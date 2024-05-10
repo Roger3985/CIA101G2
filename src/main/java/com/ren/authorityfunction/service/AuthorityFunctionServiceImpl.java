@@ -1,7 +1,6 @@
 package com.ren.authorityfunction.service;
 
-import com.Entity.AuthorityFunction;
-import com.Entity.ServiceRobot;
+import com.ren.authorityfunction.entity.AuthorityFunction;
 import com.ren.authorityfunction.dao.AuthorityFunctionDAO_interface;
 import com.ren.authorityfunction.dao.AuthorityFunctionJDBCDAOImpl;
 import com.ren.authorityfunction.dao.AuthorityFunctionRepository;

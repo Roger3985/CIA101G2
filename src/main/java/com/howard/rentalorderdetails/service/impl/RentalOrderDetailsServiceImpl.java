@@ -1,8 +1,8 @@
-package com.Cia101G2.howard.rentalorderdetails.service.impl;
+package com.howard.rentalorderdetails.service.impl;
 
-import com.Cia101G2.howard.rentalorderdetails.entity.RentalOrderDetails;
-import com.Cia101G2.howard.rentalorderdetails.dao.RentalOrderDetailsRepository;
-import com.Cia101G2.howard.rentalorderdetails.service.RentalOrderDetailsService;
+import com.howard.rentalorderdetails.entity.RentalOrderDetails;
+import com.howard.rentalorderdetails.dao.RentalOrderDetailsRepository;
+import com.howard.rentalorderdetails.service.RentalOrderDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,9 +30,9 @@ public class RentalOrderDetailsServiceImpl implements RentalOrderDetailsService 
 
         // 取出 PK 、單價、押金
         Integer rentalOrdNo = rod.getCompositeDetail().getrentalOrdNo();
-        Integer rentalNo = rod.getCompositeDetail().getrentalNo();
-        BigDecimal rentalPrice = rod.getrentalPrice();
-        BigDecimal rentalDesPrice = rod.getrentalDesPrice();
+        Integer rentalNo = rod.getCompositeDetail().getRentalNo();
+        BigDecimal rentalPrice = rod.getRentalPrice();
+        BigDecimal rentalDesPrice = rod.getRentalDesPrice();
         // 裝進內部類別
         RentalOrderDetails.CompositeDetail compositeDetail = new RentalOrderDetails.CompositeDetail(rentalOrdNo, rentalNo);
         // 裝進類別

@@ -1,8 +1,8 @@
-package com.Cia101G2.howard.rentalorderdetails.controller;
+package com.howard.rentalorderdetails.controller;
 
-import com.Cia101G2.howard.rentalorderdetails.entity.RentalOrderDetails;
-import com.Cia101G2.howard.rentalorderdetails.dto.RentalOrderDetailsRequest;
-import com.Cia101G2.howard.rentalorderdetails.service.impl.RentalOrderDetailsServiceImpl;
+import com.howard.rentalorderdetails.entity.RentalOrderDetails;
+import com.howard.rentalorderdetails.dto.RentalOrderDetailsRequest;
+import com.howard.rentalorderdetails.service.impl.RentalOrderDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -83,9 +83,9 @@ public class RentalOrderDetailsController {
 
         // 先把 PK 、單價、押金 取出
         Integer rentalOrdNo = details_request.getrentalOrdNo();
-        Integer rentalNo = details_request.getrentalNo();
-        BigDecimal rentalPrice = details_request.getrentalPrice();
-        BigDecimal rentalDesPrice = details_request.getrentalDesPrice();
+        Integer rentalNo = details_request.getRentalNo();
+        BigDecimal rentalPrice = details_request.getRentalPrice();
+        BigDecimal rentalDesPrice = details_request.getRentalDesPrice();
         // 資料是否已存在 ? 新增過了 : 繼續執行新增
         if (service.findById(rentalOrdNo, rentalNo) != null) {
             attributes.addFlashAttribute("already", "已經新增過了");

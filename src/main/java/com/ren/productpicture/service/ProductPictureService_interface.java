@@ -1,6 +1,6 @@
 package com.ren.productpicture.service;
 
-import com.Entity.ProductPicture;
+import com.ren.productpicture.entity.ProductPicture;
 
 import java.util.List;
 

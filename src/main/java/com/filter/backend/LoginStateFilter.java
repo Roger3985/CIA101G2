@@ -1,4 +1,4 @@
-package com.ren.filter.backend;
+package com.filter.backend;
 
 import com.ren.administrator.dto.LoginState;
 import org.springframework.beans.factory.annotation.Autowired;

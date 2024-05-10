@@ -1,6 +1,6 @@
 package com.ren.product.service;
 
-import com.Entity.Product;
+import com.ren.product.entity.Product;
 
 import java.util.List;
 import java.util.Map;

@@ -10,7 +10,8 @@
 //import java.util.List;
 //import java.util.Set;
 //
-//import com.Entity.*;
+//import
+//import com.ren.productcategory.entity.ProductCategory;
 //
 //public class ProductCategoryJDBCDAOImpl implements ProductCategoryDAO_interface {
 //    String driver = "com.mysql.cj.jdbc.Driver";

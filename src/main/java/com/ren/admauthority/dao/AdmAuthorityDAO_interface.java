@@ -1,6 +1,6 @@
 package com.ren.admauthority.dao;
 
-import com.Entity.*;
+import com.ren.admauthority.entity.AdmAuthority;
 
 import java.util.List;
 

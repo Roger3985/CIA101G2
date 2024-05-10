@@ -47,15 +47,15 @@
                                     <tr>
 
                                         <td th:text="${detail.compositeDetail.getrentalOrdNo()}"></td>
-                                        <td th:text="${detail.compositeDetail.getrentalNo()}"></td>
-                                        <td th:text="${detail.getrentalPrice()}"></td>
-                                        <td th:text="${detail.getrentalDesPrice()}"></td>
+                                        <td th:text="${detail.compositeDetail.getRentalNo()}"></td>
+                                        <td th:text="${detail.getRentalPrice()}"></td>
+                                        <td th:text="${detail.getRentalDesPrice()}"></td>
                                         <td>
                                             <form method="get" th:action="@{listAllToUpdateRentalOrderDetails}">
                                                 <input type="hidden" name="rentalOrdNo" th:value="${detail.compositeDetail.getrentalOrdNo()}">
-                                                <input type="hidden" name="rentalNo" th:value="${detail.compositeDetail.getrentalNo()}">
-                                                <input type="hidden" name="rentalPrice" th:value="${detail.getrentalPrice()}">
-                                                <input type="hidden" name="rentalDesPrice" th:value="${detail.getrentalDesPrice()}">
+                                                <input type="hidden" name="rentalNo" th:value="${detail.compositeDetail.getRentalNo()}">
+                                                <input type="hidden" name="rentalPrice" th:value="${detail.getRentalPrice()}">
+                                                <input type="hidden" name="rentalDesPrice" th:value="${detail.getRentalDesPrice()}">
                                                 <button type="submit" >
                                                     <i class="far fa-edit"></i>
                                                 </button>

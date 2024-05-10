@@ -3,7 +3,7 @@ package com.iting.productorderdetail.controller;
 import com.iting.productorder.entity.ProductOrder;
 import com.iting.productorderdetail.entity.ProductOrderDetail;
 import com.iting.productorderdetail.service.ProductOrderDetailService;
-import com.roger.member.entity.unique.Create;
+import com.roger.member.entity.uniqueAnnotation.Create;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;

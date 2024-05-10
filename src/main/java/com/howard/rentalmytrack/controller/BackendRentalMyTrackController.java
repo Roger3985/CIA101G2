@@ -1,7 +1,7 @@
-package com.Cia101G2.howard.rentalmytrack.controller;
+package com.howard.rentalmytrack.controller;
 
-import com.Cia101G2.howard.rentalmytrack.entiy.RentalMyTrack;
-import com.Cia101G2.howard.rentalmytrack.service.impl.RentalMyTrackServiceImpl;
+import com.howard.rentalmytrack.entity.RentalMyTrack;
+import com.howard.rentalmytrack.service.impl.RentalMyTrackServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

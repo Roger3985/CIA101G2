@@ -1,9 +1,7 @@
 package com.chihyun.mycoupon.model;
 
-import com.chihyun.coupon.entity.Coupon;
 import com.chihyun.mycoupon.dao.MyCouponRepository;
 import com.chihyun.mycoupon.entity.MyCoupon;
-import com.roger.member.entity.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +11,6 @@ import java.util.Set;
 
 @Service
 public class MyCouponService {
-
-    @Autowired
-    Member member;
-    @Autowired
-    Coupon coupon;
 
     @Autowired
     MyCouponRepository repository;

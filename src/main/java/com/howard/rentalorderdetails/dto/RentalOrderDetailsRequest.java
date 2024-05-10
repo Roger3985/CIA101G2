@@ -1,4 +1,4 @@
-package com.Cia101G2.howard.rentalorderdetails.dto;
+package com.howard.rentalorderdetails.dto;
 
 
 
@@ -24,7 +24,7 @@ public class RentalOrderDetailsRequest {
         this.rentalOrdNo = rentalOrdNo;
     }
 
-    public Integer getrentalNo() {
+    public Integer getRentalNo() {
         return rentalNo;
     }
 
@@ -32,7 +32,7 @@ public class RentalOrderDetailsRequest {
         this.rentalNo = rentalNo;
     }
 
-    public BigDecimal getrentalPrice() {
+    public BigDecimal getRentalPrice() {
         return rentalPrice;
     }
 
@@ -40,7 +40,7 @@ public class RentalOrderDetailsRequest {
         this.rentalPrice = rentalPrice;
     }
 
-    public BigDecimal getrentalDesPrice() {
+    public BigDecimal getRentalDesPrice() {
         return rentalDesPrice;
     }
 

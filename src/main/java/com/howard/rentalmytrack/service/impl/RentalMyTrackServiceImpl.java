@@ -1,8 +1,8 @@
-package com.Cia101G2.howard.rentalmytrack.service.impl;
+package com.howard.rentalmytrack.service.impl;
 
-import com.Cia101G2.howard.rentalmytrack.entiy.RentalMyTrack;
-import com.Cia101G2.howard.rentalmytrack.dao.RentalMyTrackRepository;
-import com.Cia101G2.howard.rentalmytrack.service.RentalMyTrackService;
+import com.howard.rentalmytrack.entity.RentalMyTrack;
+import com.howard.rentalmytrack.dao.RentalMyTrackRepository;
+import com.howard.rentalmytrack.service.RentalMyTrackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +29,7 @@ public class RentalMyTrackServiceImpl implements RentalMyTrackService {
     public void update(RentalMyTrack rmt) {
 
         // 取出 PK、期望租借日期
-        Integer rentalNo = rmt.getCompositeTrack().getrentalNo();
+        Integer rentalNo = rmt.getCompositeTrack().getRentalNo();
         Integer memNo = rmt.getCompositeTrack().getMemNo();
         Date expRentalDate = rmt.getExpRentalDate();
         // 把 PK 存進內部類別

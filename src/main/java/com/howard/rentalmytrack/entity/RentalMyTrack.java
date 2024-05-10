@@ -12,22 +12,96 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "rentalmytrack")
-@IdClass(RentalMyTrack.CompositeTrack.class)
 public class RentalMyTrack implements Serializable {
-    @Id
-    @ManyToOne
+
+    @EmbeddedId
+    private CompositeTrack compositeTrack;
     @JsonManagedReference
-    @JoinColumn(name = "rno", referencedColumnName = "rno")
+    @ManyToOne
+    @JoinColumn(name = "rentalno", referencedColumnName = "rentalno", insertable = false, updatable = false)
     private Rental rental;
-    @Id
-    @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "memno", referencedColumnName = "memno")
+    @ManyToOne
+    @JoinColumn(name = "memno", referencedColumnName = "memno", insertable = false, updatable = false)
     private Member member;
-	@Column(name = "rtracktime")
-    private Timestamp rTrackTime;
-	@Column(name = "exprentaldate")
+    @Column(name = "rentaltracktime")
+    private Timestamp rentalTrackTime;
+    @Column(name = "exprentaldate")
     private Date expRentalDate;
+
+    @Embeddable
+    public static class CompositeTrack implements Serializable {
+
+        @Column(name = "rentalno")
+        private Integer rentalNo;
+
+        @Column(name = "memno")
+        private Integer memNo;
+
+        public Integer getRentalNo() {
+            return rentalNo;
+        }
+
+        public void setrentalNo(Integer rentalNo) {
+            this.rentalNo = rentalNo;
+        }
+
+        public Integer getMemNo() {
+            return memNo;
+        }
+
+        public void setMemNo(Integer memNo) {
+            this.memNo = memNo;
+        }
+
+        public CompositeTrack() {
+        }
+
+        public CompositeTrack(Integer rentalNo, Integer memNo) {
+            this.rentalNo = rentalNo;
+            this.memNo = memNo;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof CompositeTrack that)) return false;
+            return Objects.equals(getRentalNo(), that.getRentalNo()) && Objects.equals(getMemNo(), that.getMemNo());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(getRentalNo(), getMemNo());
+        }
+
+    } // 內部類別結束
+
+    public RentalMyTrack() {
+    }
+
+    public RentalMyTrack(CompositeTrack compositeTrack, Timestamp rentalTrackTime) {
+        this.compositeTrack = compositeTrack;
+        this.rentalTrackTime = rentalTrackTime;
+    }
+
+    public RentalMyTrack(CompositeTrack compositeTrack, Date expRentalDate) {
+        this.compositeTrack = compositeTrack;
+        this.expRentalDate = expRentalDate;
+    }
+
+    public RentalMyTrack(CompositeTrack compositeTrack, Timestamp rentalTrackTime, Date expRentalDate) {
+        this.compositeTrack = compositeTrack;
+        this.rentalTrackTime = rentalTrackTime;
+        this.expRentalDate = expRentalDate;
+    }
+
+    public CompositeTrack getCompositeTrack() {
+        return compositeTrack;
+    }
+
+    public void setCompositeTrack(CompositeTrack compositeTrack) {
+        this.compositeTrack = compositeTrack;
+    }
 
     public Rental getRental() {
         return rental;
@@ -45,12 +119,12 @@ public class RentalMyTrack implements Serializable {
         this.member = member;
     }
 
-    public Timestamp getrTrackTime() {
-        return rTrackTime;
+    public Timestamp getrentalTrackTime() {
+        return rentalTrackTime;
     }
 
-    public void setrTrackTime(Timestamp rTrackTime) {
-        this.rTrackTime = rTrackTime;
+    public void setrentalTrackTime(Timestamp rentalTrackTime) {
+        this.rentalTrackTime = rentalTrackTime;
     }
 
     public Date getExpRentalDate() {
@@ -61,62 +135,15 @@ public class RentalMyTrack implements Serializable {
         this.expRentalDate = expRentalDate;
     }
 
-    static class CompositeTrack implements Serializable {
-
-        private Rental rental;
-        private Member member;
-
-        public CompositeTrack() {
-
-        }
-
-        public CompositeTrack(Rental rental, Member member) {
-            this.rental = rental;
-            this.member = member;
-        }
-
-        public Rental getRental() {
-            return rental;
-        }
-
-        public void setRental(Rental rental) {
-            this.rental = rental;
-        }
-
-        public Member getMember() {
-            return member;
-        }
-
-        public void setMember(Member member) {
-            this.member = member;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof CompositeTrack that)) return false;
-            return Objects.equals(getRental(), that.getRental()) && Objects.equals(getMember(), that.getMember());
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(getRental(), getMember());
-        }
-
-    }
 
     @Override
     public String toString() {
-        return "RentalMyTrackVO{" +
-                "rental=" + rental +
-                ", member=" + member +
-                ", rTrackTime=" + rTrackTime +
+        return "RentalMyTrack{" +
+                "rentalNo=" + compositeTrack.getRentalNo() +
+                "memNo=" + compositeTrack.getMemNo() +
+                ", rentalTrackTime=" + rentalTrackTime +
                 ", expRentalDate=" + expRentalDate +
-                '}';
-    }
-
-    public RentalMyTrack() {
-
+                '}' + "\n";
     }
 
 }

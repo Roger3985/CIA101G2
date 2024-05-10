@@ -1,9 +1,9 @@
-package com.ren.studiotimebooking.entity;
+package com.firesnoopy.studiotimebooking.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.ren.studioinfo.entity.StudioInfo;
-import com.ren.studioorder.entity.StudioOrder;
+import com.firesnoopy.studioinfo.entity.StudioInfo;
+import com.firesnoopy.studioorder.entity.StudioOrder;
 
 import javax.persistence.*;
 import java.sql.Date;

@@ -138,7 +138,7 @@ import com.iting.cart.entity.CartRedis;
 import com.iting.cart.service.CartService;
 import com.iting.productorder.entity.ProductOrder;
 import com.iting.productorder.service.ProductOrderService;
-import com.roger.member.entity.unique.Create;
+import com.roger.member.entity.uniqueAnnotation.Create;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;

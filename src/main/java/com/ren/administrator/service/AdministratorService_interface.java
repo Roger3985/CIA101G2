@@ -1,8 +1,7 @@
 package com.ren.administrator.service;
 
-import com.Entity.Administrator;
-import com.Entity.ServicePicture;
 import com.ren.administrator.dto.LoginState;
+import com.ren.administrator.entity.Administrator;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Date;

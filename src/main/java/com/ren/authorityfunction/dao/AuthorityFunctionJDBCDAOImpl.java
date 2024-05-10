@@ -1,6 +1,6 @@
 package com.ren.authorityfunction.dao;
 
-import com.Entity.AuthorityFunction;
+import com.ren.authorityfunction.entity.AuthorityFunction;
 
 import java.sql.*;
 import java.util.ArrayList;

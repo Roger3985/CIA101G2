@@ -1,7 +1,7 @@
-package com.Cia101G2.howard.rentalorder;
+package com.config;
 
-import com.Cia101G2.howard.rentalorder.entity.RentalOrder;
-import com.Cia101G2.howard.rentalorder.dao.RentalOrderRepository;
+import com.howard.rentalorder.entity.RentalOrder;
+import com.howard.rentalorder.dao.RentalOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;

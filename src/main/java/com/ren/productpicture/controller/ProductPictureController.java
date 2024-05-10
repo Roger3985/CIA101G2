@@ -1,6 +1,6 @@
 package com.ren.productpicture.controller;
 
-import com.Entity.ProductPicture;
+import com.ren.productpicture.entity.ProductPicture;
 import com.ren.productpicture.service.ProductPictureServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

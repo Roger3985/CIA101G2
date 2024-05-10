@@ -1,4 +1,4 @@
-package com.roger.config;
+package com.config;
 
 import com.roger.converters.StringToDateConverter;
 import com.roger.converters.StringToTimestampConverter;

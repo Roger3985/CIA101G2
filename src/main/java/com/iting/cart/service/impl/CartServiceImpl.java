@@ -85,10 +85,11 @@ import java.util.Set;
 import java.math.BigDecimal;
 
 @Service("CartService")
-
 public class CartServiceImpl implements CartService {
+
     @Autowired
-CartRepository repository;
+    private CartRepository repository;
+
     private final JedisPool jedisPool = JedisPoolUtil.getJedisPool();
     @Override
     public void addCart(CartRedis cart) {
@@ -108,10 +109,6 @@ CartRepository repository;
             e.printStackTrace();
         }
     }
-
-
-
-
 
     @Override
     public void updateCart(CartRedis cartRedis) {
@@ -219,6 +216,7 @@ public void deleteBymemNoAndProductNo(Integer memNo, Integer productNo) {
         private String generateProductKey(Integer productNo) {
             return "product:" + productNo;
         }
+
 }
 //    }
 //

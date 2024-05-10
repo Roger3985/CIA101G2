@@ -3,7 +3,7 @@ package com.ren.administrator.entity;
 import com.chihyun.servicerecord.entity.ServiceRecord;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.ren.studioorder.entity.StudioOrder;
+import com.firesnoopy.studioorder.entity.StudioOrder;
 import com.ren.title.entity.Title;
 import com.roger.columnarticle.entity.ColumnArticle;
 import com.roger.report.entity.Report;

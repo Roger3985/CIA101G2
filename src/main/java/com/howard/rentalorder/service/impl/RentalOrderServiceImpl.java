@@ -1,13 +1,15 @@
-package com.Cia101G2.howard.rentalorder.service.impl;
+package com.howard.rentalorder.service.impl;
 
-import com.Cia101G2.howard.rentalorder.entity.RentalOrder;
-import com.Cia101G2.howard.rentalorderdetails.entity.RentalOrderDetails;
-import com.Cia101G2.howard.rentalorder.dao.MemberRepository;
-import com.Cia101G2.howard.rentalorder.dao.RentalOrderRepository;
-import com.Cia101G2.howard.rentalorder.dao.RentalRepository;
-import com.Cia101G2.howard.rentalorder.dto.RentalOrderRequest;
-import com.Cia101G2.howard.rentalorder.service.RentalOrderService;
-import com.Cia101G2.howard.rentalorderdetails.dao.RentalOrderDetailsRepository;
+import com.roger.member.repository.MemberRepository;
+import com.howard.rentalorder.dao.RentalOrderRepository;
+import com.yu.rental.dao.RentalRepository;
+import com.howard.rentalorder.dto.RentalOrderRequest;
+import com.howard.rentalorder.service.RentalOrderService;
+import com.howard.rentalorderdetails.dao.RentalOrderDetailsRepository;
+import com.howard.rentalorder.entity.RentalOrder;
+import com.howard.rentalorderdetails.entity.RentalOrderDetails;
+import com.roger.member.entity.Member;
+import com.yu.rental.entity.Rental;
 import ecpay.payment.integration.AllInOne;
 import ecpay.payment.integration.domain.AioCheckOutALL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +55,7 @@ public class RentalOrderServiceImpl implements RentalOrderService {
 
                 Set<RentalOrderDetails> details = rentalOrder.getRentalOrderDetailses();
                 for (RentalOrderDetails detail : details) {
-                    detail.getRental().setrentalStat((byte) 3);
+                    detail.getRental().setRentalStat((byte) 3);
                 }
                 rentalOrder.setRentalOrderDetailses(details);
 
@@ -207,16 +209,16 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         for (String buyItem : buyItems) {
 
             RentalOrderDetails detail = new RentalOrderDetails();
-            Rental rental = rentalRepository.findById(Integer.valueOf(buyItem)).orElse(null);
+            Rental rental = rentalRepository.findByRentalNo(Integer.valueOf(buyItem));
             detail.setRental(rental);
-            detail.setCompositeDetail(new RentalOrderDetails.CompositeDetail(order.getrentalOrdNo(), rental.getrentalNo()));
-            detail.setrentalPrice(rental.getrentalPrice());
-            detail.setrentalDesPrice(rental.getRentalCategory().getrentalDesPrice());
+            detail.setCompositeDetail(new RentalOrderDetails.CompositeDetail(order.getrentalOrdNo(), rental.getRentalNo()));
+            detail.setrentalPrice(rental.getRentalPrice());
+            detail.setrentalDesPrice(rental.getRentalCategory().getRentalDesPrice());
 
             // 單一明細加入明細集合
             details.add(detail);
             // 把個別商品改變狀態為1(已預約)
-            rental.setrentalStat((byte) 1);
+            rental.setRentalStat((byte) 1);
 
         }
         // 明細放進訂單主體

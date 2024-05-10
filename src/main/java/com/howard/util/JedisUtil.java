@@ -1,4 +1,4 @@
-package com.Cia101G2.howard.util;
+package com.howard.util;
 
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;

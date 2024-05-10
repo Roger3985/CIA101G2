@@ -1,7 +1,6 @@
 package com.ren.admauthority.service;
 
-import com.Entity.*;
-import com.Entity.News;
+import com.ren.admauthority.entity.AdmAuthority;
 
 import java.util.List;
 

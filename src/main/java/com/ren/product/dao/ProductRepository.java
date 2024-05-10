@@ -1,6 +1,6 @@
 package com.ren.product.dao;
 
-import com.Entity.Product;
+import com.ren.product.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

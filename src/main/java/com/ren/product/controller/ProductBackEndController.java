@@ -1,7 +1,7 @@
 package com.ren.product.controller;
 
-import com.Entity.Product;
-import com.Entity.ProductCategory;
+import com.ren.product.entity.Product;
+import com.ren.productcategory.entity.ProductCategory;
 import com.ren.product.service.ProductServiceImpl;
 import com.ren.productcategory.service.ProductCategoryServiceImpl;
 import com.ren.productpicture.service.ProductPictureServiceImpl;

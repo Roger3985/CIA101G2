@@ -1,6 +1,6 @@
 package com.ren.productpicture.service;
 
-import com.Entity.ProductPicture;
+import com.ren.productpicture.entity.ProductPicture;
 import com.ren.product.dao.ProductRepository;
 import com.ren.productpicture.dao.ProductPictureRepository;
 import org.springframework.beans.factory.annotation.Autowired;

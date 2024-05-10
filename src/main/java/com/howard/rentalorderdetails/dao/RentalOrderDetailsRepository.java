@@ -1,6 +1,6 @@
-package com.Cia101G2.howard.rentalorderdetails.dao;
+package com.howard.rentalorderdetails.dao;
 
-import com.Cia101G2.howard.rentalorderdetails.entity.RentalOrderDetails;
+import com.howard.rentalorderdetails.entity.RentalOrderDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,6 +1,6 @@
 package com.ren.authorityfunction.controller;
 
-import com.Entity.AuthorityFunction;
+import com.ren.authorityfunction.entity.AuthorityFunction;
 import com.ren.authorityfunction.service.AuthorityFunctionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

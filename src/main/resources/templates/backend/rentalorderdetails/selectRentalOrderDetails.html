@@ -42,7 +42,7 @@
                 <form method="get" th:action="@{getOnAny}">
                     <label>選擇租借訂單編號</label>
                     <select name="rentalNo">
-                        <option th:each="detail : ${detailList}" th:value="${detail.compositeDetail.getrentalNo()}" th:text="${detail.compositeDetail.getrentalNo()}"></option>
+                        <option th:each="detail : ${detailList}" th:value="${detail.compositeDetail.getRentalNo()}" th:text="${detail.compositeDetail.getRentalNo()}"></option>
                     </select>
                     <button type="submit" >
                         送出查詢

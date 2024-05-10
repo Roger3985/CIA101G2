@@ -49,10 +49,10 @@
                                 <tbody>
                                 <th:block th:each="rental : ${rentalList}">
                                     <tr>
-                                        <td th:name="rentalNo" th:text="${rental.getrentalNo()}"></td>
+                                        <td th:name="rentalNo" th:text="${rental.getRentalNo()}"></td>
                                         <td th:name="rentalCatNo" th:text="${rental.getRentalCategory().getrentalCatNo()}"></td>
                                         <td th:name="rentalName" th:text="${rental.getrentalName()}"></td>
-                                        <td th:name="rentalPrice" th:text="${rental.getrentalPrice()}"></td>
+                                        <td th:name="rentalPrice" th:text="${rental.getRentalPrice()}"></td>
                                         <td th:name="rentalSize" th:text="${rental.getrentalSize()}"></td>
                                         <td th:name="rentalColor" th:text="${rental.getrentalColor()}"></td>
                                         <td th:name="rentalInfo" th:text="${rental.getrentalInfo()}"></td>

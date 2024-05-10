@@ -1,7 +1,7 @@
 package com.roger.columnarticle.controller;
 
 import com.ren.administrator.entity.Administrator;
-import com.ren.administrator.service.AdministratorService;
+import com.ren.administrator.service.AdministratorServiceImpl;
 import com.roger.columnarticle.entity.ColumnArticle;
 import com.roger.columnarticle.service.ColumnArticleService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,7 @@ public class ColumnArticleControllerBackEnd {
     ColumnArticleService columnArticleService;
 
     @Autowired
-    AdministratorService administratorService;
+    AdministratorServiceImpl administratorService;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -209,7 +209,7 @@ public class ColumnArticleControllerBackEnd {
 
     @ModelAttribute("administratorListData")
     protected List<Administrator> referenceListData2() {
-        List<Administrator> list = administratorService.findAll();
+        List<Administrator> list = administratorService.getAll();
         return list;
     }
 

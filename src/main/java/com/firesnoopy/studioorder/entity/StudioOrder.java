@@ -1,11 +1,11 @@
-package com.ren.studioorder.entity;
+package com.firesnoopy.studioorder.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.firesnoopy.studioinfo.entity.StudioInfo;
+import com.firesnoopy.studiotimebooking.entity.StudioTimeBooking;
 import com.ren.administrator.entity.Administrator;
-import com.ren.studioinfo.entity.StudioInfo;
-import com.ren.studiotimebooking.entity.StudioTimeBooking;
 import com.roger.member.entity.Member;
 
 import javax.persistence.*;

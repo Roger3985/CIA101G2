@@ -1,8 +1,8 @@
-package com.Cia101G2.howard.rentalorder.service.impl;
+package com.howard.rentalorder.service.impl;
 
-import com.Cia101G2.howard.rentalorder.dao.RentalRepository;
-import com.Cia101G2.howard.rentalorder.service.RentalCartService;
-import com.Cia101G2.howard.util.JedisUtil;
+import com.yu.rental.dao.RentalRepository;
+import com.howard.rentalorder.service.RentalCartService;
+import com.howard.util.JedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;

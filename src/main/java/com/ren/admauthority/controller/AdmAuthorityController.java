@@ -1,6 +1,6 @@
 package com.ren.admauthority.controller;
 
-import com.Entity.AdmAuthority;
+import com.ren.admauthority.entity.AdmAuthority;
 import com.ren.admauthority.service.AdmAuthorityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

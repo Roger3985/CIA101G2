@@ -46,13 +46,13 @@
                 <th:block th:each="track : ${trackList}">
                   <tr>
 
-                    <td th:text="${track.compositeTrack.getrentalNo()}"></td>
+                    <td th:text="${track.compositeTrack.getRentalNo()}"></td>
                     <td th:text="${track.compositeTrack.getMemNo()}"></td>
                     <td th:text="${track.getrentalTrackTime()}"></td>
                     <td th:text="${track.getExpRentalDate()}"></td>
                     <td>
                       <form method="get" th:action="@{listAllToUpdateRentalMyTrack}">
-                        <input type="hidden" name="rentalNo" th:value="${track.compositeTrack.getrentalNo()}">
+                        <input type="hidden" name="rentalNo" th:value="${track.compositeTrack.getRentalNo()}">
                         <input type="hidden" name="memNo" th:value="${track.compositeTrack.getMemNo()}">
                         <input type="hidden" name="expRentalDate" th:value="${track.getExpRentalDate()}">
                         <button type="submit" >

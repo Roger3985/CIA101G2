@@ -1,6 +1,6 @@
 package com.ren.title.service;
 
-import com.Entity.Title;
+import com.ren.title.entity.Title;
 
 import java.util.List;
 

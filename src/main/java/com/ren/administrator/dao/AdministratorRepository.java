@@ -1,6 +1,6 @@
 package com.ren.administrator.dao;
 
-import com.Entity.Administrator;
+import com.ren.administrator.entity.Administrator;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

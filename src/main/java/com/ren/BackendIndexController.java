@@ -1,6 +1,6 @@
 package com.ren;
 
-import com.Entity.Administrator;
+import com.ren.administrator.entity.Administrator;
 import com.ren.administrator.dto.LoginState;
 import com.ren.administrator.service.AdministratorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

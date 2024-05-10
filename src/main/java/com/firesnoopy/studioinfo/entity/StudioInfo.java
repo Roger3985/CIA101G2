@@ -1,10 +1,9 @@
-package com.ren.studioinfo.entity;
+package com.firesnoopy.studioinfo.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.ren.studioorder.entity.StudioOrder;
-import com.ren.studiotimebooking.entity.StudioTimeBooking;
+import com.firesnoopy.studioorder.entity.StudioOrder;
+import com.firesnoopy.studiotimebooking.entity.StudioTimeBooking;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

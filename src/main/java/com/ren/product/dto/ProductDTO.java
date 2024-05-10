@@ -1,7 +1,7 @@
 package com.ren.product.dto;
 
-import com.Entity.Product;
-import com.Entity.ProductPicture;
+import com.ren.product.entity.Product;
+import com.ren.productpicture.entity.ProductPicture;
 
 public class ProductDTO {
     private Product product;

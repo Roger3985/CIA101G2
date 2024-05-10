@@ -1,6 +1,6 @@
 package com.ren.productcategory.controller;
 
-import com.Entity.ProductCategory;
+import com.ren.productcategory.entity.ProductCategory;
 
 import com.ren.productcategory.service.ProductCategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

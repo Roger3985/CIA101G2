@@ -1,4 +1,4 @@
-package com.Cia101G2.howard.rentalmytrack.dto;
+package com.howard.rentalmytrack.dto;
 
 import javax.validation.constraints.NotBlank;
 import java.sql.Date;
@@ -13,7 +13,7 @@ public class RentalMyTrackRequest {
     private Timestamp rentalTrackTime; // -> 加入追蹤時間
     private Date expRentalDate; // -> 期望租借日期
 
-    public Integer getrentalNo() {
+    public Integer getRentalNo() {
         return rentalNo;
     }
 

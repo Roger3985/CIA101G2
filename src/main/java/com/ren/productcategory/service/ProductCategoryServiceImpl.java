@@ -3,7 +3,7 @@ package com.ren.productcategory.service;
 import java.util.List;
 import java.util.Set;
 
-import com.Entity.ProductCategory;
+import com.ren.productcategory.entity.ProductCategory;
 import com.ren.product.dao.ProductRepository;
 import com.ren.productcategory.dao.ProductCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;

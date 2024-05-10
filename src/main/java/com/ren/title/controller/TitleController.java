@@ -1,6 +1,6 @@
 package com.ren.title.controller;
 
-import com.Entity.Title;
+import com.ren.title.entity.Title;
 import com.ren.title.service.TitleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -1,7 +1,6 @@
 package com.ren.authorityfunction.service;
 
-import com.Entity.AuthorityFunction;
-import com.Entity.ServiceRobot;
+import com.ren.authorityfunction.entity.AuthorityFunction;
 
 import java.util.List;
 

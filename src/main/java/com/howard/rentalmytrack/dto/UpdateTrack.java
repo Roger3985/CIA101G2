@@ -1,4 +1,4 @@
-package com.Cia101G2.howard.rentalmytrack.dto;
+package com.howard.rentalmytrack.dto;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Date;

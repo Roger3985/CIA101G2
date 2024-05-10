@@ -1,4 +1,4 @@
-package com.Cia101G2.howard.rentalorder.dto;
+package com.howard.rentalorder.dto;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;

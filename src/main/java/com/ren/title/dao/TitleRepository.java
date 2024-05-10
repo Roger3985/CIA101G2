@@ -1,6 +1,6 @@
 package com.ren.title.dao;
 
-import com.Entity.Title;
+import com.ren.title.entity.Title;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

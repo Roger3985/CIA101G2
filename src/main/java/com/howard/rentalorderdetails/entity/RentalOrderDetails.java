@@ -45,7 +45,7 @@ public class RentalOrderDetails implements Serializable{
             this.rentalOrdNo = rentalOrdNo;
         }
 
-        public Integer getrentalNo() {
+        public Integer getRentalNo() {
             return rentalNo;
         }
 
@@ -65,12 +65,12 @@ public class RentalOrderDetails implements Serializable{
         public boolean equals(Object o) {
             if (this == o) return true;
             if (!(o instanceof CompositeDetail that)) return false;
-            return Objects.equals(getrentalOrdNo(), that.getrentalOrdNo()) && Objects.equals(getrentalNo(), that.getrentalNo());
+            return Objects.equals(getrentalOrdNo(), that.getrentalOrdNo()) && Objects.equals(getRentalNo(), that.getRentalNo());
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(getrentalOrdNo(), getrentalNo());
+            return Objects.hash(getrentalOrdNo(), getRentalNo());
         }
 
     } // 內部類別結束
@@ -92,7 +92,7 @@ public class RentalOrderDetails implements Serializable{
         this.compositeDetail = compositeDetail;
     }
 
-    public BigDecimal getrentalPrice() {
+    public BigDecimal getRentalPrice() {
         return rentalPrice;
     }
 
@@ -100,7 +100,7 @@ public class RentalOrderDetails implements Serializable{
         this.rentalPrice = rentalPrice;
     }
 
-    public BigDecimal getrentalDesPrice() {
+    public BigDecimal getRentalDesPrice() {
         return rentalDesPrice;
     }
 
@@ -128,7 +128,7 @@ public class RentalOrderDetails implements Serializable{
     public String toString() {
         return "RentalOrderDetails{" +
                 ", rentalOrder=" + compositeDetail.getrentalOrdNo() +
-                ", rental=" + compositeDetail.getrentalNo() +
+                ", rental=" + compositeDetail.getRentalNo() +
                 ", rentalPrice=" + rentalPrice +
                 ", rentalDesPrice=" + rentalDesPrice +
                 '}' + "\n";

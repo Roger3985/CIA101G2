@@ -3,21 +3,21 @@ package com.ren.productcategory.service;
 import java.util.List;
 import java.util.Set;
 
-import com.Entity.Product;
-import com.Entity.ProductCategory;
+import com.ren.product.entity.Product;
+import com.ren.productcategory.entity.ProductCategory;
 
 public interface ProductCategoryService_interface {
 
-	public ProductCategory addProductCategory(ProductCategory productCategory);
+	ProductCategory addProductCategory(ProductCategory productCategory);
 
-	public List<ProductCategory> getAll();
+	List<ProductCategory> getAll();
 
-	public ProductCategory getOneProductCatagory(Integer pCatNo);
+	ProductCategory getOneProductCatagory(Integer pCatNo);
 
-//	public Set<Product> getProductsBypCatNo(Integer pCatNo);
+//	Set<Product> getProductsBypCatNo(Integer pCatNo);
 
-	public ProductCategory updateProductCategory(ProductCategory productCategory);
+	ProductCategory updateProductCategory(ProductCategory productCategory);
 	
-	public void deleteProductCategory(Integer pCatNo);
+	void deleteProductCategory(Integer pCatNo);
 	
 }

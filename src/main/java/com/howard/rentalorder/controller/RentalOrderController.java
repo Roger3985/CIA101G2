@@ -1,12 +1,13 @@
-package com.Cia101G2.howard.rentalorder.controller;
+package com.howard.rentalorder.controller;
 
-import com.Cia101G2.howard.rentalorder.entity.RentalOrder;
-import com.Cia101G2.howard.rentalorder.dao.RentalRepository;
-import com.Cia101G2.howard.rentalorder.dto.RentalOrderRequest;
-import com.Cia101G2.howard.rentalorder.dto.SetToCartRequest;
-import com.Cia101G2.howard.rentalorder.service.impl.RentalCartServiceImpl;
-import com.Cia101G2.howard.rentalorder.service.impl.RentalOrderServiceImpl;
-import com.Cia101G2.howard.rentalorderdetails.service.impl.RentalOrderDetailsServiceImpl;
+import com.yu.rental.dao.RentalRepository;
+import com.howard.rentalorder.dto.RentalOrderRequest;
+import com.howard.rentalorder.dto.SetToCartRequest;
+import com.howard.rentalorder.entity.RentalOrder;
+import com.howard.rentalorder.service.impl.RentalCartServiceImpl;
+import com.howard.rentalorder.service.impl.RentalOrderServiceImpl;
+import com.howard.rentalorderdetails.service.impl.RentalOrderDetailsServiceImpl;
+import com.yu.rental.entity.Rental;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

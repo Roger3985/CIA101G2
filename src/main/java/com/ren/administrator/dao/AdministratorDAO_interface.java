@@ -1,6 +1,7 @@
 package com.ren.administrator.dao;
 
-import com.Entity.Administrator;
+
+import com.ren.administrator.entity.Administrator;
 
 import java.util.List;
 

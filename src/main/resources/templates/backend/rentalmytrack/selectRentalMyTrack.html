@@ -40,7 +40,7 @@
                 <form method="get" th:action="@{getOnAny}">
                     <label>選擇會員名稱</label>
                     <select name="rentalNo">
-                        <option th:each="track : ${trackList}" th:value="${track.compositeTrack.getrentalNo()}" th:text="${track.compositeTrack.getrentalNo()}"></option>
+                        <option th:each="track : ${trackList}" th:value="${track.compositeTrack.getRentalNo()}" th:text="${track.compositeTrack.getRentalNo()}"></option>
                     </select>
                     <button type="submit" >
                         送出查詢

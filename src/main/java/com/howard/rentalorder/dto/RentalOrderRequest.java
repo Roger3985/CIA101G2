@@ -1,4 +1,4 @@
-package com.Cia101G2.howard.rentalorder.dto;
+package com.howard.rentalorder.dto;
 
 import com.howard.CustomTimestampDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

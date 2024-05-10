@@ -1,7 +1,7 @@
 package com.ren.administrator.service;
 
-import com.Entity.Administrator;
-import com.Entity.Title;
+import com.ren.administrator.entity.Administrator;
+import com.ren.title.entity.Title;
 import com.ren.administrator.dao.AdministratorRepository;
 import com.ren.administrator.dto.LoginState;
 import org.springframework.beans.factory.annotation.Autowired;

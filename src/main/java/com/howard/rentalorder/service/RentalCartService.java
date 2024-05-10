@@ -1,4 +1,4 @@
-package com.Cia101G2.howard.rentalorder.service;
+package com.howard.rentalorder.service;
 
 public interface RentalCartService {
 }

@@ -1,7 +1,7 @@
 package com.ren.administrator.dao;
 
-import com.Entity.Administrator;
-import com.Entity.Title;
+import com.ren.title.entity.Title;
+import com.ren.administrator.entity.Administrator;
 
 import java.sql.*;
 import java.util.ArrayList;

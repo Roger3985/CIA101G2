@@ -1,5 +1,8 @@
-package com.ren.config;
+package com.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.iting.cart.entity.CartRedis;
 import com.ren.administrator.dto.LoginState;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -87,6 +90,24 @@ public class RedisConfig {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new GenericToStringSerializer<>(Integer.class));
         return redisTemplate;
+    }
+
+    @Bean("cart")
+    public RedisTemplate<String, CartRedis> cartRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, CartRedis> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer(objectMapper()));
+        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer(objectMapper()));
+
+        redisTemplate.afterPropertiesSet();
+        return redisTemplate;
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper().enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
     }
 
 }

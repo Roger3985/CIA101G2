@@ -3,7 +3,8 @@ package com.ren.productcategory.dao;
 import java.util.List;
 import java.util.Set;
 
-import com.Entity.*;
+import com.ren.product.entity.Product;
+import com.ren.productcategory.entity.ProductCategory;
 
 public interface ProductCategoryDAO_interface {
 

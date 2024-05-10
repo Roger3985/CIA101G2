@@ -1,7 +1,7 @@
-package com.ren.config;
+package com.config;
 
-import com.ren.filter.backend.AutoLoginFilter;
-import com.ren.filter.backend.LoginStateFilter;
+import com.filter.backend.AutoLoginFilter;
+import com.filter.backend.LoginStateFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

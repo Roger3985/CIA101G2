@@ -1,4 +1,4 @@
-package com.Cia101G2.howard.rentalmytrack.dto;
+package com.howard.rentalmytrack.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -17,7 +17,7 @@ public class RentalMyTrackRequest_PUT {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") // 讓請求的 json 資料符合 sql.Date 格式
     private Date expRentalDate; // -> 期望租借日期
 
-    public Integer getrentalNo() {
+    public Integer getRentalNo() {
         return rentalNo;
     }
 

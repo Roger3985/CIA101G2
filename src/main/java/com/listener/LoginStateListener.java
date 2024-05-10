@@ -1,6 +1,6 @@
-package com.ren.listener;
+package com.listener;
 
-import com.Entity.Administrator;
+import com.ren.administrator.entity.Administrator;
 import com.ren.administrator.service.AdministratorServiceImpl;
 
 import javax.servlet.annotation.WebListener;

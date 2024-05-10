@@ -1,7 +1,7 @@
 package com.ren.admauthority.service;
 
-import com.Entity.*;
 import com.ren.admauthority.dao.AdmAuthorityRepository;
+import com.ren.admauthority.entity.AdmAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
