@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>404 - 找不到頁面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        a {
+            font-size: 16px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<h1>404 - 找不到頁面</h1>
+<p th:text="${errorMessage}">對不起，你正在尋找的頁面不存在。</p>
+<a th:href="@{/}">返回首頁</a>
+<!--&lt;!&ndash; 404 Error Text &ndash;&gt;-->
+<!--<div class="text-center">-->
+<!--    <div class="error mx-auto" data-text="404">404</div>-->
+<!--    <p class="lead text-gray-800 mb-5">Page Not Found</p>-->
+<!--    <p class="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p>-->
+<!--    <a href="index.html">&larr; Back to Dashboard</a>-->
+<!--</div>-->
+</body>
+</html>

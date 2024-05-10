@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>網站首頁</title>
+    <!-- 引入Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 自定義CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" th:href="@{/css/backend/member/try.css}" />
+    <link rel="stylesheet" th:href="@{/css/backend/member/try2.css}" />
+    <link rel="stylesheet" th:href="@{/css/public/elementmodel/elementStyles.css}" />
+    <link rel="stylesheet" th:href="@{/css/frontend/navForMemCenter/navForMemCenter.css}" />
+    <!-- CSS -->
+    <style>
+        /* 調整輪播圖中圖片的大小 */
+        .carousel-image {
+            /* 設置圖片的寬度和高度 */
+            width: 80%; /* 改變圖片寬度，這裡設置為80% */
+            height: auto; /* 保持圖片的寬高比 */
+            margin: 0 auto; /* 使圖片居中 */
+        }
+    </style>
+</head>
+
+<body>
+<div th:insert="~{/frontend/navForMemCenter/navForMemCenter :: nav}"></div>
+<!-- 導航欄 -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">網站名稱</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">首頁</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">關於我們</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">產品</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">聯繫我們</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- 輪播圖 -->
+<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="/images/image1.webp" class="d-block w-100" alt="輪播圖1">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>標題1</h5>
+                <p>內容1</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="/images/image2.jpg" class="d-block w-100" alt="輪播圖2">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>標題2</h5>
+                <p>內容2</p>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">上一張</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">下一張</span>
+    </button>
+</div>
+
+<!-- 內容部分 -->
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-4">
+            <h3>主題1</h3>
+            <p>一些關於主題1的簡短描述。</p>
+        </div>
+        <div class="col-md-4">
+            <h3>主題2</h3>
+            <p>一些關於主題2的簡短描述。</p>
+        </div>
+        <div class="col-md-4">
+            <h3>主題3</h3>
+            <p>一些關於主題3的簡短描述。</p>
+        </div>
+    </div>
+</div>
+<div>
+    <h2>會員中心</h2>
+
+    <!-- 其他會員資訊 -->
+</div>
+<div class="form-link">
+    <td>
+        <form th:action="@{/frontend/member/memberData}" method="get">
+            <input type="submit" value="個人會員資訊" class="submit">
+        </form>
+    </td>
+</div>
+
+<!-- 底部 -->
+<footer class="bg-light py-3">
+    <div class="container text-center">
+        <p>© 2024 你的公司名稱</p>
+    </div>
+</footer>
+
+<!-- 引入Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

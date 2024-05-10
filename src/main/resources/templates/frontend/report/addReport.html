@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>檢舉申請</title>
+
+    <link rel="stylesheet" th:href="@{/css/frontend/navForMemCenter/navForMemCenter.css}" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h3 {
+            color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+
+        #characterCount {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .error {
+            color: #d9534f;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        button {
+            background-color: #5bc0de;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #46b8da;
+        }
+    </style>
+</head>
+<body>
+<!--    <div th:insert="~{/frontend/navForMemCenter/navForMemCenter : nav}"></div>-->
+<main>
+    <div align="center">
+        <h3>
+            <b>請輸入檢舉申請內容</b>
+        </h3>
+
+        <form th:action="@{addReport}" method="post" th:object="${report}" enctype="multipart/form-data">
+            <div>
+                <textarea th:field="*{reportReason}" rows="4" cols="50" oninput="countCharacters()" placeholder="請輸入檢舉內容..."></textarea>
+                <p id="characterCount">剩餘可輸入的字數: 300</p>
+                <br>
+
+                <span
+                    th:if="${#fields.hasErrors('reportReason')}"
+                    th:error="*{reportReason}" class="error" id="reportReason.errors"></span>
+            </div>
+
+            <div>
+                <div>
+                    <button type="submit" id="submit"style="background-color: #5bc0de; /* 藍色背景顏色 */
+                                                        color: #fff; /* 白色文字顏色 */
+                                                        border: none; /* 去掉邊框 */
+                                                        padding: 10px 10px; /* 內邊距 */
+                                                        cursor: pointer; /* 鼠標懸停效果 */
+                                                        border-radius: 10px;
+                                                        font-weight: bold;
+                                                        font-size: 14px;
+                                                        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);"
+                            onmouseover="this.style.color='red'; this.style.backgroundColor='yellow'"
+                            onmouseout="this.style.color='white'; this.style.backgroundColor='#5bc0de'">送出新增</button>
+                </div>
+
+                <div></div>
+            </div>
+        </form>
+        <br>
+    </div>
+</main>
+    <SCRIPT LANGUAGE="JavaScript">
+        maxLen = 300; // 字數頂限
+        function countCharacters() {
+            var textarea = document.getElementById('reportReason');
+            var characterCount = textarea.value.length;
+            var less = 300 - characterCount;
+            var characterCount = document.getElementById('characterCount');
+            // 顯示字元數
+            characterCount.textContent = "剩餘可輸入字數:" + less;
+            characterCount.style.color = less <= 0 ? 'red' : 'black';
+            // 檢查是否超過字元限制
+            if (less <= 0) {
+                characterCount.textContent = "已達字數上限";
+                // 截斷文字
+                textarea.value = textarea.value.substring(0, 300);
+            }
+        }
+    </SCRIPT>
+</body>
+</html>

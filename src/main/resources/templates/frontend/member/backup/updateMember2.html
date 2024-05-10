@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link th:href="@{/css/backend/rentapp/addRentApp.css}" rel="stylesheet" />
+    <link th:href="@{/css/backend/indexCSS/styles.css}" rel="stylesheet" />
+    <link th:href="@{/css/backend/indexCSS/index.css}" rel="stylesheet" />
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+
+        form {
+            display: inline-block;
+        }
+
+        label {
+            /* display: inline-block; */
+            width: 5em;
+        }
+
+        b {
+            color: red;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 60%;
+            margin: 0px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 50vw;
+            text-align: right;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #333;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #ddd;
+        }
+
+        .toggler {
+            display: inline-block;
+            width: 500px;
+            height: 200px;
+        }
+
+        #button {
+            padding: .5em 1em;
+            text-decoration: none;
+        }
+
+        #effect {
+            width: 240px;
+            height: 100px;
+            padding: 0.4em;
+            position: relative;
+        }
+
+        #effect h3 {
+            margin: 0;
+            padding: 0.4em;
+            text-align: center;
+            background-color: red;
+        }
+
+        main{
+            margin-top: 50px;
+            padding: 20px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2em !important;
+            border-radius: 10px;
+            width:80%;
+            color: #fff; /* 字體顏色 */
+            background-color: #5bc0de; /* 背景顏色 */
+            padding: 20px; /* 內邊距 */
+            margin: 0px auto; /* 邊距 */
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.9); /* 底部陰影效果 */
+        }
+
+        .error {
+            color: red;
+            font-style: italic;
+        }
+    </style>
+    <title>變更員工資料</title>
+</head>
+<body>
+<!--<div th:replace="BackStage/HTMLTool/nav :: nav"></div>-->
+<main>
+    <div th:insert="~{/frontend/navForMemCenter/navForMemCenter :: nav}"></div>
+    <main>
+        <h1>修改會員資料</h1>
+        <form method="post" th:action="@{updateMember}" th:object="${data}" enctype="multipart/form-data">
+            <table style="width: 100px">
+                <tr>
+                    <td>項目</td>
+                    <td>資料</td>
+                </tr>
+            </table>
+            <div class="input-box">
+                <label>姓名：<b>*</b></label>
+                <input type="text" placeholder="請輸入姓名" th:field="*{memName}" />
+                <span th:if="${#fields.hasErrors('memName')}" th:errors="*{memName}" class="error"></span>
+            </div>
+
+            <div class="input-box">
+                <label>會員帳號：<b>*</b></label>
+                <input type="text" placeholder="請輸入會員帳號" th:field="*{memAcc}" />
+                <span  th:if="${#fields.hasErrors('memAcc')}" th:errors="*{memAcc}" class="error" id="ename.errors"></span>
+            </div>
+
+            <div class="input-box">
+                <label>會員密碼：<b>*</b></label>
+                <input type="password" placeholder="請輸入會員密碼" th:field="*{memPwd}"/>
+                <span  th:if="${#fields.hasErrors('memPwd')}" th:errors="*{memPwd}" class="error" id="memPwd.errors"></span>
+            </div>
+
+            <div class="column">
+                <div class="input-box">
+                    <label>手機號碼：<b>*</b></label>
+                    <input type="text" placeholder="例：0912345678" th:field= "*{memMob}" />
+                    <span th:if="${#fields.hasErrors('memMob')}" th:errors="*{memMob}" class="error"></span>
+                </div>
+            </div>
+            <div class="gender-box">
+                <h3>性別：<b>*</b></h3>
+                <div class="gender-option">
+                    <div class="gender">
+                        <input type="radio" id="check-male"  th:field="*{memGender}" th:value="0"/>
+                        <label for="check-male">男性</label>
+                    </div>
+                    <div class="gender">
+                        <input type="radio" id="check-female"  th:field="*{memGender}" th:value="1"/>
+                        <label for="check-female">女性</label>
+                    </div>
+                </div>
+            </div>
+            <span th:if="${#fields.hasErrors('memGender')}" th:errors="*{memGender}" class="error"></span>
+
+            <div class="input-box">
+                <label>信箱:<b>*</b></label>
+                <div class="email-input-container">
+                    <input type="text" placeholder="會員信箱" th:field="*{memMail}" />
+                </div>
+                <span th:if="${#fields.hasErrors('memMail')}" th:errors="*{memMail}" class="error" id="email.errors"></span>
+            </div>
+
+            <div class="input-box address">
+                <label>地址：<b>*</b></label>
+                <div class="column">
+                    <div class="select-box dropdown">
+                        <select name="country" id="country_box">
+                            <option value="">選擇縣市</option>
+                        </select>
+                    </div>
+                    <div class="select-box dropdown">
+                        <select name="district" id="district_box">
+                            <option value="">選擇鄉鎮市區</option>
+                        </select>
+                    </div>
+                </div>
+                <input type="text" placeholder="請輸入詳細地址" th:field= "*{memAdd}"/>
+                <span th:if="${#fields.hasErrors('memAdd')}" th:errors="*{memAdd}" class="error"></span>
+            </div>
+
+            <div class="input-box">
+                <label>生日:<b>*</b></label>
+                <input type="date" placeholder="請輸入生日" th:field="*{memBd}" />
+                <span th:if="${#fields.hasErrors('memBd')}" th:errors="*{memBd}" class="error"></span>
+            </div>
+
+            <div class="input-box">
+                <label>信用卡號:<b>*</b></label>
+                <input type="text" placeholder="請輸入信用卡卡號" th:field="*{memCard}" />
+                <span th:if="${#fields.hasErrors('memCard')}" th:errors="*{memCard}" class="error"></span>
+            </div>
+            <br>
+
+            <input type="file" th:field= "*{memPic}" id="the_file">
+            <input type="hidden" th:field="*{memNo}">
+            <input type="hidden" th:field="*{memName}">
+            <input type="hidden" th:field="*{memAcc}">
+            <input type="hidden" th:field="*{memPwd}">
+            <input type="hidden" th:field="*{memMob}">
+            <input type="hidden" th:field="*{memGender}">
+            <input type="hidden" th:field="*{memMail}">
+            <input type="hidden" th:field="*{memAdd}">
+            <input type="hidden" th:field="*{memBd}">
+
+            <input type="submit" class="submit" value="修改資料">
+               onmouseover="this.style.color='red'; this.style.backgroundColor='yellow'"
+               onmouseout="this.style.color='white'; this.style.backgroundColor='#3498db'">
+
+        <a th:href="@{/backend/emp/listAllEmp}"><button style="background-color: #3498db; /* 藍色背景顏色 */
+                                                        color: #fff; /* 白色文字顏色 */
+                                                        border: none; /* 去掉邊框 */
+                                                        padding: 10px 10px; /* 內邊距 */
+                                                        cursor: pointer; /* 鼠標懸停效果 */
+                                                        border-radius: 10px;
+                                                        font-weight: bold;
+                                                        font-size: 14px;"
+                                                          onmouseover="this.style.color='red'; this.style.backgroundColor='yellow'"
+                                                          onmouseout="this.style.color='white'; this.style.backgroundColor='#3498db'">取消</button></a>
+    </form>
+
+    <script th:src="@{/js/backend/rentapp/addRentApp.js}"></script>
+</main>
+</body>
+</html>

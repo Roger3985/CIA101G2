@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增會員通知資料</title>
+    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+    <!-- Custom styles for this page -->
+    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
+</head>
+<body id="page-top">
+<main>
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+        <!-- End of Sidebar -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                <nav th:replace="backend/component/nav :: nav"></nav>
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                    <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">新增會員通知資料:</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <form method="post" th:action="@{addNotice}" th:object="${notice}">
+                                    <table>
+                            <!--            <tr>-->
+                            <!--                <td><label for="memNo">會員編號:</label></td>-->
+                            <!--                <option th:each="memNo : ${noticeListData}" th:field="*{}"></option>-->
+                            <!--                <td><label class="error" th:if="${#fields.hasErrors('member.memNo')}" th:errors="*{member.memNo}"></label></td>-->
+                            <!--            </tr>-->
+                                        <tr>
+                                            <td><label for="member.memNo">會員編號:</label></td>
+                                            <td>
+                                                <select type="number" id="member.memNo" name="member.memNo" title="請輸入會員編號" th:field="*{member.memNo}">
+                                                    <option th:each="member : ${memberListData}" th:value="${member.memNo}" th:text="${member.memNo}"></option>
+                                                </select>
+                                            </td>
+                                            <td><label class="error" th:if="${#fields.hasErrors('member.memNo')}" th:errors="*{member.memNo}"></label></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><label for="notContent">通知內容:</label></td>
+                                            <td><input type="text" id="notContent" title="請輸入通知內容" th:field="*{notContent}"></td>
+                                            <td><label class="error" th:if="${#fields.hasErrors('notContent')}" th:errors="*{notContent}"></label></td>
+                                        </tr>
+
+                            <!--            <tr>-->
+                            <!--                <td><label for="notContent2">快速選擇會員通知內容:</label></td>-->
+                            <!--                <td>-->
+                            <!--                    <select type="text" id="notContent2" title="請輸入通知內容" th:field="*{notContent}">-->
+                            <!--                        <option value="您的訂單已成功支付">您的訂單已成功支付</option>-->
+                            <!--                        <option value="你的優惠卷已發放">您的優惠卷已發放</option>-->
+                            <!--                        <option value="您的訂單已發貨，預計三個工作日內送達">您的訂單已發貨，預計三個工作日內送達</option>-->
+                            <!--                        <option value="您的密碼已成功重置，請妥善保管新密碼">您的密碼已成功重置，請妥善保管新密碼</option>-->
+                            <!--                        <option value="您的會員註冊已成功，歡迎加入我們的大家庭">您的會員註冊已成功，歡迎加入我們的大家庭</option>-->
+                            <!--                    </select>-->
+                            <!--                </td>-->
+                            <!--                <td><label class="error" th:if="${#fields.hasErrors('notContent')}" th:errors="*{notContent}"></label></td>-->
+                            <!--            </tr>-->
+
+                                        <tr>
+                                            <td><input type="hidden" id="notTime" name="notTime" th:field="*{notTime}"></td>
+                                            <td><label class="error" th:if="${#fields.hasErrors('notTime')}" th:errors="*{notTime}"></label></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><label for="notStat">讀取狀態：</label></td>
+                                            <td>
+                                                <input type="hidden" id="notStat" name="notStat" th:field="*{notStat}">
+                                                <span>未讀</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="text-align: center;">
+                                                <input type="submit" value="送出新增">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer th:replace="backend/component/bottom :: bottom"></footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+    <!-- Logout Modal-->
+    <div th:replace="backend/component/logout :: logout"></div>
+
+    <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+    <!-- Page level plugins -->
+    <script th:src="@{/backend/vendor/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+    <!-- Page level custom scripts -->
+    <script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function() {
+            // 在表單提交時更新 notTime 字段為當前時間
+            $('form').submit(function(event) {
+                // 獲取 notTime 輸入元素
+                var notTimeInput = $('#notTime');
+
+                // 獲取當前時間
+                var now = new Date();
+                var year = now.getFullYear();
+                var month = String(now.getMonth() + 1).padStart(2, '0');
+                var day = String(now.getDate()).padStart(2, '0');
+                var hours = String(now.getHours()).padStart(2, '0');
+                var minutes = String(now.getMinutes()).padStart(2, '0');
+                var seconds = String(now.getSeconds()).padStart(2, '0');
+
+                // 組合日期時間為 SQL Timestamp 格式
+                var dateTimeString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+                // 將日期時間設置為 notTime 輸入值
+                notTimeInput.val(dateTimeString);
+            });
+        });
+
+        // 在 DOM 加載完成時設置 notStat 輸入框的值為 0
+        document.addEventListener('DOMContentLoaded', function() {
+            // 選擇 ID 為 "notStat" 的 input 元素
+            var notStatInput = document.getElementById('notStat');
+
+            // 設置值為 0
+            notStatInput.value = '0';
+        });
+    </script>
+</main>
+</body>
+</html>
