@@ -1,4 +1,4 @@
-package integration.domain;
+package ecpay.payment.integration.domain;
 
 /**
  * 信用卡定期定額訂單查詢物件

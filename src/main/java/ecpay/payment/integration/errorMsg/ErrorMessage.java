@@ -1,4 +1,4 @@
-package integration.errorMsg;
+package ecpay.payment.integration.errorMsg;
 
 public class ErrorMessage {
 	public final static String CHECK_MAC_VALUE_NOT_EQUALL_ERROR = "檢查碼驗證錯誤!";

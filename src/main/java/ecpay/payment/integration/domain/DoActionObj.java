@@ -1,4 +1,4 @@
-package integration.domain;
+package ecpay.payment.integration.domain;
 
 /**
  * 信用卡關帳/退刷/取消/放棄物件

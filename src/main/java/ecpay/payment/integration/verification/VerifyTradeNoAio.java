@@ -1,4 +1,4 @@
-package integration.verification;
+package ecpay.payment.integration.verification;
 
 import ecpay.payment.integration.domain.TradeNoAioObj;
 import ecpay.payment.integration.ecpayOperator.PaymentVerifyBase;

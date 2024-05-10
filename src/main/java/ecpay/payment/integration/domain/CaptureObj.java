@@ -1,4 +1,4 @@
-package integration.domain;
+package ecpay.payment.integration.domain;
 
 /**
  * 合作特店申請撥款物件

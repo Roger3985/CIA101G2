@@ -1,4 +1,4 @@
-package integration.domain;
+package ecpay.payment.integration.domain;
 
 /**
  * 下載合作特店對帳媒體檔物件

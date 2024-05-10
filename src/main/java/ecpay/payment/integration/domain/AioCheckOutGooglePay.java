@@ -1,4 +1,4 @@
-package integration.domain;
+package ecpay.payment.integration.domain;
 
 /**
  * 產生GooglePay訂單物件

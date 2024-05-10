@@ -1,4 +1,4 @@
-package integration.domain;
+package ecpay.payment.integration.domain;
 
 /**
  * 當ChoosePayment為CVS或BARCODE時的取號結果通知物件

@@ -1,4 +1,4 @@
-package integration;
+package ecpay.payment.integration;
 
 import ecpay.payment.integration.domain.*;
 import ecpay.payment.integration.ecpayOperator.EcpayFunction;

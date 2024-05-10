@@ -1,4 +1,4 @@
-package integration.domain;
+package ecpay.payment.integration.domain;
 
 /**
  * 產生訂單物件(不指定付款方式，由綠界顯示)

@@ -1,4 +1,4 @@
-package integration.exception;
+package ecpay.payment.integration.exception;
 
 public class EcpayException extends Error{
 	private static final long serialVersionUID = 1L;

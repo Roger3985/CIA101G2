@@ -1,4 +1,4 @@
-package integration;
+package ecpay.payment.integration;
 
 import ecpay.payment.integration.ecpayOperator.EcpayFunction;
 import ecpay.payment.integration.errorMsg.ErrorMessage;

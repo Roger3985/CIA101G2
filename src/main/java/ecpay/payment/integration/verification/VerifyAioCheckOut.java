@@ -1,4 +1,4 @@
-package integration.verification;
+package ecpay.payment.integration.verification;
 
 import ecpay.payment.integration.domain.InvoiceObj;
 import ecpay.payment.integration.ecpayOperator.PaymentVerifyBase;
