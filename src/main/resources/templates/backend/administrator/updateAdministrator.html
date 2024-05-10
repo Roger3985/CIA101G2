@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>更新商品</title>
+    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+    <style>
+        .error {
+            font-size: 12px; /* 調整字體大小 */
+        }
+    </style>
+</head>
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                <form method="post" th:action="@{updateAdministrator/update}" th:object="${administrator}">
+                    <div class="mb-3 row">
+                        <label for="administratorSelect" class="col-sm-2 col-form-label">商品編號</label>
+                        <div class="col-sm-3">
+                            <select size="1" name="administratorNo" id="administratorSelect" th:onchange="|updateAdministratorInstantly()|">
+                                <option th:each="administrator : ${administratorList}" th:value="${administrator.administratorNo}" th:text="${administrator.administratorNo}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="administratorName" class="col-sm-2 col-form-label">商品名稱</label>
+                        <div class="col-sm-3">
+                            <input type="text" th:field="*{admName}" class="form-control" name="administratorName" id="administratorName">
+                            <span th:if="${#fields.hasErrors('administratorName')}" th:errors="*{admName}" class="error" id="administratorName.errors"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="administratorInfo" class="col-sm-2 col-form-label">商品資訊</label>
+                        <div class="col-sm-3">
+                            <input type="text" th:field="*{administratorInfo}" class="form-control" name="administratorInfo" id="administratorInfo">
+                            <span th:if="${#fields.hasErrors('administratorInfo')}" th:errors="*{administratorInfo}" class="error" id="administratorInfo.errors"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="administratorSize" class="col-sm-2 col-form-label">尺寸</label>
+                        <div class="col-sm-3">
+                            <select size="1" name="administratorSize" id="administratorSize" th:field="*{administratorSize}">
+                                <option th:value="${0}" th:text="XS"></option>
+                                <option th:value="${1}" th:text="S"></option>
+                                <option th:value="${2}" th:text="M"></option>
+                                <option th:value="${3}" th:text="L"></option>
+                                <option th:value="${4}" th:text="XL"></option>
+                                <option th:value="${5}" th:text="2L"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="administratorColor" class="col-sm-2 col-form-label">顏色</label>
+                        <div class="col-sm-3">
+                            <input type="text" th:field="*{administratorColor}" class="form-control" name="administratorColor" id="administratorColor">
+                            <span th:if="${#fields.hasErrors('administratorColor')}" th:errors="*{administratorColor}" class="error" id="administratorColor.errors"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="administratorPrice" class="col-sm-2 col-form-label">商品單價</label>
+                        <div class="col-sm-3">
+                            <input type="text" th:field="*{administratorPrice}" class="form-control" name="administratorPrice" id="administratorPrice">
+                            <span th:if="${#fields.hasErrors('administratorPrice')}" th:errors="*{administratorPrice}" class="error" id="administratorPrice.errors"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="administratorStat" class="col-sm-2 col-form-label">商品狀態</label>
+                        <div class="col-sm-3">
+                            <select size="1" name="administratorStat" id="administratorStat" th:field="*{administratorStat}">
+                                <option th:value="${0}" th:text="上架"></option>
+                                <option th:value="${1}" th:text="下架"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="administratorSalQty" class="col-sm-2 col-form-label">商品已售出數量</label>
+                        <div class="col-sm-3">
+                            <input type="text" th:field="*{administratorSalQty}" class="form-control" name="administratorSalQty" id="administratorSalQty">
+                            <span th:if="${#fields.hasErrors('administratorSalQty')}" th:errors="*{administratorSalQty}" class="error" id="administratorSalQty.errors"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="administratorComPeople" class="col-sm-2 col-form-label">評價總人數</label>
+                        <div class="col-sm-3">
+                            <input type="text" th:field="*{administratorComPeople}" class="form-control" name="administratorComPeople" id="administratorComPeople">
+                            <span th:if="${#fields.hasErrors('administratorComPeople')}" th:errors="*{administratorComPeople}" class="error" id="administratorComPeople.errors"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="administratorComScore" class="col-sm-2 col-form-label">評價總星數</label>
+                        <div class="col-sm-3">
+                            <input type="text" th:field="*{admComScore}" class="form-control" name="administratorComScore" id="administratorComScore">
+                            <span th:if="${#fields.hasErrors('administratorComScore')}" th:errors="*{admComScore}" class="error" id="administratorComScore.errors"></span>
+                        </div>
+                    </div>
+                    <div>
+                        <div><button type="submit" id="submit"> 送出修改 </button></div>
+                    </div>
+                </form>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="backend/component/bottom :: bottom"></footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
+
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+
+<script th:inline="javascript">
+    // document.addEventListener("DOMContentLoaded", function() {
+    //     // 在這裡放置你的 AJAX 請求代碼
+    //     var selectedAdministratorNo = document.getElementById('administratorSelect').value;
+    //     sendAjaxRequest(selectedAdministratorNo);
+    // });
+    //
+    // function sendAjaxRequest(selectedAdministratorNo) {
+    //     var xhr = new XMLHttpRequest();
+    //     xhr.open('POST', '/backend/administrator/getAdministratorDetails?administratorNo=' + encodeURIComponent(selectedAdministratorNo), true);
+    //     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    //     xhr.onload = function () {
+    //         if (xhr.status === 200) {
+    //             var administratorDetails = JSON.parse(xhr.responseText);
+    //
+    //             document.getElementById('administratorCatNo').value = administratorDetails.administratorCategory.administratorCatNo;
+    //             document.getElementById('administratorName').value = administratorDetails.administratorName;
+    //             document.getElementById('administratorInfo').value = administratorDetails.administratorInfo;
+    //             document.getElementById('administratorSize').value = administratorDetails.administratorSize;
+    //             document.getElementById('administratorColor').value = administratorDetails.administratorColor;
+    //             document.getElementById('administratorPrice').value = administratorDetails.administratorPrice;
+    //             document.getElementById('administratorStat').value = administratorDetails.administratorStat;
+    //             document.getElementById('administratorSalQty').value = administratorDetails.administratorSalQty;
+    //             document.getElementById('administratorComPeople').value = administratorDetails.administratorComPeople;
+    //             document.getElementById('administratorComScore').value = administratorDetails.administratorComScore;
+    //         } else {
+    //             console.error('Failed to fetch administrator details');
+    //         }
+    //     };
+    //
+    //     xhr.send();
+    // }
+
+    function updateAdministratorInstantly() {
+        var selectedAdministratorNo = document.getElementById('administratorSelect').value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/backend/administrator/getAdministratorInstantly?administratorNo=' + encodeURIComponent(selectedAdministratorNo), true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var administratorDetails = JSON.parse(xhr.responseText);
+
+                document.getElementById('administratorCatNo').value = administratorDetails.administratorCategory.administratorCatNo;
+                document.getElementById('administratorName').value = administratorDetails.administratorName;
+                document.getElementById('administratorInfo').value = administratorDetails.administratorInfo;
+                document.getElementById('administratorSize').value = administratorDetails.administratorSize;
+                document.getElementById('administratorColor').value = administratorDetails.administratorColor;
+                document.getElementById('administratorPrice').value = administratorDetails.administratorPrice;
+                document.getElementById('administratorStat').value = administratorDetails.administratorStat;
+                document.getElementById('administratorSalQty').value = administratorDetails.administratorSalQty;
+                document.getElementById('administratorComPeople').value = administratorDetails.administratorComPeople;
+                document.getElementById('administratorComScore').value = administratorDetails.administratorComScore;
+            } else {
+                console.error('Failed to fetch administrator details');
+            }
+        };
+
+        xhr.send();
+    }
+</script>
+
+</body>
+</html>

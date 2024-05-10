@@ -1,0 +1,833 @@
+-- 最新版
+CREATE DATABASE IF NOT EXISTS fallElove;
+USE fallElove;
+
+DROP TABLE IF EXISTS Notice;
+DROP TABLE IF EXISTS ServicePicture;
+DROP TABLE IF EXISTS ServiceRecord;
+
+DROP TABLE IF EXISTS Report;
+DROP TABLE IF EXISTS ColumnReply;
+DROP TABLE IF EXISTS ClickLike;
+DROP TABLE IF EXISTS ArticleCollection;
+DROP TABLE IF EXISTS ColumnArticle;
+
+DROP TABLE IF EXISTS Cart;
+DROP TABLE IF EXISTS ProductMyFavorite;
+DROP TABLE IF EXISTS ProductOrderDetail;
+DROP TABLE IF EXISTS ProductPicture;
+DROP TABLE IF EXISTS ProductOrder;
+DROP TABLE IF EXISTS product;
+DROP TABLE IF EXISTS productcategory;
+
+DROP TABLE IF EXISTS Mycoupon;
+DROP TABLE IF EXISTS Coupon;
+
+DROP TABLE IF EXISTS RentalMyFavorite;
+DROP TABLE IF EXISTS RentalMyTrack;
+DROP TABLE IF EXISTS RentSet;
+DROP TABLE IF EXISTS RentalOrderDetails;
+DROP TABLE IF EXISTS RentalOrder;
+DROP TABLE IF EXISTS RentalPic;
+DROP TABLE IF EXISTS Rental;
+DROP TABLE IF EXISTS RentalCategory;
+
+DROP TABLE IF EXISTS StudioTimeBooking;
+DROP TABLE IF EXISTS StudioOrder;
+DROP TABLE IF EXISTS StudioInfo;
+
+DROP TABLE IF EXISTS AdmAuthority;
+DROP TABLE IF EXISTS Administrator;
+DROP TABLE IF EXISTS Title;
+DROP TABLE IF EXISTS AuthorityFunction;
+
+DROP TABLE IF EXISTS `Member`;
+
+DROP TABLE IF EXISTS News;
+DROP TABLE IF EXISTS ServiceRobot;
+
+
+-- 創建會員表格
+CREATE TABLE Member
+(
+    memNo          INT          NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    memName        VARCHAR(20)  NOT NULL,
+    memAcc         VARCHAR(20)  NOT NULL UNIQUE,
+    memPwd         VARCHAR(32)  NOT NULL,
+    memMob         VARCHAR(20)  NOT NULL UNIQUE,
+    memGender      TINYINT      NULL,
+    memMail        VARCHAR(40)  NOT NULL,
+    memAdd         VARCHAR(100) NOT NULL UNIQUE,
+    memBd          DATE         NULL,
+    memCard        VARCHAR(19)  NULL,
+    provider       TINYINT      NULL,
+    clientID       VARCHAR(20)  NULL,
+    displayName    VARCHAR(20)  NULL,
+    accessToken    VARCHAR(20)  NULL,
+    refreshToken   VARCHAR(20)  NULL,
+    tknExpireTime  DATETIME     NULL,
+    creationTime   DATETIME     NULL,
+    memberJoinTime DATETIME     NULL,
+    memStat        TINYINT      NOT NULL DEFAULT 0,
+    memSalt        VARCHAR(12)  NOT NULL,
+    memPic	       BLOB 		NULL
+);
+
+INSERT INTO Member(memName, memAcc, memPwd, memMob, memGender, memMail, memAdd, memBd, memCard, provider, clientID, displayName, accessToken, refreshToken, tknExpireTime, creationTime, memberJoinTime, memStat, memSalt, memPic) VALUES
+('John', 'John123', '123456', '0912345678', 1, 'John123@gmail.com','台北市大安區忠孝東路四段100號', '1990-01-15', '411235678901234', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 0, '1', null),
+('Emma', 'Emma456', 'abcdef', '0987654321', 2, 'Emma456@gmail.com','新北市板橋區文化路二段50巷20號', '1985-03-28', '510510510510510', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 0,'2', null),
+('Michael', 'Michael789', 'qwerty', '0965412378', 1, 'Michael789@gmail.com','台中市西屯區市政北二路100號', '1998-07-10', '378282246310005', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 2, '3', null),
+('Emily', 'Emily987', '987654', '0945678912', 2, 'Emily987@gmail.com','台南市中西區民族路三段30號', '1982-09-05', '371449635398431', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 0, '4', null),
+('Daniel', 'Daniel321', 'asdfgh', '0978912345', 1, 'Daniel321@gmail.com','高雄市左營區高鐵路100號', '1976-11-20', '378734493671000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 1, '5', null),
+('Sophia', 'Sophia654', 'zxcvbn', '0921654987', 1, 'Sophia654@gmail.com','桃園市中壢區中央西路200號', '1995-04-12', '601111111111111', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 2, '6', null),
+('Liam', 'Liam789', 'qazwsx', '0965498732', 2, 'Liam789@gmail.com','新竹市東區光復路二段50巷10號', '1988-06-30', '555555555555444', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 0, '7', null),
+('Olivia', 'Olivia456', 'yhnqwe', '0987321654', 2, 'Olivia456@gmail.com','基隆市安樂區中正路100號', '1979-10-22', '356611111111111', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 1, '8', null),
+('James', 'James123', '654321', '0921987654', 1, 'James123@gmail.com','嘉義市西區興業路一段20號', '1992-12-08', '353011133330000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 2, '9', null),
+('Ava', 'Ava789', 'plmokn', '0915935746', 1, 'Ava789@gmail.com','彰化縣彰化市中山路100號', '1987-02-18', '352800000000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 0, '10', null);
+
+-- 創建會員通知表格
+CREATE TABLE Notice
+(
+    motNo      INT           NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    memNo      INT           NOT NULL ,
+    notContent VARCHAR(1000) NOT NULL,
+    notTime    DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    notStat    TINYINT       NOT NULL,
+    FOREIGN KEY (memNo)      REFERENCES Member(memNo)
+);
+
+INSERT INTO Notice(memNo, notContent, notTime, notStat) VALUES (1, '您的訂單已成功支付', CURRENT_TIMESTAMP, 0);
+INSERT INTO Notice(memNo, notContent, notTime, notStat) VALUES (2, '您的訂單已成功支付', CURRENT_TIMESTAMP, 1);
+INSERT INTO Notice(memNo, notContent, notTime, notStat) VALUES (3, '您的優惠卷已發放', CURRENT_TIMESTAMP, 1);
+INSERT INTO Notice(memNo, notContent, notTime, notStat) VALUES (4, '您的優惠卷已發放', CURRENT_TIMESTAMP, 1);
+INSERT INTO Notice(memNo, notContent, notTime, notStat) VALUES (5, '您的訂單已發貨，預計三個工作日內送達', CURRENT_TIMESTAMP, 0);
+INSERT INTO Notice(memNo, notContent, notTime, notStat) VALUES (6, '您的訂單已發貨，預計三個工作日內送達', CURRENT_TIMESTAMP, 1);
+INSERT INTO Notice(memNo, notContent, notTime, notStat) VALUES (7, '您的密碼已成功重置，請妥善保管新密碼', CURRENT_TIMESTAMP, 1);
+INSERT INTO Notice(memNo, notContent, notTime, notStat) VALUES (8, '您的密碼已成功重置，請妥善保管新密碼', CURRENT_TIMESTAMP, 0);
+INSERT INTO Notice(memNo, notContent, notTime, notStat) VALUES (9, '您的會員註冊已成功，歡迎加入我們的大家庭', CURRENT_TIMESTAMP, 1);
+INSERT INTO Notice(memNo, notContent, notTime, notStat) VALUES (10, '您的會員註冊已成功，歡迎加入我們的大家庭', CURRENT_TIMESTAMP, 1);
+
+-- 創建優惠券表格
+CREATE TABLE Coupon(
+coupNo		INT	NOT NUll PRIMARY KEY AUTO_INCREMENT,
+coupName	VARCHAR(20)	NOT NUll,
+coupCond	VARCHAR(200) NOT NUll,
+coupDisc	DECIMAL(2,2) NOT NUll,
+coupAddDate	DATETIME NOT NUll DEFAULT CURRENT_TIMESTAMP,
+coupExpDate	DATETIME NOT NUll,
+coupRelDate	DATETIME,
+coupRelStat	TINYINT	NOT NUll);
+
+INSERT INTO Coupon(coupName,coupCond,coupDisc,coupExpDate,coupRelDate,coupRelStat) VALUES
+('一月壽星禮','1.八五折2.限一般商品使用3.滿一千二方可使用',0.85, '2024-02-01 00:00:00', '2024-01-01 00:00:00', 1),
+('二月壽星禮','1.八五折2.限一般商品使用3.滿一千二方可使用',0.85, '2024-03-01 00:00:00', '2024-02-01 00:00:00', 1),
+('三月壽星禮','1.八五折2.限一般商品使用3.滿一千二方可使用',0.85, '2024-04-01 00:00:00', '2024-03-01 00:00:00', 1),
+('四月壽星禮','1.八五折2.限一般商品使用3.滿一千二方可使用',0.85, '2024-05-01 00:00:00', '2024-04-01 00:00:00', 1),
+('母親節優惠','1.九折2.限一般商品使用3.滿一千方可使用',0.9,'2023-05-13 00:00:00', '2023-04-20 00:00:00', 0);
+
+-- 創建我的優惠券表格
+CREATE TABLE Mycoupon(
+coupNo	INT	NOT NUll,
+memNo	INT	NOT NUll,
+coupUsedStat	TINYINT,
+coupInfo	VARCHAR(200) NOT NUll,
+coupExpDate	DATETIME NOT NUll,
+CONSTRAINT Mycoupon_id_pk PRIMARY KEY (coupNo, memNo),
+CONSTRAINT Mycoupon_coupNo_fk FOREIGN KEY (coupNo) REFERENCES Coupon(coupNo) ,
+CONSTRAINT Mycoupon_memNo_fk FOREIGN KEY (memNo) REFERENCES Member(memNo)
+);
+
+
+INSERT INTO Mycoupon VALUES
+(1,1,0,'fallElove祝您生日快樂！送上這張生日禮券，期待與您在特殊日子共同創造更多難忘時刻。','2024-02-01 00:00:00'),
+(2,10,0,'fallElove祝您生日快樂！送上這張生日禮券，期待與您在特殊日子共同創造更多難忘時刻。','2024-03-01 00:00:00'),
+(3,2,0,'fallElove祝您生日快樂！送上這張生日禮券，期待與您在特殊日子共同創造更多難忘時刻。','2024-04-01 00:00:00'),
+(4,6,0,'fallElove祝您生日快樂！送上這張生日禮券，期待與您在特殊日子共同創造更多難忘時刻。','2024-05-01 00:00:00'),
+(5,1,0,'親愛的顧客，母親節即將來臨，讓我們一同為母親帶來美好的驚喜！使用您的母親節優惠券，為母親準備一場特別的體驗，讓我們攜手共創珍貴的回憶！','2023-05-13 00:00:00'),
+(5,2,0,'親愛的顧客，母親節即將來臨，讓我們一同為母親帶來美好的驚喜！使用您的母親節優惠券，為母親準備一場特別的體驗，讓我們攜手共創珍貴的回憶！','2023-05-13 00:00:00'),
+(5,3,0,'親愛的顧客，母親節即將來臨，讓我們一同為母親帶來美好的驚喜！使用您的母親節優惠券，為母親準備一場特別的體驗，讓我們攜手共創珍貴的回憶！','2023-05-13 00:00:00'),
+(5,4,0,'親愛的顧客，母親節即將來臨，讓我們一同為母親帶來美好的驚喜！使用您的母親節優惠券，為母親準備一場特別的體驗，讓我們攜手共創珍貴的回憶！','2023-05-13 00:00:00'),
+(5,5,0,'親愛的顧客，母親節即將來臨，讓我們一同為母親帶來美好的驚喜！使用您的母親節優惠券，為母親準備一場特別的體驗，讓我們攜手共創珍貴的回憶！','2023-05-13 00:00:00'),
+(5,6,0,'親愛的顧客，母親節即將來臨，讓我們一同為母親帶來美好的驚喜！使用您的母親節優惠券，為母親準備一場特別的體驗，讓我們攜手共創珍貴的回憶！','2023-05-13 00:00:00'),
+(5,7,0,'親愛的顧客，母親節即將來臨，讓我們一同為母親帶來美好的驚喜！使用您的母親節優惠券，為母親準備一場特別的體驗，讓我們攜手共創珍貴的回憶！','2023-05-13 00:00:00'),
+(5,8,0,'親愛的顧客，母親節即將來臨，讓我們一同為母親帶來美好的驚喜！使用您的母親節優惠券，為母親準備一場特別的體驗，讓我們攜手共創珍貴的回憶！','2023-05-13 00:00:00'),
+(5,9,0,'親愛的顧客，母親節即將來臨，讓我們一同為母親帶來美好的驚喜！使用您的母親節優惠券，為母親準備一場特別的體驗，讓我們攜手共創珍貴的回憶！','2023-05-13 00:00:00'),
+(5,10,0,'親愛的顧客，母親節即將來臨，讓我們一同為母親帶來美好的驚喜！使用您的母親節優惠券，為母親準備一場特別的體驗，讓我們攜手共創珍貴的回憶！','2023-05-13 00:00:00');
+
+-- 創建職位表格
+CREATE TABLE Title
+(
+	titleNo INT NOT NULL PRIMARY KEY,
+    titleName VARCHAR(20)
+);
+
+INSERT INTO Title (titleNo, titleName) VALUES
+(1, '老闆'),
+(2, '店長'),
+(3, '正職員工'),
+(4, '打工仔');
+
+-- 創建功能權限表格
+CREATE TABLE AuthorityFunction
+(
+	authFuncNo INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    authFuncInfo VARCHAR(30) NOT NULL
+);
+
+INSERT INTO AuthorityFunction (authFuncNo, authFuncInfo) VALUES
+(1, '查詢資料'),
+(2, '新增資料'),
+(3, '修改資料'),
+(4, '刪除資料');
+
+-- 創建職位權限表格
+CREATE TABLE AdmAuthority
+(
+	titleNo INT NOT NULL,
+	authFuncNo INT NOT NULL,
+    PRIMARY KEY (titleNo,authFuncNo),
+    FOREIGN KEY (titleNo) REFERENCES Title(titleNo) ,
+    FOREIGN KEY (authFuncNo) REFERENCES AuthorityFunction(authFuncNo)
+);
+
+INSERT INTO AdmAuthority (titleNo,authFuncNo) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4),
+(2, 1),
+(2, 2),
+(2, 3),
+(3, 1),
+(3, 2),
+(4, 1);
+
+-- 創建後台管理員表格
+CREATE TABLE Administrator
+(
+	admNo INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    admPwd VARCHAR(32) NOT NULL,
+    admName VARCHAR(50) NOT NULL,
+    admStat TINYINT NOT NULL,
+    admEmail VARCHAR(40) NOT NULL UNIQUE,
+    titleNo INT NOT NULL,
+    admHireDate DATE NOT NULL,
+    admPhoto BLOB NULL,
+    admSalt VARCHAR(12) NOT NULL,
+    admLogin TINYINT NOT NULL,
+    admLogout TINYINT NOT NULL,
+    admActiveTime DATETIME NULL,
+    FOREIGN KEY (titleNo) REFERENCES Title(titleNo)
+);
+
+INSERT INTO Administrator (admNo, admPwd, admName, admStat, admEmail, titleNo, admHireDate, admPhoto, admSalt, admLogin, admLogout, admActiveTime) VALUES
+(1, 'password1', '蔡陰魂', 1, 'admin1@gmail.com', 1, '2001-01-09', null, '1', 1, 0, '2016-09-01 00:00:00'),
+(2, 'password2', '韓果魚', 1, 'admin2@gmail.com', 1, '2002-07-08', null, '1', 1, 0, '2024-05-05 18:00:00'),
+(3, 'password3', '賴皮寮', 1, 'admin3@gmail.com', 1, '1987-08-07', null, '1', 1, 0, '2024-05-05 18:00:00'),
+(4, 'password4', '趙紹康', 0, 'admin4@gmail.com', 2, '1985-06-04', null, '1', 0, 1, '2024-01-16 20:00:00'),
+(5, 'password5', '陳石中', 0, 'admin5@gmail.com', 3, '1991-11-12', null, '1', 0, 1, '2024-01-16 19:00:00'),
+(6, 'password6', '郭拔跋', 0, 'admin6@gmail.com', 1, '1999-02-24', null, '1', 0, 1, '2023-12-31 16:00:00'),
+(7, 'password7', '柯阿伯', 1, 'admin7@gmail.com', 1, '1998-03-04', null, '1', 1, 0, '2024-01-16 12:00:00'),
+(8, 'password8', '黃國倉', 1, 'admin8@gmail.com', 1, '1995-12-24', null, '1', 1, 0, '2024-05-05 22:00:00'),
+(9, 'password9', '周船熊', 0, 'admin9@gmail.com', 3, '2002-05-06', null, '1', 0, 1, '2015-01-05 19:00:00'),
+(10, 'password10', '王小明', 0, 'admin10@gmail.com', 4, '2015-04-09', null, '1', 1, 0, '2024-05-05 12:00:00'),
+(11, '123456', 'ciren', 0, 'admin11@gmail.com', 4, '2015-04-09', null, '1', 1, 0, '2024-05-05 12:00:00');
+
+-- 創建客服紀錄表格
+CREATE TABLE ServiceRecord(
+	recordNo	INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	admNo		INT NOT NULL,
+	memNo		INT NOT NULL,
+	recordTime	DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	recordContent	VARCHAR(1000) NOT NULL,
+	speaker		TINYINT	NOT NULL,
+	CONSTRAINT FK_ServiceRecord_admNo FOREIGN KEY (admNo) REFERENCES Administrator(admNo) ,
+	CONSTRAINT FK_ServiceRecord_memNo FOREIGN KEY (memNo) REFERENCES Member(memNo)
+);
+
+INSERT INTO ServiceRecord (admNo, memNo, recordContent,speaker)VALUES
+(10, 4, '您好，我最近在您們的網站上訂購了一件商品，但是還沒收到任何確認郵件。請問我的訂單狀態是怎麼樣的呢？', 0),
+(10, 4, '您好，請問您的訂單號是多少呢？我可以幫您查詢一下訂單狀態。', 1),
+(10, 4, '我的訂單號是123456789。', 0),
+(10, 4, '好的，請稍等片刻，我馬上為您查詢一下。', 1),
+(10, 4, '感謝您的等待，我確認了您的訂單。您的訂單已經成功接收並處理，目前正在備貨階段。預計將在3-5個工作日內安排發貨。您會收到一封確認郵件，內含訂單追蹤號碼。請耐心等待，如果您有任何進一步的問題，請隨時與我們聯繫。', 1),
+(10, 4, '好的，謝謝您的幫助。', 0),
+(10, 4, '不客氣，如果您還有其他問題，請隨時告訴我們。祝您購物愉快！', 1),
+(8, 2, '你好，我最近在你們網站上訂購了一件小禮服，但收到的商品有瑕疵，有污漬在衣服上。我想換貨，可以幫我處理嗎？', 0),
+(8, 2, '非常抱歉您收到的商品有瑕疵。為了幫助您處理此事，請您提供訂單號碼以及照片，我們將盡快為您解決。', 1),
+(8, 2, '我的訂單號是789012345', 0),
+(8, 2, '我們已經記錄您的換貨需求。請您按照我們的指示退回原件，換貨將在收到退回商品後盡快為您處理。我們會向您提供新的追蹤號碼以便您追蹤換貨的運送情況。', 1);
+
+-- 創建客服紀錄圖片表格
+CREATE TABLE ServicePicture(
+	servicePicNo INT NOT NULL PRIMARY KEY,
+	recordNo	INT NOT NULL,
+	servicePic	LONGBLOB,
+	CONSTRAINT FK_ServicePicture_recordNo FOREIGN KEY (recordNo) REFERENCES ServiceRecord(recordNo)
+);
+
+INSERT INTO ServicePicture(servicePicNo,recordNo) VALUES
+(10,3),
+(11,3),
+(20,8),
+(21,8),
+(22,8);
+
+-- 創建客服機器人表格
+CREATE TABLE ServiceRobot(
+	keywordNo	INT	NOT NUll PRIMARY KEY,
+	keywordName	VARCHAR(500) NOT NUll,
+	responseContent	VARCHAR(500) NOT NUll
+);
+
+INSERT INTO ServiceRobot VALUES
+(100,'忘記密碼','請於會員登入頁面點選「忘記密碼」，重新設定您的密碼'),
+(200,'退換貨','請提供商品照片及退換原因，以便客服人員為您處理。'),
+(500,'租借天數','包裹第一次配達的日期為租借的第一天，再往後推 7 或 14 天（視您購買的方案為何），就是您的租借天數哦。系統會自動幫您算好租借天數，並於完成下單後，於「會員中心」→「我的訂單管理」內顯示。
+舉例：
+您於 7/10 下單租借兩件衣服，於 7/12 簽收此包裹(為第1天)，那就需於 7/25 (第14天)含當天前的 23:59 前至 7-11 寄件歸還喔。
+*商品也可提早至 7-11 寄件歸還哦。'),
+(501,'歸還衣服','訂單隨包裹附上歸還袋及物流單。請您填妥歸還單資料後將衣服裝入袋中，拿到7-11寄回即可。'),
+(502,'歸還期限','「會員中心」→「我的訂單管理」標示的歸還日期即為您至 7-11 寄出的最後一天。');
+
+-- 創建最新消息表格
+CREATE TABLE News(
+	newsNo	INT NOT NUll PRIMARY KEY AUTO_INCREMENT,
+	newsTitle	VARCHAR(45)	NOT NUll,
+	newsContent	LONGTEXT NOT NUll,
+	postTime	DATETIME NOT NUll
+);
+
+INSERT INTO News(newsTitle, newsContent, postTime) VALUES
+('全新春季系列現已上架，快來挑選！','新品上市！讓您焕然一新的時尚體驗即將開啟！探索我們的全新春季系列，融合了時尚元素和優雅設計，為您帶來煥然一新的穿搭風格。快來選購吧！','2024-01-26 10:00:00'),
+('Halle Bailey 身穿 N+F 高級訂製魚尾禮服出席有色人種進步協會形象獎','荷莉貝莉一襲典雅的湖水藍色禮服來自Dolce & Gabbana的作品，馬甲式的上身設計，就像是小美人魚的貝殼內衣；夢幻又浪漫的公主薄紗蓬裙，以De Beers的鑽石項鍊和耳環點綴，若迪士尼公主真實走進現代應該就會這樣吧！','2024-03-18 10:00:00'),
+('誠徵網站客服人員，歡迎加入我們的團隊！','1.IT服務線上文字客服，使用線上對接軟件、E-mail等回覆客戶問題，並將問題回饋給技術單位
+2.熟悉手機、電腦等基本操作，無相關經驗可培訓；擅溝通協調及反應能力佳的處理客戶訴求與安排。3.完成主管交辦事項。
+4.班別(早)(中)輪班
+班別如下：
+早班時間：08:00-15:30
+中班時間：15:00-22:30
+按照班別給予津貼以及交通補貼
+年底固定1個月年終以及分紅獎金.
+5.照當月國定休假日給予月休天數(需排班)。','2024-03-28 10:00:00'),
+('客戶服務時間調整通知，歡迎隨時聯繫我們！','客戶服務升級！我們一直致力於提供更好的服務體驗。現在，我們榮幸地宣布客戶服務時間已經調整完善，以更好地滿足您的需求！不論您遇到任何問題或需要幫助，我們的專業團隊隨時為您服務。歡迎隨時聯繫我們，我們將竭誠為您提供最優質的服務！','2024-04-06 10:00:00'),
+('母親節優惠，限時特惠!','立即加入會員，即可獲得九折優惠，限時2024-04-20 ~ 2024-05-13使用','2024-04-20 10:00:00');
+
+-- 創建專欄文章表格
+CREATE TABLE ColumnArticle
+(
+    artNo       INT         NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    admNo       INT         NOT NULL,
+    artTitle    VARCHAR(45) NOT NULL,
+    artContent  LONGTEXT    NOT NULL,
+    artTime     DATETIME    NOT NULL,
+    artCatNo    INT         NOT NULL,
+    artStat     TINYINT     NOT NULL,
+    FOREIGN KEY (admNo)     REFERENCES Administrator(admNo)
+);
+INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (1, '如何籌備一場難忘的婚禮：從規劃到執行', '在籌備婚禮時，規劃是至關重要的一步。這包括選擇婚禮日期和場地，管理預算和財務，以及與各個供應商合作和溝通。從訂婚到婚禮當天的流程，每一步都需要仔細計劃和準備，以確保婚禮順利進行並成為難忘的回憶。', '2024-04-02 10:00:00', 1001, 0);
+INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (2, '婚禮慶典的歷史與演變', '婚禮慶典有著悠久的歷史和豐富的文化傳統。從古代到現代，不同文化和地區的婚禮慶典都有著獨特的儀式和慣例。隨著社會的變遷和文化的交流，婚禮慶典也不斷演變，反映了不同時代和地域的價值觀和生活方式。', '2023-11-02 09:00:00', 1002, 1);
+INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (2, '婚禮場地選擇指南：室內還是室外？', '選擇婚禮場地是籌備婚禮的重要決定之一。室內場地通常提供穩定的環境和舒適的氛圍，而室外場地則能帶來自然的美景和開放的感覺。在做出選擇時，要考慮到季節、天氣、預算和個人喜好，以確保婚禮的順利進行和與眾不同的體驗。', '2024-03-02 22:00:00', 1003, 0);
+INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (3, '婚禮主題構想：從經典到獨特的靈感', '婚禮主題可以為婚禮慶典帶來獨特的氛圍和風格。從經典的浪漫到獨特的主題，如海灘婚禮或鄉村婚禮，每個主題都有其獨特的魅力和體驗。選擇一個適合的主題，可以讓婚禮更具個性化和意義深長。', '2023-12-02 13:00:00', 1004, 1);
+INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (1, '精緻設計的婚紗：流行趨勢與風格選擇', '婚紗是婚禮中最重要的元素之一，它代表著新娘的個性和風格。從經典的公主款式到時尚的露肩設計，每個婚紗款式都有其獨特的特點和魅力。選擇一款適合自己身形和個人風格的婚紗，可以讓新娘在婚禮當天散發自信和美麗。', '2024-04-03 16:00:00', 1005, 0);
+INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (2, '男士婚禮穿搭指南：如何挑選適合的婚紗西裝？', '男士的婚禮穿搭同樣重要，它展現了新郎的品味和風格。從經典的西裝款式到時尚的花色和剪裁，每個男士婚紗西裝都有其獨特的魅力和風格。選擇一款合適的婚紗西裝，可以讓新郎在婚禮當天與新娘相得益彰並展現出最好的形象。', '2023-03-02 09:00:00', 1006, 1);
+INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (3, '如何找到完美的婚紗店：選擇過程中的注意事項', '選擇一家適合的婚紗店是準備婚禮時的重要步驟之一。婚紗店不僅提供各種款式和設計的婚紗，還能提供專業的意見和定制服務。在選擇婚紗店時，要考慮到品質、服務、價格和口碑等因素，以確保找到完美的婚紗。', '2024-05-11 11:00:00', 1007, 0);
+INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (3, '婚禮攝影師的角色：捕捉幸福時刻的專業技巧', '婚禮攝影師扮演著捕捉幸福時刻和永恆回憶的重要角色。他們不僅需要具備專業的攝影技巧，還需要有豐富的婚禮攝影經驗和良好的溝通能力。選擇一位合適的婚禮攝影師，可以讓新人在婚禮當天留下美好的回憶和獨特的照片作品。', '2023-12-31 21:00:00', 1008, 1);
+INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (2, '婚禮花卉與裝飾：打造浪漫氛圍的關鍵', '婚禮花卉和裝飾是營造浪漫氛圍和美好回憶的重要元素之一。從鮮花花束到場地裝飾，每個細節都需要精心設計和佈置。選擇適合的花卉和裝飾品，可以讓婚禮場地更加美麗和令人難忘。', '2024-01-02 10:00:00', 1009, 0);
+INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (3, '婚禮籌備中的常見挑戰與解決方案', '婚禮籌備過程中常常會遇到各種挑戰和困難。例如預算超支、供應商問題、人際關係等。面對這些挑戰，新人需要保持冷靜和耐心，並尋找解決問題的有效方法。通過合理的計劃和良好的溝通，可以克服婚禮籌備中的各種困難，讓婚禮順利進行並成為美好回憶。', '2023-02-02 13:00:00', 1010, 1);
+
+-- 創建點讚表格
+CREATE TABLE ClickLike
+(
+    memNo INT NOT NULL,
+    artNo INT NOT NULL,
+    PRIMARY KEY (memNo, artNo),
+    FOREIGN KEY (memNo) REFERENCES Member(memNo) ,
+    FOREIGN KEY (artNo) REFERENCES ColumnArticle(artNo)
+);
+INSERT INTO ClickLike(memNo, artNo) VALUES (1, 1);
+INSERT INTO ClickLike(memNo, artNo) VALUES (2, 2);
+INSERT INTO ClickLike(memNo, artNo) VALUES (3, 3);
+INSERT INTO ClickLike(memNo, artNo) VALUES (4, 4);
+INSERT INTO ClickLike(memNo, artNo) VALUES (5, 5);
+INSERT INTO ClickLike(memNo, artNo) VALUES (6, 6);
+INSERT INTO ClickLike(memNo, artNo) VALUES (7, 7);
+INSERT INTO ClickLike(memNo, artNo) VALUES (8, 8);
+INSERT INTO ClickLike(memNo, artNo) VALUES (9, 9);
+INSERT INTO ClickLike(memNo, artNo) VALUES (10, 10);
+
+-- 創建文章收藏表格
+CREATE TABLE ArticleCollection
+(
+    memNo INT NOT NULL,
+    artNo INT NOT NULL,
+    PRIMARY KEY (memNo, artNo),
+    FOREIGN KEY (memNo) REFERENCES Member(memNo) ,
+    FOREIGN KEY (artNo) REFERENCES ColumnArticle(artNo)
+);
+INSERT INTO ArticleCollection(memNo, artNo) VALUES (1, 1);
+INSERT INTO ArticleCollection(memNo, artNo) VALUES (2, 2);
+INSERT INTO ArticleCollection(memNo, artNo) VALUES (3, 3);
+INSERT INTO ArticleCollection(memNo, artNo) VALUES (4, 4);
+INSERT INTO ArticleCollection(memNo, artNo) VALUES (5, 5);
+INSERT INTO ArticleCollection(memNo, artNo) VALUES (6, 6);
+INSERT INTO ArticleCollection(memNo, artNo) VALUES (7, 7);
+INSERT INTO ArticleCollection(memNo, artNo) VALUES (8, 8);
+INSERT INTO ArticleCollection(memNo, artNo) VALUES (9, 9);
+INSERT INTO ArticleCollection(memNo, artNo) VALUES (10, 10);
+
+-- 創建專欄文章回覆表格
+CREATE TABLE ColumnReply
+(
+    columnReplyNo INT           NOT NULL PRIMARY KEY,
+    artNo         INT           NOT NULL,
+    memNo         INT           NOT NULL,
+    comContent    VARCHAR(255)  NOT NULL,
+    comTime       DATETIME      NOT NULL,
+    comStat       TINYINT       NOT NULL,
+    FOREIGN KEY (artNo) REFERENCES ColumnArticle(artNo) ,
+    FOREIGN KEY (memNo) REFERENCES Member(memNo)
+);
+INSERT INTO ColumnReply(columnReplyNo, artNo, memNo, comContent, comTime, comStat) VALUES (1001, 1, 1, '感謝分享！這些建議對我們即將籌備婚禮的夫妻非常有幫助。我們將會仔細考慮每一步，確保婚禮順利舉辦。', '2024-04-02 10:30:00', 1);
+INSERT INTO ColumnReply(columnReplyNo, artNo, memNo, comContent, comTime, comStat) VALUES (1002, 1, 2, '太棒了！籌備婚禮確實需要一個良好的計劃和準備。我們正在著手籌備，您提供的建議會讓我們更有信心地迎接這個特別的日子。謝謝！', '2024-04-02 11:30:00', 1);
+INSERT INTO ColumnReply(columnReplyNo, artNo, memNo, comContent, comTime, comStat) VALUES (1003, 1, 3, '非常感謝您的建議！我們剛剛開始籌備婚禮，這些提示讓我們感到更有把握。我們期待著能夠與供應商合作，並把我們的夢想婚禮變成現實。祝您有一個美好的婚禮！', '2024-04-02 12:30:00', 1);
+INSERT INTO ColumnReply(columnReplyNo, artNo, memNo, comContent, comTime, comStat) VALUES (1004, 2, 4, '這篇文章真是精彩！我對婚禮慶典的歷史和演變一直很感興趣，能夠了解到不同文化間的差異和共通之處真是很有意思。謝謝您分享這份知識！', '2023-11-05 12:00:00', 1);
+INSERT INTO ColumnReply(columnReplyNo, artNo, memNo, comContent, comTime, comStat) VALUES (1005, 2, 5, '婚禮慶典的演變真是一個很有趣的話題。看到不同時期和地區的婚禮傳統如何隨著時間而改變，真是讓人深思。期待更多關於婚禮文化的內容！', '2023-12-12 12:00:00', 1);
+INSERT INTO ColumnReply(columnReplyNo, artNo, memNo, comContent, comTime, comStat) VALUES (1006, 2, 6, '這篇文章讓我對婚禮慶典有了全新的認識。從古代到現代，婚禮的慣例和儀式經歷了如此多的變化，讓人感受到文化的多樣性和豐富性。謝謝您分享這份深入的觀察！', '2024-01-01 10:00:00', 1);
+INSERT INTO ColumnReply(columnReplyNo, artNo, memNo, comContent, comTime, comStat) VALUES (1007, 3, 7, '這篇文章提供了很好的婚禮場地選擇指南！我一直在猶豫是選擇室內還是室外場地，但現在我對兩者的優缺點有了更清楚的了解。謝謝您分享這些寶貴的建議！', '2024-03-04 12:00:00', 1);
+INSERT INTO ColumnReply(columnReplyNo, artNo, memNo, comContent, comTime, comStat) VALUES (1008, 3, 8, '我很喜歡這篇文章！婚禮場地的選擇確實是一個重要的決定，您提到的考慮因素都很全面。我們將根據這些建議來做出最適合我們的選擇。期待能夠在特殊的場地裡舉辦我們的婚禮！', '2024-04-02 21:00:00', 1);
+INSERT INTO ColumnReply(columnReplyNo, artNo, memNo, comContent, comTime, comStat) VALUES (1009, 3, 9, '室內還是室外？真是個難題！但這篇文章提供了很好的參考，讓我更容易做出決定。我們對於婚禮場地的選擇有了更清晰的想法，感謝您的指南！', '2024-05-02 19:00:00', 1);
+INSERT INTO ColumnReply(columnReplyNo, artNo, memNo, comContent, comTime, comStat) VALUES (1010, 3, 10, '這篇文章提到的所有考慮因素都非常重要。我們正在籌備婚禮，這些建議將幫助我們做出明智的決定，確保我們的婚禮舉辦得順利又難忘。謝謝您的分享！', '2024-03-03 09:00:00', 1);
+
+
+-- 創建回覆檢舉表格
+CREATE TABLE Report
+(
+    reportNo        INT          NOT NULL PRIMARY KEY,
+    artReplyNo      INT          NOT NULL,
+    memNo           INT          NOT NULL,
+    admNo           INT          NULL,
+    reportTime      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    reportReason    VARCHAR(300) NOT NULL,
+    reportType      TINYINT      NOT NULL,
+    FOREIGN KEY (artReplyNo) REFERENCES ColumnReply(columnReplyNo) ,
+    FOREIGN KEY (memNo)      REFERENCES Member(memNo) ,
+    FOREIGN KEY (admNo)      REFERENCES Administrator(admNo)
+);
+
+INSERT INTO Report(reportNo, artReplyNo, memNo, admNo, reportTime,reportReason, reportType) VALUES (1001, 1001, 1, 1, '2024-04-02 12:30:00','不當言論或語言', 1);
+INSERT INTO Report(reportNo, artReplyNo, memNo, admNo, reportTime,reportReason, reportType) VALUES (1002, 1002, 2, 1, '2024-04-03 12:30:00','不當言論或語言', 1);
+INSERT INTO Report(reportNo, artReplyNo, memNo, admNo, reportTime,reportReason, reportType) VALUES (1003, 1003, 3, 1, '2024-03-02 12:30:00','不當言論或語言', 1);
+INSERT INTO Report(reportNo, artReplyNo, memNo, admNo, reportTime,reportReason, reportType) VALUES (1004, 1004, 4, 2, '2024-02-02 12:30:00','侵犯版權或知識產權', 1);
+INSERT INTO Report(reportNo, artReplyNo, memNo, admNo, reportTime,reportReason, reportType) VALUES (1005, 1005, 5, 2, '2024-01-02 12:30:00','侵犯版權或知識產權', 1);
+INSERT INTO Report(reportNo, artReplyNo, memNo, admNo, reportTime,reportReason, reportType) VALUES (1006, 1006, 6, 2, '2024-01-02 12:30:00','侵犯版權或知識產權', 1);
+INSERT INTO Report(reportNo, artReplyNo, memNo, admNo, reportTime,reportReason, reportType) VALUES (1007, 1007, 7, 3, '2023-12-01 12:30:00','違反社群守則或使用條款', 1);
+INSERT INTO Report(reportNo, artReplyNo, memNo, admNo, reportTime,reportReason, reportType) VALUES (1008, 1008, 8, 3, '2024-02-02 12:30:00','違反社群守則或使用條款', 1);
+INSERT INTO Report(reportNo, artReplyNo, memNo, admNo, reportTime,reportReason, reportType) VALUES (1009, 1009, 9, 3, '2024-03-02 12:30:00','違反社群守則或使用條款', 1);
+INSERT INTO Report(reportNo, artReplyNo, memNo, admNo, reportTime,reportReason, reportType) VALUES (1010, 1010, 10, 3, '2024-04-02 12:30:00','違反社群守則或使用條款', 1);
+
+-- 創建商品類別表格
+CREATE TABLE ProductCategory
+(
+	productCatNo INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    productCatName VARCHAR(40) NOT NULL
+);
+INSERT INTO ProductCategory (productCatNo, productCatName) VALUES
+(1644, '男士襯衫'),
+(4133, '女士連衣裙'),
+(1321, '男士西裝'),
+(4566, '女士牛仔褲'),
+(1782, '男士外套'),
+(3311, '女士針織衫'),
+(2166, '男士運動褲'),
+(3679, '女士外套'),
+(1851, '男士長袖T恤'),
+(4223, '女士短裙');
+
+-- 創建商品表格
+CREATE TABLE product
+(
+	productNo INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    productCatNo INT NOT NULL,
+    productName VARCHAR(40) NOT NULL,
+    productInfo VARCHAR(1000) NOT NULL,
+    productSize INT NOT NULL,
+    productColor VARCHAR(10),
+    productPrice DECIMAL(6,0) NOT NULL,
+    productStat TINYINT NOT NULL,
+    productSalQty INT NOT NULL,
+    productComPeople INT NOT NULL,
+    productComScore INT NOT NULL,
+    FOREIGN KEY (productCatNo) REFERENCES ProductCategory(productCatNo)
+);
+INSERT INTO product (productCatNo, productName, productInfo, productSize, productColor, productPrice, productStat, productSalQty, productComPeople, productComScore) VALUES
+(1644, '男士襯衫', '舒適且時尚的男士襯衫', 2, '藍色', 30, 1, 1000, 500, 2),
+(4133, '女士連衣裙', '優雅的女士連衣裙，適合各種場合', 1, '紅色', 50, 1, 500, 200, 5),
+(1321, '男士西裝', '高品質的男士西裝套裝，專業又時尚', 3, '黑色', 200, 0, 300, 150, 1),
+(4566, '女士牛仔褲', '舒適的女士牛仔褲，適合日常穿著', 2, '淺藍色', 40, 1, 200, 100, 3),
+(1782, '男士外套', '時尚的男士外套，適合秋季穿著', 4, '灰色', 80, 1, 400, 250, 4),
+(3311, '女士針織衫', '溫暖且舒適的女士針織衫', 2, '綠色', 35, 0, 600, 300, 5),
+(2166, '男士運動褲', '適合運動穿著的男士運動褲', 3, '黑色', 25, 1, 700, 400, 2),
+(3679, '女士外套', '時尚的女士外套，適合春季穿著', 1, '粉色', 60, 1, 800, 500, 1),
+(1851, '男士長袖T恤', '舒適的男士長袖T恤，適合秋冬季節穿著', 4, '白色', 20, 0, 200, 100, 4),
+(4223, '女士短裙', '可愛的女士短裙，適合夏季穿著', 2, '黃色', 30, 1, 300, 150, 3);
+
+-- 創建 ProductPicture 表格
+CREATE TABLE ProductPicture
+(
+    productPicNo         INT              NOT NULL   PRIMARY KEY   AUTO_INCREMENT,
+    productNo            INT              NOT NULL,
+    productPic           LONGBLOB,
+    CONSTRAINT FK_ProductPicture_productNo foreign key(productNo) REFERENCES Product(productNo)
+);
+
+INSERT INTO  ProductPicture  (productNo,productPic) VALUES
+(1,'null'),
+(2,'null'),
+(3,'null'),
+(3,''),
+(7,'null'),
+(6,'null'),
+(10,'null'),
+(4,'null');
+
+-- 創建 ProductOrder 表格
+CREATE TABLE ProductOrder
+(
+    productOrdNo         INT              Not Null PRIMARY KEY AUTO_INCREMENT,
+    memNo          		 INT              Not Null,
+    productByrName       VARCHAR(20)      Not Null,
+    productByrPhone      VARCHAR(10),
+    productByrEmail      VARCHAR(40)      Not Null,
+    productRcvName       VARCHAR(20),
+    productRcvPhone      VARCHAR (10),
+    productTakeMethod    TINYINT          Not Null,
+    productAddr          VARCHAR(100)     Null,
+    productPayMethod     TINYINT          Not Null,
+    productAllPrice      DECIMAL(6,0)     Not Null,
+    coupNo               INT,
+    productDisc          DECIMAL(6,0)     Not Null,
+    productRealPrice     DECIMAL(6,0)     Not Null,
+    productOrdTime       DATETIME         Not Null DEFAULT CURRENT_TIMESTAMP,
+    productOrdStat       TINYINT          Not Null,
+    productStat          TINYINT          Not Null,
+   CONSTRAINT FK_ProductOrder_memNo foreign key(memNo) REFERENCES Member(memNo) ,
+   CONSTRAINT FK_ProductOrder_Coupon foreign key(coupNo) REFERENCES Coupon(coupNo)
+);
+
+INSERT INTO ProductOrder (memNo, productByrName, productByrPhone, productByrEmail, productRcvName, productRcvPhone, productTakeMethod, productAddr, productPayMethod, productAllPrice, coupNo, productDisc, productRealPrice, productOrdTime, productOrdStat, productStat) VALUES
+(1, 'John Doe', '0912345678', 'john.doe@example.com', 'Jane Doe', '0912345678', 2, '台北市大安區忠孝東路四段100號', 1, 5400, NULL, 0, 5400, '2022-08-16 04:23:00', 10, 0),
+(2, 'Alice Smith', '0923456789', 'alice.smith@example.com', 'Bob Smith', '0923456789', 2, '台北市大安區忠孝東路四段100號', 1, 7060, 4, 706, 6354, CURRENT_TIMESTAMP, 50, 1),
+(3, 'Emily Johnson', '0934567890', 'emily.johnson@example.com', 'Michael Johnson', '0934567890', 3, null, 1, 3070, NULL, 0, 3070, '2024-01-16 14:14:00', 81, 1),
+(4, 'Sophia Brown', '0955678901', 'sophia.brown@example.com', 'Oliver Brown', '0955678901', 1, '', 2, 2580, NULL, 0, 2580, CURRENT_TIMESTAMP, 82, 1),
+(5, 'David Wilson', '0966789012', 'david.wilson@example.com', 'Emma Wilson', '0966789012', 2, '桃園市中壢區中山路1000號', 1, 8000, 2, 800, 7200, CURRENT_TIMESTAMP, 40, 0),
+(4, 'Sophia Brown', '0988901234', 'sophia.brown@example.com', 'Oliver Brown', '0988901234', 1, '', 1, 4050, NULL, 0, 4050, '2022-01-16 04:14:00', 30,0),
+(7, 'Ethan Martinez', '0977890123', 'ethan.martinez@example.com', 'Isabella Martinez', '0977890123', 3, null, 1, 6900, 5, 1035, 5865, '2023-10-09 01:06:00', 30, 0);
+
+-- 創建 ProductOrderDetail 表格
+CREATE TABLE ProductOrderDetail
+(
+   productOrdNo          INT              NOT NULL,
+   productNo             INT              NOT NULL,
+   productPrice          DECIMAL  (6,0)   NOT NULL,
+   productOrdQty         INT              NOT NULL,
+   productRealPrice      DECIMAL  (6,0)   NOT NULL,
+   productComContent     VARCHAR  (500),
+   productScore          INT,
+   CONSTRAINT PK_ProductOrderDetail_productOrdNo_productNo PRIMARY KEY(productOrdNo, productNo),
+   CONSTRAINT FK_ProductOrderDetail_productOrdNo foreign key(productOrdNo) REFERENCES ProductOrder (productOrdNo) ,
+   CONSTRAINT FK_ProductOrderDetail_productNo foreign key(productNo) REFERENCES Product(productNo)
+);
+
+INSERT INTO  ProductOrderDetail	(productOrdNo,productNo,productPrice,productOrdQty,productRealPrice,productComContent,productScore) VALUES
+(3,5,3000,1,3000, '商品品質很好，速度也很快，非常滿意！',5),
+(7,3,8600,1,8600, '商品外觀漂亮，但用起來有點不太方便。',2),
+(3,6,3000,2,6000, '物超所值，推薦給大家！',5),
+(5,5,7800,2,15600, '商品質量不錯，價格也很實惠。',4),
+(6,4,8200,1,8200, '價格便宜，但是商品質量一般，送貨速度也不夠快。',3),
+(3,7,2900,3,8700, '商品外觀漂亮，但耐用性還需要觀察。',3),
+(3,9,6400,2,12160, '',5);
+
+-- 創建 ProductMyFavorite 表格
+CREATE TABLE ProductMyFavorite
+(
+   productNo       INT              NOT NULL ,
+   memNo           INT              NOT NULL,
+   CONSTRAINT PK_ProductMyFavorite_productNo_memNo PRIMARY KEY(productNo, memNo),
+   CONSTRAINT FK_ProductMyFavorite_productNo foreign key(productNo) REFERENCES Product(productNo),
+   CONSTRAINT FK_ProductMyFavorite_memNo foreign key(memNo) REFERENCES Member(memNo)
+);
+
+INSERT INTO  ProductMyFavorite	(productNo, memNo) VALUES
+(1,1),
+(2,4),
+(5,2),
+(2,5),
+(4,5),
+(6,5),
+(6,7);
+
+CREATE TABLE Cart
+(
+    productNo     INT NOT NULL,
+    memNo         INT NOT NULL,
+    productBuyQty INT NOT NULL,
+    PRIMARY KEY (productNo, memNo),
+    FOREIGN KEY (productNo) REFERENCES Product(productNo),
+    FOREIGN KEY (memNo) REFERENCES Member(memNo)
+);
+
+INSERT INTO  Cart (productNo, memNo, productBuyQty) VALUES
+(1,5,1),
+(2,4,3),
+(3,5,2),
+(3,4,5),
+(4,8,1),
+(6,9,3),
+(8,3,1),
+(9,2,9),
+(3,8,1);
+
+-- 租借品類別table
+CREATE TABLE RentalCategory
+(
+    rentalCatNo      INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    rentalCatName    VARCHAR(40) NOT NULL,
+    rentalStockQty   INT NOT NULL,
+    rentalRentedQty  INT NOT NULL,
+    rentalDesPrice   DECIMAL(6,0) NOT NULL
+)
+AUTO_INCREMENT = 1;
+
+INSERT INTO RentalCategory(rentalCatNo, rentalCatName, rentalStockQty, rentalRentedQty, rentalDesPrice)
+VALUES(1, '西裝', 3, 1, 2000),
+      (2, '婚紗', 5, 1, 4000),
+      (3, '禮服', 6, 4, 2000),
+      (4, '婚紗', 5, 2, 4000),
+      (5, '西裝', 3, 2, 2000);
+
+-- 租借品table
+CREATE TABLE Rental
+(
+    rentalNo         INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    rentalCatNo      INT NOT NULL,
+    rentalName       VARCHAR(40) NOT NULL,
+    rentalPrice      DECIMAL(6,0) NOT NULL,
+    rentalSize       INT NOT NULL,
+    rentalColor      VARCHAR(10) NOT NULL,
+    rentalInfo       VARCHAR(1000) NOT NULL,
+    rentalStat       TINYINT NOT NULL,
+    CONSTRAINT FK_Rental_rentalCatNo FOREIGN KEY (rentalCatNo) REFERENCES RentalCategory (rentalCatNo)
+)
+AUTO_INCREMENT = 5001;
+
+INSERT INTO Rental(rentalNo, rentalCatNo, rentalName, rentalPrice, rentalSize, rentalColor, rentalInfo, rentalStat)
+VALUES(5001, 1, '格紋成套西裝', 15500, '2', '黑色', '款式：劍領 單排釦。適用場合：婚攝 婚宴 宴客 求婚', 1),
+      (5011, 5, '雙排扣格紋成套西裝', 12500, '3', '深卡其色', '款式：標準領 單排釦 雙扣。適用場合：婚攝 婚宴 求婚 日常', 2),
+      (5038, 3, '時尚復古斜領緊身晚禮服', 12000, '4', '白色', '款式：斜頸、高腰、泡泡袖。適用場合：婚攝 婚宴 宴客', 0),
+      (5201, 2, '閃光香檳婚紗', 20000, '1', '白色', '款式：刺繡 蕾絲、V領、薄紗。適用場合：婚攝 婚宴', 1),
+      (5375, 4, '露肩緞面婚紗', 18600, '2', '白色', '款式：一字領 緞面。適用場合：婚攝 婚宴', 3);
+
+-- 租借品照片
+CREATE TABLE RentalPic
+(
+    rentalPicNo      INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    rentalNo	        INT NOT NULL,
+    rentalPic        LONGBLOB,
+    CONSTRAINT FK_RentalPic_rentalNo FOREIGN KEY (rentalNo) REFERENCES Rental (rentalNo)
+)
+AUTO_INCREMENT = 1;
+
+INSERT INTO RentalPic(rentalPicNo, rentalNo, rentalPic) VALUES
+(1, 5001, 'null'),
+(2, 5011, 'null'),
+(3, 5038, 'null'),
+(4, 5201, 'null'),
+(5, 5375, 'null');
+
+-- 創建租借品訂單表格
+CREATE TABLE RentalOrder
+(
+    rentalOrdNo  INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    memNo   INT NOT NULL,
+    rentalByrName    VARCHAR(20) NOT NULL,
+    rentalByrPhone   VARCHAR(10) NOT NULL,
+    rentalByrEmail   VARCHAR(40) NOT NULL,
+    rentalRcvName    VARCHAR(20),
+    rentalRcvPhone   VARCHAR(10),
+    rentalTakeMethod TINYINT     NOT NULL,
+    rentalAddr       VARCHAR(100),
+    rentalPayMethod  TINYINT     NOT NULL,
+    rentalAllPrice   DECIMAL(6,0)    NOT NULL,
+    rentalAllDepPrice    DECIMAL(6,0)    NOT NULL,
+    rentalOrdTime    DATETIME    NOT NULL,
+    rentalDate       DATETIME    NOT NULL,
+    rentalBackDate   DATETIME    NOT NULL,
+    rentalRealBackDate   DATETIME    NOT NULL,
+    rentalPayStat    TINYINT     NOT NULL,
+    rentalOrdStat    TINYINT     NOT NULL,
+    rtnStat     TINYINT     NOT NULL,
+    rtnRemark   VARCHAR(300)    NOT NULL,
+    rtnCompensation DECIMAL(6,0),
+    CONSTRAINT FK_RentalOrder_memNo FOREIGN KEY(memNo) REFERENCES Member (memNo)
+);
+INSERT INTO RentalOrder (memNo, rentalByrName, rentalByrPhone, rentalByrEmail, rentalRcvName, rentalRcvPhone, rentalTakeMethod, rentalAddr, rentalPayMethod,
+                         rentalAllPrice, rentalAllDepPrice, rentalOrdTime, rentalDate, rentalBackDate, rentalRealBackDate, rentalPayStat, rentalOrdStat,
+                         rtnStat, rtnRemark, rtnCompensation)
+VALUES(1, 'John', '0912345678', 'John123@gmail.com', 'John', '0912345678', 2, '台北市大安區忠孝東路四段100號', 1,
+       3000, 4000, '2024-01-02 11:11:00', '2024-01-06 11:11:00', '2024-01-20 11:11:00', '2024-01-20 11:11:00',
+        1, 50, 1, '商品無損傷', NULL),
+      (2, 'Emma', '0987654321', 'Emma456@gmail.com', 'Emma', '0987654321', 2, '新北市板橋區文化路二段50巷20號', 1,
+       1500, 2000, '2024-02-03 12:12:00', '2024-02-05 12:00:00', '2024-02-12 12:00:00', '2024-02-12 12:00:00',
+       1, 50, 1, '商品無損傷', NULL),
+      (3, 'Michael', '0965412378', 'Michael789@gmail.com', 'Michael', '0965412378', 1, NULL, 2,
+        1300, 2000, '2024-04-01 10:00:00', '2024-04-10 10:00:00', '2024-04-17 10:00:00', '2024-04-17 10:00:00',
+        1, 50, 1, '邊角被染色', 200),
+      (4, 'Emily', '0945678912', 'Emily987@gmail.com', 'Emily', '0945678912', 2, '台南市中西區民族路三段30號', 1,
+       1200, 2000, '2024-05-20 13:13:00', '2024-05-21 17:30:00', '2024-05-28 17:30:00', '2024-05-28 13:13:00',
+       1, 50, 1, '內襯破洞', 500),
+      (6, 'Sophia', '0921654987', 'Sophia654@gmail.com', 'Sophia', '0921654987', 1, NULL, 2,
+       3500, 4000, '2024-09-05 14:14:30', '2024-09-16 14:14:00', '2024-09-30 14:14:00', '2024-09-29 23:17:00',
+       1, 50, 1, '商品無損傷', NULL);
+
+
+-- 創建 租借品明細 表格
+
+CREATE TABLE RentalOrderDetails
+(
+    rentalOrdNo  INT NOT NULL,
+    rentalNo     INT NOT NULL,
+    rentalPrice  DECIMAL(6,0)    NOT NULL,
+    rentalDesPrice   DECIMAL(6,0)    NOT NULL,
+    CONSTRAINT PK_RentalOrderDetails_rentalOrdNo_rentalNo PRIMARY KEY(rentalOrdNo, rentalNo),
+    CONSTRAINT FK_RentalOrderDetails_rentalOrdNo FOREIGN KEY(rentalOrdNo) REFERENCES RentalOrder(rentalOrdNo) ,
+    CONSTRAINT FK_RentalOrderDetails_rentalNo FOREIGN KEY(rentalNo) REFERENCES Rental(rentalNo)
+);
+INSERT INTO RentalOrderDetails (rentalOrdNo, rentalNo, rentalPrice, rentalDesPrice)
+VALUES (1, 5001, 1500, 1500),
+       (5, 5038, 1500, 1500),
+       (2, 5011, 1500, 2000),
+       (3, 5375, 1300, 2000),
+       (4, 5011, 1200, 2000);
+
+-- 租借方案
+CREATE TABLE RentSet
+(
+    rentalOrdNo      INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    rentalSetName    VARCHAR(20) NOT NULL,
+    rentalSetDays    TINYINT NOT NULL,
+    CONSTRAINT FK_RentSet_rentalOrdNo FOREIGN KEY (rentalOrdNo) REFERENCES RentalOrder (rentalOrdNo)
+)
+AUTO_INCREMENT = 0;
+
+INSERT INTO RentSet(rentalOrdNo, rentalSetName, rentalSetDays)
+VALUES(2, '租借7日', 0),
+      (3, '租借14日', 1),
+      (1, '租借14日', 1),
+      (4, '租借7日', 0),
+      (5, '租借7日', 0);
+
+-- 創建 租借品追蹤 表格
+
+CREATE TABLE RentalMyTrack
+(
+    rentalNo INT NOT NULL,
+    memNo   INT NOT NULL,
+    rentalTrackTime  DATETIME   NOT NULL,
+    expRentalDate   DATE,
+    CONSTRAINT PK_RentalMyTrack_rentalNo_memNo PRIMARY KEY(rentalNo, memNo),
+    CONSTRAINT FK_RentalMyTrack_rentalNo foreign key(rentalNo) REFERENCES Rental(rentalNo) ,
+    CONSTRAINT FK_RentalMyTrack_memNo foreign key(memNo) REFERENCES Member (memNo)
+);
+
+INSERT INTO RentalMyTrack (rentalNo, memNo, rentalTrackTime, expRentalDate)
+VALUES (5001, 5, '2023-12-31 20:30:00', '2024-01-06'),
+       (5201, 1, '2024-01-02 20:31:30', '2024-01-06'),
+       (5011, 3, '2024-03-25 11:09:40', '2024-04-09'),
+       (5375, 4, '2024-06-05 14:25:50', '2024-09-11'),
+       (5038, 6, '2024-06-05 14:26:30', '2024-09-11');
+
+-- 租借品我的最愛
+CREATE TABLE RentalMyFavorite
+(
+    rentalNo         INT NOT NULL,
+    memNo       INT NOT NULL,
+    rentalFavTime    DATETIME NOT NULL,
+    CONSTRAINT PK_RentalOrderDetails_rentalNo_memNo PRIMARY KEY(rentalNo, memNo),
+    CONSTRAINT FK_RentalMyFavorite_rentalNo FOREIGN KEY (rentalNo) REFERENCES Rental (rentalNo) ,
+    CONSTRAINT FK_RentalMyFavorite_memNo FOREIGN KEY (memNo) REFERENCES `Member` (memNo)
+);
+
+INSERT INTO RentalMyFavorite(rentalNo, memNo, rentalFavTime)
+VALUES(5001, 5, '1996-01-01 12:30:10'),
+      (5011, 4, '2021-06-18 08:17:00'),
+      (5038, 3, '2024-03-13 16:55:50'),
+      (5201, 2, '2000-12-30 20:07:10'),
+      (5375, 1, '1998-11-03 13:00:55');
+
+-- 創建場地資訊表格
+CREATE TABLE StudioInfo (
+  studioNo INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  studioName VARCHAR(10) NOT NULL,
+  studioInfo VARCHAR(1000) NOT NULL,
+  studioPrice DECIMAL(6,0) NOT NULL
+)
+AUTO_INCREMENT = 8001;
+
+INSERT INTO StudioInfo (studioNo, studioName, studioInfo, studioPrice) VALUES (8001, 'fallElove', '地點：台北市信義區 電話：(02) 1234-5678 郵件：fallyilove@gmail.com 網站：www.fallElove.com 營業時間：週一至週日，上午9點至晚上9點 設施：主攝影棚：寬敞明亮，面積 100 平方米，配有專業燈光設備和各種背景布，可滿足各種攝影需求，如商業攝影、人像攝影等。專業燈光：提供多款燈光設備，包括柔光燈、反光傘燈等，以滿足不同拍攝場景的需求。背景布：提供多種顏色和紋理的背景布，包括純色布和印花布，客戶可根據需要選擇適合的背景。攝影設備：提供專業相機、鏡頭和三腳架等攝影設備租借服務。化妝桌：提供化妝桌和化妝鏡，方便模特兒和客戶進行化妝和換裝。休息區：設有舒適的沙發和茶水，供客戶休息和等待。更衣室：提供獨立的更衣室，保證客戶的隱私。空調系統：全棚配備冷暖空調系統，確保舒適的工作環境。服務：專業攝影師：提供專業攝影師服務，協助客戶完成各類攝影作品。', 3000);
+
+-- 創建場地預約訂單表格
+CREATE TABLE StudioOrder
+(
+  studioOrdNo INT NOT NULL PRIMARY KEY,
+  memNo INT NOT NULL,
+  studioNo INT NOT NULL,
+  admNo INT NOT NULL,
+  bookedDate DATE NOT NULL,
+  bookedTimeMorning TINYINT NOT NULL,
+  bookedTimeAfternoon TINYINT NOT NULL,
+  bookedTimeNight TINYINT NOT NULL,
+  studioOrdTime DATETIME NOT NULL,
+  studioOrdStat TINYINT NOT NULL,
+  studioTtlPrice DECIMAL(6,0) NOT NULL,
+  studioByrName VARCHAR(20) NOT NULL,
+  studioDepPrice DECIMAL(6,0) NOT NULL,
+  studioByrPhone VARCHAR(10) NOT NULL,
+  studioByrEmail VARCHAR(40) NOT NULL,
+  studioPayMethod TINYINT NOT NULL,
+  studioPayStat TINYINT NOT NULL,
+  checkInStat TINYINT NOT NULL,
+  studioReturnMark VARCHAR(100) DEFAULT NULL,
+  studioCompensation DECIMAL(6,0) DEFAULT NULL,
+  FOREIGN KEY (memNo) REFERENCES `Member`(memNo) ,
+  FOREIGN KEY (admNo) REFERENCES Administrator(admNo) ,
+  FOREIGN KEY (studioNo) REFERENCES StudioInfo(studioNo)
+  );
+
+INSERT INTO StudioOrder (studioOrdNo, memNo, studioNo, admNo, bookedDate, bookedTimeMorning, bookedTimeAfternoon, bookedTimeNight, studioOrdTime, studioOrdStat, studioTtlPrice, studioByrName, studioDepPrice, studioByrPhone, studioByrEmail, studioPayMethod, studioPayStat, checkInStat, studioReturnMark, studioCompensation) VALUES
+(1, 2, 8001, 1, '2024-6-6', 1, 1, 0, '2024-05-31 11:30:00', 50, 6000, 'Emma', 3000, '0987654321', 'Emma456@gmail.com', 1, 1, 1, '場地已歸還，無任何設備損壞', 0),
+(2, 3, 8001, 1, '2024-6-7', 0, 1, 1, '2024-05-31 13:30:00', 40, 6000, 'Michael', 3000, '0965412378', 'Michael789@gmail.com', 1, 0, 0, NULL, NULL),
+(3, 4, 8001, 2, '2024-6-8', 1, 1, 0, '2024-05-31 15:30:00', 0, 0, 'Emily', 0, '0945678912', 'Emily987@gmail.com', 1, 0, 0, NULL, NULL),
+(4, 5, 8001, 2, '2024-6-9', 0, 1, 0, '2024-06-01 10:00:00', 40, 3000, 'Daniel', 1500, '0978912345', 'Daniel321@gmail.com', 1, 0, 0, NULL, NULL),
+(5, 1, 8001, 2, '2024-6-10', 0, 0, 1, '2024-06-04 10:07:00', 0, 0, 'John', 0, '0912345678', 'John123@gmail.com', 1, 0, 0, NULL, NULL);
+
+  -- 創建場地時段預約表格
+CREATE TABLE StudioTimeBooking
+(
+  studioTimeNo INT NOT NULL PRIMARY KEY,
+  studioOrdNo INT NULL,
+  studioNo INT NULL,
+  closeDate DATE NULL,
+  closeTimeMorning TINYINT NOT NULL,
+  closeTimeAfternoon TINYINT NOT NULL,
+  closeTimeNight TINYINT NOT NULL,
+  FOREIGN KEY (studioOrdNo) REFERENCES StudioOrder(studioOrdNo) ,
+  FOREIGN KEY (studioNo) REFERENCES StudioInfo(studioNo)
+);
+
+INSERT INTO StudioTimeBooking (studioTimeNo, studioOrdNo, studioNo, closeDate, closeTimeMorning, closeTimeAfternoon, closeTimeNight) VALUES
+(1, NULL, 8001, '2025-01-29', 0, 0, 0),
+(2, NULL, 8001, '2025-01-30', 0, 0, 0),
+(3, NULL, 8001, '2025-01-31', 0, 0, 0),
+(4, NULL, 8001, '2025-02-01', 0, 0, 0),
+(5, NULL, 8001, '2025-02-02', 0, 0, 0);
