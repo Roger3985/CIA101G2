@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{backend/component/plugin/backendplugin.html :: css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select</title>
+    <!-- Custom styles for this page -->
+    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
+
+</head>
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <!-- 內容請寫在這裡呦~~~~ -->
+                <span>我是法克 凸ˋ口ˊ凸</span>
+
+
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="backend/component/bottom :: bottom"></footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
+
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+<!-- Page level plugins -->
+<script th:src="@{/backend/vendor/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+<!-- Page level custom scripts -->
+<script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
+
+
+</body>
+</html>

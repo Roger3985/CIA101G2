@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{backend/component/plugin/backendplugin.html :: css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Custom styles for this page -->
+    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
+
+</head>
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>會員編號</th>
+                                    <th>會員姓名</th>
+                                    <th>會員帳號</th>
+                                    <th>手機號碼</th>
+                                    <th>性別</th>
+                                    <th>email</th>
+                                    <th>聯絡地址</th>
+                                    <th>會員生日</th>
+                                    <th>帳號狀態</th>
+                                    <th>會員大頭貼</th>
+                                    <th>權限修改</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <th:block th:each="member : ${memListData}">
+                                    <tr>
+                                        <td th:text="${member.memNo}"></td>
+                                        <td th:text="${member.mName}"></td>
+                                        <td th:text="${member.memAcc}"></td>
+                                        <td th:text="${member.memMob}"></td>
+                                        <td>
+                                            <span th:if="${member.mGender == 1}" th:text="男性"></span>
+                                            <span th:if="${member.mGender == 2}" th:text="女性"></span>
+                                        </td>
+                                        <td th:text="${member.memMail}"></td>
+                                        <td th:text="${member.memAdd}"></td>
+                                        <td th:text="${member.memBd}"></td>
+                                        <td>
+                                            <span th:if="${member.memStat == 0}" th:text="未驗證"></span>
+                                            <span th:if="${member.memStat == 1}" th:text="已驗證"></span>
+                                            <span th:if="${member.memStat == 2}" th:text="停權"></span>
+                                        </td>
+                                        <td><img th:src="@{/backend/member/picture} + '?memno=' + ${member.memNo}"
+                                                 width="50px" height="50px"></td>
+
+                                        <td>
+                                            <form method="post" th:action="@{banMember}">
+                                                <input type="hidden" name="memNo" th:value="${member.memNo}">
+                                                <input type="submit" value="停權" th:if="${member.memStat != 2}" style="background-color: #3498db; /* 藍色背景顏色 */>
+                                                </form>
+                                        <form method=" post" th:action="@{reMember}">
+                                                <input type="hidden" name="memNo" th:value="${member.memNo}">
+                                                <input type="submit" value="復權" th:unless="${member.memStat != 2}"
+                                                       style="background-color: green; /* 藍色背景顏色 */
+                                                        color: #fff; /* 白色文字顏色 */
+                                                        border: none; /* 去掉邊框 */
+                                                        padding: 10px 10px; /* 內邊距 */
+                                                        cursor: pointer; /* 鼠標懸停效果 */
+                                                        border-radius: 10px;
+                                                        font-weight: bold;
+                                                        font-size: 14px;"
+                                                       onmouseover="this.style.color='red'; this.style.backgroundColor='yellow'"
+                                                       onmouseout="this.style.color='white'; this.style.backgroundColor='green'">
+                                            </form>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="backend/component/bottom :: bottom"></footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
+
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+<!-- Page level plugins -->
+<script th:src="@{/backend/vendor/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+<!-- Page level custom scripts -->
+<script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
+
+</body>
+</html>
