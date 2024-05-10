@@ -1,4 +1,4 @@
-package com.Cia101G2.Entity;
+package com.Cia101G2.howard.rentalmytrack.entiy;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 

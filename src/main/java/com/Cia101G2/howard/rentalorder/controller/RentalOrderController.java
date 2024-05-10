@@ -1,7 +1,6 @@
 package com.Cia101G2.howard.rentalorder.controller;
 
-import com.Cia101G2.Entity.Rental;
-import com.Cia101G2.Entity.RentalOrder;
+import com.Cia101G2.howard.rentalorder.entity.RentalOrder;
 import com.Cia101G2.howard.rentalorder.dao.RentalRepository;
 import com.Cia101G2.howard.rentalorder.dto.RentalOrderRequest;
 import com.Cia101G2.howard.rentalorder.dto.SetToCartRequest;

@@ -1,6 +1,6 @@
 package com.Cia101G2.howard.rentalmytrack.dao;
 
-import com.Cia101G2.Entity.RentalMyTrack;
+import com.Cia101G2.howard.rentalmytrack.entiy.RentalMyTrack;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

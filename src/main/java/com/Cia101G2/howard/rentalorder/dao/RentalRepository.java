@@ -1,6 +1,5 @@
 package com.Cia101G2.howard.rentalorder.dao;
 
-import com.Cia101G2.Entity.Rental;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,6 @@
 package com.Cia101G2.howard.rentalorderdetails.service.impl;
 
-import com.Cia101G2.Entity.RentalOrderDetails;
+import com.Cia101G2.howard.rentalorderdetails.entity.RentalOrderDetails;
 import com.Cia101G2.howard.rentalorderdetails.dao.RentalOrderDetailsRepository;
 import com.Cia101G2.howard.rentalorderdetails.service.RentalOrderDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;

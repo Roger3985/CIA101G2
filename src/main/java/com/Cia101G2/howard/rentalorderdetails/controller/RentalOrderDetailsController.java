@@ -1,6 +1,6 @@
 package com.Cia101G2.howard.rentalorderdetails.controller;
 
-import com.Cia101G2.Entity.RentalOrderDetails;
+import com.Cia101G2.howard.rentalorderdetails.entity.RentalOrderDetails;
 import com.Cia101G2.howard.rentalorderdetails.dto.RentalOrderDetailsRequest;
 import com.Cia101G2.howard.rentalorderdetails.service.impl.RentalOrderDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.Cia101G2.howard.rentalorder.service;
 
-import com.Cia101G2.Entity.RentalOrder;
+import com.Cia101G2.howard.rentalorder.entity.RentalOrder;
 
 import java.util.List;
 

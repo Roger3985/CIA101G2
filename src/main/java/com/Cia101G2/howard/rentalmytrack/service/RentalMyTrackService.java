@@ -1,6 +1,6 @@
 package com.Cia101G2.howard.rentalmytrack.service;
 
-import com.Cia101G2.Entity.RentalMyTrack;
+import com.Cia101G2.howard.rentalmytrack.entiy.RentalMyTrack;
 
 import java.util.List;
 

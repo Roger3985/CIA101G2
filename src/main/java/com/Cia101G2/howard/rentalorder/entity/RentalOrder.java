@@ -1,5 +1,6 @@
-package com.Cia101G2.Entity;
+package com.Cia101G2.howard.rentalorder.entity;
 
+import com.Cia101G2.howard.rentalorderdetails.entity.RentalOrderDetails;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 

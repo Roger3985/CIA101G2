@@ -1,9 +1,7 @@
 package com.Cia101G2.howard.rentalorder.service.impl;
 
-import com.Cia101G2.Entity.Member;
-import com.Cia101G2.Entity.Rental;
-import com.Cia101G2.Entity.RentalOrder;
-import com.Cia101G2.Entity.RentalOrderDetails;
+import com.Cia101G2.howard.rentalorder.entity.RentalOrder;
+import com.Cia101G2.howard.rentalorderdetails.entity.RentalOrderDetails;
 import com.Cia101G2.howard.rentalorder.dao.MemberRepository;
 import com.Cia101G2.howard.rentalorder.dao.RentalOrderRepository;
 import com.Cia101G2.howard.rentalorder.dao.RentalRepository;

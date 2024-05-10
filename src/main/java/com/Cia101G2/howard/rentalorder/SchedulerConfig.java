@@ -1,6 +1,6 @@
 package com.Cia101G2.howard.rentalorder;
 
-import com.Cia101G2.Entity.RentalOrder;
+import com.Cia101G2.howard.rentalorder.entity.RentalOrder;
 import com.Cia101G2.howard.rentalorder.dao.RentalOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
