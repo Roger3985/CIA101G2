@@ -1,0 +1,113 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>訂單資料修改</title>
+
+    <style type="text/css">
+
+        button {
+            padding: 5px;
+        }
+        form {
+            display: table;
+        }
+        form div {
+            display: table-row;
+        }
+        label, input, span, select {
+            display: table-cell;
+            margin: 5px;
+            text-align: left;
+        }
+        input[type=text], input[type=password], select, textarea {
+            width: 200px;
+            margin: 5px;
+        }
+        form div div {
+            display: table-cell;
+        }
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+    <div align="center"> <h2>訂單資料修改 - update_productorder_input.html</h2>
+        <h3><a class="navbar-brand" th:href="@{/productorder/select_page}"><img th:src="@{/images/back1.gif}">回查詢頁</a></h3></div>
+</nav>
+
+<div align="center">
+    <div class="errorblock" th:utext="${errorMessage}"></div><br>
+    <h3><b></b></h3>
+    <form th:action="@{update}" method="post" th:object="${productOrderDetail}" enctype="multipart/form-data">
+        <div>
+            <label>商品訂單編號:</label>
+            <input type="text" th:field="*{compositeKey.productOrdNo}" style="border:0px ; font-weight: bold;" readonly /><br/>
+
+        </div>
+
+        <div>
+            <label>商品編號:</label>
+            <input type="text" th:field="*{compositeKey.productNo}" style="border:0px ; font-weight: bold;" readonly /><br/>
+        </div>
+
+        <div>
+            <label>商品單價:</label>
+            <input type="text" th:field="*{productPrice}" onclick="hideContent('productPrice.errors');" /><br/>
+            <span  th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}" class="error" id="productPrice.errors"></span>
+        </div>
+
+        <div>
+            <label>購買數量:</label>
+            <input type="text" th:field="*{productOrdQty}" onclick="hideContent('productOrdQty.errors');" /><br/>
+            <span  th:if="${#fields.hasErrors('productOrdQty')}" th:errors="*{productOrdQty}" class="error" id="productOrdQty.errors"></span>
+        </div>
+
+        <div>
+            <label>單一商品金額:</label>
+            <input type="text" th:field="*{productRealPrice}" onclick="hideContent('productRealPrice.errors');" /><br/>
+            <span  th:if="${#fields.hasErrors('productRealPrice')}" th:errors="*{productRealPrice}" class="error" id="productRealPrice.errors"></span>
+        </div>
+        <div>
+            <label>評價內容:</label>
+            <input type="text" th:field="*{productComContent}" onclick="hideContent('productComContent.errors');" /><br/>
+            <span th:if="${#fields.hasErrors('productComContent')}" th:errors="*{productComContent}" class="error" id="productComContent.errors"></span>
+        </div>
+        <div>
+            <label>評價星等:</label>
+            <select th:field="*{productScore}" onclick="hideContent('productScore.errors');">
+                <option th:value="1" th:text="一顆星" />
+                <option th:value="2" th:text="兩顆星" />
+                <option th:value="3" th:text="三顆星" />
+                <option th:value="4" th:text="四顆星" />
+                <option th:value="5" th:text="五顆星" />
+            </select>
+        </div>
+
+        <div>
+            <div></div>
+            <input type="hidden" name="productOrdNo" th:value="${productOrderDetail.compositeKey.productOrdNo}">
+            <input type="hidden" name="productNo" th:value="${productOrderDetail.compositeKey.productNo}">
+            <div><button type="submit" id="submit"> 送出修改 </button></div>
+            <div></div>
+        </div>
+    </form>
+
+</div>
+
+</body>
+</html>

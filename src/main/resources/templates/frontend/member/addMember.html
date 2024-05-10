@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <link rel="stylesheet" th:href="@{/css/frontend/member/register.css}" />
+    <style type="text/css">
+        b {
+            color: red;
+        }
+
+        .error {
+            color: red;
+            font-style: italic;
+        }
+
+        button.goBack {
+            height: 55px;
+            width: 100%;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 400;
+            margin-top: 30px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: rgb(130, 106, 251);
+        }
+
+        button.goBack:hover {
+            background: rgb(88, 56, 250);
+        }
+
+        /* 去掉按鈕的邊框和焦點輪廓 */
+        .platform-button {
+            border: none;
+            outline: none;
+            background: none;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        /* 設定按鈕中的圖片大小 */
+        .platform-button img {
+            width: 50px; /* 設定圖片寬度 */
+            height: 50px; /* 設定圖片高度 */
+        }
+
+        .input-box2 {
+            display: flex; /* 使用 flex 布局 */
+            flex-direction: column; /* 垂直方向 */
+            align-items: center; /* 水平居中對齊 */
+        }
+
+        /* 定制下拉菜單的樣式 */
+        .email-provider-select {
+            background-color: #f3f3f3; /* 背景顏色 */
+            border: 1px solid #ccc; /* 邊框顏色和樣式 */
+            border-radius: 5px; /* 圓角 */
+            padding: 5px; /* 內邊距 */
+            margin: 5px 0; /* 外邊距 */
+            color: #333; /* 字體顏色 */
+            font-family: Arial, sans-serif; /* 字體 */
+            font-size: 14px; /* 字體大小 */
+        }
+
+        /* 滑鼠懸停在下拉菜單上時的樣式 */
+        .email-provider-select:hover {
+            border-color: #999; /* 滑鼠懸停時的邊框顏色 */
+        }
+
+        /* 下拉菜單中的選項樣式 */
+        .email-provider-select option {
+            padding: 5px;
+            background-color: #fff; /* 選項背景顏色 */
+            color: #333; /* 選項字體顏色 */
+        }
+    </style>
+
+    <title>歡迎加入41L</title>
+</head>
+
+<body>
+<section class="container">
+    <header style="font-size: 30px; font-weight: bolder;">註冊會員</header>
+    <form class="form" method="post" th:action="@{memadd}" th:object="${member}" enctype="multipart/form-data">
+        <div class="input-box">
+            <label>姓名：<b>*</b></label>
+            <input type="text" placeholder="請輸入姓名" th:field="*{mName}" />
+            <span th:if="${#fields.hasErrors('mName')}" th:errors="*{mName}" class="error"></span>
+        </div>
+
+        <div class="input-box">
+            <label>會員帳號：<b>*</b></label>
+            <input type="text" placeholder="請輸入會員帳號" th:field="*{memAcc}" />
+            <span  th:if="${#fields.hasErrors('memAcc')}" th:errors="*{memAcc}" class="error" id="ename.errors"></span>
+        </div>
+
+        <div class="input-box">
+            <label>會員密碼：<b>*</b></label>
+            <input type="password" placeholder="請輸入會員密碼" th:field="*{memPwd}"/>
+            <span  th:if="${#fields.hasErrors('memPwd')}" th:errors="*{memPwd}" class="error" id="ename.errors"></span>
+        </div>
+
+        <div class="column">
+            <div class="input-box">
+                <label>手機號碼：<b>*</b></label>
+                <input type="text" placeholder="例：0912345678" th:field= "*{memMob}" />
+                <span th:if="${#fields.hasErrors('memMob')}" th:errors="*{memMob}" class="error"></span>
+            </div>
+        </div>
+
+        <div class="gender-box">
+            <h3>性別：<b>*</b></h3>
+            <div class="gender-option">
+                <div class="gender">
+                    <input type="radio" id="check-male"  th:field="*{mGender}" th:value="0"/>
+                    <label for="check-male">男性</label>
+                </div>
+                <div class="gender">
+                    <input type="radio" id="check-female"  th:field="*{mGender}" th:value="1"/>
+                    <label for="check-female">女性</label>
+                </div>
+            </div>
+        </div>
+        <span th:if="${#fields.hasErrors('mGender')}" th:errors="*{mGender}" class="error"></span>
+
+        <div class="input-box">
+            <label>信箱:<b>*</b></label>
+            <div class="email-input-container">
+                <input type="text" placeholder="請輸入信箱帳號" th:field="*{memMail}" />
+                <select th:field="*{memMail}" class="email-provider-select">
+                    <option value="@gmail.com">@gmail.com</option>
+                    <option value="@yahoo.com">@yahoo.com</option>
+                    <option value="@outlook.com">@outlook.com</option>
+                    <option value="@icloud.com">@icloud.com</option>
+                    <!-- Add more email providers as needed -->
+                </select>
+            </div>
+            <span th:if="${#fields.hasErrors('memMail')}" th:errors="*{memMail}" class="error" id="email.errors"></span>
+        </div>
+
+        <div class="input-box address">
+            <label>地址：<b>*</b></label>
+            <div class="column">
+                <div class="select-box dropdown">
+                    <select name="county" id="county_box">
+                        <option value="">選擇縣市</option>
+                    </select>
+                </div>
+                <div class="select-box dropdown">
+                    <select name="district" id="district_box">
+                        <option value="">選擇鄉鎮市區</option>
+                    </select>
+                </div>
+            </div>
+            <input type="text" placeholder="請輸入詳細地址" th:field= "*{memAdd}"/>
+            <span th:if="${#fields.hasErrors('memAdd')}" th:errors="*{memAdd}" class="error"></span>
+        </div>
+
+        <div class="input-box">
+            <label>生日:<b>*</b></label>
+            <input type="date" placeholder="請輸入生日" th:field="*{memBd}" />
+            <span th:if="${#fields.hasErrors('memBd')}" th:errors="*{memBd}" class="error"></span>
+        </div>
+
+        <div class="input-box">
+            <label>信用卡號:<b>*</b></label>
+            <input type="text" placeholder="請輸入信用卡卡號" th:field="*{memCard}" />
+            <span th:if="${#fields.hasErrors('memCard')}" th:errors="*{memCard}" class="error"></span>
+        </div>
+
+        <br>
+        <div class="input-box2">
+            <label>選擇要註冊的第三方平台：<b>*</b></label>
+            <div id="platform-buttons">
+                <button1 type="button" data-value="github" class="platform-button">
+                    <img src="/images/frontend/github.png" alt="GitHub" width="50" height="50" />
+                </button1>
+                <button1 type="button" data-value="facebook" class="platform-button">
+                    <img src="/images/frontend/facebook.png" alt="Facebook" width="50" height="50" />
+                </button1>
+                <button1 type="button" data-value="google" class="platform-button">
+                    <img src="/images/frontend/google.png" alt="Google" width="50" height="50" />
+                </button1>
+                <button1 type="button" data-value="line" class="platform-button">
+                    <img src="/images/frontend/line.png" alt="LINE" width="50" height="50" />
+                </button1>
+            </div>
+            <input type="hidden" th:field="*{provider}" id="provider-hidden" />
+            <span th:if="${#fields.hasErrors('provider')}" th:errors="*{provider}" class="error"></span>
+        </div>
+
+
+        <button>註冊</button>
+    </form>
+    <a th:href="@{login}"><button class="goBack">返回登入</button></a>
+</section>
+<script>
+
+    // 監聽平台按鈕的點擊事件
+    document.querySelectorAll('.platform-button').forEach(button => {
+        button.addEventListener('click', function() {
+            // 取得選定平台的 data-value 屬性值
+            const provider = this.getAttribute('data-value');
+            // 更新隱藏表單字段的值
+            document.getElementById('provider-hidden').value = provider;
+        });
+    });
+</script>
+<script th:src="@{/js/frontend/member/register.js}"></script>
+<script th:src="@{/js/backend/rentapp/addRentApp.js}"></script>
+
+</script>
+
+</body>
+</html>

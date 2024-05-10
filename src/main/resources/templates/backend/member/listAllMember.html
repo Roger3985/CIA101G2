@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員管理</title>
+    <link rel="stylesheet" th:href="@{/css/backend/member/try.css}" />
+    <link rel="stylesheet" th:href="@{/css/backend/member/try2.css}" />
+    <link th:href="@{/css/backend/index/styles.css}" rel="stylesheet" />
+    <link th:href="@{/css/backend/index/index.css}" rel="stylesheet" />
+    <style>
+        h1 {
+            text-align: center;
+            color: red;
+        }
+        main {
+            margin-top: 50px;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2em;
+            border-radius: 10px;
+            width: 80%;
+            color: #fff;
+            background-color: #5bc0de;
+            padding: 20px;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.9);
+        }
+    </style>
+</head>
+<body>
+<main>
+    <h1>會員查詢</h1>
+    <table id="example" class="display" style="width: 100%;">
+        <thead>
+        <tr>
+            <th>會員編號</th>
+            <th>會員姓名</th>
+            <th>會員帳號</th>
+            <th>會員密碼</th>
+            <th>手機號碼</th>
+            <th>性別</th>
+            <th>email</th>
+            <th>地址</th>
+            <th>會員生日</th>
+            <th>第三方平台</th>
+            <th>修改</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="member : ${memListData}">
+            <tr>
+                <td th:text="${member.memNo}"></td>
+                <td th:text="${member.mName}"></td>
+                <td th:text="${member.memAcc}"></td>
+                <td th:text="${member.memPwd}"></td>
+                <td th:text="${member.memMob}"></td>
+                <td>
+                    <span th:if="${member.mGender == 1}" th:text="男性"></span>
+                    <span th:if="${member.mGender == 2}" th:text="女性"></span>
+                </td>
+                <td th:text="${member.memMail}"></td>
+                <td th:text="${member.memAdd}"></td>
+                <td th:text="${member.memBd}"></td>
+                <td th:text="${member.provider}"></td>
+
+                <td>
+                    <!-- 您可以在這裡添加修改按鈕的功能 -->
+                    <button th:onclick="'editMember(' + ${member.memNo} + ')'">修改</button>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+    <br>
+    <script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
+    <script th:src="@{/js/backend/member/the.js}"></script>
+    <script th:src="@{/js/backend/member/the2.js}"></script>
+    <script>
+        let table = new DataTable("#example");
+    </script>
+</main>
+</body>
+</html>

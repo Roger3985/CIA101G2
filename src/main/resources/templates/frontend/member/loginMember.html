@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/frontend/member/login.css}">
+    <style type="text/css">
+        .error {
+            color: red;
+            font-style: italic;
+        }
+
+        div.rollback {
+            text-align: right;
+        }
+    </style>
+    <!-- Boxicons CSS -->
+    <!-- <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'> -->
+
+</head>
+<body>
+<body>
+<section class="container forms">
+    <div class="form login">
+        <div class="rollback">
+            <a th:href="@{/}"><img th:src="@{/icons/frontend/member/close.png}" width="30px" height="30px"></a>
+        </div>
+        <div class="form-content">
+            <header>會員登入</header>
+
+            <form method="post" th:action="@{loginPage}">
+                <div>
+                    <span th:text="*{message}" class="error" id="ename.errors"></span>
+                    <span th:text="*{noFun}" class="error" id="ename.errors"></span>
+                </div>
+                <div class="field input-field">
+                    <input type="email" placeholder="信箱" class="input" name="mail">
+                </div>
+
+                <div class="field input-field">
+                    <input type="password" placeholder="密碼" class="password" name="password">
+                    <i class='bx bx-hide eye-icon'></i>
+                </div>
+
+                <div class="form-link">
+                    <a th:href="@{forgetPwd}" class="forgot-pass">忘記密碼？</a>
+                </div>
+
+                <div class="field button-field">
+                    <input type="submit" class="submit" value="登入">
+                </div>
+            </form>
+
+            <div class="form-link">
+                <span>還沒有帳號？ <a th:href="@{addMem}" class="link signup-link">註冊</a></span>
+            </div>
+        </div>
+
+
+    </div>
+
+</section>
+    <script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
+    <script th:src="@{/js/backend/member/the.js}"></script>
+    <script th:src="@{/js/backend/member/the2.js}"></script>
+    <script>
+        let table = new DataTable("#example");
+    </script>
+
+</body>
+</html>
