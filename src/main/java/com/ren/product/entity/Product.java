@@ -1,7 +1,12 @@
-package com.Entity;
+package com.ren.product.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.iting.cart.entity.Cart;
+import com.iting.productmyfavorite.entity.ProductMyFavorite;
+import com.iting.productorderdetail.entity.ProductOrderDetail;
+import com.ren.productcategory.entity.ProductCategory;
+import com.ren.productpicture.entity.ProductPicture;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;

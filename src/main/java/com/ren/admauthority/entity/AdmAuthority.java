@@ -1,7 +1,10 @@
-package com.Entity;
+package com.ren.admauthority.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ren.authorityfunction.entity.AuthorityFunction;
+import com.ren.title.entity.Title;
+
 import javax.persistence.*;
 
 

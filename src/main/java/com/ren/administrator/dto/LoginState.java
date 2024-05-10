@@ -1,7 +1,5 @@
 package com.ren.administrator.dto;
 
-import com.Entity.Title;
-
 import java.io.Serializable;
 import java.sql.Timestamp;
 

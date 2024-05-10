@@ -1,6 +1,6 @@
 package com.ren.administrator.controller;
 
-import com.Entity.Administrator;
+import com.ren.administrator.entity.Administrator;
 import com.ren.administrator.service.AdministratorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

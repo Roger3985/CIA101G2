@@ -1,6 +1,7 @@
-package com.Entity;
+package com.ren.productpicture.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ren.product.entity.Product;
 
 import javax.persistence.*;
 

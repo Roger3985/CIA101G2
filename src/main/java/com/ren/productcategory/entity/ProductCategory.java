@@ -1,6 +1,7 @@
-package com.Entity;
+package com.ren.productcategory.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.ren.product.entity.Product;
 
 import javax.persistence.*;
 import java.util.Set;

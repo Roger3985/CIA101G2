@@ -1,6 +1,7 @@
-package com.Entity;
+package com.ren.authorityfunction.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.ren.admauthority.entity.AdmAuthority;
 
 import javax.persistence.*;
 import java.util.Set;
