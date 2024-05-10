@@ -1,4 +1,4 @@
-package com.Cia101G2;
+package com.howard;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

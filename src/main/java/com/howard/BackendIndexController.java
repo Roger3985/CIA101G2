@@ -1,4 +1,4 @@
-package com.Cia101G2;
+package com.howard;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;

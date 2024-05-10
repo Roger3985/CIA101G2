@@ -1,6 +1,6 @@
 package com.Cia101G2.howard.rentalorder.dto;
 
-import com.Cia101G2.CustomTimestampDeserializer;
+import com.howard.CustomTimestampDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import javax.validation.constraints.Email;

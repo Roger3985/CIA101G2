@@ -1,4 +1,4 @@
-package com.Cia101G2;
+package com.howard;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
