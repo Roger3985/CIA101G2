@@ -1,7 +1,8 @@
-package com.Cia101G2.howard.rentalorderdetails.entity;
+package com.howard.rentalorderdetails.entity;
 
-import com.Cia101G2.howard.rentalorder.entity.RentalOrder;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.howard.rentalorder.entity.RentalOrder;
+import com.yu.rental.entity.Rental;
 
 import javax.persistence.*;
 import java.io.Serializable;
