@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <link rel="stylesheet" th:href="@{/css/backend/member/try.css}" />
+      <link rel="stylesheet" th:href="@{/css/backend/member/try2.css}" />
+    <link rel="stylesheet" th:href="@{/css/public/elementmodel/elementStyles.css}" />
+    <link rel="stylesheet" th:href="@{/css/frontend/navForMemCenter/navForMemCenter.css}" />
+    <title>會員基本資料</title>
+
+    <style>
+        body {
+            /*             font-family: Arial, sans-serif; */
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0px;
+            display: flex;
+            flex-direction: row;
+            /*             text-align: center; */
+        }
+
+        h1 {
+            color: red;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 60%;
+            margin: 0px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 50vw;
+            text-align: right;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #333;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #ddd;
+        }
+
+        .fly {
+            display: flex;
+            justify-content: space-around;
+        }
+
+
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        ul>li {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        #the_file {
+            display: none;
+        }
+
+        #changeImg {
+            width: auto;
+            height: 200px;
+            border-radius: 50%;
+        }
+
+        .avatar-container {
+            text-align: center;
+            padding: 50px;
+        }
+
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        body {
+            text-align: center;
+        }
+
+        button, input.submit {
+            background-color: #5bc0de;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        input.submit:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+    <div>
+        <div th:insert="~{/frontend/navForMemCenter/navForMemCenter :: nav}"></div>
+        <div class="tittleBoard"><span class="tittleBoard">會員基本資料</span></div>
+        <table id="example" class="display">
+            <thead>
+            <tr>
+                <th>項目</th>
+                <th>資料</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>會員大頭貼</td>
+                <th:block>
+                    <td>
+                        <!-- 顯示會員大頭貼 -->
+                        <img th:src="@{/frontend/member/picture(memno=${myData.memNo})}" id="memberAvatar" style="width: 100px; height: 100px;" alt="會員大頭貼">
+                        <!-- 上傳表單 -->
+                        <form method="post" th:action="@{newPicture2}" enctype="multipart/form-data" onsubmit="return handleAvatarUpload(event)">
+                            <input type="file" name="chaPic" id="avatarInput" accept="image/*">
+                            <input type="submit" value="上傳新頭貼">
+                        </form>
+                    </td>
+                </th:block>
+            </tr>
+            <tr>
+                <td>會員編號</td>
+                <td th:text="${myData.memNo}"></td>
+            </tr>
+            <tr>
+                <td>姓名</td>
+                <td th:text="${myData.memName}"></td>
+            </tr>
+            <tr>
+                <td>會員帳號</td>
+                <td th:text="${myData.memAcc}"></td>
+            </tr>
+            <tr>
+            <tr>
+                <td>會員密碼</td>
+                <td th:text="${myData.memPwd}"></td>
+            </tr>
+            <tr>
+                <td>密碼變更</td>
+                <td>
+                    <form th:action="@{newPassword}" method="get">
+                        <input type="submit" value="變更密碼" class="submit">
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td>手機號碼</td>
+                <td th:text="${myData.memMob}"></td>
+            </tr>
+            <tr>
+                <td>性別</td>
+                <td>
+                    <span th:if="${myData.memGender == 1}" th:text="男性"></span>
+                    <span th:if="${myData.memGender == 2}" th:text="女性"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>信箱帳號</td>
+                <td th:text="${myData.memMail}"></td>
+            </tr>
+            <tr>
+                <td>聯絡地址</td>
+                <td th:text="${myData.memAdd}"></td>
+            </tr>
+            <tr>
+                <td>會員生日</td>
+                <td th:text="${myData.memBd}"></td>
+            </tr>
+            <tr>
+                <td>註冊日期</td>
+                <td th:text="${myData.memberJoinTime}"></td>
+                <!-- 				<td> -->
+                <!-- 					<span th:if="${myData.memStatus == 0}" th:text="未驗證"></span> -->
+                <!-- 					<span th:if="${myData.memStatus == 1}" th:text="正常"></span> -->
+                <!-- 					<span th:if="${myData.memStatus ==2}" th:text="停權"></span>				 -->
+                <!-- 				</td> -->
+            </tr>
+<!--            <tr>-->
+<!--                <td>最後上線時間</td>-->
+<!--                <td th:if="${myData.lastLoginTime != null}" th:text="${#dates.format(myData.lastLoginTime, 'yyyy/MM/dd HH:mm:ss')}"></td>-->
+<!--            </tr>-->
+            <tr>
+                <td>修改會員資料</td>
+                <td >
+                    <form method="get" th:action="@{updateData}">
+                        <input type="hidden" name= "memNo" th:text="${myData.memNo}" readonly>
+                        <input type="submit" value="修改" class="submit">
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
+    <!--   	<script th:src="@{/js/BackStage/mem/the.js}"></script> -->
+    <!--   	<script th:src="@{/js/BackStage/mem/the2.js}"></script> -->
+    <script th:src="@{/js/public/tableModel/dateInput.js}"></script>
+    <script th:src="@{/js/FrontEnd/navForMemCenter/navForMemCenter.js}"></script>
+
+    </main>
+    <script>
+
+        let choose_file_el = document.getElementById("choose_file");
+        choose_file_el.addEventListener("click", function () {
+            let my_input = document.getElementById("the_file");
+            my_input.click(); //input type=flie 被點
+        });
+        window.addEventListener("load", function () {
+            var the_file_element = document.getElementById("the_file");
+            the_file_element.addEventListener("change", function (e) {
+                // 寫在這
+                //   console.log(this);
+                //   console.log(this.files);
+                //   console.log(this.files[0]);
+                //   console.log(this.files[0].name);
+                let that = this;
+                let ul_el = document.querySelector(".picture_list");
+                ul_el.innerHTML = "";
+
+                for (let i = 0; i < this.files.length; i++) {
+                    let reader = new FileReader();
+                    reader.readAsDataURL(this.files[i]);
+                    reader.addEventListener("load", function () {
+//             console.log(this.result);
+                        //寫法1
+                        // let li_html = "";
+                        // li_html += "<li>";
+                        // li_html += "<img src = '" + this.result + "' class = 'preview'/>";
+                        // li_html += "</li>";
+                        //寫法2
+                        let li_html2 = `<li>
+
+                                            <input type="submit" class="submit" value="儲存">
+                                    </li>`;
+
+                        let html_img = document.getElementById("pic");
+                        let html_newImg = document.createElement("img");
+                        html_newImg.src = `${this.result}`;
+                        html_newImg.id = "changeImg";
+                        html_newImg.style = "width: 100%; height: 100%";
+                        let html_oldImg = document.getElementById("memImg");
+                        if(html_oldImg === null){
+                            html_oldImg = document.getElementById("changeImg")
+                        }
+                        console.log(html_oldImg);
+
+                        html_img.replaceChild(html_newImg, html_oldImg);
+
+                        ul_el.insertAdjacentHTML("beforeend", li_html2);
+                    });
+                }
+            });
+        });
+
+        // 前端 JavaScript 處理表單提交和更新頭像的代碼
+        function handleAvatarUpload(event) {
+            event.preventDefault(); // 阻止默認提交行為
+            const formData = new FormData(event.target);
+
+            fetch('/frontend/member/newPicture2', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const avatarElement = document.getElementById('memberAvatar');
+                        avatarElement.src = data.newAvatarUrl; // 更新頭像的 src 屬性
+                        alert('上傳成功！');
+                    } else {
+                        console.error('上傳失敗:', data.error);
+                        alert('上傳失敗，請重試。');
+                    }
+                })
+                .catch(error => {
+                    console.error('錯誤:', error);
+                    alert('發生錯誤，請稍後重試。');
+                });
+        }
+
+        // 綁定表單提交事件處理程序
+        // const form = document.querySelector('form');
+        // if (form) {
+        //     form.addEventListener('submit', handleAvatarUpload);
+        // }
+
+    </script>
+</body>
+</html>

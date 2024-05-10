@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修改專欄文章資料</title>
+    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+    <!-- Custom styles for this page -->
+    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
+</head>
+<body id="page-top">
+<main>
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+        <!-- End of Sidebar -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                <nav th:replace="backend/component/nav :: nav"></nav>
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                    <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">修改專欄文章資料:</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <!--    <div th:replace="backend/HTMLTool/nav :: nav"></div>-->
+                            <form method="post" th:action="@{updateColumnArticle}" th:object="${data}" enctype="multipart/form-data">
+                                <table>
+                                    <tr>
+                                        <td><label for="artNo">文章編號：<b>*</b></label></td>
+                                        <td><input type="text" id="artNo" title="文章編號" th:field="*{artNo}" readonly></td>
+                                        <td><span  th:if="${#fields.hasErrors('artNo')}" th:errors="*{artNo}" class="error" id="artNo.errors"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="administrator.admNo">管理員編號：</label></td>
+                                        <td>
+                                            <select type="number" id="administrator.admNo" name="administrator.admNo" title="請輸入管理員編號" th:field="*{administrator.admNo}">
+                                                <option th:each="administrator : ${administratorListData}" th:value="${administrator.admNo}" th:text="${administrator.admNo}"></option>
+                                            </select>
+                                        </td>
+                                        <td><span  th:if="${#fields.hasErrors('administrator.admNo')}" th:errors="*{administrator.admNo}" class="error" id="administrator.admNo.errors"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="artTitle">文章標題</label></td>
+                                        <td><input id="artTitle" title="文章標題" th:field="*{artTitle}" ></td>
+                                        <td><span  th:if="${#fields.hasErrors('artTitle')}" th:errors="*{artTitle}" class="error" id="notContent.errors"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="artContent">文章內容:</label></td>
+                                        <td><input id="artContent" title="文章內容" th:field="*{artContent}" ></td>
+                                        <td><span  th:if="${#fields.hasErrors('artContent')}" th:errors="*{artContent}" class="error" id="artContent.errors"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="artCatNo">文章分類編號:</label></td>
+                                        <td><input id="artCatNo" title="文章分類編號" th:field="*{artCatNo}" ></td>
+                                        <td><span  th:if="${#fields.hasErrors('artCatNo')}" th:errors="*{artCatNo}" class="error" id="artCatNo.errors"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="artStat">文章狀態：</label></td>
+                                        <td>
+                                        <select id="artStat" title="文章狀態" th:field="*{artStat}">
+                                            <option value="0">上架</option>
+                                            <option value="1">下架</option>
+                                        </select>
+                                        </td>
+                                        <td><span  th:if="${#fields.hasErrors('artStat')}" th:errors="*{artStat}" class="error" id="artStat.errors"></span></td>
+                                    </tr>
+                                    <tr>
+<!--                                        <td><label for="artTime">文章發表時間：</label></td>-->
+                                        <td><input type="hidden" id="artTime" th:field="*{artTime}" name="artTime"></td>
+                                        <td><span  th:if="${#fields.hasErrors('artTime')}" th:errors="*{artTime}" class="error" id="artTime.errors"></span></td>
+                                    </tr>
+                                </table>
+                                <input type="submit" class="submit" value="修改資料">
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer th:replace="backend/component/bottom :: bottom"></footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+    <!-- Logout Modal-->
+    <div th:replace="backend/component/logout :: logout"></div>
+
+    <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+    <!-- Page level plugins -->
+    <script th:src="@{/backend/vendor/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+    <!-- Page level custom scripts -->
+    <script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
+
+    <script>
+        $(document).ready(function() {
+            // 在表單提交時更新 artTime 字段為當前時間
+            $('form').submit(function(event) {
+                // 獲取 artTime 輸入元素
+                var notTimeInput = $('#artTime');
+
+                // 獲取當前時間
+                var now = new Date();
+                var year = now.getFullYear();
+                var month = String(now.getMonth() + 1).padStart(2, '0');
+                var day = String(now.getDate()).padStart(2, '0');
+                var hours = String(now.getHours()).padStart(2, '0');
+                var minutes = String(now.getMinutes()).padStart(2, '0');
+                var seconds = String(now.getSeconds()).padStart(2, '0');
+
+                // 組合日期時間為 SQL Timestamp 格式
+                var dateTimeString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+                // 將日期時間設置為 notTime 輸入值
+                notTimeInput.val(dateTimeString);
+            });
+        });
+    </script>
+</main>
+</body>
+</html>

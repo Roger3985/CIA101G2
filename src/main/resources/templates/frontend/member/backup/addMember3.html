@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link th:href='@{/css/backend/member/bootstrap-3.3.6.css}' rel='stylesheet' />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="@{/css/backend/member/croppie-2.6.5.css}" rel="stylesheet"></link>
+    <link rel="stylesheet" th:href="@{/css/frontend/member/register.css}" />
+    <style type="text/css">
+        b {
+            color: red;
+        }
+
+        .error {
+            color: red;
+            font-style: italic;
+        }
+
+        button.goBack {
+            height: 55px;
+            width: 100%;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 400;
+            margin-top: 30px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: rgb(130, 106, 251);
+        }
+
+        button.goBack:hover {
+            background: rgb(88, 56, 250);
+        }
+
+        /* 移除按钮边框和焦点轮廓 */
+        .platform-button {
+            border: none;
+            outline: none;
+            background: none;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        /* 在按钮中设置图像尺寸 */
+        .platform-button img {
+            width: 50px; /* 设置图像宽度 */
+            height: 50px; /* 设置图像高度 */
+        }
+
+        .input-box2 {
+            display: flex; /* 使用弹性布局 */
+            flex-direction: column; /* 垂直方向 */
+            align-items: center; /* 居中对齐 */
+        }
+
+        /* 自定义下拉菜单样式 */
+        .email-provider-select {
+            background-color: #f3f3f3; /* 背景色 */
+            border: 1px solid #ccc; /* 边框颜色和样式 */
+            border-radius: 5px; /* 边框半径 */
+            padding: 5px; /* 填充 */
+            margin: 5px 0; /* 边距 */
+            color: #333; /* 字体颜色 */
+            font-family: Arial, sans-serif; /* 字体 */
+            font-size: 14px; /* 字体大小 */
+        }
+
+        /* 悬停在下拉菜单上时的样式 */
+        .email-provider-select:hover {
+            border-color: #999; /* 悬停时的边框颜色 */
+        }
+
+        /* 下拉菜单中的选项样式 */
+        .email-provider-select option {
+            padding: 5px;
+            background-color: #fff; /* 选项背景颜色 */
+            color: #333; /* 选项字体颜色 */
+        }
+
+        #oldImg img {
+            max-width: 100% !important;
+        }
+
+        #oldImg {
+            overflow: hidden;
+        }
+    </style>
+
+    <title>歡迎加入 41L</title>
+</head>
+
+<body>
+<section class="container">
+    <header style="font-size: 30px; font-weight: bolder;">註冊會員</header>
+    <form class="form" method="post" th:action="@{addMember}" th:object="${member}" enctype="multipart/form-data">
+        <div class="input-box">
+            <label>姓名： <b>*</b></label>
+            <input type="text" placeholder="請輸入姓名" th:field="*{memName}" />
+            <span th:if="${#fields.hasErrors('memName')}" th:errors="*{memName}" class="error"></span>
+        </div>
+
+        <div class="input-box">
+            <label>會員帳號： <b>*</b></label>
+            <input type="text" placeholder="請輸入會員帳號" th:field="*{memAcc}" />
+            <span th:if="${#fields.hasErrors('memAcc')}" th:errors="*{memAcc}" class="error" id="ename.errors"></span>
+        </div>
+
+        <div class="input-box">
+            <label>會員密碼： <b>*</b></label>
+            <input type="password" placeholder="請輸入會員密碼" th:field="*{memPwd}" />
+            <span th:if="${#fields.hasErrors('memPwd')}" th:errors="*{memPwd}" class="error" id="ename.errors"></span>
+        </div>
+
+        <div class="column">
+            <div class="input-box">
+                <label>手機號碼： <b>*</b></label>
+                <input type="text" placeholder="例如：0912345678" th:field="*{memMob}" />
+                <span th:if="${#fields.hasErrors('memMob')}" th:errors="*{memMob}" class="error"></span>
+            </div>
+        </div>
+
+        <div class="gender-box">
+            <h3>性別： <b>*</b></h3>
+            <div class="gender-option">
+                <div class="gender">
+                    <input type="radio" id="check-male" th:field="*{memGender}" th:value="0"/>
+                    <label for="check-male">男</label>
+                </div>
+                <div class="gender">
+                    <input type="radio" id="check-female" th:field="*{memGender}" th:value="1"/>
+                    <label for="check-female">女</label>
+                </div>
+            </div>
+        </div>
+        <span th:if="${#fields.hasErrors('memGender')}" th:errors="*{memGender}" class="error"></span>
+
+        <div class="input-box">
+            <label>電子郵件： <b>*</b></label>
+            <div class="email-input-container">
+                <input type="text" placeholder="請輸入電子郵件帳戶" th:field="*{memMail}" />
+                <select th:field="*{memMail}" class="email-provider-select">
+                    <option value="@gmail.com">@gmail.com</option>
+                    <option value="@yahoo.com">@yahoo.com</option>
+                    <option value="@outlook.com">@outlook.com</option>
+                    <option value="@icloud.com">@icloud.com</option>
+                    <!-- 根據需要添加更多電子郵件提供商 -->
+                </select>
+            </div>
+            <span th:if="${#fields.hasErrors('memMail')}" th:errors="*{memMail}" class="error" id="email.errors"></span>
+        </div>
+
+        <div class="input-box address">
+            <label>地址： <b>*</b></label>
+            <div class="column">
+                <div class="select-box dropdown">
+                    <select name="county" id="county_box">
+                        <option value="">選擇縣市</option>
+                    </select>
+                </div>
+                <div class="select-box dropdown">
+                    <select name="district" id="district_box">
+                        <option value="">選擇鄉鎮市區</option>
+                    </select>
+                </div>
+            </div>
+            <input type="text" placeholder="請輸入詳細地址" th:field="*{memAdd}" />
+            <span th:if="${#fields.hasErrors('memAdd')}" th:errors="*{memAdd}" class="error"></span>
+        </div>
+
+        <div class="input-box">
+            <label>生日： <b>*</b></label>
+            <input type="date" placeholder="請輸入生日" th:field="*{memBd}" />
+            <span th:if="${#fields.hasErrors('memBd')}" th:errors="*{memBd}" class="error"></span>
+        </div>
+
+        <div class="input-box">
+            <label>信用卡卡號： <b>*</b></label>
+            <input type="text" placeholder="請輸入信用卡卡號" th:field="*{memCard}" />
+            <span th:if="${#fields.hasErrors('memCard')}" th:errors="*{memCard}" class="error"></span>
+        </div>
+
+        <br><br>
+
+        <label class="btn btn-info">
+            <input id="upload_img" name="uploadImg" style="display:none;" type="file" accept="image/*">
+            <!-- 隱藏輸入字段，用於存儲裁剪圖像數據，建設中 -->
+            <input type="hidden" name="croppedImage" id="croppedImage" value="" th:field="*{memPic}">
+            <span th:if="${#fields.hasErrors('memPic')}" th:errors="*{memPic}" class="error"></span>
+            <i class="fa fa-photo"></i> 上傳圖片
+        </label>
+
+        <div id="oldImg" style="display:none;"></div>
+
+        <br>
+        <button id="crop_img" style="margin-left: 10px;">裁剪</button>
+
+        <!-- 裁剪區 -->
+        <div id="crop_container" style="width: 250px; height: 250px;"></div>
+
+        <br>
+        <input type="submit" value="新增" class="btn btn-info">
+        <input type="button" value="返回" class="goBack btn btn-danger" onclick="history.back()">
+    </form>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
+<script>
+    // 上傳圖片和裁剪功能
+    const inputImg = document.getElementById('upload_img');
+    const cropContainer = document.getElementById('crop_container');
+    const oldImgDiv = document.getElementById('oldImg');
+    const newImgDiv = document.getElementById('newImg');
+    const croppedImageInput = document.getElementById('croppedImage');
+
+    // 創建 Croppie 實例
+    const croppieInstance = new Croppie(cropContainer, {
+        viewport: {
+            width: 200,
+            height: 200
+        },
+        boundary: {
+            width: 250,
+            height: 250
+        },
+        enableExif: true
+    });
+
+    // 處理圖片上傳
+    inputImg.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+            const imgData = event.target.result;
+            croppieInstance.bind({
+                url: imgData
+            }).then(function() {
+                cropContainer.style.display = 'block';
+            });
+        };
+
+        reader.readAsDataURL(file);
+    });
+
+    // 處理裁剪
+    document.getElementById('crop_img').addEventListener('click', function() {
+        croppieInstance.result({
+            type: 'base64',
+            size: 'viewport'
+        }).then(function(croppedImg) {
+            // 顯示裁剪的圖片
+            newImgDiv.innerHTML = `<img src="${croppedImg}" alt="裁剪後的圖片" />`;
+            // 將裁剪的圖片數據存儲在隱藏的輸入字段中
+            croppedImageInput.value = croppedImg;
+        });
+    });
+</script>
+</body>
+</html>

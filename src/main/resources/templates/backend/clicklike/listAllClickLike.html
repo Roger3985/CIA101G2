@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全部專欄文章資料</title>
+    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+    <!-- Custom styles for this page -->
+    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
+</head>
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">全部專欄文章資料</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>會員編號</th>
+                                    <th>文章編號</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <th:block th:each="clicklike : ${clickLikeListData}">
+                                    <tr>
+                                        <td th:text="${clicklike.member.memNo}"></td>
+                                        <td th:text="${clicklike.columnArticle.artNo}"></td>
+                                            <!--                                            <&#45;&#45;您可以在這裡添加修改按鈕的功能 &ndash;&gt;-->
+                                            <!--                                            <button th:onclick="'editArticleData(' + ${columnarticle.artNo} + ')'">修改</button>-->
+<!--                                            <form method="get" th:action="@{updateColumnArticleData}">-->
+<!--                                                &lt;!&ndash;                                                <input type="text" name="artNo" th:value="${columnarticle.artNo}" readonly>&ndash;&gt;-->
+<!--                                                <input type="text" name="artNo" th:value="${columnarticle.artNo}">-->
+<!--                                                <input type="submit" value="修改" class="submit">-->
+<!--                                            </form>-->
+<!--                                        </td>-->
+<!--                                        <td>-->
+<!--                                            <form method="post" th:action="@{updateColumnArticleStat}">-->
+<!--                                                <input type="hidden" name="artNo" th:value="${columnarticle.artNo}">-->
+<!--                                                <input type="submit" value="上架" th:if="${columnarticle.artStat != 1}" style="background-color: #3498db; /* 藍色背景顏色 */-->
+<!--                                                        color: #fff; /* 白色文字顏色 */-->
+<!--                                                        border: none; /* 去掉邊框 */-->
+<!--                                                        padding: 10px 10px; /* 內邊距 */-->
+<!--                                                        cursor: pointer; /* 鼠標懸停效果 */-->
+<!--                                                        border-radius: 10px;-->
+<!--                                                        font-weight: bold;-->
+<!--                                                        font-size: 14px;"-->
+<!--                                                       onmouseover="this.style.color='red'; this.style.backgroundColor='yellow'"-->
+<!--                                                       onmouseout="this.style.color='white'; this.style.backgroundColor='#3498db'">-->
+<!--                                            </form>-->
+<!--                                            <form method="post" th:action="@{updateColumnArticleStat}">-->
+<!--                                                <input type="hidden" name="artNo" th:value="${columnarticle.artNo}">-->
+<!--                                                <input type="submit" value="下架" th:unless="${columnarticle.artStat != 1}" style="background-color: green; /* 藍色背景顏色 */-->
+<!--                                                        color: #fff; /* 白色文字顏色 */-->
+<!--                                                        border: none; /* 去掉邊框 */-->
+<!--                                                        padding: 10px 10px; /* 內邊距 */-->
+<!--                                                        cursor: pointer; /* 鼠標懸停效果 */-->
+<!--                                                        border-radius: 10px;-->
+<!--                                                        font-weight: bold;-->
+<!--                                                        font-size: 14px;"-->
+<!--                                                       onmouseover="this.style.color='red'; this.style.backgroundColor='yellow'"-->
+<!--                                                       onmouseout="this.style.color='white'; this.style.backgroundColor='green'">-->
+<!--                                            </form>-->
+<!--                                        </td>-->
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="backend/component/bottom :: bottom"></footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
+
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+<!-- Page level plugins -->
+<script th:src="@{/backend/vendor/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+<!-- Page level custom scripts -->
+<script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
+</body>
+</html>
