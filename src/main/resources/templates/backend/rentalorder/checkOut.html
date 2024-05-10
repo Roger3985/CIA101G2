@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{backend/component/plugin/backendplugin.html :: css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>租借品訂單清單</title>
+    <!-- Custom styles for this page -->
+    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="/static/css/fontawesome/fontawesome-6.4.0.css">
+
+    <style>
+
+
+
+    </style>
+
+</head>
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">購物車商品:</h6>
+                        <a th:href="@{/backend/rentalorder/toRentalCart}">點這裡確定結帳</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>租借品編號</th>
+                                    <th>類別編號</th>
+                                    <th>租借品名稱</th>
+                                    <th>租借品單價</th>
+                                    <th>尺寸</th>
+                                    <th>顏色</th>
+                                    <th>租借品資訊</th>
+                                    <th>租借品狀態</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!--商品會在這-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="test">
+                        這裡是預備填入結帳資訊的地方
+                    </div>
+                    <br>
+                    <label>訂購人資料</label>
+                    <hr>
+                    <span> : </span><span>John</span>
+
+                    <span> : </span><span>0923561207</span>
+
+                    <span> : </span><span>howardcyh@icloud.com</span>
+
+                    <span>地址 : </span><span>新北市**區***路</span>
+                    <br>
+                    <br>
+
+                    <form>
+                        <label>訂購人資料</label>
+                        <input type="hidden" name="memNo" value="1">
+                        <label>姓名</label><input name="rentalByrName">
+                        <label>手機號碼</label><input name="rentalByrPhone">
+                        <label>E-mail</label><input name="rentalByrEmail">
+                        <label>收件人資料</label>
+                        <input type="radio" th:text="同訂購人">
+                        <hr>
+                        <label>姓名</label><input name="rentalRcvName">
+                        <label>手機號碼</label><input name="rentalRcvPhone">
+                        <label>取貨方式</label>
+                        <select name="rentalTakeMethod">
+                            <option value="1">店取</option>
+                            <option value="2">宅配</option>
+                        </select>
+                        <label>宅配地址</label><input name="rentalAddr">
+                        <label>付款方式</label>
+                        <select name="rentalPayMethod">
+                            <option name="1" value="1">綠界</option>
+                            <option name="2" value="2">現場付款</option>
+                        </select>
+                        <label>預計租借日期</label>
+                        <input type="datetime-local" name="rentalDate">
+                        <label>租借方案</label>
+                        <select name="rentSet">
+                            <option value="1">方案1(7天)</option>
+                            <option value="2">方案2(14天)</option>
+                        </select>
+
+
+                        <label>本次訂單金額</label>
+                        <div id="rentalAllPrice"></div>
+                        <label>本次訂單押金</label>
+                        <div id="rentalAllDepPrice" th:name="rentalAllDepPrice">8000</div>
+                        <button type="button" class="create">確定結帳</button>
+                    </form>
+
+                    <hr>
+
+                    <label>輸入信用卡號</label>
+                    <input name="memCard" >
+                    <label>輸入有效日期</label>
+                    <select name="month">
+                        <option th:each="num : ${#numbers.sequence(1, 12)}" th:value="${num}" th:text="${num}"></option>
+                    </select>
+                    <select>
+                        <option th:each="num : ${#numbers.sequence(2024, 2040)}" th:value="${num}" th:text="${num}"></option>
+                    </select>
+                    <input name="last3" value="卡片背面末三碼">
+                    <br>
+                    <hr>
+                    <br>
+
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="backend/component/bottom :: bottom"></footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
+
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+<!-- Page level plugins -->
+<script th:src="@{/backend/vendor/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+<!-- Page level custom scripts -->
+<script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
+
+
+
+<script th:inline="javascript">
+
+    $(function() {
+
+        let totalPrice = 0;
+        let items = [];
+
+        function getAll() {
+
+            fetch('/backend/rentalorder/getFromCart?memNo=1')  // 發出 GET 請求取得所有購物車商品
+                .then(response => response.json())  // 解析 JSON  這邊等於.then(function(response) {return response.json();})
+                .then(data => { // 這邊等於 .then(function(data) {...})
+                    const table = $('#dataTable').DataTable();  // 初始化 DataTable
+                    table.clear(); // 清除表格現有行
+                    totalPrice = 0;
+
+                    for (const key in data) { // 取得每個商品的 key
+                        const item = data[key]; // item = 包含每一個商品的詳細資訊的物件
+                        totalPrice += parseFloat(item['rentalPrice']);
+                        // let newItem = {};
+                        // 把每個商品加入商品陣列，給送出訂單備用
+                        // for (const key in item) {
+                        //     item[key] = item[key];
+                        // }
+
+                        items.push(item['rentalNo']);
+
+                        table.row.add([  // 添加行到 DataTable
+                            item['rentalNo'],
+                            item['rentalCatNo'],
+                            item['rentalName'],
+                            item['rentalPrice'],
+                            item['rentalSize'],
+                            item['rentalColor'],
+                            item['rentalInfo'],
+                            item['rentalStat'],
+                            '<button class="btn btn-sm btn-primary"><i class="fa-solid fa-plus"></i></button>' +
+                            ' <button class="btn btn-sm btn-danger delbtn"><i class="fa-solid fa-minus"></i></button>'
+                        ]).draw(false);  // 繪製表格，但不重設分頁
+                    }
+                    // 101
+                    $("div#rentalAllPrice").html(totalPrice);
+                })
+                .catch(error => console.error('Error loading cart data:', error));
+
+        }
+        getAll();
+        // console.log(cartItems);
+
+        $(document).on("click", "button.delbtn", function () {
+            console.log($(this));
+            let rentalNo = $(this).closest("tr").find("td:first").text();
+            if (confirm("確定要刪除?")) {
+
+                fetch("/backend/rentalorder/deleteFromCart?memNo=1&rentalNo=" + rentalNo, {
+                    method : "DELETE"
+                }).then(function (response) {
+                    return response.text();
+                }).then(function (data) {
+                    if (data === "ok") {
+                        alert("刪除成功");
+                        getAll();
+                    }
+                });
+
+            }
+
+        });
+
+
+        // $("select[name='rPayMethod']").change(function () {
+        //
+        //     if ($(this).val() === "2") {
+        //         $("input[name='memCard']").attr("disabled", "disabled");
+        //     } else {
+        //         $("input[name='memCard']").removeAttr("disabled");
+        //     }
+        //
+        // });
+
+
+
+        $(document).on("click", "button.create", function () {
+
+            var formData = {
+                memNo: $('input[name="memNo"]').val(),
+                rentalByrName: $('input[name="rentalByrName"]').val(),
+                rentalByrPhone: $('input[name="rentalByrPhone"]').val(),
+                rentalByrEmail: $('input[name="rentalByrEmail"]').val(),
+                rentalRcvName: $('input[name="rentalRcvName"]').val(),
+                rentalRcvPhone: $('input[name="rentalRcvPhone"]').val(),
+                rentalTakeMethod: $('select[name="rentalTakeMethod"]').val(),
+                rentalAddr: $('input[name="rentalAddr"]').val(),
+                rentalPayMethod: $('select[name="rentalPayMethod"]').val(),
+                rentalDate: $('input[name="rentalDate"]').val(),
+                rentSet: $('select[name="rentSet"]').val(),
+                rentalAllPrice: $('#rentalAllPrice').text(),
+                rentalAllDepPrice: $('#rentalAllDepPrice').text(),
+                buyItems: items
+            };
+
+            console.log("Sending FormData: ", formData);  // 顯示原始數據
+            console.log("JSON String of FormData: ", JSON.stringify(formData));
+
+            fetch("/backend/rentalorder/createOrder", {
+                method : "POST",
+                headers : {
+                    "Content-Type" : "application/json"
+                },
+                body : JSON.stringify(formData)
+            }).then(function (response) {
+                return response.text();
+            }).then(function (redirectUrl) {
+                window.location.href = redirectUrl;
+            });
+
+
+        });
+
+
+
+
+
+    });
+
+
+
+
+</script>
+
+
+
+
+</body>
+</html>

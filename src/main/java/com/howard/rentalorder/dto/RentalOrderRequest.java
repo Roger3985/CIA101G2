@@ -1,74 +1,63 @@
-package com.Cia101G2.howard.rentalorder.entity;
+package com.Cia101G2.howard.rentalorder.dto;
 
-import com.Cia101G2.howard.rentalorderdetails.entity.RentalOrderDetails;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.howard.CustomTimestampDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Set;
+import java.util.List;
 
-@Entity
-@Table(name = "rentalorder")
-public class RentalOrder implements Serializable {
+public class RentalOrderRequest {
 
-    public RentalOrder() {
-
-    }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "rentalordno", updatable = false)
-    private Integer rentalOrdNo; // -> 租借品訂單編號
-    @ManyToOne
-    @JsonManagedReference
-    @JoinColumn(name = "memno", referencedColumnName = "memno")
-    private Member member;
-    @Column(name = "rentalbyrname")
+    private Integer rentalOrdNo; // -> 租借訂單編號
+    @NotNull
+    private Integer memNo; // -> 會員編號
+    @NotBlank
     private String rentalByrName; // -> 訂購人姓名
-    @Column(name = "rentalbyrphone")
+    @NotBlank
     private String rentalByrPhone; // -> 訂購人手機號碼
-    @Column(name = "rentalbyremail")
+    @NotBlank
+    @Email
     private String rentalByrEmail; // -> 訂購人Email
-    @Column(name = "rentalrcvname")
     private String rentalRcvName; // -> 收件人姓名
-    @Column(name = "rentalrcvphone")
     private String rentalRcvPhone; // -> 收件人手機號碼
-    @Column(name = "rentaltakemethod")
+    @NotNull
     private byte rentalTakeMethod; // -> 取貨方式
-    @Column(name = "rentaladdr")
     private String rentalAddr; // -> 宅配住址
-    @Column(name = "rentalpaymethod")
+    @NotNull
     private byte rentalPayMethod; // -> 付款方式
-    @Column(name = "rentalallprice")
+    @NotNull
     private BigDecimal rentalAllPrice; // -> 訂單總金額
-    @Column(name = "rentalalldepprice")
+    @NotNull
     private BigDecimal rentalAllDepPrice; // -> 押金總金額
-    @Column(name = "rentalordtime")
     private Timestamp rentalOrdTime; // -> 下單時間
-    @Column(name = "rentaldate")
-    private Timestamp rentalDate; // -> 預計租借日期
-    @Column(name = "rentalbackdate")
-    private Timestamp rentalBackDate; // -> 預計歸還日期
-    @Column(name = "rentalrealbackdate")
-    private Timestamp rentalRealBackDate; // -> 實際歸還日期
-    @Column(name = "rentalpaystat")
-    private byte rentalPayStat; // -> 付款狀態
-    @Column(name = "rentalordstat")
-    private byte rentalOrdStat; // -> 訂單狀態
-    @Column(name = "rtnstat")
-    private byte rtnStat; // -> 歸還狀態
-    @Column(name = "rtnremark")
-    private String rtnRemark; // -> 歸還註記
-    @Column(name = "rtncompensation")
-    private BigDecimal rtnCompensation; // -> 賠償金額
-    @JsonBackReference
-    @OneToMany(mappedBy = "rentalOrder", cascade = CascadeType.ALL)
-    private Set<RentalOrderDetails> rentalOrderDetailses;
 
-/*----------------------getter、setter--------------------------*/
+    @JsonDeserialize(using = CustomTimestampDeserializer.class)
+    private Timestamp rentalDate; // -> 預計租借日期
+    private Byte rentSet; // -> 租借方案
+    private Timestamp rentalBackDate; // -> 預計歸還日期
+    private Timestamp rentalRealBackDate; // -> 實際歸還日期
+
+    private byte rentalPayStat; // -> 付款狀態
+
+    private byte rentalOrdStat; // -> 訂單狀態
+
+    private byte rtnStat; // -> 歸還狀態
+    private String rtnRemark; // -> 歸還註記
+    private BigDecimal rtnCompensation; // -> 賠償金額
+
+    @NotEmpty
+    private List<String> buyItems; // -> 購買明細
+
+
+
+    /*--------------------------getter、setter-----------------------------*/
+
+
 
     public Integer getrentalOrdNo() {
         return rentalOrdNo;
@@ -76,6 +65,14 @@ public class RentalOrder implements Serializable {
 
     public void setrentalOrdNo(Integer rentalOrdNo) {
         this.rentalOrdNo = rentalOrdNo;
+    }
+
+    public Integer getMemNo() {
+        return memNo;
+    }
+
+    public void setMemNo(Integer memNo) {
+        this.memNo = memNo;
     }
 
     public String getrentalByrName() {
@@ -230,52 +227,20 @@ public class RentalOrder implements Serializable {
         this.rtnCompensation = rtnCompensation;
     }
 
-    /*--------------------------聯合映射用的 getter、setter( rentalorder 是主表)------------------------------*/
-    public Set<RentalOrderDetails> getRentalOrderDetailses() {
-        return rentalOrderDetailses;
+    public List<String> getBuyItems() {
+        return buyItems;
     }
 
-    public void setRentalOrderDetailses(Set<RentalOrderDetails> rentalOrderDetailses) {
-        this.rentalOrderDetailses = rentalOrderDetailses;
+    public void setBuyItems(List<String> buyItems) {
+        this.buyItems = buyItems;
     }
 
-/*--------------------------聯合映射用的 getter、setter( member 是主表)------------------------------*/
-    public Member getMember() {
-        return this.member;
+    public Byte getRentSet() {
+        return rentSet;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
-    }
-
-
-    @Override
-    public String toString() {
-        return "RentalOrderVo_ORM{" +
-                "rentalOrdNo=" + rentalOrdNo +
-                ", memNo=" + member.getMemNo() +
-                ", rentalByrName='" + rentalByrName + '\'' +
-                ", rentalByrPhone='" + rentalByrPhone + '\'' +
-                ", rentalByrEmail='" + rentalByrEmail + '\'' +
-                ", rentalRcvName='" + rentalRcvName + '\'' +
-                ", rentalRcvPhone='" + rentalRcvPhone + '\'' +
-                ", rentalTakeMethod=" + rentalTakeMethod +
-                ", rentalAddr='" + rentalAddr + '\'' +
-                ", rentalPayMethod=" + rentalPayMethod +
-                ", rentalAllPrice=" + rentalAllPrice +
-                ", rentalAllDepPrice=" + rentalAllDepPrice +
-                ", rentalOrdTime=" + rentalOrdTime +
-                ", rentalDate=" + rentalDate +
-                ", rentalBackDate=" + rentalBackDate +
-                ", rentalRealBackDate=" + rentalRealBackDate +
-                ", rentalPayStat=" + rentalPayStat +
-                ", rentalOrdStat=" + rentalOrdStat +
-                ", rtnStat=" + rtnStat +
-                ", rtnRemark='" + rtnRemark + '\'' +
-                ", rtnCompensation=" + rtnCompensation +
-                ", rentalOrderDetailses=" + rentalOrderDetailses +
-                '}';
-
+    public void setRentSet(Byte rentSet) {
+        this.rentSet = rentSet;
     }
 
 }
