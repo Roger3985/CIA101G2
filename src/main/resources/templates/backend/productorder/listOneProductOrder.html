@@ -1,0 +1,100 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>員工資料 - listOneEmp.html</title>
+
+
+    <style type="text/css">
+
+        span {
+            display: inline-block;
+            width: 150px;
+            text-align: left;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
+    <div align="center"> <h2>商品訂單資料 - listOneEmp.html</h2>
+        <h3><a class="navbar-brand" th:href="@{/backend/productorder/selectProductOrder}"><img th:src="@{/images/back1.gif}">回查詢頁<label th:text="${success}"></label></a></h3></div>
+</nav>
+
+<div align="center" th:fragment="listOneEmp-div"> <!-- 此div被select_page.html第158行insert用 -->
+    <h3><span>查詢結果 :</span></h3>
+    <div><span>商品訂單編號:</span><span th:text="${productOrder.productOrdNo}"></span></div><br/>
+    <div><span>會員編號:</span><span th:if="${productOrder.member != null}" th:text="${productOrder.member.memNo}"></span></div><br/>
+    <div><span>訂購人姓名:</span><span th:text="${productOrder.productByrName}"></span></div><br/>
+    <div><span>訂購人手機號碼:</span><span th:text="${productOrder.productByrPhone}"></span></div><br/>
+    <div><span>訂購人Email:</span><span th:text="${productOrder.productByrEmail}"></span></div><br/>
+    <div><span>收件人姓名:</span><span th:text="${productOrder.productRcvName}"></span></div><br/>
+    <div><span>收件人手機號碼:</span><span th:text="${productOrder.productRcvPhone}"></span></div><br/>
+    <div>
+    <span>取貨方式:</span>
+    <span th:if="${productOrder.productTakeMethod == 1}">店取</span>
+    <span th:if="${productOrder.productTakeMethod == 2}">宅配</span>
+    <span th:if="${productOrder.productTakeMethod == 3}">超商取貨</span>
+    </div>
+    <br/>
+    <div>
+    <span>宅配住址:</span><span th:text="${productOrder.productAddr}"></span>
+</div>
+    <br/>
+    <div>
+    <span>付款方式:</span>
+    <span th:if="${productOrder.productPayMethod == 1}">綠界</span>
+    <span th:if="${productOrder.productPayMethod == 2}">現場付款</span>
+    </div>
+    <br/>
+    <div>
+    <span>訂單總金額:</span><span th:text="${productOrder.productAllPrice}"></span>
+    </div>
+    <br/>
+    <div>
+        <span>優惠券編號:</span>
+        <span th:unless="${productOrder.coupon.coupNo == 1}" th:text="${productOrder.coupon.coupNo}"></span>
+        <span th:if="${productOrder.coupon.coupNo == 1}">沒有使用優惠券</span>
+    </div>
+   <br/>
+    <div><span>優惠券折價總和:</span><span th:text="${productOrder.productDisc}"></span> </div>
+    <br/>
+        <div><span>訂單實付金額:</span><span th:text="${productOrder.productRealPrice}"></span> </div>
+    <br/>
+            <div><span>下單時間:</span><span th:text="${productOrder.productOrdTime}"></span> </div>
+    <br/>
+    <div>
+        <span>訂單狀態:</span>
+        <span th:if="${productOrder.productOrdStat == 0}">訂單取消</span>
+        <span th:if="${productOrder.productOrdStat == 10}">揀貨中</span>
+        <span th:if="${productOrder.productOrdStat == 20}">配送中</span>
+        <span th:if="${productOrder.productOrdStat == 30}">等待取貨</span>
+        <span th:if="${productOrder.productOrdStat == 40}">訂單成立</span>
+        <span th:if="${productOrder.productOrdStat == 50}">訂單完成</span>
+        <span th:if="${productOrder.productOrdStat == 81}">申請換貨</span>
+        <span th:if="${productOrder.productOrdStat == 82}">換貨中</span>
+        <span th:if="${productOrder.productOrdStat == 83}">申請退貨退款</span>
+        <span th:if="${productOrder.productOrdStat == 84}">退款中</span>
+        </div>
+    <br/>
+    <div>
+        <span>付款狀態：</span>
+        <span th:if="${productOrder.productStat == 0}">未付款</span>
+        <span th:if="${productOrder.productStat == 1}">已付款</span>
+    </div>
+
+
+</div>
+</body>
+</html>
