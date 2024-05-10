@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員管理</title>
+    <link rel="stylesheet" th:href="@{/css/backend/member/try.css}" />
+    <link rel="stylesheet" th:href="@{/css/backend/member/try2.css}" />
+    <link th:href="@{/css/backend/index/styles.css}" rel="stylesheet" />
+    <link th:href="@{/css/backend/index/index.css}" rel="stylesheet" />
+    <title>會員訊息通知</title>
+    <style type="text/css">
+        table {
+            background-color: white;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        table, th, td {
+            border: 1px solid #CCCCFF;
+        }
+        th, td {
+            padding: 5px;
+            text-align: center;
+            width: 100px;
+        }
+
+        h1 {
+            text-align: center;
+            color: red;
+        }
+        main {
+            margin-top: 50px;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2em;
+            border-radius: 10px;
+            width: 80%;
+            color: #fff;
+            background-color: #5bc0de;
+            padding: 20px;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.9);
+        }
+
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 以下為table分頁用 */
+        #pageStyle {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border: 1px solid #CCC;
+            line-height: 32px;
+            text-align: center;
+            color: #999;
+            margin-top: 20px;
+            text-decoration: none;
+        }
+        #pageStyle:hover {
+            background-color: #CCC;
+        }
+        #pageStyle .active {
+            background-color: #0CF;
+            color: #ffffff;
+        }
+        main{
+            margin-top: 30px;
+            padding: 50px 20px;
+        }
+
+    </style>
+</head>
+
+<body>
+<main>
+    <h1>最新公告管理</h1>
+    <table id="example" class="display" style="width: 100%">
+        <thead>
+            <tr>
+                <th>會員通知編號</th>
+                <th>會員編號</th>
+                <th>通知內容</th>
+                <th>發送時間</th>
+                <th>讀取狀態</th>
+                <th>修改</th>
+            </tr>
+        </thead>
+        <tbody>
+            <th:block th:each="notice : ${noticeListData}">
+                <tr>
+                    <td th:text="${notice.motNo}"></td>
+                    <td th:text="${notice.member.memNo}"></td>
+                    <td th:text="${notice.notContent}"></td>
+                    <td th:text="${notice.notTime}"></td>
+                    <td>
+                        <span th:if="${notice.notStat == 0}" th:text="未讀"></span>
+                        <span th:if="${notice.notStat == 1}" th:text="已讀"></span>
+                    </td>
+                    <td>
+                        <form method="post" th:action="@{updateNotice}">
+                            <input type="hidden" name="noticeNo" th:value="${notice.motNo}">
+                            <input type="submit" value="修改">
+                        </form>
+                    </td>
+                </tr>
+            </th:block>
+        </tbody>
+    </table>
+
+    <script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
+    <script th:src="@{/js/backend/member/the.js}"></script>
+    <script th:src="@{/js/backend/member/the2.js}"></script>
+    <script>
+        let table = new DataTable("#example");
+    </script>
+</main>
+
+</body>
+</html>

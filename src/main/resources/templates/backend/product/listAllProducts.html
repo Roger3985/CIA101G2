@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{backend/component/plugin/backendplugin.html :: css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Custom styles for this page -->
+    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
+
+</head>
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>商品編號</th>
+                                    <th>商品類別編號</th>
+                                    <th>商品名稱</th>
+                                    <th>商品資訊</th>
+                                    <th>尺寸</th>
+                                    <th>顏色</th>
+                                    <th>商品單價</th>
+                                    <th>商品狀態</th>
+                                    <th>商品已售出數量</th>
+                                    <th>評價總人數</th>
+                                    <th>評價總星數</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <th:block th:each="product : ${productList}">
+                                    <tr>
+                                        <td th:text="${product.productNo}"></td>
+                                        <td th:text="${product.productCategory.productCatNo}"></td>
+                                        <td th:text="${product.productName}"></td>
+                                        <td th:text="${product.productInfo}"></td>
+                                        <td th:text="${product.productSize}"></td>
+                                        <td th:text="${product.productColor}"></td>
+                                        <td th:text="${product.productPrice}"></td>
+                                        <td>
+                                            <span th:if="${product.productStat == 0}" th:text="上架"></span>
+                                            <span th:if="${product.productStat == 1}" th:text="下架"></span>
+                                        </td>
+                                        <td th:text="${product.productSalQty}"></td>
+                                        <td th:text="${product.productComPeople}"></td>
+                                        <td th:text="${product.productComScore}"></td>
+                                        <td>
+                                            <form method="post" th:action="@{updateProduct}">
+                                                <button type="submit">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                    <input type="hidden" name="productNo" value="${product.productNo}">
+                                                    <input type="hidden" name="action" value="getOne_For_Update">
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="backend/component/bottom :: bottom"></footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
+
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+<!-- Page level plugins -->
+<script th:src="@{/backend/vendor/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+<!-- Page level custom scripts -->
+<script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
+
+</body>
+</html>

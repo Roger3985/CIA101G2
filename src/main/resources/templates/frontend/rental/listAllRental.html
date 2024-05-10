@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link th:href="@{/css/bootstrap/bootstrap-5.3.3.min.css}" rel="stylesheet" />
+    <script th:src="@{/js/bootstrap/bootstrap-5.3.3.bundle.min.js}"></script>
+    <style>
+        .shop__product__option__right{
+            float:right
+        }
+    </style>
+</head>
+<body style="padding-top: 100px;">
+<!--  導覽  -->
+<header th:replace="frontend/component/nav :: nav"></header>
+<!--&lt;!&ndash;  輪播  &ndash;&gt;-->
+<!--<div th:replace="frontend/component/carousel :: carousel"></div>-->
+<!--&lt;!&ndash;<main>Hello World</main>&ndash;&gt;-->
+
+<!-- 自行新增--------------------------------------------------------------------------------------------------------->
+<section class="shop spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="shop__sidebar">
+                    <div class="shop__sidebar__search">
+                        <form action="#">
+                            <br><br>
+                            <input type="text" placeholder="Search...">
+                            <button type="submit"><img th:src="@{/icons/frontend/rental/icon/search.png}" alt=""></a></span></button>
+                        </form>
+                    </div>
+                    <br>
+                    <div class="shop__sidebar__accordion">
+                        <div class="accordion" id="accordionExample">
+                            <div class="card">
+                                <div class="card-heading">
+                                <div class="card"><!-- 租借品類別篩選 -------------->
+                                    <div class="card-heading">
+                                        <!-- 下拉式選單 -->
+                                        <a class="nav-link dropdown-toggle" th:href="@{listAllRental}" data-bs-toggle="dropdown">租借品</a>
+                                        <div class="nav-item dropdown">
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" th:href="@{listAllRental}">所有租借品 (50)</a><!-- 所有租借品listAll連結 -->
+                                                <a class="dropdown-item" th:href="@{/}">西裝 (20)</a><!-- 西裝類別list one連結 -->
+                                                <a class="dropdown-item" th:href="@{/}">婚紗 (20)</a><!-- 婚紗類別list one連結 -->
+                                                <a class="dropdown-item" th:href="@{/}">禮服 (20)</a><!-- 禮服類別list one連結 -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--                                    租借品類別篩選 結束----------->
+                                <div class="card"><!--                   押金金額 ------------------ -->
+                                    <div class="card-heading">
+                                        <!-- 下拉式選單 -->
+                                        <a class="nav-link dropdown-toggle" th:href="@{/listAllRental}" data-bs-toggle="dropdown">金額</a>
+                                        <div class="nav-item dropdown">
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="#">$2000</a><!-- 商品類別list one連結 -->
+                                                <a class="dropdown-item" href="#">$4000</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--                   押金 結束位置 ------------------------------------------------------- -->
+                                <!--                   尺寸 --------------------------------------------------------- -->
+                                <div class="card">
+                                    <div class="card-heading">
+                                        <!-- 下拉式選單 -->
+                                        <a class="nav-link dropdown-toggle" th:href="@{/listAllRental}" data-bs-toggle="dropdown">Size</a>
+                                        <div class="nav-item dropdown">
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" th:href="@{/listAllRental/{rentalSize}}">S</a><!-- 商品類別list one連結 -->
+                                                <a class="dropdown-item" href="#">M</a><!-- 商品類別list one連結 -->
+                                                <a class="dropdown-item" href="#">XL</a><!-- 商品類別list one連結 -->
+                                            </div>
+<!--                                            <form method="post" th:action="@{getOne_For_Display}">-->
+<!--                                                <select name="rentalSize" id="rentalSize">-->
+<!--                                                    <option>請選擇</option>-->
+<!--                                                    <option class="dropdown-item" value="1" th:selected="${rental.rentalSize == 1}">S</option>-->
+<!--                                                    <option class="dropdown-item" value="2" th:selected="${rental.rentalSize == 2}">M</option>-->
+<!--                                                    <option class="dropdown-item" value="3" th:selected="${rental.rentalSize == 3}">L</option>                                                </select>-->
+<!--                                            </form>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!--col-lg-3-->
+            <div class="col-lg-9">
+                <div class="shop__product__option">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="shop__product__option__left">
+<!--                                <p>可輸入文字</p>-->
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="shop__product__option__right">
+                                <br>
+                                <p>選擇排序:</p>
+                                <select>
+                                    <option value="0">最新</option>
+                                    <option value="1">最熱門</option>
+                                    <option value="2" th:action="@{sortingToCheap}">價格由低到高</option>
+                                    <option value="3" th:action="@{sortingToExpensive}">價格由高到低</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div><br>
+                <div class="row">
+                    <!--商品1-->
+                    <div class="col-lg-4 col-md-6 col-sm-6" th:each="rental : ${rentalListData}" th:object="${rental}">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"><img th:src="@{/icons/frontend/rental/suit1.jpg}" alt="" th:width="200">
+                                <ul class="product__hover">
+                                    <li><a href="#"><img th:src="@{/icons/frontend/rental/icon/heart.png}" alt=""></a></li><!--添加我的最愛-->
+                                </ul>
+                            </div>
+                            <div class="product__item__text"> <!--商品資訊，個別顯示區域-->
+                                <h6 th:text="${rental.rentalName}"></h6>
+                                <a href="#" class="add-cart"> + 加入購物車</a>
+                                <h5 th:text="'$' + ${rental.rentalPrice}"></h5>
+                            </div>
+                        </div>
+                    <!--商品2-->
+<!--                    <div class="col-lg-4 col-md-6 col-sm-6" th:each="rental : ${rentalListData}" th:object="${rental}">-->
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"><img th:src="@{/icons/frontend/rental/wedding1.jpg}" alt="" th:width="200">
+                                <ul class="product__hover">
+                                    <li><a href="#"><img th:src="@{/icons/frontend/rental/icon/heart.png}" alt=""></a></li><!--添加我的最愛-->
+                                </ul>
+                            </div>
+                            <div class="product__item__text"> <!--商品資訊，個別顯示區域-->
+                                <h6 th:text="${rental.rentalName}"></h6>
+                                <a href="#" class="add-cart"> + 加入購物車</a>
+                                <h5 th:text="'$' + ${rental.rentalPrice}"></h5>
+                            </div>
+                        </div>
+                    <!--商品3-->
+<!--                    <div class="col-lg-4 col-md-6 col-sm-6" th:each="rental : ${rentalListData}" th:object="${rental}">-->
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"><img th:src="@{/icons/frontend/rental/gown1.jpg}" alt="" th:width="200">
+                                <ul class="product__hover">
+                                    <li><a href="#"><img th:src="@{/icons/frontend/rental/icon/heart.png}" alt=""></a></li><!--添加我的最愛-->
+                                </ul>
+                            </div>
+                            <div class="product__item__text"> <!--商品資訊，個別顯示區域-->
+                                <h6 th:text="${rental.rentalName}"></h6>
+                                <a href="#" class="add-cart"> + 加入購物車</a>
+                                <h5 th:text="'$' + ${rental.rentalPrice}"></h5>
+                            </div>
+                        </div>
+                    <!--結束-->
+                    <!--商品4-->
+<!--                    <div class="col-lg-4 col-md-6 col-sm-6" th:each="rental : ${rentalListData}" th:object="${rental}">-->
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"><img th:src="@{/icons/frontend/rental/1.jpg}" alt="" th:width="200">
+                                <ul class="product__hover">
+                                    <li><a href="#"><img th:src="@{/icons/frontend/rental/icon/heart.png}" alt=""></a></li><!--添加我的最愛-->
+                                </ul>
+                            </div>
+                            <div class="product__item__text"> <!--商品資訊，個別顯示區域-->
+                                <h6 th:text="${rental.rentalName}"></h6>
+                                <a href="#" class="add-cart"> + 加入購物車</a>
+                                <h5 th:text="'$' + ${rental.rentalPrice}"></h5>
+                            </div>
+                        </div>
+                    <!--結束-->
+                    <!--商品5-->
+<!--                    <div class="col-lg-4 col-md-6 col-sm-6" th:each="rental : ${rentalListData}" th:object="${rental}">-->
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"><img th:src="@{/icons/frontend/rental/2.jpg}" alt="" th:width="200">
+                                <ul class="product__hover">
+                                    <li><a href="#"><img th:src="@{/icons/frontend/rental/icon/heart.png}" alt=""></a></li><!--添加我的最愛-->
+                                </ul>
+                            </div>
+                            <div class="product__item__text"> <!--商品資訊，個別顯示區域-->
+                                <h6 th:text="${rental.rentalName}"></h6>
+                                <a href="#" class="add-cart"> + 加入購物車</a>
+                                <h5 th:text="'$' + ${rental.rentalPrice}"></h5>
+                            </div>
+                        </div>
+                    <!--結束-->
+                    <!--商品6-->
+<!--                    <div class="col-lg-4 col-md-6 col-sm-6" th:each="rental : ${rentalListData}" th:object="${rental}">-->
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"><img th:src="@{/icons/frontend/rental/3.jpg}" alt="" th:width="200">
+                                <ul class="product__hover">
+                                    <li><a href="#"><img th:src="@{/icons/frontend/rental/icon/heart.png}" alt=""></a></li><!--添加我的最愛-->
+                                </ul>
+                            </div>
+                            <div class="product__item__text"> <!--商品資訊，個別顯示區域-->
+                                <h6 th:text="${rental.rentalName}"></h6>
+                                <a href="#" class="add-cart"> + 加入購物車</a>
+                                <h5 th:text="'$' + ${rental.rentalPrice}"></h5>
+                            </div>
+                        </div>
+                    <!--結束-->
+                    <!--商品7-->
+<!--                    <div class="col-lg-4 col-md-6 col-sm-6" th:each="rental : ${rentalListData}" th:object="${rental}">-->
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"><img th:src="@{/icons/frontend/rental/4.jpg}" alt="" th:width="200">
+                                <ul class="product__hover">
+                                    <li><a href="#"><img th:src="@{/icons/frontend/rental/icon/heart.png}" alt=""></a></li><!--添加我的最愛-->
+                                </ul>
+                            </div>
+                            <div class="product__item__text"> <!--商品資訊，個別顯示區域-->
+                                <h6 th:text="${rental.rentalName}"></h6>
+                                <a href="#" class="add-cart"> + 加入購物車</a>
+                                <h5 th:text="'$' + ${rental.rentalPrice}"></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <!--結束-->
+                    <!--商品8-->
+<!--                    <div class="col-lg-4 col-md-6 col-sm-6" th:each="rental : ${rentalListData}" th:object="${rental}">-->
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"><img th:src="@{/icons/frontend/rental/5.jpg}" alt="" th:width="200">
+                                <ul class="product__hover">
+                                    <li><a href="#"><img th:src="@{/icons/frontend/rental/icon/heart.png}" alt=""></a></li><!--添加我的最愛-->
+                                </ul>
+                            </div>
+                            <div class="product__item__text"> <!--商品資訊，個別顯示區域-->
+                                <h6 th:text="${rental.rentalName}"></h6>
+                                <a href="#" class="add-cart"> + 加入購物車</a>
+                                <h5 th:text="'$' + ${rental.rentalPrice}"></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <!--結束-->
+                    <!--商品9-->
+<!--                    <div class="col-lg-4 col-md-6 col-sm-6" th:each="rental : ${rentalListData}" th:object="${rental}">-->
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"><img th:src="@{/icons/frontend/rental/banner-1.jpg}" alt="" th:width="200">
+                                <ul class="product__hover">
+                                    <li><a href="#"><img th:src="@{/icons/frontend/rental/icon/heart.png}" alt=""></a></li><!--添加我的最愛-->
+                                </ul>
+                            </div>
+                            <div class="product__item__text"> <!--商品資訊，個別顯示區域-->
+                                <h6 th:text="${rental.rentalName}"></h6>
+                                <a href="#" class="add-cart"> + 加入購物車</a>
+                                <h5 th:text="'$' + ${rental.rentalPrice}"></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <!--結束-->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 自行新增--------------------------------------------------------------------------------------------------------->
+
+<!--&lt;!&ndash;  頁尾  &ndash;&gt;-->
+<!--<footer th:replace="frontend/component/bottom :: bottom"></footer>-->
+</body>
+</html>

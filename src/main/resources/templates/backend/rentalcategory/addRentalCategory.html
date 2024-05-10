@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+    <style>
+        *{
+            font-size: 12px; /* 調整字體大小 */
+        }
+        *.error {
+            font-size: 12px; /* 調整字體大小 */
+            color:red;
+        }
+    </style>
+    <!-- Custom styles for this page -->
+</head>
+
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">新增租借品類別資料</h6>
+                    </div>
+                    <div class="a">
+                        <ul>
+                            <form method="post" th:action="@{addRentalCategory}" th:object="${rentalCategory}">
+                                <li>
+                                    輸入租借品類別名稱:
+                                    <input type="text" th:field="*{rentalCatName}" onclick="hideContent('rentalCatName.errors');" /><br/>
+                                    <span th:if="${#fields.hasErrors('rentalCatName')}" th:errors="*{rentalCatName}" class="error" id="rentalCatName.errors">類別名稱錯誤</span>
+                                </li><br>
+                                <li>
+                                    輸入租借品庫存數量:
+                                    <input type="text" th:field="*{rentalStockQty}" onclick="hideContent('rentalStockQty.errors');" /><br/>
+                                    <span  th:if="${#fields.hasErrors('rentalStockQty')}" th:errors="*{rentalStockQty}" class="error" id="rentalStockQty.errors">庫存數量錯誤</span>
+                                </li><br>
+                                <li>
+                                    輸入租借品已租借數量:
+                                    <input type="text" th:field="*{rentalRentedQty}" onclick="hideContent('rentalRentedQty.errors');" /><br/>
+                                    <span  th:if="${#fields.hasErrors('rentalRentedQty')}" th:errors="*{rentalRentedQty}" class="error" id="rentalRentedQty.errors">已租借數量錯誤</span>
+                                </li><br>
+                                <li>
+                                    輸入押金:
+                                    <input type="text" th:field="*{rentalDesPrice}" onclick="hideContent('rentalDesPrice.errors');" /><br/>
+                                    <span  th:if="${#fields.hasErrors('rentalDesPrice')}" th:errors="*{rentalDesPrice}" class="error" id="rentalDesPrice.errors">押金錯誤</span>
+                                </li><br><br>
+                                <input type="submit" value="送出"><!-- 送出成功跳轉listAll -->
+                            </form>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer th:replace="backend/component/bottom :: bottom"></footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+</div>
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
+
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+<script th:src="@{/static/jquery/jquery-3.7.1.min.js}"></script>
+<script>
+    function addRentalCategory(){
+        //-----------打包資料(start)
+        let rentalCatData = {
+            rentalCatName: $('#rentalCatName').val(),
+            rentalStockQty:parseInt($('#rentalStockQty').value()),
+            rentalRentedQty:parseInt($('#rentalRentedQty').value()),
+            rentalDesPrice:parseFloat($('#rentalDesPrice').value()),
+            action:"addRentalCategory"
+        }
+
+        $.ajax({
+            url:"addRentalCategory",
+            type:"POST",
+            data:JSON.stringify(rentalCatData),
+            contentType:"application/json",
+            success:function (data){
+                alert("請求成功")
+            },
+            error:function (data) {
+                alert("請求失敗")
+            }
+        })
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="/css/backend/notice/try.css">
+<link rel="stylesheet" href="/css/backend/notice/try2.css">
+<link th:href="@{/css/backend/notice/styles.css}" rel="stylesheet" />
+<link th:href="@{/css/backend/notice/index.css}" rel="stylesheet" />
+<style>
+ 	h1 {
+		text-align: center;
+      	color: red;
+		}
+</style>
+<title>Insert title here</title>
+<script th:src="@{/js/jquery-1.11.3.min.js}"></script>
+</head>   
+<head>
+<style type="text/css">
+    table {
+      background-color: white;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+    table, th, td {
+      border: 1px solid #CCCCFF;
+    }
+    th, td {
+      padding: 5px;
+      text-align: center;
+      width: 100px;
+    }
+    .center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* 以下為table分頁用 */
+    #pageStyle {
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        border: 1px solid #CCC;
+        line-height: 32px;
+        text-align: center;
+        color: #999;
+        margin-top: 20px;
+        text-decoration: none;
+    }
+    #pageStyle:hover {
+        background-color: #CCC;
+    }
+    #pageStyle .active {
+        background-color: #0CF;
+        color: #ffffff;
+    }
+    main{
+   margin-top: 30px;
+   padding: 50px 20px;
+}
+    
+</style> 
+</head>
+<body>
+   <div th:replace="BackStage/HTMLTool/nav :: nav"></div>
+<main>
+    <h1 style="color:#87CEEB; font-family: Arial; font-size: 25px; font-weight: bold;line-height: 1.2;">最新公告管理</h1>
+    <table id="example" class="display" style="width: 100%">
+        <thead>
+            <tr>
+                <th>最新公告編號</th>
+                <th>員工編號</th>
+                <th>最新公告時間</th>
+                <th>最新公告內容</th>
+                <th>最新公告狀態</th>
+                <th>修改</th>
+            </tr>
+        </thead>
+        <tbody>
+            <th:block th:each="notice : ${noticeListData}">
+    
+                <tr>
+                    <td th:text="${notice.noticeNo}"></td>
+                    <td th:text="${notice.empNo}"></td>
+                    <td th:text="${#dates.format(notice.noticeTime, 'yyyy/MM/dd HH:mm:ss')}"></td>
+                    <td th:text="${notice.noticeContent}"></td>
+                    <td th:text="${notice.noticeStatus}">
+                        <span th:if="${notice.noticeStatus == 0}" th:text="下架"></span>
+                        <span th:if="${notice.noticeStatus == 1}" th:text="上架"></span>
+                    </td>
+                    <td>
+                        <form method="post" th:action="@{updateNotice}">
+                            <input type="hidden" name="noticeNo" th:value="${notice.noticeNo}">
+                            <input type="submit" value="修改">
+                        </form>
+                    </td>
+                </tr>
+            </th:block>
+        </tbody>
+    </table>
+   
+ </main>
+    
+</body>
+</html>

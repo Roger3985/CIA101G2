@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <link rel="stylesheet" th:href="@{css/frontend/member/register.css}" />
+    <style type="text/css">
+        b {
+            color: red;
+        }
+
+        .error {
+            color: red;
+            font-style: italic;
+        }
+
+        button.goBack {
+            height: 55px;
+            width: 100%;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 400;
+            margin-top: 30px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: rgb(130, 106, 251);
+        }
+
+        button.goBack:hover {
+            background: rgb(88, 56, 250);
+        }
+    </style>
+    <title>歡迎加入41L</title>
+</head>
+
+<body>
+<section class="container">
+    <header style="font-size: 30px; font-weight: bolder;">註冊會員</header>
+    <form class="form" method="post" th:action="@{memadd}" th:object="${member}" enctype="multipart/form-data">
+        <div class="input-box">
+            <label>姓名：<b>*</b></label>
+            <input type="text" placeholder="請輸入姓名" th:field="*{mName}" />
+            <span th:if="${#fields.hasErrors('mName')}" th:errors="*{mName}" class="error"></span>
+        </div>
+
+        <div class="input-box">
+            <label>會員帳號：<b>*</b></label>
+            <input type="text" placeholder="請輸入會員帳號" th:field="*{memAcc}" />
+            <span  th:if="${#fields.hasErrors('memAcc')}" th:errors="*{memAcc}" class="error" id="ename.errors"></span>
+        </div>
+
+        <div class="input-box">
+            <label>會員密碼：<b>*</b></label>
+            <input type="password" placeholder="請輸入會員密碼" th:field="*{memPwd}"/>
+            <span  th:if="${#fields.hasErrors('memPwd')}" th:errors="*{memPwd}" class="error" id="ename.errors"></span>
+        </div>
+
+        <div class="column">
+            <div class="input-box">
+                <label>手機號碼：<b>*</b></label>
+                <input type="text" placeholder="例：0912345678" th:field= "*{memMob}" />
+                <span th:if="${#fields.hasErrors('memMob')}" th:errors="*{memMob}" class="error"></span>
+            </div>
+        </div>
+
+        <div class="gender-box">
+            <h3>性別：<b>*</b></h3>
+            <div class="gender-option">
+                <div class="gender">
+                    <input type="radio" id="check-male"  th:field="*{mGender}" th:value="0"/>
+                    <label for="check-male">男性</label>
+                </div>
+                <div class="gender">
+                    <input type="radio" id="check-female"  th:field="*{mGender}" th:value="1"/>
+                    <label for="check-female">女性</label>
+                </div>
+            </div>
+        </div>
+        <span th:if="${#fields.hasErrors('mGender')}" th:errors="*{mGender}" class="error"></span>
+
+        <div class="input-box">
+            <label>信箱:<b>*</b></label>
+            <div class="email-input-container">
+                <input type="text" placeholder="請輸入信箱帳號" th:field="*{memMail}" />
+                <select th:field="*{memMail}" class="email-provider-select">
+                    <option value="@gmail.com">@gmail.com</option>
+                    <option value="@yahoo.com">@yahoo.com</option>
+                    <option value="@outlook.com">@outlook.com</option>
+                    <option value="@icloud.com">@icloud.com</option>
+                    <!-- Add more email providers as needed -->
+                </select>
+            </div>
+            <span th:if="${#fields.hasErrors('memMail')}" th:errors="*{memMail}" class="error" id="email.errors"></span>
+        </div>
+
+        <div class="input-box address">
+            <label>地址：<b>*</b></label>
+            <div class="column">
+                <div class="select-box dropdown">
+                    <select name="county" id="county_box">
+                        <option value="">選擇縣市</option>
+                    </select>
+                </div>
+                <div class="select-box dropdown">
+                    <select name="district" id="district_box">
+                        <option value="">選擇鄉鎮市區</option>
+                    </select>
+                </div>
+            </div>
+            <input type="text" placeholder="請輸入詳細地址" th:field= "*{memAdd}"/>
+            <span th:if="${#fields.hasErrors('memAdd')}" th:errors="*{memAdd}" class="error"></span>
+        </div>
+
+        <div class="input-box">
+            <label>生日:<b>*</b></label>
+            <input type="date" placeholder="請輸入生日" th:field="*{memBd}" />
+            <span th:if="${#fields.hasAnyErrors('memBd')}" th:errors="*{memBd}" class="error"></span>
+        </div>
+
+        <div class="input-box">
+            <label>信用卡號:<b>*</b></label>
+            <input type="text" placeholder="請輸入信用卡卡號" th:field="*{memCard}" />
+            <span th:if="${#fields.hasAnyErrors('memCard')}" th:errors="*{memCard}" class="error"></span>
+        </div>
+
+        <div class="input-box">
+            <div class="login-block ">
+                <form class="new_user" id="new_user" action="/users/sign_in" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="zxpIJ6ltejqq/6AhfaBOOhqSPfPJ93NHR31T6JvSkB3OsIG6XvQHzSoTKZEwB70jfPaACyISgVaP+u9BK35NCg==" />
+
+                    <div class="oauth block sm:flex w-full">
+                        <a href="/users/auth/github">
+                            <div class="oauth-btn gitbub-btn">
+                                <i class="fa fa-github fa-before"></i>
+                                <span>使用 Github 登入</span>
+                            </div>
+                        </a>          <a href="/users/auth/facebook">
+                        <div class="oauth-btn fb-btn">
+                            <i class="fa fa-facebook-square fa-before"></i>
+                            <span>使用 Facebook 登入</span>
+                        </div>
+                    </a>          <a href="/users/auth/google_oauth2">
+                        <div class="oauth-btn google-btn">
+                            <i class="icon google-icon fa-before"></i>
+                            <span class="oauth-btn-text">使用 Google 登入</span>
+                        </div>
+                    </a>
+                        <a href="/users/auth/line">
+                            <div class="oauth-btn google-btn">
+                                <i class="icon line-icon fa-before"></i>
+                                <span class="oauth-btn-text">使用 LINE 登入</span>
+                            </div>
+                        </a>
+            <input type="hidden" th:field="*{provider}" id="provider-hidden" />
+            <span th:if="${#fields.hasErrors('provider')}" th:errors="*{provider}" class="error"></span>
+        </div>
+
+
+        <button>註冊</button>
+    </form>
+    <a th:href="@{login}"><button class="goBack">返回登入</button></a>
+</section>
+
+<script th:src="@{/js/FrontEnd/mem/register.js}"></script>
+<script th:src="@{/js/BackStage/rentapp/addRentApp.js}"></script>
+</body>
+</html>
