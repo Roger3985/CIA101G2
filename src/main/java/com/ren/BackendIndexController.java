@@ -82,6 +82,7 @@ public class BackendIndexController {
                         @RequestParam String admPwd,
                         @RequestParam Byte autoLogin,
                         HttpSession session,
+                        HttpServletRequest req,
                         HttpServletResponse res,
                         ModelMap model) {
 
@@ -135,7 +136,7 @@ public class BackendIndexController {
             // 設置存活7天
             cookie.setMaxAge(604800);
             // 設置cookie的路徑為/backend，當訪問所有後台網頁時都可以獲取這個cookie
-            cookie.setPath("/backend");
+            cookie.setPath(req.getContextPath() + "/backend");
             res.addCookie(cookie);
             stiRedisTemplate.opsForValue().set(random, admNo);
             System.out.println("cookie存入");

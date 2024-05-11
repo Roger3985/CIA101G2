@@ -108,16 +108,16 @@ public class AutoLoginFilter extends HttpFilter {
     /**
      * 判斷是否有登入資訊
      * 1.從cookie裡面先尋找是否有名字為"autoLogin"的cookie
-     * 2.其值為在登入時自動生成的亂數，分別存入Cookie("autoLogin", random)、Redis資料庫(random, admNo.toString())
+     * 2.其值為在登入時自動生成的亂數，分別存入Cookie("autoLogin", random)、Redis資料庫(random, admNo)
      * 3.透過Redis的搜尋方法找到相對應的key
      *
      * @param cookie 傳入Cookie物件，並呼叫Cookie的getter方法確認使否有符合登入資訊的Cookie
      * @return 如果兩者都符合則返回true，沒有則返回false
      */
     public boolean check(Cookie cookie) {
-        return "autoLogin".equals(cookie.getName()) &&
-                !stringRedisTemplate.opsForValue()
-                        .get(cookie.getValue()).equals("");
+        return "autoLogin".equals(cookie.getName()) // 找尋名為"autoLogin"的Cookie
+                && stringRedisTemplate.opsForValue() // 以Cookie的Value確認Redis資料庫內有無存入此登入相關資料
+                .get(cookie.getValue()) != null;
     }
 
 }

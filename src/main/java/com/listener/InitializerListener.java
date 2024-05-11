@@ -9,6 +9,7 @@ import javax.servlet.ServletContextListener;
 public class InitializerListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+        // 新增用於記數在線人數
         sce.getServletContext().setAttribute("onlineUsers", 0);
     }
 
