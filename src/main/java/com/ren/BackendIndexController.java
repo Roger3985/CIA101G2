@@ -2,7 +2,7 @@ package com.ren;
 
 import com.ren.administrator.entity.Administrator;
 import com.ren.administrator.dto.LoginState;
-import com.ren.administrator.service.AdministratorServiceImpl;
+import com.ren.administrator.service.Impl.AdministratorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -27,10 +27,6 @@ import static com.ren.util.Validator.validateEmail;
 @Controller
 @RequestMapping("/backend")
 public class BackendIndexController {
-
-    @Autowired
-    @Qualifier("integerLoginState")
-    private RedisTemplate<Integer, LoginState> itlRedisTemplate;
 
     @Autowired
     @Qualifier("stringInteger")
@@ -123,7 +119,8 @@ public class BackendIndexController {
 
         // 使用Service的登入方法，更改administrator的登入狀態，並傳回登入狀態DTO，
         // 於後續存入Session做權限、登入狀態驗證
-        LoginState loginState = administratorSvc.login(administrator, session);
+        LoginState loginState = administratorSvc.login(administrator, session.getId());
+        session.setAttribute("loginState", loginState);
 
         // 確認密碼正確後，回傳登入成功訊息，並將administrator存入session
         model.addAttribute("message", "登入成功!");
@@ -142,8 +139,6 @@ public class BackendIndexController {
             System.out.println("cookie存入");
         }
 
-        // 將登入狀態放入Redis資料庫，供LoginStateFilter於每次發出請求時做登入狀態驗證
-        storeLoginstateInRedis(admNo, loginState);
         System.out.println("登入成功!!!");
 
         return "redirect:/backend/index";
@@ -162,7 +157,11 @@ public class BackendIndexController {
      */
     @GetMapping("logout")
     public String logout(HttpSession session) {
-        // 註銷session，會觸發SessionListener的登入狀態確認
+        // 獲取登入狀態物件
+        LoginState loginState = (LoginState) session.getAttribute("loginState");
+        // 執行Service的登出方法，修改資料庫內的登入狀態與刪除Redis內的登入狀態資料
+        administratorSvc.logout(loginState);
+        // 註銷session
         session.invalidate();
 
         return "redirect:/backend/login";
@@ -178,37 +177,6 @@ public class BackendIndexController {
     @GetMapping
     public String search() {
         return "";
-    }
-
-    /**
-     * 從Redis資料庫內查詢資料
-     *
-     * @param key 傳入管理員編號
-     * @return 返回登入狀態DTO
-     */
-    private LoginState getFromRedis(Integer key) {
-        return itlRedisTemplate.opsForValue().get(key);
-    }
-
-    /**
-     * 新增或修改Redis資料庫內的資料
-     *
-     * @param key 傳入管理員編號
-     * @param loginState 傳入登入狀態
-     */
-    private void storeLoginstateInRedis(Integer key, LoginState loginState) {
-        itlRedisTemplate.opsForValue().set(key, loginState);
-    }
-
-    /**
-     * 刪除Redis資料庫內的資料
-     *
-     * @param key 傳入管理員編號
-     */
-    private void deleteRedisData(Integer key) {
-        if (itlRedisTemplate.hasKey(key)) {
-            itlRedisTemplate.delete(key);
-        }
     }
 
 }

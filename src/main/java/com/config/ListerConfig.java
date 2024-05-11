@@ -1,14 +1,12 @@
 package com.config;
 
 import com.listener.InitializerListener;
-import com.listener.OnlineUsers;
+import com.listener.backend.OnlineUsers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.servlet.ServletContextListener;
-import javax.servlet.http.HttpSessionListener;
 import java.util.EventListener;
 
 /**

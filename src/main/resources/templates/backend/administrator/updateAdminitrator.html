@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>ºÞ²z­û¸ê®Æ­×§ï - update_administrator_input.jsp</title>
+<title>ï¿½Þ²zï¿½ï¿½ï¿½ï¿½Æ­×§ï¿½ - update_administrator_input.jsp</title>
 
 <style>
   table#table-1 {
@@ -49,16 +49,16 @@
 
 <table id="table-1">
 	<tr><td>
-		 <h3>ºÞ²z­û¸ê®Æ­×§ï - update_administrator_input.jsp</h3>
-		 <h4><a href="select_administrator.jsp">¦^­º­¶</a></h4>
+		 <h3>ï¿½Þ²zï¿½ï¿½ï¿½ï¿½Æ­×§ï¿½ - update_administrator_input.jsp</h3>
+		 <h4><a href="select_administrator.jsp">ï¿½^ï¿½ï¿½ï¿½ï¿½</a></h4>
 	</td></tr>
 </table>
 
-<h3>¸ê®Æ­×§ï:</h3>
+<h3>ï¿½ï¿½Æ­×§ï¿½:</h3>
 
-<%-- ¿ù»~ªí¦C --%>
+<%-- ï¿½ï¿½ï¿½~ï¿½ï¿½C --%>
 <c:if test="${not empty errorMsgs}">
-	<font style="color:red">½Ð­×¥¿¥H¤U¿ù»~:</font>
+	<font style="color:red">ï¿½Ð­×¥ï¿½ï¿½Hï¿½Uï¿½ï¿½ï¿½~:</font>
 	<ul>
 		<c:forEach var="message" items="${errorMsgs}">
 			<li style="color:red">${message}</li>
@@ -69,41 +69,41 @@
 <FORM METHOD="post" ACTION="administrator.do" name="form1">
 <table>
 	<tr>
-		<td>ºÞ²z­û½s¸¹:</td>
+		<td>ï¿½Þ²zï¿½ï¿½ï¿½sï¿½ï¿½:</td>
 		<td><input type="TEXT" name="admNo" value="<%= (administratorVO==null)? "10000001" : administratorVO.getAdmNo()%>" size="45"/></td>
 	</tr>
 	<tr>
-		<td>ºÞ²z­û±K½X:</td>
+		<td>ï¿½Þ²zï¿½ï¿½ï¿½Kï¿½X:</td>
 		<td><input type="password" name="admPwd" size="45"/></td>
 	</tr>
 	<tr>
-		<td>ºÞ²z­û¦WºÙ:</td>
-		<td><input type="TEXT" name="admName" value="<%= (administratorVO==null)? "µuµuªºÅ¨­m" : administratorVO.getAdmName()%>" size="45"/></td>
+		<td>ï¿½Þ²zï¿½ï¿½ï¿½Wï¿½ï¿½:</td>
+		<td><input type="TEXT" name="admName" value="<%= (administratorVO==null)? "ï¿½uï¿½uï¿½ï¿½Å¨ï¿½m" : administratorVO.getAdmName()%>" size="45"/></td>
 	</tr>
 	<tr>
-		<td>¤Ø¤o:</td>
+		<td>ï¿½Ø¤o:</td>
 		<td><input type="TEXT" name="admStat" value="<%= (administratorVO==null)? "1" : administratorVO.getAdmStat()%>" size="45"/></td>
 	</tr>
 	<tr>
-		<td>ÃC¦â:</td>
-		<td><input type="TEXT" name="admEmail" value="<%= (administratorVO==null)? "ÂÅ¦â" : administratorVO.getAdmEmail()%>" size="45"/></td>
+		<td>ï¿½Cï¿½ï¿½:</td>
+		<td><input type="TEXT" name="admEmail" value="<%= (administratorVO==null)? "ï¿½Å¦ï¿½" : administratorVO.getAdmEmail()%>" size="45"/></td>
 	</tr>
 	<tr>
-		<td>°Ó«~³æ»ù:</td>
+		<td>ï¿½Ó«~ï¿½ï¿½ï¿½:</td>
 		<td><input type="TEXT" name="titleNo" value="<%= (administratorVO==null)? "5000" : administratorVO.getTitleNo()%>" size="45"/></td>
 	</tr>
 	<tr>
-		<td>°Ó«~ª¬ºA:</td>
+		<td>ï¿½Ó«~ï¿½ï¿½ï¿½A:</td>
 		<td><input type="TEXT" name="admHireDate" value="<%= (administratorVO==null)? "1" : administratorVO.getAdmHireDate()%>" size="45"/></td>
 	</tr>
 	<tr>
-		<td>°Ó«~¤w°â¥X¼Æ¶q:</td>
+		<td>ï¿½Ó«~ï¿½wï¿½ï¿½Xï¿½Æ¶q:</td>
 		<td><input type="TEXT" name="admPhoto" value="<%= (administratorVO==null)? "200" : administratorVO.getAdmPhoto()%>" size="45"/></td>
 	</tr>
 
-	<jsp:useBean id="administratorSvc" scope="page" class="com.ren.administrator.service.AdministratorServiceImpl" />
+	<jsp:useBean id="administratorSvc" scope="page" class="com.ren.administrator.service.Impl.AdministratorServiceImpl" />
 	<tr>
-		<td>°Ó«~Ãþ§O½s¸¹:<font color=red><b>*</b></font></td>
+		<td>ï¿½Ó«~ï¿½ï¿½ï¿½Oï¿½sï¿½ï¿½:<font color=red><b>*</b></font></td>
 		<td><select size="1" name="admPwd">
 			<c:forEach var="administratorVO" items="${administratorSvc.all}">
 				<option value="${administratorVO.admNo}" ${(administratorVO.admNo==administratorVO.admNo)? 'selected':'' } >${administratorVO.admName}
@@ -116,7 +116,7 @@
 
 <input type="hidden" name="action" value="update">
 <input type="hidden" name="admNo" value="<%=administratorVO.getAdmNo()%>">
-<input type="submit" value="°e¥X­×§ï"></FORM>
+<input type="submit" value="ï¿½eï¿½Xï¿½×§ï¿½"></FORM>
 
 </body>
 

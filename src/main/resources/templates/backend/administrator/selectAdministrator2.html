@@ -44,7 +44,7 @@
 
 <body bgcolor='white'>
 
-<!-- ¾ÉÄý¦C -->
+<!-- ï¿½ï¿½ï¿½ï¿½ï¿½C -->
 <nav>
     <div>FallElove</div>
     <input id="hamburger" type="checkbox">
@@ -52,22 +52,22 @@
         <div class="bar"></div>
     </label>
     <ul class="menu">
-        <li><a href="<%=request.getContextPath()%>/administrator/select_administrator.jsp">ºÞ²z­û</a></li>
-        <li><a href="<%=request.getContextPath()%>/admauthority/select_admAuthority.jsp">ºÞ²z­ûÅv­­</a></li>
-        <li><a href="<%=request.getContextPath()%>/authorityfunction/select_authorityFunction.jsp">¥\¯àÅv­­</a></li>
-        <li><a href="<%=request.getContextPath()%>/title/select_title.jsp">Â¾¦ì</a></li>
-        <li><a href="<%=request.getContextPath()%>/product/select_product.jsp">°Ó«~</a></li>
-        <li><a href="<%=request.getContextPath()%>/productcategory/select_productCategory.jsp">°Ó«~ºØÃþ</a></li>
+        <li><a href="<%=request.getContextPath()%>/administrator/select_administrator.jsp">ï¿½Þ²zï¿½ï¿½</a></li>
+        <li><a href="<%=request.getContextPath()%>/admauthority/select_admAuthority.jsp">ï¿½Þ²zï¿½ï¿½ï¿½vï¿½ï¿½</a></li>
+        <li><a href="<%=request.getContextPath()%>/authorityfunction/select_authorityFunction.jsp">ï¿½\ï¿½ï¿½ï¿½vï¿½ï¿½</a></li>
+        <li><a href="<%=request.getContextPath()%>/title/select_title.jsp">Â¾ï¿½ï¿½</a></li>
+        <li><a href="<%=request.getContextPath()%>/product/select_product.jsp">ï¿½Ó«~</a></li>
+        <li><a href="<%=request.getContextPath()%>/productcategory/select_productCategory.jsp">ï¿½Ó«~ï¿½ï¿½ï¿½ï¿½</a></li>
     </ul>
 </nav>
 
 <table id="table-1">
     <tr>
         <td>
-            <h3>ºÞ²z­ûºÞ²z­¶­±</h3>
+            <h3>ï¿½Þ²zï¿½ï¿½ï¿½Þ²zï¿½ï¿½ï¿½ï¿½</h3>
             <h4>
                 <a class="icon-link" href="select_administrator.jsp">
-                    <i class="fa-solid fa-house">­º­¶</i>
+                    <i class="fa-solid fa-house">ï¿½ï¿½ï¿½ï¿½</i>
                 </a>
             </h4>
         </td>
@@ -76,11 +76,11 @@
 
 <p>This is the Home page for FallELove Administrator Management</p>
 
-<h3>¸ê®Æ¬d¸ß:</h3>
+<h3>ï¿½ï¿½Æ¬dï¿½ï¿½:</h3>
 
-<%-- ¿ù»~ªí¦C --%>
+<%-- ï¿½ï¿½ï¿½~ï¿½ï¿½C --%>
 <c:if test="${not empty errorMsgs}">
-    <font style="color: red">½Ð­×¥¿¥H¤U¿ù»~:</font>
+    <font style="color: red">ï¿½Ð­×¥ï¿½ï¿½Hï¿½Uï¿½ï¿½ï¿½~:</font>
     <ul>
         <c:forEach var="message" items="${errorMsgs}">
             <li style="color: red">${message}</li>
@@ -94,44 +94,44 @@
 
     <li>
         <FORM METHOD="post" ACTION="administrator.do">
-            <b>¿é¤JºÞ²z­û½s¸¹ (±q1¶}©l):</b> <input type="text" name="admNo">
+            <b>ï¿½ï¿½Jï¿½Þ²zï¿½ï¿½ï¿½sï¿½ï¿½ (ï¿½q1ï¿½}ï¿½l):</b> <input type="text" name="admNo">
             <input type="hidden" name="action" value="getOne_For_Display">
-            <input type="submit" value="°e¥X">
+            <input type="submit" value="ï¿½eï¿½X">
         </FORM>
     </li>
 
     <jsp:useBean id="administratorSvc" scope="page"
-                 class="com.ren.administrator.service.AdministratorServiceImpl"/>
+                 class="com.ren.administrator.service.Impl.AdministratorServiceImpl"/>
 
     <li>
         <FORM METHOD="post" ACTION="administrator.do">
-            <b>¿ï¾ÜºÞ²z­û½s¸¹:</b> <select size="1" name="admNo">
+            <b>ï¿½ï¿½ÜºÞ²zï¿½ï¿½ï¿½sï¿½ï¿½:</b> <select size="1" name="admNo">
             <c:forEach var="adminitratorVO" items="${administratorSvc.all}">
             <option value="${adminitratorVO.admNo}">${adminitratorVO.admNo}
                 </c:forEach>
         </select> <input type="hidden" name="action" value="getOne_For_Display">
-            <input type="submit" value="°e¥X">
+            <input type="submit" value="ï¿½eï¿½X">
         </FORM>
     </li>
 
     <li>
         <FORM METHOD="post" ACTION="administrator.do">
-            <b>¿ï¾ÜºÞ²z­û¦WºÙ:</b> <select size="1" name="admNo">
+            <b>ï¿½ï¿½ÜºÞ²zï¿½ï¿½ï¿½Wï¿½ï¿½:</b> <select size="1" name="admNo">
             <c:forEach var="adminitratorVO" items="${administratorSvc.all}">
             <option value="${adminitratorVO.admNo}">${adminitratorVO.admName}
                 </c:forEach>
         </select> <input type="hidden" name="action" value="getOne_For_Display">
-            <input type="submit" value="°e¥X">
+            <input type="submit" value="ï¿½eï¿½X">
         </FORM>
     </li>
 </ul>
 
 
-<h3>ºÞ²z­û·s¼W</h3>
+<h3>ï¿½Þ²zï¿½ï¿½ï¿½sï¿½W</h3>
 <ul>
     <li><a href='addAdministrator.jsp'>Add</a> a new Product.</li>
 </ul>
-<h3>¤jÀY¶K¤W¶Ç</h3>
+<h3>ï¿½jï¿½Yï¿½Kï¿½Wï¿½ï¿½</h3>
 <ul>
     <li><a href='upload.jsp'>Add</a> photoSticker.</li>
 </ul>

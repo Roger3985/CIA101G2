@@ -45,6 +45,7 @@ public interface AdministratorService_interface {
      * @return 返回Entity到View渲染
      */
     Administrator getOneAdministrator(String admEmail);
+
     /**
      * R:
      * 查詢所有管理員資料
@@ -52,6 +53,15 @@ public interface AdministratorService_interface {
      * @return 返回管理員列表到View渲染
      */
     List<Administrator> getAll();
+
+    /**
+     * R:
+     * 從Redis資料庫內查詢資料
+     *
+     * @param key 傳入管理員編號
+     * @return 返回登入狀態DTO
+     */
+    LoginState getFromRedis(Integer key);
 
     /**
      * U:
@@ -64,12 +74,30 @@ public interface AdministratorService_interface {
 
     /**
      * U:
-     * 登入成功，修改管理員登入狀態
+     * 登入成功，修改管理員登入狀態，在Redis資料庫中增加登入狀態緩存
      *
      * @param administrator 使用查詢方法取得Entity，身分核對後將Entity傳入方法內修改登入狀態
+     * @param sessionID 傳入SessionID，於後續存入LoginState
      * @return 返回帳號登入狀態DTO
      */
-    LoginState login(Administrator administrator, HttpSession session);
+    LoginState login(Administrator administrator, String sessionID);
+
+    /**
+     * 登出成功，修改管理員登入狀態，並關閉Session，移除Redis資料庫中的登入狀態緩存
+     *
+     * @param loginState 傳入登入狀態，執行登出
+     * @return
+     */
+    void logout(LoginState loginState);
+
+    /**
+     * U:
+     * 新增或修改Redis資料庫內的資料
+     *
+     * @param key 傳入管理員編號
+     * @param loginState 傳入登入狀態
+     */
+    void storeLoginstateInRedis(Integer key, LoginState loginState);
 
     /**
      * D:
@@ -79,6 +107,13 @@ public interface AdministratorService_interface {
      */
     void deleteAdministrator(Integer admNo);
 
+    /**
+     * 刪除Redis資料庫內的資料
+     *
+     * @param key 傳入管理員編號
+     */
+    void deleteRedisData(Integer key);
+
     // 上傳圖片
 //    public void uploadPhoto(Integer admNo, byte[] admPhoto);
 //    // 顯示大頭貼
@@ -87,5 +122,7 @@ public interface AdministratorService_interface {
 //    public void ChangePhoto(Integer admNo, byte[] admPhoto);
 //    // 註冊(含驗證)
 //    public List<String> register(Administrator administrator);
+
+
 
 }

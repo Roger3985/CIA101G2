@@ -14,9 +14,9 @@
 </head>
 <body>
 
-<%-- ¿ù»~ªí¦C --%>
+<%-- ï¿½ï¿½ï¿½~ï¿½ï¿½C --%>
 <c:if test="${not empty errorMsgs}">
-    <font style="color: red">½Ð­×¥¿¥H¤U¿ù»~:</font>
+    <font style="color: red">ï¿½Ð­×¥ï¿½ï¿½Hï¿½Uï¿½ï¿½ï¿½~:</font>
     <ul>
         <c:forEach var="message" items="${errorMsgs}">
             <li style="color: red">${message}</li>
@@ -25,11 +25,11 @@
 </c:if>
 
 <jsp:useBean id="administratorSvc" scope="page"
-             class="com.ren.administrator.service.AdministratorServiceImpl"/>
+             class="com.ren.administrator.service.Impl.AdministratorServiceImpl"/>
 
 <form ACTION="administrator.do" METHOD="POST" enctype="multipart/form-data" id="imageForm">
-    <!-- ÁôÂÃªº¿é¤J¦r¬q¡A¥Î©óÀx¦sºÞ²z­û½s¸¹ -->
-    <b>¿ï¾ÜºÞ²z­û½s¸¹:</b>
+    <!-- ï¿½ï¿½ï¿½Ãªï¿½ï¿½ï¿½Jï¿½rï¿½qï¿½Aï¿½Î©ï¿½ï¿½xï¿½sï¿½Þ²zï¿½ï¿½ï¿½sï¿½ï¿½ -->
+    <b>ï¿½ï¿½ÜºÞ²zï¿½ï¿½ï¿½sï¿½ï¿½:</b>
     <select size="1" name="admNo">
         <c:forEach var="adminitratorVO" items="${administratorSvc.all}">
             <option value="${adminitratorVO.admNo}">${adminitratorVO.admNo}</option>
@@ -39,17 +39,17 @@
 
     <label class="btn btn-info">
         <input id="upload_img" name="uploadImg" style="display:none;" type="file" accept="image/*">
-        <!-- ÁôÂÃªº¿é¤J¦r¬q¡A¥Î©óÀx¦sµô°Å«áªº¹Ï¤ù¼Æ¾Ú¡A¬I¤u¤¤ -->
+        <!-- ï¿½ï¿½ï¿½Ãªï¿½ï¿½ï¿½Jï¿½rï¿½qï¿½Aï¿½Î©ï¿½ï¿½xï¿½sï¿½ï¿½ï¿½Å«áªºï¿½Ï¤ï¿½ï¿½Æ¾Ú¡Aï¿½Iï¿½uï¿½ï¿½ -->
 <%--        <input type="hidden" name="croppedImage" id="croppedImage" value="">--%>
-        <i class="fa fa-photo"></i> ¤W¶Ç¹Ï¤ù
+        <i class="fa fa-photo"></i> ï¿½Wï¿½Ç¹Ï¤ï¿½
     </label>
 
-    <!-- µô°Å«ö¶s -->
-    <button id="crop_img" type="button" class="btn btn-info"><i class="fa fa-scissors"></i> µô°Å¹Ï¤ù</button>
+    <!-- ï¿½ï¿½ï¿½Å«ï¿½ï¿½s -->
+    <button id="crop_img" type="button" class="btn btn-info"><i class="fa fa-scissors"></i> ï¿½ï¿½ï¿½Å¹Ï¤ï¿½</button>
 
-    <!-- ´£¥æªí³æ -->
+    <!-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ -->
     <input type="hidden" name="action" value="upload">
-    <input type="submit" value="°e¥X">
+    <input type="submit" value="ï¿½eï¿½X">
 </form>
 
 <div id="oldImg" style="display:none;"></div>
@@ -62,35 +62,35 @@
 
 <script>
     (function ($) {
-        var width_crop = 300, // ¹Ï¤ùµô¤Á¼e«× px ­È
-            height_crop = 200, // ¹Ï¤ùµô¤Á°ª«× px ­È
-            type_crop = "square", // µô¤Á§Îª¬: square ¬°¤è§Î, circle ¬°¶ê§Î
-            width_preview = 350, // ¹wÄý°Ï¶ô¼e«× px ­È
-            height_preview = 350, // ¹wÄý°Ï¶ô°ª«× px ­È
-            compress_ratio = 0.85, // ¹Ï¤ùÀ£ÁY¤ñ¨Ò 0~1
-            type_img = "jpeg", // ¹ÏÀÉ®æ¦¡ jpeg png webp
+        var width_crop = 300, // ï¿½Ï¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½eï¿½ï¿½ px ï¿½ï¿½
+            height_crop = 200, // ï¿½Ï¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ px ï¿½ï¿½
+            type_crop = "square", // ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½: square ï¿½ï¿½ï¿½ï¿½ï¿½, circle ï¿½ï¿½ï¿½ï¿½ï¿½
+            width_preview = 350, // ï¿½wï¿½ï¿½ï¿½Ï¶ï¿½ï¿½eï¿½ï¿½ px ï¿½ï¿½
+            height_preview = 350, // ï¿½wï¿½ï¿½ï¿½Ï¶ï¿½ï¿½ï¿½ï¿½ï¿½ px ï¿½ï¿½
+            compress_ratio = 0.85, // ï¿½Ï¤ï¿½ï¿½ï¿½ï¿½Yï¿½ï¿½ï¿½ 0~1
+            type_img = "jpeg", // ï¿½ï¿½ï¿½É®æ¦¡ jpeg png webp
             oldImg = new Image(),
             myCrop, file, oldImgDataUrl;
 
-        // µô¤Áªì©l°Ñ¼Æ³]©w
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½Ñ¼Æ³]ï¿½w
         myCrop = $("#oldImg").croppie({
-            viewport: { // µô¤Á°Ï¶ô
+            viewport: { // ï¿½ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½
                 width: 300,
                 height: 300,
-                type: "circle" // §ï¬°¶ê§Îªºµô¤Á°Ï¶ô,type_crop¬°¤è®Ø
+                type: "circle" // ï¿½ï¬°ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½,type_cropï¿½ï¿½ï¿½ï¿½ï¿½
             },
-            boundary: { // ¹wÄý°Ï¶ô
+            boundary: { // ï¿½wï¿½ï¿½ï¿½Ï¶ï¿½
                 width: width_preview,
                 height: height_preview
             }
-            // enableResize: true // ¤¹³\µô¤Áµ¡¤f¤j¤p½Õ¾ã¡A¦]·Æ¹«²¾°Ê±±¨î¤è¦¡ÁÙ¨S·d©w¡A¦¹¬q¼È®É®³±¼
+            // enableResize: true // ï¿½ï¿½ï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½fï¿½jï¿½pï¿½Õ¾ï¿½Aï¿½]ï¿½Æ¹ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½è¦¡ï¿½Ù¨Sï¿½dï¿½wï¿½Aï¿½ï¿½ï¿½qï¿½È®É®ï¿½ï¿½ï¿½
         });
 
         function readFile(input) {
             if (input.files && input.files[0]) {
                 file = input.files[0];
             } else {
-                alert("ÂsÄý¾¹¤£¤ä´©¦¹¥\¯à¡I«ØÄ³¨Ï¥Î³Ì·sª©¥» Chrome");
+                alert("ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ä´©ï¿½ï¿½ï¿½\ï¿½ï¿½Iï¿½ï¿½Ä³ï¿½Ï¥Î³Ì·sï¿½ï¿½ï¿½ï¿½ Chrome");
                 return;
             }
 
@@ -99,7 +99,7 @@
 
                 reader.onload = function (e) {
                     oldImgDataUrl = e.target.result;
-                    oldImg.src = oldImgDataUrl; // ¸ü¤J oldImg ¨ú±o¹Ï¤ù¸ê°T
+                    oldImg.src = oldImgDataUrl; // ï¿½ï¿½ï¿½J oldImg ï¿½ï¿½ï¿½oï¿½Ï¤ï¿½ï¿½ï¿½T
                     myCrop.croppie("bind", {
                         url: oldImgDataUrl
                     });
@@ -107,7 +107,7 @@
 
                 reader.readAsDataURL(file);
             } else {
-                alert("±z¤W¶Çªº¤£¬O¹ÏÀÉ¡I");
+                alert("ï¿½zï¿½Wï¿½Çªï¿½ï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½É¡I");
             }
         }
 
@@ -127,8 +127,8 @@
                 fileSize = Math.round(file.size / 1000),
                 html = "";
 
-            html += "<p>­ì©l¹Ï¤ù¤Ø¤o " + width + "x" + height + "</p>";
-            html += "<p>ÀÉ®×¤j¤p¬ù " + fileSize + "k</p>";
+            html += "<p>ï¿½ï¿½lï¿½Ï¤ï¿½ï¿½Ø¤o " + width + "x" + height + "</p>";
+            html += "<p>ï¿½É®×¤jï¿½pï¿½ï¿½ " + fileSize + "k</p>";
             $("#oldImg").before(html);
         };
 
@@ -136,8 +136,8 @@
             var html = "",
                 filesize = src.length * 0.75;
 
-            html += "<p>µô¤Á¹Ï¤ù¤Ø¤o " + width_crop + "x" + height_crop + "</p>";
-            html += "<p>ÀÉ®×¤j¤p¬ù " + Math.round(filesize / 1000) + "k</p>";
+            html += "<p>ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Ø¤o " + width_crop + "x" + height_crop + "</p>";
+            html += "<p>ï¿½É®×¤jï¿½pï¿½ï¿½ " + Math.round(filesize / 1000) + "k</p>";
             $("#newImgInfo").html(html);
         }
 
@@ -149,7 +149,7 @@
             }).then(function (src) {
                 displayCropImg(src);
 
-                // ±Nµô°Å«áªº¹Ï¤ù¼Æ¾Ú³]¸m¨ìÁôÂÃªº¿é¤J¦r¬q¤¤
+                // ï¿½Nï¿½ï¿½ï¿½Å«áªºï¿½Ï¤ï¿½ï¿½Æ¾Ú³]ï¿½mï¿½ï¿½ï¿½ï¿½ï¿½Ãªï¿½ï¿½ï¿½Jï¿½rï¿½qï¿½ï¿½
                 $("#croppedImage").val(src);
 
                 displayNewImgInfo(src);
@@ -158,20 +158,20 @@
 
         // $("#crop_img").on("click", function () {
         //     myCrop.croppie("result", {
-        //         type: "blob", // ??«¬?¸m? blob ¦Ó¤£¬O canvas ¥H±o¨ì Blob ®æ¦¡ªº?¤ù?Õu
-        //         format: type_img, // ?¸m?¹³®æ¦¡¡A³q±`¬O jpeg¡Bpng ©Î webp
-        //         quality: compress_ratio // ?¸m?¤ù?¶q
+        //         type: "blob", // ??ï¿½ï¿½?ï¿½m? blob ï¿½Ó¤ï¿½ï¿½O canvas ï¿½Hï¿½oï¿½ï¿½ Blob ï¿½æ¦¡ï¿½ï¿½?ï¿½ï¿½?ï¿½u
+        //         format: type_img, // ?ï¿½m?ï¿½ï¿½ï¿½æ¦¡ï¿½Aï¿½qï¿½`ï¿½O jpegï¿½Bpng ï¿½ï¿½ webp
+        //         quality: compress_ratio // ?ï¿½m?ï¿½ï¿½?ï¿½q
         //     }).then(function (blob) {
-        //         // ¦b?¬q¥N?¤¤¡A'blob' ¬Oµô¤Á¦Zªº?¤ùªº Blob ?¶H
-        //         displayCropImg(URL.createObjectURL(blob)); // ¨Ï¥Î URL.createObjectURL(blob) ? Blob ?¶H???¥i¥Îªº URL
+        //         // ï¿½b?ï¿½qï¿½N?ï¿½ï¿½ï¿½A'blob' ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ Blob ?ï¿½H
+        //         displayCropImg(URL.createObjectURL(blob)); // ï¿½Ï¥ï¿½ URL.createObjectURL(blob) ? Blob ?ï¿½H???ï¿½iï¿½Îªï¿½ URL
         //
-        //         // ?µô¤Á¦Zªº Blob ?Õu?¸m¨ì?ÂÃªº?¤J¦r¬q¤¤
-        //         // ?¨½? Blob ?Õuªþ¥[¨ìªí??Õu¤¤
+        //         // ?ï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½ï¿½ Blob ?ï¿½u?ï¿½mï¿½ï¿½?ï¿½Ãªï¿½?ï¿½Jï¿½rï¿½qï¿½ï¿½
+        //         // ?ï¿½ï¿½? Blob ?ï¿½uï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½??ï¿½uï¿½ï¿½
         //         const formData = new FormData();
         //         formData.append('croppedImage', blob, 'cropped-image.' + type_img);
         //         document.getElementById('imageForm').append(formData);
         //
-        //         // ?¥Üµô¤Á¦Zªº?¤ù«H®§
+        //         // ?ï¿½Üµï¿½ï¿½ï¿½ï¿½Zï¿½ï¿½?ï¿½ï¿½ï¿½Hï¿½ï¿½
         //         displayNewImgInfo(blob);
         //     });
         // });

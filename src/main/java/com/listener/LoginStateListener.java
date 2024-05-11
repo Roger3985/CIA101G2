@@ -1,7 +1,7 @@
 //package com.listener;
 //
 //import com.ren.administrator.entity.Administrator;
-//import com.ren.administrator.service.AdministratorServiceImpl;
+//import com.ren.administrator.service.Impl.AdministratorServiceImpl;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Component;
 //
