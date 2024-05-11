@@ -22,25 +22,25 @@ public class Title {
     @OneToMany(mappedBy = "title", cascade = CascadeType.ALL)
     private Set<Administrator> administrators;
 
-    // enum常量定義
-    public enum Position {
-        PARTJOB(4),
-        FULLTIME(3),
-        MANAGER(2),
-        BOSS(1);
-
-        private final int value;
-
-        Position(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
-
-    private Position position;
+//    // enum常量定義
+//    public enum Position {
+//        PARTJOB(4),
+//        FULLTIME(3),
+//        MANAGER(2),
+//        BOSS(1);
+//
+//        private final int value;
+//
+//        Position(int value) {
+//            this.value = value;
+//        }
+//
+//        public int getValue() {
+//            return value;
+//        }
+//    }
+//
+//    private Position position;
 
     public Title() {
 
