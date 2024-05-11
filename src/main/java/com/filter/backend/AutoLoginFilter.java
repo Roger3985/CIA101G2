@@ -2,7 +2,7 @@ package com.filter.backend;
 
 import com.ren.administrator.entity.Administrator;
 import com.ren.administrator.dto.LoginState;
-import com.ren.administrator.service.AdministratorServiceImpl;
+import com.ren.administrator.service.Impl.AdministratorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.annotation.Order;
@@ -33,14 +33,12 @@ public class AutoLoginFilter extends HttpFilter {
     @Autowired
     private AdministratorServiceImpl administratorSvc;
 
+    // String To Integer
     @Autowired
     @Qualifier("stringInteger")
     private RedisTemplate<String, Integer> stiRedisTemplate;
 
-    @Autowired
-    @Qualifier("integerLoginState")
-    private RedisTemplate<Integer, LoginState> itlRedisTemplate;
-
+    // <String, String>
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
@@ -61,7 +59,7 @@ public class AutoLoginFilter extends HttpFilter {
                     .flatMap(this::userCookie);
 
             /**
-             * ((有無造訪網頁(有無session) || 有無登入(有無administrator)) || 有無設定自動登入(有無autoLogin Cookie))
+             * (有無登入(有無LoginState) && 有無設定自動登入(有無autoLogin Cookie))
              * 因考慮使用者可能會關閉Cookie與不使用自動登入功能，且優先判斷cookie有較高的安全性問題，將autoLogin的確認放在 or 判斷式的最後面，
              * 優先確認使用者登入狀態
              * 如果都沒有，導向登入頁面
@@ -82,10 +80,9 @@ public class AutoLoginFilter extends HttpFilter {
                 // 透過使用者編號找到管理員
                 Administrator administrator = administratorSvc.getOneAdministrator(admNo);
                 // 使用Service的登入方法，獲得登入狀態DTO
-                loginState = administratorSvc.login(administrator, session);
+                loginState = administratorSvc.login(administrator, session.getId());
                 // 將登入狀態存入Session
                 session.setAttribute("loginState", loginState);
-                itlRedisTemplate.opsForValue().set(admNo, loginState);
             }
         }
         chain.doFilter(req, res);
@@ -108,16 +105,16 @@ public class AutoLoginFilter extends HttpFilter {
     /**
      * 判斷是否有登入資訊
      * 1.從cookie裡面先尋找是否有名字為"autoLogin"的cookie
-     * 2.其值為在登入時自動生成的亂數，分別存入Cookie("autoLogin", random)、Redis資料庫(random, admNo.toString())
+     * 2.其值為在登入時自動生成的亂數，分別存入Cookie("autoLogin", random)、Redis資料庫(random, admNo)
      * 3.透過Redis的搜尋方法找到相對應的key
      *
      * @param cookie 傳入Cookie物件，並呼叫Cookie的getter方法確認使否有符合登入資訊的Cookie
      * @return 如果兩者都符合則返回true，沒有則返回false
      */
     public boolean check(Cookie cookie) {
-        return "autoLogin".equals(cookie.getName()) &&
-                !stringRedisTemplate.opsForValue()
-                        .get(cookie.getValue()).equals("");
+        return "autoLogin".equals(cookie.getName()) // 找尋名為"autoLogin"的Cookie
+                && stringRedisTemplate.opsForValue() // 以Cookie的Value確認Redis資料庫內有無存入此登入相關資料
+                .get(cookie.getValue()) != null;
     }
 
 }

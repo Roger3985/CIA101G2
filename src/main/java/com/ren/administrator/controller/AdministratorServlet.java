@@ -1,7 +1,7 @@
 //package com.ren.administrator.controller;
 //
 //import com.Entity.ServicePicture;
-//import com.ren.administrator.service.AdministratorServiceImpl;
+//import com.ren.administrator.service.Impl.AdministratorServiceImpl;
 //
 //import javax.servlet.RequestDispatcher;
 //import javax.servlet.ServletException;

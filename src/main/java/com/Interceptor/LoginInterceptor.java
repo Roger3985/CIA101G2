@@ -1,7 +1,7 @@
 //package com.ren.Interceptor;
 //
 //import com.Entity.Administrator;
-//import com.ren.administrator.service.AdministratorServiceImpl;
+//import com.ren.administrator.service.Impl.AdministratorServiceImpl;
 //import org.springframework.web.servlet.HandlerInterceptor;
 //
 //import javax.servlet.http.Cookie;

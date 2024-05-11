@@ -1,7 +1,7 @@
 package com.roger.columnarticle.controller;
 
 import com.ren.administrator.entity.Administrator;
-import com.ren.administrator.service.AdministratorServiceImpl;
+import com.ren.administrator.service.Impl.AdministratorServiceImpl;
 import com.roger.columnarticle.entity.ColumnArticle;
 import com.roger.columnarticle.service.ColumnArticleService;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;

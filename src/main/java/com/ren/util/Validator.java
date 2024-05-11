@@ -2,7 +2,7 @@ package com.ren.util;
 
 
 import static com.ren.util.Regex.emailRegex;
-import static com.ren.util.Regex.resoucesRegex;
+import static com.ren.util.Regex.resourcesRegex;
 
 public class Validator {
 
@@ -23,7 +23,7 @@ public class Validator {
      * @return True為靜態資源或登入相關網頁(無須過濾)，False為需過濾頁面
      */
     public static boolean validateURL(String url) {
-        return resoucesRegex.matcher(url).find();
+        return resourcesRegex.matcher(url).find();
     }
 
 }

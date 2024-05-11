@@ -15,7 +15,11 @@ public interface Constants {
     byte NO = 0;
     int FIRST_ORDER = 1;
     int SECOND_ORDER = 2;
-
+    int THIRD_ORDER = 3;
+    int PARTJOB = 4;
+    int FULLTIME = 3;
+    int MANAGER = 2;
+    int BOSS = 1;
 
     /**
      * 首頁路徑
