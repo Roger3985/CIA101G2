@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.iting.cart.entity.CartRedis;
 import com.ren.administrator.dto.LoginState;
+import com.roger.member.dto.LoginStateMember;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -12,7 +13,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-
 
 @Configuration
 public class RedisConfig {
@@ -34,6 +34,29 @@ public class RedisConfig {
         // 設置連線
         redisTemplate.setConnectionFactory(connectionFactory);
         // 設置Serializer
+        redisTemplate.setKeySerializer(new GenericToStringSerializer<>(Integer.class));
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        return redisTemplate;
+    }
+
+    /**
+     * 變更 RedisTemplate 默認配置
+     * 序列化器默認為 JdkSerializationRedisSerializer，序列化後會回傳 byte[]
+     * 1. 將 key 的序列化器設置為 Integer 序列化器
+     * 2. 將 value 的序列化器設置為 Json 序列化器
+     * 泛型設置為 <Integer, LoginStateMember>，用於根據會員編號操作 LoginStateMember(CRUD)
+     * Bean 名稱設計成 integerLoginState (調用 @Qualifier("integerLoginState") 即可使用)
+     *
+     * @param connectionFactory 配置 RedisConnectionFactory，與資料庫建立連線
+     * @return 返回 redisTemplate
+     */
+    @Bean("integerLoginStateMember")
+    public RedisTemplate<Integer, LoginStateMember> integerLoginStateRedisTemplateMember(RedisConnectionFactory connectionFactory) {
+        RedisTemplate<Integer, LoginStateMember> redisTemplate = new RedisTemplate<>();
+        // 設置連線
+        redisTemplate.setConnectionFactory(connectionFactory);
+        // 設置 Serializer
         redisTemplate.setKeySerializer(new GenericToStringSerializer<>(Integer.class));
         redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
 

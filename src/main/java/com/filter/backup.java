@@ -2,7 +2,7 @@
 //
 //import com.Entity.Administrator;
 //import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.ren.administrator.dto.LoginState;
+//import com.ren.administrator.dto.LoginStateMember;
 //import com.ren.administrator.service.AdministratorServiceImpl;
 //import org.springframework.core.Ordered;
 //import org.springframework.core.annotation.Order;
@@ -37,7 +37,7 @@
 //
 //            // 獲得session物件，如果沒有則創建一個(使用false會有已造訪網頁時session物件仍未建立的情況)
 //            HttpSession session = req.getSession();
-//            LoginState loginState = null;
+//            LoginStateMember loginState = null;
 //
 //            System.out.println(session);
 //            // 搜尋使用者cookie確認是否有管理員相關資訊
@@ -50,7 +50,7 @@
 //             * 優先確認使用者登入狀態
 //             * 如果都沒有，導向登入頁面
 //             */
-//            if ((loginState = (LoginState) session.getAttribute("loginState")) == null && !userCookie.isPresent()) {
+//            if ((loginState = (LoginStateMember) session.getAttribute("loginState")) == null && !userCookie.isPresent()) {
 //                System.out.println("來看看是誰被過濾, session:" + session + ", loginState:" + loginState + ", cookie:" + userCookie);
 //                System.out.println("還沒登入哦!");
 //                res.sendRedirect(loginPage);

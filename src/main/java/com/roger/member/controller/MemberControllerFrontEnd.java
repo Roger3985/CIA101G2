@@ -24,12 +24,9 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -96,10 +93,10 @@ public class MemberControllerFrontEnd {
         // 從 HTTP 會話中獲取當前已登入的會員資料
         Member myData = (Member) session.getAttribute("loginsuccess");
 
-        // 如果會員未登錄，重定向到登錄頁面
-        if (myData == null) {
-            return "redirect:/frontend/member/loginMember";
-        }
+//        // 如果會員未登錄，重定向到登錄頁面
+//        if (myData == null) {
+//            return "redirect:/frontend/member/loginMember";
+//        }
 
         // 將會員資料添加到模型中
         modelMap.addAttribute("myData", myData);
@@ -151,6 +148,7 @@ public class MemberControllerFrontEnd {
     public String goToLoginMember() {
         return "frontend/member/loginMember";
     }
+
 
     /**
      * 前往登入頁面 (透過信箱跟密碼登錄) 。
@@ -225,7 +223,7 @@ public class MemberControllerFrontEnd {
     public String varify(@RequestParam("forgetPassword") String memMail, ModelMap modelMap) {
 
         if (memberService.forgetPassword(memMail)) {
-            return "redirect:loginMember";
+            return "redirect:/frontend/member/loginMember";
         }
 
         if (memMail.isEmpty()) {
@@ -414,6 +412,8 @@ public class MemberControllerFrontEnd {
                 ? "frontend/member/loginMember"
                 : "frontend/member/loginMemberByAccount";
     }
+
+
 
     /**
      * 停權指定的會員信箱並立即登出該會員。

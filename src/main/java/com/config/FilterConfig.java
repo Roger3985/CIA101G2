@@ -2,6 +2,10 @@ package com.config;
 
 import com.filter.backend.AutoLoginFilter;
 import com.filter.backend.LoginStateFilter;
+import com.filter.frontend.AutoLoginMemberFilter;
+import com.filter.frontend.LoginStateMemberFilter;
+import com.roger.member.dto.LoginStateMember;
+import com.roger.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +29,12 @@ public class FilterConfig {
     @Autowired
     private LoginStateFilter loginStateFilter;
 
+    @Autowired
+    private AutoLoginMemberFilter autoLoginMemberFilter;
+
+    @Autowired
+    private LoginStateMemberFilter loginStateMemberFilter;
+
     @Bean
     public FilterRegistrationBean<Filter> registration1() {
         FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>(autoLoginFilter);
@@ -40,5 +50,22 @@ public class FilterConfig {
         registration.setOrder(SECOND_ORDER);
         return registration;
     }
+
+    @Bean
+    public FilterRegistrationBean<Filter> registration3() {
+        FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>(autoLoginMemberFilter);
+        registration.addUrlPatterns("/frontend/member/*");
+        registration.setOrder(Constants.FIRST_ORDER);
+        return registration;
+    }
+
+    @Bean
+    public FilterRegistrationBean<Filter> registration4() {
+        FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>(loginStateMemberFilter);
+        registration.addUrlPatterns("/frontend/member/*");
+        registration.setOrder(Constants.SECOND_ORDER);
+        return registration;
+    }
+
 
 }

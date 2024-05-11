@@ -122,6 +122,15 @@ public class Member implements java.io.Serializable {
     @Column(name = "mempic", columnDefinition = "longblob")
     private byte[] memPic;
 
+    @Column(name = "memlogin")
+    private Byte memLogin;
+
+    @Column(name = "memlogout")
+    private Byte memLogout;
+
+    @Column(name = "memactivetime")
+    private Timestamp memActiveTime;
+
     @JsonBackReference
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private Set<Notice> notices;
@@ -219,6 +228,32 @@ public class Member implements java.io.Serializable {
         this.memPic = memPic;
     }
 
+    public Member(Integer memNo, String memName, String memAcc, String memPwd, String memMob, Byte memGender, String memMail, String memAdd, Date memBd, String memCard, Byte provider, String clientID, String displayName, String accessToken, String refreshToken, Timestamp tknExpireTime, Timestamp creationTime, Timestamp memberJoinTime, Byte memStat, String memSalt, byte[] memPic, Byte memLogin, Byte memLogout, Timestamp memActiveTime) {
+        this.memNo = memNo;
+        this.memName = memName;
+        this.memAcc = memAcc;
+        this.memPwd = memPwd;
+        this.memMob = memMob;
+        this.memGender = memGender;
+        this.memMail = memMail;
+        this.memAdd = memAdd;
+        this.memBd = memBd;
+        this.memCard = memCard;
+        this.provider = provider;
+        this.clientID = clientID;
+        this.displayName = displayName;
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+        this.tknExpireTime = tknExpireTime;
+        this.creationTime = creationTime;
+        this.memberJoinTime = memberJoinTime;
+        this.memStat = memStat;
+        this.memSalt = memSalt;
+        this.memPic = memPic;
+        this.memLogin = memLogin;
+        this.memLogout = memLogout;
+        this.memActiveTime = memActiveTime;
+    }
 
     public Integer getMemNo() {
         return memNo;
@@ -394,6 +429,30 @@ public class Member implements java.io.Serializable {
 
     public void setMemPic(byte[] memPic) {
         this.memPic = memPic;
+    }
+
+    public Byte getMemLogin() {
+        return memLogin;
+    }
+
+    public void setMemLogin(Byte memLogin) {
+        this.memLogin = memLogin;
+    }
+
+    public Byte getMemLogout() {
+        return memLogout;
+    }
+
+    public void setMemLogout(Byte memLogout) {
+        this.memLogout = memLogout;
+    }
+
+    public Timestamp getMemActiveTime() {
+        return memActiveTime;
+    }
+
+    public void setMemActiveTime(Timestamp memActiveTime) {
+        this.memActiveTime = memActiveTime;
     }
 
     public Set<Notice> getNotices() {

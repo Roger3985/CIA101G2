@@ -55,6 +55,13 @@
                                             <td><input type="text" id="notContent" title="請輸入通知內容" th:field="*{notContent}"></td>
                                             <td><label class="error" th:if="${#fields.hasErrors('notContent')}" th:errors="*{notContent}"></label></td>
                                         </tr>
+<!--                                        <tr>-->
+<!--                                            <td><label>快速選擇通知內容: </label></td>-->
+<!--                                            <td><select name="notContent">-->
+<!--                                                <option th:each="notice : ${noticeListData}" th:value="${notice.notContent}" th:text="${notice.notContent}"></option>-->
+<!--                                            </select>-->
+<!--                                            </td>-->
+<!--                                        </tr>-->
 
                             <!--            <tr>-->
                             <!--                <td><label for="notContent2">快速選擇會員通知內容:</label></td>-->
@@ -152,6 +159,50 @@
             notStatInput.value = '0';
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            // 在表單提交時更新通知內容字段為手動輸入的值
+            $('form').submit(function(event) {
+                // 獲取手動輸入的通知內容
+                var manualInput = $('#notContent').val().trim();
+
+                // 獲取選擇的下拉式選單值
+                var selectValue = $('select[name="notContent"]').val();
+
+                // 移除手動輸入的通知內容中的逗號
+                manualInput = manualInput.split(',').join('');
+
+                // 如果手動輸入的通知內容存在，將手動輸入的值設置為通知內容的值
+                if (manualInput !== '') {
+                    $('input[name="notContent"]').val(manualInput);
+                    $('select[name="notContent"]').removeAttr('name'); // 移除下拉選單的 name 屬性，避免被提交
+                } else if (selectValue !== '') { // 如果手動輸入為空且選擇了下拉式選單，將下拉選單的值設置為通知內容的值
+                    $('input[name="notContent"]').val(selectValue);
+                } else {
+                    // event.preventDefault(); // 如果手動輸入和下拉選單都沒有值，阻止表單提交
+                }
+            });
+
+            // 去除下拉式選單中重複的值
+            var uniqueValues = {};
+            $('select[name="notContent"] option').each(function() {
+                var text = $(this).text();
+                uniqueValues[text] = text;
+            });
+
+            $('select[name="notContent"]').empty();
+
+            // 添加未選擇的選項
+            var defaultOption = $('<option>').text('未選擇').val('');
+            $('select[name="notContent"]').append(defaultOption);
+
+            for (var value in uniqueValues) {
+                var option = $('<option>').text(value).val(value);
+                $('select[name="notContent"]').append(option);
+            }
+        });
+    </script>
+
 </main>
 </body>
 </html>

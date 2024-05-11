@@ -1,7 +1,9 @@
 package com.roger.member.service;
 
+import com.roger.member.dto.LoginStateMember;
 import com.roger.member.entity.Member;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public interface MemberService {
@@ -166,5 +168,15 @@ public interface MemberService {
      * @return 與給定會員編號匹配的會員對象；如果找不到匹配的會員，則返回 null。
      */
     public Member getMemberByMemNo(Integer memNo);
+
+
+    /**
+     * U:
+     * 登入成功，修改會員登入狀態
+     *
+     * @param member 使用查詢方法取得 Entity，身分核對後將 Entity 傳入方法內修改登入狀態
+     * @return 返回帳號登入狀態 DTO
+     */
+    public LoginStateMember loginState(Member member, HttpSession session);
 
 }

@@ -33,6 +33,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
+                                <li>單一查詢</li>
                                 <form method="get" th:action="@{getOnAny}">
                                     <label>選擇會員編號</label>
                                     <select name="memNo">
@@ -69,6 +70,34 @@
                                         送出查詢
                                     </button>
                                 </form>
+                                <br>
+                                <li>複雜查詢</li>
+                                <form method="get" th:action="@{getOnAny}">
+                                    <label>選擇會員編號</label>
+                                    <select name="memNo">
+                                        <option th:each="member : ${memberListData}" th:value="${member.memNo}" th:text="${member.memNo}"></option>
+                                    </select>
+                                    <br>
+                                    <label>通知內容</label>
+                                    <select name="notContent">
+                                        <option th:each="notice : ${noticeListData}" th:value="${notice.notContent}" th:text="${notice.notContent}"></option>
+                                    </select>
+                                    <br>
+                                    <label>發送時間</label>
+                                    <select name="notTime">
+                                        <option th:each="notice : ${noticeListData}" th:value="${notice.notTime}" th:text="${notice.notTime}"></option>
+                                    </select>
+                                    <br>
+                                    <label>讀取狀態</label>
+                                    <select name="notStat">
+                                        <option th:each="notice : ${noticeListData}" th:value="${notice.notStat}" th:text="${notice.notStat == 0 ? '未讀' : '已讀'}"></option>
+                                    </select>
+                                    <br>
+                                    <button type="submit">
+                                        送出查詢
+                                    </button>
+                                </form>
+                                <br>
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <div th:if="${getOnAny}">
@@ -125,46 +154,36 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script>
-        // 定義一個函數來處理 `noticeListData`
-        function processNoticeListData(noticeListData) {
-            // 使用 Set 來去除重複的 `notStat`、`notContent` 和 `notTime` 值
-            const uniqueNotStatValues = new Set();
-            const uniqueNotContentValues = new Set();
-            const uniqueNotTimeValues = new Set();
+        // 當頁面載入時執行
+        window.onload = function() {
+            // 獲取所有下拉選單元素
+            var selects = document.querySelectorAll('select');
 
-            // 遍歷 `noticeListData` 並將唯一的值添加到 Set 中
-            noticeListData.forEach(notice => {
-                uniqueNotStatValues.add(notice.notStat);
-                uniqueNotContentValues.add(notice.notContent);
-                uniqueNotTimeValues.add(notice.notTime);
+            // 遍歷每個下拉選單
+            selects.forEach(function(select) {
+                // 獲取選項集合
+                var options = select.options;
+
+                // 創建一個空的物件來存儲已出現的值
+                var uniqueValues = {};
+
+                // 遍歷選項，將唯一值添加到物件中
+                for (var i = 0; i < options.length; i++) {
+                    uniqueValues[options[i].value] = options[i].text;
+                }
+
+                // 清空下拉選單
+                select.innerHTML = '';
+
+                // 將物件中的唯一值添加回下拉選單
+                for (var value in uniqueValues) {
+                    var option = document.createElement('option');
+                    option.value = value;
+                    option.text = uniqueValues[value];
+                    select.appendChild(option);
+                }
             });
-
-            // 為每個下拉選單添加唯一的選項
-            updateSelectOptions('select[name="notStat"]', uniqueNotStatValues, value => value === 0 ? '未讀' : '已讀');
-            updateSelectOptions('select[name="notContent"]', uniqueNotContentValues);
-            updateSelectOptions('select[name="notTime"]', uniqueNotTimeValues);
-        }
-
-        // 定義一個函數來更新下拉選單中的選項
-        function updateSelectOptions(selector, uniqueValues, optionTextCallback) {
-            // 獲取下拉選單元素
-            const selectElement = document.querySelector(selector);
-
-            // 清空下拉選單以防止重複
-            selectElement.innerHTML = '';
-
-            // 使用 `uniqueValues` 為下拉選單添加選項
-            uniqueValues.forEach(value => {
-                const option = document.createElement('option');
-                option.value = value;
-                // 如果有提供 optionTextCallback，則使用該回調函數獲取選項的文本
-                option.text = optionTextCallback ? optionTextCallback(value) : value;
-                selectElement.appendChild(option);
-            });
-        }
-
-        // 調用 fetchNoticeListData 來獲取數據並處理
-        fetchNoticeListData();
+        };
     </script>
 </main>
 </body>

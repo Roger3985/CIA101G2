@@ -2,7 +2,7 @@
 //
 //import com.Entity.Administrator;
 //import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.ren.administrator.dto.LoginState;
+//import com.ren.administrator.dto.LoginStateMember;
 //import org.springframework.data.redis.core.RedisTemplate;
 //import redis.clients.jedis.Jedis;
 //
@@ -27,10 +27,10 @@
 //    protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
 //        String requestURI = req.getRequestURI();
 //        HttpSession session = req.getSession();
-//        LoginState loginState = null;
+//        LoginStateMember loginState = null;
 //        // 非靜態資源與登入相關網頁 && 已登入
 //        System.out.println(session);
-//        if (!validateURL(requestURI) && (loginState = (LoginState) session.getAttribute("loginState")) != null) {
+//        if (!validateURL(requestURI) && (loginState = (LoginStateMember) session.getAttribute("loginState")) != null) {
 //            System.out.println("被LoginStateFilter過濾的" + requestURI);
 //            // 如果當前SessionID與Redis資料庫內的SessionID不同，則代表為不同裝置登入，強制登出
 //            Jedis jedis = null;
@@ -38,7 +38,7 @@
 //                jedis = new Jedis("localhost", 6379);
 //                String json = jedis.get(loginState.getAdmNo().toString());
 //                ObjectMapper jsonTransform = new ObjectMapper();
-//                if (session.getId() != jsonTransform.readValue(json, LoginState.class)
+//                if (session.getId() != jsonTransform.readValue(json, LoginStateMember.class)
 //                        .getJsessionid()){
 //                    session.invalidate();
 //                    System.out.println("被強制登出囉");

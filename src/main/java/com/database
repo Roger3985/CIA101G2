@@ -70,20 +70,23 @@ CREATE TABLE Member
     memberJoinTime DATETIME     NULL,
     memStat        TINYINT      NOT NULL DEFAULT 0,
     memSalt        VARCHAR(12)  NOT NULL,
-    memPic	       LONGBLOB 		NULL
+    memPic	       LONGBLOB     NULL,
+    memLogin       TINYINT      NULL,
+    memLogout      TINYINT      NULL,
+    memActiveTime  DATETIME     NULL
 );
 
-INSERT INTO Member(memName, memAcc, memPwd, memMob, memGender, memMail, memAdd, memBd, memCard, provider, clientID, displayName, accessToken, refreshToken, tknExpireTime, creationTime, memberJoinTime, memStat, memSalt, memPic) VALUES
-('John', 'John123', '123456', '0912345678', 1, 'John123@gmail.com','台北市大安區忠孝東路四段100號', '1990-01-15', '411235678901234', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 0, '1', null),
-('Emma', 'Emma456', 'abcdef', '0987654321', 2, 'Emma456@gmail.com','新北市板橋區文化路二段50巷20號', '1985-03-28', '510510510510510', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 0,'2', null),
-('Michael', 'Michael789', 'qwerty', '0965412378', 1, 'Michael789@gmail.com','台中市西屯區市政北二路100號', '1998-07-10', '378282246310005', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 2, '3', null),
-('Emily', 'Emily987', '987654', '0945678912', 2, 'Emily987@gmail.com','台南市中西區民族路三段30號', '1982-09-05', '371449635398431', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 0, '4', null),
-('Daniel', 'Daniel321', 'asdfgh', '0978912345', 1, 'Daniel321@gmail.com','高雄市左營區高鐵路100號', '1976-11-20', '378734493671000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 1, '5', null),
-('Sophia', 'Sophia654', 'zxcvbn', '0921654987', 1, 'Sophia654@gmail.com','桃園市中壢區中央西路200號', '1995-04-12', '601111111111111', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 2, '6', null),
-('Liam', 'Liam789', 'qazwsx', '0965498732', 2, 'Liam789@gmail.com','新竹市東區光復路二段50巷10號', '1988-06-30', '555555555555444', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 0, '7', null),
-('Olivia', 'Olivia456', 'yhnqwe', '0987321654', 2, 'Olivia456@gmail.com','基隆市安樂區中正路100號', '1979-10-22', '356611111111111', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 1, '8', null),
-('James', 'James123', '654321', '0921987654', 1, 'James123@gmail.com','嘉義市西區興業路一段20號', '1992-12-08', '353011133330000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 2, '9', null),
-('Ava', 'Ava789', 'plmokn', '0915935746', 1, 'Ava789@gmail.com','彰化縣彰化市中山路100號', '1987-02-18', '352800000000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 0, '10', null);
+INSERT INTO Member(memName, memAcc, memPwd, memMob, memGender, memMail, memAdd, memBd, memCard, provider, clientID, displayName, accessToken, refreshToken, tknExpireTime, creationTime, memberJoinTime, memStat, memSalt, memPic, memLogin, memLogout, memActiveTime) VALUES
+('John', 'John123', '123456', '0912345678', 1, 'John123@gmail.com','台北市大安區忠孝東路四段100號', '1990-01-15', '411235678901234', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 0, '1', null, 1, 0, '2024-05-05 18:00:00'),
+('Emma', 'Emma456', 'abcdef', '0987654321', 2, 'Emma456@gmail.com','新北市板橋區文化路二段50巷20號', '1985-03-28', '510510510510510', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 0,'2', null, 1, 0, '2024-05-05 18:00:00'),
+('Michael', 'Michael789', 'qwerty', '0965412378', 1, 'Michael789@gmail.com','台中市西屯區市政北二路100號', '1998-07-10', '378282246310005', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 2, '3', null, 1, 0, '2024-05-05 18:00:00'),
+('Emily', 'Emily987', '987654', '0945678912', 2, 'Emily987@gmail.com','台南市中西區民族路三段30號', '1982-09-05', '371449635398431', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 0, '4', null, 1, 0, '2024-05-05 18:00:00'),
+('Daniel', 'Daniel321', 'asdfgh', '0978912345', 1, 'Daniel321@gmail.com','高雄市左營區高鐵路100號', '1976-11-20', '378734493671000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 1, '5', null, 1, 0, '2024-05-05 18:00:00'),
+('Sophia', 'Sophia654', 'zxcvbn', '0921654987', 1, 'Sophia654@gmail.com','桃園市中壢區中央西路200號', '1995-04-12', '601111111111111', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 2, '6', null, 1, 0, '2024-05-05 18:00:00'),
+('Liam', 'Liam789', 'qazwsx', '0965498732', 2, 'Liam789@gmail.com','新竹市東區光復路二段50巷10號', '1988-06-30', '555555555555444', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 0, '7', null, 1, 0, '2024-05-05 18:00:00'),
+('Olivia', 'Olivia456', 'yhnqwe', '0987321654', 2, 'Olivia456@gmail.com','基隆市安樂區中正路100號', '1979-10-22', '356611111111111', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 1, '8', null, 1, 0, '2024-05-05 18:00:00'),
+('James', 'James123', '654321', '0921987654', 1, 'James123@gmail.com','嘉義市西區興業路一段20號', '1992-12-08', '353011133330000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 2, '9', null, 1, 0, '2024-05-05 18:00:00'),
+('Ava', 'Ava789', 'plmokn', '0915935746', 1, 'Ava789@gmail.com','彰化縣彰化市中山路100號', '1987-02-18', '352800000000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 0, '10', null, 1, 0, '2024-05-05 18:00:00');
 
 -- 創建會員通知表格
 CREATE TABLE Notice

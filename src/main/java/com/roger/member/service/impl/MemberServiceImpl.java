@@ -1,5 +1,6 @@
 package com.roger.member.service.impl;
 
+import com.roger.member.dto.LoginStateMember;
 import com.roger.member.repository.MemberRepository;
 import com.roger.member.entity.Member;
 import com.roger.member.service.MemberService;
@@ -24,6 +25,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpSession;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -323,6 +325,32 @@ public class MemberServiceImpl implements MemberService {
     public Member getMemberByMemNo(Integer memNo) {
         Optional<Member> member = memberRepository.findMemberByMemNo(memNo);
         return member.orElse(null);
+    }
+
+    /**
+     * U:
+     * 登入成功，修改會員登入狀態
+     */
+    @Override
+    public LoginStateMember loginState(Member member, HttpSession session) {
+        // Login 1:登入 0:登出 , Logout 1:登出 0:登入
+        // 四種情況 1.已登入未登出(帳號使用中) 2.已登入已登出(異常) 3.未登入已登出(帳號未登入) 4.未登入未登出(異常)
+        if (member.getMemLogin() == 0 || member.getMemLogout() == 1) {
+            member.setMemLogin(Byte.valueOf("1"));
+            member.setMemLogout(Byte.valueOf("0"));
+
+            // 返回更新過後的 member
+            member = memberRepository.save(member);
+        }
+
+        LoginStateMember loginStateMember = new LoginStateMember();
+        loginStateMember.setMemNo(member.getMemNo());
+        loginStateMember.setJessionid(session.getId());
+        loginStateMember.setMemLogin(member.getMemLogin());
+        loginStateMember.setMemLogout(member.getMemLogout());
+        loginStateMember.setMemActiveTime(member.getMemActiveTime());
+
+        return loginStateMember;
     }
 
     /**
