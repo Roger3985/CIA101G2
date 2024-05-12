@@ -35,6 +35,15 @@ public interface MemberService {
     public Member loginByMemAcc(String memAcc, String memPwd);
 
     /**
+     * 登入會員並驗證其電話和密碼。
+     *
+     * @param memMob 會員的註冊電話。
+     * @param memPwd 會員的註冊密碼。
+     * @return 登入成功後的 Member 物件，其中包含該會員的資料。
+     */
+    public Member loginByMemMob(String memMob, String memPwd);
+
+    /**
      * 編輯會員資料
      * 此方法接收一個 'Member' 類型的物件，表示需要更新的會員資料。
      * 方法執行後，將會根據提供的會員資料更新相應的會員訊息。
@@ -77,6 +86,14 @@ public interface MemberService {
      * @return 與該帳號相匹配的會員，如果找不到則返回 null。
      */
     public Member findByMemAcc(String memAcc);
+
+    /**
+     * 根據會員電話查找會員。
+     *
+     * @param memMob 要查找的會員的電話。
+     * @return 與該電話相匹配的會員，如果找不到則返回 null。
+     */
+    public Member findByMemMob(String memMob);
 
     /**
      * 查找所有會員。

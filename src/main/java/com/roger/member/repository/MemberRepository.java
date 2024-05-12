@@ -34,6 +34,16 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     public Member findByMemAcc(String memAcc);
 
     /**
+     * 根據會員的電話查詢會員。
+     * 此方法使用 JpaRepository 方法 'findByMemMob' 會以屬性 'memMob' 為設置條件搜尋，根據會員的電話查詢會員。
+     *
+     * @param memMob 會員的電話。
+     * @return 如果找到相應的會員，則返回該會員。
+     */
+    @Transactional
+    public Member findByMemMob(String memMob);
+
+    /**
      * 判斷指定的電子郵件是否存在於會員資料庫中。
      * 此方法使用 JpaRepository 的 'existsByMemMail'
      * 方法檢查會員資料庫中是否存在具有指定電子郵件的會員。

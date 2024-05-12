@@ -65,14 +65,11 @@
                                             <span th:text="*{noFun}" style="color: red;" class="error" id="noFun.errors"></span>
                                         </div>
                                         <div class="form-group mb-3">
-                                            <div class="row align-items-center">
-                                                <label for="email_1" class="form-label col">
-                                                    Email
-                                                    <span class="text-danger">*</span>
-                                                </label>
-                                                <span class="col ms-auto small text-end">
-                                                    <a th:href="@{loginMemberByAccount}">Login By Account</a></span></div>
-                                            <input type="email" id="email_1" class="form-control" placeholder="E-mail" name="identifier">
+                                            <label for="email_1" class="form-label col">
+                                                Account/Email
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" id="email_1" class="form-control" placeholder="請輸入帳號或信箱" name="identifier">
                                         </div>
                                         <div class="form-group mb-3">
                                             <div class="row align-items-center">
@@ -85,9 +82,10 @@
                                             <input type="password" class="form-control" id="exampleInputPassword01"
                                                 placeholder="*********" name="password">
                                         </div><!-- Checkbox -->
-                                        <div class="form-check mb-3"><input class="form-check-input" type="checkbox"
-                                                value="" id="form2Example3" checked="checked">
-                                            <label class="form-check-label" for="form2Example3">Remember me</label>
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" name="autoLoginMember" type="checkbox"
+                                                value="" id="customCheck" checked="checked">
+                                            <label class="form-check-label" for="customCheck">Remember me</label>
                                         </div>
                                         <div class="form-group text-center">
                                             <button type="submit" class="btn btn-primary w-100">Log in</button>
@@ -129,6 +127,16 @@
     <!-- script start -->
     <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
     <!-- End script start -->
+    <!-- jQuery code -->
+    <script>
+        $(document).ready(function() {
+            // 在頁面加載時檢查用戶的登錄狀態，然後設置複選框的值
+            var isLoggedIn = /* 根據用戶登錄狀態獲取 */;
+            $('#customCheck').prop('checked', isLoggedIn);
+            // 更新複選框的值
+            $('#customCheck').val(isLoggedIn ? "1" : "0");
+        });
+    </script>
 </body>
 
 </html>
