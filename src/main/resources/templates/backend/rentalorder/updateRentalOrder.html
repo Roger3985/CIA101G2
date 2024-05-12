@@ -27,8 +27,9 @@
                 <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
                 <li>輸入租借品訂單資料 : </li>
                 <form method="post" th:action="@{/backend/rentalorder/update}">
-                    <label>租借訂單編號</label>
+                    <label>租借訂單編號 : </label>
                     <input type="text" name="rentalOrdNo" th:value="${rentalOrdNo}" readonly>
+<!--                    <span th:name="rentalOrdNo" th:text="${rentalOrdNo}"></span>-->
                     <br>
                     <label>會員編號</label>
                     <input type="text" name="memNo" th:value="${memNo}" readonly>
@@ -76,10 +77,20 @@
                     <input type="text" name="rentalRealBackDate" th:value="${rentalRealBackDate}" readonly>
                     <br>
                     <label>付款狀態</label>
-                    <input type="text" name="rentalPayStat" th:value="${rentalPayStat}" readonly>
+                    <select name="rentalPayStat">
+                        <option th:value="0" th:text="未付款" th:selected="${rentalPayStat == 0}"></option>
+                        <option th:value="1" th:text="已付款" th:selected="${rentalPayStat == 1}"></option>
+                    </select>
                     <br>
                     <label>訂單狀態</label>
-                    <input type="text" name="rentalOrdStat" th:value="${rentalOrdStat}" readonly>
+                    <select name="rentalOrdStat">
+                        <option th:value="0" th:text="訂單取消" th:selected="${rentalOrdStat == 0}"></option>
+                        <option th:value="10" th:text="撿貨中" th:selected="${rentalOrdStat == 10}"></option>
+                        <option th:value="20" th:text="配送中" th:selected="${rentalOrdStat == 20}"></option>
+                        <option th:value="30" th:text="等待取貨" th:selected="${rentalOrdStat == 30}"></option>
+                        <option th:value="40" th:text="訂單成立" th:selected="${rentalOrdStat == 40}"></option>
+                        <option th:value="50" th:text="訂單完成" th:selected="${rentalOrdStat == 50}"></option>
+                    </select>
                     <br>
                     <label>歸還狀態</label>
                     <select name="rtnStat">
@@ -88,7 +99,7 @@
                     </select>
                     <br>
                     <label>歸還註記</label>
-                    <textarea name="rtnRemark" rows="4" cols="50" th:text="${rtnRemark}"></textarea>
+                    <textarea name="rtnRemark" rows="4" cols="50" th:text="${rtnRemark}" required></textarea>
                     <br>
                     <label>賠償金額</label>
                     <input type="text" name="rtnCompensation" th:value="${rtnCompensation}">

@@ -30,10 +30,16 @@
 
                 <li>用 PK 查詢 : </li>
                 <form method="get" th:action="@{getOnAny}">
-                    <label>選擇訂單編號</label>
-                    <select name="rentalOrdNo">
-                        <option th:each="order : ${orderList}" th:value="${order.getrentalOrdNo()}" th:text="${order.getrentalOrdNo()}"></option>
+                    <label>選擇會員編號</label>
+                    <select  id="memNo" name="memNo">
+                        <option th:each="order : ${orderList}" th:value="${order.getMember().getMemNo()}" th:text="${order.getMember().getMemNo()}"></option>
                     </select>
+                    <br>
+                    <label>選擇訂單編號</label>
+                    <select id="rentalOrdNo" name="rentalOrdNo">
+                        <option th:each="order : ${orderList}" th:value="${order.getrentalOrdNo()}" th:text="${order.getrentalOrdNo()}" th:data-member="${order.getMember().getMemNo()}"></option>
+                    </select>
+                    <br>
                     <button type="submit" >
                         送出查詢
                     </button>
@@ -42,9 +48,11 @@
 
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <div th:if="${getOnAny}">
-                            <div th:insert="~{/backend/rentalorder/listOneRentalOrder :: listOneOrder}"></div>
-                        </div>
+                        <tbody>
+                            <div th:if="${getOnAny}">
+                                <div th:insert="~{/backend/rentalorder/listOneRentalOrder :: listOneOrder}"></div>
+                            </div>
+                        </tbody>
                     </table>
                 </div>
 
@@ -72,6 +80,30 @@
 <script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 <!-- Page level custom scripts -->
 <script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
+
+<script>
+
+    $(function () {
+
+        $("#memNo").change(function () {
+
+            let memNo = $(this).val(); // 會員編號選項當前被選取的值
+            let rentalOrdNos = $("select#rentalOrdNo option"); // 選取所有訂單編號
+
+            rentalOrdNos.each(function () {
+                let option = $(this); // 其中一個訂單編號選項
+                if (option.attr("data-member") === memNo) { // 如果等於會員選項
+                    option.show();
+                } else {
+                    option.hide();
+                }
+            });
+
+        });
+
+    });
+
+</script>
 
 </body>
 </html>

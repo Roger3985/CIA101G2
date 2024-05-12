@@ -117,19 +117,8 @@
 
                     <hr>
 
-                    <label>輸入信用卡號</label>
-                    <input name="memCard" >
-                    <label>輸入有效日期</label>
-                    <select name="month">
-                        <option th:each="num : ${#numbers.sequence(1, 12)}" th:value="${num}" th:text="${num}"></option>
-                    </select>
-                    <select>
-                        <option th:each="num : ${#numbers.sequence(2024, 2040)}" th:value="${num}" th:text="${num}"></option>
-                    </select>
-                    <input name="last3" value="卡片背面末三碼">
-                    <br>
-                    <hr>
-                    <br>
+                    <!-- 動態加載的表單將放在這個div中 -->
+                    <div id="ecpayFormContainer"></div>
 
                 </div>
             </div>
@@ -163,12 +152,19 @@
 
     $(function() {
 
+        /*
+         * 拼接動態前置路徑 (為適應上雲時路徑變化)
+         * window.location.protocol = 當前頁面所使用之通訊協定 (ex : http: 、 https:)
+         * window.location.host = 當前頁面主機名和連接阜號 (ex : localhost:8080)
+        */
+        let baseUrl = window.location.protocol + "//" + window.location.host;
+        let apiPath = "/backend/rentalorder/";
         let totalPrice = 0;
         let items = [];
 
         function getAll() {
 
-            fetch('/backend/rentalorder/getFromCart?memNo=1')  // 發出 GET 請求取得所有購物車商品
+            fetch(baseUrl + apiPath + "getFromCart?memNo=1")  // 發出 GET 請求取得所有購物車商品
                 .then(response => response.json())  // 解析 JSON  這邊等於.then(function(response) {return response.json();})
                 .then(data => { // 這邊等於 .then(function(data) {...})
                     const table = $('#dataTable').DataTable();  // 初始化 DataTable
@@ -213,7 +209,7 @@
             let rentalNo = $(this).closest("tr").find("td:first").text();
             if (confirm("確定要刪除?")) {
 
-                fetch("/backend/rentalorder/deleteFromCart?memNo=1&rentalNo=" + rentalNo, {
+                fetch(baseUrl + apiPath + "deleteFromCart?memNo=1&rentalNo=" + rentalNo, {
                     method : "DELETE"
                 }).then(function (response) {
                     return response.text();
@@ -263,7 +259,7 @@
             console.log("Sending FormData: ", formData);  // 顯示原始數據
             console.log("JSON String of FormData: ", JSON.stringify(formData));
 
-            fetch("/backend/rentalorder/createOrder", {
+            fetch(baseUrl + apiPath + "createOrder", {
                 method : "POST",
                 headers : {
                     "Content-Type" : "application/json"
@@ -271,8 +267,10 @@
                 body : JSON.stringify(formData)
             }).then(function (response) {
                 return response.text();
-            }).then(function (redirectUrl) {
-                window.location.href = redirectUrl;
+            }).then(function (checkoutUrl) {
+                let formContainer = document.getElementById("ecpayFormContainer");
+                formContainer.innerHTML = checkoutUrl;
+                formContainer.querySelector('form').submit();
             });
 
 
@@ -282,7 +280,7 @@
 
 
 
-    });
+    }); // DOMcontentloaded結束
 
 
 
