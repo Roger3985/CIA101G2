@@ -34,19 +34,19 @@
     <!-- End Header -->
     <!-- Main -->
     <main>
-        <!-- Breadcrumb -->
+        <!-- 租借品專區 -->
         <div class="py-3 bg-gray-100">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6 my-2">
-                        <h1 class="m-0 h4 text-center text-lg-start">Shop</h1>
+                        <h1 class="m-0 h4 text-center text-lg-start">租借品專區</h1>
                     </div>
                     <div class="col-lg-6 my-2">
                         <ol class="breadcrumb m-0 small justify-content-center justify-content-lg-end">
                             <li class="breadcrumb-item">
-                                <a class="text-nowrap text-reset" href="#">Home</a>
+                                <a class="text-nowrap text-reset" th:href="@{index}">Home</a>
                             </li>
-                            <li class="breadcrumb-item text-nowrap active" aria-current="page">Product</li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page">租借品</li>
                         </ol>
                     </div>
                 </div>
@@ -71,102 +71,54 @@
                                 <div class="shop-sidebar-title">
                                     <a class="h5" data-bs-toggle="collapse" href="#shop_categories" role="button"
                                        aria-expanded="true" aria-controls="shop_categories">
-                                        Categories <i class="bi bi-chevron-up"></i>
+                                        租借品類別 <i class="bi bi-chevron-up"></i>
                                     </a>
                                 </div>
                                 <div class="shop-category-list collapse show" id="shop_categories">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link active">All Products</a>
+                                            <a href="#" class="nav-link active">所有租借品</a>
                                         </li>
+
                                         <li class="nav-item">
                                             <a href="#" class="nav-link">
-                                                Men <span>(25)</span>
+                                                男士 <span>(25)</span>
                                             </a>
                                             <a data-bs-toggle="collapse" href="#shop_cat_1" role="button"
                                                aria-expanded="false" aria-controls="shop_cat_1" class="s-icon"></a>
                                             <div class="collapse" id="shop_cat_1">
                                                 <ul class="nav nav-pills flex-column nav-hierarchy">
                                                     <li class="nav-item">
-                                                        <a href="#" class="nav-link">Topwear</a>
+                                                        <a th:href="@{listAllRental}" class="nav-link">成套西裝</a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a href="#" class="nav-link">Bottomwear</a>
+                                                        <a th:href="@{listAllRental}" class="nav-link">西裝外套</a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a href="#" class="nav-link">Footwear</a>
+                                                        <a th:href="@{listAllRental}" class="nav-link">西裝褲</a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a href="#" class="nav-link">Sports &amp;Active Wear</a>
+                                                        <a th:href="@{listAllRental}" class="nav-link">飾品</a>
                                                     </li>
                                                 </ul>
                                             </div>
                                         </li>
                                         <li class="nav-item">
                                             <a href="#" class="nav-link">
-                                                Women <span>(40)</span>
+                                                女士 <span>(40)</span>
                                             </a>
                                             <a data-bs-toggle="collapse" href="#shop_cat_2" role="button"
                                                aria-expanded="false" aria-controls="shop_cat_2" class="s-icon"></a>
                                             <div class="collapse" id="shop_cat_2">
                                                 <ul class="nav nav-pills flex-column nav-hierarchy">
                                                     <li class="nav-item">
-                                                        <a href="#" class="nav-link">Indian &amp;Fusion Wear</a>
+                                                        <a th:href="@{listAllRental}" class="nav-link">婚紗</a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a href="#" class="nav-link">Western Wear</a>
+                                                        <a th:href="@{listAllRental}" class="nav-link">禮服</a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a href="#" class="nav-link">Footwear</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a href="#" class="nav-link">Beauty &amp;Personal Care</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                Kids <span>(35)</span>
-                                            </a>
-                                            <a data-bs-toggle="collapse" href="#shop_cat_3" role="button"
-                                               aria-expanded="false" aria-controls="shop_cat_3" class="s-icon"></a>
-                                            <div class="collapse" id="shop_cat_3">
-                                                <ul class="nav nav-pills flex-column nav-hierarchy">
-                                                    <li class="nav-item">
-                                                        <a href="#" class="nav-link">Boys Clothing</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a href="#" class="nav-link">Girls Clothing</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a href="#" class="nav-link">Boys Footwear</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a href="#" class="nav-link">Girls Footwear</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                Home &amp;Living <span>(80)</span>
-                                            </a>
-                                            <a data-bs-toggle="collapse" href="#shop_cat_4" role="button"
-                                               aria-expanded="false" aria-controls="shop_cat_4" class="s-icon"></a>
-                                            <div class="collapse" id="shop_cat_4">
-                                                <ul class="nav nav-pills flex-column nav-hierarchy">
-                                                    <li class="nav-item">
-                                                        <a href="#" class="nav-link">Bed Linen &amp;Furnishing</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a href="#" class="nav-link">Bath</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a href="#" class="nav-link">Home Decor</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a href="#" class="nav-link">Kitchen &amp;Table</a>
+                                                        <a th:href="@{listAllRental}" class="nav-link">飾品</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -175,7 +127,7 @@
                                 </div>
                             </div>
                             <!-- End Categories -->
-                            <!-- gender -->
+                            <!-- 性別 -->
                             <div class="shop-sidebar-block">
                                 <div class="shop-sidebar-title">
                                     <a class="h5" data-bs-toggle="collapse" href="#shop_Gender" role="button"
@@ -188,28 +140,18 @@
                                         <li class="custom-radio">
                                             <input class="custom-control-input" id="gen1" type="radio" name="Gender"
                                                    checked="checked">
-                                            <label class="custom-control-label" for="gen1">Men</label>
+                                            <label class="custom-control-label" for="gen1">男士</label>
                                         </li>
                                         <li class="custom-radio">
                                             <input class="custom-control-input" id="gen2" type="radio"
                                                    name="Gender">
-                                            <label class="custom-control-label" for="gen2">Women</label>
-                                        </li>
-                                        <li class="custom-radio">
-                                            <input class="custom-control-input" id="gen3" type="radio"
-                                                   name="Gender">
-                                            <label class="custom-control-label" for="gen3">Boys</label>
-                                        </li>
-                                        <li class="custom-radio">
-                                            <input class="custom-control-input" id="gen4" type="radio"
-                                                   name="Gender">
-                                            <label class="custom-control-label" for="gen4">Girls</label>
+                                            <label class="custom-control-label" for="gen2">女士</label>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                             <!-- End Gender -->
-                            <!-- Color -->
+                            <!-- 顏色 -->
                             <div class="shop-sidebar-block">
                                 <div class="shop-sidebar-title">
                                     <a class="h5" data-bs-toggle="collapse" href="#shop_Color" role="button"
@@ -248,90 +190,77 @@
                                                 <span class="text-body">Red</span>
                                             </label>
                                         </li>
-                                        <li class="custom-checkbox checkbox-color">
-                                            <input class="custom-control-input" id="colorsidebar5" type="checkbox"
-                                                   disabled="">
-                                            <label class="custom-control-label" style="color: #17a2b8;"
-                                                   for="colorsidebar5">
-                                                <span class="text-body">Cyan</span>
-                                            </label>
-                                        </li>
                                     </ul>
                                 </div>
                             </div>
                             <!-- End Color -->
-                            <!-- Brands -->
+                            <!-- 大小size -->
                             <div class="shop-sidebar-block">
                                 <div class="shop-sidebar-title">
                                     <a class="h5" data-bs-toggle="collapse" href="#shop_brand" role="button"
                                        aria-expanded="true" aria-controls="shop_brand">
-                                        Brands <i class="bi bi-chevron-up"></i>
+                                        Size <i class="bi bi-chevron-up"></i>
                                     </a>
                                 </div>
                                 <div class="shop-sidebar-list collapse show" id="shop_brand">
                                     <ul>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input" id="brand1" type="checkbox">
-                                            <label class="custom-control-label" for="brand1">Adidas</label>
+                                            <label class="custom-control-label" for="brand1">XS</label>
                                         </li>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input" id="brand2" type="checkbox">
-                                            <label class="custom-control-label" for="brand2">Levis</label>
+                                            <label class="custom-control-label" for="brand2">S</label>
                                         </li>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input" id="brand3" type="checkbox">
-                                            <label class="custom-control-label" for="brand3">Puma</label>
+                                            <label class="custom-control-label" for="brand3">M</label>
                                         </li>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input" id="brand4" type="checkbox"
                                                    disabled="">
-                                            <label class="custom-control-label" for="brand4">Roadster</label>
+                                            <label class="custom-control-label" for="brand4">L</label>
                                         </li>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input" id="brand5" type="checkbox">
-                                            <label class="custom-control-label" for="brand5">Converse</label>
+                                            <label class="custom-control-label" for="brand5">XL</label>
+                                        </li>
+                                        <li class="custom-checkbox">
+                                            <input class="custom-control-input" id="brand6" type="checkbox">
+                                            <label class="custom-control-label" for="brand6">2L</label>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                             <!-- End Brands -->
-                            <!-- Brands -->
+                            <!-- 租借金額 -->
                             <div class="shop-sidebar-block">
                                 <div class="shop-sidebar-title">
                                     <a class="h5" data-bs-toggle="collapse" href="#shop_price" role="button"
                                        aria-expanded="true" aria-controls="shop_price">
-                                        Price <i class="bi bi-chevron-up"></i>
+                                        租借金額 <i class="bi bi-chevron-up"></i>
                                     </a>
                                 </div>
                                 <div class="shop-sidebar-list collapse show" id="shop_price">
                                     <ul>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input" id="price1" type="checkbox">
-                                            <label class="custom-control-label" for="price1">$10.00 - $49.00</label>
+                                            <label class="custom-control-label" for="price1">$2000</label>
                                         </li>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input" id="price2" type="checkbox">
-                                            <label class="custom-control-label" for="price2">$50.00 - $99.00</label>
-                                        </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="price3" type="checkbox">
-                                            <label class="custom-control-label" for="price3">$100.00 -
-                                                $199.00</label>
-                                        </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="price4" type="checkbox">
-                                            <label class="custom-control-label" for="price4">$200.00 and Up</label>
+                                            <label class="custom-control-label" for="price2">$4000</label>
                                         </li>
                                     </ul>
                                     <div class="d-flex align-items-center pt-3">
                                         <!-- Input -->
                                         <input type="number" class="form-control form-control-sm"
-                                               placeholder="$10.00" min="10">
+                                               placeholder="$0" min="10">
                                         <!-- Divider -->
                                         <div class="text-gray-350 mx-2">‒</div>
                                         <!-- Input -->
                                         <input type="number" class="form-control form-control-sm"
-                                               placeholder="$350.00" max="350">
+                                               placeholder="$4000" max="350">
                                     </div>
                                 </div>
                             </div>
@@ -339,66 +268,57 @@
                         </div>
                     </div>
                     <!-- End Sidebar -->
-                    <!-- Product Box -->
-                    <div class="col-lg-8 col-xl-9">
-                        <div class="shop-top-bar d-flex pb-3">
+                    <!-- 商品列表 -->
+                    <div class="col-lg-8 col-xl-9" th:each="rental : ${rentalListData}" th:object="${rental}">
+                        <div class="shop-top-bar d-flex pb-3"><!-- 切換顯示&排序的區塊 -->
+                            <!-- 列表呈現方式 (網格or直列) -->
                             <div class="layout-change">
-                                <!-- Mobile Toggle -->
+                                <!-- 手機模式  Mobile Toggle -->
                                 <button class="btn btn-sm d-lg-none" type="button" data-bs-toggle="offcanvas"
                                         data-bs-target="#shop_filter" aria-controls="shop_filter">
                                     <i class="fs-4 lh-1 bi bi-justify-left"></i>
                                 </button>
-                                <!-- End Mobile Toggle -->
-                                <a class="btn btn-white btn-sm" href="shop.html">
+                                <!-- 手機模式 結束 Mobile Toggle -->
+                                <a class="btn btn-white btn-sm" href="#">
                                     <i class="bi bi-grid"></i>
                                 </a>
                                 <a class="btn btn-white btn-sm active" href="#">
                                     <i class="bi bi-view-stacked"></i>
                                 </a>
                             </div>
+                            <!-- 列表呈現方式 (網格or直列)  結束 -->
+                            <!--  選擇排序   -->
                             <div class="shortby-dropdown ms-auto">
                                 <div class="dropdown">
                                     <a class="btn btn-none btn-sm border dropdown-toggle text-mode" href="#"
                                        role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
-                                       aria-expanded="false">Short by</a>
+                                       aria-expanded="false">排序方式</a>
                                     <ul class="dropdown-menu dropdown-menu-end shadow"
                                         aria-labelledby="dropdownMenuLink">
                                         <li>
-                                            <a class="dropdown-item" href="#">Featured</a>
+                                            <a class="dropdown-item" href="#">最新</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="#">Best selling</a>
+                                            <a class="dropdown-item" href="#">最熱門</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="#">Alphabetically, A-Z</a>
+                                            <a class="dropdown-item" href="#">價格由低到高</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="#">Alphabetically, Z-A</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="#">Price, low to high</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="#">Price, high to low</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="#">Date, old to new</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="#">Date, new to old</a>
+                                            <a class="dropdown-item" href="#">價格由高到低</a>
                                         </li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div><!--  選擇排序  結束 -->
                         </div>
-                        <!-- Product Box -->
+                        <!-- 第一個商品 -->
                         <div class="row g-0 mb-4">
                             <div class="col-sm-4 position-relative">
                                 <div class="badge-ribbon position-absolute top-0 mt-3">
                                     <span class="badge bg-danger">Sale</span>
                                 </div>
-                                <a href="#">
-                                    <img class="border img-fluid w-100" src="../../assets/img/fashion/product-1.jpg"
+                                <a th:href="@{showOneRental}"><!-- 轉至單一品項查詢 -->
+                                    <img class="border img-fluid w-100" th:src="@{/icons/frontend/rental/gown1.jpg}"
                                          title="" alt="">
                                 </a>
                             </div>
@@ -411,46 +331,37 @@
                                     <i class="bi bi-star"></i>
                                 </div>
                                 <h5 class="product-title">
-                                    <a class="text-reset" href="#">Fine-knit sweater</a>
+                                    <a class="text-reset" th:href="@{showOneRental}"><span th:text="${rental.rentalName}"></span></a>
                                 </h5>
                                 <div class="m-0">
-                                    <p class="small mb-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                                        ad minim veniam.</p>
+                                    <p class="small mb-2"><span>編號：</span><span th:text="${rental.rentalNo}"></span></p>
                                 </div>
                                 <div class="product-price pb-3">
-                                        <span class="text-primary fs-4">
-                                            $28.<small>50</small>
-                                        </span>
-                                    <del class="fs-sm text-muted">
-                                        $38.<small>50</small>
-                                    </del>
+                                        <span class="text-primary fs-4" th:text="'$' + ${rentalCategory.rentalDesPrice}"></span>
+                                    <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del>
                                 </div>
                                 <div>
-                                    <a href="#" class="btn btn-mode">
+                                    <a href="#" class="btn btn-mode"><!--  加入購物車  -->
                                         <i class="fi-shopping-cart"></i>
                                     </a>
-                                    <a href="#" class="btn btn-primary">
+                                    <a href="#" class="btn btn-primary"><!--  加入我的最愛  -->
                                         <i class="fi-heart"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-primary">
-                                        <i class="fi-repeat"></i>
                                     </a>
                                     <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
                                        href="javascript:void(0)" class="btn btn-primary">
-                                        <i class="fi-eye"></i>
+                                        <i class="fi-eye"></i><!--  跳窗顯示該商品畫面  -->
                                     </a>
                                 </div>
                             </div>
                         </div>
-                        <!-- End Product Box -->
-                        <!-- Product Box -->
+                        <!-- 第一個商品  結束 -->
+                        <!-- 第二個商品 -->
                         <div class="row g-0 mb-4">
                             <div class="col-sm-4 position-relative">
                                 <div class="badge-ribbon position-absolute top-0 mt-3">
                                     <span class="badge bg-danger">Sale</span>
                                 </div>
-                                <a href="#">
+                                <a th:href="@{showOneRental}"><!-- 轉至單一品項查詢 -->
                                     <img class="border img-fluid w-100" src="../../assets/img/fashion/product-2.jpg"
                                          title="" alt="">
                                 </a>
@@ -464,20 +375,14 @@
                                     <i class="bi bi-star"></i>
                                 </div>
                                 <h5 class="product-title">
-                                    <a class="text-reset" href="#">Fine-knit sweater</a>
+                                    <a class="text-reset" href="#"><span th:text="${rental.rentalName}"></span></a>
                                 </h5>
                                 <div class="m-0">
-                                    <p class="small mb-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                                        ad minim veniam.</p>
+                                    <p class="small mb-2">租借品介紹</p>
                                 </div>
                                 <div class="product-price pb-3">
-                                        <span class="text-primary fs-4">
-                                            $28.<small>50</small>
-                                        </span>
-                                    <del class="fs-sm text-muted">
-                                        $38.<small>50</small>
-                                    </del>
+                                        <span class="text-primary fs-4" th:text="'$' + ${rentalCategory.rentalDesPrice}"></span>
+                                    <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del>
                                 </div>
                                 <div>
                                     <a href="#" class="btn btn-mode">
@@ -486,9 +391,6 @@
                                     <a href="#" class="btn btn-primary">
                                         <i class="fi-heart"></i>
                                     </a>
-                                    <a href="#" class="btn btn-primary">
-                                        <i class="fi-repeat"></i>
-                                    </a>
                                     <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
                                        href="javascript:void(0)" class="btn btn-primary">
                                         <i class="fi-eye"></i>
@@ -496,14 +398,14 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- End Product Box -->
-                        <!-- Product Box -->
+                        <!-- 第二個商品  結束 -->
+                        <!-- 第三個商品   -->
                         <div class="row g-0 mb-4">
                             <div class="col-sm-4 position-relative">
                                 <div class="badge-ribbon position-absolute top-0 mt-3">
                                     <span class="badge bg-danger">Sale</span>
                                 </div>
-                                <a href="#">
+                                <a th:href="@{showOneRental}"><!-- 轉至單一品項查詢 -->
                                     <img class="border img-fluid w-100" src="../../assets/img/fashion/product-3.jpg"
                                          title="" alt="">
                                 </a>
@@ -517,20 +419,14 @@
                                     <i class="bi bi-star"></i>
                                 </div>
                                 <h5 class="product-title">
-                                    <a class="text-reset" href="#">Fine-knit sweater</a>
+                                    <a class="text-reset" href="#"><span th:text="${rental.rentalName}"></span></a>
                                 </h5>
                                 <div class="m-0">
-                                    <p class="small mb-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                                        ad minim veniam.</p>
+                                    <p class="small mb-2">租借品介紹</p>
                                 </div>
                                 <div class="product-price pb-3">
-                                        <span class="text-primary fs-4">
-                                            $28.<small>50</small>
-                                        </span>
-                                    <del class="fs-sm text-muted">
-                                        $38.<small>50</small>
-                                    </del>
+                                        <span class="text-primary fs-4" th:text="'$' + ${rentalCategory.rentalDesPrice}"></span>
+                                    <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del>
                                 </div>
                                 <div>
                                     <a href="#" class="btn btn-mode">
@@ -539,9 +435,7 @@
                                     <a href="#" class="btn btn-primary">
                                         <i class="fi-heart"></i>
                                     </a>
-                                    <a href="#" class="btn btn-primary">
-                                        <i class="fi-repeat"></i>
-                                    </a>
+
                                     <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
                                        href="javascript:void(0)" class="btn btn-primary">
                                         <i class="fi-eye"></i>
@@ -549,14 +443,14 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- End Product Box -->
-                        <!-- Product Box -->
+                        <!-- 第三個商品  結束 -->
+                        <!-- 第四個商品   -->
                         <div class="row g-0 mb-4">
                             <div class="col-sm-4 position-relative">
                                 <div class="badge-ribbon position-absolute top-0 mt-3">
                                     <span class="badge bg-danger">Sale</span>
                                 </div>
-                                <a href="#">
+                                <a th:href="@{showOneRental}"><!-- 轉至單一品項查詢 -->
                                     <img class="border img-fluid w-100" src="../../assets/img/fashion/product-4.jpg"
                                          title="" alt="">
                                 </a>
@@ -570,20 +464,14 @@
                                     <i class="bi bi-star"></i>
                                 </div>
                                 <h5 class="product-title">
-                                    <a class="text-reset" href="#">Fine-knit sweater</a>
+                                    <a class="text-reset" href="#"><span th:text="${rental.rentalName}"></span></a>
                                 </h5>
                                 <div class="m-0">
-                                    <p class="small mb-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                                        ad minim veniam.</p>
+                                    <p class="small mb-2">租借品介紹</p>
                                 </div>
                                 <div class="product-price pb-3">
-                                        <span class="text-primary fs-4">
-                                            $28.<small>50</small>
-                                        </span>
-                                    <del class="fs-sm text-muted">
-                                        $38.<small>50</small>
-                                    </del>
+                                        <span class="text-primary fs-4" th:text="'$' + ${rentalCategory.rentalDesPrice}"></span>
+                                    <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del>
                                 </div>
                                 <div>
                                     <a href="#" class="btn btn-mode">
@@ -592,9 +480,7 @@
                                     <a href="#" class="btn btn-primary">
                                         <i class="fi-heart"></i>
                                     </a>
-                                    <a href="#" class="btn btn-primary">
-                                        <i class="fi-repeat"></i>
-                                    </a>
+
                                     <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
                                        href="javascript:void(0)" class="btn btn-primary">
                                         <i class="fi-eye"></i>
@@ -602,14 +488,14 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- End Product Box -->
-                        <!-- Product Box -->
+                        <!-- 第四個商品 結束  -->
+                        <!-- 第五個商品   -->
                         <div class="row g-0 mb-4">
                             <div class="col-sm-4 position-relative">
                                 <div class="badge-ribbon position-absolute top-0 mt-3">
                                     <span class="badge bg-danger">Sale</span>
                                 </div>
-                                <a href="#">
+                                <a th:href="@{showOneRental}"><!-- 轉至單一品項查詢 -->
                                     <img class="border img-fluid w-100" src="../../assets/img/fashion/product-5.jpg"
                                          title="" alt="">
                                 </a>
@@ -623,20 +509,14 @@
                                     <i class="bi bi-star"></i>
                                 </div>
                                 <h5 class="product-title">
-                                    <a class="text-reset" href="#">Fine-knit sweater</a>
+                                    <a class="text-reset" href="#"><span th:text="${rental.rentalName}"></span></a>
                                 </h5>
                                 <div class="m-0">
-                                    <p class="small mb-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                                        ad minim veniam.</p>
+                                    <p class="small mb-2">租借品介紹</p>
                                 </div>
                                 <div class="product-price pb-3">
-                                        <span class="text-primary fs-4">
-                                            $28.<small>50</small>
-                                        </span>
-                                    <del class="fs-sm text-muted">
-                                        $38.<small>50</small>
-                                    </del>
+                                        <span class="text-primary fs-4" th:text="'$' + ${rentalCategory.rentalDesPrice}"></span>
+                                    <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del>
                                 </div>
                                 <div>
                                     <a href="#" class="btn btn-mode">
@@ -645,9 +525,7 @@
                                     <a href="#" class="btn btn-primary">
                                         <i class="fi-heart"></i>
                                     </a>
-                                    <a href="#" class="btn btn-primary">
-                                        <i class="fi-repeat"></i>
-                                    </a>
+
                                     <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
                                        href="javascript:void(0)" class="btn btn-primary">
                                         <i class="fi-eye"></i>
@@ -655,14 +533,14 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- End Product Box -->
-                        <!-- Product Box -->
+                        <!-- 第五個商品 結束  -->
+                        <!-- 第六個商品  -->
                         <div class="row g-0 mb-4">
                             <div class="col-sm-4 position-relative">
                                 <div class="badge-ribbon position-absolute top-0 mt-3">
                                     <span class="badge bg-danger">Sale</span>
                                 </div>
-                                <a href="#">
+                                <a th:href="@{showOneRental}"><!-- 轉至單一品項查詢 -->
                                     <img class="border img-fluid w-100" src="../../assets/img/fashion/product-6.jpg"
                                          title="" alt="">
                                 </a>
@@ -676,20 +554,14 @@
                                     <i class="bi bi-star"></i>
                                 </div>
                                 <h5 class="product-title">
-                                    <a class="text-reset" href="#">Fine-knit sweater</a>
+                                    <a class="text-reset" href="#"><span th:text="${rental.rentalName}"></span></a>
                                 </h5>
                                 <div class="m-0">
-                                    <p class="small mb-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                                        ad minim veniam.</p>
+                                    <p class="small mb-2">租借品介紹</p>
                                 </div>
                                 <div class="product-price pb-3">
-                                        <span class="text-primary fs-4">
-                                            $28.<small>50</small>
-                                        </span>
-                                    <del class="fs-sm text-muted">
-                                        $38.<small>50</small>
-                                    </del>
+                                        <span class="text-primary fs-4" th:text="'$' + ${rentalCategory.rentalDesPrice}"></span>
+                                    <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del>
                                 </div>
                                 <div>
                                     <a href="#" class="btn btn-mode">
@@ -698,17 +570,15 @@
                                     <a href="#" class="btn btn-primary">
                                         <i class="fi-heart"></i>
                                     </a>
-                                    <a href="#" class="btn btn-primary">
-                                        <i class="fi-repeat"></i>
-                                    </a>
+
                                     <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
                                        href="javascript:void(0)" class="btn btn-primary">
                                         <i class="fi-eye"></i>
                                     </a>
                                 </div>
                             </div>
-                        </div>
-                        <!-- End Product Box -->
+                        </div><!-- 第六個商品 結束  -->
+                        <!-- 分頁區  -->
                         <div class="shop-bottom-bar d-flex align-items-center mt-3">
                             <div>Showing: 1 - 12 of 17</div>
                             <div class="ms-auto">
@@ -734,9 +604,9 @@
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div><!-- 分頁區  結束  -->
                     </div>
-                    <!-- End Product Box -->
+                    <!-- 商品列表結束 -->
                 </div>
             </div>
         </section>

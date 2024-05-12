@@ -69,8 +69,8 @@ CREATE TABLE Member
     creationTime   DATETIME     NULL,
     memberJoinTime DATETIME     NULL,
     memStat        TINYINT      NOT NULL DEFAULT 0,
-    memSalt        VARCHAR(12)  NOT NULL,
-    memPic	       LONGBLOB 		NULL
+    memSalt        VARCHAR(12)  NULL,
+    memPic	       LONGBLOB 	NULL
 );
 
 INSERT INTO Member(memName, memAcc, memPwd, memMob, memGender, memMail, memAdd, memBd, memCard, provider, clientID, displayName, accessToken, refreshToken, tknExpireTime, creationTime, memberJoinTime, memStat, memSalt, memPic) VALUES

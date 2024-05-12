@@ -172,7 +172,7 @@ public class Member implements java.io.Serializable {
         this.memNo = memNo;
     }
 
-    public Member(Integer memNo, String memName, String memAcc, String memPwd, String memMob, Byte memGender, String memMail, String memAdd, Date memBd, String memCard, Byte provider, String clientID, String displayName, String accessToken, String refreshToken, Timestamp tknExpireTime, Timestamp creationTime, Timestamp memberJoinTime, Byte memStat, byte[] memPic) {
+    public Member(Integer memNo, String memName, String memAcc, String memPwd, String memMob, Byte memGender, String memMail, String memAdd, Date memBd, String memCard, Byte provider, String clientID, String displayName, String accessToken, String refreshToken, Timestamp tknExpireTime, Timestamp creationTime, Timestamp memberJoinTime, Byte memStat) {
         this.memNo = memNo;
         this.memName = memName;
         this.memAcc = memAcc;
@@ -192,10 +192,9 @@ public class Member implements java.io.Serializable {
         this.creationTime = creationTime;
         this.memberJoinTime = memberJoinTime;
         this.memStat = memStat;
-        this.memPic = memPic;
     }
 
-        public Member(Integer memNo, String memName, String memAcc, String memPwd, String memMob, Byte memGender, String memMail, String memAdd, Date memBd, String memCard, Byte provider, String clientID, String displayName, String accessToken, String refreshToken, Timestamp tknExpireTime, Timestamp creationTime, Timestamp memberJoinTime, Byte memStat, String memSalt, byte[] memPic) {
+    public Member(Integer memNo, String memName, String memAcc, String memPwd, String memMob, Byte memGender, String memMail, String memAdd, Date memBd, String memCard, Byte provider, String clientID, String displayName, String accessToken, String refreshToken, Timestamp tknExpireTime, Timestamp creationTime, Timestamp memberJoinTime, Byte memStat, String memSalt, byte[] memPic) {
         this.memNo = memNo;
         this.memName = memName;
         this.memAcc = memAcc;
