@@ -24,6 +24,7 @@ public interface Constants {
      */
     String loginPage = "/frontend/member/loginMember";
     String loginPage2 = "/frontend/member/loginMemberByAccount";
+    String loginPage3 = "/frontend/member/loginPage";
 
     /**
      * 註冊前台會員路徑

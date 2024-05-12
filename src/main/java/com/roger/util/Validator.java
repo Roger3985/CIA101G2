@@ -24,6 +24,7 @@ public class Validator {
         return accountRegex.matcher(account).find();
     }
 
+
     /**
      * 驗證請求的 url 是否為靜態資源或為登入、註冊、忘記密碼等網頁
      *

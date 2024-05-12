@@ -109,6 +109,26 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
+     * 登入會員並驗證其電話和密碼。
+     */
+    @Override
+    public Member loginByMemMob(String memMob, String memPwd) {
+        // 根據會員的電話尋找會員資料
+        Member getMemMob = memberRepository.findByMemMob(memMob);
+
+        // 如果找不到會員資料，則返回該會員資料，即 null
+        if (getMemMob == null) {
+            return getMemMob;
+        }
+
+        // 核對密碼(比較輸入的密碼經哈希後的結果與會員資料中的密碼是否匹配)
+        getMemMob = (hashPassword(memPwd).equals(getMemMob.getMemPwd())) ? getMemMob : null;
+
+        // 返回會員資料(如果密碼匹配則返回會員資料；否則返回null)
+        return getMemMob;
+    }
+
+    /**
      * 編輯會員資料
      */
     @Override
@@ -146,6 +166,14 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member findByMemAcc(String memAcc) {
         return memberRepository.findByMemAcc(memAcc);
+    }
+
+    /**
+     * 根據會員電話查找會員。
+     */
+    @Override
+    public Member findByMemMob(String memMob) {
+        return memberRepository.findByMemMob(memMob);
     }
 
     /**
