@@ -16,10 +16,10 @@ public interface Constants {
     int FIRST_ORDER = 1;
     int SECOND_ORDER = 2;
     int THIRD_ORDER = 3;
-    int PARTJOB = 4;
-    int FULLTIME = 3;
-    int MANAGER = 2;
-    int BOSS = 1;
+    int PARTJOB = 1;
+    int FULLTIME = 2;
+    int MANAGER = 3;
+    int BOSS = 4;
 
     /**
      * 首頁路徑
