@@ -66,7 +66,7 @@ public class FilterConfig {
     public FilterRegistrationBean<Filter> registration3() {
         FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>(autoLoginMemberFilter);
         registration.addUrlPatterns("/frontend/member/*");
-        registration.setOrder(FIRST_ORDER);
+        registration.setOrder(Constants.FIRST_ORDER);
         return registration;
     }
 
@@ -74,7 +74,7 @@ public class FilterConfig {
     public FilterRegistrationBean<Filter> registration4() {
         FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>(loginStateMemberFilter);
         registration.addUrlPatterns("/frontend/member/*");
-        registration.setOrder(SECOND_ORDER);
+        registration.setOrder(Constants.SECOND_ORDER);
         return registration;
     }
 
