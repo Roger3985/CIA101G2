@@ -69,7 +69,7 @@ CREATE TABLE Member
     creationTime   DATETIME     NULL,
     memberJoinTime DATETIME     NULL,
     memStat        TINYINT      NOT NULL DEFAULT 0,
-    memSalt        VARCHAR(12)  NOT NULL,
+    memSalt        VARCHAR(12)  NULL,
     memPic	       LONGBLOB     NULL,
     memLogin       TINYINT      NULL,
     memLogout      TINYINT      NULL,

@@ -56,12 +56,29 @@
                             <li><a class="dropdown-item" href="../pages/policy.html">商品頁面</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown nav-item"><a href="#" class="nav-link">租借品</a> <label
-                            class="px-dropdown-toggle mob-menu"></label>
-                        <ul class="dropdown-menu left shadow-lg">
-                            <li><a class="dropdown-item" href="../shop-01/shop.html">瀏覽商品</a></li>
-                            <li><a class="dropdown-item" href="../pages/policy.html">商品頁面</a></li>
-                        </ul>
+                    <li class="dropdown dropdown-full nav-item"><a th:href="@{rentalShop}" class="nav-link">租借品</a>
+                        <label class="px-dropdown-toggle mob-menu"></label>
+                        <div class="dropdown-menu dropdown-mega-menu py-0">
+                            <div class="container p-3 p-lg-4">
+                                <div class="row gy-4">
+                                    <div class="col-6 col-md-3 col-xl-2">
+                                        <h6 class="sm-title-02 mb-3 fw-500">男士</h6>
+                                        <ul class="list-unstyled link-list-style-02 mb-4">
+                                            <li><a th:href="@{rentalShop}">成套西裝</a></li>
+                                            <li><a th:href="@{rentalShop}">西裝外套</a></li>
+                                            <li><a th:href="@{rentalShop}">西裝褲</a></li>
+                                            <li><a th:href="@{rentalShop}">飾品</a></li>
+                                        </ul>
+                                        <h6 class="sm-title-02 mb-3 fw-500">女士</h6>
+                                        <ul class="list-unstyled link-list-style-02 m-0">
+                                            <li><a th:href="@{rentalShop}">婚紗</a></li>
+                                            <li><a th:href="@{rentalShop}">禮服</a></li>
+                                            <li><a th:href="@{rentalShop}">飾品</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </li>
                     <li class="dropdown nav-item"><a href="#" class="nav-link">專欄文章</a> <label
                             class="px-dropdown-toggle mob-menu"></label>
