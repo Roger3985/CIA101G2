@@ -1,16 +1,25 @@
-package com.listener;
+package com.listener.backend;
+
+import com.ren.administrator.dto.LoginState;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.annotation.WebListener;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 
-@WebListener
-public class CookieListener implements HttpSessionAttributeListener {
+@Component
+public class AdmListener implements HttpSessionAttributeListener {
     // 預計使用來確認登入狀況
 
     @Override
     public void attributeAdded(HttpSessionBindingEvent se) {
-        System.out.println("資料好像被放進去囉");
+//        System.out.println("資料好像被放進去囉");
+//        HttpSession session = se.getSession();
+//        LoginState loginState = (LoginState) session.getAttribute("loginState");
+//        if () {
+//
+//        }
     }
 
     @Override

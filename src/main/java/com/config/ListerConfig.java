@@ -1,7 +1,7 @@
 package com.config;
 
 import com.listener.InitializerListener;
-import com.listener.backend.OnlineUsers;
+import com.listener.OnlineUsers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;

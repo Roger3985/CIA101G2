@@ -3,6 +3,7 @@ package com.filter.backend;
 import com.ren.administrator.dto.LoginState;
 import com.ren.administrator.service.Impl.AdministratorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.FilterChain;
@@ -25,6 +26,7 @@ import static com.ren.util.Validator.validateURL;
  * 3.delete/xxx/deleteYyy
  */
 @Component
+@Order(THIRD_ORDER)
 public class FunctionFilter extends HttpFilter {
 
     @Autowired
@@ -41,7 +43,7 @@ public class FunctionFilter extends HttpFilter {
 //        if (!validateURL(requestURI) && (loginState = (LoginState) session.getAttribute("loginState")) != null) {
 //            System.out.println("被FunctionFilter過濾的" + requestURI);
 //            // 獲取職位編號，後續用來校對職位
-//            // 職位 1.老闆(神) 2.經理 3.正職員工 4.打工仔
+//            // 職位 1.老闆 2.經理 3.正職員工 4.打工仔
 //            Integer titleNo = loginState.getTitleNo();
 //            // 1.老闆可以做到CRUD
 //            // 2.經理可以做到CRU
@@ -54,6 +56,8 @@ public class FunctionFilter extends HttpFilter {
 //                case MANAGER -> ;
 //                case BOSS -> ;
 //            }
+//
+//
 //        }
 
         chain.doFilter(req, res);

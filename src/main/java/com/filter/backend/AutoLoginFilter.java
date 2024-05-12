@@ -54,16 +54,14 @@ public class AutoLoginFilter extends HttpFilter {
             LoginState loginState = null;
 
             System.out.println(session);
-            // 搜尋使用者cookie確認是否有管理員相關資訊
+            // 搜尋使用者cookie確認是否有登入相關資訊的cookie
             Optional<Cookie> userCookie = Optional.ofNullable(req.getCookies())
                     .flatMap(this::userCookie);
 
-            /**
-             * (有無登入(有無LoginState) && 有無設定自動登入(有無autoLogin Cookie))
-             * 因考慮使用者可能會關閉Cookie與不使用自動登入功能，且優先判斷cookie有較高的安全性問題，將autoLogin的確認放在 or 判斷式的最後面，
-             * 優先確認使用者登入狀態
-             * 如果都沒有，導向登入頁面
-             */
+            // (有無登入(有無LoginState) && 有無設定自動登入(有無autoLogin Cookie))
+            // 因考慮使用者可能會關閉Cookie與不使用自動登入功能，且優先判斷cookie有較高的安全性問題，將autoLogin的確認放在 or 判斷式的最後面，
+            // 優先確認使用者登入狀態
+            // 如果都沒有，導向登入頁面
             if ((loginState = (LoginState) session.getAttribute("loginState")) == null && !userCookie.isPresent()) {
 //                System.out.println("來看看是誰被過濾, session:" + session + ", loginState:" + loginState + ", cookie:" + userCookie);
                 System.out.println("還沒登入哦!");
@@ -111,7 +109,7 @@ public class AutoLoginFilter extends HttpFilter {
      * @param cookie 傳入Cookie物件，並呼叫Cookie的getter方法確認使否有符合登入資訊的Cookie
      * @return 如果兩者都符合則返回true，沒有則返回false
      */
-    public boolean check(Cookie cookie) {
+    private boolean check(Cookie cookie) {
         return "autoLogin".equals(cookie.getName()) // 找尋名為"autoLogin"的Cookie
                 && stringRedisTemplate.opsForValue() // 以Cookie的Value確認Redis資料庫內有無存入此登入相關資料
                 .get(cookie.getValue()) != null;
