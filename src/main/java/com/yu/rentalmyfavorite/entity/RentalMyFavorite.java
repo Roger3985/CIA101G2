@@ -3,6 +3,7 @@ package com.yu.rentalmyfavorite.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.roger.member.entity.Member;
 import com.yu.rental.entity.Rental;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -15,7 +16,8 @@ public class RentalMyFavorite implements java.io.Serializable {
     @EmbeddedId   //加上@EmbeddedId 標註，必須override此類別的hashcode()、equals()
     private CompositeDetail compositeKey;
 
-    @Column(name = "rentalfavtime", columnDefinition = "DATETIME")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")
+    @Column(name = "rentalfavtime")
     private Timestamp rentalFavTime;
 
     @ManyToOne
@@ -27,6 +29,15 @@ public class RentalMyFavorite implements java.io.Serializable {
     @JsonManagedReference
     @JoinColumn(name = "memno", referencedColumnName = "memno", insertable = false, updatable = false)
     private Member member;
+
+    public RentalMyFavorite(){}
+
+    public RentalMyFavorite(CompositeDetail compositeKey, Timestamp rentalFavTime, Rental rental, Member member) {
+        this.compositeKey = compositeKey;
+        this.rentalFavTime = rentalFavTime;
+        this.rental = rental;
+        this.member = member;
+    }
 
     public CompositeDetail getCompositeKey() {
         return compositeKey;

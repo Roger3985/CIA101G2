@@ -17,9 +17,6 @@ import java.util.Set;
 public class Rental implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
-    public Rental(Integer rentalNo, String rentalName, BigDecimal rentalPrice, Integer rentalSize, String rentalColor,
-                  String rentalInfo, Byte rentalStat) {
-    }
 
     // 分組驗證 (ex. Add時是以自動分配的數字，但Update也許對應不到。固可使用此方法)
     public static interface AddRentalGroup{};
@@ -94,6 +91,10 @@ public class Rental implements java.io.Serializable {
     private Set<RentalPic> rentalPics;
 
     public Rental() {
+    }
+
+    public Rental(Integer rentalNo, String rentalName, BigDecimal rentalPrice, Integer rentalSize, String rentalColor,
+                  String rentalInfo, Byte rentalStat) {
     }
 
     public Rental(Integer rentalNo, String rentalName,BigDecimal rentalPrice, Integer rentalSize, String rentalColor, String rentalInfo, Byte rentalStat,

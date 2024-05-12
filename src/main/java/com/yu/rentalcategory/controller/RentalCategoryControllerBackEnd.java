@@ -51,7 +51,7 @@ public class RentalCategoryControllerBackEnd {
 	}
 	
 	
-	//顯示後台 listOneRental.html
+	//顯示後台 showOneRental.html
 	@GetMapping("listOneRentalCategory")  //required = true：請求參數不可為null(預設)
 	public String listOneRentalCat(@RequestParam(value = "rentalCatNo", required = true) Integer rentalCatNo, ModelMap model) {
 		//建立返回數據的對象
