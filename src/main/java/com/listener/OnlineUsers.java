@@ -1,4 +1,4 @@
-package com.listener.backend;
+package com.listener;
 
 import org.springframework.stereotype.Component;
 
