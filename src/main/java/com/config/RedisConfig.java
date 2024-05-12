@@ -14,6 +14,8 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import java.util.Map;
+
 @Configuration
 public class RedisConfig {
 
@@ -131,6 +133,19 @@ public class RedisConfig {
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper().enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+    }
+
+    @Bean("cartList")
+    public RedisTemplate<String, Map<String, String>> cartListRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Map<String, String>> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        redisTemplate.setKeySerializer(new GenericToStringSerializer<>(Integer.class));
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer(objectMapper()));
+        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        redisTemplate.setHashValueSerializer(new StringRedisSerializer()); // 使用StringRedisSerializer来序列化内部的Map
+
+        redisTemplate.afterPropertiesSet();
+        return redisTemplate;
     }
 
 }

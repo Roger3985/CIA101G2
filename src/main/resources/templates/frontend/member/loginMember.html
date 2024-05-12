@@ -130,11 +130,13 @@
     <!-- jQuery code -->
     <script>
         $(document).ready(function() {
-            // 在頁面加載時檢查用戶的登錄狀態，然後設置複選框的值
-            var isLoggedIn = /* 根據用戶登錄狀態獲取 */;
-            $('#customCheck').prop('checked', isLoggedIn);
-            // 更新複選框的值
-            $('#customCheck').val(isLoggedIn ? "1" : "0");
+            $('#customCheck').change(function() {
+                if (this.checked) {
+                    $(this).val("1");
+                } else {
+                    $(this).val("0");
+                }
+            });
         });
     </script>
 </body>
