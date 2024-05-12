@@ -72,7 +72,6 @@ import com.iting.cart.entity.CartRedis;
 import com.iting.cart.redis.JedisPoolUtil;
 import com.iting.cart.service.CartService;
 
-import com.iting.productorderdetail.entity.ProductOrderDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;

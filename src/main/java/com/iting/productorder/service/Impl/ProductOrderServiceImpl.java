@@ -1,5 +1,7 @@
 package com.iting.productorder.service.Impl;
 
+import com.chihyun.coupon.entity.Coupon;
+import com.chihyun.coupon.model.CouponService;
 import com.iting.cart.entity.CartRedis;
 import com.iting.cart.service.CartService;
 import com.iting.productorder.dao.ProductOrderRepository;
@@ -28,6 +30,8 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     CartService cartService;
     @Autowired
     ProductOrderDetailService productOrderDetailService;
+    @Autowired
+    CouponService couponService;
     @Override
     public List<ProductOrder> findByMember(Integer memNo){
         return repository.findByMember(memNo);
@@ -45,8 +49,8 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         // 創建一個 Set 來存儲訂單明細
         Set<ProductOrderDetail> orderDetails = new HashSet<>();
         ProductOrder productOrder = new ProductOrder();
-//        int orderNoHash = Math.abs(UUID.randomUUID().hashCode());
-//        productOrder.setProductOrdNo(orderNoHash);
+        int orderNoHash = Math.abs(UUID.randomUUID().hashCode());
+        productOrder.setProductOrdNo(orderNoHash);
         productOrder.setMemNo(cartRedis.getMemNo());
         BigDecimal productAllPrice = BigDecimal.ZERO; // Initialize productAllPrice
         // 將購物車商品轉換為訂單明細
@@ -54,7 +58,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
             ProductOrderDetail orderDetail = new ProductOrderDetail();
             // 設定訂單明細相關屬性
             ProductOrderDetail.CompositeDetail compositeKey = new ProductOrderDetail.CompositeDetail();
-//            compositeKey.setProductOrdNo(orderNoHash);
+            compositeKey.setProductOrdNo(orderNoHash);
             compositeKey.setProductNo(cartItem.getProductNo());
             orderDetail.setCompositeKey(compositeKey);
             orderDetail.setProductPrice(cartItem.getProductPrice());
@@ -100,6 +104,34 @@ productOrder.setProductOrdTime(Timestamp.valueOf(LocalDateTime.now()));
         Optional<ProductOrder> optional = repository.findById(productOrdNo);
         return optional.orElse(null);  // public T orElse(T other) : 如果值存在就回傳其值，否則回傳other的值
     }
+    @Override
+    public ProductOrder getProductOrderByCoupon(Integer coupNo, Integer productOrdNo) {
+        // 根據訂單編號查詢訂單詳情
+        ProductOrder productOrder = getOneProductOrder(productOrdNo);
+
+        // 根據優惠券編號查詢優惠券信息
+        Coupon coupon = couponService.getOneCoupon(coupNo);
+
+        // 更新訂單中的優惠券編號並計算相應的優惠金額
+        if (productOrder != null && coupon != null) {
+            // 更新優惠券編號
+            productOrder.setCoupon(coupon);
+
+            // 更新優惠金額和實付金額
+            BigDecimal productDisc = productOrder.getProductDisc();
+            BigDecimal productRealPrice = productOrder.getProductRealPrice();
+
+            // 更新訂單的優惠金額
+            productOrder.setProductDisc(productDisc);
+
+            // 更新訂單的實付金額
+            productOrder.setProductRealPrice(productRealPrice);
+
+        }
+
+        return productOrder;
+    }
+
 
 
 }

@@ -1,225 +1,286 @@
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>訂單資料修改</title>
-
-    <style type="text/css">
-
-        button {
-            padding: 5px;
-        }
-        form {
-            display: table;
-        }
-        form div {
-            display: table-row;
-        }
-        label, input, span, select {
-            display: table-cell;
-            margin: 5px;
-            text-align: left;
-        }
-        input[type=text], input[type=password], select, textarea {
-            width: 200px;
-            margin: 5px;
-        }
-        form div div {
-            display: table-cell;
-        }
-        .center {
-            margin-left: auto;
-            margin-right: auto;
+    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+    <style>
+        .error {
+            font-size: 12px; /* 調整字體大小 */
         }
     </style>
 </head>
-<body>
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                <form method="post" th:action="@{update}" th:object="${productOrder}">
+                    <div class="mb-3 row">
+                        <label for="productOrderSelect" class="col-sm-2 col-form-label">商品訂單編號</label>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
-    <div align="center"> <h2>訂單資料修改 - update_productorder_input.html</h2>
-        <h3><a class="navbar-brand" th:href="@{/backend/productorder/selectProductOrder}"><img th:src="@{/images/back1.gif}">回查詢頁</a></h3></div>
-</nav>
+                        <div class="col-sm-3">
+                            <select size="1" name="productOrdNo" id="productOrderSelect" th:field="*{productOrdNo}" th:onchange="|updateProductOrderInstantly()|">
+                                <option th:each="productOrder : ${productorderListData}" th:value="${productOrder.productOrdNo}" th:text="${productOrder.productOrdNo}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="memNo" class="col-sm-2 col-form-label">會員編號</label>
+                        <div class="col-sm-3">
+                            <select size="1" name="memNo" id="memNo" th:field="*{member.memNo}">
+                                <option th:each="member : ${memberList}" th:value="${member.memNo}" th:text="${member.memNo} + ' : ' + ${member.memName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="productByrName" class="col-sm-2 col-form-label">訂購人姓名</label>
+                        <div class="col-sm-3">
+                            <input type="text" th:field="*{productByrName}" class="form-control" name="productByrName" id="productByrName">
+                            <span th:if="${#fields.hasErrors('productByrName')}" th:errors="*{productByrName}" class="error" id="productByrName.errors"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="productByrPhone" class="col-sm-2 col-form-label">訂購人手機號碼</label>
+                        <div class="col-sm-3">
+                            <input type="text" th:field="*{productByrPhone}" class="form-control" name="productByrPhone" id="productByrPhone">
+                            <span th:if="${#fields.hasErrors('productByrPhone')}" th:errors="*{productByrPhone}" class="error" id="productByrPhone.errors"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="productByrPhone" class="col-sm-2 col-form-label">訂購人Email</label>
+                        <div class="col-sm-3">
+                            <input type="email" th:field="*{productByrEmail}" class="form-control" name="productByrEmail" id="productByrEmail">
+                            <span th:if="${#fields.hasErrors('productByrEmail')}" th:errors="*{productByrEmail}" class="error" id="productByrEmail.errors"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="productRcvName" class="col-sm-2 col-form-label">收件人姓名</label>
+                        <div class="col-sm-3">
+                            <input type="text" th:field="*{productRcvName}" class="form-control" name="productRcvName" id="productRcvName">
+                            <span th:if="${#fields.hasErrors('productRcvName')}" th:errors="*{productRcvName}" class="error" id="productRcvName.errors"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="productRcvName" class="col-sm-2 col-form-label">收件人手機號碼</label>
+                        <div class="col-sm-3">
+                            <input type="text" th:field="*{productRcvPhone}" class="form-control" name="productRcvPhone" id="productRcvPhone">
+                            <span th:if="${#fields.hasErrors('productRcvPhone')}" th:errors="*{productRcvPhone}" class="error" id="productRcvPhone.errors"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="productTakeMethod" class="col-sm-2 col-form-label">取貨方式</label>
+                        <div class="col-sm-3">
+                            <select size="1" name="productTakeMethod" id="productTakeMethod" th:field="*{productTakeMethod}">
+                                <option th:value="1" th:text="店取" /></option>
+                                <option th:value="2" th:text="宅配" /></option>
+                                <option th:value="3" th:text="超商取貨" /></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="productAddr" class="col-sm-2 col-form-label">宅配住址</label>
+                        <div class="col-sm-3">
+                            <input type="text" th:field="*{productAddr}" class="form-control" name="productAddr" id="productAddr">
+                            <span th:if="${#fields.hasErrors('productAddr')}" th:errors="*{productAddr}" class="error" id="productAddr.errors"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="productPayMethod" class="col-sm-2 col-form-label">付款方式</label>
+                        <div class="col-sm-3">
+                            <select size="1" name="productPayMethod" id="productPayMethod" th:field="*{productPayMethod}">
+                                <option th:value="1" th:text="綠界" /></option>
+                                <option th:value="2" th:text="現場付款" /></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="productAllPrice" class="col-sm-2 col-form-label">訂單總金額</label>
+                        <div class="col-sm-3">
+                            <input type="text" th:field="*{productAllPrice}" class="form-control" name="productAllPrice" id="productAllPrice">
+                            <span th:if="${#fields.hasErrors('productAllPrice')}" th:errors="*{productAllPrice}" class="error" id="productAllPrice.errors"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="coupNo" class="col-sm-2 col-form-label">優惠券編號</label>
+                        <div class="col-sm-3">
+                            <input type="text" th:field="*{coupon.coupNo}" class="form-control" name="coupNo" id="coupNo" th:onchange="|updatePriceInstantly()|">
+                            <span th:if="${#fields.hasErrors('coupon.coupNo')}" th:errors="*{coupon.coupNo}" class="error" id="coupon.coupNo.errors"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="productDisc" class="col-sm-2 col-form-label">優惠券折價總和</label>
+                        <div class="col-sm-3">
+                            <input type="text" th:field="*{productDisc}" class="form-control" name="productDisc" id="productDisc">
+                            <span th:if="${#fields.hasErrors('productDisc')}" th:errors="*{productDisc}" class="error" id="productDisc.errors"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="productRealPrice" class="col-sm-2 col-form-label">訂單實付金額</label>
+                        <div class="col-sm-3">
+                            <input type="text" th:field="*{productRealPrice}" class="form-control" name="productRealPrice" id="productRealPrice">
+                            <span th:if="${#fields.hasErrors('productRealPrice')}" th:errors="*{productRealPrice}" class="error" id="productRealPrice.errors"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="productOrdTime" class="col-sm-2 col-form-label">下單時間</label>
+                        <div class="col-sm-3">
+                            <input type="text" th:field="*{productOrdTime}" class="form-control" name="productOrdTime" id="productOrdTime">
+                            <span th:if="${#fields.hasErrors('productOrdTime')}" th:errors="*{productOrdTime}" class="error" id="productOrdTime.errors"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="productOrdStat" class="col-sm-2 col-form-label">訂單狀態</label>
+                        <div class="col-sm-3">
+                            <select size="1" name="productOrdStat" id="productOrdStat" th:field="*{productOrdStat}">
+                                <option th:value="0" th:text="訂單取消" />
+                                <option th:value="10" th:text="揀貨中" />
+                                <option th:value="20" th:text="配送中" />
+                                <option th:value="30" th:text="等待取貨" />
+                                <option th:value="40" th:text="訂單成立" />
+                                <option th:value="50" th:text="訂單完成" />
+                                <option th:value="81" th:text="申請換貨" />
+                                <option th:value="82" th:text="換貨中" />
+                                <option th:value="83" th:text="申請退貨退款" />
+                                <option th:value="84" th:text="退款中" />
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="productStat" class="col-sm-2 col-form-label">付款狀態</label>
+                        <div class="col-sm-3">
+                            <select size="1" name="productStat" id="productStat" th:field="*{productStat}">
+                                <option th:value="0" th:text="未付款" />
+                                <option th:value="1" th:text="已付款" />
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <div><button type="submit" id="submit"> 送出修改 </button></div>
+                    </div>
+                </form>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
 
-<div align="center">
-    <h3><b>所有欄位皆為必填欄位</b></h3>
-    <form th:action="@{update}" method="post" th:object="${productOrder}" enctype="multipart/form-data">
-        <div>
-            <label>商品訂單編號:</label>
-            <input type="text" th:field="*{productOrdNo}" style="border:0px ; font-weight: bold;" readonly /><br/>
-
-        </div>
-
-        <div>
-            <label>會員編號:</label>
-            <input type="text" th:field="*{member.memNo}" style="border:0px ; font-weight: bold;" readonly /><br/>
-        </div>
-
-        <div>
-            <label>訂購人姓名:</label>
-            <input type="text" th:field="*{productByrName}" onclick="hideContent('productByrName.errors');" /><br/>
-            <span  th:if="${#fields.hasErrors('productByrName')}" th:errors="*{productByrName}" class="error" id="productByrName.errors"></span>
-        </div>
-
-        <div>
-            <label>訂購人手機號碼:</label>
-            <input type="text" th:field="*{productByrPhone}" onclick="hideContent('productByrPhone.errors');" /><br/>
-            <span  th:if="${#fields.hasErrors('productByrPhone')}" th:errors="*{productByrPhone}" class="error" id="productByrPhone.errors"></span>
-        </div>
-
-        <div>
-            <label>訂購人Email:</label>
-            <input type="email" th:field="*{productByrEmail}" onclick="hideContent('productByrEmail.errors');" /><br/>
-            <span  th:if="${#fields.hasErrors('productByrEmail')}" th:errors="*{productByrEmail}" class="error" id="productByrEmail.errors"></span>
-        </div>
-        <div>
-            <label>收件人姓名:</label>
-            <input type="text" th:field="*{productRcvName}" onclick="hideContent('productRcvName.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('productRcvName')}" th:errors="*{productRcvName}" class="error" id="productRcvName.errors"></span>
-        </div>
-        <div>
-            <label>收件人手機號碼:</label>
-            <input type="text" th:field="*{productRcvPhone}" onclick="hideContent('productRcvPhone.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('productRcvPhone')}" th:errors="*{productRcvPhone}" class="error" id="productRcvPhone.errors"></span>
-        </div>
-        <div>
-            <label>取貨方式:</label>
-            <select th:field="*{productTakeMethod}">
-                <option th:value="1" th:text="店取" />
-                <option th:value="2" th:text="宅配" />
-                <option th:value="3" th:text="超商取貨" />
-            </select><br/>
-            <span th:if="${#fields.hasErrors('productTakeMethod')}" th:errors="*{productTakeMethod}" class="error" id="productTakeMethod.errors"></span>
-        </div>
-        <div>
-            <label>宅配住址:</label>
-            <input type="text" th:field="*{productAddr}" onclick="hideContent('productAddr.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('productAddr')}" th:errors="*{productAddr}" class="error" id="productAddr.errors"></span>
-        </div>
-        <div>
-            <label>付款方式:</label>
-            <select th:field="*{productPayMethod}">
-                <option th:value="1" th:text="綠界" />
-                <option th:value="2" th:text="現場付款" />
-            </select><br/>
-        </div>
-        <div>
-            <label>訂單總金額:</label>
-            <input type="text" th:field="*{productAllPrice}" onclick="hideContent('productAllPrice.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('productAllPrice')}" th:errors="*{productAllPrice}" class="error" id="productAllPrice.errors"></span>
-        </div>
-        <div>
-            <label>優惠券編號:</label>
-            <input type="text" th:field="*{coupon.coupNo}" onclick="hideContent('coupon.coupNo.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('coupon.coupNo')}" th:errors="*{coupon.coupNo}" class="error" id="coupon.coupNo.errors"></span>
-        </div>
-        <div>
-            <label>優惠券折價總和:</label>
-            <input type="text" th:field="*{productDisc}" style="border:0px ; font-weight: bold;" readonly /><br/>
-        </div>
-        <div>
-            <label>訂單實付金額:</label>
-            <input type="text" th:field="*{productRealPrice}" style="border:0px ; font-weight: bold;" readonly /><br/>
-        </div>
-        <div>
-            <label>下單時間:</label>
-            <input type="text" th:field="*{productOrdTime}" style="border:0px ; font-weight: bold;" readonly/><br/>
-            <span th:if="${#fields.hasErrors('productOrdTime')}" th:errors="*{productOrdTime}" class="error" id="productOrdTime.errors"></span>
-        </div>
-        <div>
-            <label>訂單狀態:</label>
-            <select th:field="*{productOrdStat}">
-                <option th:value="0" th:text="訂單取消" />
-                <option th:value="10" th:text="揀貨中" />
-                <option th:value="20" th:text="配送中" />
-                <option th:value="30" th:text="等待取貨" />
-                <option th:value="40" th:text="訂單成立" />
-                <option th:value="50" th:text="訂單完成" />
-                <option th:value="81" th:text="申請換貨" />
-                <option th:value="82" th:text="換貨中" />
-                <option th:value="83" th:text="申請退貨退款" />
-                <option th:value="84" th:text="退款中" />
-            </select>
-        </div>
-        <div>
-            <label>付款狀態:</label>
-            <select th:field="*{productStat}">
-                <option th:value="0" th:text="未付款" />
-                <option th:value="1" th:text="已付款" />
-            </select>
-            <br/>
-        </div>
-
-        <div>
-            <div></div>
-            <div><button type="submit" id="submit"> 送出修改 </button></div>
-            <div></div>
-        </div>
-    </form>
-
+        <!-- Footer -->
+        <footer th:replace="backend/component/bottom :: bottom"></footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
 </div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
+
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+
+<script th:inline="javascript">
+    // Get傳遞
+    // function updateProductInstantly() {
+    //     var selectedProductNo = document.getElementById('productSelect').value;
+    //
+    //     var xhr = new XMLHttpRequest();
+    //     xhr.open('GET', '/backend/product/updateProduct/' + encodeURIComponent(selectedProductNo), true); // 將POST改為GET，並在URL中傳遞productNo
+    //     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    //     xhr.onload = function () {
+    //         if (xhr.status === 200) {
+    //             var productDetails = JSON.parse(xhr.responseText);
+    //
+    //             document.getElementById('productCatNo').value = productDetails.productCategory.productCatNo;
+    //             document.getElementById('productName').value = productDetails.productName;
+    //             document.getElementById('productInfo').value = productDetails.productInfo;
+    //             document.getElementById('productSize').value = productDetails.productSize;
+    //             document.getElementById('productColor').value = productDetails.productColor;
+    //             document.getElementById('productPrice').value = productDetails.productPrice;
+    //             document.getElementById('productStat').value = productDetails.productStat;
+    //             document.getElementById('productSalQty').value = productDetails.productSalQty;
+    //             document.getElementById('productComPeople').value = productDetails.productComPeople;
+    //             document.getElementById('productComScore').value = productDetails.productComScore;
+    //
+    //             // 手動更新URL
+    //             window.location.href = '/backend/product/updateProduct/' + encodeURIComponent(selectedProductNo);
+    //         } else {
+    //             console.error('Failed to fetch product details');
+    //         }
+    //     };
+    //
+    //     xhr.send();
+    // }
+
+    // 舊的寫法，用post傳遞
+    function updateProductOrderInstantly() {
+        var selectedProductOrderNo = document.getElementById('productOrderSelect').value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/backend/productorder/getProductOrderInstantly?productOrdNo=' + encodeURIComponent(selectedProductOrderNo), true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var productOrderDetails = JSON.parse(xhr.responseText);
+
+                document.getElementById('memNo').value = productOrderDetails.memNo;
+                document.getElementById('productByrName').value = productOrderDetails.productByrName;
+                document.getElementById('productByrPhone').value = productOrderDetails.productByrPhone;
+                document.getElementById('productByrEmail').value = productOrderDetails.productByrEmail;
+                document.getElementById('productRcvName').value = productOrderDetails.productRcvName;
+                document.getElementById('productRcvPhone').value = productOrderDetails.productRcvPhone;
+                document.getElementById('productAddr').value = productOrderDetails.productAddr;
+                document.getElementById('productAllPrice').value = productOrderDetails.productAllPrice;
+                document.getElementById('coupNo').value = productOrderDetails.coupon.coupNo;
+                document.getElementById('productDisc').value = productOrderDetails.productDisc;
+                document.getElementById('productRealPrice').value = productOrderDetails.productRealPrice;
+                document.getElementById('productOrdTime').value = productOrderDetails.productOrdTime;
+                document.getElementById('productOrdStat').value = productOrderDetails.productOrdStat;
+                document.getElementById('productStat').value = productOrderDetails.productStat;
+            } else {
+                console.error('Failed to fetch productorder details');
+            }
+        };
+
+        xhr.send();
+    }
+    function updatePriceInstantly() {
+        var selectedcoupNo = document.getElementById('coupNo').value;
+        var selectedProductOrderNo = document.getElementById('productOrderSelect').value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/backend/productorder/getcoupNoInstantly?coupNo=' + encodeURIComponent(selectedcoupNo) + '&productOrdNo=' + encodeURIComponent(selectedProductOrderNo)+ '&productOrdNo=' + encodeURIComponent(selectedProductOrderNo), true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var productOrdercoupNo = JSON.parse(xhr.responseText);
 
 
-<!-- JavaScript part -->
-<!--<script type="text/javascript">-->
-<!--    //清除提示信息-->
-<!--    function hideContent(d) {-->
-<!--        document.getElementById(d).style.display = "none";-->
-<!--    }-->
+                document.getElementById('productDisc').value = productOrdercoupNo.productDisc;
+                document.getElementById('productRealPrice').value = productOrdercoupNo.productRealPrice;
 
-<!--    //照片上傳-預覽用-->
-<!--    var filereader_support = typeof FileReader != 'undefined';-->
-<!--    if (!filereader_support) {-->
-<!--        alert("No FileReader support");-->
-<!--    }-->
-<!--    acceptedTypes = {-->
-<!--        'image/png' : true,-->
-<!--        'image/jpeg' : true,-->
-<!--        'image/gif' : true-->
-<!--    };-->
-<!--    function previewImage() {-->
-<!--        var upfile1 = document.getElementById("upFiles");-->
-<!--        upfile1.addEventListener("change", function(event) {-->
-<!--            var files = event.target.files || event.dataTransfer.files;-->
-<!--            for (var i = 0; i < files.length; i++) {-->
-<!--                previewfile(files[i])-->
-<!--            }-->
-<!--        }, false);-->
-<!--    }-->
-<!--    function previewfile(file) {-->
-<!--        if (filereader_support === true && acceptedTypes[file.type] === true) {-->
-<!--            var reader = new FileReader();-->
-<!--            reader.onload = function(event) {-->
-<!--                var image = new Image();-->
-<!--                image.src = event.target.result;-->
-<!--                image.width = 100;-->
-<!--                image.height = 75;-->
-<!--                image.border = 2;-->
-<!--                if (blob_holder.hasChildNodes()) {-->
-<!--                    blob_holder.removeChild(blob_holder.childNodes[0]);-->
-<!--                }-->
-<!--                blob_holder.appendChild(image);-->
-<!--            };-->
-<!--            reader.readAsDataURL(file);-->
-<!--            document.getElementById('submit').disabled = false;-->
-<!--        } else {-->
-<!--            blob_holder.innerHTML = "<div  style='text-align: left;'>" + "● filename: " + file.name-->
-<!--                + "<br>" + "● ContentTyp: " + file.type-->
-<!--                + "<br>" + "● size: " + file.size + "bytes"-->
-<!--                + "<br>" + "● 上傳ContentType限制: <b> <font color=red>image/png、image/jpeg、image/gif </font></b></div>";-->
-<!--            document.getElementById('submit').disabled = true;-->
-<!--        }-->
-<!--    }-->
-<!--</script>-->
+            } else {
+                console.error('Failed to fetch productorder details');
+            }
+        };
+
+        xhr.send();
+    }
+</script>
 
 </body>
 </html>

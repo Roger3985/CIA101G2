@@ -14,6 +14,7 @@ public void addProductOrder(ProductOrder productOrder);
     public ProductOrder getOneProductOrder(Integer productOrdNo);
     public List<ProductOrder> getAll();
     public List<ProductOrder> findByMember(Integer memNo);
+    public ProductOrder getProductOrderByCoupon(Integer coupNo,Integer productOrdNo);
 
 //////////////////////////////////////////////////////////////////////////////////
 
