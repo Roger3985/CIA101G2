@@ -1,9 +1,8 @@
 package com.ren.productcategory.controller;
 
-import com.ren.product.entity.Product;
 import com.ren.productcategory.entity.ProductCategory;
 
-import com.ren.productcategory.service.ProductCategoryServiceImpl;
+import com.ren.productcategory.service.impl.ProductCategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BeanPropertyBindingResult;

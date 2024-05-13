@@ -8,6 +8,7 @@ import com.iting.productorderdetail.entity.ProductOrderDetail;
 import com.ren.productcategory.entity.ProductCategory;
 import com.ren.productpicture.entity.ProductPicture;
 import com.ren.productreview.entity.ProductReview;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -58,12 +59,17 @@ public class Product {
     @Column(name = "productcompeople")
     private Integer productComPeople;
     @NotEmpty(message = "請輸入商品評價分數")
+    @Digits(integer = 1, fraction = 2)
     @DecimalMin(value = "0.01", message = "評分請填0.00 ~ 5.00的分數")
     @DecimalMax(value = "5.00", message = "評分請填0.00 ~ 5.00的分數")
     @Column(name = "productcomscore")
     private BigDecimal productComScore;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = "yyyy-MM-dd HH:mm:ss")
+    @Future(message = "上架時間不能為過去時間")
     @Column(name = "productonshelf")
     private Timestamp productOnShelf;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = "yyyy-MM-dd HH:mm:ss")
+    @Future(message = "下架時間不能為過去時間")
     @Column(name = "productoffshelf")
     private Timestamp productOffShelf;
 

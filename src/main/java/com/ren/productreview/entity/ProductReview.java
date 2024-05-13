@@ -6,9 +6,10 @@ import com.ren.authorityfunction.entity.AuthorityFunction;
 import com.ren.product.entity.Product;
 import com.ren.title.entity.Title;
 import com.roger.member.entity.Member;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -28,9 +29,13 @@ public class ProductReview {
     @Column(name = "review")
     private String review;
     @NotEmpty(message = "請選擇評分")
+    @Min(value = 1, message = "請選擇1~5顆星的評價")
+    @Max(value = 5, message = "請選擇1~5顆星的評價")
     @Column(name = "productscore")
     private Integer productScore;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = "yyyy-MM-dd HH:mm:ss")
     @NotEmpty(message = "時間請勿空白")
+    @Future(message = "評論時間不能為過去時間")
     @Column(name = "reviewtime")
     private Timestamp reviewTime;
 

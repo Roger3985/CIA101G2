@@ -36,6 +36,14 @@ public interface AdministratorService_interface {
 //    void backup(List<Administrator> list);
 
     /**
+     * 用來確認員工出缺勤狀態的方法，每當員工登入時，將今天第一次更新的活動時間存入Redis資料庫
+     * 之後登入或登出就不會再更新了，並於首頁顯示出缺勤狀態，設置於每天24:00資料消失
+     *
+     * @param admNo 傳入員工編號
+     */
+    void punch(Integer admNo);
+
+    /**
      * R:
      * 查詢單筆管理員資料
      *
@@ -88,6 +96,13 @@ public interface AdministratorService_interface {
     Administrator updateAdministrator(Administrator administrator);
 
     /**
+     * 修改密碼
+     *
+     * @param administrator 傳入管理員Entity，用於後續更新密碼使用
+     */
+    void changePwd(Administrator administrator);
+
+    /**
      * U:
      * 登入成功，修改管理員登入狀態，在Redis資料庫中增加登入狀態緩存
      *
@@ -134,9 +149,13 @@ public interface AdministratorService_interface {
 //    public String photoSticker(Integer admNo);
 //    // 修改圖片
 //    public void ChangePhoto(Integer admNo, byte[] admPhoto);
-//    // 註冊(含驗證)
-//    public List<String> register(Administrator administrator);
 
-
+    /**
+     * 用於找回密碼時寄出預設密碼的信件
+     *
+     * @param email 輸入註冊信箱
+     * @return 返回布林值，成功重導回登入畫面、失敗則返回
+     */
+    boolean sendEmail(String email);
 
 }

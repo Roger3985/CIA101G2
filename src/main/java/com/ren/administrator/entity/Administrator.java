@@ -7,6 +7,7 @@ import com.firesnoopy.studioorder.entity.StudioOrder;
 import com.ren.title.entity.Title;
 import com.roger.columnarticle.entity.ColumnArticle;
 import com.roger.report.entity.Report;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -40,6 +41,7 @@ public class Administrator {
     @JsonManagedReference
     @JoinColumn(name = "titleno", referencedColumnName = "titleno")
     private Title title;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")
     @NotEmpty(message = "入職時間不可留空!")
     @Column(name = "admhiredate")
     private Date admHireDate;
@@ -53,6 +55,7 @@ public class Administrator {
     @NotEmpty(message = "請選擇登出狀態")
     @Column(name = "admlogout")
     private Byte admLogout;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "admactivetime")
     private Timestamp admActiveTime;
 

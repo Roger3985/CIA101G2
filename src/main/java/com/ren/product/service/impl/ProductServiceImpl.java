@@ -1,7 +1,8 @@
-package com.ren.product.service;
+package com.ren.product.service.impl;
 
 import com.ren.product.entity.Product;
 import com.ren.product.dao.ProductRepository;
+import com.ren.product.service.ProductService_interface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

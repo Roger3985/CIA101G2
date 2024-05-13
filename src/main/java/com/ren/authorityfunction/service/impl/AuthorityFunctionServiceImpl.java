@@ -1,9 +1,10 @@
-package com.ren.authorityfunction.service;
+package com.ren.authorityfunction.service.impl;
 
 import com.ren.authorityfunction.entity.AuthorityFunction;
 import com.ren.authorityfunction.dao.AuthorityFunctionDAO_interface;
 import com.ren.authorityfunction.dao.AuthorityFunctionJDBCDAOImpl;
 import com.ren.authorityfunction.dao.AuthorityFunctionRepository;
+import com.ren.authorityfunction.service.AuthorityFunctionService_interface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,14 +1,15 @@
-package com.ren.title.service;
+package com.ren.title.service.impl;
 
 import com.ren.title.entity.Title;
 import com.ren.title.dao.TitleRepository;
+import com.ren.title.service.TitleService_interface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class TitleServiceImpl implements TitleService_interface{
+public class TitleServiceImpl implements TitleService_interface {
 
     @Autowired
     private TitleRepository titleRepository;

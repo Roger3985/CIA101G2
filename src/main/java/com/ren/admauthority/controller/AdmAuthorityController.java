@@ -1,8 +1,7 @@
 package com.ren.admauthority.controller;
 
 import com.ren.admauthority.entity.AdmAuthority;
-import com.ren.admauthority.service.AdmAuthorityServiceImpl;
-import com.ren.administrator.entity.Administrator;
+import com.ren.admauthority.service.impl.AdmAuthorityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -20,16 +19,32 @@ public class AdmAuthorityController {
     @Autowired
     private AdmAuthorityServiceImpl admAuthoritySvc;
 
+    /**
+     * 前往職位權限管理頁面
+     *
+     * @return forward to 管理頁面路徑
+     */
     @GetMapping("/selectAdmAuthority")
     public String toSelect() {
         return "backend/admauthority/selectAdmAuthority";
     }
 
+    /**
+     * 前往獲得該職位所有權限清單頁面
+     *
+     * @param titleNo 職位編號
+     * @return
+     */
     @GetMapping("/listOneAdmAuthority")
     public String getAdmAuthority(@PathVariable Integer titleNo) {
         return "backend/admauthority/listOneAdmAuthority";
     }
 
+    /**
+     *
+     *
+     * @return
+     */
     @GetMapping("/listAllAdmAuthorities")
     public String getAllAdmAuthorities() {
         return "backend/admauthority/listAllAdmAuthorities";

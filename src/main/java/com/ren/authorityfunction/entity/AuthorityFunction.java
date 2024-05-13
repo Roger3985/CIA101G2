@@ -14,7 +14,7 @@ public class AuthorityFunction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "authfuncno")
     private Integer authFuncNo;
-    @NotEmpty(message = "功能權限名稱")
+    @NotEmpty(message = "功能權限名稱不可為空")
     @Column(name = "authfuncinfo")
     private String authFuncInfo;
     @JsonBackReference

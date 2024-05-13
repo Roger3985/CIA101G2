@@ -31,7 +31,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.ren.util.Constants.YES;
+import static com.ren.util.Constants.*;
 import static com.ren.util.RandomStringGenerator.generateRandomString;
 import static com.ren.util.Validator.validateEmail;
 
@@ -69,6 +69,14 @@ public class BackendIndexController {
         return "backend/register";
     }
 
+    /**
+     *
+     *
+     * @param administrator
+     * @param result
+     * @param model
+     * @return
+     */
     @PostMapping("/signup")
     public String signUp(@Valid Administrator administrator, BindingResult result, ModelMap model) {
         if (result.hasErrors()) {
@@ -145,7 +153,7 @@ public class BackendIndexController {
 
 
         // 確認帳號是否已被登入
-        if (administrator.getAdmLogin() == 1) {
+        if (administrator.getAdmLogin() == LOGIN_STATE_LOGIN && administrator.getAdmLogout() == LOGOUT_STATE_LOGIN) {
             System.out.println("帳號已被登入");
         }
 
@@ -176,11 +184,41 @@ public class BackendIndexController {
         return "redirect:/backend/index";
     }
 
+    /**
+     *
+     *
+     * @return
+     */
     @GetMapping("/forgotPassword")
     public String toForgotPwd() {
         return "backend/forgotPassword";
     }
 
+    /**
+     * 密碼遺失時可透過輸入註冊信箱來重新獲取帳戶密碼
+     *
+     * @param email 帳戶註冊信箱
+     * @param model 用於將錯誤信息傳到view
+     * @return 錯誤則會forward到原網址，成功則會重導至登入頁面
+     */
+    @PostMapping("/sendEmail")
+    public String forgotPwd(@RequestParam String email, ModelMap model) {
+        if (!validateEmail(email)) {
+            model.addAttribute("errorMessage", "格式不符!請輸入信箱格式");
+            return "backend/forgotPassword";
+        } else if (administratorSvc.getOneAdministrator(email) == null){
+            model.addAttribute("errorMessage", "查無此信箱");
+            return "backend/forgotPassword";
+        }
+
+        // 如果寄送郵件失敗
+        if (!administratorSvc.sendEmail(email)) {
+            model.addAttribute("errorMessage", "發生錯誤，請重新嘗試");
+            return "backend/forgotPassword";
+        }
+
+        return "redirect:/backend/login";
+    }
 
     /**
      * 點擊導覽與個人資料頁面內的登出按鈕登出

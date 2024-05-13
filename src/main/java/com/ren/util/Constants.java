@@ -45,4 +45,7 @@ public interface Constants {
      */
     String forgotPasswordPage = "/backend/forgotPassword";
 
+    String emailSubject = "Fall衣Love股份有限公司";
+    String forgotPwdContent = "親愛的Fall衣Love員工您好，因您的帳戶密碼遺失，系統將您的密碼修改為預設，若您需要修改，請麻煩登入後於管理員系統修改，以下為預設密碼: ";
+
 }
