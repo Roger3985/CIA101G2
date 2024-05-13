@@ -432,12 +432,11 @@ public class MemberControllerFrontEnd {
     // 其他 import 和類的定義部分
 
     /**
-     * 控制器方法，用於處理彈出式登錄。
+     * 用於處理彈出式登錄。
      *
      * @param identifier         使用者輸入的識別符（電子郵件或帳戶）。
      * @param memPwd             使用者輸入的密碼。
      * @param autoLoginMember    標誌，指示是否要求自動登錄。
-     * @param modelMap           ModelMap 物件，用於為視圖添加屬性。
      * @param session            HttpSession 物件，用於管理會話數據。
      * @param response           HttpServletResponse 物件，用於發送響應。
      * @param request            HttpServletRequest 物件，用於處理請求。
@@ -448,7 +447,6 @@ public class MemberControllerFrontEnd {
     public ResponseEntity<?> loginPageByPopup(@RequestParam("identifier") String identifier,
                                               @RequestParam("password") String memPwd,
                                               @RequestParam(value = "autoLoginMember", defaultValue = "0") Byte autoLoginMember,
-                                              ModelMap modelMap,
                                               HttpSession session,
                                               HttpServletResponse response,
                                               HttpServletRequest request) {
