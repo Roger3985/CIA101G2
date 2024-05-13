@@ -6,12 +6,14 @@
     <title>Document</title>
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <!-- Custom styles for this page -->
-    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
+    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
     <style>
-        .completed-order {
-            color: #1a1d20;
-            background-color: darkgray;
-            opacity: 0.5;}
+        *{
+            font-size: 12px; /* 調整字體大小 */
+        }
+        .error {
+            font-size: 12px; /* 調整字體大小 */
+        }
     </style>
 </head>
 <body id="page-top">
@@ -34,7 +36,7 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">單筆查詢</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -42,39 +44,78 @@
                                 <thead>
                                 <tr>
                                     <th>商品訂單編號</th>
-                                    <th>商品編號</th>
-                                    <th>商品單價</th>
-                                    <th>購買數量</th>
+                                    <th>訂購人姓名</th>
+                                    <th>訂購人手機號碼</th>
+                                    <th>訂購人Email</th>
+                                    <th>收件人姓名</th>
+                                    <th>收件人手機號碼</th>
+                                    <th>取貨方式</th>
+                                    <th>宅配住址</th>
+                                    <th>付款方式</th>
+                                    <th>訂單總金額</th>
+                                    <th>優惠券編號</th>
+                                    <th>優惠券折價總和</th>
                                     <th>訂單實付金額</th>
-                                    <th>評價內容</th>
-                                    <th>評價星等</th>
-                                    <th>修改</th>
-
+                                    <th>下單時間</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <th:block th:each="productOrderDetail : ${productOrderDetailListData}">
+                                <tr>
+                                    <td th:text="${productOrder.productOrdNo}"></td>
+                                    <td th:text="${productOrder.productByrName}"></td>
+                                    <td th:text="${productOrder.productByrPhone}"></td>
+                                    <td th:text="${productOrder.productByrEmail}"></td>
+                                    <td th:text="${productOrder.productRcvName}"></td>
+                                    <td th:text="${productOrder.productRcvPhone}"></td>
+                                    <td>
+                                        <span th:if="${productOrder.productTakeMethod == 1}">店取</span>
+                                        <span th:if="${productOrder.productTakeMethod == 2}">宅配</span>
+                                        <span th:if="${productOrder.productTakeMethod == 3}">超商取貨</span>
+                                    </td>
+                                    <td th:text="${productOrder.productAddr}"></td>
+                                    <td>
+                                        <span th:if="${productOrder.productPayMethod == 1}">綠界</span>
+                                        <span th:if="${productOrder.productPayMethod == 2}">現場付款</span>
+                                    </td>
+                                    <td th:text="${productOrder.productAllPrice}"></td>
+                                    <td th:text="${productOrder.coupon.coupNo}"></td>
+                                    <td th:text="${productOrder.productDisc}"></td>
+                                    <td th:text="${productOrder.productRealPrice}"></td>
+                                    <td th:text="${productOrder.productOrdTime}"></td>
+                                </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                            <table id="example" class="display" style="width: 100%">
+                                <thead >
+                                <tr style="background-color:#CCCCFF">
+                                    <th>商品訂單編號</th>
+                                    <th>商品編號</th>
+                                    <th>商品單價</th>
+                                    <th>購買數量</th>
+                                    <th>評價內容</th>
+                                    <th>評價星等</th>
+                                    <th>評分</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <th:block th:each="productOrderDetail : ${productOrder.ProductOrderDetails}">
                                     <tr>
                                         <td th:text="${productOrderDetail.compositeKey.productOrdNo}"></td>
                                         <td th:text="${productOrderDetail.compositeKey.productNo}"></td>
                                         <td th:text="${productOrderDetail.productPrice}"></td>
                                         <td th:text="${productOrderDetail.productOrdQty}"></td>
-                                        <td th:text="${productOrderDetail.productRealPrice}"></td>
                                         <td th:text="${productOrderDetail.productComContent}"></td>
                                         <td th:text="${productOrderDetail.productScore}"></td>
                                         <td>
-                                            <form method="post" th:action="@{/backend/productorderdetail/getOne_For_Update}" style="margin-bottom: 0px;">
-                                                <input type="submit" value="修改">
+                                            <form method="post" th:action="@{/frontend/productorder/getAll}" style="margin-bottom: 0px;">
+                                                <input type="submit" value="評分">
                                                 <input type="hidden" name="productOrdNo" th:value="${productOrderDetail.compositeKey.productOrdNo}">
                                                 <input type="hidden" name="productNo" th:value="${productOrderDetail.compositeKey.productNo}"></form>
                                         </td>
                                     </tr>
                                 </th:block>
-
-
-                                </tbody>
-
-                            </table>
                         </div>
                     </div>
                 </div>
@@ -105,3 +146,5 @@
 
 </body>
 </html>
+
+

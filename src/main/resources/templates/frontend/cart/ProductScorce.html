@@ -32,40 +32,44 @@
                     <div class="mb-3 row">
                         <label for="productOrdNo" class="col-sm-2 col-form-label">商品訂單編號</label>
                         <div class="col-sm-3">
-                            <input type="text" th:field="*{compositeKey.productOrdNo}" class="form-control" name="productOrdNo" id="productOrdNo" >
+                            <span th:text="*{compositeKey.productOrdNo}"  id="productOrdNo"></span>
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="productNo" class="col-sm-2 col-form-label">商品編號</label>
+                        <label for="productName" class="col-sm-2 col-form-label">商品名稱</label>
                         <div class="col-sm-3">
-                            <input type="text" th:field="*{compositeKey.productNo}" class="form-control" name="productNo" id="productNo">
+                            <span th:text="*{product.productName}"  id="productName"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label  class="col-sm-2 col-form-label">商品大小</label>
+                        <div class="col-sm-3">
+                            <span th:if="${product.productSize == 0}">XS</span>
+                            <span th:if="${product.productSize == 1}">S</span>
+                            <span th:if="${product.productSize == 2}">M</span>
+                            <span th:if="${product.productSize == 3}">L</span>
+                            <span th:if="${product.productSize == 4}">XL</span>
+                            <span th:if="${product.productSize == 5}">2L</span>
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="productPrice" class="col-sm-2 col-form-label">商品單價</label>
                         <div class="col-sm-3">
-                            <input type="text" th:field="*{productPrice}" class="form-control" name="productPrice" id="productPrice">
-                            <span th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}" class="error" id="productPrice.errors"></span>
+                            <span th:text="*{product.productPrice}"  id="productPrice"></span>
+                            <span th:if="${#fields.hasErrors('productPrice')}" th:errors="*{product.productPrice}" class="error" id="productPrice.errors"></span>
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="productOrdQty" class="col-sm-2 col-form-label">購買數量</label>
                         <div class="col-sm-3">
-                            <input type="text" th:field="*{productOrdQty}" class="form-control" name="productOrdQty" id="productOrdQty">
+                            <span th:text="*{productOrdQty}"  id="productOrdQty"></span>
                             <span th:if="${#fields.hasErrors('productOrdQty')}" th:errors="*{productOrdQty}" class="error" id="productOrdQty.errors"></span>
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="productRealPrice" class="col-sm-2 col-form-label">實際商品金額</label>
-                        <div class="col-sm-3">
-                            <input type="text" th:field="*{productRealPrice}" class="form-control" name="productRealPrice" id="productRealPrice">
-                            <span th:if="${#fields.hasErrors('productRealPrice')}" th:errors="*{productRealPrice}" class="error" id="productRealPrice.errors"></span>
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="productComContent" class="col-sm-2 col-form-label">評價內容</label>
                         <div class="col-sm-3">
-                            <input type="text" th:field="*{productComContent}" class="form-control" name="productComContent" id="productComContent">
+                            <input type="textarea" th:field="*{productComContent}" class="form-control" id="productComContent">
                             <span th:if="${#fields.hasErrors('productComContent')}" th:errors="*{productComContent}" class="error" id="productComContent.errors"></span>
                         </div>
                     </div>
@@ -73,20 +77,22 @@
                         <label for="productScore" class="col-sm-2 col-form-label">評價星等</label>
                         <div class="col-sm-3">
                             <select size="1" name="productScore" id="productScore" th:field="*{productScore}">
-                                <option th:value="1" th:text="一顆星" /></option>
-                                <option th:value="2" th:text="兩顆星" /></option>
-                                <option th:value="3" th:text="三顆星" /></option>
-                                <option th:value="4" th:text="四顆星" /></option>
-                                <option th:value="5" th:text="五顆星" /></option>
+                                <option th:value="1" th:text="一顆星" />
+                                <option th:value="2" th:text="兩顆星" />
+                                <option th:value="3" th:text="三顆星" />
+                                <option th:value="4" th:text="四顆星" />
+                                <option th:value="5" th:text="五顆星" />
                             </select>
                         </div>
                     </div>
+                    <!-- Add your submit button here -->
+
 
 
                     <div>
                         <input type="hidden" name="productOrdNo" th:value="${productOrderDetail.compositeKey.productOrdNo}">
                         <input type="hidden" name="productNo" th:value="${productOrderDetail.compositeKey.productNo}">
-                        <div><button type="submit" id="submit"> 送出修改 </button></div>
+                        <div><button type="submit" id="submit"> 確認 </button></div>
                     </div>
                 </form>
             </div>
