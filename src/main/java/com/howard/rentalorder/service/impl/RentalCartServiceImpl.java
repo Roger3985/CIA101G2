@@ -77,7 +77,7 @@ public class RentalCartServiceImpl implements RentalCartService {
 
         }
 
-    } // setToCart 方法結束
+    } // SetToCart 方法結束
 
     public void deleteFromCart(Integer memNo, List<Integer> rentalNos) {
             // 從連線池取得連線物件

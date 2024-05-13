@@ -1,8 +1,8 @@
 package com.howard.rentalorder.controller;
 
+import com.howard.rentalorder.dto.SetToCart;
 import com.yu.rental.dao.RentalRepository;
 import com.howard.rentalorder.dto.RentalOrderRequest;
-import com.howard.rentalorder.dto.SetToCartRequest;
 import com.howard.rentalorder.entity.RentalOrder;
 import com.howard.rentalorder.service.impl.RentalCartServiceImpl;
 import com.howard.rentalorder.service.impl.RentalOrderServiceImpl;
@@ -56,7 +56,19 @@ public class RentalOrderController {
 
     /*--------------------------處理跳轉頁面請求的方法-------------------------------*/
 
-    // 去 測試串接 畫面
+    // 去 購物車 畫面
+    @GetMapping("/rentalCart")
+    public String toRentalCart() {
+        return "/frontend/rental/rentalCart";
+    }
+
+    // 去 結帳 頁面
+    @GetMapping("/toRentalPayment")
+    public String toRentalPayment() {
+        return "/frontend/rental/rentalPayment";
+    }
+
+    // 去 測試 頁面
     @GetMapping("/toTestEcpay")
     public String toTestEcpay() {
         return "/backend/rentalorder/testEcpay";
@@ -323,20 +335,22 @@ public class RentalOrderController {
 
     // 加入購物車
     @PostMapping("/setToCart")
-    public ResponseEntity<?> setToCart(@RequestBody SetToCartRequest setToCartRequest) {
+    public ResponseEntity<?> setToCart(@RequestBody SetToCart setToCart) {
+
+        Rental rental = rentalRepository.findByRentalNo(setToCart.getRentalNo());
 
         Map<String, String> map = new HashMap<>();
-        map.put("rentalNo", String.valueOf(setToCartRequest.getRentalNo()));
-        map.put("rentalCatNo", String.valueOf(setToCartRequest.getRentalCatNo()));
-        map.put("rentalName", setToCartRequest.getRentalName());
-        map.put("rentalPrice", String.valueOf(setToCartRequest.getRentalPrice()));
-        map.put("rentalSize", String.valueOf(setToCartRequest.getRentalSize()));
-        map.put("rentalColor", setToCartRequest.getRentalColor());
-        map.put("rentalInfo", setToCartRequest.getRentalInfo());
-        map.put("rentalStat", String.valueOf(setToCartRequest.getRentalStat()));
-        cartService.setToCart(setToCartRequest.getMemNo(), map);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(setToCartRequest.getRentalName());
+        map.put("rentalNo", String.valueOf(setToCart.getRentalNo()));
+        map.put("rentalCatNo", String.valueOf(rental.getRentalCategory().getRentalCatNo()));
+        map.put("rentalName", rental.getRentalName());
+        map.put("rentalPrice", String.valueOf(rental.getRentalPrice()));
+        map.put("rentalSize", String.valueOf(rental.getRentalSize()));
+        map.put("rentalColor", rental.getRentalColor());
+        map.put("rentalInfo", rental.getRentalInfo());
+        map.put("rentalStat", String.valueOf(rental.getRentalStat()));
+        cartService.setToCart(setToCart.getMemNo(), map);
+        System.out.println(rental.getRentalName());
+        return ResponseEntity.status(HttpStatus.CREATED).body(rental.getRentalName());
 
     }
 
