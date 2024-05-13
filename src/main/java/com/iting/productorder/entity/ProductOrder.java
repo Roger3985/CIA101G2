@@ -18,7 +18,7 @@ import java.util.Set;
 public class ProductOrder {
     @Id
     @Column(name = "productordno", updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer productOrdNo;
     @ManyToOne
     @JsonManagedReference

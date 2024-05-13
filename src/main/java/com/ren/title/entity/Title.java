@@ -5,6 +5,7 @@ import com.ren.admauthority.entity.AdmAuthority;
 import com.ren.administrator.entity.Administrator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 @Entity
@@ -13,6 +14,7 @@ public class Title {
     @Id
     @Column(name = "titleno")
     private Integer titleNo;
+    @NotEmpty(message="職位名稱: 請勿空白")
     @Column(name = "titlename")
     private String titleName;
     @JsonBackReference
@@ -21,26 +23,6 @@ public class Title {
     @JsonBackReference
     @OneToMany(mappedBy = "title", cascade = CascadeType.ALL)
     private Set<Administrator> administrators;
-
-//    // enum常量定義
-//    public enum Position {
-//        PARTJOB(4),
-//        FULLTIME(3),
-//        MANAGER(2),
-//        BOSS(1);
-//
-//        private final int value;
-//
-//        Position(int value) {
-//            this.value = value;
-//        }
-//
-//        public int getValue() {
-//            return value;
-//        }
-//    }
-//
-//    private Position position;
 
     public Title() {
 

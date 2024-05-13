@@ -165,10 +165,10 @@ CREATE TABLE Title
 );
 
 INSERT INTO Title (titleNo, titleName) VALUES
-(1, '老闆'),
-(2, '店長'),
-(3, '正職員工'),
-(4, '打工仔');
+(1, '打工仔'),
+(2, '正職員工'),
+(3, '店長'),
+(4, '老闆');
 
 -- 創建功能權限表格
 CREATE TABLE AuthorityFunction
@@ -195,15 +195,15 @@ CREATE TABLE AdmAuthority
 
 INSERT INTO AdmAuthority (titleNo,authFuncNo) VALUES
 (1, 1),
-(1, 2),
-(1, 3),
-(1, 4),
 (2, 1),
 (2, 2),
-(2, 3),
 (3, 1),
 (3, 2),
-(4, 1);
+(3, 3),
+(4, 1),
+(4, 2),
+(4, 3),
+(4, 4);
 
 -- 創建後台管理員表格
 CREATE TABLE Administrator

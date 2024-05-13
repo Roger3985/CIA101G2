@@ -3,6 +3,7 @@ package com.yu.rental.service;
 import com.yu.rental.dao.RentalRepository;
 import com.yu.rental.entity.Rental;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -39,14 +40,16 @@ public class RentalServiceImpl implements RentalService {
 
 	//金額由大到小
 	@Override
-	public List<Rental> getRentalPriceDESC(BigDecimal rentalPrice) {
-		return repository.findByRentalPriceDESC(rentalPrice);
+	public List<Rental> findAllSortDESC() {
+		List<Rental> sortListDESC = repository.findAll(Sort.by("rentalPrice").descending());
+		return sortListDESC;
 	}
 
 	//金額由小到大
 	@Override
-	public List<Rental> getRentalPrice(BigDecimal rentalPrice) {
-		return repository.findByRentalPriceASC(rentalPrice);
+	public List<Rental> findAllSort() {
+		List<Rental> sortList = repository.findAll(Sort.by("rentalPrice"));
+		return sortList;
 	}
 
 	//處理查詢(依租借品的尺寸)

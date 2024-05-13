@@ -10,9 +10,9 @@ public interface RentalService {
 
     public Rental findByRentalName(String rentalName);//單筆查詢
 
-    public List<Rental> getRentalPriceDESC(BigDecimal rentalPrice); //以rentalPrice查詢，金額由大到小
+    public List<Rental> findAllSortDESC(); //以rentalPrice查詢，金額由大到小
 
-    public List<Rental> getRentalPrice(BigDecimal rentalPrice); //以rentalPrice查詢，金額由小到大
+    public List<Rental> findAllSort(); //以rentalPrice查詢，金額由小到大
 
     public List<Rental> getRentalSize(Integer rentalSize); //以rentalSize查詢
 

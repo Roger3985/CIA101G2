@@ -10,7 +10,7 @@
     <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
     <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template">
     <!-- title -->
-    <title>ShopApp - eCommerce Bootstrap 5 Template</title>
+    <title>租借品專區</title>
     <!-- Favicon -->
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
@@ -97,9 +97,6 @@
                                                     <li class="nav-item">
                                                         <a th:href="@{listAllRental}" class="nav-link">西裝褲</a>
                                                     </li>
-                                                    <li class="nav-item">
-                                                        <a th:href="@{listAllRental}" class="nav-link">飾品</a>
-                                                    </li>
                                                 </ul>
                                             </div>
                                         </li>
@@ -116,9 +113,6 @@
                                                     </li>
                                                     <li class="nav-item">
                                                         <a th:href="@{listAllRental}" class="nav-link">禮服</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a th:href="@{listAllRental}" class="nav-link">飾品</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -217,8 +211,7 @@
                                             <label class="custom-control-label" for="brand3">M</label>
                                         </li>
                                         <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="brand4" type="checkbox"
-                                                   disabled="">
+                                            <input class="custom-control-input" id="brand4" type="checkbox">
                                             <label class="custom-control-label" for="brand4">L</label>
                                         </li>
                                         <li class="custom-checkbox">
@@ -269,7 +262,7 @@
                     </div>
                     <!-- End Sidebar -->
                     <!-- 商品列表 -->
-                    <div class="col-lg-8 col-xl-9" th:each="rental : ${rentalListData}" th:object="${rental}">
+                    <div class="col-lg-8 col-xl-9">
                         <div class="shop-top-bar d-flex pb-3"><!-- 切換顯示&排序的區塊 -->
                             <!-- 列表呈現方式 (網格or直列) -->
                             <div class="layout-change">
@@ -292,7 +285,7 @@
                                 <div class="dropdown">
                                     <a class="btn btn-none btn-sm border dropdown-toggle text-mode" href="#"
                                        role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
-                                       aria-expanded="false">排序方式</a>
+                                       aria-expanded="false">Short by</a>
                                     <ul class="dropdown-menu dropdown-menu-end shadow"
                                         aria-labelledby="dropdownMenuLink">
                                         <li>
@@ -302,282 +295,63 @@
                                             <a class="dropdown-item" href="#">最熱門</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="#">價格由低到高</a>
+                                            <a class="dropdown-item" id="low_to_high" href="#" onclick="sortBy('low_to_high')">價格由低到高</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="#">價格由高到低</a>
+                                            <a class="dropdown-item" id="high_to_low" href="#" onclick="sortBy('high_to_low')">價格由高到低</a>
                                         </li>
                                     </ul>
                                 </div>
-                            </div><!--  選擇排序  結束 -->
-                        </div>
-                        <!-- 第一個商品 -->
-                        <div class="row g-0 mb-4">
-                            <div class="col-sm-4 position-relative">
-                                <div class="badge-ribbon position-absolute top-0 mt-3">
-                                    <span class="badge bg-danger">Sale</span>
-                                </div>
-                                <a th:href="@{showOneRental}"><!-- 轉至單一品項查詢 -->
-                                    <img class="border img-fluid w-100" th:src="@{/icons/frontend/rental/gown1.jpg}"
-                                         title="" alt="">
-                                </a>
-                            </div>
-                            <div class="col-sm-8 ps-sm-4 pt-3 pt-sm-0">
-                                <div class="rating-star text mb-2 small">
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star"></i>
-                                </div>
-                                <h5 class="product-title">
-                                    <a class="text-reset" th:href="@{showOneRental}"><span th:text="${rental.rentalName}"></span></a>
-                                </h5>
-                                <div class="m-0">
-                                    <p class="small mb-2"><span>編號：</span><span th:text="${rental.rentalNo}"></span></p>
-                                </div>
-                                <div class="product-price pb-3">
-                                        <span class="text-primary fs-4" th:text="'$' + ${rentalCategory.rentalDesPrice}"></span>
-                                    <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del>
-                                </div>
-                                <div>
-                                    <a href="#" class="btn btn-mode"><!--  加入購物車  -->
-                                        <i class="fi-shopping-cart"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-primary"><!--  加入我的最愛  -->
-                                        <i class="fi-heart"></i>
-                                    </a>
-                                    <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
-                                       href="javascript:void(0)" class="btn btn-primary">
-                                        <i class="fi-eye"></i><!--  跳窗顯示該商品畫面  -->
-                                    </a>
-                                </div>
                             </div>
                         </div>
-                        <!-- 第一個商品  結束 -->
-                        <!-- 第二個商品 -->
-                        <div class="row g-0 mb-4">
-                            <div class="col-sm-4 position-relative">
-                                <div class="badge-ribbon position-absolute top-0 mt-3">
-                                    <span class="badge bg-danger">Sale</span>
-                                </div>
-                                <a th:href="@{showOneRental}"><!-- 轉至單一品項查詢 -->
-                                    <img class="border img-fluid w-100" src="../../assets/img/fashion/product-2.jpg"
-                                         title="" alt="">
-                                </a>
-                            </div>
-                            <div class="col-sm-8 ps-sm-4 pt-3 pt-sm-0">
-                                <div class="rating-star text mb-2 small">
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star"></i>
-                                </div>
-                                <h5 class="product-title">
-                                    <a class="text-reset" href="#"><span th:text="${rental.rentalName}"></span></a>
-                                </h5>
-                                <div class="m-0">
-                                    <p class="small mb-2">租借品介紹</p>
-                                </div>
-                                <div class="product-price pb-3">
-                                        <span class="text-primary fs-4" th:text="'$' + ${rentalCategory.rentalDesPrice}"></span>
-                                    <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del>
-                                </div>
-                                <div>
-                                    <a href="#" class="btn btn-mode">
-                                        <i class="fi-shopping-cart"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-primary">
-                                        <i class="fi-heart"></i>
-                                    </a>
-                                    <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
-                                       href="javascript:void(0)" class="btn btn-primary">
-                                        <i class="fi-eye"></i>
+                        <!-- 商品 -->
+                        <th:block th:each="rental : ${rentalListData}">
+                            <div class="row g-0 mb-4">
+                                <div class="col-sm-4 position-relative">
+                                    <div class="badge-ribbon position-absolute top-0 mt-3">
+                                        <span class="badge bg-danger">Sale</span>
+                                    </div>
+                                    <a th:href="@{showOneRental}"><!-- 對應品項查詢 -->
+                                        <img class="border img-fluid w-100" th:src="@{/icons/frontend/rental/gown1.jpg}"
+                                             th:attr="width=276, height=307" title="" alt="">
                                     </a>
                                 </div>
-                            </div>
-                        </div>
-                        <!-- 第二個商品  結束 -->
-                        <!-- 第三個商品   -->
-                        <div class="row g-0 mb-4">
-                            <div class="col-sm-4 position-relative">
-                                <div class="badge-ribbon position-absolute top-0 mt-3">
-                                    <span class="badge bg-danger">Sale</span>
-                                </div>
-                                <a th:href="@{showOneRental}"><!-- 轉至單一品項查詢 -->
-                                    <img class="border img-fluid w-100" src="../../assets/img/fashion/product-3.jpg"
-                                         title="" alt="">
-                                </a>
-                            </div>
-                            <div class="col-sm-8 ps-sm-4 pt-3 pt-sm-0">
-                                <div class="rating-star text mb-2 small">
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star"></i>
-                                </div>
-                                <h5 class="product-title">
-                                    <a class="text-reset" href="#"><span th:text="${rental.rentalName}"></span></a>
-                                </h5>
-                                <div class="m-0">
-                                    <p class="small mb-2">租借品介紹</p>
-                                </div>
-                                <div class="product-price pb-3">
-                                        <span class="text-primary fs-4" th:text="'$' + ${rentalCategory.rentalDesPrice}"></span>
-                                    <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del>
-                                </div>
-                                <div>
-                                    <a href="#" class="btn btn-mode">
-                                        <i class="fi-shopping-cart"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-primary">
-                                        <i class="fi-heart"></i>
-                                    </a>
-
-                                    <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
-                                       href="javascript:void(0)" class="btn btn-primary">
-                                        <i class="fi-eye"></i>
-                                    </a>
+                                <div class="col-sm-8 ps-sm-4 pt-3 pt-sm-0">
+                                    <div class="rating-star text mb-2 small"><!-- 評價 -->
+                                        <i class="bi bi-star-fill active"></i>
+                                        <i class="bi bi-star-fill active"></i>
+                                        <i class="bi bi-star-fill active"></i>
+                                        <i class="bi bi-star-fill active"></i>
+                                        <i class="bi bi-star"></i>
+                                    </div>
+                                    <h5 class="product-title">
+                                        <a class="text-reset" th:href="@{showOneRental}"><span th:text="${rental.rentalName}"></span></a><!-- 租借品名稱 -->
+                                    </h5>
+                                    <div class="m-0">
+                                        <p class="small mb-2"><span>編號：</span><span th:text="${rental.rentalNo}"></span></p><!-- 租借品編號 -->
+                                        <p class="small mb-2"><span th:text="${rental.rentalInfo}"></span></p><!-- 租借品介紹 -->
+                                    </div>
+                                    <div class="product-price pb-3">
+                                        <span class="text-primary fs-4" th:text="'$' + ${rental.rentalCategory.rentalDesPrice}"></span><!-- 押金 -->
+                                        <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del><!-- 定價 -->
+                                    </div>
+                                    <div>
+                                        <a href="#" class="btn btn-mode"><!--  加入購物車  -->
+                                            <i class="fi-shopping-cart"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-primary"><!--  加入我的最愛  -->
+                                            <i class="fi-heart"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-primary">追蹤</a><!--  加入追蹤的圖示 <i class="fi-repeat"></i>  -->
+                                        <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
+                                           href="javascript:void(0)" class="btn btn-primary">
+                                            <i class="fi-eye"></i><!--  跳窗顯示該商品畫面 (rentalQuickview.html) -->
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- 第三個商品  結束 -->
-                        <!-- 第四個商品   -->
-                        <div class="row g-0 mb-4">
-                            <div class="col-sm-4 position-relative">
-                                <div class="badge-ribbon position-absolute top-0 mt-3">
-                                    <span class="badge bg-danger">Sale</span>
-                                </div>
-                                <a th:href="@{showOneRental}"><!-- 轉至單一品項查詢 -->
-                                    <img class="border img-fluid w-100" src="../../assets/img/fashion/product-4.jpg"
-                                         title="" alt="">
-                                </a>
-                            </div>
-                            <div class="col-sm-8 ps-sm-4 pt-3 pt-sm-0">
-                                <div class="rating-star text mb-2 small">
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star"></i>
-                                </div>
-                                <h5 class="product-title">
-                                    <a class="text-reset" href="#"><span th:text="${rental.rentalName}"></span></a>
-                                </h5>
-                                <div class="m-0">
-                                    <p class="small mb-2">租借品介紹</p>
-                                </div>
-                                <div class="product-price pb-3">
-                                        <span class="text-primary fs-4" th:text="'$' + ${rentalCategory.rentalDesPrice}"></span>
-                                    <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del>
-                                </div>
-                                <div>
-                                    <a href="#" class="btn btn-mode">
-                                        <i class="fi-shopping-cart"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-primary">
-                                        <i class="fi-heart"></i>
-                                    </a>
-
-                                    <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
-                                       href="javascript:void(0)" class="btn btn-primary">
-                                        <i class="fi-eye"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 第四個商品 結束  -->
-                        <!-- 第五個商品   -->
-                        <div class="row g-0 mb-4">
-                            <div class="col-sm-4 position-relative">
-                                <div class="badge-ribbon position-absolute top-0 mt-3">
-                                    <span class="badge bg-danger">Sale</span>
-                                </div>
-                                <a th:href="@{showOneRental}"><!-- 轉至單一品項查詢 -->
-                                    <img class="border img-fluid w-100" src="../../assets/img/fashion/product-5.jpg"
-                                         title="" alt="">
-                                </a>
-                            </div>
-                            <div class="col-sm-8 ps-sm-4 pt-3 pt-sm-0">
-                                <div class="rating-star text mb-2 small">
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star"></i>
-                                </div>
-                                <h5 class="product-title">
-                                    <a class="text-reset" href="#"><span th:text="${rental.rentalName}"></span></a>
-                                </h5>
-                                <div class="m-0">
-                                    <p class="small mb-2">租借品介紹</p>
-                                </div>
-                                <div class="product-price pb-3">
-                                        <span class="text-primary fs-4" th:text="'$' + ${rentalCategory.rentalDesPrice}"></span>
-                                    <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del>
-                                </div>
-                                <div>
-                                    <a href="#" class="btn btn-mode">
-                                        <i class="fi-shopping-cart"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-primary">
-                                        <i class="fi-heart"></i>
-                                    </a>
-
-                                    <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
-                                       href="javascript:void(0)" class="btn btn-primary">
-                                        <i class="fi-eye"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 第五個商品 結束  -->
-                        <!-- 第六個商品  -->
-                        <div class="row g-0 mb-4">
-                            <div class="col-sm-4 position-relative">
-                                <div class="badge-ribbon position-absolute top-0 mt-3">
-                                    <span class="badge bg-danger">Sale</span>
-                                </div>
-                                <a th:href="@{showOneRental}"><!-- 轉至單一品項查詢 -->
-                                    <img class="border img-fluid w-100" src="../../assets/img/fashion/product-6.jpg"
-                                         title="" alt="">
-                                </a>
-                            </div>
-                            <div class="col-sm-8 ps-sm-4 pt-3 pt-sm-0">
-                                <div class="rating-star text mb-2 small">
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star"></i>
-                                </div>
-                                <h5 class="product-title">
-                                    <a class="text-reset" href="#"><span th:text="${rental.rentalName}"></span></a>
-                                </h5>
-                                <div class="m-0">
-                                    <p class="small mb-2">租借品介紹</p>
-                                </div>
-                                <div class="product-price pb-3">
-                                        <span class="text-primary fs-4" th:text="'$' + ${rentalCategory.rentalDesPrice}"></span>
-                                    <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del>
-                                </div>
-                                <div>
-                                    <a href="#" class="btn btn-mode">
-                                        <i class="fi-shopping-cart"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-primary">
-                                        <i class="fi-heart"></i>
-                                    </a>
-
-                                    <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
-                                       href="javascript:void(0)" class="btn btn-primary">
-                                        <i class="fi-eye"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div><!-- 第六個商品 結束  -->
+                        </th:block>
+                        <!-- 商品  結束 -->
                         <!-- 分頁區  -->
                         <div class="shop-bottom-bar d-flex align-items-center mt-3">
                             <div>Showing: 1 - 12 of 17</div>
@@ -625,6 +399,56 @@
 <!-- script start -->
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
 <!-- End script start -->
-</body>
+<!--<script>-->
+<!--    function sortBy(sortType) { //sortType參數定義是對應上面的low_to_high或high_to_low-->
+<!--        let url = "/frontend/rental/sortAllPrice?sortType=" + sortType;-->
 
+<!--        fetch(url)-->
+<!--            .then(response => {-->
+<!--                if (!response.ok) {-->
+<!--                    throw new Error('Network response was not ok');-->
+<!--                }-->
+<!--                return response.text();-->
+<!--            })-->
+<!--            .then(html => {-->
+<!--                // 将响应的 HTML 插入到页面中-->
+<!--                document.getElementById("sortAllPrice").innerHTML = html;-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                console.error('There has been a problem with your fetch operation:', error);-->
+<!--            });-->
+<!--    }-->
+<!--</script>-->
+
+<script>
+    $(document).ready(function() {
+        $("#low_to_high").click(function(event) {
+            // alert("點選low_to_high");
+            event.preventDefault(); // 阻止默认的链接跳转行为
+
+            var sortType = $(this).data("sortType"); // 获取自定义属性 data-sort-type 的值
+            sortBy(sortType); // 调用 sortBy 函数进行排序
+        });
+
+        $("#high_to_low").click(function(event) {
+            // alert("點選high_to_low");
+            event.preventDefault(); // 阻止默认的链接跳转行为
+
+            var sortType = $(this).data("sortType"); // 获取自定义属性 data-sort-type 的值
+            sortBy(sortType); // 调用 sortBy 函数进行排序
+        });
+
+        function sortBy(sortType) {
+            var url = "/frontend/rental/sortAllPrice?sortType=" + sortType;
+
+            $.get(url, function(html) {
+                // 将响应的 HTML 插入到页面中
+                $("#sortAllPrice").html(html);
+            }).fail(function() {
+                console.error('There has been a problem with your request');
+            });
+        }
+    });
+</script>
+</body>
 </html>

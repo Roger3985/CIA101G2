@@ -172,16 +172,15 @@ public class RentalOrderController {
         order.setRtnRemark("尚未歸還");
         /*-------------------------執行創建訂單流程-------------------------*/
         // 創建訂單
-        service.createOrder(order);
+        String form = service.createOrder(order);
         // 先把字串陣列轉成整數陣列(因為service層方法需要List<Integer>)
         List<Integer> rentalNoList = order.getBuyItems().stream()
                 .map(Integer::parseInt)
                         .toList();
         // 把購物車清空
         cartService.deleteFromCart(order.getMemNo(), rentalNoList);
-        // 成功後傳送重導url(顯示訂購成功畫面)
-        String redirectUrl = "/backend/rentalorder/createOrderSuccess";
-        return ResponseEntity.status(HttpStatus.CREATED).body(redirectUrl);
+        // 回傳帶有付款畫面 html 的 form 字串
+        return ResponseEntity.status(HttpStatus.CREATED).body(form);
 
     }
 
@@ -368,16 +367,13 @@ public class RentalOrderController {
 
     /*----------------------------練習串接綠界api的方法----------------------------------*/
 
-
-    @PostMapping("/ecpayCheckout")
-    @ResponseBody
-    public String ecpayCheckout() {
-
-        String aioCheckOutALLForm = service.ecpayCheckout();
-        return aioCheckOutALLForm;
-
-    }
-
-
+//    @PostMapping("/ecpayCheckout")
+//    @ResponseBody
+//    public String ecpayCheckout() {
+//
+//        String aioCheckOutALLForm = service.ecpayCheckout();
+//        return aioCheckOutALLForm;
+//
+//    }
 
 }

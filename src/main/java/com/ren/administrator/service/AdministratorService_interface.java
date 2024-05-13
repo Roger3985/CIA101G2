@@ -28,6 +28,13 @@ public interface AdministratorService_interface {
      */
     Administrator register(Administrator administrator);
 
+//    /**
+//     * 將在線管理員的資料同步到Redis資料庫(用於當ServletContext啟動時使用)
+//     *
+//     * @param list 傳入在線管理員列表
+//     */
+//    void backup(List<Administrator> list);
+
     /**
      * R:
      * 查詢單筆管理員資料
@@ -53,6 +60,14 @@ public interface AdministratorService_interface {
      * @return 返回管理員列表到View渲染
      */
     List<Administrator> getAll();
+
+    /**
+     * R:
+     * 獲得所有已上線的管理員清單
+     *
+     * @return 返回管理員列表到View渲染
+     */
+    List<Administrator> getLoginAdms();
 
     /**
      * R:
@@ -86,7 +101,6 @@ public interface AdministratorService_interface {
      * 登出成功，修改管理員登入狀態，並關閉Session，移除Redis資料庫中的登入狀態緩存
      *
      * @param loginState 傳入登入狀態，執行登出
-     * @return
      */
     void logout(LoginState loginState);
 

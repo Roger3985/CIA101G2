@@ -50,13 +50,13 @@
                                 <th:block th:each="rental : ${rentalList}">
                                     <tr>
                                         <td th:name="rentalNo" th:text="${rental.getRentalNo()}"></td>
-                                        <td th:name="rentalCatNo" th:text="${rental.getRentalCategory().getrentalCatNo()}"></td>
-                                        <td th:name="rentalName" th:text="${rental.getrentalName()}"></td>
+                                        <td th:name="rentalCatNo" th:text="${rental.getRentalCategory().getRentalCatNo()}"></td>
+                                        <td th:name="rentalName" th:text="${rental.getRentalName()}"></td>
                                         <td th:name="rentalPrice" th:text="${rental.getRentalPrice()}"></td>
-                                        <td th:name="rentalSize" th:text="${rental.getrentalSize()}"></td>
-                                        <td th:name="rentalColor" th:text="${rental.getrentalColor()}"></td>
-                                        <td th:name="rentalInfo" th:text="${rental.getrentalInfo()}"></td>
-                                        <td th:name="rentalStat" th:text="${rental.getrentalStat()}"></td>
+                                        <td th:name="rentalSize" th:text="${rental.getRentalSize()}"></td>
+                                        <td th:name="rentalColor" th:text="${rental.getRentalColor()}"></td>
+                                        <td th:name="rentalInfo" th:text="${rental.getRentalInfo()}"></td>
+                                        <td th:name="rentalStat" th:text="${rental.getRentalStat()}"></td>
                                         <td>
                                             <button type="button" class="addToCart">
                                                 <i class="fas fa-plus"> </i>
@@ -97,6 +97,14 @@
     
     $(function () {
 
+       /*
+        * 拼接動態前置路徑 (為適應上雲時路徑變化)
+        * window.location.protocol = 當前頁面所使用之通訊協定 (ex : http: 、 https:)
+        * window.location.host = 當前頁面主機名和連接阜號 (ex : localhost:8080)
+       */
+        let baseUrl = window.location.protocol + "//" + window.location.host;
+        let apiPath = "/backend/rentalorder/setToCart";
+
         $("button.addToCart").on("click", function (e) {
 
             e.preventDefault();
@@ -114,7 +122,7 @@
                 rentalStat : tr.find("td[name='rentalStat']").text(),
             };
 
-            fetch("/backend/rentalorder/setToCart", {
+            fetch(baseUrl + apiPath, {
                 method : "POST",
                 headers : {
                     "Content-Type" : "application/json"

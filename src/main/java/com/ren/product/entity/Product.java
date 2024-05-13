@@ -22,6 +22,7 @@ public class Product {
     private Integer productNo;
     @ManyToOne
     @JsonManagedReference
+    @NotEmpty(message = "請選擇商品類別編號")
     @JoinColumn(name = "productcatno", referencedColumnName = "productcatno")
     private ProductCategory productCategory;
     @NotEmpty(message="商品名稱: 請勿空白")
@@ -31,23 +32,32 @@ public class Product {
     @NotEmpty(message="商品資訊: 請勿空白")
     @Column(name = "productinfo")
     private String productInfo;
+    @NotEmpty(message="請選擇商品尺寸")
+    @Min(value = 0, message = "商品尺寸只能是XS、S、M、L、XL、2L")
+    @Max(value = 5, message = "商品尺寸只能是XS、S、M、L、XL、2L")
     @Column(name = "productsize")
     private Integer productSize;
     @NotEmpty(message="商品顏色: 請勿空白")
     @Pattern(regexp = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$", message = "商品顏色: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間")
     @Column(name = "productcolor")
     private String productColor;
-    @NotNull(message="商品價格: 請勿空白")
+    @NotEmpty(message="商品價格: 請勿空白")
     @DecimalMin(value = "100.00", message = "商品價格: 不能小於{value}")
     @DecimalMax(value = "99999.99", message = "商品價格: 不能超過{value}")
     @Column(name = "productprice")
     private BigDecimal productPrice;
+    @NotEmpty(message="請選擇商品狀態")
     @Column(name = "productstat")
     private Byte productStat;
+    @NotEmpty(message = "請輸入商品售出數量")
     @Column(name = "productsalqty")
     private Integer productSalQty;
+    @NotEmpty(message = "請輸入評價人數")
     @Column(name = "productcompeople")
     private Integer productComPeople;
+    @NotEmpty(message = "請輸入商品評價分數")
+    @Min(value = 0, message = "評分請填0~5的分數")
+    @Max(value = 5, message = "評分請填0~5的分數")
     @Column(name = "productcomscore")
     private Integer productComScore;
 
@@ -70,6 +80,7 @@ public class Product {
     public Product(Integer productNo) {
         this.productNo = productNo;
     }
+
 
     public Product(ProductCategory productCategory, String productName, String productInfo, Integer productSize, String productColor, BigDecimal productPrice, Byte productStat, Integer productSalQty, Integer productComPeople, Integer productComScore) {
         this.productCategory = productCategory;

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ren.product.entity.Product;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 @Entity
@@ -13,6 +14,7 @@ public class ProductCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "productcatno")
     private Integer productCatNo;
+    @NotEmpty(message="商品種類名稱: 請勿空白")
     @Column(name = "productcatname")
     private String productCatName;
     @JsonBackReference

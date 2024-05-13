@@ -3,12 +3,16 @@ package com.ren;
 import com.ren.administrator.entity.Administrator;
 import com.ren.administrator.dto.LoginState;
 import com.ren.administrator.service.Impl.AdministratorServiceImpl;
+import com.roger.member.entity.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +22,14 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.time.Duration;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.ren.util.Constants.YES;
 import static com.ren.util.RandomStringGenerator.generateRandomString;
@@ -58,6 +69,20 @@ public class BackendIndexController {
         return "backend/register";
     }
 
+    @PostMapping("/signup")
+    public String signUp(@Valid Administrator administrator, BindingResult result, ModelMap model) {
+        if (result.hasErrors()) {
+            model.addAttribute("administrator", administrator);
+            model.addAttribute("errors", result.getAllErrors());
+            return "backend/administrator/addAdministrator";
+        } else {
+            System.out.println("新增成功");
+        }
+        administratorSvc.register(administrator);
+
+        return "redirect:/backend/login";
+    }
+
     /**
      * 前往登入頁面
      *
@@ -69,11 +94,7 @@ public class BackendIndexController {
         return "backend/login";
     }
 
-
-    // 記錄登入活動，如嘗試登入、成功登入、登入失敗等
-    // 確認帳號正確，但密碼不正確的情況 n + 1， 30分鐘內達5次鎖定登入
-
-    @PostMapping("/login/login")
+    @PostMapping("/loginPage")
     public String login(@RequestParam String userId,
                         @RequestParam String admPwd,
                         @RequestParam Byte autoLogin,
@@ -106,11 +127,22 @@ public class BackendIndexController {
             return "backend/login";
         }
 
-        // 判斷密碼是否正確
-        if (!admPwd.equals(administrator.getAdmPwd())) {
-            model.addAttribute("message", "密碼錯誤!");
+        Integer failTimes = getFailedTimes();
+        // 密碼嘗試次數最多5次，如果錯誤次數少於等於5次，檢查密碼是否正確；若超過5次，直接導回去頁面
+        if (failTimes <= 5) {
+            // 判斷密碼是否正確
+            if (!admPwd.equals(administrator.getAdmPwd())) {
+                model.addAttribute("message", "密碼錯誤!");
+                // 執行登入失敗方法，將登入失敗次數記入Session
+                failTimes = loginFailed(failTimes);
+                session.setAttribute("failTimes", failTimes);
+                return "backend/login";
+            }
+        } else {
+            model.addAttribute("message", "您已超過嘗試次數，請等30分鐘後再嘗試");
             return "backend/login";
         }
+
 
         // 確認帳號是否已被登入
         if (administrator.getAdmLogin() == 1) {
@@ -145,9 +177,10 @@ public class BackendIndexController {
     }
 
     @GetMapping("/forgotPassword")
-    public String toForgotPassword() {
+    public String toForgotPwd() {
         return "backend/forgotPassword";
     }
+
 
     /**
      * 點擊導覽與個人資料頁面內的登出按鈕登出
@@ -167,6 +200,7 @@ public class BackendIndexController {
         return "redirect:/backend/login";
     }
 
+
     // 最新消息推播
     @GetMapping("/")
     public String news() {
@@ -177,6 +211,82 @@ public class BackendIndexController {
     @GetMapping
     public String search() {
         return "";
+    }
+
+    /**
+     * 記錄密碼輸入錯誤的次數，
+     * 透過使用者IP記錄，記錄時間為30分鐘
+     *
+     * @param failTimes 密碼輸入錯誤次數
+     * @return 返回 failTimes + 1
+     */
+    private Integer loginFailed(Integer failTimes) {
+        try {
+            // 取得使用者IP
+            InetAddress localHost = InetAddress.getLocalHost();
+            String ipAddress = localHost.getHostAddress();
+            // 如果密碼輸入失敗次數為0
+            if (failTimes == 0) {
+                stiRedisTemplate.opsForValue().set(ipAddress, ++failTimes);
+                stiRedisTemplate.expire(ipAddress, Duration.ofMinutes(30));
+            } else {
+                failTimes = stiRedisTemplate.opsForValue().get(ipAddress);
+                stiRedisTemplate.opsForValue().set(ipAddress, ++failTimes);
+                stiRedisTemplate.expire(ipAddress, Duration.ofMinutes(30));
+            }
+
+            System.out.println("本地主機的 IP 地址：" + ipAddress + ", 密碼輸入錯誤次數" + failTimes);
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
+        return failTimes;
+    }
+
+    /**
+     * 取得密碼輸入錯誤次數
+     *
+     * @return 從Redis資料庫取得錯誤次數，若沒有則設為0
+     */
+    private Integer getFailedTimes() {
+        Integer failTimes = null;
+        try {
+            // 取得使用者IP
+            InetAddress localHost = InetAddress.getLocalHost();
+            String ipAddress = localHost.getHostAddress();
+            if (stiRedisTemplate.hasKey(ipAddress)) {
+                failTimes = stiRedisTemplate.opsForValue().get(ipAddress);
+            } else {
+                failTimes = 0;
+            }
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
+        return failTimes;
+    }
+
+    /**
+     * 去除指定字段的錯誤信息並返回更新後的 BindingResult。
+     * 此方法會過濾掉 BindingResult 中與指定字段相關的錯誤信息，然後將剩餘的錯誤信息添加到新的 BindingResult 中。
+     *
+     * @param administrator 要操作的 Entity 對象。
+     * @param result 目前的 BindingResult，其中包含 Entity 的錯誤信息。
+     * @param removedFieldname 要去除錯誤信息的字段名稱。
+     * @return 更新後的 BindingResult，其中去除了指定字段的錯誤信息。
+     */
+    private BindingResult removeFieldError(Administrator administrator, BindingResult result, String removedFieldname) {
+
+        // 過濾掉指定字段的錯誤信息
+        List<FieldError> errorsListToKeep = result.getFieldErrors().stream()
+                .filter(fieldname -> !fieldname.getField().equals(removedFieldname))
+                .collect(Collectors.toList());
+        // 創建新的 BindingResult，關聯 Entity 物件
+        result = new BeanPropertyBindingResult(administrator, "administrator");
+        // 將過濾後的錯誤信息添加到新的 BindingResult 中
+        for (FieldError fieldError : errorsListToKeep) {
+            result.addError(fieldError);
+        }
+        // 返回修改後的 BindingResult
+        return result;
     }
 
 }
