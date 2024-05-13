@@ -17,6 +17,10 @@ import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.ren.util.Constants.*;
+
+import static com.ren.util.Constants.*;
+
 @Service
 public class AdministratorServiceImpl implements AdministratorService_interface {
 
@@ -61,8 +65,20 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
         administrator.setAdmSalt("1");
         administrator.setAdmLogin(Byte.valueOf("0"));
         administrator.setAdmLogout(Byte.valueOf("1"));
-        return administratorRepository.save(administrator);
+        return addAdministrator(administrator);
     }
+
+//    /**
+//     * 將在線管理員清單資料同步到Redis資料庫
+//     *
+//     * @param list 傳入在線管理員列表
+//     */
+//    @Override
+//    public void backup(List<Administrator> list) {
+//        for (Administrator administrator : list) {
+//
+//        }
+//    }
 
     /**
      * 透過管理員編號查詢單筆管理員資料
@@ -94,6 +110,17 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
     @Override
     public List<Administrator> getAll() {
         return administratorRepository.findAll();
+    }
+
+    /**
+     * 獲得在線管理員清單
+     *
+     * @return 返回在線管理員清單
+     */
+    @Override
+    public List<Administrator> getLoginAdms() {
+        return administratorRepository
+                .findAllByAdmLoginAndAdmLogout(LOGIN_STATE_LOGIN ,LOGOUT_STATE_LOGIN);
     }
 
     /**
@@ -138,21 +165,19 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
             // 返回更新後的administrator
             administrator = updateAdministrator(administrator);
         }
-        LoginState loginState = new LoginState();
         Integer admNo = administrator.getAdmNo();
-        loginState.setAdmNo(admNo);
-        loginState.setJsessionid(sessionID);
-        loginState.setAdmLogin(administrator.getAdmLogin());
-        loginState.setAdmLogout(administrator.getAdmLogout());
-        loginState.setAdmActiveTime(administrator.getAdmActiveTime());
-        loginState.setTitleNo(administrator.getTitle().getTitleNo());
-
+        LoginState loginState = new LoginState(admNo, sessionID, administrator.getAdmLogin(), administrator.getAdmLogout(), administrator.getAdmActiveTime(), administrator.getTitle().getTitleNo());
         // 將登入狀態放入Redis資料庫，供LoginStateFilter於每次發出請求時做登入狀態驗證
         storeLoginstateInRedis(admNo, loginState);
 
         return loginState;
     }
 
+    /**
+     * 執行登出，更新資料庫內的登入狀態與刪除Redis內的登入資訊
+     *
+     * @param loginState 傳入登入狀態，執行登出
+     */
     @Override
     public void logout(LoginState loginState) {
         Administrator administrator = getOneAdministrator(loginState.getAdmNo());
@@ -176,6 +201,11 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
         itlRedisTemplate.opsForValue().set(key, loginState);
     }
 
+    /**
+     * 刪除管理員資料
+     *
+     * @param admNo 根據主鍵刪除該筆資料
+     */
     @Override
     public void deleteAdministrator(Integer admNo) {
         administratorRepository.deleteById(admNo);
@@ -192,12 +222,6 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
             itlRedisTemplate.delete(key);
         }
     }
-
-
-
-
-
-
 
     //    @Override
 //    public void uploadPhoto(Integer admNo,byte[] admPhoto) {

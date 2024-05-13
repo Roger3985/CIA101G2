@@ -38,6 +38,11 @@ public class FilterConfig {
     @Autowired
     private LoginStateMemberFilter loginStateMemberFilter;
 
+    /**
+     * 註冊自動登入Filter到Spring容器
+     *
+     * @return 返回註冊物件，後續將用於告訴Spring容器如何註冊與配置過濾器
+     */
     @Bean
     public FilterRegistrationBean<Filter> autoLoginFilterRegistration() {
         FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>(autoLoginFilter);
@@ -46,6 +51,11 @@ public class FilterConfig {
         return registration;
     }
 
+    /**
+     * 註冊登入狀態Filter到Spring容器
+     *
+     * @return 返回註冊物件，後續將用於告訴Spring容器如何註冊與配置過濾器
+     */
     @Bean
     public FilterRegistrationBean<Filter> loginStateFilterRegistration() {
         FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>(loginStateFilter);
@@ -54,6 +64,11 @@ public class FilterConfig {
         return registration;
     }
 
+    /**
+     * 註冊權限Filter到Spring容器
+     *
+     * @return 返回註冊物件，後續將用於告訴Spring容器如何註冊與配置過濾器
+     */
     @Bean
     public FilterRegistrationBean<Filter> functionFilterRegistration() {
         FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>(functionFilter);

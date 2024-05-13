@@ -40,7 +40,7 @@ public class FunctionFilter extends HttpFilter {
         if (!validateURL(requestURI) && (loginState = (LoginState) session.getAttribute("loginState")) != null) {
             System.out.println("被FunctionFilter過濾的" + requestURI);
             // 獲取職位編號，後續用來校對職位
-            // 職位 1.老闆 2.經理 3.正職員工 4.打工仔
+            // 職位 1.打工仔 2.正職員工 3.經理 4.老闆
             // 1.老闆可以做到CRUD
             // 2.經理可以做到CRU
             // 3.正職員工可以做到CR

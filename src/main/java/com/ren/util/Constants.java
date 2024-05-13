@@ -20,6 +20,10 @@ public interface Constants {
     int FULLTIME = 2;
     int MANAGER = 3;
     int BOSS = 4;
+    byte LOGIN_STATE_LOGIN = 1;
+    byte LOGIN_STATE_LOGOUT = 0;
+    byte LOGOUT_STATE_LOGIN = 0;
+    byte LOGOUT_STATE_LOGOUT = 1;
 
     /**
      * 首頁路徑
