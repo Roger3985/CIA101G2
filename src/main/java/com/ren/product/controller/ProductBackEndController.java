@@ -1,5 +1,6 @@
 package com.ren.product.controller;
 
+import com.ren.authorityfunction.entity.AuthorityFunction;
 import com.ren.product.entity.Product;
 import com.ren.productcategory.entity.ProductCategory;
 import com.ren.product.service.ProductServiceImpl;
@@ -10,13 +11,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.ren.util.Constants.FIRST;
 
@@ -190,4 +194,29 @@ public class ProductBackEndController {
 
 
     // 更新
+
+    /**
+     * 去除指定字段的錯誤信息並返回更新後的 BindingResult。
+     * 此方法會過濾掉 BindingResult 中與指定字段相關的錯誤信息，然後將剩餘的錯誤信息添加到新的 BindingResult 中。
+     *
+     * @param product 要操作的 Entity 對象。
+     * @param result 目前的 BindingResult，其中包含 Entity 的錯誤信息。
+     * @param removedFieldname 要去除錯誤信息的字段名稱。
+     * @return 更新後的 BindingResult，其中去除了指定字段的錯誤信息。
+     */
+    private BindingResult removeFieldError(Product product, BindingResult result, String removedFieldname) {
+
+        // 過濾掉指定字段的錯誤信息
+        List<FieldError> errorsListToKeep = result.getFieldErrors().stream()
+                .filter(fieldname -> !fieldname.getField().equals(removedFieldname))
+                .collect(Collectors.toList());
+        // 創建新的 BindingResult，關聯 Entity 物件
+        result = new BeanPropertyBindingResult(product, "product");
+        // 將過濾後的錯誤信息添加到新的 BindingResult 中
+        for (FieldError fieldError : errorsListToKeep) {
+            result.addError(fieldError);
+        }
+        // 返回修改後的 BindingResult
+        return result;
+    }
 }

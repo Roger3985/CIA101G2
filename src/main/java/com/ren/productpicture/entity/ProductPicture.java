@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ren.product.entity.Product;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 
 @Entity
@@ -14,6 +15,7 @@ public class ProductPicture implements java.io.Serializable {
     private Integer productPicNo;
     @ManyToOne
     @JsonManagedReference
+    @NotEmpty(message = "請選擇商品編號")
     @JoinColumn(name = "productno", referencedColumnName = "productno")
     private Product product;
     @Column(name = "productpic", columnDefinition = "longblob")
