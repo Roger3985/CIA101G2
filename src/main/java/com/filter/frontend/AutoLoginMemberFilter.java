@@ -46,7 +46,6 @@ public class AutoLoginMemberFilter extends HttpFilter {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
-
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
 
@@ -96,7 +95,7 @@ public class AutoLoginMemberFilter extends HttpFilter {
                 // 將登入狀態存入 Session
                 session.setAttribute("loginsuccess", loginStateMember);
 
-                integerLoginStateRedisTemplateMember.opsForValue().set(memNo, loginStateMember);
+                // integerLoginStateRedisTemplateMember.opsForValue().set(memNo, loginStateMember);
             }
         }
         chain.doFilter(req, res);

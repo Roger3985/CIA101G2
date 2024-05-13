@@ -84,7 +84,7 @@
                                         </div><!-- Checkbox -->
                                         <div class="form-check mb-3">
                                             <input class="form-check-input" name="autoLoginMember" type="checkbox"
-                                                value="" id="customCheck" checked="checked">
+                                                value="1" id="customCheck" checked="checked">
                                             <label class="form-check-label" for="customCheck">Remember me</label>
                                         </div>
                                         <div class="form-group text-center">
@@ -128,17 +128,6 @@
     <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
     <!-- End script start -->
     <!-- jQuery code -->
-    <script>
-        $(document).ready(function() {
-            $('#customCheck').change(function() {
-                if (this.checked) {
-                    $(this).val("1");
-                } else {
-                    $(this).val("0");
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>

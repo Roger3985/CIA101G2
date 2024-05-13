@@ -5,23 +5,32 @@
             <div class="modal-header bg-primary">
                 <div class="modal-title p-3">
                     <h5 class="m-0 text-white">Sign in to your account!</h5>
-                    <p class="m-0 text-white">Nice to see you! Please log in with your account.</p>
+                    <p class="m-0 text-white">Nice to see you! Please log in with your account or email.</p>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="w-100 p-3"><!-- Form START -->
-                    <form>
-                        <div class="mb-3">
-                            <label class="form-label" for="exampleInputEmail1">Email address</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="E-mail">
+                    <form method="post" th:action="@{/frontend/member/loginPageByPopup}" id="loginForm">
+                        <div style="text-align: center;">
+                            <span id="errorMessage" style="color: red;"></span>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="*********">
+                            <label class="form-label" for="exampleInputEmail1">Account / Email</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="請輸入帳號或信箱" name="identifier">
+                        </div>
+                        <div class="mb-3">
+                            <div class="row align-items-center">
+                                <label class="form-label col" for="exampleInputPassword1">
+                                    Password
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <span class="col ms-auto small text-end">
+                                                    <a th:href="@{/frontend/member/forgetPassword}">Forgot password?</a></span></div>
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="*********" name="password">
                         </div>
                         <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <input type="checkbox" name="autoLoginMember" class="form-check-input" id="exampleCheck1" value="1">
                             <label class="form-check-label" for="exampleCheck1">keep me signed in</label>
                         </div>
                         <div class="row align-items-center">
@@ -30,7 +39,7 @@
                             </div>
                             <div class="col-sm-8 text-sm-end">
                                 <span class="text-muted">Don't have an account?
-                                    <a href="sign-up.html">Signup here</a>
+                                    <a th:href="@{/frontend/member/addMemberData}">Signup here</a>
                                 </span>
                             </div>
                         </div>
@@ -41,3 +50,34 @@
     </div>
 </div>
 <!-- End Login Popup  -->
+<script>
+    $('#loginForm').submit(function(event) {
+        // 防止表單默認提交
+        event.preventDefault();
+
+        // 獲取表單數據
+        var formData = $(this).serialize();
+
+        // 發送 POST 請求到後端控制器
+        $.ajax({
+            type: "POST",
+            url: "/frontend/member/loginPageByPopup",
+            data: formData,
+            contentType: 'application/x-www-form-urlencoded',
+            success: function(response) {
+                // 登入成功處理
+                $('#errorMessage').text(''); // 清除錯誤消息
+                // 可以執行其他操作，例如關閉彈窗或重定向
+                $('#topbarlogin').modal('hide');
+                // 在這裡可以添加其他處理邏輯，例如重定向或刷新頁面
+            },
+            error: function(xhr, status, error) {
+                // 登入失敗處理
+                // 顯示錯誤消息
+                var errorMessage = JSON.parse(xhr.responseText);
+                $('#errorMessage').text(errorMessage.message);
+                // 在這裡可以添加其他失敗處理邏輯，例如清除表單數據或保留輸入內容
+            }
+        });
+    });
+</script>

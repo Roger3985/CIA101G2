@@ -21,6 +21,8 @@
                     <ul class="nav ms-auto ms-lg-3">
                         <li class="nav-item"><a href="#" class="nav-link text-white" data-bs-toggle="modal"
                                                 data-bs-target="#topbarlogin"><i class="fi-user me-2"></i>Login</a></li>
+<!--                        <li class="nav-item"><a th:href="@{frontend/member/loginpopup.html}" class="nav-link text-white" data-bs-toggle="modal"-->
+<!--                                                data-bs-target="#topbarlogin"><i class="fi-user me-2"></i>Login</a></li>-->
                     </ul><!-- Top social -->
                     <div class="nav header-social justify-content-end d-none d-lg-block white-link"><a
                             class="h-social-link" href="#"><i class="bi bi-facebook"></i></a> <a class="h-social-link"
@@ -98,9 +100,11 @@
             <div class="nav-item dropdown"><a class="nav-link" href="#" role="button" id="dropdown_myaccount"
                                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
                     class="fi-user"></i></a>
-                <div class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="dropdown_myaccount"><a
-                        class="dropdown-item" href="#">Login</a> <a class="dropdown-item" href="#">Register</a> <a
-                        class="dropdown-item" href="#">Wishlist</a> <a class="dropdown-item" href="#">My account</a>
+                <div class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="dropdown_myaccount">
+                    <a class="dropdown-item" th:href="@{/frontend/member/loginMember}">Login</a>
+                    <a class="dropdown-item" href="#">Register</a>
+                    <a class="dropdown-item" href="#">Wishlist</a>
+                    <a class="dropdown-item" href="#">My account</a>
                 </div>
             </div><!-- Wishlist -->
             <div class="nav-item d-none d-xl-block"><a class="nav-link" href="#"><i class="fi-heart"></i></a></div>
