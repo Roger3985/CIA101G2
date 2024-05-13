@@ -31,12 +31,6 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     @Query("SELECT re FROM Rental re WHERE re.rentalName LIKE %:rentalName%")
     List<Rental> findQueryByRentalName(@Param("rentalName") String rentalName);
 
-    @Query("SELECT re FROM Rental re WHERE re.rentalPrice = :rentalPrice ORDER BY re.rentalNo DESC") //金額由大到小
-    List<Rental> findByRentalPriceDESC(@Param("rentalPrice") BigDecimal rentalPrice);
-
-    @Query("SELECT re FROM Rental re WHERE re.rentalPrice = :rentalPrice ORDER BY re.rentalNo") //金額由小到大
-    List<Rental> findByRentalPriceASC(@Param("rentalPrice") BigDecimal rentalPrice);
-
     @Query("SELECT re FROM Rental re WHERE re.rentalSize = :rentalSize")
     List<Rental> findQueryByRentalSize(@Param("rentalSize") Integer rentalSize);
 
