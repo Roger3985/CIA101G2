@@ -7,10 +7,12 @@ import com.iting.productmyfavorite.entity.ProductMyFavorite;
 import com.iting.productorderdetail.entity.ProductOrderDetail;
 import com.ren.productcategory.entity.ProductCategory;
 import com.ren.productpicture.entity.ProductPicture;
+import com.ren.productreview.entity.ProductReview;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
@@ -56,10 +58,14 @@ public class Product {
     @Column(name = "productcompeople")
     private Integer productComPeople;
     @NotEmpty(message = "請輸入商品評價分數")
-    @Min(value = 0, message = "評分請填0~5的分數")
-    @Max(value = 5, message = "評分請填0~5的分數")
+    @DecimalMin(value = "0.01", message = "評分請填0.00 ~ 5.00的分數")
+    @DecimalMax(value = "5.00", message = "評分請填0.00 ~ 5.00的分數")
     @Column(name = "productcomscore")
-    private Integer productComScore;
+    private BigDecimal productComScore;
+    @Column(name = "productonshelf")
+    private Timestamp productOnShelf;
+    @Column(name = "productoffshelf")
+    private Timestamp productOffShelf;
 
     @JsonBackReference
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
@@ -73,6 +79,9 @@ public class Product {
     @JsonBackReference
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<ProductPicture> productPictures;
+    @JsonBackReference
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private Set<ProductReview> productReviews;
 
     public Product() {
     }
@@ -81,8 +90,7 @@ public class Product {
         this.productNo = productNo;
     }
 
-
-    public Product(ProductCategory productCategory, String productName, String productInfo, Integer productSize, String productColor, BigDecimal productPrice, Byte productStat, Integer productSalQty, Integer productComPeople, Integer productComScore) {
+    public Product(ProductCategory productCategory, String productName, String productInfo, Integer productSize, String productColor, BigDecimal productPrice, Byte productStat, Integer productSalQty, Integer productComPeople, BigDecimal productComScore) {
         this.productCategory = productCategory;
         this.productName = productName;
         this.productInfo = productInfo;
@@ -95,7 +103,7 @@ public class Product {
         this.productComScore = productComScore;
     }
 
-    public Product(Integer productNo, ProductCategory productCategory, String productName, String productInfo, Integer productSize, String productColor, BigDecimal productPrice, Byte productStat, Integer productSalQty, Integer productComPeople, Integer productComScore) {
+    public Product(Integer productNo, ProductCategory productCategory, String productName, String productInfo, Integer productSize, String productColor, BigDecimal productPrice, Byte productStat, Integer productSalQty, Integer productComPeople, BigDecimal productComScore) {
         this.productNo = productNo;
         this.productCategory = productCategory;
         this.productName = productName;
@@ -107,6 +115,61 @@ public class Product {
         this.productSalQty = productSalQty;
         this.productComPeople = productComPeople;
         this.productComScore = productComScore;
+    }
+
+    public Product(ProductCategory productCategory, String productName, String productInfo, Integer productSize, String productColor, BigDecimal productPrice, Byte productStat, Integer productSalQty, Integer productComPeople, BigDecimal productComScore, Timestamp productOnShelf, Timestamp productOffShelf) {
+        this.productCategory = productCategory;
+        this.productName = productName;
+        this.productInfo = productInfo;
+        this.productSize = productSize;
+        this.productColor = productColor;
+        this.productPrice = productPrice;
+        this.productStat = productStat;
+        this.productSalQty = productSalQty;
+        this.productComPeople = productComPeople;
+        this.productComScore = productComScore;
+        this.productOnShelf = productOnShelf;
+        this.productOffShelf = productOffShelf;
+    }
+
+    public Product(Integer productNo, ProductCategory productCategory, String productName, String productInfo, Integer productSize, String productColor, BigDecimal productPrice, Byte productStat, Integer productSalQty, Integer productComPeople, BigDecimal productComScore, Timestamp productOnShelf, Timestamp productOffShelf) {
+        this.productNo = productNo;
+        this.productCategory = productCategory;
+        this.productName = productName;
+        this.productInfo = productInfo;
+        this.productSize = productSize;
+        this.productColor = productColor;
+        this.productPrice = productPrice;
+        this.productStat = productStat;
+        this.productSalQty = productSalQty;
+        this.productComPeople = productComPeople;
+        this.productComScore = productComScore;
+        this.productOnShelf = productOnShelf;
+        this.productOffShelf = productOffShelf;
+    }
+
+    public Timestamp getProductOnShelf() {
+        return productOnShelf;
+    }
+
+    public void setProductOnShelf(Timestamp productOnShelf) {
+        this.productOnShelf = productOnShelf;
+    }
+
+    public Timestamp getProductOffShelf() {
+        return productOffShelf;
+    }
+
+    public void setProductOffShelf(Timestamp productOffShelf) {
+        this.productOffShelf = productOffShelf;
+    }
+
+    public Set<ProductReview> getProductReviews() {
+        return productReviews;
+    }
+
+    public void setProductReviews(Set<ProductReview> productReviews) {
+        this.productReviews = productReviews;
     }
 
     public Integer getProductNo() {
@@ -189,11 +252,11 @@ public class Product {
         this.productComPeople = productComPeople;
     }
 
-    public Integer getProductComScore() {
+    public BigDecimal getProductComScore() {
         return productComScore;
     }
 
-    public void setProductComScore(Integer productComScore) {
+    public void setProductComScore(BigDecimal productComScore) {
         this.productComScore = productComScore;
     }
 

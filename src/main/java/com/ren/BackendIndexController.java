@@ -181,10 +181,6 @@ public class BackendIndexController {
         return "backend/forgotPassword";
     }
 
-    @GetMapping("/forgotPassword")
-    public String toForgotPassword() {
-        return "backend/forgotPassword";
-    }
 
     /**
      * 點擊導覽與個人資料頁面內的登出按鈕登出

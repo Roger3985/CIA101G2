@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ren.admauthority.entity.AdmAuthority;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 @Entity
@@ -13,6 +14,7 @@ public class AuthorityFunction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "authfuncno")
     private Integer authFuncNo;
+    @NotEmpty(message = "功能權限名稱")
     @Column(name = "authfuncinfo")
     private String authFuncInfo;
     @JsonBackReference

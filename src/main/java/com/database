@@ -46,6 +46,8 @@ DROP TABLE IF EXISTS `Member`;
 DROP TABLE IF EXISTS News;
 DROP TABLE IF EXISTS ServiceRobot;
 
+DROP TABLE IF EXISTS ProductReview;
+
 
 -- 創建會員表格
 CREATE TABLE Member
@@ -460,20 +462,22 @@ CREATE TABLE product
     productStat TINYINT NOT NULL,
     productSalQty INT NOT NULL,
     productComPeople INT NOT NULL,
-    productComScore INT NOT NULL,
+    productComScore DECIMAL(3,2) NOT NULL,
+    productOnShelf DATETIME NULL,
+    productOffShelf DATETIME NULL,
     FOREIGN KEY (productCatNo) REFERENCES ProductCategory(productCatNo)
 );
-INSERT INTO product (productCatNo, productName, productInfo, productSize, productColor, productPrice, productStat, productSalQty, productComPeople, productComScore) VALUES
-(1644, '男士襯衫', '舒適且時尚的男士襯衫', 2, '藍色', 30, 1, 1000, 500, 2),
-(4133, '女士連衣裙', '優雅的女士連衣裙，適合各種場合', 1, '紅色', 50, 1, 500, 200, 5),
-(1321, '男士西裝', '高品質的男士西裝套裝，專業又時尚', 3, '黑色', 200, 0, 300, 150, 1),
-(4566, '女士牛仔褲', '舒適的女士牛仔褲，適合日常穿著', 2, '淺藍色', 40, 1, 200, 100, 3),
-(1782, '男士外套', '時尚的男士外套，適合秋季穿著', 4, '灰色', 80, 1, 400, 250, 4),
-(3311, '女士針織衫', '溫暖且舒適的女士針織衫', 2, '綠色', 35, 0, 600, 300, 5),
-(2166, '男士運動褲', '適合運動穿著的男士運動褲', 3, '黑色', 25, 1, 700, 400, 2),
-(3679, '女士外套', '時尚的女士外套，適合春季穿著', 1, '粉色', 60, 1, 800, 500, 1),
-(1851, '男士長袖T恤', '舒適的男士長袖T恤，適合秋冬季節穿著', 4, '白色', 20, 0, 200, 100, 4),
-(4223, '女士短裙', '可愛的女士短裙，適合夏季穿著', 2, '黃色', 30, 1, 300, 150, 3);
+INSERT INTO product (productCatNo, productName, productInfo, productSize, productColor, productPrice, productStat, productSalQty, productComPeople, productComScore, productOnShelf, productOffShelf) VALUES
+(1644, '男士襯衫', '舒適且時尚的男士襯衫', 2, '藍色', 30, 1, 1000, 500, 2, null, null),
+(4133, '女士連衣裙', '優雅的女士連衣裙，適合各種場合', 1, '紅色', 50, 1, 500, 200, 5, null, null),
+(1321, '男士西裝', '高品質的男士西裝套裝，專業又時尚', 3, '黑色', 200, 0, 300, 150, 1, null, null),
+(4566, '女士牛仔褲', '舒適的女士牛仔褲，適合日常穿著', 2, '淺藍色', 40, 1, 200, 100, 3, null, null),
+(1782, '男士外套', '時尚的男士外套，適合秋季穿著', 4, '灰色', 80, 1, 400, 250, 4, null, null),
+(3311, '女士針織衫', '溫暖且舒適的女士針織衫', 2, '綠色', 35, 0, 600, 300, 5, null, null),
+(2166, '男士運動褲', '適合運動穿著的男士運動褲', 3, '黑色', 25, 1, 700, 400, 2, null, null),
+(3679, '女士外套', '時尚的女士外套，適合春季穿著', 1, '粉色', 60, 1, 800, 500, 1, null, null),
+(1851, '男士長袖T恤', '舒適的男士長袖T恤，適合秋冬季節穿著', 4, '白色', 20, 0, 200, 100, 4, null, null),
+(4223, '女士短裙', '可愛的女士短裙，適合夏季穿著', 2, '黃色', 30, 1, 300, 150, 3, null, null);
 
 -- 創建 ProductPicture 表格
 CREATE TABLE ProductPicture
@@ -834,3 +838,28 @@ INSERT INTO StudioTimeBooking (studioTimeNo, studioOrdNo, studioNo, closeDate, c
 (3, NULL, 8001, '2025-01-31', 0, 0, 0),
 (4, NULL, 8001, '2025-02-01', 0, 0, 0),
 (5, NULL, 8001, '2025-02-02', 0, 0, 0);
+
+-- 創建商品評價表格
+CREATE TABLE ProductReview
+(
+	productNo INT NOT NULL,
+	memNo INT NOT NULL,
+    review VARCHAR(255) NULL,
+    productScore INT NOT NULL,
+    reviewTime DATETIME NOT NULL,
+    PRIMARY KEY (productNo,memNo),
+    FOREIGN KEY (productNo) REFERENCES Product(productNo) ,
+    FOREIGN KEY (memNo) REFERENCES `member`(memNo)
+);
+
+INSERT INTO ProductReview (productNo, memNo, review, productScore, reviewTime) VALUES
+(1, 1, '這個商品很棒!', 5, '2024-05-01 10:00:00'),
+(1, 2, '感覺很普通，不太喜歡。', 3, '2024-05-02 11:00:00'),
+(2, 3, '品質不錯，價格也實惠。', 4, '2024-05-03 12:00:00'),
+(2, 4, '挺好的，性價比很高。', 5, '2024-05-04 13:00:00'),
+(3, 5, '太差了，不值得購買。', 1, '2024-05-05 14:00:00'),
+(3, 6, '商品與描述相符，很滿意。', 5, '2024-05-06 15:00:00'),
+(4, 7, '還可以，勉勉強強。', 2, '2024-05-07 16:00:00'),
+(4, 8, '非常好，推薦購買。', 5, '2024-05-08 17:00:00'),
+(5, 9, '不錯，性價比挺高的。', 4, '2024-05-09 18:00:00'),
+(5, 10, '一般般，沒什麼特別的。', 3, '2024-05-10 19:00:00');

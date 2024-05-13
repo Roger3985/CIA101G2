@@ -10,6 +10,7 @@ import com.roger.report.entity.Report;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Set;
@@ -21,27 +22,35 @@ public class Administrator {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "admno")
     private Integer admNo;
+    @NotEmpty(message = "密碼不可空白")
     @Column(name = "admpwd")
     private String admPwd;
+    @NotEmpty(message = "管理員名稱不可空白")
     @Column(name = "admname")
     private String admName;
+    @NotEmpty(message = "請選擇在職狀態")
     @Column(name = "admstat")
     private Byte admStat;
+    @NotEmpty(message = "請填入信箱!")
     @Email(message = "不符合信箱格式!")
     @Column(name = "admemail")
     private String admEmail;
+    @NotEmpty(message = "請選擇職位編號")
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "titleno", referencedColumnName = "titleno")
     private Title title;
+    @NotEmpty(message = "入職時間不可留空!")
     @Column(name = "admhiredate")
     private Date admHireDate;
     @Column(name = "admphoto", columnDefinition = "blob")
     private byte[] admPhoto;
     @Column(name = "admsalt")
     private String admSalt;
+    @NotEmpty(message = "請選擇登入狀態")
     @Column(name = "admlogin")
     private Byte admLogin;
+    @NotEmpty(message = "請選擇登出狀態")
     @Column(name = "admlogout")
     private Byte admLogout;
     @Column(name = "admactivetime")
