@@ -267,4 +267,23 @@ public class CartController {
 ////        }
 //
 //
+
+
+    @Controller
+    public class ProductController {
+
+        @PostMapping("/updateQuantity")
+        @ResponseBody
+        public String updateQuantity(@RequestParam("productNo") String productNo,
+                                     @RequestParam("memNo") String memNo,
+                                     @RequestParam("quantity") int quantity) {
+            // 这里可以编写更新商品数量的逻辑，例如更新数据库中的商品数量
+            // 你可以使用 productNo 和 memNo 来确定要更新的商品和会员
+            // quantity 是新的商品数量
+
+            // 这里只是简单地返回一个成功的消息，你应该根据实际情况返回相应的结果
+            return "Quantity updated successfully";
+        }
+    }
+
 }

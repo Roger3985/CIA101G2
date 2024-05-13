@@ -152,12 +152,8 @@ public String insert(@Validated(Create.class) ProductOrder productOrder, Binding
     }
     @PostMapping("updateProductOrder")
     public String getOne_For_Update(@RequestParam("productOrdNo") String productOrdNo, ModelMap model) {
-        /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
-        /*************************** 2.開始查詢資料 *****************************************/
 
         ProductOrder productOrder = productOrderSvc.getOneProductOrder(Integer.valueOf(productOrdNo));
-
-        /*************************** 3.查詢完成,準備轉交(Send the Success view) **************/
         model.addAttribute("productOrder", productOrder);
         model.addAttribute("memberList", memberService.findAll());
 
@@ -178,19 +174,7 @@ public String insert(@Validated(Create.class) ProductOrder productOrder, Binding
 
 
 
-    @PostMapping("insertproductOrdersuccess")
-    public String insertproductOrdersuccess(@Valid ProductOrder productOrder, BindingResult result, ModelMap model) {
-//        result = removeFieldError(productOrderDetail, result, "upFiles");
-//        if (result.hasErrors() ) {
-//            return "backend/productorderdetail/addProductOrderDetail";
-//        }
-        /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
-        productOrderSvc.addOneProductOrderSuccess(productOrder);
-//        List<ProductOrderDetail> list = productOrderDetailSvc.getAll();
-//        model.addAttribute("productorderdetailListData", list);
-//        model.addAttribute("success", "- (新增成功)");
-        return "redirect:/backend/productorder/selectProductOrder";
-    }
+
 
 
 

@@ -145,21 +145,22 @@
                         <th>會員編號</th>
                         <th>商品編號</th>
                         <th>商品</th>
-                        <th>規格</th>
+                        <th>顏色</th>
+                        <th>大小</th>
                         <th>單價</th>
                         <th>數量</th>
                         <th>總計</th>
                         <th>操作</th>
                     </tr>
                     </thead>
-                    <tbody class="align-middle">
+                    <tbody class="align-middle" id="parentOfProductAllPrice">
                     <th:block th:each="cart : ${cartListData}">
                         <tr class="productitm">
-                            <td class="align-middle" th:text="${cart.memNo}"> </td>
-                            <td class="align-middle" th:text="${cart.productNo}"> </td>
-                            <td class="align-middle" th:text="${cart.productName}"> </td>
-                            <td class="align-middle" th:text="${cart.productColor}">
-                                <span th:text="${cart.productColor}">   </span><br>
+                            <td class="align-middle" id="memNo"th:text="${cart.memNo}"> </td>
+                            <td class="align-middle" id="productNo"th:text="${cart.productNo}"> </td>
+                            <td class="align-middle" id="productName"th:text="${cart.productName}"> </td>
+                            <td class="align-middle" id="productColor"th:text="${cart.productColor}"> </td>
+                            <td  id="productSize">
                                 <span th:if="${cart.productSize == 0}">XS</span>
                                 <span th:if="${cart.productSize == 1}">S</span>
                                 <span th:if="${cart.productSize == 2}">M</span>
@@ -167,7 +168,7 @@
                                 <span th:if="${cart.productSize == 4}">XL</span>
                                 <span th:if="${cart.productSize == 5}">2L</span>
                             </td>
-                            <td class="price" th:text="${cart.productPrice}"></td>
+                            <td class="price" id="productPrice" th:text="${cart.productPrice}"></td>
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
                                     <div class="input-group-btn">
@@ -175,7 +176,7 @@
                                             <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input type="number" class="form-control form-control-sm bg-secondary text-center qut" style="text-align: right;" th:value="${cart.productBuyQty}" onchange="updateTotal(this)" readonly>
+                                    <input type="number" name="productBuyQty"  id="productBuyQty"class="form-control form-control-sm bg-secondary text-center qut" style="text-align: right;" th:value="${cart.productBuyQty}" onchange="updateTotal(this)" readonly>
                                     <div class="input-group-btn">
                                         <button type="button" class="btn btn-sm btn-primary btn-plus" onclick="increaseQuantity(this)">
                                             <i class="fa fa-plus"></i>
@@ -183,7 +184,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="align-middle allprice" th:text="'$' +${cart.productBuyQty * cart.productPrice}"></td>
+                            <td class="align-middle allprice" id="productAllPrice" th:text="'$' + ${cart.productBuyQty * cart.productPrice}" th:onchange="updatePrice()"></td>
                             <td class="align-middle">
                                 <form th:action="@{deletecartsuccess}" method="post" id="deleteForm">
                                     <input type="hidden" name="productNo" th:value="${cart.productNo}" />
@@ -192,10 +193,10 @@
                                         <i class="fa fa-times"></i>
                                     </button>
                                 </form>
-
                             </td>
                         </tr>
                     </th:block>
+
                     </tbody>
                 </table>
             </div>
@@ -221,7 +222,7 @@
         <div class="card-body">
             <div class="d-flex justify-content-between mb-3 pt-1">
                 <h6 class="font-weight-medium">商品總金額</h6>
-                <h6 class="font-weight-medium">$150</h6>
+                <h6 class="font-weight-medium" id="allprice">$150</h6>
             </div>
             <div class="d-flex justify-content-between">
                 <h6 class="font-weight-medium">優惠券折抵</h6>
@@ -314,6 +315,8 @@
         var price = parseFloat(priceElement.textContent.replace('$', '')); // 获取价格并转换为浮点数
         var total = price * quantity; // 计算总价
         totalPriceElement.textContent = '$' + total; // 更新总价，并保留两位小数
+        calculateTotalAllPrice(); // 更新总价
+        saveTotalPrice(); // 保存总价到会话存储中
     }
 
     function increaseQuantity(button) {
@@ -322,23 +325,7 @@
         var newValue = quantity + 1;
         input.value = newValue;
         updateTotal(input);
-
-        // 发送 AJAX 请求更新数量到后端
-        var productNo = input.dataset.productNo; // 使用自定义属性获取商品编号
-        var memNo = input.dataset.memNo; // 使用自定义属性获取会员编号
-
-        // 发送 AJAX 请求
-        $.post("/updateQuantity", {
-            productNo: productNo,
-            memNo: memNo,
-            quantity: newValue
-        }).done(function(response) {
-            // 处理成功的情况
-            console.log("Quantity updated successfully");
-        }).fail(function(error) {
-            // 处理失败的情况
-            console.error("Failed to update quantity");
-        });
+        updateBackendQuantity(input, newValue); // 更新后端数据
     }
 
     function decreaseQuantity(button) {
@@ -348,27 +335,70 @@
             var newValue = quantity - 1;
             input.value = newValue;
             updateTotal(input);
-
-            // 发送 AJAX 请求更新数量到后端
-            var productNo = input.dataset.productNo; // 使用自定义属性获取商品编号
-            var memNo = input.dataset.memNo; // 使用自定义属性获取会员编号
-
-            // 发送 AJAX 请求
-            $.post("/updateQuantity", {
-                productNo: productNo,
-                memNo: memNo,
-                quantity: newValue
-            }).done(function(response) {
-                // 处理成功的情况
-                console.log("Quantity updated successfully");
-            }).fail(function(error) {
-                // 处理失败的情况
-                console.error("Failed to update quantity");
-            });
+            updateBackendQuantity(input, newValue); // 更新后端数据
         }
     }
 
+    function calculateTotalAllPrice() {
+        var allPriceElements = document.querySelectorAll('#parentOfProductAllPrice .allprice');
+        var totalAllPrice = 0;
+        allPriceElements.forEach(function(element) {
+            var price = parseFloat(element.textContent.replace('$', '')); // 获取元素的文本内容并去除货币符号
+            totalAllPrice += price;
+        });
+        var totalPriceElement = document.getElementById('allprice');
+        totalPriceElement.textContent = '$' + totalAllPrice.toFixed(2); // 保留两位小数并添加货币符号
+    }
+
+    function saveTotalPrice() {
+        var totalAllPrice = document.getElementById('allprice').textContent.replace('$', ''); // 获取总价并去除货币符号
+        sessionStorage.setItem('totalPrice', totalAllPrice);
+
+    }
+
+    // 页面加载时执行一次计算
+    calculateTotalAllPrice();
+
+    // 检查会话存储中是否存在之前保存的总价
+    var totalPrice = sessionStorage.getItem('totalPrice');
+    if (totalPrice !== null) {
+        document.getElementById('allprice').textContent = '$' + totalPrice;
+    }
+
+    // 创建一个 MutationObserver 实例
+    var observer = new MutationObserver(function(mutationsList, observer) {
+        calculateTotalAllPrice(); // 更新总价
+        saveTotalPrice(); // 保存总价到会话存储中
+    });
+
+    // 选择要观察的节点
+    var targetNode = document.getElementById('parentOfProductAllPrice');
+
+    // 配置观察器选项
+    var config = { subtree: true, childList: true };
+
+    // 启动观察器并传入要观察的节点和配置
+    observer.observe(targetNode, config);
+
+    // 更新后端数量
+    function updateBackendQuantity(input, newValue) {
+        var productNo = input.dataset.productNo; // 使用自定义属性获取商品编号
+        var memNo = input.dataset.memNo; // 使用自定义属性获取会员编号
+        $.post("/frontend/cart/updateQuantity", {
+            productNo: productNo,
+            memNo: memNo,
+            quantity: newValue
+        }).done(function(response) {
+            console.log("Quantity updated successfully");
+        }).fail(function(error) {
+            console.error("Failed to update quantity");
+        });
+    }
 </script>
+
+
+
+
 </body>
 
 </html>
