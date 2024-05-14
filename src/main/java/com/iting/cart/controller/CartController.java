@@ -152,6 +152,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
@@ -170,15 +171,34 @@ public class CartController {
     @GetMapping("addcart")
     public String addcart(ModelMap model) {
         CartRedis cartRedis = new CartRedis();
+
         model.addAttribute("cartRedis", cartRedis);
         return "frontend/cart/addCart";
     }
 
 //
-//    @GetMapping("Cart")
-//    public String Cart() {
-//        return "frontend/cart/Cart";
-//    }
+@GetMapping("Cart")
+public String Cart(HttpSession session, ModelMap model) {
+    // 从会话中获取 memNo 的值
+    Integer memNo = (Integer) session.getAttribute("memNo");
+
+    // 如果 memNo 为空，则需要进行相应的处理，比如重定向到登录页面或者给出提示信息
+    if (memNo == null) {
+        // 处理 memNo 为空的情况，比如重定向到登录页面
+        return "redirect:/login";
+    }
+
+    // 根据 memNo 获取购物车数据
+    List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNo);
+
+    // 将购物车数据添加到模型中
+    model.addAttribute("cartListData", cartListData);
+
+    // 返回购物车页面
+    return "frontend/cart/Cart";
+}
+
+
 //    @GetMapping("select_page")
 //    public String select_page() {
 //        return "frontend/cart/CartSelectPage";
@@ -188,19 +208,19 @@ public class CartController {
 ////        return "frontend/cart/cartbymemno";
 ////    }
 
-    @PostMapping("/deletecartsuccess")
-    public String delete(@RequestParam(name="memNo") Integer memNo,
-                         @RequestParam(name="productNo") Integer productNo,
-                         ModelMap model) {
-
-        cartSvc.deleteBymemNoAndProductNo(memNo, productNo);
-        List<CartRedis> updatedCartList = cartSvc.findByCompositeKey(memNo);
-        model.addAttribute("cartListData", updatedCartList);
-        return "frontend/cart/Cart";
-    }
+//    @PostMapping("/deletecartsuccess")
+//    public String delete(@RequestParam(name="memNo") Integer memNo,
+//                         @RequestParam(name="productNo") Integer productNo,
+//                         ModelMap model) {
+//
+//        cartSvc.deleteBymemNoAndProductNo(memNo, productNo);
+//        List<CartRedis> updatedCartList = cartSvc.findByCompositeKey(memNo);
+//        model.addAttribute("cartListData", updatedCartList);
+//        return "frontend/cart/Cart";
+//    }
 
     @PostMapping("addcartsuccess")
-    public String insert(@Validated(Create.class) CartRedis cartRedis, BindingResult result, @RequestParam(name="memNo") String memNo, ModelMap model) {
+    public String insert(@Validated(Create.class) CartRedis cartRedis, BindingResult result, @RequestParam(name="memNo") Integer memNo, ModelMap model) {
         if (result.hasErrors()) {
             model.addAttribute("errors", result.getFieldErrors());
             return "frontend/cart/addCart";
@@ -208,8 +228,8 @@ public class CartController {
 
 
                 cartSvc.updateCart(cartRedis);
-                List<CartRedis> updatedCartList = cartSvc.findByCompositeKey(Integer.parseInt(memNo));
-                model.addAttribute("cartListData", updatedCartList);
+                List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNo);
+                model.addAttribute("cartListData", cartListData);
                 return "frontend/cart/Cart";
 
         }
@@ -269,21 +289,39 @@ public class CartController {
 //
 
 
-    @Controller
-    public class ProductController {
 
-        @PostMapping("/updateQuantity")
-        @ResponseBody
-        public String updateQuantity(@RequestParam("productNo") String productNo,
-                                     @RequestParam("memNo") String memNo,
-                                     @RequestParam("quantity") int quantity) {
-            // 这里可以编写更新商品数量的逻辑，例如更新数据库中的商品数量
-            // 你可以使用 productNo 和 memNo 来确定要更新的商品和会员
-            // quantity 是新的商品数量
 
-            // 这里只是简单地返回一个成功的消息，你应该根据实际情况返回相应的结果
-            return "Quantity updated successfully";
-        }
+//        @PostMapping("/updateQuantity")
+//        @ResponseBody
+//        public String updateQuantity(@RequestParam("productNo") String productNo,
+//                                     @RequestParam("memNo") String memNo,
+//                                     @RequestParam("quantity") int quantity) {
+//            // 这里可以编写更新商品数量的逻辑，例如更新数据库中的商品数量
+//            // 你可以使用 productNo 和 memNo 来确定要更新的商品和会员
+//            // quantity 是新的商品数量
+//
+//            // 这里只是简单地返回一个成功的消息，你应该根据实际情况返回相应的结果
+//            return "Quantity updated successfully";
+//
+//    }
+
+    @PostMapping("/deleteInstantly")
+    public String deleteInstantly(@RequestParam("productNo") Integer productNo,
+                                  @RequestParam("memNo") Integer memNo,
+                                  HttpSession session,
+                                  ModelMap model) {
+
+        // 执行删除操作
+        cartSvc.deleteBymemNoAndProductNo(memNo, productNo);
+        // 获取更新后的购物车数据
+        List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNo);
+        // 将更新后的数据添加到模型中
+        model.addAttribute("cartListData", cartListData);
+        // 返回购物车页面
+        session.setAttribute("memNo", memNo);
+        return "frontend/cart/Cart";
     }
+
+
 
 }

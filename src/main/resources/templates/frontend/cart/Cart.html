@@ -1,295 +1,167 @@
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zxx" data-bs-theme="light">
 
-<head>
+<head><!-- metas -->
     <meta charset="utf-8">
-    <title>FallElove</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
-
+    <meta name="author" content="pxdraft">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <!-- title -->
+    <title>ShopApp - eCommerce Bootstrap 5 Template</title>
     <!-- Favicon -->
-    <link th:href="@{/frontend/img/favicon.ico}" rel="icon" />
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <!-- CSS Template -->
+    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
 
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link th:href="@{/frontend/lib/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet" />
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link th:href="@{/frontend/css/style.css}" rel="stylesheet" />
 </head>
 
 <body>
-<!-- Topbar Start -->
-<div class="container-fluid">
-    <div class="row bg-secondary py-2 px-xl-5">
-        <div class="col-lg-6 d-none d-lg-block">
-            <div class="d-inline-flex align-items-center">
-                <h5><a  class="text-dark" href="">FAQs</a></h5>
-                <!-- <span  class="text-muted px-2">|</span>
-                <a class="text-dark" href="">幫助</a>
-                <span class="text-muted px-2">|</span>
-                <a class="text-dark" href="">Support</a> -->
-            </div>
-        </div>
-        <div class="col-lg-6 text-center text-lg-right">
-            <div class="d-inline-flex align-items-center">
-                <a class="text-dark px-2" href="">
-                    <h5><i class="fab fa-facebook-f"></i></h5>
-                </a>
-                <a class="text-dark px-2" href="">
-                    <h5><i class="fab fa-twitter"></i></h5>
-                </a>
-                <a class="text-dark px-2" href="">
-                    <h5><i class="fab fa-linkedin-in"></i></h5>
-                </a>
-                <a class="text-dark px-2" href="">
-                    <h5><i class="fab fa-instagram"></i></h5>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="row align-items-center py-3 px-xl-5">
-        <div class="col-lg-3 d-none d-lg-block">
-            <a href="" class="text-decoration-none">
-                <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">Fall</span>衣<span class="text-primary font-weight-bold border px-4 mr-1">Love</span></h1>
-            </a>
-        </div>
-        <div class="col-lg-6 col-6 text-left">
-            <form action="">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for products">
-                    <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
-                                <i class="fa fa-search"></i>
-                            </span>
+<!-- 通用插件 -->
+<th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block>
+<!-- 通用插件 -->
+<!--
+========================
+    Wrapper
+========================
+-->
+<div class="wrapper">
+    <!-- Header -->
+    <header th:replace="frontend/component/header :: header"></header>
+    <!-- End Header -->
+    <!-- Main -->
+    <main>
+        <!-- Page Title -->
+        <div class="bg-no-repeat bg-cover bg-right-center position-relative">
+            <div class="position-absolute top-0 end-0 start-0 bottom-0 opacity-3 bg-dark"></div>
+            <!-- Header Height Bar -->
+            <div class="header-height-bar border-bottom opacity-3" style="min-height: 104.865px;"></div>
+            <div class="container py-6 position-relative">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 my-2">
+                        <h1 class="m-0 h4 text-center text-lg-start text-white">Your cart</h1>
+                    </div>
+                    <div class="col-lg-6 my-2">
+                        <ol
+                                class="breadcrumb breadcrumb-light m-0 small justify-content-center justify-content-lg-end">
+                            <li class="breadcrumb-item"><a class="text-nowrap" href="#">Home</a></li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page">Your cart</li>
+                        </ol>
                     </div>
                 </div>
-            </form>
-        </div>
-        <div class="col-lg-3 col-6 text-right">
-            <a href="" class="btn border">
-                <i class="fas fa-heart text-primary"></i>
-                <span class="badge">0</span>
-            </a>
-            <a href="" class="btn border">
-                <i class="fas fa-shopping-cart text-primary"></i>
-                <span class="badge">0</span>
-            </a>
-        </div>
-    </div>
-</div>
-<!-- Topbar End -->
-
-
-<!-- Navbar Start -->
-
-<div class="col-lg-9">
-    <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-        <a href="" class="text-decoration-none d-block d-lg-none">
-            <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">FALL</span>衣Love</h1>
-        </a>
-        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-            <div class="navbar-nav mr-auto py-0">
-                <a th:href="@{/cart/addcart}" class="nav-item nav-link">回首頁</a>
-                <a href="shop.html" class="nav-item nav-link">商品</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">購物頁面</a>
-                    <div class="dropdown-menu rounded-0 m-0">
-                        <a href="cart.html" class="dropdown-item">商品購物車</a>
-                        <a th:href="@{/cart/addcart}"  class="dropdown-item">結帳</a>
-                    </div>
-                </div>
-                <a href="contact.html" class="nav-item nav-link">聯絡我們</a>
-            </div>
-            <div class="navbar-nav ml-auto py-0">
-                <a href="" class="nav-item nav-link">登入</a>
-                <a href="" class="nav-item nav-link">註冊</a>
             </div>
         </div>
-    </nav>
-</div>
-</div>
-</div>
-<!-- Navbar End -->
+    </main>
+        <!-- End Page Title -->
+        <!-- Section -->
 
+        <form th:action="@{/frontend/productorder/insertOrder}" method="post" th:object="${cartListData}">
+            <table class="table">
+                <thead>
+                <tr>
+                    <!--                <th>會員編號</th>-->
+                    <!--                <th>商品編號</th>-->
+                    <th>商品</th>
+                    <th>顏色</th>
+                    <th>大小</th>
+                    <th>單價</th>
+                    <th>數量</th>
+                    <th>總計</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
 
-<!-- Page Header Start -->
-<div class="container-fluid bg-secondary mb-5">
-    <div class="d-flex flex-column align-items-center justify-content-center black-border" style="min-height: 300px;  background-size: cover; background-position: center;opacity: 0.8;">
+                <tbody class="align-middle" id="parentOfProductAllPrice">
+                <th:block th:each="cart: ${cartListData}">
+                    <tr class="productitm">
 
-        <h1 class="font-weight-semi-bold text-uppercase mb-3" style="color:black;">fallElove 商品購物車</h1>
-        <div class="d-inline-flex">
-            <p class="m-0"><a href="">首頁</a></p>
+                        <td class="align-middle" th:id="productName" th:text="${cart.productName}"></td>
+                        <td class="align-middle" th:id="productColor" th:text="${cart.productColor}"></td>
+                        <td id="productSize">
+                            <span th:if="${cart.productSize == 0}">XS</span>
+                            <span th:if="${cart.productSize == 1}">S</span>
+                            <span th:if="${cart.productSize == 2}">M</span>
+                            <span th:if="${cart.productSize == 3}">L</span>
+                            <span th:if="${cart.productSize == 4}">XL</span>
+                            <span th:if="${cart.productSize == 5}">2L</span>
+                        </td>
+                        <td class="price" th:id="productPrice" th:text="${cart.productPrice}"></td>
+                        <td class="align-middle">
+                            <div class="cart-qty-01">
+                                <button type="button" class="inc qty-btn" onclick="decreaseQuantity(this)">
+                                    <i class="bi bi-caret-down-fill"></i>
+                                </button>
+                                <input class="cart-qty-input form-control" type="text" name="productBuyQty"
+                                       th:value="${cart.productBuyQty}">
+                                <button type="button" class="dec qty-btn" onclick="increaseQuantity(this)">
+                                    <i class="bi bi-caret-up-fill"></i>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="align-middle allprice" th:id="productAllPrice"
+                            th:text="'$' + ${cart.productBuyQty * cart.productPrice}" th:onchange="updatePrice()"></td>
+                        <td class="align-middle">
 
-        </div>
-    </div>
-</div>
-<!-- Page Header End -->
-
-
-<!-- Cart Start -->
-<form th:action="@{/frontend/productorder/insertOrder}" method="post" th:object="${cartListData}">
-    <div class="container-fluid pt-5">
-        <div class="row px-xl-5">
-            <div class="col-lg-8 table-responsive mb-5">
-                <table class="table table-bordered text-center mb-0">
-                    <thead class="bg-secondary text-dark">
-                    <tr>
-                        <th>會員編號</th>
-                        <th>商品編號</th>
-                        <th>商品</th>
-                        <th>顏色</th>
-                        <th>大小</th>
-                        <th>單價</th>
-                        <th>數量</th>
-                        <th>總計</th>
-                        <th>操作</th>
+                            <input type="hidden" name="productNo" th:value="${cart.productNo}"/>
+                            <input type="hidden" name="memNo" th:value="${cart.memNo}"/>
+                            <button class="btn btn-link px-0 text-danger btn btn-sm btn-primary btn-remove"
+                                    type="button" onclick="deleteProduct(this)">
+                                <i class="bi-trash3 me-2"></i>
+                                <span class="">Remove</span>
+                            </button>
+                        </td>
                     </tr>
-                    </thead>
-                    <tbody class="align-middle" id="parentOfProductAllPrice">
-                    <th:block th:each="cart : ${cartListData}">
-                        <tr class="productitm">
-                            <td class="align-middle" id="memNo"th:text="${cart.memNo}"> </td>
-                            <td class="align-middle" id="productNo"th:text="${cart.productNo}"> </td>
-                            <td class="align-middle" id="productName"th:text="${cart.productName}"> </td>
-                            <td class="align-middle" id="productColor"th:text="${cart.productColor}"> </td>
-                            <td  id="productSize">
-                                <span th:if="${cart.productSize == 0}">XS</span>
-                                <span th:if="${cart.productSize == 1}">S</span>
-                                <span th:if="${cart.productSize == 2}">M</span>
-                                <span th:if="${cart.productSize == 3}">L</span>
-                                <span th:if="${cart.productSize == 4}">XL</span>
-                                <span th:if="${cart.productSize == 5}">2L</span>
-                            </td>
-                            <td class="price" id="productPrice" th:text="${cart.productPrice}"></td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary btn-minus" onclick="decreaseQuantity(this)">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="number" name="productBuyQty"  id="productBuyQty"class="form-control form-control-sm bg-secondary text-center qut" style="text-align: right;" th:value="${cart.productBuyQty}" onchange="updateTotal(this)" readonly>
-                                    <div class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary btn-plus" onclick="increaseQuantity(this)">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle allprice" id="productAllPrice" th:text="'$' + ${cart.productBuyQty * cart.productPrice}" th:onchange="updatePrice()"></td>
-                            <td class="align-middle">
-                                <form th:action="@{deletecartsuccess}" method="post" id="deleteForm">
-                                    <input type="hidden" name="productNo" th:value="${cart.productNo}" />
-                                    <input type="hidden" name="memNo" th:value="${cart.memNo}" />
-                                    <button type="button" class="btn btn-sm btn-primary btn-remove" onclick="deleteProduct()">
-                                        <i class="fa fa-times"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    </th:block>
+                </th:block>
+                </tbody>
 
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <!-- 结帐按钮 -->
+            </table>
 
-</form>
+            <div class="card">
+                <div class="card-header bg-transparent py-3">
+                    <h6 class="m-0 h5">商品金額</h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="me-2 text-body">商品總金額</h6>
+                            <h6 class="font-weight-medium text-end" id="allprice"></h6>
+                        </li>
+                    </ul>
+                    <div class="pt-2 pb-4">
+                        <div class="d-flex">
 
-<div class="col-lg-4">
-    <form class="mb-5" action="">
-        <div class="input-group">
-            <input type="text" class="form-control p-4" placeholder="Coupon Code">
-            <div class="input-group-append">
-                <button class="btn btn-primary">輸入優惠券</button>
-            </div>
-        </div>
-    </form>
-    <div class="card border-secondary mb-5">
-        <div class="card-header bg-secondary border-0">
-            <h4 class="font-weight-semi-bold m-0">訂單金額</h4>
-        </div>
-        <div class="card-body">
-            <div class="d-flex justify-content-between mb-3 pt-1">
-                <h6 class="font-weight-medium">商品總金額</h6>
-                <h6 class="font-weight-medium" id="allprice">$150</h6>
-            </div>
-            <div class="d-flex justify-content-between">
-                <h6 class="font-weight-medium">優惠券折抵</h6>
-                <h6 class="font-weight-medium">$10</h6>
-            </div>
-        </div>
-        <div class="card-footer border-secondary bg-transparent">
-            <div class="d-flex justify-content-between mt-2">
-                <h5 class="font-weight-bold">總付款金額</h5>
-                <h5 class="font-weight-bold">$160</h5>
-            </div>
-            <button class="btn btn-block btn-primary my-3 py-3 btn-remove" type="submit">結帳</button>
-        </div>
-    </div>
-</div>
-</div>
-</div>
-
-<!-- Cart End -->
-
-
-<!-- Footer Start -->
-<div class="container-fluid bg-secondary text-dark mt-5 pt-5">
-    <div class="row px-xl-5 pt-5">
-        <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-            <a href="" class="text-decoration-none">
-                <h1 class="mb-4 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border border-white px-3 mr-1"></span>FallELove</h1>
-            </a>
-
-            <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
-            <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
-            <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
-        </div>
-        <div class="col-lg-8 col-md-12">
-            <div class="row">
-                <div class="col-md-4 mb-5">
-                    <div class="d-flex flex-column justify-content-start">
-                        <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>首頁</a>
-                        <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>商品總覽</a>
-                        <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>商品訂單</a>
-                        <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>商品購物車</a>
-                        <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>結帳</a>
-                        <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>聯絡我們</a>
+                            <button class="btn btn-dark btn-sm ms-2">結帳</button>
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-4 mb-5">
-                    <h5 class="font-weight-bold text-dark mb-4">Newsletter</h5>
-                    <form action="">
-                        <div class="form-group">
-                            <input type="text" class="form-control border-0 py-4" placeholder="Your Name" required="required" />
-                        </div>
-                        <div class="form-group">
-                            <input type="email" class="form-control border-0 py-4" placeholder="Your Email"
-                                   required="required" />
-                        </div>
-                        <div>
-                            <button class="btn btn-primary btn-block border-0 py-3" type="submit">Subscribe Now</button>
-                        </div>
-                    </form>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+        </form>
+
+            <div class="col-md-4 mb-5">
+                <h5 class="font-weight-bold text-dark mb-4">Newsletter</h5>
+
+            </div>
+
+
+
+<!-- End Section -->
+<!-- End Main -->
+<!-- Footer -->
+<footer th:replace="frontend/component/footer :: footer"></footer>
+<!-- End Footer -->
+
 <!-- Footer End -->
 
+<!--
+========================
+   End Wrapper
+========================
+-->
+<!-- script start -->
+<th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
+<!-- End script start -->
 
 <!-- Back to Top -->
 <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
@@ -306,99 +178,167 @@
 <script th:src="@{/frontend/mail/contact.js}"></script>
 
 <!-- Template Javascript -->
-<script th:src="@{/frontend/js/main.js}"></script>
-<script>
-    function updateTotal(input) {
-        var quantity = parseInt(input.value);
-        var priceElement = input.closest('.productitm').querySelector('.price');
-        var totalPriceElement = input.closest('.productitm').querySelector('.allprice');
-        var price = parseFloat(priceElement.textContent.replace('$', '')); // 获取价格并转换为浮点数
-        var total = price * quantity; // 计算总价
-        totalPriceElement.textContent = '$' + total; // 更新总价，并保留两位小数
-        calculateTotalAllPrice(); // 更新总价
-        saveTotalPrice(); // 保存总价到会话存储中
-    }
 
-    function increaseQuantity(button) {
-        var input = button.closest('.quantity').querySelector('.qut');
-        var quantity = parseInt(input.value);
-        var newValue = quantity + 1;
-        input.value = newValue;
-        updateTotal(input);
-        updateBackendQuantity(input, newValue); // 更新后端数据
-    }
+<script>
+    // function updateTotal(input) {
+    //     var quantity = parseInt(input.value);
+    //     var priceElement = input.closest('.productitm').querySelector('.price');
+    //     var totalPriceElement = input.closest('.productitm').querySelector('.allprice');
+    //     var price = parseFloat(priceElement.textContent.replace('$', '')); // 获取价格并转换为浮点数
+    //     var total = price * quantity; // 计算总价
+    //     totalPriceElement.textContent = '$' + total; // 更新总价，并保留两位小数
+    //     calculateTotalAllPrice(); // 更新总价
+    //     saveTotalPrice(); // 保存总价到会话存储中
+    // }
+    document.getElementById('decreaseQuantityBtn').addEventListener('click', function () {
+        decreaseQuantity(this);
+    });
+
+    document.getElementById('increaseQuantityBtn').addEventListener('click', function () {
+        increaseQuantity(this);
+    });
+
 
     function decreaseQuantity(button) {
-        var input = button.closest('.quantity').querySelector('.qut');
+        var input = button.nextElementSibling;
         var quantity = parseInt(input.value);
         if (quantity > 1) {
             var newValue = quantity - 1;
             input.value = newValue;
-            updateTotal(input);
-            updateBackendQuantity(input, newValue); // 更新后端数据
+            // updateTotal(); // 更新总价
+            // updateBackendQuantity(input, newValue); // 更新后端数据
         }
     }
 
-    function calculateTotalAllPrice() {
-        var allPriceElements = document.querySelectorAll('#parentOfProductAllPrice .allprice');
-        var totalAllPrice = 0;
-        allPriceElements.forEach(function(element) {
-            var price = parseFloat(element.textContent.replace('$', '')); // 获取元素的文本内容并去除货币符号
-            totalAllPrice += price;
-        });
-        var totalPriceElement = document.getElementById('allprice');
-        totalPriceElement.textContent = '$' + totalAllPrice.toFixed(2); // 保留两位小数并添加货币符号
+    function increaseQuantity(button) {
+        var input = button.previousElementSibling;
+        var quantity = parseInt(input.value);
+        var newValue = quantity + 1;
+        input.value = newValue;
+        // updateTotal(); // 更新总价
+        // updateBackendQuantity(input, newValue); // 更新后端数据
     }
 
-    function saveTotalPrice() {
-        var totalAllPrice = document.getElementById('allprice').textContent.replace('$', ''); // 获取总价并去除货币符号
-        sessionStorage.setItem('totalPrice', totalAllPrice);
 
+    // 发送 AJAX 请求更新数量到后端
+    var productNo = input.dataset.productNo; // 使用自定义属性获取商品编号
+    var memNo = input.dataset.memNo; // 使用自定义属性获取会员编号
+
+    //     // 发送 AJAX 请求
+    //     $.post("/updateQuantity", {
+    //         productNo: productNo,
+    //         memNo: memNo,
+    //         quantity: newValue
+    //     }).done(function(response) {
+    //         // 处理成功的情况
+    //         console.log("Quantity updated successfully");
+    //     }).fail(function(error) {
+    //         // 处理失败的情况
+    //         console.error("Failed to update quantity");
+    //     });
+    //     updateBackendQuantity(input, newValue); // 更新后端数据
+    // }
+
+    //
+    //     function calculateTotalAllPrice() {
+    //         var allPriceElements = document.querySelectorAll('#parentOfProductAllPrice .allprice');
+    //         var totalAllPrice = 0;
+    //         allPriceElements.forEach(function(element) {
+    //             var price = parseFloat(element.textContent.replace('$', '')); // 获取元素的文本内容并去除货币符号
+    //             totalAllPrice += price;
+    //         });
+    //         var totalPriceElement = document.getElementById('allprice');
+    //         totalPriceElement.textContent = '$' + totalAllPrice.toFixed(2); // 保留两位小数并添加货币符号
+    //     }
+    //
+    //     // 发送 AJAX 请求更新数量到后端
+    //     var productNo = input.dataset.productNo; // 使用自定义属性获取商品编号
+    //     var memNo = input.dataset.memNo; // 使用自定义属性获取会员编号
+    //
+    //     // 发送 AJAX 请求
+    //     $.post("/updateQuantity", {
+    //         productNo: productNo,
+    //         memNo: memNo,
+    //         quantity: newValue
+    //     }).done(function(response) {
+    //         // 处理成功的情况
+    //         console.log("Quantity updated successfully");
+    //     }).fail(function(error) {
+    //         // 处理失败的情况
+    //         console.error("Failed to update quantity");
+    //     });
+    // }
+    // function saveTotalPrice() {
+    //     var totalAllPrice = document.getElementById('allprice').textContent.replace('$', ''); // 获取总价并去除货币符号
+    //     sessionStorage.setItem('totalPrice', totalAllPrice);
+    //
+    // }
+    //
+    // // 页面加载时执行一次计算
+    // calculateTotalAllPrice();
+    //
+    //
+    // // 创建一个 MutationObserver 实例
+    // var observer = new MutationObserver(function(mutationsList, observer) {
+    //     calculateTotalAllPrice(); // 更新总价
+    //     saveTotalPrice(); // 保存总价到会话存储中
+    // });
+    //
+    // // 选择要观察的节点
+    // var targetNode = document.getElementById('parentOfProductAllPrice');
+    //
+    // // 配置观察器选项
+    // var config = { subtree: true, childList: true };
+    //
+    // // 启动观察器并传入要观察的节点和配置
+    // observer.observe(targetNode, config);
+    //
+    // // 更新后端数量
+    // function updateBackendQuantity(input, newValue) {
+    //     var productNo = input.dataset.productNo; // 使用自定义属性获取商品编号
+    //     var memNo = input.dataset.memNo; // 使用自定义属性获取会员编号
+    //     $.post("/frontend/cart/updateQuantity", {
+    //         productNo: productNo,
+    //         memNo: memNo,
+    //         quantity: newValue
+    //     }).done(function(response) {
+    //         console.log("Quantity updated successfully");
+    //     }).fail(function(error) {
+    //         console.error("Failed to update quantity");
+    //     });
+    // }
+    //
+    function deleteProduct(button) {
+        var row = button.closest('.productitm'); // 获取最近的行元素
+        var productNo = row.querySelector('input[name="productNo"]').value; // 获取要删除的商品编号
+        var memNo = row.querySelector('input[name="memNo"]').value; // 获取会员编号
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/frontend/cart/deleteInstantly', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+            if (xhr.status === 200 && xhr.responseText === "success") {
+                // 从 DOM 中移除该行
+                row.remove();
+                // 更新总价
+                calculateTotalAllPrice();
+            } else {
+                // 处理删除失败的情况
+                console.error('删除失败');
+            }
+        };
+        xhr.send('productNo=' + encodeURIComponent(productNo) + '&memNo=' + encodeURIComponent(memNo));
     }
 
-    // 页面加载时执行一次计算
-    calculateTotalAllPrice();
 
-    // 检查会话存储中是否存在之前保存的总价
-    var totalPrice = sessionStorage.getItem('totalPrice');
-    if (totalPrice !== null) {
-        document.getElementById('allprice').textContent = '$' + totalPrice;
-    }
 
-    // 创建一个 MutationObserver 实例
-    var observer = new MutationObserver(function(mutationsList, observer) {
-        calculateTotalAllPrice(); // 更新总价
-        saveTotalPrice(); // 保存总价到会话存储中
-    });
+    // 发送请求
 
-    // 选择要观察的节点
-    var targetNode = document.getElementById('parentOfProductAllPrice');
 
-    // 配置观察器选项
-    var config = { subtree: true, childList: true };
+    <!--        xhr.send();-->
+    <!--    }-->
 
-    // 启动观察器并传入要观察的节点和配置
-    observer.observe(targetNode, config);
-
-    // 更新后端数量
-    function updateBackendQuantity(input, newValue) {
-        var productNo = input.dataset.productNo; // 使用自定义属性获取商品编号
-        var memNo = input.dataset.memNo; // 使用自定义属性获取会员编号
-        $.post("/frontend/cart/updateQuantity", {
-            productNo: productNo,
-            memNo: memNo,
-            quantity: newValue
-        }).done(function(response) {
-            console.log("Quantity updated successfully");
-        }).fail(function(error) {
-            console.error("Failed to update quantity");
-        });
-    }
 </script>
-
-
-
-
 </body>
 
 </html>

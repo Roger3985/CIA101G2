@@ -95,19 +95,41 @@ public class CartServiceImpl implements CartService {
         try (Jedis jedis = jedisPool.getResource()) {
             String cartKey = "cart:" + cart.getMemNo();
             String productKey = cart.generateId(cart.getProductNo(), cart.getMemNo());
-            jedis.hset(productKey, "memNo", cart.getMemNo().toString());
-            jedis.hset(productKey, "productNo", cart.getProductNo().toString());
-            jedis.hset(productKey, "productName", cart.getProductName());
-            jedis.hset(productKey, "productSize", cart.getProductSize().toString());
-            jedis.hset(productKey, "productColor", cart.getProductColor());
-            jedis.hset(productKey, "productPrice", cart.getProductPrice().toString());
-            jedis.hset(productKey, "productBuyQty", cart.getProductBuyQty().toString());
+            jedis.hset(productKey, "memNo", String.valueOf(cart.getMemNo()));
+            jedis.hset(productKey, "productNo", String.valueOf(cart.getProductNo()));
+            jedis.hset(productKey, "productName", String.valueOf(cart.getProductName()));
+            jedis.hset(productKey, "productSize",String.valueOf (cart.getProductSize()));
+            jedis.hset(productKey, "productColor", String.valueOf(cart.getProductColor()));
+            jedis.hset(productKey, "productPrice", String.valueOf(cart.getProductPrice()));
+            jedis.hset(productKey, "productBuyQty", String.valueOf(cart.getProductBuyQty()));
 
             jedis.sadd(cartKey, productKey);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+    @Override
+    public void addCart(List<CartRedis> cartList) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            for (CartRedis cart : cartList) {
+                String productKey = "cart:" + cart.getMemNo() + ":" + cart.getProductNo();
+                jedis.hset(productKey, "memNo", String.valueOf(cart.getMemNo()));
+                jedis.hset(productKey, "productNo", String.valueOf(cart.getProductNo()));
+                jedis.hset(productKey, "productName", cart.getProductName());
+                jedis.hset(productKey, "productSize", String.valueOf(cart.getProductSize()));
+                jedis.hset(productKey, "productColor", cart.getProductColor());
+                jedis.hset(productKey, "productPrice", String.valueOf(cart.getProductPrice()));
+                jedis.hset(productKey, "productBuyQty", String.valueOf(cart.getProductBuyQty()));
+
+                // 将商品键添加到购物车集合中
+                String cartKey = "cart:" + cart.getMemNo();
+                jedis.sadd(cartKey, productKey);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void updateCart(CartRedis cartRedis) {
@@ -170,16 +192,50 @@ public void deleteBymemNoAndProductNo(Integer memNo, Integer productNo) {
 
             for (String productKey : productKeys) {
                 Map<String, String> productDetails = jedis.hgetAll(productKey);
-                CartRedis cartItem = new CartRedis();
 
+                // 创建一个新的 CartRedis 对象，只设置会员编号
+                CartRedis cartItem = new CartRedis();
                 cartItem.setMemNo(memNo); // 使用传入的会员编号
-                cartItem.setProductNo(Integer.parseInt(productDetails.get("productNo"))); // 获取商品编号
-                cartItem.setProductName(productDetails.get("productName")); // 获取商品名称
-                cartItem.setProductSize(Integer.parseInt(productDetails.get("productSize"))); // 获取商品尺寸
-                cartItem.setProductColor(productDetails.get("productColor")); // 获取商品颜色
-                cartItem.setProductPrice(new BigDecimal(productDetails.get("productPrice"))); // 获取商品价格
-                cartItem.setProductBuyQty(Integer.parseInt(productDetails.get("productBuyQty"))); // 获取购买数量
-                cartItems.add(cartItem);
+
+                // 获取商品编号
+                if (productDetails.containsKey("productNo")) {
+                    Integer productNo = Integer.parseInt(productDetails.get("productNo"));
+                    cartItem.setProductNo(productNo);
+                }
+
+                // 获取商品名称
+                if (productDetails.containsKey("productName")) {
+                    cartItem.setProductName(productDetails.get("productName"));
+                }
+
+                // 获取商品尺寸
+                if (productDetails.containsKey("productSize")) {
+                    Integer productSize = Integer.parseInt(productDetails.get("productSize"));
+                    cartItem.setProductSize(productSize);
+                }
+
+                // 获取商品颜色
+                if (productDetails.containsKey("productColor")) {
+                    cartItem.setProductColor(productDetails.get("productColor"));
+                }
+
+                // 获取商品价格
+                if (productDetails.containsKey("productPrice")) {
+                    BigDecimal productPrice = new BigDecimal(productDetails.get("productPrice"));
+                    cartItem.setProductPrice(productPrice);
+                }
+
+                // 获取购买数量
+                if (productDetails.containsKey("productBuyQty")) {
+                    String productBuyQtyStr = productDetails.get("productBuyQty");
+                    // 检查购买数量是否为空
+                    if (productBuyQtyStr != null && !productBuyQtyStr.isEmpty()) {
+                        Integer productBuyQty = Integer.parseInt(productBuyQtyStr);
+                        cartItem.setProductBuyQty(productBuyQty);
+                        // 将当前商品的属性添加到列表中
+                        cartItems.add(cartItem);
+                    }
+                }
             }
         } catch (Exception e) {
             // 处理异常
@@ -188,6 +244,7 @@ public void deleteBymemNoAndProductNo(Integer memNo, Integer productNo) {
 
         return cartItems;
     }
+
 
 //    @Override
 //    public void createOrderFromCart(Integer memNo) {

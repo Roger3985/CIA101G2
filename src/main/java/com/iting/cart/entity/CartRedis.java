@@ -7,8 +7,7 @@ import java.math.BigDecimal;
 
 @RedisHash("CartRedis")
 public class CartRedis implements Serializable {
-    @Id
-    private String id; // Redis中的键
+
     private Integer productNo;
     private Integer memNo;
     private Integer productBuyQty;
@@ -30,18 +29,13 @@ public class CartRedis implements Serializable {
         this.productPrice = productPrice;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+
 
     // 根据用户ID和产品ID生成唯一的Redis键
     public String generateId(Integer productNo, Integer memNo) {
         return "cart:" + memNo + ":" + productNo;
     }
 
-    public String getId() {
-        return id;
-    }
 
     public Integer getProductNo() {
         return productNo;
@@ -102,7 +96,6 @@ public class CartRedis implements Serializable {
     @Override
     public String toString() {
         return "CartRedis{" +
-                "id='" + id + '\'' +
                 ", productNo=" + productNo +
                 ", memNo=" + memNo +
                 ", productBuyQty=" + productBuyQty +

@@ -83,6 +83,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     }
 
 
+
     @Override
     public void addOneProductOrderSuccess(ProductOrder productOrder) {
         int orderNoHash = Math.abs(UUID.randomUUID().hashCode());
@@ -94,6 +95,10 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         productOrder.setProductByrPhone(productOrder.getMember().getMemMob());
         productOrder.setProductAddr(productOrder.getMember().getMemAdd());
 
+        Coupon coupon= couponService.getOneCoupon(productOrder.getCoupon().getCoupNo());
+        BigDecimal discount = coupon.getCoupDisc();
+        BigDecimal totalPrice = productOrder.getProductAllPrice();
+       productOrder.setProductRealPrice(discount.multiply(totalPrice));
         Set<ProductOrderDetail> orderDetails = new HashSet<>();
         productOrder.setProductOrderDetails(orderDetails);
         List<CartRedis> cartItems = cartService.findByCompositeKey(productOrder.getMemNo());
