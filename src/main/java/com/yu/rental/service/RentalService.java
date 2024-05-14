@@ -8,34 +8,37 @@ import java.util.Map;
 
 public interface RentalService {
 
-    public Rental findByRentalName(String rentalName);//單筆查詢
+    public List<Rental> findAll();  //全部查詢(Rental)
 
-    public List<Rental> getRentalPriceDESC(BigDecimal rentalPrice); //以rentalPrice查詢，金額由大到小
+    public Rental findByNo(Integer rentalNo);//單筆查詢(rentalNo)
 
-    public List<Rental> getRentalPrice(BigDecimal rentalPrice); //以rentalPrice查詢，金額由小到大
+    public List<Rental> getOneRental(Map<String, Object> getOneRentalMap);	//單筆查詢(List集合)
 
-    public List<Rental> getRentalSize(Integer rentalSize); //以rentalSize查詢
-
-    public List<Rental> getRentalColor(String rentalColor); //以rentalColor查詢
+    public Rental findByRentalName(String rentalName);//單筆查詢(rentalName)
 
     public List<Rental> getRentalName(String rentalName); //以rentalName 做模糊查詢
 
-    public Rental findByNo(Integer rentalNo);//單筆查詢
+    public List<Rental> findAllSortDESC(); //以rentalPrice查詢，金額由大到小
 
-    public List<Rental> findAll();  //全部查詢(Rental)
+    public List<Rental> findAllSort(); //以rentalPrice查詢，金額由小到大
 
-    public List<Rental> searchRentals(Map<String, String[]> paramsMap); //複合查詢
+    public List<Rental> getRentalSize(Integer rentalSize); //以rentalSize查詢
 
-    public Rental getOneRental(Integer rentalNo);
+    public Rental getRentalColor(String rentalColor); //以rentalColor查詢
 
-    public List<Rental> getOneRental(Map<String, Object> getOneRentalMap);
 
-//    public List<RentalCategory> findAllRentalCat();  //全部查詢(RentalCategory)
 
+//----------------------------------------------------------------------------------------------------------------------
+    //主要為後端使用：增查改
+
+
+    public List<Rental> findByRentalCategoryRentalCatNo(Integer rentalCatNo); //rentalCatNo查詢(List集合)
 
     public Rental addRental(Rental rental); //新增
 
     public Rental updateRental(Rental rental); //修改
 
+    public List<Rental> searchRentals(Map<String, String[]> paramsMap); //複合查詢
 
+    public List<Rental> findByStat(Byte rentalStat);//單筆查詢(rentalNo)
 }

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/frontend/rental") //對應資料夾路徑
+@RequestMapping("/frontend/rentalcategory") //對應資料夾路徑
 public class RentalCategoryControllerFrontEnd {
 
     /**前端網頁需求：
@@ -34,47 +34,40 @@ public class RentalCategoryControllerFrontEnd {
     private RentalCategoryServiceImpl rentalCategoryService;
 
 
+    //顯示單一類商品查詢(依類別編號)
+    @GetMapping("/showOneRentalCat")
+    public String showOneRentalCat(@RequestParam(value = "rentalCatNo") Integer rentalCatNo,
+                                   ModelMap model) {
+        //建立返回數據的對象
+        RentalCategory rentalCategory = rentalCategoryService.findByCatNo(rentalCatNo);
+        List<RentalCategory> rentalCatList = rentalCategoryService.findAll();
+        model.addAttribute("rentalCatList", rentalCatList);
+
+        // 根據分類編號查詢相應的租賃資料
+        List<Rental> rentalList = rentalService.findByRentalCategoryRentalCatNo(rentalCatNo);
+        model.addAttribute("rentalList", rentalList);
+
+        if (rentalCategory == null) {
+            model.addAttribute("errorMessage", "errors");
+            return "/frontend/rental/rentalShop";
+        }
+
+        model.addAttribute("rentalCategory", rentalCategory);
+        return "/frontend/rentalcategory/showOneRentalCat";
+    }
 
 
     //顯示租借品類別 - 依名稱
-    @GetMapping("listOneRentalCat")
-    public String listOneRentalCat(@RequestParam(value = "rentalCatName", required = true) String rentalCatName, ModelMap model) {
-//        建立返回數據的對象
-        RentalCategory rentalCategory = rentalCategoryService.getRentalCatName(rentalCatName);
-        model.addAttribute("rentalCategory", rentalCategory);
-        return "/frontend/rental/rentalShop";
-    }
-
-    //顯示租借品類別 - 依租借品類別名稱
-    @PostMapping("listForRentalCatName")
-    public String listForRentalCatName(@RequestParam(value = "rentalCatName") String rentalCatName, ModelMap model) {
-
-        String catToDisplay = ""; // 用來存放要顯示的類別
-
-        // 判斷租借品類別名稱
-        if ("西裝".equals(rentalCatName))
-             catToDisplay = "西裝類別";
-        else if ("婚紗".equals(rentalCatName))
-             catToDisplay = "婚紗類別";
-
-        else if ("禮服".equals(rentalCatName))
-            catToDisplay = "禮服類別";
+//    @GetMapping("listOneRentalCat")
+//    public String listOneRentalCat(@RequestParam(value = "rentalCatName", required = true) String rentalCatName, ModelMap model) {
+////        建立返回數據的對象
+//        RentalCategory rentalCategory = rentalCategoryService.getRentalCatName(rentalCatName);
+//        model.addAttribute("rentalCategory", rentalCategory);
+//        return "/frontend/rental/rentalShop";
+//    }
 
 
-        model.addAttribute(" catToDisplay",  catToDisplay);
-
-        // 顯示全部租借品類別列表
-        List<RentalCategory> rentalCatListData = rentalCategoryService.findAll();
-        model.addAttribute("rentalCatListData", rentalCatListData);
-        return "/frontend/rental/rentalShop";
-    }
-
-
-
-
-
-
-//    顯示單一租借品
+    //    顯示單一租借品
 //    @GetMapping("/listOneRental")  //required = true：請求參數不可為null(預設)
 //    public String getOneRental(@RequestParam(value = "rentalNo",required = true) Integer rentalNo, ModelMap model) {
 //        //建立返回數據的對象
@@ -82,6 +75,32 @@ public class RentalCategoryControllerFrontEnd {
 //        model.addAttribute("rental", rental);
 //        return "/frontend/rental/listOneRental";
 //    }
+
+
+    //    //顯示租借品類別 - 依租借品類別名稱
+//    @PostMapping("listForRentalCatName")
+//    public String listForRentalCatName(@RequestParam(value = "rentalCatName") String rentalCatName, ModelMap model) {
+//
+//        String catToDisplay = ""; // 用來存放要顯示的類別
+//
+//        // 判斷租借品類別名稱
+//        if ("西裝".equals(rentalCatName))
+//             catToDisplay = "西裝類別";
+//        else if ("婚紗".equals(rentalCatName))
+//             catToDisplay = "婚紗類別";
+//
+//        else if ("禮服".equals(rentalCatName))
+//            catToDisplay = "禮服類別";
+//
+//
+//        model.addAttribute(" catToDisplay",  catToDisplay);
+//
+//        // 顯示全部租借品類別列表
+//        List<RentalCategory> rentalCatListData = rentalCategoryService.findAll();
+//        model.addAttribute("rentalCatListData", rentalCatListData);
+//        return "/frontend/rental/rentalShop";
+//    }
+
 
 //    //顯示租借品新增
 //    @GetMapping("/addRental")
@@ -103,23 +122,8 @@ public class RentalCategoryControllerFrontEnd {
 //        return "/frontend/rental/updateRental";
 //    }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //處理單筆商品查詢(依租借品編號)
-    @PostMapping("/getOne_For_Display")
-    public String getOne_For_Display(@RequestParam("rentalCatNo") String rentalCatNo, ModelMap model) {
 
-        RentalCategory rentalCategory = rentalCategoryService.getOneRentalCat(Integer.valueOf(rentalCatNo));
-        List<RentalCategory> list = rentalCategoryService.findAll();
-        model.addAttribute("list", list);
-        model.addAttribute("rentalCategory", new RentalCategory());
 
-        if (rentalCategory == null) {
-            model.addAttribute("errorMessage", "查無資料");
-            return "select_RentalCategory_page";
-        }
-        model.addAttribute("rentalCategory", rentalCategory);
-        return "/frontend/rentalcategory/listOneRentalCategory"; // 查詢完成後轉交listOneRental.html
-    }
 
 
     //處理查詢(依租借品的顏色)
@@ -139,8 +143,6 @@ public class RentalCategoryControllerFrontEnd {
 //        model.addAttribute("rentalColor", rentalColor);
 //        return "/frontend/rental/listOneRental"; // 查詢完成後轉交listOneRental.html
 //    }
-
-
     //處理查詢(依租借品的尺寸)
 //    @PostMapping("/getDisplayRentalSize")
 //    public String getDisplayRentalSize(@RequestParam("rentalSize") String rentalSize, ModelMap model) {
@@ -204,7 +206,7 @@ public class RentalCategoryControllerFrontEnd {
 
 
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * 因 @ModelAttribute寫在方法上，故將此類別中的@GetMapping Method先加入model.addAttribute("...List",...Service.getAll());
      * referenceListData()：回傳一個包含參考資料的列表或映射，透過View渲染到使用者介面上。
@@ -245,6 +247,15 @@ public class RentalCategoryControllerFrontEnd {
     protected List<Rental> referenceListDataRental() {
         List<Rental> rentalList = rentalService.findAll();
         return rentalList; //取得Rental列表
+    }
+    /**
+     *前端透過Ajax方式傳送Json資料，由此處控制器方法來接收JSON資料
+     *必須使用@RequestBody註釋
+     */
+    @PostMapping("/json")
+    public String handleJson(@RequestBody RentalCategory rentalCategory){
+        System.out.println(rentalCategory);
+        return "finish";
     }
 
 

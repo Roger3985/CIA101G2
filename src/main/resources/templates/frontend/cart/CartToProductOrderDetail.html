@@ -56,43 +56,44 @@
 <div align="center">
     <h3><b>所有欄位皆為必填欄位</b></h3>
 
-    <form th:action="@{insertproductOrdersuccess}" method="post" th:object="${productOrder}" >
+    <form th:action="@{/frontend/productorder/insertProductOrderSuccess}" method="post" >
         <tbody>
         <div>
             <label>會員編號:</label>
-            <input type="text" th:field="*{memNo}"  onclick="hideContent('memNo.errors');"><br/>
+            <input type="text" th:name="memNo"th:field="*{productOrder.member.memNo}"  onclick="hideContent('productOrder.member.memNo.errors');"><br/>
         </div>
 
         <div>
             <label>訂購人姓名:</label>
-            <input type="text" th:field="*{productByrName}" onclick="hideContent('productByrName.errors');" /><br/>
-            <span  th:if="${#fields.hasErrors('productByrName')}" th:errors="*{productByrName}" class="error" id="productByrName.errors"></span>
+            <input type="text" th:name="productByrName"th:field="*{productOrder.member.memName}" onclick="hideContent('productOrder.member.memName.errors');" /><br/>
+            <span  th:if="${#fields.hasErrors('productOrder.member.memName')}" th:errors="*{member.memName}" class="error" id="productByrName.errors"></span>
         </div>
 
         <div>
             <label>訂購人手機號碼:</label>
-            <input type="text" th:field="*{productByrPhone}" onclick="hideContent('productByrPhone.errors');" /><br/>
-            <span  th:if="${#fields.hasErrors('productByrPhone')}" th:errors="*{productByrPhone}" class="error" id="productByrPhone.errors"></span>
+            <input type="text"th:name="productByrPhone" th:field="*{productOrder.member.memMob}" onclick="hideContent('productOrder.member.memMob.errors');" /><br/>
+            <span  th:if="${#fields.hasErrors('productOrder.member.memMob')}" th:errors="*{productOrder.member.memMob}" class="error" id="productByrPhone.errors"></span>
         </div>
 
         <div>
             <label>訂購人Email:</label>
-            <input type="email" th:field="*{productByrEmail}" onclick="hideContent('productByrEmail.errors');" /><br/>
-            <span  th:if="${#fields.hasErrors('productByrEmail')}" th:errors="*{productByrEmail}" class="error" id="productByrEmail.errors"></span>
+            <input type="email" th:name="productByrEmail" th:field="*{productOrder.member.memMail}" onclick="hideContent('productOrder.member.memMail.errors');" required /><br/>
+            <span th:if="${#fields.hasErrors('productOrder.member.memMail')}" th:errors="*{productOrder.member.memMail}" class="error" id="productByrEmail.errors"></span>
         </div>
+
         <div>
             <label>收件人姓名:</label>
-            <input type="text" th:field="*{productRcvName}" onclick="hideContent('productRcvName.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('productRcvName')}" th:errors="*{productRcvName}" class="error" id="productRcvName.errors"></span>
+            <input type="text" th:field="*{productOrder.productRcvName}" onclick="hideContent('productOrder.productRcvName.errors');" /><br/>
+            <span th:if="${#fields.hasErrors('productOrder.productRcvName')}" th:errors="*{productOrder.productRcvName}" class="error" id="productRcvName.errors"></span>
         </div>
         <div>
             <label>收件人手機號碼:</label>
-            <input type="text" th:field="*{productRcvPhone}" onclick="hideContent('productRcvPhone.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('productRcvPhone')}" th:errors="*{productRcvPhone}" class="error" id="productRcvPhone.errors"></span>
+            <input type="text" th:field="*{productOrder.productRcvPhone}" onclick="hideContent('productOrder.productRcvPhone.errors');" /><br/>
+            <span th:if="${#fields.hasErrors('productOrder.productRcvPhone')}" th:errors="*{productOrder.productRcvPhone}" class="error" id="productRcvPhone.errors"></span>
         </div>
         <div>
             <label>取貨方式:</label>
-            <select th:field="*{productTakeMethod}">
+            <select th:field="*{productOrder.productTakeMethod}">
                 <option th:value="1" th:text="店取" />
                 <option th:value="2" th:text="宅配" />
                 <option th:value="3" th:text="超商取貨" />
@@ -100,36 +101,36 @@
         </div>
         <div>
             <label>宅配住址:</label>
-            <input type="text" th:field="*{productAddr}" onclick="hideContent('productAddr.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('productAddr')}" th:errors="*{productAddr}" class="error" id="productAddr.errors"></span>
+            <input type="text" th:field="*{productOrder.member.memAdd}" onclick="hideContent('productOrder.member.memAdd.errors');" /><br/>
+            <span th:if="${#fields.hasErrors('productOrder.member.memAdd')}" th:errors="*{productOrder.member.memAdd}" class="error" id="productAddr.errors"></span>
         </div>
         <div>
             <label>付款方式:</label>
-            <select th:field="*{productPayMethod}">
+            <select th:field="*{productOrder.productPayMethod}">
                 <option th:value="1" th:text="綠界" />
                 <option th:value="2" th:text="現場付款" />
             </select><br/>
         </div>
         <div>
             <label>訂單總金額:</label>
-            <input type="text" th:name="productAllPrice" th:field="*{productAllPrice}" onclick="hideContent('productAllPrice.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('productAllPrice')}" th:errors="*{productAllPrice}" class="error" id="productAllPrice.errors"></span>
+            <input type="text" th:name="productAllPrice" th:field="*{productOrder.productAllPrice}" onclick="hideContent('productOrder.productAllPrice.errors');" /><br/>
+            <span th:if="${#fields.hasErrors('productOrder.productAllPrice')}" th:errors="*{productOrder.productAllPrice}" class="error" id="productAllPrice.errors"></span>
         </div>
         <div>
             <label>優惠券編號:</label>
-            <input type="text"  th:field="*{coupon.coupNo}" onclick="hideContent('coupon.coupNo.errors');"  /><br/>
-            <span th:if="${#fields.hasErrors('coupon.coupNo')}" th:errors="*{coupon.coupNo}" class="error" id="coupon.coupNo.errors"></span>
+            <input type="text"  th:field="*{productOrder.coupon.coupNo}" onclick="hideContent('productOrder.coupon.coupNo.errors');"  /><br/>
+            <span th:if="${#fields.hasErrors('productOrder.coupon.coupNo')}" th:errors="*{productOrder.coupon.coupNo}" class="error" id="coupon.coupNo.errors"></span>
         </div>
 
         <div>
             <label>優惠券折價總和:</label>
-            <input type="text" th:field="*{productDisc}" onclick="hideContent('productDisc.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('productDisc')}" th:errors="*{productDisc}" class="error" id="productDisc.errors"></span>
+            <input type="text" th:field="*{productOrder.productDisc}" onclick="hideContent('productOrder.productDisc.errors');" /><br/>
+            <span th:if="${#fields.hasErrors('productOrder.productDisc')}" th:errors="*{productOrder.productDisc}" class="error" id="productDisc.errors"></span>
         </div>
         <div>
             <label>訂單實付金額:</label>
-            <input type="text" th:name="productRealPrice" th:field="*{productRealPrice}" onclick="hideContent('productRealPrice.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('productRealPrice')}" th:errors="*{productRealPrice}" class="error" id="productRealPrice.errors"></span>
+            <input type="text" th:name="productOrder.productRealPrice" th:field="*{productOrder.productRealPrice}" onclick="hideContent('productOrder.productRealPrice.errors');" /><br/>
+            <span th:if="${#fields.hasErrors('productOrder.productRealPrice')}" th:errors="*{productOrder.productRealPrice}" class="error" id="productRealPrice.errors"></span>
         </div>
 <!--        <div>-->
 <!--            <label>下單時間:</label>-->
@@ -138,7 +139,7 @@
 <!--        </div>-->
         <div>
             <label>訂單狀態:</label>
-            <select th:field="*{productOrdStat}">
+            <select th:field="*{productOrder.productOrdStat}">
                 <option th:value="0" th:text="訂單取消" />
                 <option th:value="10" th:text="揀貨中" />
                 <option th:value="20" th:text="配送中" />
@@ -154,7 +155,7 @@
         </div>
         <div>
             <label>付款狀態:</label>
-            <select th:field="*{productStat}">
+            <select th:field="*{productOrder.productStat}">
                 <option th:value="0" th:text="未付款" />
                 <option th:value="1" th:text="已付款" />
             </select>
@@ -188,14 +189,7 @@
             <td th:name="productOrderDetail.productPrice" th:text="${productOrderDetail.productPrice}"></td>
             <td th:name="productOrderDetail.productOrdQty" th:text="${productOrderDetail.productOrdQty}"></td>
             <td  th:name="productOrderDetail.productRealPrice" th:text="${productOrderDetail.productRealPrice}"></td>
-<!--                        <td th:text="${productOrderDetail.productComContent}"></td>-->
-<!--                        <td th:text="${productOrderDetail.productScore}"></td>-->
-<!--                        <td>-->
-            <!--                <form method="post" th:action="@{/backend/productorderdetail/getOne_For_Update}" style="margin-bottom: 0px;">-->
-            <!--                    <input type="submit" value="修改">-->
-            <!--                    <input type="hidden" name="productOrdNo" th:value="${productOrderDetail.compositeKey.productOrdNo}">-->
-            <!--                    <input type="hidden" name="productNo" th:value="${productOrderDetail.compositeKey.productNo}"></form>-->
-            <!--            </td>-->
+
         </tr>
     </th:block>
     </tbody>

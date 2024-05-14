@@ -7,6 +7,7 @@ import com.iting.cart.service.CartService;
 import com.iting.productorder.dao.ProductOrderRepository;
 import com.iting.productorder.entity.ProductOrder;
 import com.iting.productorder.service.ProductOrderService;
+import com.iting.productorderdetail.dao.ProductOrderDetailRepository;
 import com.iting.productorderdetail.entity.ProductOrderDetail;
 import com.iting.productorderdetail.service.ProductOrderDetailService;
 import com.roger.member.entity.Member;
@@ -22,6 +23,8 @@ import java.util.*;
 @Service("productOrderService")
 public class ProductOrderServiceImpl implements ProductOrderService {
 
+    @Autowired
+    ProductOrderDetailRepository productOrderDetailRepository;
     @Autowired
     MemberService memberSvc;
     @Autowired
@@ -41,16 +44,17 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 
         repository.save(productOrder);
     }
-
     @Override
     public ProductOrder addOneProductOrder(CartRedis cartRedis) {
         // 根據會員編號查詢購物車中的商品
         List<CartRedis> cartItems = cartService.findByCompositeKey(cartRedis.getMemNo());
         // 創建一個 Set 來存儲訂單明細
-        Set<ProductOrderDetail> orderDetails = new HashSet<>();
+
         ProductOrder productOrder = new ProductOrder();
-        int orderNoHash = Math.abs(UUID.randomUUID().hashCode());
-        productOrder.setProductOrdNo(orderNoHash);
+        // 初始化訂單明細集合
+        Set<ProductOrderDetail> orderDetails = new HashSet<>();
+        productOrder.setProductOrderDetails(orderDetails);
+        // 设置其他属性
         productOrder.setMemNo(cartRedis.getMemNo());
         BigDecimal productAllPrice = BigDecimal.ZERO; // Initialize productAllPrice
         // 將購物車商品轉換為訂單明細
@@ -58,7 +62,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
             ProductOrderDetail orderDetail = new ProductOrderDetail();
             // 設定訂單明細相關屬性
             ProductOrderDetail.CompositeDetail compositeKey = new ProductOrderDetail.CompositeDetail();
-            compositeKey.setProductOrdNo(orderNoHash);
             compositeKey.setProductNo(cartItem.getProductNo());
             orderDetail.setCompositeKey(compositeKey);
             orderDetail.setProductPrice(cartItem.getProductPrice());
@@ -75,18 +78,55 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         productOrder.setProductAllPrice(productAllPrice);
         // 將訂單明細 Set 設定到訂單對象中
         productOrder.setProductOrderDetails(orderDetails);
-        // 保存訂單到資料庫中
-//         repository.save(productOrder);
-       return productOrder;
+        // 返回訂單對象
+        return productOrder;
     }
+
 
     @Override
     public void addOneProductOrderSuccess(ProductOrder productOrder) {
-productOrder.setProductOrdTime(Timestamp.valueOf(LocalDateTime.now()));
+        int orderNoHash = Math.abs(UUID.randomUUID().hashCode());
+        productOrder.setProductOrdNo(orderNoHash);
+        productOrder.setMemNo(productOrder.getMember().getMemNo());
+        productOrder.setProductOrdTime(Timestamp.valueOf(LocalDateTime.now()));
+        productOrder.setProductByrEmail(productOrder.getMember().getMemMail());
+        productOrder.setProductByrName(productOrder.getMember().getMemName());
+        productOrder.setProductByrPhone(productOrder.getMember().getMemMob());
+        productOrder.setProductAddr(productOrder.getMember().getMemAdd());
 
+        Set<ProductOrderDetail> orderDetails = new HashSet<>();
+        productOrder.setProductOrderDetails(orderDetails);
+        List<CartRedis> cartItems = cartService.findByCompositeKey(productOrder.getMemNo());
+        BigDecimal productAllPrice = BigDecimal.ZERO; // Initialize productAllPrice
+
+        // 将购物车商品转换为订单明细
+        for (CartRedis cartItem : cartItems) {
+            ProductOrderDetail orderDetail = new ProductOrderDetail();
+            // 设置订单明细相关属性
+            ProductOrderDetail.CompositeDetail compositeKey = new ProductOrderDetail.CompositeDetail();
+            compositeKey.setProductNo(cartItem.getProductNo());
+            orderDetail.setCompositeKey(compositeKey);
+            orderDetail.setProductPrice(cartItem.getProductPrice());
+            orderDetail.setProductOrdQty(cartItem.getProductBuyQty());
+            BigDecimal realPrice = BigDecimal.valueOf(cartItem.getProductBuyQty())
+                    .multiply(cartItem.getProductPrice());
+            orderDetail.setProductRealPrice(realPrice);
+            // Increment productAllPrice by the real price of current order detail
+            productAllPrice = productAllPrice.add(realPrice);
+            // 设置订单编号
+            orderDetail.getCompositeKey().setProductOrdNo(orderNoHash);
+            // 加入订单明细 Set
+            orderDetails.add(orderDetail);
+        }
+        // 保存订单
         repository.save(productOrder);
     }
-    @Override
+
+
+
+
+
+        @Override
     public void updateProductOrder(ProductOrder productOrder) {
         Optional<ProductOrder> existingOrder = repository.findById(productOrder.getProductOrdNo());
         if (existingOrder.isPresent()) {

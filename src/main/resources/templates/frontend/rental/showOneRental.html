@@ -42,9 +42,9 @@
                     </div>
                     <div class="col-lg-6 my-2">
                         <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
-                            <li class="breadcrumb-item"><a class="text-nowrap" href="#"><i
+                            <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{index}"><i
                                     class="bi bi-home"></i>Home</a></li>
-                            <li class="breadcrumb-item text-nowrap active" aria-current="page">租借品</li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page">租借品專區</li>
                         </ol>
                     </div>
                 </div>
@@ -71,84 +71,84 @@
                                 <div class="swiper-slide swiper-slide-next" role="group" aria-label="2 / 6"
                                      style="width: 516px; opacity: 0; transform: translate3d(-516px, 0px, 0px);">
                                     <div class="pd-gallery-slide"><a class="gallery-link"
-                                                                     th:src="@{/icons/frontend/rental/1.jpg}"><i
+                                                                     th:src="@{/icons/frontend/rental/1.jpg}" th:attr="width=356, height=356"><i
                                             class="bi bi-arrows-fullscreen"></i></a> <img
-                                            th:src="@{/icons/frontend/rental/suit1.jpg}" class="img-fluid"
+                                            th:src="@{/icons/frontend/rental/suit1.jpg}" th:attr="width=356, height=356" class="img-fluid"
                                             title="" alt=""></div>
                                 </div>
                                 <div class="swiper-slide" role="group" aria-label="3 / 6"
                                      style="width: 516px; opacity: 0; transform: translate3d(-1032px, 0px, 0px);">
                                     <div class="pd-gallery-slide"><a class="gallery-link"
-                                                                     th:src="@{/icons/frontend/rental/gown1.jpg}"><i
+                                                                     th:src="@{/icons/frontend/rental/gown1.jpg}" th:attr="width=356, height=356"><i
                                             class="bi bi-arrows-fullscreen"></i></a> <img
-                                            th:src="@{/icons/frontend/rental/2.jpg}" class="img-fluid"
+                                            th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=356, height=356" class="img-fluid"
                                             title="" alt=""></div>
                                 </div>
                                 <div class="swiper-slide" role="group" aria-label="4 / 6"
                                      style="width: 516px; opacity: 0; transform: translate3d(-1548px, 0px, 0px);">
                                     <div class="pd-gallery-slide"><a class="gallery-link"
-                                                                     th:src="@{/icons/frontend/rental/gown1.jpg}"><i
+                                                                     th:src="@{/icons/frontend/rental/gown1.jpg}" th:attr="width=356, height=356" ><i
                                             class="bi bi-arrows-fullscreen"></i></a> <img
-                                            th:src="@{/icons/frontend/rental/2.jpg}" class="img-fluid"
+                                            th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=356, height=356"  class="img-fluid"
                                             title="" alt=""></div>
                                 </div>
                                 <div class="swiper-slide" role="group" aria-label="5 / 6"
                                      style="width: 516px; opacity: 0; transform: translate3d(-2064px, 0px, 0px);">
                                     <div class="pd-gallery-slide"><a class="gallery-link"
-                                                                     th:src="@{/icons/frontend/rental/gown1.jpg}"><i
+                                                                     th:src="@{/icons/frontend/rental/gown1.jpg}" th:attr="width=356, height=356" ><i
                                             class="bi bi-arrows-fullscreen"></i></a> <img
-                                            th:src="@{/icons/frontend/rental/2.jpg}" class="img-fluid"
+                                            th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=356, height=356"  class="img-fluid"
                                             title="" alt=""></div>
                                 </div>
                                 <div class="swiper-slide" role="group" aria-label="6 / 6"
                                      style="width: 516px; opacity: 0; transform: translate3d(-2580px, 0px, 0px);">
                                     <div class="pd-gallery-slide"><a class="gallery-link"
-                                                                     th:src="@{/icons/frontend/rental/gown1.jpg}"><i
+                                                                     th:src="@{/icons/frontend/rental/gown1.jpg}" th:attr="width=356, height=356" ><i
                                             class="bi bi-arrows-fullscreen"></i></a> <img
-                                            th:src="@{/icons/frontend/rental/2.jpg}" class="img-fluid"
+                                            th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=356, height=356"  class="img-fluid"
                                             title="" alt=""></div>
                                 </div>
                             </div>
                             <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
                         </div>
-                        <div
-                                class="swiper swiper_thumb_gallery product-thumb swiper-initialized swiper-horizontal swiper-pointer-events swiper-free-mode swiper-backface-hidden swiper-thumbs">
+                        <!--  該商品圖片輪播區(角度變換)  -->
+                        <div class="swiper swiper_thumb_gallery product-thumb swiper-initialized swiper-horizontal swiper-pointer-events swiper-free-mode swiper-backface-hidden swiper-thumbs">
                             <div class="swiper-wrapper" id="swiper-wrapper-e8a3f9d6a5818fef" aria-live="polite"
                                  style="transform: translate3d(0px, 0px, 0px);">
                                 <div class="swiper-slide swiper-slide-visible swiper-slide-active swiper-slide-thumb-active"
                                      role="group" aria-label="1 / 6" style="width: 95.2px; margin-right: 10px;">
                                     <div class="pd-gallery-slide-thumb"><img
-                                            th:src="@{/icons/frontend/rental/2.jpg}" class="img-fluid"
+                                            th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=63.2, height=63.2" class="img-fluid"
                                             title="" alt=""></div>
                                 </div>
                                 <div class="swiper-slide swiper-slide-visible swiper-slide-next" role="group"
                                      aria-label="2 / 6" style="width: 95.2px; margin-right: 10px;">
                                     <div class="pd-gallery-slide-thumb"><img
-                                            th:src="@{/icons/frontend/rental/2.jpg}" class="img-fluid"
+                                            th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=63.2, height=63.2" class="img-fluid"
                                             title="" alt=""></div>
                                 </div>
                                 <div class="swiper-slide swiper-slide-visible" role="group" aria-label="3 / 6"
                                      style="width: 95.2px; margin-right: 10px;">
                                     <div class="pd-gallery-slide-thumb"><img
-                                            th:src="@{/icons/frontend/rental/2.jpg}" class="img-fluid"
+                                            th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=63.2, height=63.2" class="img-fluid"
                                             title="" alt=""></div>
                                 </div>
                                 <div class="swiper-slide swiper-slide-visible" role="group" aria-label="4 / 6"
                                      style="width: 95.2px; margin-right: 10px;">
                                     <div class="pd-gallery-slide-thumb"><img
-                                            th:src="@{/icons/frontend/rental/2.jpg}" class="img-fluid"
+                                            th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=63.2, height=63.2" class="img-fluid"
                                             title="" alt=""></div>
                                 </div>
                                 <div class="swiper-slide swiper-slide-visible" role="group" aria-label="5 / 6"
                                      style="width: 95.2px; margin-right: 10px;">
                                     <div class="pd-gallery-slide-thumb"><img
-                                            th:src="@{/icons/frontend/rental/2.jpg}" class="img-fluid"
+                                            th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=63.2, height=63.2" class="img-fluid"
                                             title="" alt=""></div>
                                 </div>
                                 <div class="swiper-slide" role="group" aria-label="6 / 6"
                                      style="width: 95.2px; margin-right: 10px;">
                                     <div class="pd-gallery-slide-thumb"><img
-                                            th:src="@{/icons/frontend/rental/2.jpg}" class="img-fluid"
+                                            th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=63.2, height=63.2" class="img-fluid"
                                             title="" alt=""></div>
                                 </div>
                             </div>
@@ -184,44 +184,44 @@
                                     <div class="form-check radio-text form-check-inline me-2"><input
                                             class="form-check-input" type="radio" name="size_d3" id="xs_2"
                                             checked="">
-                                        <label class="radio-text-label" for="xs_2"><span th:if="${rental.rentalSize == 0}" th:text="XS"></span></label>
+                                        <label class="radio-text-label" for="xs_2"><span th:text="XS"></span></label>
                                     </div>
                                     <div class="form-check radio-text form-check-inline me-2"><input
                                             class="form-check-input" type="radio" name="size_d3" id="s_2"> <label
-                                            class="radio-text-label" for="s_2"><span th:if="${rental.rentalSize == 1}" th:text="S"></span></label></div>
+                                            class="radio-text-label" for="s_2"><span th:text="S"></span></label></div>
                                     <div class="form-check radio-text form-check-inline me-2"><input
                                             class="form-check-input" type="radio" name="size_d3" id="m_2"> <label
-                                            class="radio-text-label" for="m_2"><span th:if="${rental.rentalSize == 2}" th:text="M"></span></label></div>
+                                            class="radio-text-label" for="m_2"><span th:text="M"></span></label></div>
                                     <div class="form-check radio-text form-check-inline me-2"><input
                                             class="form-check-input" type="radio" name="size_d3" id="l_2"> <label
-                                            class="radio-text-label" for="l_2"><span th:if="${rental.rentalSize == 3}" th:text="L"></span></label></div>
+                                            class="radio-text-label" for="l_2"><span th:text="L"></span></label></div>
                                     <div class="form-check radio-text form-check-inline me-2"><input
                                             class="form-check-input" type="radio" name="size_d3" id="xl_2"> <label
-                                            class="radio-text-label" for="xl_2"><span th:if="${rental.rentalSize == 4}" th:text="XL"></span></label></div>
+                                            class="radio-text-label" for="xl_2"><span th:text="XL"></span></label></div>
                                     <div class="form-check radio-text form-check-inline me-2"><input
                                             class="form-check-input" type="radio" name="size_d3" id="2l_2"> <label
-                                            class="radio-text-label" for="2l_2"><span th:if="${rental.rentalSize == 5}" th:text="2L"></span></label></div>
+                                            class="radio-text-label" for="2l_2"><span th:text="2L"></span></label></div>
                                 </div>
                                 <!-- 顏色篩選 -->
-                                <label class="fs-6 text-mode pb-2 fw-500">顏色</label>
-                                <div class="nav-thumbs nav mb-3"><span th:text="${rental.rentalColor}"></span>
-                                    <div class="form-check radio-color large form-check-inline me-2"><input
-                                            class="form-check-input" type="radio" name="color_1" id="color_01"
-                                            checked=""> <label class="radio-color-label" for="color_01"><span
-                                            style="background-color: #126532;"></span></label></div>
-                                    <div class="form-check radio-color large form-check-inline me-2"><input
-                                            class="form-check-input" type="radio" name="color_1" id="color_2">
-                                        <label class="radio-color-label" for="color_2"><span
-                                                style="background-color: #ff9922;"></span></label></div>
-                                    <div class="form-check radio-color large form-check-inline me-2"><input
-                                            class="form-check-input" type="radio" name="color_1" id="color_3">
-                                        <label class="radio-color-label" for="color_3"><span
-                                                style="background-color: #326598;"></span></label></div>
-                                    <div class="form-check radio-color large form-check-inline me-2"><input
-                                            class="form-check-input" type="radio" name="color_1" id="color_4">
-                                        <label class="radio-color-label" for="color_4"><span
-                                                style="background-color: #126578;"></span></label></div>
-                                </div>
+                                <label class="fs-6 text-mode pb-2 fw-500"><b>顏色： </b><span th:text="${rental.rentalColor}"></span></label>
+                                <!--                                <div class="nav-thumbs nav mb-3">-->
+                                <!--                                    <div class="form-check radio-color large form-check-inline me-2"><input-->
+                                <!--                                            class="form-check-input" type="radio" name="color_1" id="color_01"-->
+                                <!--                                            checked=""> <label class="radio-color-label" for="color_01"><span-->
+                                <!--                                            style="background-color: #126532;"></span></label></div>-->
+                                <!--                                    <div class="form-check radio-color large form-check-inline me-2"><input-->
+                                <!--                                            class="form-check-input" type="radio" name="color_1" id="color_2">-->
+                                <!--                                        <label class="radio-color-label" for="color_2"><span-->
+                                <!--                                                style="background-color: #ff9922;"></span></label></div>-->
+                                <!--                                    <div class="form-check radio-color large form-check-inline me-2"><input-->
+                                <!--                                            class="form-check-input" type="radio" name="color_1" id="color_3">-->
+                                <!--                                        <label class="radio-color-label" for="color_3"><span-->
+                                <!--                                                style="background-color: #326598;"></span></label></div>-->
+                                <!--                                    <div class="form-check radio-color large form-check-inline me-2"><input-->
+                                <!--                                            class="form-check-input" type="radio" name="color_1" id="color_4">-->
+                                <!--                                        <label class="radio-color-label" for="color_4"><span-->
+                                <!--                                                style="background-color: #126578;"></span></label></div>-->
+                                <!--                                </div>-->
                             </div>
 
                             <!--     排成器顯示區域開始   -->
@@ -244,31 +244,27 @@
                                 <div class="cart-qty me-3 mb-3">
                                     <div class="dec qty-btn qty_btn">-</div>
                                     <input class="cart-qty-input form-control" type="text" name="qtybutton"
-                                           value="1">
+                                           th:text="${rentalCategory.rentalStockQty}" th:value="1">
                                     <div class="inc qty-btn qty_btn">+</div>
                                 </div>
                                 <div class="cart-button mb-3 d-flex">
-                                    <button class="btn btn-mode me-3"><i class="fi-shopping-cart"></i> Add to cart
+                                    <button class="btn btn-mode me-3"><i class="fi-shopping-cart"></i> 加入購物車
                                     </button>
                                     <button class="btn btn-outline-mode me-3"><i class="fi-heart"></i></button><!--  加入我的最愛  -->
-                                    <button class="btn btn-outline-mode"><i class="fi-repeat"></i></button>
+                                    <button class="btn btn-outline-mode">追蹤</button><!--  加入我的追蹤：圖示 <i class="fi-repeat"></i>-->
                                 </div>
                             </div>
                             <div class="product-info-buttons nav pt-4"><a href="#" class="me-3"
                                                                           data-bs-toggle="modal" data-bs-target="#px_size_chart_modal"><i
-                                    class="bi bi-scissors"></i>Size guide</a> <a href="#" class=""
-                                                                                 data-bs-toggle="modal" data-bs-target="#px_shipping_modal"><i
-                                    class="bi bi-truck me-2"></i>Shipping</a> <a href="#" class="ms-auto"
+                                    class="bi bi-scissors"></i>尺寸表</a> <a href="#" class=""
+                                                                             data-bs-toggle="modal" data-bs-target="#px_shipping_modal"><i
+                                    class="bi bi-truck me-2"></i>租借須知</a> <a href="#" class="ms-auto"
                                                                                  data-bs-toggle="modal" data-bs-target="#px_ask_modal"><i
-                                    class="bi bi-envelope ms-auto"></i>詢問租借品詳情</a></div> <!--  可轉交客服網頁  -->
+                                    class="bi bi-envelope ms-auto"></i>我有疑問</a></div> <!--  可轉交客服網頁  -->
                             <div class="pt-3 border-top mt-3 small">
-                                <p class="theme-link mb-2"><label class="m-0 text-mode">類別:</label> <a
-                                        href="#">Sunglasses</a>, <a href="#">Winter</a>,
-                                    <a href="#">Shorts</a>, <a href="#">Cool</a>
-                                </p>
                                 <p class="theme-link mb-2"><label class="m-0 text-mode">關鍵字:</label> <a
-                                        href="#">西裝</a>,
-                                    <a href="#">Women</a>, <a href="#">Winter</a>
+                                        th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=1'}">西裝</a>,
+                                    <a th:href="@{/frontend/rental/rentalShop}">正裝</a>
                                 </p>
                                 <p class="theme-link m-0"><label class="m-0 text-mode">分享:</label> <a
                                         class="icon icon-sm icon-secondary me-2" href="#"><i
@@ -294,16 +290,16 @@
                 <div class="product-tabs">
                     <ul class="nav product-nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation"><a href="#" class="nav-link active"
-                            id="pd_description_tab" data-bs-toggle="tab" data-bs-target="#pd_description"
-                            role="tab" aria-controls="pd_description" aria-selected="true">詳細介紹</a>
+                                                                    id="pd_description_tab" data-bs-toggle="tab" data-bs-target="#pd_description"
+                                                                    role="tab" aria-controls="pd_description" aria-selected="true">詳細介紹</a>
                         </li>
                         <li class="nav-item" role="presentation"><a href="#" class="nav-link"
-                            id="pd_information_tab" data-bs-toggle="tab" data-bs-target="#px_information"
-                            role="tab" aria-controls="px_information" aria-selected="false"
-                            tabindex="-1">資訊(可放size範圍圖)</a></li>
+                                                                    id="pd_information_tab" data-bs-toggle="tab" data-bs-target="#px_information"
+                                                                    role="tab" aria-controls="px_information" aria-selected="false"
+                                                                    tabindex="-1">資訊(可放size範圍圖)</a></li>
                         <li class="nav-item" role="presentation"><a href="#" class="nav-link" id="pd_reviews_tab"
-                            data-bs-toggle="tab" data-bs-target="#pd_reviews" role="tab"
-                            aria-controls="pd_reviews" aria-selected="false" tabindex="-1">客戶回饋</a></li>
+                                                                    data-bs-toggle="tab" data-bs-target="#pd_reviews" role="tab"
+                                                                    aria-controls="pd_reviews" aria-selected="false" tabindex="-1">客戶回饋</a></li>
                     </ul>
 
                     <div class="tab-content" id="myTabContent">
@@ -312,46 +308,24 @@
                             <div class="row">
                                 <div class="col-lg-7 pe-lg-10">
                                     <h5>詳細介紹</h5>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                        tempor
-                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                                        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                        consequat.
-                                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                                        eu
-                                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-                                        in
-                                        culpa qui officia deserunt mollit anim id est laborum.</p>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                        tempor
-                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                                        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                        consequat.
-                                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                                        eu
-                                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-                                        in
-                                        culpa qui officia deserunt mollit anim id est laborum.</p>
+                                    <p>介紹填寫第一</p>
+                                    <p>介紹填寫第二</p>
                                     <h5 class="pt-3">
                                         Sample Unordered List</h5>
                                     <ul class="mb-5">
-                                        <li>Comodous in tempor ullamcorper miaculis</li>
-                                        <li>Pellentesque vitae neque mollis urna mattis laoreet.</li>
-                                        <li>Divamus sit amet purus justo.</li>
-                                        <li>Proin molestie egestas orci ac suscipit risus posuere loremous</li>
+                                        <li>例1</li>
+                                        <li>例2</li>
+                                        <li>例3</li>
+                                        <li>例4</li>
                                     </ul>
-                                    <h5>Sample Ordered Lista</h5>
-                                    <ol>
-                                        <li>Comodous in tempor ullamcorper miaculis</li>
-                                        <li>Pellentesque vitae neque mollis urna mattis laoreet.</li>
-                                        <li>Divamus sit amet purus justo.</li>
-                                        <li>Proin molestie egestas orci ac suscipit risus posuere loremous</li>
-                                    </ol>
                                     <blockquote
                                             class="bg-gray-100 p-3 lead fw-400 mt-5 text-mode border-start border-primary border-5">
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                        tempor
-                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
+                                        <ul class="mb-5">
+                                            <li>例1</li>
+                                            <li>例2</li>
+                                            <li>例3</li>
+                                            <li>例4</li>
+                                        </ul>
                                     </blockquote>
                                 </div>
                                 <!--  4塊格子顯示區  -->
@@ -593,13 +567,13 @@
                     </div>
                 </div>
             </div>
-        </section><!-- End Product Tabs --><!-- You may also like -->
+        </section><!-- End Product Tabs -->
+        <!-- 最下方輪播圖 -->
         <section class="section bg-gray-100">
             <div class="container">
                 <div class="row justify-content-center mb-4 mb-lg-6">
                     <div class="col-lg-6 text-center">
-                        <h3 class="h2 mb-2">You might also like these</h3>
-                        <p class="fs-6 m-0">Read Today’s News.</p>
+                        <h3 class="h2 mb-2">猜你會感興趣</h3>
                     </div>
                 </div>
                 <div class="swiper-hover-arrow position-relative">
@@ -651,7 +625,7 @@
                                                                                     alt=""></a>
                                             <div class="product-cart-btn"><a href="#"
                                                                              class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> Add to cart</a></div>
+                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
                                         </div>
                                     </div>
                                     <div class="product-card-info">
@@ -686,7 +660,7 @@
                                                                                     alt=""></a>
                                             <div class="product-cart-btn"><a href="#"
                                                                              class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> Add to cart</a></div>
+                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
                                         </div>
                                     </div>
                                     <div class="product-card-info">
@@ -721,7 +695,7 @@
                                                                                     alt=""></a>
                                             <div class="product-cart-btn"><a href="#"
                                                                              class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> Add to cart</a></div>
+                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
                                         </div>
                                     </div>
                                     <div class="product-card-info">
@@ -756,7 +730,7 @@
                                                                                     alt=""></a>
                                             <div class="product-cart-btn"><a href="#"
                                                                              class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> Add to cart</a></div>
+                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
                                         </div>
                                     </div>
                                     <div class="product-card-info">
@@ -791,7 +765,7 @@
                                                                                     alt=""></a>
                                             <div class="product-cart-btn"><a href="#"
                                                                              class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> Add to cart</a></div>
+                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
                                         </div>
                                     </div>
                                     <div class="product-card-info">
@@ -826,7 +800,7 @@
                                                                                     alt=""></a>
                                             <div class="product-cart-btn"><a href="#"
                                                                              class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> Add to cart</a></div>
+                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
                                         </div>
                                     </div>
                                     <div class="product-card-info">
@@ -861,7 +835,7 @@
                                                                                     alt=""></a>
                                             <div class="product-cart-btn"><a href="#"
                                                                              class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> Add to cart</a></div>
+                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
                                         </div>
                                     </div>
                                     <div class="product-card-info">
@@ -896,7 +870,7 @@
                                                                                     alt=""></a>
                                             <div class="product-cart-btn"><a href="#"
                                                                              class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> Add to cart</a></div>
+                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
                                         </div>
                                     </div>
                                     <div class="product-card-info">
@@ -931,7 +905,7 @@
                                                                                     alt=""></a>
                                             <div class="product-cart-btn"><a href="#"
                                                                              class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> Add to cart</a></div>
+                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
                                         </div>
                                     </div>
                                     <div class="product-card-info">
@@ -966,7 +940,7 @@
                                                                                     alt=""></a>
                                             <div class="product-cart-btn"><a href="#"
                                                                              class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> Add to cart</a></div>
+                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
                                         </div>
                                     </div>
                                     <div class="product-card-info">
@@ -1002,7 +976,7 @@
                                                                                     alt=""></a>
                                             <div class="product-cart-btn"><a href="#"
                                                                              class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> Add to cart</a></div>
+                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
                                         </div>
                                     </div>
                                     <div class="product-card-info">
@@ -1038,7 +1012,7 @@
                                                                                     alt=""></a>
                                             <div class="product-cart-btn"><a href="#"
                                                                              class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> Add to cart</a></div>
+                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
                                         </div>
                                     </div>
                                     <div class="product-card-info">
@@ -1082,7 +1056,7 @@
                 </div>
             </div>
         </section>
-        <!-- End You may also like -->
+        <!-- 最下方輪播圖  (結束)-->
     </main>
     <!-- End Main -->
     <!-- Footer -->

@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
@@ -40,11 +41,17 @@ public class RentalOrderServiceImpl implements RentalOrderService {
 
         Integer rentalOrdNo = (Integer) map.get("rentalOrdNo");
         RentalOrder rentalOrder = repository.findById(rentalOrdNo).orElse(null);
+        Set<RentalOrderDetails> details = rentalOrder.getRentalOrderDetailses();
 
         if (map.containsKey("rentalPayStat")) {
             rentalOrder.setrentalPayStat((Byte) map.get("rentalPayStat"));
         }
         if (map.containsKey("rentalOrdStat")) {
+
+            if ((byte)map.get("rentalOrdStat") == (byte) 50) {
+                rentalOrder.setRtnStat((byte) 1);
+            }
+
             rentalOrder.setrentalOrdStat((Byte) map.get("rentalOrdStat"));
         }
         if (map.containsKey("rtnStat")) {
@@ -53,7 +60,6 @@ public class RentalOrderServiceImpl implements RentalOrderService {
 
             if (rtnStat == 1) {
 
-                Set<RentalOrderDetails> details = rentalOrder.getRentalOrderDetailses();
                 for (RentalOrderDetails detail : details) {
                     detail.getRental().setRentalStat((byte) 3);
                 }
@@ -177,7 +183,7 @@ public class RentalOrderServiceImpl implements RentalOrderService {
     }
 
     @Transactional
-    public void createOrder(RentalOrderRequest req) {
+    public String createOrder(RentalOrderRequest req) {
         // 新增訂單
         RentalOrder order = new RentalOrder();
         Optional<Member> members = memberRepository.findById(req.getMemNo());
@@ -203,9 +209,13 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         order.setRtnRemark(req.getRtnRemark());
 
         repository.save(order);
-
+        // 取出所有租借的商品的 rentalNo
         List<String> buyItems = req.getBuyItems();
+        // 拿來裝準備 set 進 order 裡的明細的 HashSet
         Set<RentalOrderDetails> details = new HashSet<>();
+        // 拿來裝明細裡所有品名的 ArrayList
+        List<String> rentalNames = new ArrayList<>();
+
         for (String buyItem : buyItems) {
 
             RentalOrderDetails detail = new RentalOrderDetails();
@@ -217,34 +227,47 @@ public class RentalOrderServiceImpl implements RentalOrderService {
 
             // 單一明細加入明細集合
             details.add(detail);
+            // 把個別商品名稱加入集合
+            rentalNames.add(rental.getRentalName());
             // 把個別商品改變狀態為1(已預約)
             rental.setRentalStat((byte) 1);
 
         }
         // 明細放進訂單主體
         order.setRentalOrderDetailses(details);
-
+        // 拼接綠界成立訂單的商品明細(綠界商品明細規定各品名之間以#區隔)
+        String itemNames = String.join("#", rentalNames);
+        // 呼叫綠界成立訂單的方法並回傳
+        return ecpayCheckout(order, itemNames);
 
     } // createOrder 方法結束
 
     /*----------------------------練習串接綠界api的方法----------------------------------*/
 
-    public String ecpayCheckout() {
+    public String ecpayCheckout(RentalOrder order, String itemNames) {
 
         AllInOne all = new AllInOne("");
-
         AioCheckOutALL obj = new AioCheckOutALL();
-        obj.setMerchantTradeNo("testCompany0004");
-        obj.setMerchantTradeDate("2024/05/10 08:05:23");
-        obj.setTotalAmount("50");
+        // 訂單號碼(規定大小寫英文+數字)
+        obj.setMerchantTradeNo( "Member" + order.getMember().getMemName() + order.getrentalOrdNo());
+        // 交易時間(先把毫秒部分切掉)
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        obj.setMerchantTradeDate( sdf.format(order.getrentalOrdTime()) );
+        // 總金額(總金額 + 總押金)
+        obj.setTotalAmount( String.valueOf( order.getrentalAllPrice().add(order.getrentalAllDepPrice()) ) );
+        // 交易描述(沒改)
         obj.setTradeDesc("test Description");
-        obj.setItemName("TestItem");
+        // 交易商品明細
+        obj.setItemName(itemNames);
         // 交易結果回傳網址，只接受 https 開頭的網站，可以使用 ngrok
         obj.setReturnURL("<http://211.23.128.214:5000>");
         obj.setNeedExtraPaidInfo("N");
         // 商店轉跳網址 (Optional)
-        obj.setClientBackURL("<http://192.168.1.37:8080/>");
+        obj.setClientBackURL("https://9baa-2001-b011-2020-1de1-5da9-9157-923e-f92.ngrok-free.app/backend/rentalorder/addToCart");
         String form = all.aioCheckOut(obj, null);
+
+        // 付款完後把付款狀態改為 1 (已付款)
+        order.setrentalPayStat((byte) 1);
 
         return form;
 

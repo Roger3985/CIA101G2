@@ -69,7 +69,7 @@
     </thead>
 
     <tbody>
-    <th:block th:each="productOrderDetail : ${productOrderDetail}">
+    <th:block th:each="productOrderDetail : ${productOrder.ProductOrderDetails}">
         <tr>
             <td th:text="${productOrderDetail.compositeKey.productOrdNo}"></td>
             <td th:text="${productOrderDetail.compositeKey.productNo}"></td>
@@ -79,7 +79,7 @@
             <td th:text="${productOrderDetail.productComContent}"></td>
             <td th:text="${productOrderDetail.productScore}"></td>
             <td>
-                <form method="post" th:action="@{/productorderdetail/getOne_For_Update}" style="margin-bottom: 0px;">
+                <form method="post" th:action="@{/frontend/productorder/getOne_For_Update}" style="margin-bottom: 0px;">
                     <input type="submit" value="修改">
                     <input type="hidden" name="productOrdNo" th:value="${productOrderDetail.compositeKey.productOrdNo}">
                     <input type="hidden" name="productNo" th:value="${productOrderDetail.compositeKey.productNo}"></form>

@@ -29,7 +29,7 @@ public interface Constants {
     /**
      * 註冊前台會員路徑
      */
-    String registerPage = "/frontend/memeber/addMemberData";
+    String registerPage = "/frontend/member/addMemberData";
 
     /**
      * 忘記密碼

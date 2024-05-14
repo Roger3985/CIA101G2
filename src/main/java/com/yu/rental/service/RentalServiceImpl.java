@@ -3,6 +3,7 @@ package com.yu.rental.service;
 import com.yu.rental.dao.RentalRepository;
 import com.yu.rental.entity.Rental;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -26,28 +27,21 @@ public class RentalServiceImpl implements RentalService {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	//單筆查詢
+	//單筆查詢(rentalNo)
 	@Override
 	public Rental findByNo(Integer rentalNo) {
-//  添加邏輯判斷是否有查詢到資料.
 		return repository.findByRentalNo(rentalNo); }
 
-	//單筆查詢
+	//單類查詢(rentalCatNo)
+	@Override
+	public List<Rental> findByRentalCategoryRentalCatNo(Integer rentalCatNo) {
+		return repository.findByRentalCategoryRentalCatNo(rentalCatNo);
+	}
+
+	//單筆查詢(String rentalName)
 	@Override
 	public Rental findByRentalName(String rentalName) {
 		return repository.findByRentalName(rentalName); }
-
-	//金額由大到小
-	@Override
-	public List<Rental> getRentalPriceDESC(BigDecimal rentalPrice) {
-		return repository.findByRentalPriceDESC(rentalPrice);
-	}
-
-	//金額由小到大
-	@Override
-	public List<Rental> getRentalPrice(BigDecimal rentalPrice) {
-		return repository.findByRentalPriceASC(rentalPrice);
-	}
 
 	//處理查詢(依租借品的尺寸)
 	@Override
@@ -57,7 +51,7 @@ public class RentalServiceImpl implements RentalService {
 
 	//處理查詢(依租借品的顏色)
 	@Override
-	public List<Rental> getRentalColor(String rentalColor) {
+	public Rental getRentalColor(String rentalColor) {
 		return repository.findQueryByRentalColor(rentalColor);
 	}
 
@@ -73,23 +67,22 @@ public class RentalServiceImpl implements RentalService {
 		return repository.findAll();
 	}
 
-	//修改 (PK有值，save方法修改數據)
+
+	//金額由大到小
 	@Override
-	public Rental updateRental(Rental rental) {
-		return repository.save(rental);
+	public List<Rental> findAllSortDESC() {
+		return repository.findAll(Sort.by("rentalPrice").descending());
 	}
 
-	//單筆查詢
+	//金額由小到大
 	@Override
-	public Rental getOneRental(Integer rentalNo) {
-		return repository.findByRentalNo(rentalNo);
+	public List<Rental> findAllSort() {
+		return repository.findAll(Sort.by("rentalPrice"));
 	}
 
 
-	@Override
-	public List<Rental> getOneRental(Map<String, Object> getOneRentalMap) {
-		return null;
-	}
+//----------------------------------------------------------------------------------------------------------------------
+	//主要為後端使用：增查改
 
 	//新增 (PK為null，save方法插入數據)
 	@Override
@@ -97,6 +90,23 @@ public class RentalServiceImpl implements RentalService {
 		return repository.save(rental);
 	}
 
+	//修改 (PK有值，save方法修改數據)
+	@Override
+	public Rental updateRental(Rental rental) {
+		return repository.save(rental);
+	}
+
+	//單筆查詢(List集合)
+	@Override
+	public List<Rental> getOneRental(Map<String, Object> getOneRentalMap) {
+		return null;
+	}
+
+	//以rentalStat查詢
+	@Override
+	public List<Rental> findByStat(Byte rentalStat) {
+		return repository.findQueryByRentalStat(rentalStat);
+	}
 
 	/**
 	 * 根據給定的查詢條件搜尋租賃資訊並傳回結果清單。
@@ -110,59 +120,70 @@ public class RentalServiceImpl implements RentalService {
 	//複合查詢 (使用"Map<String, String[]> paramsMap" 處理多個參數值)
 	@Override
 	public List<Rental> searchRentals(Map<String, String[]> paramsMap) {
+
+		// 判斷是否有輸入條件，如果沒有給條件，就返回所有租借品資料
 		if (paramsMap == null || paramsMap.isEmpty()) {
-			return repository.findAll(); // 如果没有任何条件，返回所有
+			return repository.findAll();
 		}
 
 		//JPQL查詢語句
 		StringBuilder jpql = new StringBuilder("SELECT re FROM Rental re WHERE 1=1");
 
-		Map<String, Object> params = new HashMap<>();
+		Map<String, Object> params = new HashMap<>(); //建立Map<> 應用於從HTTP請求中取得參數
+
 
 		for (Map.Entry<String, String[]> entry : paramsMap.entrySet()) {
-			String paramName = entry.getKey();
-			String[] paramValues = entry.getValue();
+			String paramName = entry.getKey();  //設立儲存key的變數
+			String[] paramValues = entry.getValue();  //設立儲存Value的變數
 
-			if (paramValues != null && paramValues.length > 0) {
-				if ("rentalNo".equals(paramName)) {
-					Integer rentalNo = Integer.parseInt(paramValues[0]);
-					jpql.append(" AND re.rentalNo = :rentalNo");
-					params.put("rentalNo", rentalNo);
+			if (paramValues != null && paramValues.length > 0) {  //若參數不為空&長度大於0，才執行後續的處理
+				if ("rentalNo".equals(paramName)) {   //判斷租借品類別編號。如果參數對應
+					Integer rentalNo = Integer.parseInt(paramValues[0]); //參數轉換為 Integer 類型
+					jpql.append(" AND re.rentalNo = :rentalNo"); //將對應的查詢語句加到 jpql 字串中
+					params.put("rentalNo", rentalNo); //參數值添加到params Map中
+
+//				} else if ("rentalCatNo".equals(paramName)) {  //判斷租借品類別編號
+//					Integer rentalCatNo = Integer.parseInt(paramValues[0]);
+//					jpql.append(" AND re.rentalCatNo = :rentalCatNo");
+//					params.put("rentalCatNo", rentalCatNo);
+
 				} else if ("rentalName".equals(paramName)) {
 					String rentalName = paramValues[0];
-					jpql.append(" AND re.rentalName LIKE :rentalName");
+					jpql.append(" AND re.rentalName LIKE :rentalName");  //使用模糊查詢Like
 					params.put("rentalName", "%" + rentalName + "%");
-				} else if ("rentalPrice".equals(paramName)) {
-					BigDecimal rentalPrice = new BigDecimal(paramValues[0]);
-					jpql.append(" AND re.rentalPrice = :rentalPrice");
-					params.put("rentalPrice", rentalPrice);
-				} else if ("rentalSize".equals(paramName)) {
+
+				} else if ("rentalSize".equals(paramName)) {  //判斷租借品大小
 					Integer rentalSize = Integer.parseInt(paramValues[0]);
 					jpql.append(" AND re.rentalSize = :rentalSize");
 					params.put("rentalSize", rentalSize);
-				} else if ("rentalColor".equals(paramName)) {
+
+				} else if ("rentalColor".equals(paramName)) {  //判斷租借品顏色
 					String rentalColor = paramValues[0];
 					jpql.append(" AND re.rentalColor LIKE :rentalColor");
-					params.put("rentalColor", "%" + rentalColor + "%");
-				} else if ("rentalInfo".equals(paramName)) {
-					String rentalInfo = paramValues[0];
-					jpql.append(" AND re.rentalInfo LIKE :rentalInfo");
-					params.put("rentalInfo", "%" + rentalInfo + "%");
-				} else if ("rentalStat".equals(paramName)) {
+					params.put("rentalColor", "%" + rentalColor + "%");  //使用模糊查詢Like
+
+				} else if ("rentalStat".equals(paramName)) {  //判斷租借品狀態
 					Byte rentalStat = Byte.parseByte(paramValues[0]);
 					jpql.append(" AND re.rentalStat = :rentalStat");
 					params.put("rentalStat", rentalStat);
 				}
 			}
 		}
+
+		//建立TypedQuery物件，使用jpql.toString() 將先前構建的JPQL字串轉換為具體的JPQL語句
+		//指定了查詢的返回類型為 Rental.class (Rental 類型的物件)
 		TypedQuery<Rental> query = entityManager.createQuery(jpql.toString(), Rental.class);
-		// 设置参数
+
+		//遍歷先前建構的params Map中的key & Value，使用query.setParameter()將參數值設置到查詢中
 		for (Map.Entry<String, Object> rentalEntry : params.entrySet()) {
 			query.setParameter(rentalEntry.getKey(), rentalEntry.getValue());
 		}
-		// 执行查询
+
+		//使用query.getResultList()來執行查詢，返回查詢結果列表
 		return query.getResultList();
 	}
+
+
 
 
 }

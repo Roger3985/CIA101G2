@@ -63,6 +63,14 @@
 			<!-- <version>2.7.0</version> -->
 		</dependency>
 
+		<!--加上橋接器的依賴(因為綠界物流api用的還是log4j)-->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-1.2-api</artifactId>
+			<version>2.17.1</version>
+		</dependency>
+
+
 		<!--
 		========================================================================================== -->
 		<!-- ●前面的jpa已經包含有hibernate，以下為純 hibernate 使用● -->
@@ -264,6 +272,15 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.security.oauth.boot/spring-security-oauth2-autoconfigure -->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.security.oauth.boot</groupId>-->
+<!--			<artifactId>spring-security-oauth2-autoconfigure</artifactId>-->
+<!--			<version>2.6.8</version>-->
+<!--		</dependency>-->
+
+
 
 	</dependencies>
 
