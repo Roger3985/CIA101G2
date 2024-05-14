@@ -1,5 +1,6 @@
 package com.ren.administrator.controller;
 
+import com.ren.administrator.dto.LoginState;
 import com.ren.administrator.entity.Administrator;
 import com.ren.administrator.service.Impl.AdministratorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -133,7 +135,7 @@ public class AdministratorController {
      */
     @ModelAttribute("administratorList")
     protected List<Administrator> getAllAdministrators(){
-        List<Administrator> list =administratorSvc.getAll();
+        List<Administrator> list = administratorSvc.getAll();
         return list;
     }
 
@@ -147,6 +149,29 @@ public class AdministratorController {
         administratorSvc.register(administrator);
         model.addAttribute("registerSuccess", "註冊成功!");
         return "redirect:backend/login";
+    }
+
+    /**
+     * 前往修改密碼
+     *
+     * @param session 從Session中獲取登入狀態，已登入狀態來取得管理員物件
+     * @param model 將管理者物件渲染到view，供後續修改密碼使用
+     * @return forward到修改密碼頁面
+     */
+    @GetMapping("/changePwd")
+    public String toChangePwd(HttpSession session, Model model) {
+        LoginState loginState = (LoginState) session.getAttribute("loginState");
+        Administrator administrator = administratorSvc.getOneAdministrator(loginState.getAdmNo());
+        model.addAttribute("administrator", administrator);
+
+        return "backend/administrator/changePwd";
+    }
+
+
+    @PostMapping("/change")
+    public String changePwd(@Valid Administrator administrator, BindingResult result, ModelMap model) {
+
+        return "redirect:/backend/login";
     }
 
     // 審核註冊

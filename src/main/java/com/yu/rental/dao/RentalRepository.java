@@ -18,29 +18,29 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
      * 注意：JpaRepository的泛型為 <T,ID>，所以在使用繼承時，必須定義好 T 與 ID 的型別，也就是 <MemberDTO, Long>。
      */
     @Transactional
-    public Rental findByRentalNo(Integer rentalNo);
+    public Rental findByRentalNo(Integer rentalNo); //rentalNo查詢
 
     @Transactional
-    public Rental findByRentalName(String rentalName);
+    public List<Rental> findByRentalCategoryRentalCatNo(Integer rentalCatNo); //rentalCatNo查詢
+
+    @Transactional
+    public Rental findByRentalName(String rentalName); //單筆查詢(String rentalName)
 
 
     //自定義查詢(for萬用，使用JPQL語法)
-    @Query("SELECT re FROM Rental re WHERE re.rentalNo = :rentalNo")
-    List<Rental> findQueryByRentalNo(@Param("rentalNo") Integer rentalNo);
-
-    @Query("SELECT re FROM Rental re WHERE re.rentalName LIKE %:rentalName%")
+    @Query("SELECT re FROM Rental re WHERE re.rentalName LIKE %:rentalName%") //以rentalName 做模糊查詢
     List<Rental> findQueryByRentalName(@Param("rentalName") String rentalName);
 
-    @Query("SELECT re FROM Rental re WHERE re.rentalSize = :rentalSize")
+    @Query("SELECT re FROM Rental re WHERE re.rentalSize = :rentalSize") //以rentalSize 查詢
     List<Rental> findQueryByRentalSize(@Param("rentalSize") Integer rentalSize);
 
-    @Query("SELECT re FROM Rental re WHERE re.rentalColor LIKE %:rentalColor%")
-    List<Rental> findQueryByRentalColor(@Param("rentalColor") String rentalColor);
+    @Query("SELECT re FROM Rental re WHERE re.rentalColor LIKE %:rentalColor%") //以rentalColor 做模糊查詢
+    Rental findQueryByRentalColor(@Param("rentalColor") String rentalColor);
 
-    @Query("SELECT re FROM Rental re WHERE re.rentalInfo LIKE %:rentalInfo%")
+    @Query("SELECT re FROM Rental re WHERE re.rentalInfo LIKE %:rentalInfo%") //以rentalInfo 做模糊查詢
     List<Rental> findQueryByRentalInfo(@Param("rentalInfo") String rentalInfo);
 
-    @Query("SELECT re FROM Rental re WHERE re.rentalStat = :rentalStat")
+    @Query("SELECT re FROM Rental re WHERE re.rentalStat = :rentalStat") //以rentalStat 查詢
     List<Rental> findQueryByRentalStat(@Param("rentalStat") Byte rentalStat);
 
 

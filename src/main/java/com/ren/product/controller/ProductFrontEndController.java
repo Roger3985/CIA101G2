@@ -1,6 +1,10 @@
 package com.ren.product.controller;
 
 import com.ren.product.entity.Product;
+import com.ren.product.service.impl.ProductServiceImpl;
+import com.ren.productpicture.service.impl.ProductPictureServiceImpl;
+import com.ren.productreview.service.impl.ProductReviewServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
@@ -22,6 +26,15 @@ import static com.ren.util.Constants.YES;
 @Controller
 @RequestMapping("/frontend/product")
 public class ProductFrontEndController {
+
+    @Autowired
+    private ProductServiceImpl productSvc;
+
+    @Autowired
+    private ProductPictureServiceImpl productPictureSvc;
+
+    @Autowired
+    private ProductReviewServiceImpl productReviewSvc;
 
     // 前往商品瀏覽頁面
     @GetMapping("/selectProduct")

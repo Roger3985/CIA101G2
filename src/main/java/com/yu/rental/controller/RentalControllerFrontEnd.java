@@ -37,36 +37,55 @@ public class RentalControllerFrontEnd {
     // 測試區 //
 
     //排序方法：價格低~高、價格高~低
-    @GetMapping("/sortAllPrice")
-    public String sortAllPrice(@RequestParam("sortType") String sortType, Model model) {
+    @GetMapping("/sortAllPrice/{sortType}")
+    public String sortAllPrice(@PathVariable("sortType") String sortType, Model model) {
 
         //判斷選擇哪種方式
         if("low_to_high".equals(sortType)){
             List<Rental> sortList = rentalService.findAllSort();
-            model.addAttribute("rentalListData", sortList); // 顯示價格由小到大
+            model.addAttribute("sortList", sortList); // 顯示價格由小到大
         } else if("high_to_low".equals(sortType)){
             List<Rental> sortDESCList = rentalService.findAllSortDESC();
-            model.addAttribute("rentalListData", sortDESCList); // 顯示價格由大到小
+            model.addAttribute("sortDESCList", sortDESCList); // 顯示價格由大到小
         } else {
             List<Rental> defaultSortList = rentalService.findAllSort();
-            model.addAttribute("rentalListData", defaultSortList); // 預設價格由小到大
+            model.addAttribute("defaultSortList", defaultSortList); // 預設價格由小到大
         }
 
-        return "/frontend/rental/select_page"; // 查詢完成後轉交
+        return "/frontend/rental/sortAllPrice"; // 查詢完成後轉交
     }
+ //---------------------------------------------------------------------------------------------------------
+    //關鍵字查詢
+
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    //顯示首頁
+    //顯示前台首頁
     @GetMapping("/frontend/index")
     public String index() {
         return "/frontend/index";
     }
 
-    //瀏覽全部租借品頁面
+    //瀏覽全部租借品頁面 (前台)
     @GetMapping("/rental/rentalShop")
     public String rentalShop() {
         return "/frontend/rental/rentalShop";
+    }
+
+    //顯示單筆租借品 (快速查看)
+    @GetMapping("/rental/rentalQuickview")
+    public String rentalQuickview(@RequestParam(value = "rentalNo") Integer rentalNo, ModelMap model) {
+        //建立返回數據的對象
+        Rental rental = rentalService.findByNo(rentalNo);
+        model.addAttribute("rentalCategory", new RentalCategory());
+        List<RentalCategory> rentalCatListData = rentalCategoryService.findAll();
+        model.addAttribute("rentalCatListData",rentalCatListData); //所有租借品類別資訊
+        if (rental == null) {
+            model.addAttribute("errors", "errors");
+            return "/frontend/rental/rentalShop";
+        }
+        model.addAttribute("rental", rental);
+        return "/frontend/rental/rentalQuickview";
     }
 
 
@@ -86,60 +105,9 @@ public class RentalControllerFrontEnd {
         return "/frontend/rental/showOneRental";
     }
 
-//    //顯示租借品篩選
-//    @GetMapping("/selectPage")
-//    public String selectPage(ModelMap model) {
-//        Rental rental = new Rental();
-//        model.addAttribute("rental", rental);
-//        return "/frontend/rental/select_page";
-//    }
-//
-//
 
-
-//    //顯示租借品新增
-//    @GetMapping("/addRental")
-//    public String addRentalFrom(ModelMap model) {
-//        Rental rental = new Rental();
-//        model.addAttribute("rental", rental);
-//        return "/frontend/rental/addRental";
-//    }
-
-
-//    //顯示租借品修改
-//    @GetMapping("/updateRental")
-//    public String updateRental(Model model) {
-//        //建立返回數據的對象
-//        List<Rental> rentalList = rentalService.findAll();
-//        model.addAttribute("rental", rentalList);
-//        model.addAttribute("rentalCategory", rentalCategoryService.findAll());
-//        model.addAttribute("rental", rentalList.get(0));
-//        return "/frontend/rental/updateRental";
-//    }
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //處理單筆商品查詢(依租借品編號)
-    @PostMapping("/getOne_For_Display")
-    public String getOne_For_Display(@RequestParam("rentalNo") String rentalNo, ModelMap model) {
-
-        Rental rental = rentalService.getOneRental(Integer.valueOf(rentalNo));
-        List<Rental> list = rentalService.findAll();
-        model.addAttribute("list", list);
-        model.addAttribute("rentalCategory", new RentalCategory());
-        List<RentalCategory> rentalCatListData = rentalCategoryService.findAll();
-        model.addAttribute("rentalCatListData",rentalCatListData);
-
-        if (rental == null) {
-            model.addAttribute("errors", "errors");
-            return "/frontend/rental/select_page";
-        }
-        model.addAttribute("rental", rental);
-        return "/frontend/rental/listOneRental"; // 查詢完成後轉交listOneRental.html
-    }
-
-
-//    //處理查詢(依租借品的顏色)
-//    @PostMapping("/getDisplayColor")
+    //處理查詢(依租借品的顏色)
+//    @GetMapping("/getDisplayColor")
 //    public String getDisplayColor(@RequestParam("rentalColor") String rentalColor, ModelMap model) {
 //
 //        List<Rental> colorList = rentalService.getRentalColor(rentalColor); //找出符合相關顏色的，放入list
@@ -174,9 +142,6 @@ public class RentalControllerFrontEnd {
 //        model.addAttribute("rentalSize", rentalSize);
 //        return "/frontend/rental/listOneRental"; // 查詢完成後轉交listOneRental.html
 //    }
-
-
-
 
 
     //關鍵字查詢(依租借品的名稱 "模糊查詢")
@@ -215,7 +180,7 @@ public class RentalControllerFrontEnd {
 
 
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * 因 @ModelAttribute寫在方法上，故將此類別中的@GetMapping Method先加入model.addAttribute("...List",...Service.getAll());
      * referenceListData()：回傳一個包含參考資料的列表或映射，透過View渲染到使用者介面上。

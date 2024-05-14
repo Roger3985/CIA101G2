@@ -95,7 +95,7 @@ public class RentalCategoryControllerBackEnd {
 
 
 		if (rentalCategory == null) {
-			model.addAttribute("errorMessage", "查無資料");
+			model.addAttribute("errors", "errors");
 			return "/backend/rentalcategory/select_RentalCategory_page";
 		}
 		model.addAttribute("rentalCategory", rentalCategory);
@@ -183,7 +183,7 @@ public class RentalCategoryControllerBackEnd {
 	//處理單筆修改
 	@PostMapping("getOneUpdate")
 	public String getOneUpdate(@RequestParam("rentalNo") String rentalNo, @RequestParam("rentalCatNo") String rentalCatNo, ModelMap model) {
-		Rental rental = rentalService.getOneRental(Integer.valueOf(rentalNo));
+		Rental rental = rentalService.findByNo(Integer.valueOf(rentalNo));
 		model.addAttribute("rental", rental);
 		RentalCategory rentalCategory = rentalCategoryService.getOneRentalCat(Integer.valueOf(rentalCatNo));
 		model.addAttribute("rentalCategory", rentalCategory);

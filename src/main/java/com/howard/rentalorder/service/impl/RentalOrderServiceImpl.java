@@ -213,8 +213,8 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         List<String> buyItems = req.getBuyItems();
         // 拿來裝準備 set 進 order 裡的明細的 HashSet
         Set<RentalOrderDetails> details = new HashSet<>();
-        // 拼接綠界成立訂單的商品明細
-        String itemNames = String.join("#", buyItems);
+        // 拿來裝明細裡所有品名的 ArrayList
+        List<String> rentalNames = new ArrayList<>();
 
         for (String buyItem : buyItems) {
 
@@ -227,12 +227,16 @@ public class RentalOrderServiceImpl implements RentalOrderService {
 
             // 單一明細加入明細集合
             details.add(detail);
+            // 把個別商品名稱加入集合
+            rentalNames.add(rental.getRentalName());
             // 把個別商品改變狀態為1(已預約)
             rental.setRentalStat((byte) 1);
 
         }
         // 明細放進訂單主體
         order.setRentalOrderDetailses(details);
+        // 拼接綠界成立訂單的商品明細(綠界商品明細規定各品名之間以#區隔)
+        String itemNames = String.join("#", rentalNames);
         // 呼叫綠界成立訂單的方法並回傳
         return ecpayCheckout(order, itemNames);
 
@@ -244,13 +248,16 @@ public class RentalOrderServiceImpl implements RentalOrderService {
 
         AllInOne all = new AllInOne("");
         AioCheckOutALL obj = new AioCheckOutALL();
-        System.out.println(String.valueOf(order.getrentalOrdNo()));
-        obj.setMerchantTradeNo( "Member" + order.getMember().getMemName() + String.valueOf(order.getrentalOrdNo()) );
-        // 把毫秒部分切掉
+        // 訂單號碼(規定大小寫英文+數字)
+        obj.setMerchantTradeNo( "Member" + order.getMember().getMemName() + order.getrentalOrdNo());
+        // 交易時間(先把毫秒部分切掉)
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         obj.setMerchantTradeDate( sdf.format(order.getrentalOrdTime()) );
+        // 總金額(總金額 + 總押金)
         obj.setTotalAmount( String.valueOf( order.getrentalAllPrice().add(order.getrentalAllDepPrice()) ) );
+        // 交易描述(沒改)
         obj.setTradeDesc("test Description");
+        // 交易商品明細
         obj.setItemName(itemNames);
         // 交易結果回傳網址，只接受 https 開頭的網站，可以使用 ngrok
         obj.setReturnURL("<http://211.23.128.214:5000>");

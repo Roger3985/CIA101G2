@@ -10,6 +10,7 @@ import com.iting.cart.entity.Cart;
 import com.iting.productmyfavorite.entity.ProductMyFavorite;
 import com.iting.productorder.entity.ProductOrder;
 import com.firesnoopy.studioorder.entity.StudioOrder;
+import com.ren.productreview.entity.ProductReview;
 import com.roger.articlecollection.entity.ArticleCollection;
 import com.roger.clicklike.entity.ClickLike;
 import com.roger.columnreply.entity.ColumnReply;
@@ -173,6 +174,9 @@ public class Member implements java.io.Serializable {
     @JsonBackReference
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private Set<ServiceRecord> serviceRecords;
+    @JsonBackReference
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private Set<ProductReview> productReviews;
 
     public Member() {
     }
@@ -564,5 +568,13 @@ public class Member implements java.io.Serializable {
 
     public void setServiceRecords(Set<ServiceRecord> serviceRecords) {
         this.serviceRecords = serviceRecords;
+    }
+
+    public Set<ProductReview> getProductReviews() {
+        return productReviews;
+    }
+
+    public void setProductReviews(Set<ProductReview> productReviews) {
+        this.productReviews = productReviews;
     }
 }

@@ -1,8 +1,7 @@
 package com.ren.title.controller;
 
-import com.ren.productpicture.entity.ProductPicture;
 import com.ren.title.entity.Title;
-import com.ren.title.service.TitleServiceImpl;
+import com.ren.title.service.impl.TitleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BeanPropertyBindingResult;

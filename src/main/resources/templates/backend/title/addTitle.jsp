@@ -77,7 +77,7 @@
 		<td><input type="TEXT" name="titleName" value="<%= (titleVO==null)? "董事長" : titleVO.getTitleName()%>" size="45"/></td>
 	</tr>
 
-	<jsp:useBean id="titleSvc" scope="page" class="com.ren.title.service.TitleServiceImpl" />
+	<jsp:useBean id="titleSvc" scope="page" class="com.ren.title.service.impl.TitleServiceImpl" />
 	<tr>
 		<td>職位編號:<font color=red><b>*</b></font></td>
 		<td><select size="1" name="titleNo">

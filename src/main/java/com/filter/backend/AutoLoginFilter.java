@@ -70,7 +70,6 @@ public class AutoLoginFilter extends HttpFilter {
             }
             // 第一次登入(自動登入)
             if (loginState == null) {
-
                 // 獲取Cookie值
                 String cookieValue = userCookie.get().getValue();
                 // 透過Cookie值獲得AdmNo
