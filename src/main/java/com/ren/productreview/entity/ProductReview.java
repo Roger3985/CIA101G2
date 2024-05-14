@@ -1,10 +1,7 @@
 package com.ren.productreview.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.ren.admauthority.entity.AdmAuthority;
-import com.ren.authorityfunction.entity.AuthorityFunction;
 import com.ren.product.entity.Product;
-import com.ren.title.entity.Title;
 import com.roger.member.entity.Member;
 import org.springframework.format.annotation.DateTimeFormat;
 

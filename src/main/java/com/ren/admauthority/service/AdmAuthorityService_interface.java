@@ -17,8 +17,17 @@ public interface AdmAuthorityService_interface {
 
     /**
      * R:
-     * (複合主鍵表格，沒有查詢單項的功能)
-     * 根據職位編號查詢該職位所有的所有權限
+     * 根據職位編號,權限編號查詢功能權限(複合主鍵表格)
+     *
+     * @param titleNo 管理員職位編號
+     * @param AuthFuncNo 權限編號
+     * @return 返回查詢之Entity
+     */
+    AdmAuthority getOneAdmAuthority(Integer titleNo, Integer AuthFuncNo);
+
+    /**
+     * R:
+     * 根據職位編號查詢該職位所有的所有權限(複合主鍵表格)
      *
      * @param titleNo 管理員職位編號
      * @return 該職位所有的權限清單
@@ -27,8 +36,7 @@ public interface AdmAuthorityService_interface {
 
     /**
      * R:
-     * (複合主鍵表格，沒有查詢單項的功能)
-     * 根據權限編號查詢所有擁有該權限的職位
+     * 根據權限編號查詢所有擁有該權限的職位(複合主鍵表格)
      *
      * @param AuthFuncNo 權限編號
      * @return 返回所有擁有該權限的職位清單
@@ -51,6 +59,15 @@ public interface AdmAuthorityService_interface {
      * @return 返回更新後Entity
      */
     AdmAuthority updateAdmAuthority(AdmAuthority admAuthority);
+
+    /**
+     * D:
+     * 依複合主鍵刪除管理員權限
+     *
+     * @param titleNo 管理員編號
+     * @param authFuncNo 權限編號
+     */
+    void deleteAdmAuthority(Integer titleNo, Integer authFuncNo);
 
     /**
      * D:

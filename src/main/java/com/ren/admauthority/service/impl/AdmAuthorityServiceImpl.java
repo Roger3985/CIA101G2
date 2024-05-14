@@ -26,7 +26,18 @@ public class AdmAuthorityServiceImpl implements AdmAuthorityService_interface {
     }
 
     /**
-     * 因此表格為複合主鍵，無查詢單項功能
+     * 根據複合主鍵編號查詢管理員權限
+     *
+     * @param titleNo 管理員職位編號
+     * @param authFuncNo 權限編號
+     * @return 返回管理員權限Entity
+     */
+    @Override
+    public AdmAuthority getOneAdmAuthority(Integer titleNo, Integer authFuncNo) {
+        return admAuthorityRepository.findAdmAuthorityByTitle_TitleNoAndAuthorityFunction_AuthFuncNo(titleNo, authFuncNo);
+    }
+
+    /**
      * 此方法用於查詢職位所有的所有權限清單
      *
      * @param titleNo 管理員職位編號
@@ -34,19 +45,18 @@ public class AdmAuthorityServiceImpl implements AdmAuthorityService_interface {
      */
     @Override
     public List<AdmAuthority> getByTitleNo(Integer titleNo) {
-        return null;
+        return admAuthorityRepository.findAdmAuthoritiesByCompositeAdmAuthority_TitleNo(titleNo);
     }
 
     /**
-     * 因此表格為複合主鍵，無查詢單項功能
      * 此方法用於查詢職位所有的所有權限清單
      *
-     * @param AuthFuncNo 權限編號
+     * @param authFuncNo 權限編號
      * @return 返回該職位所有的權限清單
      */
     @Override
-    public List<AdmAuthority> getByAuthFuncNo(Integer AuthFuncNo) {
-        return null;
+    public List<AdmAuthority> getByAuthFuncNo(Integer authFuncNo) {
+        return admAuthorityRepository.findAdmAuthoritiesByCompositeAdmAuthority_AuthFuncNo(authFuncNo);
     }
 
     /**
@@ -68,6 +78,11 @@ public class AdmAuthorityServiceImpl implements AdmAuthorityService_interface {
     @Override
     public AdmAuthority updateAdmAuthority(AdmAuthority admAuthority) {
         return admAuthorityRepository.save(admAuthority);
+    }
+
+    @Override
+    public void deleteAdmAuthority(Integer titleNo, Integer authFuncNo) {
+        admAuthorityRepository.deleteAdmAuthorityByTitle_TitleNoAndAuthorityFunction_AuthFuncNo(titleNo, authFuncNo);
     }
 
     /**

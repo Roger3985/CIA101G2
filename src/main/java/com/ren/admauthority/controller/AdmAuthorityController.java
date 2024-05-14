@@ -64,10 +64,11 @@ public class AdmAuthorityController {
         return "";
     }
 
-//    @DeleteMapping("/titles/{titleNo}")
-//    public void deleteAdmAuthority(@PathVariable Integer titleNo) {
-//        admAuthoritySvc.deleteAdmAuthority(titleNo);
-//    }
+    @DeleteMapping("/delete")
+    public void deleteFromListAll(@RequestParam Integer titleNo, @RequestParam Integer authFuncNo) {
+        admAuthoritySvc.deleteAdmAuthority(titleNo, authFuncNo);
+        return ;
+    }
 
     @ModelAttribute("admAuthorityList")
     protected List<AdmAuthority> getAllData() {

@@ -135,7 +135,7 @@ public class AdministratorController {
      */
     @ModelAttribute("administratorList")
     protected List<Administrator> getAllAdministrators(){
-        List<Administrator> list =administratorSvc.getAll();
+        List<Administrator> list = administratorSvc.getAll();
         return list;
     }
 

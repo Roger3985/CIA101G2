@@ -5,13 +5,42 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @Controller
+@RequestMapping("/backend/productreview")
 public class ProductReviewController {
+
+    @GetMapping("/selectProductReview")
+    public String toSelect() {
+        return "backend/productreview/selectProductReview";
+    }
+
+    @GetMapping("/addProductReview")
+    public String toAddProductReview() {
+
+        return "backend/productreview/addProductReview";
+    }
+
+    @GetMapping("/listOneProductReview")
+    public String getOneProductReview() {
+        return "backend/productreview/listOneProductReview";
+    }
+
+    @GetMapping("/listAllProductReviews")
+    public String getAllProductReviews() {
+        return "backend/productreview/listAllProductReviews";
+    }
+
+    @GetMapping("/updateProductReview")
+    public String toUpdateProductReview() {
+        return "backend/productreview/updateProductReview";
+    }
+
 
 
 
