@@ -1,4 +1,4 @@
-package com.ren.productcategory.service;
+package com.ren.productcategory.service.impl;
 
 import java.util.List;
 import java.util.Set;
@@ -6,6 +6,7 @@ import java.util.Set;
 import com.ren.productcategory.entity.ProductCategory;
 import com.ren.product.dao.ProductRepository;
 import com.ren.productcategory.dao.ProductCategoryRepository;
+import com.ren.productcategory.service.ProductCategoryService_interface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

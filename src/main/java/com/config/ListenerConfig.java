@@ -2,6 +2,7 @@ package com.config;
 
 import com.listener.InitializerListener;
 import com.listener.OnlineUsers;
+import com.listener.backend.LoginStateListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -14,13 +15,16 @@ import java.util.EventListener;
  * 這兩種方式都是將其作為Servlet管理的元件，無法使其受Spring容器管理，因此需要使用Config來註冊，以下為Listener的註冊Config
  */
 @Configuration
-public class ListerConfig {
+public class ListenerConfig {
 
     @Autowired
     private OnlineUsers onlineUsers;
 
     @Autowired
     private InitializerListener initializerListener;
+
+    @Autowired
+    private LoginStateListener loginStateListener;
 
     @Bean
     public ServletListenerRegistrationBean<EventListener> registrationOnlineUsers() {
@@ -30,5 +34,10 @@ public class ListerConfig {
     @Bean
     public ServletListenerRegistrationBean<EventListener> registrationInitializerListener() {
         return new ServletListenerRegistrationBean<>(initializerListener);
+    }
+
+    @Bean
+    public ServletListenerRegistrationBean<EventListener> registrationLoginStateListener() {
+        return new ServletListenerRegistrationBean<>(loginStateListener);
     }
 }

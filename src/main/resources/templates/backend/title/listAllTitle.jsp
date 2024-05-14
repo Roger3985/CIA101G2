@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*" %>
-<%@ page import="com.ren.title.service.TitleServiceImpl" %>
+<%@ page import="com.ren.title.service.impl.TitleServiceImpl" %>
 <%@ page import="com.ren.title.model.TitleVO" %>
 <%-- 此頁練習採用 EL 的寫法取值 --%>
 

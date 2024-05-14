@@ -1,11 +1,9 @@
 package com.ren.product.controller;
 
-import com.ren.authorityfunction.entity.AuthorityFunction;
 import com.ren.product.entity.Product;
-import com.ren.productcategory.entity.ProductCategory;
-import com.ren.product.service.ProductServiceImpl;
-import com.ren.productcategory.service.ProductCategoryServiceImpl;
-import com.ren.productpicture.service.ProductPictureServiceImpl;
+import com.ren.product.service.impl.ProductServiceImpl;
+import com.ren.productcategory.service.impl.ProductCategoryServiceImpl;
+import com.ren.productpicture.service.impl.ProductPictureServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.ren.util.Constants.FIRST;

@@ -101,7 +101,7 @@
     </li>
 
     <jsp:useBean id="titleSvc" scope="page"
-                 class="com.ren.title.service.TitleServiceImpl"/>
+                 class="com.ren.title.service.impl.TitleServiceImpl"/>
 
     <li>
         <FORM METHOD="post" ACTION="title.do">

@@ -5,21 +5,29 @@ import com.ren.administrator.service.AdministratorService_interface;
 import com.ren.title.entity.Title;
 import com.ren.administrator.dao.AdministratorRepository;
 import com.ren.administrator.dto.LoginState;
+import com.roger.member.service.impl.MemberServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
-import com.ren.util.Constants.*;
 
 import static com.ren.util.Constants.*;
+import static com.ren.util.RandomStringGenerator.generateRandomString;
+import static java.awt.SystemColor.text;
 
 @Service
 public class AdministratorServiceImpl implements AdministratorService_interface {
@@ -79,6 +87,16 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
 //
 //        }
 //    }
+
+    /**
+     * 打卡，預計等之後實作記錄出缺勤表格之後完成
+     *
+     * @param admNo 傳入員工編號
+     */
+    @Override
+    public void punch(Integer admNo) {
+
+    }
 
     /**
      * 透過管理員編號查詢單筆管理員資料
@@ -143,6 +161,16 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
     @Override
     public Administrator updateAdministrator(Administrator administrator) {
         return administratorRepository.save(administrator);
+    }
+
+    /**
+     *
+     *
+     * @param administrator 傳入管理員Entity，用於後續更新密碼使用
+     */
+    @Override
+    public void changePwd(Administrator administrator) {
+
     }
 
     /**
@@ -246,23 +274,65 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
 //    public void ChangePhoto(Integer admNo, byte[] admPhoto) {
 //        administratorRepository.ChangePhoto(admNo, admPhoto);
 //    }
-//
-//    @Override
-//    public List<String> register(Administrator administrator) {
-//        // 放驗證錯誤訊息，在controller迭代放入errorMessage
-//        List<String> existData = new LinkedList<>();
-//        // 輸入名字
-//        String inputName = administrator.getAdmName();
-//        // 輸入信箱
-//        String inputEmail = administrator.getAdmEmail();
-//        // 查詢使用者名稱與信箱，檢查是否有重複
-//        existData = administratorRepository.findExistData(inputName, inputEmail);
-//        if (existData.size() >= 1) {
-//            return existData;
-//        }
-//
-//        return existData;
-//    }
+
+    /**
+     * 用於找回密碼時寄出預設密碼的信件
+     *
+     * @param email 輸入註冊信箱
+     * @return 返回布林值，成功重導回登入畫面、失敗則返回
+     */
+    @Override
+    public boolean sendEmail(String email) {
+
+        try {
+            // 設定使用 SSL 連線至 Gmail smtp Server
+            Properties props = new Properties();
+            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.socketFactory.port", "465");
+            props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.port", "465");
+
+            // 設定 Gmail 帳號跟密碼
+            final String myGmail = "ixlogic.wu@gmail.com";
+            final String myGmail_password = "ddjomltcnypgcstn";
+
+            Session session = Session.getInstance(props, new Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    // 返回 Gmail 帳號和密碼進行身分驗證
+                    return new PasswordAuthentication(myGmail, myGmail_password);
+                }
+            });
+
+            // 創建新郵件
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(myGmail));
+
+            // 設定郵件的收件人
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+
+            // 設定郵件的主旨
+            message.setSubject(emailSubject);
+
+            String newPwd = generateRandomString(12);
+            // 設定郵件的內容，包括新密碼
+            message.setText(forgotPwdContent + newPwd);
+            Administrator administrator = getOneAdministrator(email);
+            administrator.setAdmPwd(newPwd);
+            updateAdministrator(administrator);
+
+            // 發送郵件
+            Transport.send(message);
+            System.out.println("傳送成功");
+
+            // 郵件發送成功，返回true
+            return true;
+        } catch (MessagingException e) {
+            System.out.println("傳送失敗!");
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }
 
