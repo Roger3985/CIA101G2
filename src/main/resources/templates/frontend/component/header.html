@@ -100,13 +100,15 @@
             <div class="nav-item dropdown"><a class="nav-link" href="#" role="button" id="dropdown_myaccount"
                                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
                     class="fi-user"></i></a>
+
                 <div class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="dropdown_myaccount">
-                    <a class="dropdown-item" th:href="@{/frontend/member/loginMember}">Login</a>
-                    <a class="dropdown-item" href="#">Register</a>
-                    <a class="dropdown-item" href="#">Wishlist</a>
-                    <a class="dropdown-item" href="#">My account</a>
+                    <a class="dropdown-item" th:href="@{/frontend/member/loginMember}" th:unless="${session.loginsuccess}">Login</a>
+                    <a class="dropdown-item" href="#" th:unless="${session.loginsuccess}">Register</a>
+                    <a class="dropdown-item" href="#" th:if="${session.loginsuccess}">Wishlist</a>
+                    <a class="dropdown-item" href="#" th:if="${session.loginsuccess}">My account</a>
+                    <a th:href="@{/frontend/member/logoutMember}" th:if="${session.loginsuccess}"><button type="button">登出</button> </a>
                 </div>
-            </div><!-- Wishlist -->
+            <!-- Wishlist -->
             <div class="nav-item d-none d-xl-block"><a class="nav-link" href="#"><i class="fi-heart"></i></a></div>
             <!-- Cart -->
             <div class="nav-item"><a class="nav-link" data-bs-toggle="offcanvas" href="#modalMiniCart" role="button"
