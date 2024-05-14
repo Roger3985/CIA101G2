@@ -75,7 +75,7 @@
                                         <td th:text="${product.productComPeople}"></td>
                                         <td th:text="${product.productComScore}"></td>
                                         <td>
-                                            <form method="get" th:action="@{updateProduct}">
+                                            <form method="get" th:action="@{listToUpdateProduct}">
                                                 <input type="hidden" name="productNo" th:value="${product.productNo}">
                                                 <button type="submit">
                                                     <i class="far fa-edit"></i>

@@ -32,8 +32,11 @@
                     <div class="mb-3 row">
                         <label for="productSelect" class="col-sm-2 col-form-label">商品編號</label>
                         <div class="col-sm-3">
-                            <select size="1" name="productNo" id="productSelect" th:field="*{productNo}" th:onchange="|updateProductInstantly()|">
-                                <option th:each="product : ${productList}" th:value="${product.productNo}" th:text="${product.productNo}"></option>
+                            <select size="1" name="productNo" id="productSelect" th:field="*{productNo}">
+                                <option th:each="product : ${productList}"
+                                        th:value="${product.productNo}"
+                                        th:text="${product.productNo}"
+                                        th:selected="${product.productNo} == *{productNo}"></option>
                             </select>
                         </div>
                     </div>
@@ -173,33 +176,35 @@
     //     xhr.send();
     // }
 
-    // 舊的寫法，用post傳遞
+    $(document).ready(function() {
+        $('#productSelect').on('change', updateProductInstantly);
+    });
+
     function updateProductInstantly() {
-        var selectedProductNo = document.getElementById('productSelect').value;
+        console.log("即時更新觸發");
+        var selectedProductNo = $('#productSelect').val();  // 使用 jQuery 獲取選中的商品編號
 
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/backend/product/getProductInstantly?productNo=' + encodeURIComponent(selectedProductNo), true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                var productDetails = JSON.parse(xhr.responseText);
-
-                document.getElementById('productCatNo').value = productDetails.productCategory.productCatNo;
-                document.getElementById('productName').value = productDetails.productName;
-                document.getElementById('productInfo').value = productDetails.productInfo;
-                document.getElementById('productSize').value = productDetails.productSize;
-                document.getElementById('productColor').value = productDetails.productColor;
-                document.getElementById('productPrice').value = productDetails.productPrice;
-                document.getElementById('productStat').value = productDetails.productStat;
-                document.getElementById('productSalQty').value = productDetails.productSalQty;
-                document.getElementById('productComPeople').value = productDetails.productComPeople;
-                document.getElementById('productComScore').value = productDetails.productComScore;
-            } else {
-                console.error('Failed to fetch product details');
+        $.ajax({
+            url: '/backend/product/getProductInstantly?productNo=' + encodeURIComponent(selectedProductNo),
+            type: 'POST',
+            contentType: 'application/x-www-form-urlencoded',
+            success: function(productDetails) {
+                // 更新 DOM 元素的值
+                $('#productCatNo').val(productDetails.productCategory.productCatNo);
+                $('#productName').val(productDetails.productName);
+                $('#productInfo').val(productDetails.productInfo);
+                $('#productSize').val(productDetails.productSize);
+                $('#productColor').val(productDetails.productColor);
+                $('#productPrice').val(productDetails.productPrice);
+                $('#productStat').val(productDetails.productStat);
+                $('#productSalQty').val(productDetails.productSalQty);
+                $('#productComPeople').val(productDetails.productComPeople);
+                $('#productComScore').val(productDetails.productComScore);
+            },
+            error: function(xhr, status, error) {
+                console.error('Failed to fetch product details: ' + error);
             }
-        };
-
-        xhr.send();
+        });
     }
 </script>
 

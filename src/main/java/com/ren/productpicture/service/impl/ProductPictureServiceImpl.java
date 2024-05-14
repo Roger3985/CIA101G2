@@ -16,10 +16,10 @@ public class ProductPictureServiceImpl implements ProductPictureService_interfac
 	private ProductPictureRepository productPictureRepository;
 
 	/**
+	 * 新增商品照片
 	 *
-	 *
-	 * @param productPicture
-	 * @return
+	 * @param productPicture 欲新增之商品照片Entity
+	 * @return 返回新增後Entity
 	 */
 	@Override
 	public ProductPicture addProductPicture(ProductPicture productPicture) {

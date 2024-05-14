@@ -7,6 +7,7 @@ import java.util.List;
 public interface ProductPictureService_interface {
 
 	/**
+	 * C:
 	 * 增加商品照片
 	 *
 	 * @param productPicture
@@ -15,18 +16,20 @@ public interface ProductPictureService_interface {
 	ProductPicture addProductPicture(ProductPicture productPicture);
 
 	/**
+	 * R:
+	 * 根據商品照片編號查詢單項商品照片
 	 *
-	 *
-	 * @param productPicNo
-	 * @return
+	 * @param productPicNo 商品照片編號
+	 * @return 返回查詢Entity
 	 */
 	ProductPicture getOneProductPicture(Integer productPicNo);
 
 	/**
+	 * R:
+	 * 根據商品編號查詢該商品所有照片
 	 *
-	 *
-	 * @param productNo
-	 * @return
+	 * @param productNo 商品編號
+	 * @return 返回該商品所有照片的清單
 	 */
 	List<ProductPicture> getByProductNo(Integer productNo);
 

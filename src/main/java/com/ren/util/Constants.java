@@ -24,6 +24,8 @@ public interface Constants {
     byte LOGIN_STATE_LOGOUT = 0;
     byte LOGOUT_STATE_LOGIN = 0;
     byte LOGOUT_STATE_LOGOUT = 1;
+    byte OnShelf = 1;
+    byte OffShelf = 0;
 
     /**
      * 首頁路徑

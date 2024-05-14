@@ -6,10 +6,14 @@ import com.ren.product.service.ProductService_interface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static com.ren.util.Constants.*;
 
 @Service
 public class ProductServiceImpl implements ProductService_interface {
@@ -20,78 +24,283 @@ public class ProductServiceImpl implements ProductService_interface {
     @Autowired
     private ProductRepository productRepository;
 
+    /**
+     * 新增單項商品
+     *
+     * @param product 前端輸入商品資訊
+     * @return 返回更新後Entity
+     */
     @Override
     public Product addProduct(Product product) {
         return productRepository.save(product);
     }
 
+    /**
+     * 批量新增
+     *
+     * @param list 商品清單
+     * @return 返回新增後清單
+     */
     @Override
-    public Product getOneProduct(Integer pNo) {
-        return productRepository.findById(pNo).orElse(null);
+    public List<Product> addProductList(List<Product> list) {
+        return productRepository.saveAll(list);
     }
 
+    /**
+     * 查詢單項商品
+     *
+     * @param productNo 商品編號
+     * @return 返回查詢資料
+     */
+    @Override
+    public Product getOneProduct(Integer productNo) {
+        return productRepository.findById(productNo).orElse(null);
+    }
+
+    /**
+     * 查詢全部商品資料
+     *
+     * @return 返回查詢清單
+     */
     @Override
     public List<Product> getAll() {
         return productRepository.findAll();
     }
 
+    /**
+     * 關鍵字查詢
+     *
+     * @param keyword 關鍵字
+     * @return 返回相關聯資料
+     */
     @Override
-    public List<Product> getAll(int currentPage) {
-        return null;
+    public List<Product> searchByKeyword(String keyword) {
+        return productRepository.searchByKeyword(keyword);
     }
 
+    /**
+     * 根據商品類別編號查詢商品
+     *
+     * @param productCatNo 商品類別編號
+     * @return 返回相同商品編號的商品清單
+     */
     @Override
-    public List<Product> getProductsByCompositeQuery(Map<String, String[]> map) {
-//        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-//        Map<String, String> query = new HashMap<>();
-//        Set<Map.Entry<String, String[]>> entry = map.entrySet();
-//
-//        for (Map.Entry<String, String[]> row : entry) {
-//            String key = row.getKey();
-//            // 因為請求參數裡包含了action，做個去除動作
-//            if ("action".equals(key)) {
-//                continue;
-//            }
-//            // 若是value為空即代表沒有查詢條件，做個去除動作
-//            String value = row.getValue()[0];
-//            if (value.isEmpty() || value == null) {
-//                continue;
-//            }
-//            query.put(key, value);
-//        }
-//
-//        try {
-//            session.beginTransaction();
-//            List<Product> list = dao.getByCompositeQuery(query);
-//            session.getTransaction().commit();
-//            return list;
-//        } catch (Exception e) {
-//            session.getTransaction().rollback();
-//            e.printStackTrace();
-//            return null;
-//        }
-        return null;
+    public List<Product> getByProductCatNo(Integer productCatNo) {
+        return productRepository.findProductsByProductCategory_ProductCatNo(productCatNo);
     }
 
+    /**
+     * 根據商品類別名稱查詢商品
+     *
+     * @param productCatName 商品類別名稱
+     * @return 返回相同商品類別名稱的商品清單
+     */
+    @Override
+    public List<Product> getByProductCatName(String productCatName) {
+        return productRepository.findProductsByProductCategory_ProductCatName(productCatName);
+    }
+
+    /**
+     * 獲得全部上架或全部下架的商品清單
+     *
+     * @param productStat 商品上下架狀態
+     * @return 返回相同狀態的商品清單
+     */
+    @Override
+    public List<Product> getByProductStat(Byte productStat) {
+        return productRepository.findByProductStat(productStat);
+    }
+
+    /**
+     * 評分前10名的商品
+     *
+     * @return 返回前10名的清單
+     */
+    @Override
+    public List<Product> getTopScore() {
+        return productRepository.findTop10ByOrderByProductComScoreDesc();
+    }
+
+    /**
+     * 最多人評價前10名
+     *
+     * @return 返回前10名的清單
+     */
+    @Override
+    public List<Product> getTopPopular() {
+        return productRepository.findTop10ByOrderByProductComPeopleDesc();
+    }
+
+    /**
+     * 售出最多前10名
+     *
+     * @return 返回前10名的清單
+     */
+    @Override
+    public List<Product> getTopSalQty() {
+        return productRepository.findTop10ByOrderByProductSalQtyDesc();
+    }
+
+    /**
+     * 最新上架時間前10名
+     *
+     * @return 返回前10名的清單
+     */
+    @Override
+    public List<Product> getTopOnShelf() {
+        return productRepository.findTop1OByOrderByProductOnShelfDesc();
+    }
+
+    /**
+     * 下架時間前10名
+     *
+     * @return 返回前10名的清單
+     */
+    @Override
+    public List<Product> getTopOffShelf() {
+        return productRepository.findTop10ByOrderByProductOffShelfDesc();
+    }
+
+    /**
+     * 萬用複合查詢
+     * 預計在前台使用標籤過濾搜尋結果使用
+     *
+     * @return 返回相關聯商品清單
+     */
+    @Override
+    public List<Product> getComposite(Product product) {
+        return productRepository.findByAttributes(product.getProductNo(), product.getProductCategory().getProductCatNo(), product.getProductName(), product.getProductInfo(), product.getProductSize(), product.getProductColor(), product.getProductPrice(), product.getProductStat(), product.getProductSalQty(), product.getProductComPeople(), product.getProductComScore(), product.getProductOnShelf(), product.getProductOffShelf());
+    }
+
+    /**
+     * 更新單筆商品資料
+     *
+     * @param product 欲更新商品Entity
+     * @return 返回更新後商品Entity
+     */
     @Override
     public Product updateProduct(Product product) {
         return productRepository.save(product);
     }
 
+    /**
+     * 批量更新商品資料
+     *
+     * @param list 欲更新商品清單
+     * @return 返回更新後商品清單
+     */
     @Override
-    public Product onShelf(Product product) {
-        return null;
+    public List<Product> updateProducts(List<Product> list) {
+        return productRepository.saveAll(list);
     }
 
+    /**
+     * 將商品上架
+     *
+     * @param productNo 欲上架商品
+     */
     @Override
-    public Product offShelf(Product product) {
-        return null;
+    public void onShelf(Integer productNo) {
+        productRepository.updateProductOnShelf(productNo, OnShelf, Timestamp.valueOf(LocalDateTime.now()));
     }
 
+    /**
+     * 將商品下架
+     *
+     * @param productNo 欲下架商品
+     */
     @Override
-    public void deleteProduct(Integer pNo) {
-        productRepository.deleteById(pNo);
+    public void offShelf(Integer productNo) {
+        productRepository.updateProductOffShelf(productNo, OffShelf, Timestamp.valueOf(LocalDateTime.now()));
     }
 
+    /**
+     * 批量上架商品
+     *
+     * @param list 欲上架商品清單
+     */
+    @Override
+    public void listOnShelf(List<Integer> list) {
+        productRepository.updateProductOnShelfBatch(list, OnShelf, Timestamp.valueOf(LocalDateTime.now()));
+    }
 
+    /**
+     * 批量下架商品
+     *
+     * @param list 欲下架商品清單
+     */
+    @Override
+    public void listOffShelf(List<Integer> list) {
+        productRepository.updateProductOffShelfBatch(list, OffShelf, Timestamp.valueOf(LocalDateTime.now()));
+    }
+
+    /**
+     * 依商品類別編號將同一類別商品上架
+     *
+     * @param productCatNo 欲上架之商品類別編號
+     */
+    @Override
+    public void OnShelfByProductCatNo(Integer productCatNo) {
+        productRepository.updateProductOnShelfByCategoryNo(productCatNo, OnShelf, Timestamp.valueOf(LocalDateTime.now()));
+    }
+
+    /**
+     * 依商品類別編號將同一類別商品下架
+     *
+     * @param productCatNo 欲下架之商品類別編號
+     */
+    @Override
+    public void OffShelfByProductCatNo(Integer productCatNo) {
+        productRepository.updateProductOffShelfByCategoryNo(productCatNo, OffShelf, Timestamp.valueOf(LocalDateTime.now()));
+    }
+
+    /**
+     * 依商品類別名稱將同一類別商品上架
+     *
+     * @param productCatName 欲上架之商品類別名稱
+     */
+    @Override
+    public void OnShelfByProductCatName(String productCatName) {
+        productRepository.updateProductOnShelfByCategoryName(productCatName, OnShelf, Timestamp.valueOf(LocalDateTime.now()));
+    }
+
+    /**
+     * 依商品類別名稱將同一類別商品下架
+     *
+     * @param productCatName 欲下架之商品類別名稱
+     */
+    @Override
+    public void OffShelfByProductCatName(String productCatName) {
+        productRepository.updateProductOffShelfByCategoryName(productCatName, OffShelf, Timestamp.valueOf(LocalDateTime.now()));
+    }
+
+    /**
+     * 刪除單項商品
+     *
+     * @param productNo 欲刪除之商品編號
+     */
+    @Override
+    public void deleteProduct(Integer productNo) {
+        productRepository.deleteById(productNo);
+    }
+
+    /**
+     * 依商品類別編號刪除商品
+     *
+     * @param productCatNo 欲刪除商品類別編號
+     */
+    @Override
+    public void deleteByProductCatNo(Integer productCatNo) {
+        productRepository.deleteProductsByProductCategory_ProductCatNo(productCatNo);
+    }
+
+    /**
+     * 依商品類別名稱刪除商品
+     *
+     * @param productCatName 欲刪除商品類別名稱
+     */
+    @Override
+    public void deleteByProductCatName(String productCatName) {
+        productRepository.deleteProductsByProductCategory_ProductCatName(productCatName);
+    }
 }

@@ -5,9 +5,13 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.iting.cart.entity.CartRedis;
 import com.ren.administrator.dto.LoginState;
 import com.roger.member.dto.LoginStateMember;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
@@ -31,7 +35,7 @@ public class RedisConfig {
      * @return 返回redisTemplate
      */
     @Bean("integerLoginState")
-    public RedisTemplate<Integer, LoginState> integerLoginStateRedisTemplate(RedisConnectionFactory connectionFactory) {
+    public RedisTemplate<Integer, LoginState> integerLoginStateRedisTemplate(@Qualifier("loginState") RedisConnectionFactory connectionFactory) {
         RedisTemplate<Integer, LoginState> redisTemplate = new RedisTemplate<>();
         // 設置連線
         redisTemplate.setConnectionFactory(connectionFactory);
@@ -146,6 +150,26 @@ public class RedisConfig {
 
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
+    }
+
+//    @Bean("loginState")
+//    public JedisConnectionFactory jedisConnectionFactory() {
+//        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
+//        // 設置Redis服務主機與端口
+//        jedisConnectionFactory.setHostName("localhost");
+//        jedisConnectionFactory.setPort(6379);
+//        // 設置連接的數據庫索引
+//        jedisConnectionFactory.setDatabase(1);
+//        return jedisConnectionFactory;
+//    }
+
+    @Bean("loginState")
+    public LettuceConnectionFactory redisConnectionFactory() {
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
+        config.setHostName("localhost");
+        config.setPort(6379);
+        config.setDatabase(1);  // 設定使用的 Redis database 索引
+        return new LettuceConnectionFactory(config);
     }
 
 }

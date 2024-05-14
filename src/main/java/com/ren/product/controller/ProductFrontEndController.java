@@ -42,6 +42,14 @@ public class ProductFrontEndController {
         return "frontend/product/selectProduct";
     }
 
+    @GetMapping
+    public String recommendProducts() {
+
+        return "";
+    }
+
+
+
     // 加入購物車
 
     // 前往結帳畫面

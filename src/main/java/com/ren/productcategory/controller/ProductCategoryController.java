@@ -21,8 +21,8 @@ public class ProductCategoryController {
     private ProductCategoryServiceImpl productCategorySvc;
 
     @GetMapping("/listOneProductCategory")
-    public ProductCategory getProductCategory(@PathVariable Integer pCatNo) {
-        return productCategorySvc.getOneProductCatagory(pCatNo);
+    public ProductCategory getProductCategory(@RequestParam Integer productCatNo) {
+        return productCategorySvc.getOneProductCategory(productCatNo);
     }
 
     @GetMapping("/listAllProductCategories")

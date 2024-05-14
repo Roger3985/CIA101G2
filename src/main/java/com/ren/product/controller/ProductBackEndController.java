@@ -31,12 +31,6 @@ public class ProductBackEndController {
     @Autowired
     private ProductCategoryServiceImpl productCategorySvc;
 
-    @Autowired
-    private ProductPictureServiceImpl productPictureSvc;
-
-//    @Autowired
-//    private ProductOrderServiceImpl productOrderSvc;
-
     /**
      * 前往商品管理頁面
      *
@@ -48,7 +42,13 @@ public class ProductBackEndController {
     }
 
     @GetMapping("/listOneProduct")
-    public String getProduct(@PathVariable Integer productNo, HttpSession session) {
+    public String getProduct(@RequestParam Integer productNo, BindingResult result, ModelMap model) {
+        if (result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors());
+        }
+        Product product = productSvc.getOneProduct(productNo);
+        model.addAttribute("", product);
+
         return "backend/product/listOneProduct";
     }
 
@@ -79,9 +79,9 @@ public class ProductBackEndController {
      * 將前端輸入資料新增置資料庫
      *
      * @param product 如果輸入格式錯誤時，將返回前端輸入值，不讓使用者再次輸入相同內容
-     * @param result
-     * @param model
-     * @return
+     * @param result 格式錯誤時，會存放Entity設置的錯誤訊息
+     * @param model 如果輸入錯誤，將錯誤訊息渲染到前端顯示
+     * @return 如果有錯誤訊息則forward回新增頁面，如果成功則重導到全部清單列表
      */
     @PostMapping("addProduct/add")
     public String addProduct(@Valid Product product, BindingResult result, ModelMap model) {
@@ -98,38 +98,45 @@ public class ProductBackEndController {
     }
 
     /**
-     * 從listAll前往更新頁面
+     * 從listAll點集修改時前往更新頁面
      *
-     * @param model
-     * @param productNo
-     * @return
+     * @param model 因畫面要顯示為點擊的商品資料，執行查詢單項方法後放入，並放入商品類別Service放入
+     * @param productNo 傳入商品編號於後續查詢
+     * @return forward到修改頁面
      */
-    @GetMapping("/updateProduct/{productNo}")
-    public String toUpdateProduct(ModelMap model, @PathVariable Integer productNo) {
-
+    @GetMapping("/listToUpdateProduct")
+    public String toUpdateProduct(ModelMap model, @RequestParam Integer productNo) {
         model.addAttribute("product", productSvc.getOneProduct(productNo));
+        System.out.println(productNo);
+        System.out.println(productSvc.getOneProduct(productNo).getProductNo());
         if (model.getAttribute("productCategoryList") == null) {
             model.addAttribute("productCategoryList", productCategorySvc.getAll());
         }
         return "backend/product/updateProduct";
     }
 
+
     /**
      * 點選側邊欄連結前往更新頁面
      *
-     * @param model
-     * @return
+     * @param list 訪問這個控制器時用於渲染的商品清單，傳入方法內用於將列表的第一項商品渲染到前端
+     * @param model 將原本訪問網頁的商品清單第一項商品與商品類別清單加入ModelMap，渲染前端
+     * @return forward到更新頁面
      */
     @GetMapping("/updateProduct")
-    public String toUpdateProduct(ModelMap model) {
-        List<Product> list = productSvc.getAll();
-        model.addAttribute("productList", list);
+    public String toUpdateProduct(@ModelAttribute("productList") List<Product> list, ModelMap model) {
         model.addAttribute("productCategoryList", productCategorySvc.getAll());
         model.addAttribute("product", list.get(FIRST));
         return "backend/product/updateProduct";
     }
 
-    // 處理修改資料
+    /**
+     *
+     * @param product
+     * @param result
+     * @param model
+     * @return
+     */
     @PostMapping("updateProduct/update")
     public String updateProduct(@Valid Product product, BindingResult result, ModelMap model) {
         if (result.hasErrors()) {
@@ -145,16 +152,16 @@ public class ProductBackEndController {
     }
 
     // 商品上下架功能
-    @PostMapping()
-    public String changeProductStat() {
-
-        return "";
+    @PostMapping("/changeProduct")
+    public String changeProductStat(@RequestParam Integer productNo) {
+        productSvc.onShelf(productNo);
+        return "backend/product/listAllProducts";
     }
 
-//    @DeleteMapping("/products/{pNo}")
-//    public void deleteProduct(@PathVariable Integer pNo) {
-//        productSvc.deleteProduct(pNo);
-//    }
+    @DeleteMapping("/products/{productNo}")
+    public void deleteProduct(@PathVariable Integer productNo) {
+        productSvc.deleteProduct(productNo);
+    }
 
     /**
      * 提供所有商品資料列表供視圖渲染使用。
@@ -173,7 +180,7 @@ public class ProductBackEndController {
      * 選取下拉式選單後即時更新商品資訊
      *
      * @param productNo 傳入主鍵搜尋
-     * @return 返回到前端顯示
+     * @return 以ResponseEntity返回到前端顯示
      */
     @PostMapping("/getProductInstantly")
     @ResponseBody
@@ -181,6 +188,7 @@ public class ProductBackEndController {
         // 根據商品編號查詢商品詳情
         Product product = productSvc.getOneProduct(productNo);
         // 返回查詢結果
+        System.out.println("即時更新成功");
         return ResponseEntity.ok().body(product);
     }
 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,52 +61,113 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     // 根據關鍵字搜尋產品
     @Transactional
     List<Product> findByProductNameContaining(String keyword);
+
+    /**
+     * 萬用搜尋
+     *
+     * @param keyword 關鍵字
+     * @return 返回相關聯商品清單
+     */
+    @Query("SELECT p FROM Product p " +
+            "LEFT JOIN p.productCategory pc " +
+            "WHERE CAST(p.productNo AS string) LIKE %:keyword% " +
+            "OR CAST(pc.productCatNo AS string) LIKE %:keyword% " +
+            "OR p.productName LIKE %:keyword% " +
+            "OR pc.productCatName LIKE %:keyword% " +
+            "OR p.productInfo LIKE %:keyword% " +
+            "OR p.productColor LIKE %:keyword%")
     @Transactional
-    List<Product> findByProductNameContainingAndProductCategoryProductCatNo(String keyword, Integer productCatNo);
+    List<Product> searchByKeyword(@Param("keyword") String keyword);
 
     /**
      * 獲得所有同一商品種類的商品清單
      *
-     * @param productCatNo
-     * @return
+     * @param productCatNo 商品類別編號
+     * @return 返回商品清單
      */
     @Transactional
     List<Product> findProductsByProductCategory_ProductCatNo(Integer productCatNo);
 
     /**
+     * 透過商品類別名稱搜尋所有商品
+     *
+     * @param productCatName 商品類別名稱
+     * @return 返回商品清單
+     */
+    @Transactional
+    List<Product> findProductsByProductCategory_ProductCatName(String productCatName);
+
+    /**
      * 獲得所有上架商品(or 下架商品)
      *
-     * @param productStat
-     * @return
+     * @param productStat 商品狀態
+     * @return 返回所有上架或下架商品清單
      */
     @Transactional
     List<Product> findByProductStat(Byte productStat);
 
     /**
-     * 獲得評分前10名的商品
+     * 評分前10名的商品
      *
-     * @return
+     * @return 返回前10名的清單
      */
     @Transactional
     List<Product> findTop10ByOrderByProductComScoreDesc();
 
-    // 最多人評價
+    /**
+     * 最多人評價前10名
+     *
+     * @return 返回前10名的清單
+     */
     @Transactional
-    List<Product> findTop10ByOrderByProductComPeople();
+    List<Product> findTop10ByOrderByProductComPeopleDesc();
 
-    // 最新上架
+    /**
+     * 售出最多前10名
+     *
+     * @return 返回前10名的清單
+     */
+    List<Product> findTop10ByOrderByProductSalQtyDesc();
+
+    /**
+     * 最新上架時間前10名
+     *
+     * @return 返回前10名的清單
+     */
     @Transactional
     List<Product> findTop1OByOrderByProductOnShelfDesc();
 
-    // 最新下架
+    /**
+     * 下架時間前10名
+     *
+     * @return 返回前10名的清單
+     */
     @Transactional
-    List<Product> findTop10ByOrderByProductOffShelf();
+    List<Product> findTop10ByOrderByProductOffShelfDesc();
 
+    /**
+     * 萬用複合查詢
+     * 預計在前台使用標籤過濾搜尋結果使用
+     *
+     * @param productNo 商品標號
+     * @param productCatNo 商品類別編號
+     * @param productName 商品名稱
+     * @param productInfo 商品資訊
+     * @param productSize 商品尺寸
+     * @param productColor 商品顏色
+     * @param productPrice 商品單價
+     * @param productStat 商品狀態
+     * @param productSalQty 商品售出數量
+     * @param productComPeople 商品評價人數
+     * @param productComScore 商品評價
+     * @param productOnShelf 商品上架時間
+     * @param productOffShelf 商品下架時間
+     * @return 返回符合查詢資格的清單
+     */
     @Transactional
-    @Modifying
     @Query("SELECT p FROM Product p WHERE " +
-//            "(:productNo IS NULL OR p.productNo = :productNo) AND " +
-//            "(:productCatNo IS NULL OR p.productCatNo = :productCatNo) AND " +
+            "(:productNo IS NULL OR p.productNo = :productNo) AND " +
+            "(:productCatNo IS NULL OR p.productCategory.productCatNo = :productCatNo) AND " +
             "(:productName IS NULL OR p.productName = :productName) AND " +
             "(:productInfo IS NULL OR p.productInfo = :productInfo) AND " +
             "(:productSize IS NULL OR p.productSize = :productSize) AND " +
@@ -114,10 +176,12 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "(:productStat IS NULL OR p.productStat = :productStat) AND " +
             "(:productSalQty IS NULL OR p.productSalQty = :productSalQty) AND " +
             "(:productComPeople IS NULL OR p.productComPeople = :productComPeople) AND " +
-            "(:productComScore IS NULL OR p.productComScore = :productComScore)")
+            "(:productComScore IS NULL OR p.productComScore = :productComScore) AND " +
+            "(:productOnShelf IS NULL OR p.productOnShelf = :productOnShelf) AND " +
+            "(:productOffShelf IS NULL OR p.productOffShelf = :productOffShelf)")
     List<Product> findByAttributes(
-//            @Param("productNo") Integer productNo,
-//            @Param("productCatNo") Integer productCatNo,
+            @Param("productNo") Integer productNo,
+            @Param("productCatNo") Integer productCatNo,
             @Param("productName") String productName,
             @Param("productInfo") String productInfo,
             @Param("productSize") Integer productSize,
@@ -126,7 +190,123 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             @Param("productStat") Byte productStat,
             @Param("productSalQty") Integer productSalQty,
             @Param("productComPeople") Integer productComPeople,
-            @Param("productComScore") Integer productComScore
+            @Param("productComScore") BigDecimal productComScore,
+            @Param("productOnShelf") Timestamp productOnShelf,
+            @Param("productOffShelf") Timestamp productOffShelf
     );
+
+    /**
+     * 自定義更新商品上架狀態方法
+     *
+     * @param productNo 商品編號
+     * @param productStat 更新商品狀態為上架
+     * @param productOnShelf 更新商品上架時間
+     */
+    @Modifying
+    @Transactional
+    @Query("UPDATE Product p SET p.productStat = :productStat, p.productOnShelf = :productOnShelf WHERE p.productNo = :productNo")
+    void updateProductOnShelf(@Param("productNo") Integer productNo, @Param("productStat") Byte productStat, @Param("productOnShelf") Timestamp productOnShelf);
+
+    /**
+     * 自定義更新商品下架狀態方法
+     *
+     * @param productNo 商品編號
+     * @param productStat 更新商品狀態為下架
+     * @param productOffShelf 更新商品下架時間
+     */
+    @Modifying
+    @Transactional
+    @Query("UPDATE Product p SET p.productStat = :productStat, p.productOffShelf = :productOffShelf WHERE p.productNo = :productNo")
+    void updateProductOffShelf(@Param("productNo") Integer productNo, @Param("productStat") Byte productStat, @Param("productOffShelf") Timestamp productOffShelf);
+
+    /**
+     * 自定義批量更新商品上架方法
+     *
+     * @param productNos 商品編號
+     * @param productStat 更新商品狀態為上架
+     * @param productOnShelf 更新商品上架時間
+     */
+    @Modifying
+    @Transactional
+    @Query("UPDATE Product p SET p.productStat = :productStat, p.productOnShelf = :productOnShelf WHERE p.productNo IN :productNos")
+    void updateProductOnShelfBatch(@Param("productNos") List<Integer> productNos, @Param("productStat") Byte productStat, @Param("productOnShelf") Timestamp productOnShelf);
+
+    /**
+     * 自定義批量更新商品下架方法
+     *
+     * @param productNos 商品編號
+     * @param productStat 更新商品狀態為下架
+     * @param productOffShelf 更新商品下架時間
+     */
+    @Modifying
+    @Transactional
+    @Query("UPDATE Product p SET p.productStat = :productStat, p.productOffShelf = :productOffShelf WHERE p.productNo IN :productNos")
+    void updateProductOffShelfBatch(@Param("productNos") List<Integer> productNos, @Param("productStat") Byte productStat, @Param("productOffShelf") Timestamp productOffShelf);
+
+    /**
+     * 根據商品類別編號上架商品
+     *
+     * @param productCatNo 商品類別編號
+     * @param productStat 更新商品狀態為上架
+     * @param productOnShelf 更新商品上架時間
+     */
+    @Modifying
+    @Transactional
+    @Query("UPDATE Product p SET p.productStat = :productStat, p.productOnShelf = :productOnShelf WHERE p.productCategory.productCatNo = :productCatNo")
+    void updateProductOnShelfByCategoryNo(@Param("productCatNo") Integer productCatNo, @Param("productStat") Byte productStat, @Param("productOnShelf") Timestamp productOnShelf);
+
+    /**
+     * 根據商品類別編號下架商品
+     *
+     * @param productCatNo 商品類別編號
+     * @param productStat 更新商品狀態為下架
+     * @param productOffShelf 更新商品下架時間
+     */
+    @Modifying
+    @Transactional
+    @Query("UPDATE Product p SET p.productStat = :productStat, p.productOffShelf = :productOffShelf WHERE p.productCategory.productCatNo = :productCatNo")
+    void updateProductOffShelfByCategoryNo(@Param("productCatNo") Integer productCatNo, @Param("productStat") Byte productStat, @Param("productOffShelf") Timestamp productOffShelf);
+
+    /**
+     * 根據商品類別名稱上架
+     *
+     * @param productCatName 商品類別名稱
+     * @param productStat 更新商品狀態為上架
+     * @param productOnShelf 更新商品上架時間
+     */
+    @Modifying
+    @Transactional
+    @Query("UPDATE Product p SET p.productStat = :productStat, p.productOnShelf = :productOnShelf WHERE p.productCategory.productCatName = :productCatName")
+    void updateProductOnShelfByCategoryName(@Param("productCatName") String productCatName, @Param("productStat") Byte productStat, @Param("productOnShelf") Timestamp productOnShelf);
+
+    /**
+     * 根據商品類別名稱下架
+     *
+     * @param productCatName 商品類別名稱
+     * @param productStat 更新商品狀態為下架
+     * @param productOffShelf 更新商品下架時間
+     */
+    @Modifying
+    @Transactional
+    @Query("UPDATE Product p SET p.productStat = :productStat, p.productOffShelf = :productOffShelf WHERE p.productCategory.productCatName = :productCatName")
+    void updateProductOffShelfByCategoryName(@Param("productCatName") String productCatName, @Param("productStat") Byte productStat, @Param("productOffShelf") Timestamp productOffShelf);
+
+    /**
+     * 根據商品類別編號刪除商品
+     *
+     * @param productCatNo 商品類別編號
+     */
+    @Transactional
+    @Modifying
+    void deleteProductsByProductCategory_ProductCatNo(Integer productCatNo);
+
+    /**
+     * 根據商品類別名稱刪除商品
+     *
+     * @param productCatName 商品類別名稱
+     */
+    @Transactional
+    @Modifying
+    void deleteProductsByProductCategory_ProductCatName(String productCatName);
 
 }

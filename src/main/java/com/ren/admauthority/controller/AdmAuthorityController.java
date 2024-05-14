@@ -4,6 +4,8 @@ import com.ren.admauthority.entity.AdmAuthority;
 import com.ren.admauthority.service.impl.AdmAuthorityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -33,10 +35,15 @@ public class AdmAuthorityController {
      * 前往獲得該職位所有權限清單頁面
      *
      * @param titleNo 職位編號
-     * @return
+     * @return 前往listOne頁面
      */
     @GetMapping("/listOneAdmAuthority")
-    public String getAdmAuthority(@PathVariable Integer titleNo) {
+    public String getAdmAuthority(@RequestParam Integer titleNo,@RequestParam Integer authFuncNo, BindingResult result, ModelMap model) {
+        if (result.hasErrors()) {
+
+        }
+        AdmAuthority admAuthority = admAuthoritySvc.getOneAdmAuthority(titleNo, authFuncNo);
+        model.addAttribute("admAuthority", admAuthority);
         return "backend/admauthority/listOneAdmAuthority";
     }
 
@@ -48,6 +55,11 @@ public class AdmAuthorityController {
     @GetMapping("/listAllAdmAuthorities")
     public String getAllAdmAuthorities() {
         return "backend/admauthority/listAllAdmAuthorities";
+    }
+
+    @GetMapping("/addAdmAuthority")
+    public String toAddAdmAuthority() {
+        return "backend/admauthority/addAdmAuthority";
     }
 
     @PostMapping("/addAdmAuthority")
@@ -67,7 +79,6 @@ public class AdmAuthorityController {
     @DeleteMapping("/delete")
     public void deleteFromListAll(@RequestParam Integer titleNo, @RequestParam Integer authFuncNo) {
         admAuthoritySvc.deleteAdmAuthority(titleNo, authFuncNo);
-        return ;
     }
 
     @ModelAttribute("admAuthorityList")
