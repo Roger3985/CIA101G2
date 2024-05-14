@@ -78,10 +78,10 @@
                                             <td th:text="${rental.rentalCategory.rentalCatNo} + '-[' + ${rental.rentalCategory.rentalCatName} + ']'"></td>
                                             <td>
                                                 <!-- 觸發submit，跳轉th:action指定頁面 -->
-                                                <form method="post" th:action="@{getOneUpdate}">
+                                                <form method="get" th:action="@{updateRental}">
                                                     <button type="submit" value="修改">
-                                                        <i class="fa-solid fa-pen-to-square"></i>
-                                                        <input type="hidden" name="rentalNo" value="${rental.rentalNo}">
+                                                        <i class="far fa-edit"></i>
+                                                        <input type="hidden" name="rentalNo" th:value="${rental.rentalNo}">
                                                     </button>
                                                 </form>
                                             </td>

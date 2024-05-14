@@ -51,7 +51,6 @@
                                     <th>租借品資訊</th>
                                     <th>租借品狀態</th>
                                     <th>租借品類別編號</th>
-                                    <th>修改</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -79,15 +78,6 @@
                                             <span th:if="${rental.rentalStat == 5}" th:text="下架"></span>
                                         </td>
                                         <td th:text="${rental.rentalCategory.rentalCatNo} + '-[' + ${rental.rentalCategory.rentalCatName} + ']'"></td>
-                                        <td>
-                                            <form method="post" th:action="@{updateRental}">
-                                                <button type="submit" value="送出">
-                                                    <i class="fa-solid fa-pen-to-square"></i>
-                                                    <input type="hidden" name="rentalCatNo" value="${rental.rentalCatNo}">
-                                                    <input type="hidden" name="action" value="getOneUpdate">
-                                                </button>
-                                            </form>
-                                        </td>
                                     </tr>
                                 </th:block>
                                 </tbody>

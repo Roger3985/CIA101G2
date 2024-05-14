@@ -184,14 +184,14 @@
                                     <div class="form-check radio-text form-check-inline me-2"><input
                                             class="form-check-input" type="radio" name="size_d3" id="xs_2"
                                             checked="">
-                                        <label class="radio-text-label" for="xs_2"><span  th:text="XS"></span></label>
+                                        <label class="radio-text-label" for="xs_2"><span th:text="XS"></span></label>
                                     </div>
                                     <div class="form-check radio-text form-check-inline me-2"><input
                                             class="form-check-input" type="radio" name="size_d3" id="s_2"> <label
-                                            class="radio-text-label" for="s_2"><span  th:text="S"></span></label></div>
+                                            class="radio-text-label" for="s_2"><span th:text="S"></span></label></div>
                                     <div class="form-check radio-text form-check-inline me-2"><input
                                             class="form-check-input" type="radio" name="size_d3" id="m_2"> <label
-                                            class="radio-text-label" for="m_2"><span  th:text="M"></span></label></div>
+                                            class="radio-text-label" for="m_2"><span th:text="M"></span></label></div>
                                     <div class="form-check radio-text form-check-inline me-2"><input
                                             class="form-check-input" type="radio" name="size_d3" id="l_2"> <label
                                             class="radio-text-label" for="l_2"><span th:text="L"></span></label></div>
@@ -263,8 +263,8 @@
                                     class="bi bi-envelope ms-auto"></i>我有疑問</a></div> <!--  可轉交客服網頁  -->
                             <div class="pt-3 border-top mt-3 small">
                                 <p class="theme-link mb-2"><label class="m-0 text-mode">關鍵字:</label> <a
-                                        href="#">西裝</a>,
-                                    <a href="#">正裝</a>
+                                        th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=1'}">西裝</a>,
+                                    <a th:href="@{/frontend/rental/rentalShop}">正裝</a>
                                 </p>
                                 <p class="theme-link m-0"><label class="m-0 text-mode">分享:</label> <a
                                         class="icon icon-sm icon-secondary me-2" href="#"><i

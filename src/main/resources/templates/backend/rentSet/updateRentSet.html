@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>修改租借品資料</title>
+    <title>修改租借品方案</title>
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <style>
         *{
@@ -36,11 +36,11 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">修改租借品資料</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">修改租借品方案</h6>
                     </div>
                     <div class="a">
                         <ul>
-                            <form id="form" method="post" th:action="@{getOneUpdate}" th:object="${rental}">
+                            <form id="form" method="post" th:action="@{updateRental}" th:object="${rental}">
                                 <li>
                                     租借品編號:
                                     <input value="0" type="text" name="rentalNo" th:field="*{rentalNo}" style="border:0px ; font-weight: bold;" readonly /><br/>
