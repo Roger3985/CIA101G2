@@ -7,7 +7,7 @@ import com.iting.productorder.service.ProductOrderService;
 import com.iting.productorderdetail.entity.ProductOrderDetail;
 import com.iting.productorderdetail.service.ProductOrderDetailService;
 import com.ren.product.entity.Product;
-import com.ren.product.service.ProductServiceImpl;
+import com.ren.product.service.impl.ProductServiceImpl;
 import com.roger.member.entity.Member;
 import com.roger.member.entity.uniqueAnnotation.Create;
 import com.roger.member.service.MemberService;
