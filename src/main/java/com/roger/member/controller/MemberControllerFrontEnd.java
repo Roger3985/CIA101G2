@@ -58,11 +58,12 @@ public class MemberControllerFrontEnd {
      * StringRedisTemplate 的自動裝配成員變數，用於處理 Redis 字符串操作。
      */
     @Autowired
+    @Qualifier("memStrStr")
     private StringRedisTemplate redisTemplate;
 
     @Autowired
-    @Qualifier("stringInteger")
-    private RedisTemplate<String, Integer> stringIntegerRedisTemplate;
+    @Qualifier("memStrInt")
+    private RedisTemplate<String, Integer> memStrIntRedisTemplate;
 
 
     /**
@@ -412,7 +413,7 @@ public class MemberControllerFrontEnd {
             // 設置 cookie 的路徑為 / frontend，當訪問所有的前台網頁都可以獲取這個 cookie
             cookie.setPath(request.getContextPath() + "/frontend");
             response.addCookie(cookie);
-            stringIntegerRedisTemplate.opsForValue().set(random, memNo);
+            memStrIntRedisTemplate.opsForValue().set(random, memNo);
             System.out.println("cookie 存入");
             System.out.println("自動登入信息已存入");
         }
@@ -571,7 +572,7 @@ public class MemberControllerFrontEnd {
             // 設置 cookie 的路徑為 / frontend，當訪問所有的前台網頁都可以獲取這個 cookie
             cookie.setPath(request.getContextPath() + "/frontend");
             response.addCookie(cookie);
-            stringIntegerRedisTemplate.opsForValue().set(random, memNo);
+            memStrIntRedisTemplate.opsForValue().set(random, memNo);
             System.out.println("cookie 存入");
             System.out.println("自動登入信息已存入");
         }
@@ -746,7 +747,7 @@ public class MemberControllerFrontEnd {
 //            // 設置 cookie 的路徑為 / frontend，當訪問所有的前台網頁都可以獲取這個 cookie
 //            cookie.setPath(request.getContextPath() + "/frontend");
 //            response.addCookie(cookie);
-//            stringIntegerRedisTemplate.opsForValue().set(random, memNo);
+//            memStrIntRedisTemplate.opsForValue().set(random, memNo);
 //            System.out.println("cookie 存入");
 //            System.out.println("自動登入信息已存入");
 //        }

@@ -4,6 +4,7 @@ import com.roger.articlecollection.entity.ArticleCollection;
 import com.roger.articlecollection.repository.ArticleCollectionRepository;
 import com.roger.articlecollection.service.ArticleCollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class ArticleCollectionServiceImpl implements ArticleCollectionService {
      * 自動裝配的 StringRedisTemplate，用於執行與 Redis 資料庫操作，特別是針對字串類型的資料。
      */
     @Autowired
+    @Qualifier("colStrStr")
     private StringRedisTemplate redisTemplate;
     /**
      * 查找所有專欄文章的收藏。

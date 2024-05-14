@@ -40,7 +40,7 @@ import static com.ren.util.Validator.validateEmail;
 public class BackendIndexController {
 
     @Autowired
-    @Qualifier("stringInteger")
+    @Qualifier("admStrInt")
     private RedisTemplate<String, Integer> stiRedisTemplate;
 
     @Autowired

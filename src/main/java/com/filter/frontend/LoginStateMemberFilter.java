@@ -28,7 +28,7 @@ import static com.roger.util.Validator.validateURL;
 public class LoginStateMemberFilter extends HttpFilter {
 
     @Autowired
-    @Qualifier("integerLoginStateMember")
+    @Qualifier("memIntLogin")
     private RedisTemplate<Integer, LoginStateMember> integerLoginStateRedisTemplateMember;
 
 
