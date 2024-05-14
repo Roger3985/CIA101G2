@@ -17,14 +17,14 @@ import java.util.Optional;
  * (1)prefix 前綴
  * 1.find:透過指定值查詢資料，可為單個Entity(由Optional包裹)也可為List
  * 2.get:與find類似，通常會設計成透過主鍵搜尋單個物件(非規定)
- * 3.search:
+ * 3.search:通用搜尋方法，可以設計複雜的搜尋條件獲得欲搜索資料
  * 4.query:使用自定義的JPQL語法查詢，可執行更複雜的資料庫操作
- * 5.count:
- * 6.delete:
- * 7.stream:
- * 8.read:
- * 9.exists:
- * 10.update:
+ * 5.count:統計符合指定條件的實體數量
+ * 6.delete:刪除符合指定條件的資料
+ * 7.stream:以Stream的形式獲得指定條件的實體對象
+ * 8.read:讀取資料庫內的數據，通常透過查詢實現，類似find方法
+ * 9.exists:檢查是否存在符合指定條件的Entity
+ * 10.update:更新符合指定條件的Entity
  * (2)suffix 後綴
  * 1.By:依照指定條件搜尋
  * 2.Distinct:返回不重複的結果
