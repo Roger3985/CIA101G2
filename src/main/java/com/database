@@ -17,6 +17,7 @@ DROP TABLE IF EXISTS ProductMyFavorite;
 DROP TABLE IF EXISTS ProductOrderDetail;
 DROP TABLE IF EXISTS ProductPicture;
 DROP TABLE IF EXISTS ProductOrder;
+DROP TABLE IF EXISTS ProductReview;
 DROP TABLE IF EXISTS product;
 DROP TABLE IF EXISTS productcategory;
 
@@ -45,9 +46,6 @@ DROP TABLE IF EXISTS `Member`;
 
 DROP TABLE IF EXISTS News;
 DROP TABLE IF EXISTS ServiceRobot;
-
-DROP TABLE IF EXISTS ProductReview;
-
 
 -- 創建會員表格
 CREATE TABLE Member
