@@ -79,8 +79,19 @@ public class ProductServiceImpl implements ProductService_interface {
     }
 
     @Override
+    public Product onShelf(Product product) {
+        return null;
+    }
+
+    @Override
+    public Product offShelf(Product product) {
+        return null;
+    }
+
+    @Override
     public void deleteProduct(Integer pNo) {
         productRepository.deleteById(pNo);
     }
+
 
 }
