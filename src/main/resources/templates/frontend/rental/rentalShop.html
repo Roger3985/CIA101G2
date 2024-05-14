@@ -15,6 +15,18 @@
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
     <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+
+
+    <style>
+
+        span.successMsg {
+        /* 確保初始狀態為隱藏，以便fadeIn能正常工作 */
+            display: none;
+        }
+
+    </style>
+
+
 </head>
 
 <body>
@@ -281,7 +293,7 @@
                         </div>
                         <!-- 商品 -->
                         <th:block th:each="rental : ${rentalListData}">
-                            <div class="row g-0 mb-4">
+                            <div class="row g-0 mb-4 rental">
                                 <div class="col-sm-4 position-relative">
                                     <div class="badge-ribbon position-absolute top-0 mt-3">
                                         <span class="badge bg-danger">Sale</span>
@@ -304,7 +316,7 @@
                                             <span th:text="${rental.rentalName}"></span></a><!-- 租借品名稱 -->
                                     </h5>
                                     <div class="m-0">
-                                        <p class="small mb-2"><span>編號：</span><span th:text="${rental.rentalNo}"></span></p><!-- 租借品編號 -->
+                                        <p class="small mb-2"><span>編號：</span><span class="rentalNo" th:text="${rental.rentalNo}"></span></p><!-- 租借品編號 -->
                                         <p class="small mb-2"><span th:text="${rental.rentalInfo}"></span></p><!-- 租借品介紹 -->
                                     </div>
                                     <div class="product-price pb-3">
@@ -312,7 +324,7 @@
                                         <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del><!-- 定價 -->
                                     </div>
                                     <div>
-                                        <a href="#" class="btn btn-mode"><!--  加入購物車  -->
+                                        <a href="" class="btn btn-mode btn_addToCart"><!--  加入購物車(457)  -->
                                             <i class="fi-shopping-cart"></i>
                                         </a>
                                         <a href="#" class="btn btn-primary"><!--  加入我的最愛  -->
@@ -323,6 +335,7 @@
                                            href="javascript:void(0)" class="btn btn-primary">
                                             <i class="fi-eye"></i><!--  跳窗顯示該商品畫面 (rentalQuickview.html) -->
                                         </a>
+                                        <span class="successMsg" style="color: lightgreen"></span>
                                     </div>
                                 </div>
                             </div>
@@ -412,3 +425,82 @@
 <!--            });-->
 <!--    }-->
 <!--</script>-->
+
+<script>
+    $(document).ready(function() {
+        $("#low_to_high").click(function(event) {
+            // alert("點選low_to_high");
+            event.preventDefault(); // 阻止默认的链接跳转行为
+
+            var sortType = $(this).data("sortType"); // 获取自定义属性 data-sort-type 的值
+            sortBy(sortType); // 调用 sortBy 函数进行排序
+        });
+
+        $("#high_to_low").click(function(event) {
+            // alert("點選high_to_low");
+            event.preventDefault(); // 阻止默认的链接跳转行为
+
+            var sortType = $(this).data("sortType"); // 获取自定义属性 data-sort-type 的值
+            sortBy(sortType); // 调用 sortBy 函数进行排序
+        });
+
+        function sortBy(sortType) {
+            var url = "/frontend/rental/sortAllPrice?sortType=" + sortType;
+
+            $.get(url, function(html) {
+                // 将响应的 HTML 插入到页面中
+                $("#sortAllPrice").html(html);
+            }).fail(function() {
+                console.error('There has been a problem with your request');
+            });
+        }
+
+
+
+
+
+        /*----------------------------右翰寫的加入購物車跟追蹤方法----------------------------------*/
+        // 339
+        $(document).on("click", "a.btn_addToCart", function (e) {
+
+            e.preventDefault();
+            /*
+             * 拼接動態前置路徑 (為適應上雲時路徑變化)
+             * window.location.protocol = 當前頁面所使用之通訊協定 (ex : http: 、 https:)
+             * window.location.host = 當前頁面主機名和連接阜號 (ex : localhost:8080)
+            */
+            let baseUrl = window.location.protocol + "//" + window.location.host;
+            let apiPath = "/backend/rentalorder/setToCart";
+            let $this = $(this);
+            // span.rentalNo
+            let rentalNo = $this.closest("div.rental").find("span.rentalNo").text().trim();
+            let memNo = 1;
+
+            let data = {
+                "rentalNo" : rentalNo,
+                "memNo" : memNo
+            };
+
+            fetch(baseUrl + apiPath, {
+                method : "POST",
+                headers : {
+                    "Content-Type" : "application/json"
+                },
+                body : JSON.stringify(data)
+            }).then(function (response) {
+                // console.log(response)
+                return response.text();
+            }).then(function (rentalName) {
+                // console.log(rentalName);
+                // console.log(this);
+                $this.closest("div.rental").find("span.successMsg").text("已將" + rentalName + "加入購物車!").fadeIn(0).delay(500).fadeOut(500);
+            })
+
+        })
+
+        /*----------------------------右翰寫的加入購物車跟追蹤方法----------------------------------*/
+
+    });
+</script>
+</body>
+</html>
