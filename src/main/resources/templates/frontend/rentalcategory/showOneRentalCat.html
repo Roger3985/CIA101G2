@@ -78,7 +78,7 @@
                                     <div class="shop-category-list collapse show" id="shop_categories">
                                         <ul class="nav flex-column">
                                             <li class="nav-item">
-                                                <a th:href="@{/rental/rentalShop}" class="nav-link active">所有租借品</a>
+                                                <a th:href="@{/frontend/rental/rentalShop}" class="nav-link active">所有租借品</a>
                                             </li>
 
                                             <li class="nav-item">
@@ -92,10 +92,10 @@
                                                             <a th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=1'}" class="nav-link">西裝</a>
                                                         </li>
                                                         <li class="nav-item">
-                                                            <a th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=1'}" class="nav-link">西裝</a>
+                                                            <a th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=1'}" class="nav-link">西裝(可新增西裝外套)</a>
                                                         </li>
                                                         <li class="nav-item">
-                                                            <a th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=1'}" class="nav-link">西裝</a>
+                                                            <a th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=1'}" class="nav-link">西裝(可新增西裝褲)</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -120,6 +120,7 @@
                                     </div>
                                 </div>
                             </th:block>
+                            <!-- End Categories -->
                             <!-- 顏色 -->
                             <div class="shop-sidebar-block">
                                 <div class="shop-sidebar-title">
@@ -280,8 +281,7 @@
                             </div>
                         </div>
                         <!-- 商品 -->
-                        <th:block th:each="rental : ${rentalListData}">
-                            <div class="row g-0 mb-4">
+                        <div class="row g-0 mb-4" th:each="rental : ${rentalList}" th:if="${rental.rentalCategory.rentalCatNo == rentalCategory.rentalCatNo}">
                                 <div class="col-sm-4 position-relative">
                                     <div class="badge-ribbon position-absolute top-0 mt-3">
                                         <span class="badge bg-danger">Sale</span>
@@ -319,7 +319,7 @@
                                             <i class="fi-heart"></i>
                                         </a>
                                         <a href="#" class="btn btn-primary">追蹤</a><!--  加入追蹤的圖示 <i class="fi-repeat"></i>  -->
-                                        <a data-bs-toggle="modal" data-bs-target="#px-quick-view" th:href="@{/frontend/rental/rentalQuickview}"
+                                        <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
                                            href="javascript:void(0)" class="btn btn-primary">
                                             <i class="fi-eye"></i><!--  跳窗顯示該商品畫面 (rentalQuickview.html) -->
                                         </a>

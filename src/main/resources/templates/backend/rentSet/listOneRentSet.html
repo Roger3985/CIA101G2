@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>查詢租借品類別資料</title>
+    <title>租借方案(單筆)</title>
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
     <style>
         *{
-            font-size: 12px; /* 調整字體大小 */
-        }
-        .error {
             font-size: 12px; /* 調整字體大小 */
         }
     </style>
@@ -36,35 +33,36 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">查詢租借品類別資料</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">租借方案(單筆)</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>租借品類別編號</th>
-                                    <th>租借品類別名稱</th>
-                                    <th>租借品庫存數量</th>
-                                    <th>租借品已租借數量</th>
-                                    <th>押金</th>
+                                    <th>租借品訂單編號</th>
+                                    <th>方案名稱</th>
+                                    <th>租借天數</th>
                                     <th>修改</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <th:block th:each="rentalCategory : ${rentalCatListData}"> <!--th:block 用來包裝使用-->
+                                <th:block th:each="rentalSet : ${rentalSetListData}" > <!--th:block 用來包裝使用-->
                                     <tr>
-                                        <td th:text="${rentalCategory.rentalCatNo}"></td>
-                                        <td th:text="${rentalCategory.rentalCatName}"></td>
-                                        <td th:text="${rentalCategory.rentalStockQty}"></td>
-                                        <td th:text="${rentalCategory.rentalRentedQty}"></td>
-                                        <td th:text="${rentalCategory.rentalDesPrice}"></td>
+                                        <td th:text="${rentalSet.rentalOrdNo}"></td>
+                                        <td th:text="${rentalSet.rentalSetName}"></td>
+                                        <td>
+                                            <span th:if="${rentalSet.rentalSetDays == 0}" th:text="7天"></span>
+                                            <span th:if="${rentalSet.rentalSetDays == 1}" th:text="14天"></span>
+                                        </td>
                                         <td>
                                             <!-- 觸發submit，跳轉th:action指定頁面 -->
-                                            <form method="post" th:action="@{getOne_For_Update}">
-                                                <button type="submit" value="送出">
+                                            <form method="post" th:action="@{getOneUpdate}">
+                                                <button type="submit" value="修改">
                                                     <i class="fa-solid fa-pen-to-square"></i>
-                                                    <input type="hidden" name="rentalCatNo" value="${rentalCategory.rentalCatNo}">
+                                                    <input type="hidden" name="rentalOrdNo" value="${rentalSet.rentalOrdNo}">
+                                                    <input type="hidden" name="rentalSetName" value="${rentalSet.rentalSetName}">
+                                                    <input type="hidden" name="rentalSetDays" value="${rentalSet.rentalSetDays}">
                                                 </button>
                                             </form>
                                         </td>
