@@ -109,6 +109,7 @@
                     </div><!-- End Profile Menu --><!-- Content -->
                     <div class="col-lg-8 col-xxl-9">
                         <div class="table-responsive fs-md mb-4">
+
                             <table class="table table-bordered table-hover mb-0" id="dataTable">
                                 <thead class="text-700 bg-gray-200">
                                 <tr>
@@ -123,43 +124,42 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="productOrderDetail : ${productOrderDetails}" th:object="${productOrderDetail}">
-                                    <td class="p-3" th:text="${productOrderDetail.compositeKey.productOrdNo}"></td>
-                                    <td class="p-3" th:text="${productOrderDetail.product.productName}"></td>
-                                    <td class="p-3">
-                                        <span th:if="${productOrderDetail.product.productSize == 0}">XS</span>
-                                        <span th:if="${productOrderDetail.product.productSize == 1}">S</span>
-                                        <span th:if="${productOrderDetail.product.productSize == 2}">M</span>
-                                        <span th:if="${productOrderDetail.product.productSize == 3}">L</span>
-                                        <span th:if="${productOrderDetail.product.productSize == 4}">XL</span>
-                                        <span th:if="${productOrderDetail.product.productSize == 5}">2L</span>
-                                    </td>
-                                    <td class="p-3" th:text="${productOrderDetail.product.productPrice}"></td>
-                                    <td class="p-3" th:text="${productOrderDetail.productOrdQty}"></td>
-                                    <td class="editable-cell" th:field="*{productComContent}">
-                                        <input type="text" class="form-control" name="productComContent" id="productComContent" th:value="${productOrderDetail?.productComContent}">
-                                    </td>
-                                    <td class="editable-cell">
-                                        <div>
-                                            <select size="1" name="productScore" class="form-control productScore">
-                                                <option value="" disabled selected>評分</option>
-                                                <option value="1" th:selected="${productOrderDetail?.productScore == 1}">一顆星</option>
-                                                <option value="2" th:selected="${productOrderDetail?.productScore == 2}">兩顆星</option>
-                                                <option value="3" th:selected="${productOrderDetail?.productScore == 3}">三顆星</option>
-                                                <option value="4" th:selected="${productOrderDetail?.productScore == 4}">四顆星</option>
-                                                <option value="5" th:selected="${productOrderDetail?.productScore == 5}">五顆星</option>
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <form method="post" th:action="@{/frontend/productorderdetail/senddetailInstantly}" style="margin-bottom: 0px;">
-                                            <input type="submit" value="確認">
+                                <form th:each="productOrderDetail : ${productOrderDetails}" th:object="${productOrderDetail}" th:action="@{/frontend/productorderdetail/senddetailInstantly}" method="post" style="margin-bottom: 0px;">
+                                    <tr class="notouch">
+                                        <td class="p-3" th:text="${productOrderDetail.compositeKey.productOrdNo}"></td>
+                                        <td class="p-3" th:text="${productOrderDetail.product.productName}"></td>
+                                        <td class="p-3">
+                                            <span th:if="${productOrderDetail.product.productSize == 0}">XS</span>
+                                            <span th:if="${productOrderDetail.product.productSize == 1}">S</span>
+                                            <span th:if="${productOrderDetail.product.productSize == 2}">M</span>
+                                            <span th:if="${productOrderDetail.product.productSize == 3}">L</span>
+                                            <span th:if="${productOrderDetail.product.productSize == 4}">XL</span>
+                                            <span th:if="${productOrderDetail.product.productSize == 5}">2L</span>
+                                        </td>
+                                        <td class="p-3" th:text="${productOrderDetail.product.productPrice}"></td>
+                                        <td class="p-3" th:text="${productOrderDetail.productOrdQty}"></td>
+                                        <td class="editable-cell" th:field="*{productComContent}">
+                                            <input type="text" class="form-control" name="productComContent" th:id="'productComContent_' + ${productOrderDetail.compositeKey.productOrdNo}" th:value="${productOrderDetail?.productComContent}">
+                                        </td>
+                                        <td class="editable-cell">
+                                            <div>
+                                                <select size="1" name="productScore" class="form-control productScore" th:id="'productScore_' + ${productOrderDetail.compositeKey.productOrdNo}">
+                                                    <option value="" disabled selected>評分</option>
+                                                    <option value="1" th:selected="${productOrderDetail?.productScore == 1}">一顆星</option>
+                                                    <option value="2" th:selected="${productOrderDetail?.productScore == 2}">兩顆星</option>
+                                                    <option value="3" th:selected="${productOrderDetail?.productScore == 3}">三顆星</option>
+                                                    <option value="4" th:selected="${productOrderDetail?.productScore == 4}">四顆星</option>
+                                                    <option value="5" th:selected="${productOrderDetail?.productScore == 5}">五顆星</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button type="submit" class="submit-btn" id="submitBtn">確認</button>
                                             <input type="hidden" name="productOrdNo" th:value="${productOrderDetail.compositeKey.productOrdNo}">
                                             <input type="hidden" name="productNo" th:value="${productOrderDetail.product.productNo}">
-
-                                        </form>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
+                                </form>
                                 </tbody>
                             </table>
 
@@ -218,6 +218,43 @@
     //
     //     xhr.send();
     // }
+
+        window.addEventListener('DOMContentLoaded', function() {
+        // 获取所有的表单行
+        var formRows = document.querySelectorAll('tr.notouch');
+
+        // 遍历每一行
+        formRows.forEach(function(row) {
+        // 获取当前行内的 productComContent 和 productScore 输入框
+        var productComContentInput = row.querySelector('.editable-cell input[type="text"]');
+        var productScoreSelect = row.querySelector('.editable-cell select');
+
+        // 获取当前行的提交按钮
+        var submitButton = row.querySelector('button[type="submit"]');
+
+        // 添加事件监听器以检查输入框的内容
+
+
+        // 初始化时检查并更新提交按钮的状态
+        updateSubmitButtonState();
+
+        // 检查并更新提交按钮的状态的函数
+        function updateSubmitButtonState() {
+        var productComContentValue = productComContentInput.value.trim();
+        var productScoreValue = productScoreSelect.value.trim();
+
+        // 如果 productComContent 或 productScore 有值，则禁用提交按钮；否则启用提交按钮
+        if (productComContentValue !== '' || productScoreValue !== '') {
+        submitButton.disabled = true;
+    } else {
+        submitButton.disabled = false;
+    }
+    }
+    });
+    });
+
+
+
 </script>
 </body>
 

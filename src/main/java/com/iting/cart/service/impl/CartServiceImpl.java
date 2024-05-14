@@ -179,6 +179,21 @@ public void deleteBymemNoAndProductNo(Integer memNo, Integer productNo) {
         e.printStackTrace();
     }
 }
+    @Override
+    public void deleteBymemNo(Integer memNo) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            String cartKey = "cart:" + memNo; // 使用传入的会员编号构建购物车键
+
+            Set<String> productKeys = jedis.smembers(cartKey);
+
+            for (String productKey : productKeys) {
+                jedis.del(productKey);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     @Override

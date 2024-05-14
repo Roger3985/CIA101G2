@@ -68,12 +68,14 @@ public class ProductOrderDetailController2 {
         return list;
     }
     @PostMapping("/senddetailInstantly")
-    public String senddetailInstantly(@ModelAttribute("productComContent") String productComContent,
+    public String senddetailInstantly(@RequestParam("productComContent") String productComContent,
+                                      @RequestParam("productScore") Integer productScore,
                                       @RequestParam("productNo") Integer productNo,
                                       @RequestParam("productOrdNo") Integer productOrdNo,
                                       ModelMap model) {
         ProductOrderDetail productOrderDetail2 = productOrderDetailSvc.findByproductOrdNoAndproductNo(productOrdNo, productNo);
         productOrderDetail2.setProductComContent(productComContent);
+        productOrderDetail2.setProductScore(productScore);
         productOrderDetailSvc.updateProductOrderDetail(productOrderDetail2);
 
         List<ProductOrderDetail> productOrderDetailList = productOrderDetailSvc.findByCompositeKey(productOrdNo);

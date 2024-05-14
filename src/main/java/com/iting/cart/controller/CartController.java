@@ -180,6 +180,7 @@ public class CartController {
 @GetMapping("Cart")
 public String Cart(HttpSession session, ModelMap model) {
     // 从会话中获取 memNo 的值
+ 
     Integer memNo = (Integer) session.getAttribute("memNo");
 
     // 如果 memNo 为空，则需要进行相应的处理，比如重定向到登录页面或者给出提示信息
@@ -314,12 +315,10 @@ public String Cart(HttpSession session, ModelMap model) {
         // 执行删除操作
         cartSvc.deleteBymemNoAndProductNo(memNo, productNo);
         // 获取更新后的购物车数据
-        List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNo);
-        // 将更新后的数据添加到模型中
-        model.addAttribute("cartListData", cartListData);
+
         // 返回购物车页面
         session.setAttribute("memNo", memNo);
-        return "frontend/cart/Cart";
+        return "redirect:/frondend/cart/Cart";
     }
 
 

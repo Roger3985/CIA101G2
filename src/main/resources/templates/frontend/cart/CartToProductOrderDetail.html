@@ -48,7 +48,7 @@
 
 <div align="center">
 
-    <form th:action="@{/frontend/productorder/insertProductOrderSuccess}" method="post" >
+    <form th:action="@{/frontend/productorder/insertProductOrderSuccess}" method="post"  onsubmit="return dosubmit();">
         <tbody>
         <div>
             <label>會員編號:</label>
@@ -243,31 +243,41 @@
 <!--</script>-->
 <script th:inline="javascript">
 
-    $(function() {
+    // $(function() {
+    //
+    //     fetch('/backend/productorder/getFromCart?memNo=?')  // 發出 GET 請求
+    //         .then(response => response.json())  // 解析 JSON  這邊等於.then(function(response) {return response.json();})
+    //         .then(data => { // 這邊等於 .then(function(data) {...})
+    //             const table = $('#dataTable').DataTable();  // 初始化 DataTable
+    //             for (const key in data) { //
+    //                 const item = data[key]; // item = 包含每一個商品的詳細資訊的物件
+    //                 table.row.add([  // 添加行到 DataTable
+    //                     item['rentalNo'],
+    //                     item['rentalCatNo'],
+    //                     item['rentalName'],
+    //                     item['rentalPrice'],
+    //                     item['rentalSize'],
+    //                     item['rentalColor'],
+    //                     item['rentalInfo'],
+    //                     item['rentalStat'],
+    //                     '<button class="btn btn-sm btn-primary"><i class="fa-solid fa-plus"></i></button>' +
+    //                     ' <button class="btn btn-sm btn-danger"><i class="fa-solid fa-minus"></i></button>'
+    //                 ]).draw(false);  // 繪製表格，但不重設分頁
+    //             }
+    //         })
+    //         .catch(error => console.error('Error loading cart data:', error));
+    //
+    // });
 
-        fetch('/backend/productorder/getFromCart?memNo=?')  // 發出 GET 請求
-            .then(response => response.json())  // 解析 JSON  這邊等於.then(function(response) {return response.json();})
-            .then(data => { // 這邊等於 .then(function(data) {...})
-                const table = $('#dataTable').DataTable();  // 初始化 DataTable
-                for (const key in data) { //
-                    const item = data[key]; // item = 包含每一個商品的詳細資訊的物件
-                    table.row.add([  // 添加行到 DataTable
-                        item['rentalNo'],
-                        item['rentalCatNo'],
-                        item['rentalName'],
-                        item['rentalPrice'],
-                        item['rentalSize'],
-                        item['rentalColor'],
-                        item['rentalInfo'],
-                        item['rentalStat'],
-                        '<button class="btn btn-sm btn-primary"><i class="fa-solid fa-plus"></i></button>' +
-                        ' <button class="btn btn-sm btn-danger"><i class="fa-solid fa-minus"></i></button>'
-                    ]).draw(false);  // 繪製表格，但不重設分頁
-                }
-            })
-            .catch(error => console.error('Error loading cart data:', error));
-
-    });
+    // var isCommitted = false;//表单是否已经提交标识，默认为false
+    // function dosubmit(){
+    //     if(isCommitted==false){
+    //         isCommitted = true;//提交表单后，将表单是否已经提交标识设置为true
+    //         return true;//返回true让表单正常提交
+    //     }else{
+    //         return false;//返回false那么表单将不提交
+    //     }
+    // }
 
 </script>
 

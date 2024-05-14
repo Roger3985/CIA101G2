@@ -320,8 +320,8 @@
             if (xhr.status === 200 && xhr.responseText === "success") {
                 // 从 DOM 中移除该行
                 row.remove();
-                // 更新总价
-                calculateTotalAllPrice();
+                // 重新加载页面
+                location.reload();
             } else {
                 // 处理删除失败的情况
                 console.error('删除失败');
@@ -329,6 +329,7 @@
         };
         xhr.send('productNo=' + encodeURIComponent(productNo) + '&memNo=' + encodeURIComponent(memNo));
     }
+
 
 
 

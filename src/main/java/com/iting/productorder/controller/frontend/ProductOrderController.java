@@ -65,6 +65,7 @@ public class ProductOrderController {
         List<ProductOrder> list= productOrderSvc.findByMember(memNo);
         model.addAttribute("productorderListData", list);
 //        model.addAttribute("success", "- (新增成功)");
+        cartSve.deleteBymemNo(memNo);
         return "frontend/cart/CartEnd";
     }
     @PostMapping("MemberGetAll")
