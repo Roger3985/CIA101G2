@@ -1,5 +1,6 @@
 package com.iting.productorderdetail.service.impl;
 
+import com.iting.cart.entity.CartRedis;
 import com.iting.productorder.dao.ProductOrderRepository;
 import com.iting.productorder.entity.ProductOrder;
 import com.iting.productorderdetail.dao.ProductOrderDetailRepository;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -58,7 +60,23 @@ public ProductOrderDetail findByproductOrdNoAndproductNo(Integer productOrdNo,In
         return repository.findByCompositeKey(productNo);
     }
 
-
-
+//    @Override
+//    public List<ProductOrderDetail> cartaddProductOrderDetail(List<CartRedis> cartList) {
+//        List<ProductOrderDetail> orderDetails = new ArrayList<>();
+//
+//        for (CartRedis cart : cartList) {
+//            ProductOrderDetail orderDetail = new ProductOrderDetail();
+//           orderDetail.setCompositeKey.(cart.getProductName());
+//             orderDetail.setProductPrice(cart.getProductPrice());
+//            orderDetail.setProductBuyQty(cart.getProductBuyQty());
+//
+//
+//            // 将订单详情添加到列表中
+//            orderDetails.add(orderDetail);
+//        }
+//
+//        // 将订单详情列表保存到数据库
+//        return repository.saveAll(orderDetails);
+//    }
 
 }

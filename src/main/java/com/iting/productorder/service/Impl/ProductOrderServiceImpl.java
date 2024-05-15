@@ -83,6 +83,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     }
 
 
+
     @Override
     public void addOneProductOrderSuccess(ProductOrder productOrder) {
         int orderNoHash = Math.abs(UUID.randomUUID().hashCode());
@@ -94,6 +95,17 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         productOrder.setProductByrPhone(productOrder.getMember().getMemMob());
         productOrder.setProductAddr(productOrder.getMember().getMemAdd());
 
+        Coupon coupon;
+        if (productOrder.getCoupon() != null && productOrder.getCoupon().getCoupNo() != null) {
+            coupon = couponService.getOneCoupon(productOrder.getCoupon().getCoupNo());
+        } else {
+            // 如果 coupon 或 coupNo 为空，则设置 coupon 为 id 为 1 的默认优惠券
+            coupon = couponService.getOneCoupon(1);
+        }
+        productOrder.getCoupon().setCoupNo(coupon.getCoupNo());
+        BigDecimal discount = coupon.getCoupDisc();
+        BigDecimal totalPrice = productOrder.getProductAllPrice();
+       productOrder.setProductRealPrice(discount.multiply(totalPrice));
         Set<ProductOrderDetail> orderDetails = new HashSet<>();
         productOrder.setProductOrderDetails(orderDetails);
         List<CartRedis> cartItems = cartService.findByCompositeKey(productOrder.getMemNo());

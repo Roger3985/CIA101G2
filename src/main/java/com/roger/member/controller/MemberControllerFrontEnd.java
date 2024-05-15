@@ -1,6 +1,5 @@
 package com.roger.member.controller;
 
-import com.roger.member.dto.LoginStateMember;
 import com.roger.member.entity.Member;
 import com.roger.member.entity.uniqueAnnotation.Create;
 import com.roger.member.entity.uniqueAnnotation.CreateWithout;
@@ -617,7 +616,7 @@ public class MemberControllerFrontEnd {
 //            } else {
 //                modelMap.addAttribute("message", "密碼不能空白，請重新輸入!");
 //            }
-//            return "frontend/component/loginpopup";
+//            return "frontend/member/loginMember";
 //        }
 //
 //        // 從會話中獲取儲存的登錄失敗次數 Map 物件
@@ -655,7 +654,7 @@ public class MemberControllerFrontEnd {
 //                // 帳號登入
 //                modelMap.addAttribute("message", "沒有該會員帳號，請確認您的帳號。");
 //            }
-//            return "frontend/component/loginpopup";
+//            return "frontend/member/loginMember";
 //        }
 //
 //        // 使用會員ID作為 `loginAttemptsMap` 的鍵，以跟蹤同一會員的登入失敗次數
@@ -667,7 +666,7 @@ public class MemberControllerFrontEnd {
 //            // 刪除無權限會員的標記
 //            redisTemplate.delete("noFun" + existingMember.getMemNo().toString());
 //            modelMap.addAttribute("noFun", "此會員已無權限，請洽詢相關的工作人員");
-//            return "frontend/component/loginpopup";
+//            return "frontend/member/loginMember";
 //        }
 //
 //        // 如果登錄失敗
@@ -685,7 +684,7 @@ public class MemberControllerFrontEnd {
 //                } else if (validateAccout(identifier)){
 //                    banMemberByMemAcc(identifier, session, modelMap);
 //                }
-//                return "frontend/component/loginpopup";
+//                return "frontend/member/loginMember";
 //            }
 //
 //            // 細分登入失敗的原因
@@ -711,7 +710,7 @@ public class MemberControllerFrontEnd {
 //                modelMap.addAttribute("message", "您剩餘 " + (5 - attemptCount) + " 次嘗試次數");
 //            }
 //
-//            return "frontend/component/loginpopup";
+//            return "frontend/member/loginMember";
 //        }
 //
 //        // 登錄成功，清除該會員登錄失敗的次數
@@ -761,7 +760,7 @@ public class MemberControllerFrontEnd {
 //            e.printStackTrace();
 //        }
 //
-//        return "frontend/component/loginpopup";
+//        return "frontend/member/loginMember";
 //    }
 
     /**

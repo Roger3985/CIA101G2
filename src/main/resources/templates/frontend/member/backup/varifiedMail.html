@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Responsive Login and Signup Form </title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/frontend/member/login.css}">
+    <style type="text/css">
+        .error {
+            color: red;
+            font-style: italic;
+        }
+    </style>
+    <!-- Boxicons CSS -->
+    <!-- <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'> -->
+
+</head>
+
+<body>
+<section class="container forms">
+    <div class="form login">
+        <div class="form-content">
+            <header>已發送驗證碼到您的信箱了</header>
+
+            <form th:action="@{sendMail}" method="get">
+
+                <div class="field input-field">
+                    <input type="text" placeholder="輸入驗證碼" class="input" name="sendMail">
+                </div>
+
+                <div>
+                    <span class="error" th:text="*{errorCode}"></span>
+                </div>
+                <br>
+
+                <div class="field button-field">
+                    <input type="submit" class="submit" value="送出">
+                </div>
+            </form>
+
+            <form th:action="@{reSendMail}" method="get">
+                <div class="field button-field">
+                    <input type="submit" class="submit" value="重新發送信箱驗證碼">
+                </div>
+
+            </form>
+            <div class="field button-field">
+                <a th:href="@{login}"><button>取消</button></a>
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+</body>
+
+</html>

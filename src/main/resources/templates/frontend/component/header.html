@@ -20,7 +20,7 @@
                     <!-- Top link -->
                     <ul class="nav ms-auto ms-lg-3">
                         <li class="nav-item"><a href="#" class="nav-link text-white" data-bs-toggle="modal"
-                                                data-bs-target="#topbarlogin"><i class="fi-user me-2"></i>Login</a></li>
+                                                data-bs-target="#topbarlogin" th:unless="${session.loginsuccess}"><i class="fi-user me-2"></i>Login</a></li>
 <!--                        <li class="nav-item"><a th:href="@{frontend/member/loginpopup.html}" class="nav-link text-white" data-bs-toggle="modal"-->
 <!--                                                data-bs-target="#topbarlogin"><i class="fi-user me-2"></i>Login</a></li>-->
                     </ul><!-- Top social -->
@@ -85,22 +85,18 @@
                                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
                     class="fi-user"></i></a>
                 <div class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="dropdown_myaccount">
-                    <a class="dropdown-item" th:href="@{/frontend/member/loginMember}">Login</a>
-                    <a class="dropdown-item" href="#">Register</a>
-                    <a class="dropdown-item" th:href="@{/backend/rentalorder/rentalCart}">追蹤清單</a>
-                    <a class="dropdown-item" href="#">My account</a>
+                    <a class="dropdown-item" th:href="@{/frontend/member/loginMember}" th:unless="${session.loginsuccess}">Login</a>
+                    <a class="dropdown-item" th:href="@{/frontend/member/addMemberData}" th:unless="${session.loginsuccess}">Register</a>
+                    <a class="dropdown-item" href="#" th:if="${session.loginsuccess}">Wishlist</a>
+                    <a class="dropdown-item" th:href="@{/frontend/member/memberData}" th:if="${session.loginsuccess}">My account</a>
+                    <a class="dropdown-item" th:href="@{/frontend/member/logoutMember}" th:if="${session.loginsuccess}">Logout</a>
                 </div>
             </div><!-- Wishlist -->
             <div class="nav-item d-none d-xl-block"><a class="nav-link" href="#"><i class="fi-heart"></i></a></div>
             <!-- Cart -->
-            <div class="nav-item">
-                <a class="nav-link" data-bs-toggle="offcanvas" href="#modalMiniCart" role="button"
-                                     aria-controls="modalMiniCart">
-                    <span class="" data-cart-items="">
-                        <i class="fi-shopping-cart"></i>
-                    </span>
-                </a>
-            </div><!-- Mobile Toggle -->
+            <div class="nav-item"><a class="nav-link" data-bs-toggle="offcanvas" href="#modalMiniCart" role="button"
+                                     aria-controls="modalMiniCart"><span class="" data-cart-items="8"><i
+                    class="fi-shopping-cart"></i></span></a></div><!-- Mobile Toggle -->
             <button
                     class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"

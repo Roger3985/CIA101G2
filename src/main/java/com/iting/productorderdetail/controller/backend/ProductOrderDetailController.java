@@ -1,4 +1,4 @@
-package com.iting.productorderdetail.controller;
+package com.iting.productorderdetail.controller.backend;
 
 import com.iting.productorder.entity.ProductOrder;
 import com.iting.productorderdetail.entity.ProductOrderDetail;

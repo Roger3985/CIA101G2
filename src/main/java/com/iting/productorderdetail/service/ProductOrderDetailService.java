@@ -1,5 +1,6 @@
 package com.iting.productorderdetail.service;
 
+import com.iting.cart.entity.CartRedis;
 import com.iting.productorderdetail.entity.ProductOrderDetail;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface ProductOrderDetailService {
    public void updateProductOrderDetail(ProductOrderDetail productOrderDetail);
     public void addProductOrderDetail(ProductOrderDetail productOrderDetail);
   public  ProductOrderDetail findByproductOrdNoAndproductNo(Integer productOrdNo,Integer productNo);
-
+//    public List<ProductOrderDetail> addProductOrderDetail(List<CartRedis> cart);
  /////////////////////////////////////////////////////////////////////
 
 

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @SessionAttributes("productOrder")
@@ -38,35 +39,40 @@ public class ProductOrderController {
     MemberService memberService;
     @Autowired
     ProductOrderDetailService productOrderDetailService;
+
     @PostMapping("insertOrder")
-    public String insertOrder(@Validated(Create.class) CartRedis cartRedis, BindingResult result, ModelMap model, HttpServletRequest request,@RequestParam("memNo") Integer memNo) {
+    public String insertOrder(@Validated(Create.class) CartRedis cartRedis, BindingResult result, ModelMap model, HttpSession session,@RequestParam("memNo") Integer memNo) {
+
         ProductOrder productOrder = productOrderSvc.addOneProductOrder(cartRedis);
+
         Member member=memberService.findByNo(memNo);
         productOrder.setMember(member);
-
+        productOrder.setProductOrdStat(Byte.valueOf((byte)40));
+        productOrder.setProductStat(Byte.valueOf((byte)0));
         model.addAttribute("productOrder", productOrder);
-        HttpSession session=request.getSession();
-
         session.setAttribute("productOrder", productOrder); // 將訂單存儲在會話中
         return "frontend/cart/CartToProductOrderDetail";
     }
+
     @PostMapping("insertProductOrderSuccess")
-    public String insertProductOrderSuccess(@Valid ProductOrder productOrder) {
+    public String insertProductOrderSuccess(@Valid ProductOrder productOrder,@RequestParam("memNo") Integer memNo, ModelMap model) {
 //        result = removeFieldError(productOrder, result, "upFiles");
 //        if (result.hasErrors() ) {
 //            return "frontend/cart/CartToProductOrderDetail";
 //        }
         /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
         productOrderSvc.addOneProductOrderSuccess(productOrder);
-//        model.addAttribute("productorderdetailListData", list);
+        List<ProductOrder> list= productOrderSvc.findByMember(memNo);
+        model.addAttribute("productorderListData", list);
 //        model.addAttribute("success", "- (新增成功)");
+        cartSve.deleteBymemNo(memNo);
         return "frontend/cart/CartEnd";
     }
     @PostMapping("MemberGetAll")
     public String getAll(@RequestParam("productOrdNo") Integer productOrdNo,@RequestParam("productNo") Integer productNo, ModelMap model) {
-      ProductOrderDetail productOrderDetail= productOrderDetailService.findByproductOrdNoAndproductNo(productOrdNo,productNo);
+        ProductOrderDetail productOrderDetail= productOrderDetailService.findByproductOrdNoAndproductNo(productOrdNo,productNo);
         model.addAttribute("productOrderDetail", productOrderDetail);
-       Product product= productService.getOneProduct(productNo);
+        Product product= productService.getOneProduct(productNo);
         model.addAttribute("product", product);
         return "frontend/cart/ProductScorce";
     }

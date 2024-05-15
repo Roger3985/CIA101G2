@@ -64,8 +64,7 @@
                                 </thead>
                                 <tbody>
                                 <th:block th:each="productorder : ${productorderListData}">
-                                    <tr th:class="${productorder.productOrdStat == 50} ? 'completed-order' : ''">
-                                        <!-- 你现有的表格单元格内容 -->
+
                                         <td th:text="${productorder.productOrdNo}"></td>
                                         <td th:if="${productorder.member != null}" th:text="${productorder.member.memNo}"></td>
                                         <td th:text="${productorder.productByrName}"></td>
