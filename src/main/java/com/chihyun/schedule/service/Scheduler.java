@@ -17,7 +17,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 
-@Service
 @Component
 public class Scheduler {
 
@@ -31,13 +30,11 @@ public class Scheduler {
     MyCouponService myCouponService;
 
     //    設定排程器每天24:00執行發放優惠券至我的優惠券，發放完成後將優惠券狀態修改為"已發放"
-    @Scheduled(cron = "* 0 0 * * *", zone = "Asia/Taipei")
+    @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Taipei")
     public void mycouponsRelease() {
 
         List<Coupon> list = couponService.getRel();
-        for (Coupon coupon1 : list) {
-
-            Coupon coupon = couponService.getOneCoupon(coupon1.getCoupNo());
+        for (Coupon coupon : list) {
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -51,7 +48,7 @@ public class Scheduler {
 
             if (today.equals(coupReltime)) {
 
-                System.out.println(coupon1.getCoupNo() + "發卷嚕!");
+                System.out.println(coupon.getCoupNo() + "發卷嚕!");
 
                 List<Member> memberList = memberService.findAll();
                 for (Member member : memberList) {
@@ -75,7 +72,7 @@ public class Scheduler {
     }
 
     //    利用排程器檢查已失效的優惠券，將狀態設定為「已失效」。
-    @Scheduled(cron = "* 0 0 * * *", zone = "Asia/Taipei")
+    @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Taipei")
     public void ExpMyCoupon() {
         List<MyCoupon> myCouponList = myCouponService.getExpired();
         for (MyCoupon myCoupon : myCouponList) {
@@ -90,8 +87,8 @@ public class Scheduler {
 
             if (today.equals(coupExptime)) {
                 myCoupon.setCoupUsedStat(Byte.valueOf("2"));
-                System.out.println("所有過期優惠券狀態修改為2");
                 myCouponService.updateMyCoupon(myCoupon);
+                System.out.println("所有過期優惠券狀態已修改為2");
             }
         }
     }

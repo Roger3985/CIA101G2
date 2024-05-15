@@ -1,21 +1,20 @@
 package com.chihyun.news.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "news")
 public class News {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "newsno")
     private Integer newsNo;
     @Column(name = "newstitle")
     private String newsTitle;
     @Column(name = "newscontent", columnDefinition = "longtext")
     private String newsContent;
+
     @Column(name = "posttime")
     private Timestamp postTime;
 
