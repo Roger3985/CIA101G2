@@ -59,6 +59,10 @@ public ProductOrderDetail findByproductOrdNoAndproductNo(Integer productOrdNo,In
     public List<ProductOrderDetail> findByCompositeKey(Integer productOrdNo) {
         return repository.findByCompositeKey(productOrdNo);
     }
+    @Override
+    public List<ProductOrderDetail> findByProductNo(Integer ProductNo) {
+        return repository.findByProductNo(ProductNo);
+    }
 
 //    @Override
 //    public List<ProductOrderDetail> cartaddProductOrderDetail(List<CartRedis> cartList) {

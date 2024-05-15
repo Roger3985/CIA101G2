@@ -13,6 +13,7 @@ public interface ProductOrderDetailService {
     public void addProductOrderDetail(ProductOrderDetail productOrderDetail);
   public  ProductOrderDetail findByproductOrdNoAndproductNo(Integer productOrdNo,Integer productNo);
 //    public List<ProductOrderDetail> addProductOrderDetail(List<CartRedis> cart);
+public List<ProductOrderDetail> findByProductNo(Integer ProductNo);
  /////////////////////////////////////////////////////////////////////
 
 
