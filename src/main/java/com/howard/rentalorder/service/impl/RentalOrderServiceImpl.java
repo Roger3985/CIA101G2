@@ -10,6 +10,7 @@ import com.howard.rentalorder.entity.RentalOrder;
 import com.howard.rentalorderdetails.entity.RentalOrderDetails;
 import com.roger.member.entity.Member;
 import com.yu.rental.entity.Rental;
+import ecpay.logistics.integration.domain.CreateCVSObj;
 import ecpay.payment.integration.AllInOne;
 import ecpay.payment.integration.domain.AioCheckOutALL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -249,7 +250,7 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         AllInOne all = new AllInOne("");
         AioCheckOutALL obj = new AioCheckOutALL();
         // 訂單號碼(規定大小寫英文+數字)
-        obj.setMerchantTradeNo( "Member" + order.getMember().getMemName() + order.getrentalOrdNo());
+        obj.setMerchantTradeNo( "Member" + order.getMember().getMemName() + order.getrentalOrdNo() + "test" );
         // 交易時間(先把毫秒部分切掉)
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         obj.setMerchantTradeDate( sdf.format(order.getrentalOrdTime()) );
@@ -263,7 +264,7 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         obj.setReturnURL("<http://211.23.128.214:5000>");
         obj.setNeedExtraPaidInfo("N");
         // 商店轉跳網址 (Optional)
-        obj.setClientBackURL("https://9baa-2001-b011-2020-1de1-5da9-9157-923e-f92.ngrok-free.app/backend/rentalorder/addToCart");
+        obj.setClientBackURL("http://localhost:8080/backend/rentalorder/rentalCart"); // 問小吳上雲怕爆開(路徑問題)
         String form = all.aioCheckOut(obj, null);
 
         // 付款完後把付款狀態改為 1 (已付款)
@@ -272,5 +273,26 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         return form;
 
     }
+
+    public String shipping(Integer rentalOrdNo, Timestamp rentalOrdTime, BigDecimal rentalAllDepPrice
+                            , String rentalRcvName) { // 出貨
+
+        AllInOne all = new AllInOne("");
+        CreateCVSObj obj = new CreateCVSObj();
+        obj.setMerchantTradeNo( String.valueOf(rentalOrdNo) );
+        obj.setMerchantTradeDate( String.valueOf(rentalOrdTime) );
+        obj.setLogisticsType("HOME");
+        obj.setLogisticsSubType("TCAT");
+        obj.setGoodsAmount( String.valueOf(rentalAllDepPrice) );
+        obj.setSenderName( "howard" );
+        obj.setReceiverName( rentalRcvName );
+        obj.setServerReplyURL( "http://localhost:8080/backend/index" );
+        obj.setClientReplyURL( "http://localhost:8080/backend/index" );
+
+
+
+        return "";
+    }
+
 
 }
