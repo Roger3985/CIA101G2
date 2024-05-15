@@ -302,6 +302,19 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
+     * 處理第三方登入賦予隨機密碼的功能。
+     */
+    @Override
+    public String setThreeLoginPassword(String memMail) {
+
+        String authCode = getAuthCode();
+        // 發送第三方登入隨機密碼簡訊
+        verifyMail(memMail, "恭喜你利用第三方登入且註冊成功，Fall衣Love為你設置一組隨機密碼", "你的隨機密碼為:", authCode);
+
+        return authCode;
+    }
+
+    /**
      * 停權會員。
      */
     @Override
