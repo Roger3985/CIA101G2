@@ -1,56 +1,110 @@
-//package com.yu.rentalmyfavorite.service;
-//
-//import static com.yu.util.Constants.PAGE_MAX_RESULT;
-//
-//import java.math.BigDecimal;
-//import java.util.HashMap;
-//import java.util.List;
-//import java.util.Map;
-//import java.util.Set;
-//
-//import com.yu.rentalmyfavorite.dao.RentalMyFavoriteHibernateDAO;
-//import com.yu.rentalmyfavorite.dao.RentalMyFavoriteDAOHibernateImpl;
-//import com.yu.rentalmyfavorite.model.RentalCategory;
-//import com.yu.rentalmyfavorite.service.RentalCategoryService_Interface;
-//import com.yu.util.HibernateUtil;
-//import com.yu.util.Constants;
-//
-//
-//    // 搭配 JSP / Thymeleaf 後端渲染畫面，將交易動作至於 view filter
-//    public class RentalMyFavoriteServiceImpl implements RentalCategoryService_Interface {
-//
-//        // 一個 service 實體對應一個 dao 實體
-//        private RentalMyFavoriteHibernateDAO dao;
-//
-//        public RentalCategoryServiceImpl() {
-//            dao = new RentalMyFavoriteDAOHibernateImpl();
-//        }
-//        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// addRentalCat
+package com.yu.rentalmyfavorite.service;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Map;
+
+import com.yu.rentalmyfavorite.dao.RentalMyFavoriteRepository;
+
+import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
+import com.yu.rentalmyfavorite.service.RentalMyFavoriteService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+@Service
+public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
+
+    @Autowired //自動裝配
+    private RentalMyFavoriteRepository repository;
+
+    /**
+     * PersistenceContext注解用于注入一个EntityManager对象，
+     * 使得我们可以在RentalService类中使用这个entityManager对象执行持久化操作，例如保存、更新、删除实体对象，以及执行JPQL查询等。
+     */
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    //單筆查詢(rentalNo)
+    @Override
+    public RentalMyFavorite findByNo(Integer rentalNo) {
+        return repository.findByRentalNo(rentalNo);
+    }
+
+    //單筆查詢(memNo)
+    @Override
+    public RentalMyFavorite findByMemNo(Integer memNo) {
+        return repository.findByMemNo(memNo);
+    }
+
+    //複合主鍵查詢
+    @Override
+    public RentalMyFavorite findByIdRentalNoAndIdMemNo(Integer rentalNo, Integer memNo) {
+        return repository.findByIdRentalNoAndIdMemNo(rentalNo, memNo);
+    }
+
+    //單筆查詢(rentalFavTime)
+    @Override
+    public RentalMyFavorite findByRentalFavTime(DateTimeFormat rentalFavTime){
+        return repository.findByRentalFavTime(rentalFavTime);
+    }
+
+    //全部查詢(RentalMyFavorite)
+    @Override
+    public List<RentalMyFavorite> findAll() {
+        return repository.findAll();
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+//主要為後端使用：增查改
+
+    //新增 (PK為null，save方法插入數據)
+    @Override
+    public RentalMyFavorite addRentalFav(RentalMyFavorite rentalMyFavorite) {
+        return repository.save(rentalMyFavorite);
+    }
+
+    //修改 (PK有值，save方法修改數據)
+    @Override
+    public RentalMyFavorite updateRentalFav(RentalMyFavorite rentalMyFavorite) {
+        return repository.save(rentalMyFavorite);
+    }
+
+
+
+
+
+
+
 //        @Override
-//        public RentalCategory addRentalCat(String rCatName, Integer rStockQty, Integer rRentedQty, BigDecimal rDesPrice) {
+//        public RentalMyFavorite addRentalCat(String rCatName, Integer rStockQty, Integer rRentedQty, BigDecimal rDesPrice) {
 //
-//            RentalCategory RentalCategory = new RentalCategory();
-//            RentalCategory.setrCatName(rCatName);
-//            RentalCategory.setrStockQty(rStockQty);
-//            RentalCategory.setrRentedQty(rRentedQty);
-//            RentalCategory.setrDesPrice(rDesPrice);
-//            dao.add(RentalCategory);// 將VO放入DAO的方法內執行資料庫操作
+//            RentalMyFavorite RentalMyFavorite = new RentalMyFavorite();
+//            RentalMyFavorite.setrCatName(rCatName);
+//            RentalMyFavorite.setrStockQty(rStockQty);
+//            RentalMyFavorite.setrRentedQty(rRentedQty);
+//            RentalMyFavorite.setrDesPrice(rDesPrice);
+//            dao.add(RentalMyFavorite);// 將VO放入DAO的方法內執行資料庫操作
 //
-//            return RentalCategory;
+//            return RentalMyFavorite;
 //        }
 //        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// updateRentalCat
 //        @Override
-//        public RentalCategory updateRentalCat(Integer rCatNo,String rCatName, Integer rStockQty, Integer rRentedQty, BigDecimal rDesPrice) {
+//        public RentalMyFavorite updateRentalCat(Integer rCatNo,String rCatName, Integer rStockQty, Integer rRentedQty, BigDecimal rDesPrice) {
 //
-//            RentalCategory RentalCategory = new RentalCategory();
-//            RentalCategory.setrCatNo(rCatNo);
-//            RentalCategory.setrCatName(rCatName);
-//            RentalCategory.setrStockQty(rStockQty);
-//            RentalCategory.setrRentedQty(rRentedQty);
-//            RentalCategory.setrDesPrice(rDesPrice);
+//            RentalMyFavorite RentalMyFavorite = new RentalMyFavorite();
+//            RentalMyFavorite.setrCatNo(rCatNo);
+//            RentalMyFavorite.setrCatName(rCatName);
+//            RentalMyFavorite.setrStockQty(rStockQty);
+//            RentalMyFavorite.setrRentedQty(rRentedQty);
+//            RentalMyFavorite.setrDesPrice(rDesPrice);
 //
-//            dao.update(RentalCategory);
-//            return RentalCategory;
+//            dao.update(RentalMyFavorite);
+//            return RentalMyFavorite;
 //        }
 //
 //        @Override
@@ -60,22 +114,17 @@
 //
 //
 //        @Override //單筆查詢(PK)
-//        public RentalCategory getOneRentalCat(Integer rCatNo) {
+//        public RentalMyFavorite getOneRentalCat(Integer rCatNo) {
 //            return dao.getByPK(rCatNo);
 //        }
 //
 //        @Override   //萬用複合查詢
-//        public List<RentalCategory> getAll() {
+//        public List<RentalMyFavorite> findAll() {
 //            return dao.getAll();
 //        }
-//
-//        @Override
-//        public List<RentalCategory> getAllRentalCats(int currentPage) {
-//            return dao.getAllRentalCats(currentPage);
-//        }
-//
-//        @Override
-//        public List<RentalCategory> getByCompositeQuery(Map<String, String[]> map) {
+    //複合查詢
+        @Override
+        public List<RentalMyFavorite> getByCompositeQuery(Map<String, String[]> map) {
 //            Map<String, String> query = new HashMap<>();
 //            // Map.Entry即代表一組key-value
 //            Set<Map.Entry<String, String[]>> entry = map.entrySet();
@@ -95,18 +144,14 @@
 //            }
 //
 //            System.out.println(query);
-//
+
 //            return dao.getByCompositeQuery(query);
-//        }
-//
-//        @Override
-//        public int getPageTotal() {
-//            long total = dao.getPageTotal();
-////            // 計算Rental數量每頁3筆的話總共有幾頁
-//            int pageQty = (int)(total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
-//            return pageQty;
-//        }
-//
-//    }
-//
-//
+            return null;
+        }
+
+
+
+
+}
+
+
