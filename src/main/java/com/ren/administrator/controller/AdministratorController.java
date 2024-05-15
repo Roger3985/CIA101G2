@@ -174,6 +174,12 @@ public class AdministratorController {
         return "redirect:/backend/login";
     }
 
+    @GetMapping("/profile")
+    public String toProfile() {
+
+        return "backend/administrator/profile";
+    }
+
     // 審核註冊
     // 設立四種權限
     // 唯讀，可查詢跟新增，可查詢跟新增跟修改，可查詢跟新增跟修改跟刪除這四個階級

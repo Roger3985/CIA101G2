@@ -284,8 +284,9 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
      */
     @Override
     public boolean sendEmail(String email) {
-
         try {
+            System.out.println("開始寄信");
+
             // 設定使用 SSL 連線至 Gmail smtp Server
             Properties props = new Properties();
             props.put("mail.smtp.host", "smtp.gmail.com");
@@ -304,36 +305,62 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
                     return new PasswordAuthentication(myGmail, myGmail_password);
                 }
             });
+            System.out.println("連線成功");
 
             // 創建新郵件
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(myGmail));
+            System.out.println("設置發件人成功");
 
             // 設定郵件的收件人
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+            System.out.println("收件人設定成功");
 
             // 設定郵件的主旨
+            String emailSubject = "Your Password Reset Request";
             message.setSubject(emailSubject);
+            System.out.println("郵件主旨設定成功");
 
+            // 生成新密碼
             String newPwd = generateRandomString(12);
+            System.out.println("新密碼生成成功: " + newPwd);
+
             // 設定郵件的內容，包括新密碼
+            String forgotPwdContent = "Your new password is: ";
             message.setText(forgotPwdContent + newPwd);
-            Administrator administrator = getOneAdministrator(email);
-            administrator.setAdmPwd(newPwd);
-            updateAdministrator(administrator);
+            System.out.println("郵件內容設定成功");
 
             // 發送郵件
             Transport.send(message);
             System.out.println("傳送成功");
 
-            // 郵件發送成功，返回true
+            // 更新數據庫中的管理員密碼
+            Administrator administrator = getOneAdministrator(email);
+            if (administrator != null) {
+                administrator.setAdmPwd(newPwd);
+                updateAdministrator(administrator);
+                System.out.println("密碼更新成功");
+            } else {
+                System.out.println("查無此信箱");
+                return false;
+            }
+
+            // 郵件發送成功且密碼更新成功，返回true
             return true;
         } catch (MessagingException e) {
-            System.out.println("傳送失敗!");
+            System.out.println("傳送失敗! MessagingException: " + e.getMessage());
             e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("更新密碼失敗! General Exception: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Throwable t) {
+            System.out.println("捕獲到未預期的異常: " + t.getMessage());
+            t.printStackTrace();
         }
         return false;
     }
+
+
 
 }
 
