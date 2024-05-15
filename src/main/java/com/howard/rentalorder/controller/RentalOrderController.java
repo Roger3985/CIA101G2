@@ -1,6 +1,10 @@
 package com.howard.rentalorder.controller;
 
+import com.howard.rentalorder.dto.GetOrderOnAny;
 import com.howard.rentalorder.dto.SetToCart;
+import com.howard.rentalorder.service.impl.RentalOrderShippingService;
+import com.roger.member.entity.Member;
+import com.roger.member.repository.MemberRepository;
 import com.yu.rental.dao.RentalRepository;
 import com.howard.rentalorder.dto.RentalOrderRequest;
 import com.howard.rentalorder.entity.RentalOrder;
@@ -8,6 +12,7 @@ import com.howard.rentalorder.service.impl.RentalCartServiceImpl;
 import com.howard.rentalorder.service.impl.RentalOrderServiceImpl;
 import com.howard.rentalorderdetails.service.impl.RentalOrderDetailsServiceImpl;
 import com.yu.rental.entity.Rental;
+import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +23,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +39,9 @@ public class RentalOrderController {
     /*--------------------------所有方法共用-------------------------------*/
 
     @Autowired
+    private RentalOrderShippingService shippingService;
+
+    @Autowired
     private RentalOrderServiceImpl service;
 
     @Autowired
@@ -38,6 +49,9 @@ public class RentalOrderController {
 
     @Autowired
     private RentalRepository rentalRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Autowired
     private RentalOrderDetailsServiceImpl detailsService; // 加入購物車用的
@@ -50,6 +64,11 @@ public class RentalOrderController {
     @ModelAttribute("rentalList")
     protected  List<Rental> getAllRental() {
         return rentalRepository.findAll();
+    }
+
+    @ModelAttribute("memberList")
+    protected  List<Member> getAllMember() {
+        return memberRepository.findAll();
     }
 
     /*--------------------------所有方法共用-------------------------------*/
@@ -239,7 +258,8 @@ public class RentalOrderController {
     }
 
     @GetMapping("/getOnAny")
-    public String getOnAny(@RequestParam(required = false) Integer rentalOrdNo,
+    public String getOnAny(
+                           @RequestParam(required = false) Integer rentalOrdNo,
                            @RequestParam(required = false) Integer memNo,
                            @RequestParam(required = false) String rentalByrName,
                            @RequestParam(required = false) String rentalByrPhone,
@@ -396,5 +416,22 @@ public class RentalOrderController {
 //        return aioCheckOutALLForm;
 //
 //    }
+
+    // 物流
+    @PostMapping("/createShippingOrder")
+    public ResponseEntity<?> createShippingOrder() {
+        System.out.println("有進來controller");
+        String formHTML = shippingService.shipping();
+        System.out.println("service方法有執行完喔!!");
+
+        return ResponseEntity.status(HttpStatus.OK).body(formHTML);
+
+    }
+
+    @PostMapping("/testToRentalCart")
+    public String rentalCart() {
+        return "/frontend/rental/rentalCart";
+    }
+
 
 }

@@ -2,6 +2,7 @@ package com.config;
 
 import com.roger.converters.StringToDateConverter;
 import com.roger.converters.StringToTimestampConverter;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

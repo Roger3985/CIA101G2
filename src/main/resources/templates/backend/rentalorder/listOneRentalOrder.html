@@ -72,18 +72,27 @@
                                             <td th:text="${order.getrentalByrEmail()}"></td>
                                             <td th:text="${order.getrentalRcvName()}"></td>
                                             <td th:text="${order.getrentalRcvPhone()}"></td>
-                                            <td th:text="${order.getrentalTakeMethod()}"></td>
+                                            <td th:text="${order.getrentalTakeMethod() == 1 ? '店取' : '宅配'}"></td>
                                             <td th:text="${order.getrentalAddr()}"></td>
-                                            <td th:text="${order.getrentalPayMethod()}"></td>
+                                            <td th:text="${order.getrentalPayMethod() == 1 ? '綠界' : '現場付款'}"></td>
                                             <td th:text="${order.getrentalAllPrice()}"></td>
                                             <td th:text="${order.getrentalAllDepPrice()}"></td>
                                             <td th:text="${order.getrentalOrdTime()}"></td>
                                             <td th:text="${order.getrentalDate()}"></td>
                                             <td th:text="${order.getrentalBackDate()}"></td>
                                             <td th:text="${order.getrentalRealBackDate()}"></td>
-                                            <td th:text="${order.getrentalPayStat()}"></td>
-                                            <td th:text="${order.getrentalOrdStat()}"></td>
-                                            <td th:text="${order.getRtnStat()}"></td>
+                                            <td th:text="${order.getrentalPayStat() == 1 ? '已付款' : '未付款'}"></td>
+                                            <td th:switch="${order.getrentalOrdStat()}">
+                                                <span th:case="'0'">訂單取消</span>
+                                                <span th:case="'10'">揀貨中</span>
+                                                <span th:case="'20'">配送中</span>
+                                                <span th:case="'30'">等待取貨</span>
+                                                <span th:case="'40'">訂單成立</span>
+                                                <span th:case="'50'">訂單完成</span>
+                                                <span th:case="'81'">申請換貨</span>
+                                                <span th:case="'82'">換貨中</span>
+                                            </td>
+                                            <td th:text="${order.getRtnStat() == 1 ? '已歸還' : '未歸還'}"></td>
                                             <td th:text="${order.getRtnRemark()}"></td>
                                             <td th:text="${order.getRtnCompensation()}"></td>
                                             <td>
