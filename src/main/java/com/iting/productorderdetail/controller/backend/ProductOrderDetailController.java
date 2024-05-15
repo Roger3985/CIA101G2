@@ -68,7 +68,8 @@ public class ProductOrderDetailController {
 
         List<ProductOrderDetail> productOrderDetail = productOrderDetailSvc.findByCompositeKey(Integer.valueOf(productOrdNo));
 
-        model.addAttribute("productOrderDetail", productOrderDetail);
+        model.addAttribute("productOrderDetails", productOrderDetail);
+
         return "backend/productorderdetail/productorderdetail";
 }
 

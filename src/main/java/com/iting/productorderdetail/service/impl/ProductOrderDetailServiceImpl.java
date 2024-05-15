@@ -56,8 +56,8 @@ public ProductOrderDetail findByproductOrdNoAndproductNo(Integer productOrdNo,In
     }
 
     @Override
-    public List<ProductOrderDetail> findByCompositeKey(Integer productNo) {
-        return repository.findByCompositeKey(productNo);
+    public List<ProductOrderDetail> findByCompositeKey(Integer productOrdNo) {
+        return repository.findByCompositeKey(productOrdNo);
     }
 
 //    @Override

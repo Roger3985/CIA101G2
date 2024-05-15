@@ -41,7 +41,7 @@
                     <div class="mb-3 row">
                         <label for="memNo" class="col-sm-2 col-form-label">會員編號</label>
                         <div class="col-sm-3">
-                            <select size="1" name="memNo" id="memNo" th:field="*{member.memNo}">
+                            <select size="1" name="memNo" id="memNo" th:field="*{member.memNo}" >
                                 <option th:each="member : ${memberList}" th:value="${member.memNo}" th:text="${member.memNo} + ' : ' + ${member.memName}"></option>
                             </select>
                         </div>
@@ -110,7 +110,7 @@
                     <div class="mb-3 row">
                         <label for="productAllPrice" class="col-sm-2 col-form-label">訂單總金額</label>
                         <div class="col-sm-3">
-                            <input type="text" th:field="*{productAllPrice}" class="form-control" name="productAllPrice" id="productAllPrice">
+                            <input type="text" th:field="*{productAllPrice}" class="form-control" name="productAllPrice" id="productAllPrice" readonly>
                             <span th:if="${#fields.hasErrors('productAllPrice')}" th:errors="*{productAllPrice}" class="error" id="productAllPrice.errors"></span>
                         </div>
                     </div>
@@ -124,21 +124,21 @@
                     <div class="mb-3 row">
                         <label for="productDisc" class="col-sm-2 col-form-label">優惠券折價總和</label>
                         <div class="col-sm-3">
-                            <input type="text" th:field="*{productDisc}" class="form-control" name="productDisc" id="productDisc">
+                            <input type="text" th:field="*{productDisc}" class="form-control" name="productDisc" id="productDisc" readonly>
                             <span th:if="${#fields.hasErrors('productDisc')}" th:errors="*{productDisc}" class="error" id="productDisc.errors"></span>
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="productRealPrice" class="col-sm-2 col-form-label">訂單實付金額</label>
                         <div class="col-sm-3">
-                            <input type="text" th:field="*{productRealPrice}" class="form-control" name="productRealPrice" id="productRealPrice">
+                            <input type="text" th:field="*{productRealPrice}" class="form-control" name="productRealPrice" id="productRealPrice" readonly>
                             <span th:if="${#fields.hasErrors('productRealPrice')}" th:errors="*{productRealPrice}" class="error" id="productRealPrice.errors"></span>
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="productOrdTime" class="col-sm-2 col-form-label">下單時間</label>
+                        <label for="productOrdTime" class="col-sm-2 col-form-label" id="dateTime">下單時間</label>
                         <div class="col-sm-3">
-                            <input type="text" th:field="*{productOrdTime}" class="form-control" name="productOrdTime" id="productOrdTime">
+                            <input type="text" th:field="*{productOrdTime}" class="form-control" name="productOrdTime" id="productOrdTime" readonly>
                             <span th:if="${#fields.hasErrors('productOrdTime')}" th:errors="*{productOrdTime}" class="error" id="productOrdTime.errors"></span>
                         </div>
                     </div>
@@ -247,9 +247,20 @@
                 document.getElementById('coupNo').value = productOrderDetails.coupon.coupNo;
                 document.getElementById('productDisc').value = productOrderDetails.productDisc;
                 document.getElementById('productRealPrice').value = productOrderDetails.productRealPrice;
-                document.getElementById('productOrdTime').value = productOrderDetails.productOrdTime;
                 document.getElementById('productOrdStat').value = productOrderDetails.productOrdStat;
                 document.getElementById('productStat').value = productOrderDetails.productStat;
+
+                // 將productOrdTime轉換為指定格式
+                var productOrdTimeDate = new Date(productOrderDetails.productOrdTime);
+                var formattedProductOrdTime = productOrdTimeDate.getFullYear() + '-' +
+                    ('0' + (productOrdTimeDate.getMonth() + 1)).slice(-2) + '-' +
+                    ('0' + productOrdTimeDate.getDate()).slice(-2) + ' ' +
+                    ('0' + productOrdTimeDate.getHours()).slice(-2) + ':' +
+                    ('0' + productOrdTimeDate.getMinutes()).slice(-2) + ':' +
+                    ('0' + productOrdTimeDate.getSeconds()).slice(-2);
+
+                // 將格式化後的時間設置回productOrdTime元素的值
+                document.getElementById('productOrdTime').value = formattedProductOrdTime;
             } else {
                 console.error('Failed to fetch productorder details');
             }
@@ -257,6 +268,7 @@
 
         xhr.send();
     }
+
     function updatePriceInstantly() {
         var selectedcoupNo = document.getElementById('coupNo').value;
         var selectedProductOrderNo = document.getElementById('productOrderSelect').value;
@@ -280,6 +292,10 @@
 
         xhr.send();
     }
+
+    var now = new Date();
+    var dateTime = now.toLocaleString();
+    document.getElementById("datetime").innerHTML = dateTime;
 </script>
 
 </body>

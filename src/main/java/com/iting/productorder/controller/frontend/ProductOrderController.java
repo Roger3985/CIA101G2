@@ -1,5 +1,8 @@
 package com.iting.productorder.controller.frontend;
 
+import com.chihyun.coupon.entity.Coupon;
+import com.chihyun.coupon.model.CouponService;
+import com.google.gson.JsonObject;
 import com.iting.cart.entity.CartRedis;
 import com.iting.cart.service.CartService;
 import com.iting.productorder.entity.ProductOrder;
@@ -12,6 +15,7 @@ import com.roger.member.entity.Member;
 import com.roger.member.entity.uniqueAnnotation.Create;
 import com.roger.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,7 +26,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @SessionAttributes("productOrder")
@@ -39,6 +46,8 @@ public class ProductOrderController {
     MemberService memberService;
     @Autowired
     ProductOrderDetailService productOrderDetailService;
+    @Autowired
+    CouponService couponService;
 
     @PostMapping("insertOrder")
     public String insertOrder(@Validated(Create.class) CartRedis cartRedis, BindingResult result, ModelMap model, HttpSession session,@RequestParam("memNo") Integer memNo) {
@@ -84,4 +93,36 @@ public class ProductOrderController {
 //        model.addAttribute("product", product);
 //        return "frontend/cart/ProductScorce";
 //    }
+@PostMapping("/coupNoInstantly")
+@ResponseBody
+public ResponseEntity<String> updatePriceInstantly(@RequestParam("coupon.coupNo") String coupNo,
+                                                   @RequestParam("productAllPrice") BigDecimal productAllPrice) {
+    // 如果coupNo为null或者空字符串，则设为默认值1
+    int couponNumber = 1; // 默认值
+    if (coupNo != null && !coupNo.isEmpty()) {
+        couponNumber = Integer.parseInt(coupNo);
+    }
+
+
+    Coupon coupon = couponService.getOneCoupon(couponNumber);
+
+    // 如果获取的coupon为null，可以考虑返回错误或者默认值
+    if (coupon == null) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Coupon not found");
+    }
+
+    BigDecimal productRealPrice = productAllPrice.multiply(coupon.getCoupDisc());
+    BigDecimal productDisc = productAllPrice.subtract(productRealPrice);
+
+    // 创建一个 JSON 对象，包含所需的字段
+    JsonObject jsonObject = new JsonObject();
+    jsonObject.addProperty("productDisc", productDisc.toString());
+    jsonObject.addProperty("productRealPrice", productRealPrice.toString());
+
+    // 返回 JSON 格式的响应
+    return ResponseEntity.ok().body(jsonObject.toString());
+}
+
+
+
 }

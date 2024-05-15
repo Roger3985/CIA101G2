@@ -50,6 +50,7 @@
 
     <form th:action="@{/frontend/productorder/insertProductOrderSuccess}" method="post"  onsubmit="return dosubmit();">
         <tbody>
+
         <div>
             <label>會員編號:</label>
             <input type="text" th:name="memNo"th:field="*{productOrder.member.memNo}"  onclick="hideContent('productOrder.member.memNo.errors');"><br/>
@@ -105,23 +106,23 @@
         </div>
         <div>
             <label>訂單總金額:</label>
-            <input type="text" th:name="productAllPrice" th:field="*{productOrder.productAllPrice}" onclick="hideContent('productOrder.productAllPrice.errors');" /><br/>
+            <input type="text" id="productAllPrice" th:name="productAllPrice" th:field="*{productOrder.productAllPrice}" onclick="hideContent('productOrder.productAllPrice.errors');" /><br/>
             <span th:if="${#fields.hasErrors('productOrder.productAllPrice')}" th:errors="*{productOrder.productAllPrice}" class="error" id="productAllPrice.errors"></span>
         </div>
         <div>
             <label>優惠券編號:</label>
-            <input type="text"  th:field="*{productOrder.coupon.coupNo}" onclick="hideContent('productOrder.coupon.coupNo.errors');"  /><br/>
+            <input type="text" id="coupNo" th:field="*{productOrder.coupon.coupNo}" th:name="coupNo"  th:onchange="|updatePriceInstantly()|" onclick="hideContent('productOrder.coupon.coupNo.errors');" /><br/>
             <span th:if="${#fields.hasErrors('productOrder.coupon.coupNo')}" th:errors="*{productOrder.coupon.coupNo}" class="error" id="coupon.coupNo.errors"></span>
         </div>
 
         <div>
             <label>優惠券折價總和:</label>
-            <input type="text" th:field="*{productOrder.productDisc}" onclick="hideContent('productOrder.productDisc.errors');" /><br/>
+            <input type="text" id="productDisc"  th:field="*{productOrder.productDisc}" onclick="hideContent('productOrder.productDisc.errors');" /><br/>
             <span th:if="${#fields.hasErrors('productOrder.productDisc')}" th:errors="*{productOrder.productDisc}" class="error" id="productDisc.errors"></span>
         </div>
         <div>
             <label>訂單實付金額:</label>
-            <input type="text" th:name="productOrder.productRealPrice" th:field="*{productOrder.productRealPrice}" onclick="hideContent('productOrder.productRealPrice.errors');" /><br/>
+            <input type="text" id="productRealPrice"  th:name="productOrder.productRealPrice" th:field="*{productOrder.productRealPrice}" onclick="hideContent('productOrder.productRealPrice.errors');" /><br/>
             <span th:if="${#fields.hasErrors('productOrder.productRealPrice')}" th:errors="*{productOrder.productRealPrice}" class="error" id="productRealPrice.errors"></span>
         </div>
 <!--        <div>-->
@@ -278,6 +279,35 @@
     //         return false;//返回false那么表单将不提交
     //     }
     // }
+    function updatePriceInstantly() {
+        var selectedcoupNo = document.getElementById('coupNo');
+        // 如果selectedcoupNo為空，將其設置為1
+        if (!selectedcoupNo) {
+            selectedcoupNo = '1';
+        }
+
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('Post', '/frontend/productorder/coupNoInstantly?coupNo=' + encodeURIComponent(selectedcoupNo), true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var productOrdercoupNo = JSON.parse(xhr.responseText);
+
+                document.getElementById('productDisc').value = productOrdercoupNo.productDisc;
+                document.getElementById('productRealPrice').value = productOrdercoupNo.productRealPrice;
+            } else {
+                console.error('Failed to fetch productorder details');
+            }
+        };
+
+        xhr.onerror = function () {
+            console.error('Request failed');
+        };
+
+        xhr.send();
+    }
 
 </script>
 
