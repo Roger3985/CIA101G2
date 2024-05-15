@@ -203,6 +203,12 @@ public class BackendIndexController {
      */
     @PostMapping("/sendEmail")
     public String forgotPwd(@RequestParam String email, ModelMap model) {
+
+        if (email.equals("")) {
+            model.addAttribute("errorMessage", "請勿空白!");
+            return "backend/forgotPassword";
+        }
+
         if (!validateEmail(email)) {
             model.addAttribute("errorMessage", "格式不符!請輸入信箱格式");
             return "backend/forgotPassword";
@@ -213,10 +219,11 @@ public class BackendIndexController {
 
         // 如果寄送郵件失敗
         if (!administratorSvc.sendEmail(email)) {
+            System.out.println("Controller:失敗");
             model.addAttribute("errorMessage", "發生錯誤，請重新嘗試");
             return "backend/forgotPassword";
         }
-
+        System.out.println("成功");
         return "redirect:/backend/login";
     }
 

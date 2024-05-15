@@ -6,7 +6,9 @@ import com.ren.authorityfunction.entity.AuthorityFunction;
 import com.ren.title.entity.Title;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
 import java.io.Serializable;
@@ -27,10 +29,12 @@ public class AdmAuthority {
     @Embeddable
     public static class CompositeAdmAuthority implements Serializable {
         private static final long serialVersionUID = 1L;
-        @NotEmpty(message = "請選擇職位編號")
+        @NotNull(message = "請選擇職位編號")
+        @Min(value = 0, message = "請選擇職位編號")
         @Column(name = "titleno")
         private Integer titleNo;
-        @NotEmpty(message = "請選擇功能編號")
+        @NotNull(message = "請選擇功能編號")
+        @Min(value = 0, message = "請選擇職位編號")
         @Column(name = "authfuncno")
         private Integer authFuncNo;
 
