@@ -56,6 +56,12 @@ public class RentalOrderController {
 
     /*--------------------------處理跳轉頁面請求的方法-------------------------------*/
 
+    // 去 商城 首頁
+    @GetMapping("/toRentalShop")
+    public String toRentalShop() {
+        return "/frontend/rental/rentalShop";
+    }
+
     // 去 購物車 畫面
     @GetMapping("/rentalCart")
     public String toRentalCart() {
@@ -344,6 +350,7 @@ public class RentalOrderController {
         map.put("rentalCatNo", String.valueOf(rental.getRentalCategory().getRentalCatNo()));
         map.put("rentalName", rental.getRentalName());
         map.put("rentalPrice", String.valueOf(rental.getRentalPrice()));
+        map.put("rentalDesPrice", String.valueOf(rental.getRentalCategory().getRentalDesPrice()));
         map.put("rentalSize", String.valueOf(rental.getRentalSize()));
         map.put("rentalColor", rental.getRentalColor());
         map.put("rentalInfo", rental.getRentalInfo());

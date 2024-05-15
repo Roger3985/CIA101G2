@@ -206,9 +206,9 @@ public class CreateCVSObj {
 //	 * 設定LogisticsType 物流類型 CVS:超商取貨  Home:宅配 
 //	 * @param logisticsType
 //	 */
-//	public void setLogisticsType(String logisticsType) {
-//		LogisticsType = logisticsType;
-//	}
+	public void setLogisticsType(String logisticsType) {
+		LogisticsType = logisticsType;
+	}
 	/**
 	 * 取得LogisticsSubType 物流子類型
 	 * ---B2C---
