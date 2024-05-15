@@ -141,6 +141,7 @@ import com.iting.productorder.service.ProductOrderService;
 import com.roger.member.entity.uniqueAnnotation.Create;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -305,22 +306,30 @@ public String Cart(HttpSession session, ModelMap model) {
 //            return "Quantity updated successfully";
 //
 //    }
-
-    @PostMapping("/deleteInstantly")
-    public String deleteInstantly(@RequestParam("productNo") Integer productNo,
-                                  @RequestParam("memNo") Integer memNo,
-                                  HttpSession session,
-                                  ModelMap model) {
-
-        // 执行删除操作
-        cartSvc.deleteBymemNoAndProductNo(memNo, productNo);
-        // 获取更新后的购物车数据
-
-        // 返回购物车页面
+//
+@PostMapping("/deleteInstantly")
+@ResponseBody
+public List<CartRedis> deleteInstantly(@RequestParam("productNo") Integer productNo,
+                                       @RequestParam("memNo") Integer memNo,
+                                       HttpSession session) {
+    cartSvc.deleteBymemNoAndProductNo(memNo, productNo);
+    List<CartRedis> cartRedisList = cartSvc.findByCompositeKey(memNo);
+    session.setAttribute("memNo", memNo);
+    System.out.println("即时更新成功");
+    return cartRedisList;
+}
+    @PostMapping("/updateBackendQuantity")
+    @ResponseBody
+    public List<CartRedis> updateBackendQuantity(@RequestParam("productNo") Integer productNo,
+                                           @RequestParam("memNo") Integer memNo,
+                                           @RequestParam("productBuyQty")Integer productBuyQty,
+                                           HttpSession session) {
+       cartSvc.updateCart(productNo,memNo,productBuyQty);
         session.setAttribute("memNo", memNo);
-        return "redirect:/frondend/cart/Cart";
+        List<CartRedis> cartRedisList = cartSvc.findByCompositeKey(memNo);
+        System.out.println("即时更新成功");
+        return cartRedisList;
     }
-
 
 
 }

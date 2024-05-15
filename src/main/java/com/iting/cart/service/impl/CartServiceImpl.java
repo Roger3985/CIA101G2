@@ -152,6 +152,20 @@ public class CartServiceImpl implements CartService {
 
 
 }
+    @Override
+    public void updateCart(Integer productNo,Integer memNo,Integer productBuyQty) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            CartRedis cartRedis=new CartRedis();
+            String productKey = cartRedis.generateId(productNo, memNo);
+            jedis.hset(productKey, "productBuyQty", String.valueOf(productBuyQty));
+            }
+
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
 //    @Override
 //    public void deleteBymemNo(Integer memNo) {
 //        try (Jedis jedis = jedisPool.getResource()) {

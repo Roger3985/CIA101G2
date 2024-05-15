@@ -86,20 +86,21 @@
                             <span th:if="${cart.productSize == 4}">XL</span>
                             <span th:if="${cart.productSize == 5}">2L</span>
                         </td>
-                        <td class="price" th:id="productPrice" th:text="${cart.productPrice}"></td>
+                        <td class="price" th:id="productPrice" name="productPrice" th:text="${cart.productPrice}"></td>
                         <td class="align-middle">
                             <div class="cart-qty-01">
-                                <button type="button" class="inc qty-btn" onclick="decreaseQuantity(this)">
+                                <button type="button" class="inc qty-btn" onclick="updateQuantity(this, -1)">
                                     <i class="bi bi-caret-down-fill"></i>
                                 </button>
                                 <input class="cart-qty-input form-control" type="text" name="productBuyQty"
-                                       th:value="${cart.productBuyQty}">
-                                <button type="button" class="dec qty-btn" onclick="increaseQuantity(this)">
+                                       th:value="${cart.productBuyQty}" onchange="updateBackendQuantity(this)">
+
+                                <button type="button" class="dec qty-btn" onclick="updateQuantity(this, 1)">
                                     <i class="bi bi-caret-up-fill"></i>
                                 </button>
                             </div>
                         </td>
-                        <td class="align-middle allprice" th:id="productAllPrice"
+                        <td class="align-middle " th:id="productAllPrice" name="productAllPrice"
                             th:text="'$' + ${cart.productBuyQty * cart.productPrice}" th:onchange="updatePrice()"></td>
                         <td class="align-middle">
 
@@ -180,164 +181,94 @@
 <!-- Template Javascript -->
 
 <script>
-    // function updateTotal(input) {
-    //     var quantity = parseInt(input.value);
-    //     var priceElement = input.closest('.productitm').querySelector('.price');
-    //     var totalPriceElement = input.closest('.productitm').querySelector('.allprice');
-    //     var price = parseFloat(priceElement.textContent.replace('$', '')); // 获取价格并转换为浮点数
-    //     var total = price * quantity; // 计算总价
-    //     totalPriceElement.textContent = '$' + total; // 更新总价，并保留两位小数
-    //     calculateTotalAllPrice(); // 更新总价
-    //     saveTotalPrice(); // 保存总价到会话存储中
-    // }
-    document.getElementById('decreaseQuantityBtn').addEventListener('click', function () {
-        decreaseQuantity(this);
-    });
 
-    document.getElementById('increaseQuantityBtn').addEventListener('click', function () {
-        increaseQuantity(this);
-    });
-
-
-    function decreaseQuantity(button) {
-        var input = button.nextElementSibling;
-        var quantity = parseInt(input.value);
-        if (quantity > 1) {
-            var newValue = quantity - 1;
+    function updateQuantity(button, change) {
+        var input = button.parentNode.querySelector('.cart-qty-input');
+        var newValue = parseInt(input.value) + change;
+        if (newValue >= 1) {
             input.value = newValue;
-            // updateTotal(); // 更新总价
-            // updateBackendQuantity(input, newValue); // 更新后端数据
+            updateBackendQuantity(input); // 调用更新后端数量函数
+            updateTotal(input); // 更新商品总价
         }
     }
 
-    function increaseQuantity(button) {
-        var input = button.previousElementSibling;
+    function updateTotal(input) {
         var quantity = parseInt(input.value);
-        var newValue = quantity + 1;
-        input.value = newValue;
-        // updateTotal(); // 更新总价
-        // updateBackendQuantity(input, newValue); // 更新后端数据
+        var priceElement = input.closest('.productitm').querySelector('#productPrice');
+        var totalPriceElement = input.closest('.productitm').querySelector('#productAllPrice');
+        var price = parseFloat(priceElement.textContent.replace('$', '')); // 获取商品单价并转换为浮点数
+        var total = price * quantity; // 计算总价
+        totalPriceElement.textContent = '$' + total;
+        updateAllPrice()
+    }
+    window.onload = function() {
+        updateAllPrice();
+    };
+
+    function updateAllPrice() {
+        var allPriceElements = document.querySelectorAll('#productAllPrice');
+        var totalPrice = 0;
+        // 遍历每个商品的总价元素，并累加到总价中
+        allPriceElements.forEach(function(element) {
+            var price = parseFloat(element.textContent.replace('$', ''));
+            totalPrice += price;
+        });
+        // 更新显示总价的元素
+        var totalPriceElement = document.getElementById('allprice');
+        totalPriceElement.textContent = '$' + totalPrice;
     }
 
 
-    // 发送 AJAX 请求更新数量到后端
-    var productNo = input.dataset.productNo; // 使用自定义属性获取商品编号
-    var memNo = input.dataset.memNo; // 使用自定义属性获取会员编号
 
-    //     // 发送 AJAX 请求
-    //     $.post("/updateQuantity", {
-    //         productNo: productNo,
-    //         memNo: memNo,
-    //         quantity: newValue
-    //     }).done(function(response) {
-    //         // 处理成功的情况
-    //         console.log("Quantity updated successfully");
-    //     }).fail(function(error) {
-    //         // 处理失败的情况
-    //         console.error("Failed to update quantity");
-    //     });
-    //     updateBackendQuantity(input, newValue); // 更新后端数据
-    // }
+    function updateBackendQuantity(input) {
+        var row = input.closest('.productitm');
+        var productNo = row.querySelector('input[name="productNo"]').value;
+        var memNo = row.querySelector('input[name="memNo"]').value;
+        var productBuyQty = input.value;
 
-    //
-    //     function calculateTotalAllPrice() {
-    //         var allPriceElements = document.querySelectorAll('#parentOfProductAllPrice .allprice');
-    //         var totalAllPrice = 0;
-    //         allPriceElements.forEach(function(element) {
-    //             var price = parseFloat(element.textContent.replace('$', '')); // 获取元素的文本内容并去除货币符号
-    //             totalAllPrice += price;
-    //         });
-    //         var totalPriceElement = document.getElementById('allprice');
-    //         totalPriceElement.textContent = '$' + totalAllPrice.toFixed(2); // 保留两位小数并添加货币符号
-    //     }
-    //
-    //     // 发送 AJAX 请求更新数量到后端
-    //     var productNo = input.dataset.productNo; // 使用自定义属性获取商品编号
-    //     var memNo = input.dataset.memNo; // 使用自定义属性获取会员编号
-    //
-    //     // 发送 AJAX 请求
-    //     $.post("/updateQuantity", {
-    //         productNo: productNo,
-    //         memNo: memNo,
-    //         quantity: newValue
-    //     }).done(function(response) {
-    //         // 处理成功的情况
-    //         console.log("Quantity updated successfully");
-    //     }).fail(function(error) {
-    //         // 处理失败的情况
-    //         console.error("Failed to update quantity");
-    //     });
-    // }
-    // function saveTotalPrice() {
-    //     var totalAllPrice = document.getElementById('allprice').textContent.replace('$', ''); // 获取总价并去除货币符号
-    //     sessionStorage.setItem('totalPrice', totalAllPrice);
-    //
-    // }
-    //
-    // // 页面加载时执行一次计算
-    // calculateTotalAllPrice();
-    //
-    //
-    // // 创建一个 MutationObserver 实例
-    // var observer = new MutationObserver(function(mutationsList, observer) {
-    //     calculateTotalAllPrice(); // 更新总价
-    //     saveTotalPrice(); // 保存总价到会话存储中
-    // });
-    //
-    // // 选择要观察的节点
-    // var targetNode = document.getElementById('parentOfProductAllPrice');
-    //
-    // // 配置观察器选项
-    // var config = { subtree: true, childList: true };
-    //
-    // // 启动观察器并传入要观察的节点和配置
-    // observer.observe(targetNode, config);
-    //
-    // // 更新后端数量
-    // function updateBackendQuantity(input, newValue) {
-    //     var productNo = input.dataset.productNo; // 使用自定义属性获取商品编号
-    //     var memNo = input.dataset.memNo; // 使用自定义属性获取会员编号
-    //     $.post("/frontend/cart/updateQuantity", {
-    //         productNo: productNo,
-    //         memNo: memNo,
-    //         quantity: newValue
-    //     }).done(function(response) {
-    //         console.log("Quantity updated successfully");
-    //     }).fail(function(error) {
-    //         console.error("Failed to update quantity");
-    //     });
-    // }
-    //
+        // 发送 AJAX 请求更新数量到后端
+        $.ajax({
+            type: 'POST',
+            url: '/frontend/cart/updateBackendQuantity',
+            data: {
+                productBuyQty: productBuyQty,
+                memNo: memNo,
+                productNo: productNo,
+            },
+            success: function(data) {
+                console.log("更新成功");
+                updateTotalPrice(); // 更新总价
+            },
+            error: function() {
+                console.error('更新失败');
+            }
+        });
+    }
+
+
     function deleteProduct(button) {
-        var row = button.closest('.productitm'); // 获取最近的行元素
-        var productNo = row.querySelector('input[name="productNo"]').value; // 获取要删除的商品编号
-        var memNo = row.querySelector('input[name="memNo"]').value; // 获取会员编号
+        var row = button.closest('.productitm');
+        var productNo = row.querySelector('input[name="productNo"]').value;
+        var memNo = row.querySelector('input[name="memNo"]').value;
 
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/frontend/cart/deleteInstantly', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function() {
-            if (xhr.status === 200 && xhr.responseText === "success") {
-                // 从 DOM 中移除该行
-                row.remove();
-                // 重新加载页面
-                location.reload();
-            } else {
-                // 处理删除失败的情况
+        // 发送 AJAX 请求删除商品
+        $.ajax({
+            type: 'POST',
+            url: '/frontend/cart/deleteInstantly',
+            data: {
+                productNo: productNo,
+                memNo: memNo
+            },
+            success: function(data) {
+                row.remove(); // 删除对应行
+                console.log("删除成功");
+                updateTotalPrice(); // 更新总价
+            },
+            error: function() {
                 console.error('删除失败');
             }
-        };
-        xhr.send('productNo=' + encodeURIComponent(productNo) + '&memNo=' + encodeURIComponent(memNo));
+        });
     }
-
-
-
-
-    // 发送请求
-
-
-    <!--        xhr.send();-->
-    <!--    }-->
 
 </script>
 </body>
