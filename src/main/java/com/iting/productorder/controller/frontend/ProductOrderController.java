@@ -58,6 +58,8 @@ public class ProductOrderController {
         productOrder.setMember(member);
         productOrder.setProductOrdStat(Byte.valueOf((byte)40));
         productOrder.setProductStat(Byte.valueOf((byte)0));
+        Coupon coupon=new Coupon();
+        model.addAttribute("coupon", coupon);
         model.addAttribute("productOrder", productOrder);
         session.setAttribute("productOrder", productOrder); // 將訂單存儲在會話中
         return "frontend/cart/CartToProductOrderDetail";
