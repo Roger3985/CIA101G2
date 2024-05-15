@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/backend/service/chat.css}">
+    <title>前台客服</title>
+
+</head>
+<body onload="connect();">
+<h2>後台即時客服系統</h2>
+
+<div class="user-form" id="username-page">
+    <h2>Enter Chatroom</h2>
+    <form id="usernameForm">
+
+        <label for="fullname">Name:</label>
+        <input type="text" id="fullname" name="realname" required>
+
+        <button type="submit">Enter Chatroom</button>
+    </form>
+</div>
+
+<div class="chat-container" id="chat-page">
+
+    <div class="chat-area">
+        <div class="chat-area" id="chat-messages">
+        </div>
+
+        <form id="messageForm" name="messageForm">
+            <div class="message-input">
+                <input autocomplete="off" type="text" id="message" placeholder="Type your message...">
+                <button>Send</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script type="text/javascript" th:src="@{/js/frontend/service/frontendChat.js}"></script>
+</body>
+</html>

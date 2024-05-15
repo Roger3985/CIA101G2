@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{backend/component/plugin/backendplugin.html :: css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加入購物車</title>
+    <!-- Custom styles for this page -->
+    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
+
+</head>
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">選擇商品加入購物車</h6>
+                    </div>
+                    <a th:href="@{/backend/rentalorder/toRentalCart}">查看購物車</a>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>租借品編號</th>
+                                    <th>類別編號</th>
+                                    <th>租借品名稱</th>
+                                    <th>租借品單價</th>
+                                    <th>尺寸</th>
+                                    <th>顏色</th>
+                                    <th>租借品資訊</th>
+                                    <th>租借品狀態</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <th:block th:each="rental : ${rentalList}">
+                                    <tr>
+                                        <td th:name="rentalNo" th:text="${rental.getRentalNo()}"></td>
+                                        <td th:name="rentalCatNo" th:text="${rental.getRentalCategory().getRentalCatNo()}"></td>
+                                        <td th:name="rentalName" th:text="${rental.getRentalName()}"></td>
+                                        <td th:name="rentalPrice" th:text="${rental.getRentalPrice()}"></td>
+                                        <td th:name="rentalSize" th:text="${rental.getRentalSize()}"></td>
+                                        <td th:name="rentalColor" th:text="${rental.getRentalColor()}"></td>
+                                        <td th:name="rentalInfo" th:text="${rental.getRentalInfo()}"></td>
+                                        <td th:name="rentalStat" th:text="${rental.getRentalStat()}"></td>
+                                        <td>
+                                            <button type="button" class="addToCart">
+                                                <i class="fas fa-plus"> </i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="backend/component/bottom :: bottom"></footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
+
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+<!-- Page level plugins -->
+<script th:src="@{/backend/vendor/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+<!-- Page level custom scripts -->
+<script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
+
+<script>
+    
+    $(function () {
+
+       /*
+        * 拼接動態前置路徑 (為適應上雲時路徑變化)
+        * window.location.protocol = 當前頁面所使用之通訊協定 (ex : http: 、 https:)
+        * window.location.host = 當前頁面主機名和連接阜號 (ex : localhost:8080)
+       */
+        let baseUrl = window.location.protocol + "//" + window.location.host;
+        let apiPath = "/backend/rentalorder/setToCart";
+
+        $("button.addToCart").on("click", function (e) {
+
+            e.preventDefault();
+            let tr = $(this).closest("tr");
+
+            let data = {
+                memNo : 1,
+                rentalNo : tr.find("td[name='rentalNo']").text(),
+                rentalCatNo : tr.find("td[name='rentalCatNo']").text(),
+                rentalName : tr.find("td[name='rentalName']").text(),
+                rentalPrice : tr.find("td[name='rentalPrice']").text(),
+                rentalSize : tr.find("td[name='rentalSize']").text(),
+                rentalColor : tr.find("td[name='rentalColor']").text(),
+                rentalInfo : tr.find("td[name='rentalInfo']").text(),
+                rentalStat : tr.find("td[name='rentalStat']").text(),
+            };
+
+            fetch(baseUrl + apiPath, {
+                method : "POST",
+                headers : {
+                    "Content-Type" : "application/json"
+                },
+                body : JSON.stringify(data)
+            }).then(function (response) {
+                return response.text();
+            }).then(function (rentalName) {
+                alert("已將" + rentalName + "加入購物車!");
+            });
+
+
+        })
+
+    })
+    
+</script>
+
+</body>
+</html>

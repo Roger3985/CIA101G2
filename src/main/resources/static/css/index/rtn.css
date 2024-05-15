@@ -1,0 +1,52 @@
+@charset "BIG5";
+
+h1, h2, h3, h4 {
+	font-size: 4.5em !important;
+}
+
+a {
+	font-size: 2em !important;
+}
+
+.mb-0 {
+	font-size: 6em;
+	text-align: center;
+}
+
+.subManage {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.subManage a {
+	text-decoration: none;
+}
+
+.nav-link:hover, .nav-link:focus {
+	color: yellow !important;
+}
+
+/* 	sub¥\¯àÃö³¬ */
+/*     .nav-link.active { */
+/*         color: yellow !important; */
+/*     } */
+#nav-img {
+	width: 125px;
+	height: 125px;
+}
+
+#sideNav .navbar-brand .img-profile {
+	border: 10px dotted rgba(255, 255, 255, 0.2);
+	padding: 1px;
+}
+.modify-btn{
+	background: #ffc107;
+}
+
+
+.subA:hover {
+	color: #ff0000c2;
+	transition: .3s;
+	transform: scale(1.5);
+}

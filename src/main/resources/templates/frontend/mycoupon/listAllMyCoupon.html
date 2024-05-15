@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>listAllMyCoupon</title>
+</head>
+<body>
+
+    <table>
+        <thead>
+        <tr>
+            <th>優惠券編號</th>
+            <th>會員編號</th>
+            <th>優惠券資訊</th>
+            <th>優惠券有效日期</th>
+<!--            <th>使用狀態</th>-->
+        </tr>
+        </thead>
+            <tbody>
+            <th:block th:each="mycoupon : ${myCouponList}">
+                <tr>
+                    <td th:text="${mycoupon.coupon.coupNo}"></td>
+                    <td th:text="${mycoupon.member.memNo}"></td>
+                    <td th:text="${mycoupon.coupInfo}"></td>
+                    <td th:text="${mycoupon.coupExpDate}"></td>
+
+                    <td>
+                        <span th:if="${mycoupon.coupUsedStat == 0}" th:text="未使用"></span>
+                        <span th:if="${mycoupon.coupUsedStat == 1}" th:text="已使用"></span>
+                        <span th:if="${mycoupon.coupUsedStat == 2}" th:text="已過期"></span>
+                    </td>
+                    <td>
+                    <form method="post" th:action="@{/frontend/mycoupon/updateMyCoupon}">
+                        <input type="hidden" name="memNo" th:value="${mycoupon.member.memNo}">
+                        <button th:onclick="'editMycoupon(' + ${mycoupon.coupon.coupNo} + ')' " name="coupNo"
+                                th:value="${mycoupon.coupon.coupNo}">確認使用
+                        </button>
+                    </form>
+                    </td>
+                </tr>
+
+            </th:block>
+            </tbody>
+
+
+    </table>
+
+</body>
+</html>

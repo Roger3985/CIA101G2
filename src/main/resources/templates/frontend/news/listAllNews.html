@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>前台ListAllNews</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>編號</th>
+        <th>標題</th>
+        <th>內容</th>
+        <th>發布時間</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="news : ${newsListData}">
+        <tr>
+            <td th:text="${news.newsNo}"></td>
+            <td th:text="${news.newsTitle}"></td>
+            <td th:text="${news.newsContent}"></td>
+            <td th:text="${news.postTime}"></td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+
+
+</body>
+</html>

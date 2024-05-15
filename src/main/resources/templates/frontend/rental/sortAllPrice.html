@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="zxx">
+
+<head>
+    <!-- metas -->
+    <meta charset="utf-8">
+    <meta name="author" content="pxdraft">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <!-- title -->
+    <title>租借品專區</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <!-- CSS Template -->
+    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+</head>
+
+<body>
+<!-- 通用插件 -->
+<th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block>
+<!-- 通用插件 -->
+<!--
+========================
+    Wrapper
+========================
+-->
+<div class="wrapper">
+    <!-- heder height -->
+    <div class="header-height-bar"></div>
+    <!-- Header -->
+    <header th:replace="frontend/component/header :: header"></header>
+    <!-- End Header -->
+    <!-- Main -->
+    <main>
+        <!-- 租借品專區 -->
+        <div class="py-3 bg-gray-100">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 my-2">
+                        <h1 class="m-0 h4 text-center text-lg-start">租借品專區</h1>
+                    </div>
+                    <div class="col-lg-6 my-2">
+                        <ol class="breadcrumb m-0 small justify-content-center justify-content-lg-end">
+                            <li class="breadcrumb-item">
+                                <a class="text-nowrap text-reset" th:href="@{index}">Home</a>
+                            </li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page">租借品</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Breadcrumb -->
+        <!-- Shop -->
+        <section class="py-6">
+            <div class="container">
+                <div class="row">
+                    <!-- Sidebar -->
+                    <div class="col-lg-4 col-xl-3 pe-xl-5 offcanvas-lg offcanvas-start px-0 px-lg-3" tabindex="-1"
+                         id="shop_filter" aria-labelledby="shop_filterLabel">
+                        <div class="offcanvas-header border-bottom">
+                            <h5 class="offcanvas-title" id="shop_filterLabel">Shop Filter</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                                    data-bs-target="#shop_filter" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body flex-column">
+                            <!-- Categories -->
+                            <div class="shop-sidebar-block">
+                                <div class="shop-sidebar-title">
+                                    <a class="h5" data-bs-toggle="collapse" href="#shop_categories" role="button"
+                                       aria-expanded="true" aria-controls="shop_categories">
+                                        租借品類別 <i class="bi bi-chevron-up"></i>
+                                    </a>
+                                </div>
+                                <div class="shop-category-list collapse show" id="shop_categories">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link active">所有租借品</a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                男士 <span>(25)</span>
+                                            </a>
+                                            <a data-bs-toggle="collapse" href="#shop_cat_1" role="button"
+                                               aria-expanded="false" aria-controls="shop_cat_1" class="s-icon"></a>
+                                            <div class="collapse" id="shop_cat_1">
+                                                <ul class="nav nav-pills flex-column nav-hierarchy">
+                                                    <li class="nav-item">
+                                                        <a th:href="@{listAllRental}" class="nav-link">成套西裝</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a th:href="@{listAllRental}" class="nav-link">西裝外套</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a th:href="@{listAllRental}" class="nav-link">西裝褲</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                女士 <span>(40)</span>
+                                            </a>
+                                            <a data-bs-toggle="collapse" href="#shop_cat_2" role="button"
+                                               aria-expanded="false" aria-controls="shop_cat_2" class="s-icon"></a>
+                                            <div class="collapse" id="shop_cat_2">
+                                                <ul class="nav nav-pills flex-column nav-hierarchy">
+                                                    <li class="nav-item">
+                                                        <a th:href="@{listAllRental}" class="nav-link">婚紗</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a th:href="@{listAllRental}" class="nav-link">禮服</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- End Categories -->
+                            <!-- 性別 -->
+                            <div class="shop-sidebar-block">
+                                <div class="shop-sidebar-title">
+                                    <a class="h5" data-bs-toggle="collapse" href="#shop_Gender" role="button"
+                                       aria-expanded="true" aria-controls="shop_Gender">
+                                        Gender <i class="bi bi-chevron-up"></i>
+                                    </a>
+                                </div>
+                                <div class="shop-sidebar-list collapse show" id="shop_Gender">
+                                    <ul>
+                                        <li class="custom-radio">
+                                            <input class="custom-control-input" id="gen1" type="radio" name="Gender"
+                                                   checked="checked">
+                                            <label class="custom-control-label" for="gen1">男士</label>
+                                        </li>
+                                        <li class="custom-radio">
+                                            <input class="custom-control-input" id="gen2" type="radio"
+                                                   name="Gender">
+                                            <label class="custom-control-label" for="gen2">女士</label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- End Gender -->
+                            <!-- 顏色 -->
+                            <div class="shop-sidebar-block">
+                                <div class="shop-sidebar-title">
+                                    <a class="h5" data-bs-toggle="collapse" href="#shop_Color" role="button"
+                                       aria-expanded="true" aria-controls="shop_Color">
+                                        Color <i class="bi bi-chevron-up"></i>
+                                    </a>
+                                </div>
+                                <div class="shop-sidebar-list collapse show" id="shop_Color">
+                                    <ul>
+                                        <li class="custom-checkbox checkbox-color">
+                                            <input class="custom-control-input" id="colorsidebar1" type="checkbox"
+                                                   checked="">
+                                            <label class="custom-control-label" style="color: #1F45FC;"
+                                                   for="colorsidebar1">
+                                                <span class="text-body">Royal Blue</span>
+                                            </label>
+                                        </li>
+                                        <li class="custom-checkbox checkbox-color">
+                                            <input class="custom-control-input" id="colorsidebar2" type="checkbox">
+                                            <label class="custom-control-label" style="color: #FCD71E;"
+                                                   for="colorsidebar2">
+                                                <span class="text-body">Yellow</span>
+                                            </label>
+                                        </li>
+                                        <li class="custom-checkbox checkbox-color">
+                                            <input class="custom-control-input" id="colorsidebar3" type="checkbox">
+                                            <label class="custom-control-label" style="color: #000;"
+                                                   for="colorsidebar3">
+                                                <span class="text-body">Black</span>
+                                            </label>
+                                        </li>
+                                        <li class="custom-checkbox checkbox-color">
+                                            <input class="custom-control-input" id="colorsidebar4" type="checkbox">
+                                            <label class="custom-control-label" style="color: #f73636;"
+                                                   for="colorsidebar4">
+                                                <span class="text-body">Red</span>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- End Color -->
+                            <!-- 大小size -->
+                            <div class="shop-sidebar-block">
+                                <div class="shop-sidebar-title">
+                                    <a class="h5" data-bs-toggle="collapse" href="#shop_brand" role="button"
+                                       aria-expanded="true" aria-controls="shop_brand">
+                                        Size <i class="bi bi-chevron-up"></i>
+                                    </a>
+                                </div>
+                                <div class="shop-sidebar-list collapse show" id="shop_brand">
+                                    <ul>
+                                        <li class="custom-checkbox">
+                                            <input class="custom-control-input" id="brand1" type="checkbox">
+                                            <label class="custom-control-label" for="brand1">XS</label>
+                                        </li>
+                                        <li class="custom-checkbox">
+                                            <input class="custom-control-input" id="brand2" type="checkbox">
+                                            <label class="custom-control-label" for="brand2">S</label>
+                                        </li>
+                                        <li class="custom-checkbox">
+                                            <input class="custom-control-input" id="brand3" type="checkbox">
+                                            <label class="custom-control-label" for="brand3">M</label>
+                                        </li>
+                                        <li class="custom-checkbox">
+                                            <input class="custom-control-input" id="brand4" type="checkbox">
+                                            <label class="custom-control-label" for="brand4">L</label>
+                                        </li>
+                                        <li class="custom-checkbox">
+                                            <input class="custom-control-input" id="brand5" type="checkbox">
+                                            <label class="custom-control-label" for="brand5">XL</label>
+                                        </li>
+                                        <li class="custom-checkbox">
+                                            <input class="custom-control-input" id="brand6" type="checkbox">
+                                            <label class="custom-control-label" for="brand6">2L</label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- End Brands -->
+                            <!-- 租借金額 -->
+                            <div class="shop-sidebar-block">
+                                <div class="shop-sidebar-title">
+                                    <a class="h5" data-bs-toggle="collapse" href="#shop_price" role="button"
+                                       aria-expanded="true" aria-controls="shop_price">
+                                        租借金額 <i class="bi bi-chevron-up"></i>
+                                    </a>
+                                </div>
+                                <div class="shop-sidebar-list collapse show" id="shop_price">
+                                    <ul>
+                                        <li class="custom-checkbox">
+                                            <input class="custom-control-input" id="price1" type="checkbox">
+                                            <label class="custom-control-label" for="price1">$2000</label>
+                                        </li>
+                                        <li class="custom-checkbox">
+                                            <input class="custom-control-input" id="price2" type="checkbox">
+                                            <label class="custom-control-label" for="price2">$4000</label>
+                                        </li>
+                                    </ul>
+                                    <div class="d-flex align-items-center pt-3">
+                                        <!-- Input -->
+                                        <input type="number" class="form-control form-control-sm"
+                                               placeholder="$0" min="10">
+                                        <!-- Divider -->
+                                        <div class="text-gray-350 mx-2">‒</div>
+                                        <!-- Input -->
+                                        <input type="number" class="form-control form-control-sm"
+                                               placeholder="$4000" max="350">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Brands -->
+                        </div>
+                    </div>
+                    <!-- End Sidebar -->
+                    <!-- 商品列表 -->
+                    <div class="col-lg-8 col-xl-9">
+                        <div class="shop-top-bar d-flex pb-3"><!-- 切換顯示&排序的區塊 -->
+                            <!-- 列表呈現方式 (網格or直列) -->
+                            <div class="layout-change">
+                                <!-- 手機模式  Mobile Toggle -->
+                                <button class="btn btn-sm d-lg-none" type="button" data-bs-toggle="offcanvas"
+                                        data-bs-target="#shop_filter" aria-controls="shop_filter">
+                                    <i class="fs-4 lh-1 bi bi-justify-left"></i>
+                                </button>
+                                <!-- 手機模式 結束 Mobile Toggle -->
+                                <a class="btn btn-white btn-sm" href="#">
+                                    <i class="bi bi-grid"></i>
+                                </a>
+                                <a class="btn btn-white btn-sm active" href="#">
+                                    <i class="bi bi-view-stacked"></i>
+                                </a>
+                            </div>
+                            <!-- 列表呈現方式 (網格or直列)  結束 -->
+                            <!--  選擇排序   -->
+                            <div class="shortby-dropdown ms-auto">
+                                <div class="dropdown">
+                                    <a class="btn btn-none btn-sm border dropdown-toggle text-mode" href="#"
+                                       role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+                                       aria-expanded="false">Short by</a>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow"
+                                        aria-labelledby="dropdownMenuLink">
+                                        <li>
+                                            <a class="dropdown-item" href="#">最新</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">最熱門</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" id="low_to_high" href="#" th:onclick="'javascript:sortBy(\'low_to_high\')'">價格由低到高</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" id="high_to_low" href="#" th:onclick="'javascript:sortBy(\'high_to_low\')'">價格由高到低</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 商品 -->
+                        <th:block th:each="rental : ${rentalListData}">
+                            <div class="row g-0 mb-4">
+                                <div class="col-sm-4 position-relative">
+                                    <div class="badge-ribbon position-absolute top-0 mt-3">
+                                        <span class="badge bg-danger">Sale</span>
+                                    </div>
+                                    <a th:href="@{showOneRental}"><!-- 對應品項查詢 -->
+                                        <img class="border img-fluid w-100" th:src="@{/icons/frontend/rental/gown1.jpg}"
+                                             th:attr="width=276, height=307" title="" alt="">
+                                    </a>
+                                </div>
+                                <div class="col-sm-8 ps-sm-4 pt-3 pt-sm-0">
+                                    <div class="rating-star text mb-2 small"><!-- 評價 -->
+                                        <i class="bi bi-star-fill active"></i>
+                                        <i class="bi bi-star-fill active"></i>
+                                        <i class="bi bi-star-fill active"></i>
+                                        <i class="bi bi-star-fill active"></i>
+                                        <i class="bi bi-star"></i>
+                                    </div>
+                                    <h5 class="product-title">
+                                        <a class="text-reset" th:href="@{showOneRental}"><span th:text="${rental.rentalName}"></span></a><!-- 租借品名稱 -->
+                                    </h5>
+                                    <div class="m-0">
+                                        <p class="small mb-2"><span>編號：</span><span th:text="${rental.rentalNo}"></span></p><!-- 租借品編號 -->
+                                        <p class="small mb-2"><span th:text="${rental.rentalInfo}"></span></p><!-- 租借品介紹 -->
+                                    </div>
+                                    <div class="product-price pb-3">
+                                        <span class="text-primary fs-4" th:text="'$' + ${rental.rentalCategory.rentalDesPrice}"></span><!-- 押金 -->
+                                        <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del><!-- 定價 -->
+                                    </div>
+                                    <div>
+                                        <a href="#" class="btn btn-mode"><!--  加入購物車  -->
+                                            <i class="fi-shopping-cart"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-primary"><!--  加入我的最愛  -->
+                                            <i class="fi-heart"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-primary">追蹤</a><!--  加入追蹤的圖示 <i class="fi-repeat"></i>  -->
+                                        <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
+                                           href="javascript:void(0)" class="btn btn-primary">
+                                            <i class="fi-eye"></i><!--  跳窗顯示該商品畫面 (rentalQuickview.html) -->
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                        <!-- 商品  結束 -->
+                        <!-- 分頁區  -->
+                        <div class="shop-bottom-bar d-flex align-items-center mt-3">
+                            <div>Showing: 1 - 12 of 17</div>
+                            <div class="ms-auto">
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item active">
+                                        <a class="page-link" href="#">1</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">2</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">3</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div><!-- 分頁區  結束  -->
+                    </div>
+                    <!-- 商品列表結束 -->
+                </div>
+            </div>
+        </section>
+        <!-- End Shop -->
+    </main>
+    <!-- End Main -->
+    <!-- Footer -->
+    <footer th:replace="frontend/component/footer :: footer"></footer>
+    <!-- End Footer -->
+</div>
+<!--
+========================
+   End Wrapper
+========================
+-->
+<!-- script start -->
+<th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
+<!-- End script start -->
+<!--<script>-->
+<!--    function sortBy(sortType) { //sortType參數定義是對應上面的low_to_high或high_to_low-->
+<!--        let url = "/frontend/rental/sortAllPrice?sortType=" + sortType;-->
+
+<!--        fetch(url)-->
+<!--            .then(response => {-->
+<!--                if (!response.ok) {-->
+<!--                    throw new Error('Network response was not ok');-->
+<!--                }-->
+<!--                return response.text();-->
+<!--            })-->
+<!--            .then(html => {-->
+<!--                // 将响应的 HTML 插入到页面中-->
+<!--                document.getElementById("sortAllPrice").innerHTML = html;-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                console.error('There has been a problem with your fetch operation:', error);-->
+<!--            });-->
+<!--    }-->
+<!--</script>-->
+
+<script th:inline="javascript">
+    function sortBy(sortType) {
+        var url = "/frontend/rental/sortAllPrice?sortType=" + sortType;
+
+        $.get(url, function(html) {
+            // 將響應的 HTML 插入到頁面中
+            $("#sortAllPrice").html(html);
+        }).fail(function() {
+            console.error('There has been a problem with your request');
+        });
+    }
+</script>
+</body>
+</html>

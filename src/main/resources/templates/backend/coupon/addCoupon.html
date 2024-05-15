@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>addCoupon.html</title>
+    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+    <style>
+        .error {
+            font-size: 12px; /* 調整字體大小 */
+            color: red;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+        <h4><b>所有欄位皆為必填欄位</b></h4>
+        <form th:action="@{insert}" method="post" th:object="${coupon}" enctype="application/json">
+            <div>
+                <label>建立日期:</label>
+                <span id="datetime"/>
+                <input type="hidden" name="coupAddDate"/><br/>
+            </div>
+
+            <div>
+                <label>優惠券名稱:</label>
+                <input type="text" th:field="*{coupName}" onclick="hideContent('coupName.errors');"/><br/>
+                <span th:if="${#fields.hasErrors('coupName')}" th:errors="*{coupName}" class="error"
+                      id="coupName.errors"></span>
+            </div>
+
+            <div>
+                <label>使用條件:</label>
+                <input type="text" th:field="*{coupCond}" onclick="hideContent('coupCond.errors');"/><br/>
+                <span th:if="${#fields.hasErrors('coupCond')}" th:errors="*{coupCond}" class="error"
+                      id="coupCond.errors"></span>
+            </div>
+
+            <div>
+                <label>折扣數:</label>
+                <input type="text" th:field="*{coupDisc}" onclick="hideContent('coupDisc.errors');"/><br/>
+                <span th:if="${#fields.hasErrors('coupDisc')}" th:errors="*{coupDisc}" class="error"
+                      id="coupDisc.errors"></span>
+            </div>
+
+            <div>
+                <label>失效日期:</label>
+                <input type="datetime-local" th:field="*{coupExpDate}" onclick="hideContent('coupExpDate.errors');" id="coupExpDate_el"/><br/>
+                <span class="error" th:text="${errorMessage1}" id="coupExpDate.errorMessage1">${errorMessage}</span>
+            </div>
+
+            <div>
+                <label>發放日期:</label>
+                <input type="datetime-local" th:field="*{coupRelDate}" onclick="hideContent('coupRelDate.errors');"/><br/>
+                <span class="error" th:text="${errorMessage2}" th:if="${errorMessage2}" id="coupRelDate.errorMessage2">${errorMessage}</span>
+            </div>
+
+            <div>
+                <input type="hidden" name=coupRelStat value="0">
+    <!--            <label>發放狀態:</label>-->
+    <!--            <select th:field="*{coupRelStat}">-->
+    <!--                <option th:value="${0}" selected/>未發放-->
+    <!--                <option th:value="${1}"/>已發放-->
+    <!--            </select>-->
+    <!--            <span th:if="${#fields.hasErrors('coupRelStat')}" th:errors="*{coupRelStat}" class="error"-->
+    <!--                  id="coupRelStat.errors"></span>-->
+            </div>
+
+            <div>
+                <button type="submit" id="submit"> 送出新增</button>
+            </div>
+        </form>
+        </div>
+        <!-- End of Main Content -->
+    </div>
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
+
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+<script>
+    var now = new Date();
+    var dateTime = now.toLocaleString();
+    document.getElementById("datetime").innerHTML = dateTime;
+
+    //清除提示信息
+    function hideContent(d) {
+        document.getElementById(d).style.display = "none";
+    }
+</script>
+</body>
+</html>

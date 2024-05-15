@@ -1,0 +1,82 @@
+<!-- 頁首 -->
+<header class="fixed-top bg-body-tertiary border-bottom"
+        th:fragment="nav">
+    <div class="container-fluid">
+        <!-- 第一個導覽列 -->
+        <nav class="navbar navbar-expand-md bg-body-tertiary border-bottom">
+            <!-- 首頁icon -->
+            <a class="navbar-brand" href="#">FallElove</a>
+            <!-- 漢堡選單，響應式當畫面 < 768px 時出現 -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar1">
+                <span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbar1">
+                <ul class="navbar-nav me-auto">
+                    <!-- 下拉式選單 -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">商品</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item">禮服</a>
+                            <a class="dropdown-item">上衣</a>
+                            <a class="dropdown-item">下著</a>
+                            <a class="dropdown-item">裝飾品</a>
+                        </div>
+                    </li>
+                    <!-- 下拉式選單 -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">租借品</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item">禮服</a>
+                            <a class="dropdown-item">上衣</a>
+                            <a class="dropdown-item">下著</a>
+                            <a class="dropdown-item">裝飾品</a>
+                        </div>
+                    </li>
+                    <!-- 下拉式選單 -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">場地租借</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item">我要預約</a>
+                            <a class="dropdown-item">時段查詢</a>
+                            <a class="dropdown-item">注意事項</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" data-bs-toggle="dropdown">專欄</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item">禮服</a>
+                            <a class="dropdown-item">上衣</a>
+                            <a class="dropdown-item">下著</a>
+                            <a class="dropdown-item">裝飾品</a>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto" id="login_former">
+                    <li class="nav-item login">
+                        <a class="nav-link" href="#">我要登入
+                            <i class="bi bi-person-fill"></i>
+                        </a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="館內查詢...">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
+
+        <!-- 第二部分：該項次導覽項目 -->
+        <div class="row px-5">
+            <!-- 導覽項目 -->
+            <nav class="nav nav-underline justify-content-between bg-body-tertiary">
+                <a href="#" class="nav-item nav-link link-body-emphasis">生活</a>
+                <a href="#" class="nav-item nav-link link-body-emphasis">瑣事</a>
+                <a href="#" class="nav-item nav-link link-body-emphasis">娛樂</a>
+                <a href="#" class="nav-item nav-link link-body-emphasis">健康</a>
+                <a href="#" class="nav-item nav-link link-body-emphasis">藝文</a>
+                <a href="#" class="nav-item nav-link link-body-emphasis">親子</a>
+                <a href="#" class="nav-item nav-link link-body-emphasis">家居</a>
+                <a href="#" class="nav-item nav-link link-body-emphasis">美妝</a>
+            </nav>
+        </div>
+    </div>
+</header>

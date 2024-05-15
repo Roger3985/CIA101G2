@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{backend/component/plugin/backendplugin.html :: css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>租借品訂單清單</title>
+    <!-- Custom styles for this page -->
+    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="/static/css/fontawesome/fontawesome-6.4.0.css">
+
+</head>
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">購物車商品:</h6>
+                        <a th:href="@{/backend/rentalorder/toCheckOut}">結帳</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>租借品編號</th>
+                                    <th>類別編號</th>
+                                    <th>租借品名稱</th>
+                                    <th>租借品單價</th>
+                                    <th>尺寸</th>
+                                    <th>顏色</th>
+                                    <th>租借品資訊</th>
+                                    <th>租借品狀態</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!--商品會在這-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="backend/component/bottom :: bottom"></footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
+
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+<!-- Page level plugins -->
+<script th:src="@{/backend/vendor/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+<!-- Page level custom scripts -->
+<script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
+
+
+
+<script th:inline="javascript">
+
+    $(function() {
+
+        /*
+         * 拼接動態前置路徑 (為適應上雲時路徑變化)
+         * window.location.protocol = 當前頁面所使用之通訊協定 (ex : http: 、 https:)
+         * window.location.host = 當前頁面主機名和連接阜號 (ex : localhost:8080)
+        */
+        let baseUrl = window.location.protocol + "//" + window.location.host;
+        let apiPath = "/backend/rentalorder/";
+
+        function getAll() {
+
+            fetch(baseUrl + apiPath + "getFromCart?memNo=1")  // 發出 GET 請求取得所有購物車商品
+                .then(response => response.json())  // 解析 JSON  這邊等於.then(function(response) {return response.json();})
+                .then(data => { // 這邊等於 .then(function(data) {...})
+                    const table = $('#dataTable').DataTable();  // 初始化 DataTable
+                    table.clear(); // 清除表格現有行
+                    for (const key in data) { // 取得每個商品的 key
+                        const item = data[key]; // item = 包含每一個商品的詳細資訊的物件
+                        table.row.add([  // 添加行到 DataTable
+                            item['rentalNo'],
+                            item['rentalCatNo'],
+                            item['rentalName'],
+                            item['rentalPrice'],
+                            item['rentalSize'],
+                            item['rentalColor'],
+                            item['rentalInfo'],
+                            item['rentalStat'],
+                            '<button class="btn btn-sm btn-primary"><i class="fa-solid fa-plus"></i></button>' +
+                            ' <button class="btn btn-sm btn-danger delbtn"><i class="fa-solid fa-minus"></i></button>'
+                        ]).draw(false);  // 繪製表格，但不重設分頁
+                    }
+                })
+                .catch(error => console.error('Error loading cart data:', error));
+
+        }
+        getAll();
+
+        $(document).on("click", "button.delbtn", function () {
+            console.log($(this));
+            let rentalNo = $(this).closest("tr").find("td:first").text();
+            if (confirm("確定要刪除?")) {
+
+                fetch(baseUrl + apiPath + "deleteFromCart?memNo=1&rentalNo=" + rentalNo, {
+                    method : "DELETE"
+                }).then(function (response) {
+                    return response.text();
+                }).then(function (data) {
+                    if (data === "ok") {
+                        alert("刪除成功");
+                        getAll();
+                    }
+                });
+
+            }
+
+        });
+
+    });
+
+
+
+</script>
+
+
+
+
+</body>
+</html>

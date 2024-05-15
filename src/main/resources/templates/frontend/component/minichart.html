@@ -1,0 +1,84 @@
+<!-- Mini Cart  -->
+<div th:fragment="minichart" class="offcanvas offcanvas-end" tabindex="-1" id="modalMiniCart" aria-labelledby="modalMiniCartLabel">
+    <div class="offcanvas-header border-bottom">
+        <h6 class="offcanvas-title" id="modalMiniCartLabel">Your Cart (2)</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="list-unstyled m-0 p-0">
+            <li class="py-2">
+                <div class="row align-items-center">
+                    <div class="col-4">
+                        <!-- Image -->
+                        <a href="#"><img class="img-fluid border" th:src="@{/frontend/img/fashion/product-x-1.jpg}" alt="..."></a></div>
+                    <div class="col-8">
+                        <!-- Title -->
+                        <p class="mb-2">
+                            <a class="text-mode fw-500" href="#">Cotton floral print Dress</a>
+                            <span class="m-0 text-muted w-100 d-block">$40.00</span>
+                        </p>
+                        <!--Footer -->
+                        <div class="d-flex align-items-center">
+                            <!-- Select -->
+                            <select class="form-select form-select-sm w-auto">
+                                <option value="1">1</option>
+                                <option value="1">2</option>
+                                <option value="1">3</option>
+                            </select>
+                            <!-- Remove -->
+                            <a class="small text-mode ms-auto" href="#!">
+                                <i class="bi bi-x"></i> Remove
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="py-2">
+                <div class="row align-items-center">
+                    <div class="col-4">
+                        <!-- Image -->
+                        <a href="#">
+                            <img class="img-fluid border" th:src="@{/frontend/assets/img/fashion/product-x-1.jpg}" alt="..."></a></div>
+                    <div class="col-8">
+                        <!-- Title -->
+                        <p class="mb-2">
+                            <a class="text-mode fw-500" href="#">Cotton floral print Dress</a>
+                            <span class="m-0 text-muted w-100 d-block">$40.00</span></p>
+                        <!--Footer -->
+                        <div class="d-flex align-items-center">
+                            <!-- Select -->
+                            <select class="form-select form-select-sm w-auto">
+                                <option value="1">1</option>
+                                <option value="1">2</option>
+                                <option value="1">3</option>
+                            </select>
+                            <!-- Remove -->
+                            <a class="small text-mode ms-auto" href="#!">
+                                <i class="bi bi-x"></i> Remove
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="offcanvas-footer border-top p-3">
+        <div class="row g-0 py-2">
+            <div class="col-8"><span class="text-mode">Subtotal</span></div>
+            <div class="col-4 text-end"><span class="ml-auto">$89.00</span></div>
+        </div>
+        <div class="row g-0 py-2">
+            <div class="col-8"><span class="text-mode">Taxes:</span></div>
+            <div class="col-4 text-end"><span class="ml-auto">$89.00</span></div>
+        </div>
+        <div class="row g-0 pt-2 mt-2 border-top fw-bold text-mode">
+            <div class="col-8"><span class="text-mode">Subtotal</span></div>
+            <div class="col-4 text-end"><span class="ml-auto">$89.00</span></div>
+        </div>
+        <div class="pt-4">
+            <a class="btn btn-block btn-mode w-100 mb-3" href="#">結帳</a>
+            <a class="btn btn-block btn-outline-mode w-100" th:href="@{/backend/rentalorder/rentalCart}">查看購物車</a>
+        </div>
+    </div>
+</div>
+<!-- End Mini Cart  -->

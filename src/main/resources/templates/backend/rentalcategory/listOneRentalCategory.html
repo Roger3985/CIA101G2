@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>查詢租借品類別資料 (單筆)</title>
+    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+    <!-- Custom styles for this page -->
+    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
+    <style>
+        *{
+            font-size: 12px; /* 調整字體大小 */
+        }
+        .error {
+            font-size: 12px; /* 調整字體大小 */
+        }
+    </style>
+</head>
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">單筆查詢</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>租借品類別編號</th>
+                                    <th>租借品類別名稱</th>
+                                    <th>租借品庫存數量</th>
+                                    <th>租借品已租借數量</th>
+                                    <th>押金</th>
+                                    <th>修改</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <th:block th:each="rentalCategory : ${rentalCatListData}"> <!--th:block 用來包裝使用-->
+                                    <tr>
+                                        <td th:text="${rentalCategory.rentalCatNo}"></td>
+                                        <td th:text="${rentalCategory.rentalCatName}"></td>
+                                        <td th:text="${rentalCategory.rentalStockQty}"></td>
+                                        <td th:text="${rentalCategory.rentalRentedQty}"></td>
+                                        <td th:text="${rentalCategory.rentalDesPrice}"></td>
+                                        <td>
+                                            <form method="post" th:action="@{updateRentalCategory}">
+                                                <button type="submit" value="送出">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                    <input type="hidden" name="rentalNo" value="${rentalCategory.rentalCatNo}">
+                                                    <input type="hidden" name="action" value="getOneUpdate">
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="backend/component/bottom :: bottom"></footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
+
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+<!-- Page level plugins -->
+<script th:src="@{/backend/vendor/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+<!-- Page level custom scripts -->
+<script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
+
+</body>
+</html>
+
+
+
+
+
+<!--<h1>租借品個人資料 - showOneRental.html</h1>-->
+<!--<table id="example" class="display" style="width: 100%;">-->
+<!--    <div align="center" th:fragment="listOneRental-div"> &lt;!&ndash; 此div被select_page.html第158行insert用 &ndash;&gt;-->
+<!--        <h3><span>查詢結果 :</span></h3>-->
+<!--        <span th:text="'租借品編號：' + ${rental.rentalNo}"></span><br/>-->
+<!--        <span th:text="'租借品編號：' + ${rental.rentalName}"></span><br/>-->
+<!--        <span th:text="'租借品單價：' + ${rental.rentalPrice}"></span><br/>-->
+<!--        <span th:text="'租借品尺寸：' + ${rental.rentalSize}"></span><br/>-->
+<!--        <span th:text="'租借品顏色：' + ${rental.rentalColor}"></span><br/>-->
+<!--        <span th:text="'租借品資訊：' + ${rental.rentalInfo}"></span><br/>-->
+<!--        <span th:text="'租借品狀態：' + ${rental.rentalStat}"></span><br/>-->
+<!--        <span th:text="'租借品類別編號：' + ${rental.RentalCategory.rCatNo} + '-[' + ${rental.RentalCategory.rCatName} + ']'"></span><br/>-->
+<!--    </div>-->
+<!--</table>-->
+
+<!-- --------------------  第二種顯示方法： 純文字呈現(可搭配圖示)  -------------------- -->
+<!--<div align="center" th:fragment="listOneRental-div"> &lt;!&ndash; 此div被select_page.html第158行insert用 &ndash;&gt;-->
+<!--    <h3><span>查詢結果 :</span></h3>-->
+<!--    <span>租借品編號:</span><span th:text="${rental.rentalNo}"></span><br/>-->
+<!--    <span>租借品名稱:</span><span th:text="${rental.rentalName}"></span><br/>-->
+<!--    <span>租借品單價:</span><span th:text="${rental.rentalPrice}"></span><br/>-->
+<!--    <span>租借品尺寸:</span><span th:text="${rental.rentalSize}"></span><br/>-->
+<!--    <span>租借品顏色:</span><span th:text="${rental.rentalColor}"></span><br/>-->
+<!--    <span>租借品資訊:</span><span th:text="${rental.rentalInfo}"></span><br/>-->
+<!--    <span>租借品狀態:</span><span th:text="${rental.rentalStat}"></span><br/>-->
+<!--    <span>租借品類別編號:</span><span th:text="${rental.RentalCategory.rCatNo} + '-[' + ${rental.RentalCategory.rCatName} + ']'"></span><br/>-->
+<!--</div>-->
+<!-- --------------------  第一種顯示方法： 響應式畫面呈現  -------------------- -->
+<!--<thead>-->
+<!--<tr>-->
+<!--    <th>租借品編號</th>-->
+<!--    <th>租借品名稱</th>-->
+<!--    <th>租借品單價</th>-->
+<!--    <th>租借品尺寸</th>-->
+<!--    <th>租借品顏色</th>-->
+<!--    <th>租借品資訊</th>-->
+<!--    <th>租借品狀態</th>-->
+<!--    <th>租借品類別編號</th>-->
+<!--    <th>修改</th>-->
+<!--</tr>-->
+<!--</thead>-->
+<!--<tbody>-->
+<!--<th:block th:each="rental : ${rentalListData}"> &lt;!&ndash;th:block 用來包裝使用&ndash;&gt;-->
+<!--    <tr>-->
+<!--        <td th:text="${rental.rentalNo}"></td>-->
+<!--        <td th:text="${rental.rentalName}"></td>-->
+<!--        <td th:text="${rental.rentalPrice}"></td>-->
+<!--        <td th:text="${rental.rentalSize}"></td>-->
+<!--        <td th:text="${rental.rentalColor}"></td>-->
+<!--        <td th:text="${rental.rentalInfo}"></td>-->
+<!--        <td>-->
+<!--            <span th:if="${rental.rentalStat == 0}" th:text="上架"></span>-->
+<!--            <span th:if="${rental.rentalStat == 1}" th:text="已預約"></span>-->
+<!--            <span th:if="${rental.rentalStat == 2}" th:text="已租借"></span>-->
+<!--            <span th:if="${rental.rentalStat == 3}" th:text="已歸還"></span>-->
+<!--            <span th:if="${rental.rentalStat == 4}" th:text="清潔整理中"></span>-->
+<!--            <span th:if="${rental.rentalStat == 5}" th:text="下架"></span>-->
+<!--        </td>-->
+<!--        <td th:text="${rental.RentalCategory.rentalCatNo} + '-[' + ${rental.RentalCategory.rentalCatName} + ']'"></td>-->
+<!--        <td>-->
+<!--            <button th:onclick="'updateRental(' + ${rental.rentalNo} + ')'">修改</button>-->
+<!--        </td>-->
+<!--    </tr>-->
+<!--</th:block>-->
+<!--</tbody>-->
