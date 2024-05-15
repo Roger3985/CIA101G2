@@ -124,9 +124,9 @@ public class RentalMyFavoriteBackEnd {
             return "/backend/rentalmyfavorite/updateRentalMyFAV";
         }
         // 將資料添加到 ModelMap 中
-        rentalMyFAVService.updateRentalFav(rentalMyFavorite);
-        rentalMyFavorite = rentalMyFAVService.findByIdRentalNoAndIdMemNo(Integer.valueOf(rentalNo),Integer.valueOf(memNo));
-        model.addAttribute("rentalMyFavorite", rentalMyFavorite);
+//        rentalMyFAVService.updateRentalFav(rentalMyFavorite);
+//        rentalMyFavorite = rentalMyFAVService.findByIdRentalNoAndIdMemNo(Integer.valueOf(rentalNo),Integer.valueOf(memNo));
+//        model.addAttribute("rentalMyFavorite", rentalMyFavorite);
         return "/backend/rentalmyfavorite/listOneRentalMyFAV";
     }
 
