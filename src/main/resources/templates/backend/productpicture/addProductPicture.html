@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:insert="~{backend/component/plugin/backendplugin.html :: css}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>後台商品</title>
-    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+    <title>Document</title>
     <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
 
@@ -25,9 +24,16 @@
             <!-- End of Topbar -->
             <!-- Begin Page Content -->
             <div class="container-fluid">
-                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
-                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
-                <li><a th:href="@{listAllProducts}">List</a> all Products. <br> <br></li>
+                <div aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">首頁</a></li>
+                        <li class="breadcrumb-item"><a href="#">分類</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">具體頁面</li>
+                    </ol>
+                    <i class="fas fa-home">我是法克凸-_-凸</i>
+
+                </div>
+
             </div>
             <!-- /.container-fluid -->
         </div>
@@ -52,6 +58,7 @@
 <script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 <!-- Page level custom scripts -->
 <script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
+
 
 </body>
 </html>

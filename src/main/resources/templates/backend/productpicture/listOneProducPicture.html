@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{backend/component/plugin/backendplugin.html :: css}">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select</title>
+    <title>商品詳情</title>
+    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
 
 </head>
 <body id="page-top">
+<div th:replace="backend/component/loading :: loading"></div>
 <!-- Page Wrapper -->
 <div id="wrapper">
     <!-- Sidebar -->
@@ -24,9 +26,7 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
-                <!-- 內容請寫在這裡呦~~~~ -->
-
-
+                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
 
             </div>
             <!-- /.container-fluid -->
@@ -52,7 +52,6 @@
 <script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 <!-- Page level custom scripts -->
 <script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
-
 
 </body>
 </html>

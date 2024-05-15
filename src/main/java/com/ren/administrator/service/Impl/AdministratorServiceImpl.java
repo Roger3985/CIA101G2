@@ -325,7 +325,6 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
             System.out.println("新密碼生成成功: " + newPwd);
 
             // 設定郵件的內容，包括新密碼
-            String forgotPwdContent = "Your new password is: ";
             message.setText(forgotPwdContent + newPwd);
             System.out.println("郵件內容設定成功");
 
