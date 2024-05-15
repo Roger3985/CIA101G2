@@ -5,9 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
-    <!-- Custom styles for this page -->
-    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
+    <style>
+        /* CSS */
+        .section {
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+        }
 
+        .section-header {
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .card-set {
+            display: flex;
+            gap: 20px;
+        }
+
+        .card {
+            flex: 1;
+            display: block;
+            border-radius: 10px;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .thumb-container {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .content-container {
+            padding: 15px;
+            background-color: #fff;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .description {
+            font-size: 14px;
+            color: #666;
+        }
+
+    </style>
 </head>
 <body id="page-top">
 <div th:replace="backend/component/loading :: loading"></div>
@@ -25,10 +84,39 @@
             <!-- End of Topbar -->
             <!-- Begin Page Content -->
             <div class="container-fluid">
-                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
                 <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                <div class="section">
+                    <div class="section-header">
+                        <h2>News & launches</h2>
+                        <div class="section-header-description"></div>
+                    </div>
+                    <div class="card-set">
+                        <a class="card" href="https://material.io/blog/google-io-2024" target="_blank">
+                            <div class="thumb-container" style="background-image: url('https://lh3.googleusercontent.com/CZUV5ERpGmSi37S437q9yGrBDpTrCTaA_BFBe1AoFuaYuYCGGRw_Qvv4j1q3lcw7YeSJYTXoUi5UhYNA_J9XFioJb2F1wOhNTfIufwLd2SNuMxHRzPI=w960');"></div>
+                            <div class="content-container">
+                                <span class="title">Material Design at Google I/O</span>
+                                <span class="description">See the full list of Material talks and tutorials launching at I/O 2024</span>
+                            </div>
+                        </a>
+                        <a class="card" href="https://material.io/blog/get-google-fonts-update" target="_blank">
+                            <div class="thumb-container" style="background-image: url('https://lh3.googleusercontent.com/fnAWs0CZd5Ux984uoPYWo2zKxzkSq4DgaqRfOyEMLDY2E4dJ0LtxJpuAo_vACJS9FImkgokKKGDHZ5VSMSRWUacm9Up56bolNoMPcSK-LfB2-OTunQ=w960');"></div>
+                            <div class="content-container">
+                                <span class="title">How to get Google Fonts</span>
+                                <span class="description">New API updates and website upgrades make font integration easier than ever</span>
+                            </div>
+                        </a>
+                        <a class="card" href="https://www.figma.com/community/file/1035203688168086460" target="_blank">
+                            <div class="thumb-container" style="background-image: url('https://lh3.googleusercontent.com/cOI8fyZSqiEzQzBOzSqDjePihKw8h7OPzGn_SkeOubAUXIBFzsyP0-h1rQ7WcjeZneeOTjpUpKAv3f8xkiBkR-VXQEm-oDn7vkVsKh7vlA2myxY5CR8=w960');"></div>
+                            <div class="content-container">
+                                <span class="title">Figma design kit</span>
+                                <span class="description">Start designing and prototyping with the complete M3 library of ready-made components</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
 
             </div>
+            <!-- 內容結束~~~~~~~~~~~~~~~ -->
             <!-- /.container-fluid -->
         </div>
         <!-- End of Main Content -->
@@ -47,13 +135,21 @@
 <div th:replace="backend/component/logout :: logout"></div>
 
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
-<!-- Page level plugins -->
-<script th:src="@{/backend/vendor/datatables/jquery.dataTables.min.js}"></script>
-<script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-<!-- Page level custom scripts -->
-<script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
-<script>
 
+<script>
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', function (e) {
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple');
+            this.appendChild(ripple);
+
+            ripple.style.width = ripple.style.height = Math.max(this.clientWidth, this.clientHeight) + 'px';
+            ripple.style.left = e.clientX - this.getBoundingClientRect().left - ripple.offsetWidth / 2 + 'px';
+            ripple.style.top = e.clientY - this.getBoundingClientRect().top - ripple.offsetHeight / 2 + 'px';
+
+            setTimeout(() => ripple.remove(), 600);
+        });
+    });
 
 </script>
 

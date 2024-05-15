@@ -29,12 +29,8 @@ public class AdmAuthority {
     @Embeddable
     public static class CompositeAdmAuthority implements Serializable {
         private static final long serialVersionUID = 1L;
-        @NotNull(message = "請選擇職位編號")
-        @Min(value = 0, message = "請選擇職位編號")
         @Column(name = "titleno")
         private Integer titleNo;
-        @NotNull(message = "請選擇功能編號")
-        @Min(value = 0, message = "請選擇職位編號")
         @Column(name = "authfuncno")
         private Integer authFuncNo;
 

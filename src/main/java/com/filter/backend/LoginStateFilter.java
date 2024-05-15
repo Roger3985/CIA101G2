@@ -25,7 +25,7 @@ import static com.ren.util.Validator.validateURL;
  * 1.將使用者的自動登入cookie移除，使其無法透過自動登入的方式直接登入
  * 2.註銷Session
  * 之後將使用者導至登入畫面
- * 不使用Service的登出方法，因為更改到其他登入用戶的登入狀態，只針對該使用者裝置作處置
+ * 不使用Service的登出方法，因為會更改到其他登入用戶的登入狀態，只針對該使用者裝置作處置
  */
 @Component
 @Order(SECOND_ORDER)
@@ -42,9 +42,21 @@ public class LoginStateFilter extends HttpFilter {
         // 非靜態資源與登入相關網頁 && 已登入
         if (!validateURL(requestURI) && (loginState = (LoginState) session.getAttribute("loginState")) != null) {
             System.out.println("被LoginStateFilter過濾的" + requestURI);
+            // 有時會發生Redis資料庫異常的問題，在這邊處理
+            if ((loginState = administratorSvc.getFromRedis(loginState.getAdmNo())) == null) {
+                System.out.println("發生異常，請麻煩重新登入");
+                session.invalidate();
+                // 將錯誤訊息傳到前端
+//                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//                res.setContentType("application/json");
+//                res.getWriter().write("{\"error\": \"發生異常，請重新登入。\"}");
+//                res.getWriter().flush();
+                res.sendRedirect(loginPage);
+                return;
+            }
             // 如果當前SessionID與Redis資料庫內的SessionID不同，則代表為不同裝置登入，強制登出
             // 從當前session內的登入狀態獲得管理員編號，使用管理員編號查詢Redis資料庫登入狀態的SessionID
-            if (!session.getId().equals(administratorSvc.getFromRedis(loginState.getAdmNo()).getJsessionid())) {
+            if (!session.getId().equals(loginState.getJsessionid())) {
 
                 // 搜尋使用者cookie確認是否有登入相關資訊的cookie
                 Optional<Cookie> userCookie = Optional.ofNullable(req.getCookies())
@@ -62,6 +74,12 @@ public class LoginStateFilter extends HttpFilter {
                 // session.removeAttribute("loginState"); // 因Session被註銷，所以不用移除Session內的值
                 session.invalidate();
                 System.out.println("被強制登出囉");
+                // 將錯誤訊息傳到前端響應
+//                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//                res.setContentType("application/json");
+//                res.getWriter().write("{\"error\": \"偵測到您已在其他裝置登入，請重新登入。\"}");
+//                res.getWriter().flush();
+                // 重導回首頁
                 res.sendRedirect(loginPage);
                 return;
             }

@@ -192,6 +192,14 @@ public class ProductBackEndController {
         return ResponseEntity.ok().body(product);
     }
 
+    @GetMapping("listTop10Products")
+    public String top10Products(Model model) {
+        List<Product> list = productSvc.getTopPopular();
+        model.addAttribute("productList", list);
+
+        return "backend/product/listTop10Products";
+    }
+
     // 首頁更新營業額等Daily資料
     // 1.每日營業額
     // 2.賣出數量

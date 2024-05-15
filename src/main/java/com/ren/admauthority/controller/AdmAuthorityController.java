@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,7 +64,11 @@ public class AdmAuthorityController {
     }
 
     @PostMapping("/addAdmAuthority")
-    public String addAdmAuthority(@RequestBody AdmAuthority admAuthority) {
+    public String addAdmAuthority(@Valid AdmAuthority admAuthority, BindingResult result, ModelMap model) {
+//        if (result.hasErrors()) {
+//            model.addAttribute();
+//        }
+//
         return "";
     }
 

@@ -6,7 +6,8 @@
     <title>Document</title>
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <!-- Custom styles for this page -->
-    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/backend/component/profile.css}" rel="stylesheet" />
+
 
 </head>
 <body id="page-top">
@@ -27,8 +28,70 @@
             <div class="container-fluid">
                 <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
                 <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                <div class="container mt-5">
+                    <!-- Profile Card -->
+                    <div class="profile-card">
+                        <div class="cover-photo" style="background-image: url('/path/to/cover-photo.jpg');"></div>
+                        <div class="profile-info">
+                            <div class="profile-picture">
+                                <img src="/path/to/profile-picture.jpg" alt="Profile Picture">
+                            </div>
+                            <div class="profile-details">
+                                <h2>Mitchell C. Shay</h2>
+                                <p class="email">info@example.com</p>
+                                <p>UX / UI Designer</p>
+                            </div>
+                        </div>
+                        <div class="profile-stats">
+                            <div>
+                                <span>150</span>
+                                <p>Follower</p>
+                            </div>
+                            <div>
+                                <span>140</span>
+                                <p>Place Stay</p>
+                            </div>
+                            <div>
+                                <span>45</span>
+                                <p>Reviews</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="tabs-container">
+                        <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">Posts</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="about-me-tab" data-toggle="tab" href="#about-me" role="tab" aria-controls="about-me" aria-selected="false">About Me</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Setting</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="profileTabContent">
+                            <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                                <!-- Posts content -->
+                                <p>Please type what you want....</p>
+                                <button class="btn btn-primary">Post</button>
+                            </div>
+                            <div class="tab-pane fade" id="about-me" role="tabpanel" aria-labelledby="about-me-tab">
+                                <!-- About Me content -->
+                                <p>About Me content here...</p>
+                            </div>
+                            <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                                <!-- Settings content -->
+                                <p>Settings content here...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
             </div>
+            <!-- 內容結束~~~~~~~~~~~~~~~ -->
             <!-- /.container-fluid -->
         </div>
         <!-- End of Main Content -->
@@ -47,11 +110,8 @@
 <div th:replace="backend/component/logout :: logout"></div>
 
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
-<!-- Page level plugins -->
-<script th:src="@{/backend/vendor/datatables/jquery.dataTables.min.js}"></script>
-<script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-<!-- Page level custom scripts -->
-<script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
+
+<script th:src="@{/js/backend/component/profile.js}"></script>
 
 </body>
 </html>

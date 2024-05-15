@@ -131,23 +131,26 @@ public class BackendIndexController {
 
         // 判斷是否有無這個帳號
         if (administrator == null) {
-            model.addAttribute("message", "不存在此用戶");
+            model.addAttribute("idError", "不存在此用戶");
             return "backend/login";
         }
 
         Integer failTimes = getFailedTimes();
         // 密碼嘗試次數最多5次，如果錯誤次數少於等於5次，檢查密碼是否正確；若超過5次，直接導回去頁面
-        if (failTimes <= 5) {
+        if (failTimes < 5) {
             // 判斷密碼是否正確
             if (!admPwd.equals(administrator.getAdmPwd())) {
-                model.addAttribute("message", "密碼錯誤!");
                 // 執行登入失敗方法，將登入失敗次數記入Session
                 failTimes = loginFailed(failTimes);
-                session.setAttribute("failTimes", failTimes);
+                if (failTimes == 5) {
+                    model.addAttribute("pwdError", "您已達嘗試次數上限，請過30分鐘後再嘗試");
+                } else {
+                    model.addAttribute("pwdError", "密碼錯誤，剩餘嘗試次數: " + (5 - failTimes));
+                }
                 return "backend/login";
             }
         } else {
-            model.addAttribute("message", "您已超過嘗試次數，請等30分鐘後再嘗試");
+            model.addAttribute("pwdError", "您已超過嘗試次數，請等30分鐘後再嘗試");
             return "backend/login";
         }
 
@@ -164,7 +167,7 @@ public class BackendIndexController {
 
         // 確認密碼正確後，回傳登入成功訊息，並將administrator存入session
         model.addAttribute("message", "登入成功!");
-
+        System.out.println(autoLogin);
         // 確認使用者是否要自動登入
         if (autoLogin == YES) {
             // 生成名為autoLogin的cookie，其值設置為一個亂數生成的字符串，分別存入給使用者與redis資料庫，做身分核對

@@ -1,8 +1,7 @@
 package com.ren.util;
 
 
-import static com.ren.util.Regex.emailRegex;
-import static com.ren.util.Regex.resourcesRegex;
+import static com.ren.util.Regex.*;
 
 public class Validator {
 
@@ -24,6 +23,16 @@ public class Validator {
      */
     public static boolean validateURL(String url) {
         return resourcesRegex.matcher(url).find();
+    }
+
+    /**
+     * 確認是否為已壓縮的檔案格式
+     *
+     * @param contentType 前端傳送參數標頭
+     * @return 如果為jpeg、png等已壓縮格式傳回true、非壓縮檔案格式傳回false
+     */
+    public static boolean validateFileType(String contentType) {
+        return compressFileRegex.matcher(contentType).find();
     }
 
 }

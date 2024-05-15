@@ -17,12 +17,15 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
-import java.util.Base64;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.DataFormatException;
+import java.util.zip.Deflater;
+import java.util.zip.Inflater;
 
 
 import static com.ren.util.Constants.*;
@@ -358,7 +361,69 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
         return false;
     }
 
+    /**
+     * 用壓縮的方式將圖片存到資料庫
+     *
+     * @param fileData 上傳資料
+     * @param administrator 管理員Entity
+     * @throws IOException 執行壓縮時有使用到io相關的API，因此使用此方法會拋出IOException
+     */
+    public void storeFile(byte[] fileData, Administrator administrator) throws IOException {
+        byte[] compressedData = compress(fileData); // Compress the data
 
+        administrator.setAdmPhoto(compressedData); // Set the compressed data to the file entity
+        administratorRepository.save(administrator); // Save the file entity to the database
+    }
+
+    /**
+     * 將存在資料庫的圖片解壓縮
+     *
+     * @param admNo 根據管理員編號取得解壓縮的圖片
+     * @return 返回解壓縮的byte[]
+     */
+    public byte[] retrieveFile(Integer admNo) {
+        Administrator administrator = getOneAdministrator(admNo); // Retrieve the file entity by ID
+        byte[] admPhoto = null;
+        if ((admPhoto = administrator.getAdmPhoto()) != null) {
+            return decompress(admPhoto); // Decompress and return the data
+        }
+        return null;
+    }
+
+    // Helper method to compress data
+    private byte[] compress(byte[] data) {
+        Deflater deflater = new Deflater();
+        deflater.setInput(data);
+        deflater.finish();
+        byte[] buffer = new byte[1024];
+        int compressedDataLength;
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            while (!deflater.finished()) {
+                compressedDataLength = deflater.deflate(buffer); // Compress data
+                baos.write(buffer, 0, compressedDataLength); // Write compressed data to output stream
+            }
+            return baos.toByteArray(); // Return compressed data as byte array
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Helper method to decompress data
+    private byte[] decompress(byte[] data) {
+        Inflater inflater = new Inflater();
+        inflater.setInput(data);
+        byte[] buffer = new byte[1024];
+        int decompressedDataLength;
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            while (!inflater.finished()) {
+                decompressedDataLength = inflater.inflate(buffer); // Decompress data
+                baos.write(buffer, 0, decompressedDataLength); // Write decompressed data to output stream
+            }
+            return baos.toByteArray(); // Return decompressed data as byte array
+        } catch (IOException | DataFormatException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
 

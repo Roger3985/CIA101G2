@@ -24,7 +24,7 @@ import static com.ren.util.Validator.validateURL;
  * 用於確認後台員工登入狀態的過濾器，
  * 主要有二功能:
  * 1.確認登入狀態，如果未登入則導向登入
- * 2.確認自動登入功能
+ * 2.如果使用者有選擇自動登入功能，則執行自動登入
  */
 @Component
 @Order(FIRST_ORDER)
