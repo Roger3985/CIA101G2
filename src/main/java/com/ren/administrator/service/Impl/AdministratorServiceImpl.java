@@ -284,6 +284,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
      */
     @Override
     public boolean sendEmail(String email) {
+
         try {
             System.out.println("開始寄信");
 
@@ -316,8 +317,6 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
             System.out.println("收件人設定成功");
 
-            // 設定郵件的主旨
-            String emailSubject = "Your Password Reset Request";
             message.setSubject(emailSubject);
             System.out.println("郵件主旨設定成功");
 
