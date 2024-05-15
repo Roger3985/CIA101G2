@@ -1,4 +1,4 @@
-package com.chihyun.servicerecord.entity.config;
+package com.chihyun.servicerecord.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
