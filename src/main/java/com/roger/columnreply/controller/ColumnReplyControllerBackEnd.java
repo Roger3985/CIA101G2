@@ -5,6 +5,7 @@ import com.roger.columnreply.entity.ColumnReply;
 import com.roger.columnreply.service.ColumnReplyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ public class ColumnReplyControllerBackEnd {
     ColumnReplyService columnReplyService;
 
     @Autowired
+    @Qualifier("colStrStr")
     private StringRedisTemplate redisTemplate;
 
     /**

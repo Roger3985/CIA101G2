@@ -5,9 +5,14 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.iting.cart.entity.CartRedis;
 import com.ren.administrator.dto.LoginState;
 import com.roger.member.dto.LoginStateMember;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
@@ -25,13 +30,14 @@ public class RedisConfig {
      * 1.將key的序列化器設置為Integer序列化器
      * 2.將value的序列化器設置為Json序列化器
      * 泛型設置為<Integer, LoginState>，用於根據管理員編號操作LoginState(CRUD)
-     * Bean 名稱設計成integerLoginState (調用@Qualifier("integerLoginState")即可使用)
+     * Bean 名稱設計成admIntLogin (調用@Qualifier("admIntLogin")即可使用)
      *
      * @param connectionFactory 配置RedisConnectionFactory，與資料庫建立連線
      * @return 返回redisTemplate
      */
-    @Bean("integerLoginState")
-    public RedisTemplate<Integer, LoginState> integerLoginStateRedisTemplate(RedisConnectionFactory connectionFactory) {
+    @Bean("admIntLogin")
+    public RedisTemplate<Integer, LoginState> admIntLoginRedisTemplate(
+            @Qualifier("admDataBase") RedisConnectionFactory connectionFactory) {
         RedisTemplate<Integer, LoginState> redisTemplate = new RedisTemplate<>();
         // 設置連線
         redisTemplate.setConnectionFactory(connectionFactory);
@@ -53,8 +59,9 @@ public class RedisConfig {
      * @param connectionFactory 配置 RedisConnectionFactory，與資料庫建立連線
      * @return 返回 redisTemplate
      */
-    @Bean("integerLoginStateMember")
-    public RedisTemplate<Integer, LoginStateMember> integerLoginStateRedisTemplateMember(RedisConnectionFactory connectionFactory) {
+    @Bean("memIntLogin")
+    public RedisTemplate<Integer, LoginStateMember> integerLoginStateRedisTemplateMember(
+            @Qualifier("memDataBase") RedisConnectionFactory connectionFactory) {
         RedisTemplate<Integer, LoginStateMember> redisTemplate = new RedisTemplate<>();
         // 設置連線
         redisTemplate.setConnectionFactory(connectionFactory);
@@ -71,13 +78,14 @@ public class RedisConfig {
      * 1.將key的序列化器設置為String序列化器
      * 2.將value的序列化器設置為Json序列化器
      * 泛型設置為<String, LoginState>，用於根據管理員編號操作LoginState(CRUD)
-     * Bean 名稱設計成stringLoginState (調用@Qualifier("stringLoginState")即可使用)
+     * Bean 名稱設計成admStrLogin (調用@Qualifier("admStrLogin")即可使用)
      *
      * @param connectionFactory 配置RedisConnectionFactory，與資料庫建立連線
      * @return 返回redisTemplate
      */
-    @Bean("stringLoginState")
-    public RedisTemplate<String, LoginState> stringLoginStateRedisTemplate(RedisConnectionFactory connectionFactory) {
+    @Bean("admStrLogin")
+    public RedisTemplate<String, LoginState> admStrLoginRedisTemplate(
+            @Qualifier("admDataBase") RedisConnectionFactory connectionFactory) {
         RedisTemplate<String, LoginState> redisTemplate = new RedisTemplate<>();
         // 設置連線
         redisTemplate.setConnectionFactory(connectionFactory);
@@ -95,8 +103,33 @@ public class RedisConfig {
      * @param connectionFactory 配置RedisConnectionFactory，與資料庫建立連線
      * @return 返回StringRedisTemplate
      */
-    @Bean
-    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory connectionFactory) {
+    @Bean("admStrStr")
+    public StringRedisTemplate admStrRedisTemplate(
+            @Qualifier("admDataBase") RedisConnectionFactory connectionFactory) {
+        StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();
+        stringRedisTemplate.setConnectionFactory(connectionFactory);
+        return stringRedisTemplate;
+    }
+
+    @Bean("memStrStr")
+    public StringRedisTemplate memStrRedisTemplate(
+            @Qualifier("memDataBase") RedisConnectionFactory connectionFactory) {
+        StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();
+        stringRedisTemplate.setConnectionFactory(connectionFactory);
+        return stringRedisTemplate;
+    }
+
+    @Bean("proStrStr")
+    public StringRedisTemplate proStrRedisTemplate(
+            @Qualifier("proDataBase") RedisConnectionFactory connectionFactory) {
+        StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();
+        stringRedisTemplate.setConnectionFactory(connectionFactory);
+        return stringRedisTemplate;
+    }
+
+    @Bean("colStrStr")
+    public StringRedisTemplate colStrRedisTemplate(
+            @Qualifier("colDataBase") RedisConnectionFactory connectionFactory) {
         StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();
         stringRedisTemplate.setConnectionFactory(connectionFactory);
         return stringRedisTemplate;
@@ -108,8 +141,25 @@ public class RedisConfig {
      * @param connectionFactory 配置RedisConnectionFactory，與資料庫建立連線
      * @return 返回StringRedisTemplate
      */
-    @Bean("stringInteger")
-    public RedisTemplate<String, Integer> stringIntegerRedisTemplate(RedisConnectionFactory connectionFactory) {
+    @Bean("admStrInt")
+    public RedisTemplate<String, Integer> admStrIntRedisTemplate(
+            @Qualifier("admDataBase") RedisConnectionFactory connectionFactory) {
+        RedisTemplate<String, Integer> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(connectionFactory);
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new GenericToStringSerializer<>(Integer.class));
+        return redisTemplate;
+    }
+
+    /**
+     * 透過CookieValue(String)來將存在Redis資料庫內的存有使用者編號的資料取出
+     *
+     * @param connectionFactory 配置RedisConnectionFactory，與資料庫建立連線
+     * @return 返回StringRedisTemplate
+     */
+    @Bean("memStrInt")
+    public RedisTemplate<String, Integer> memStrIntRedisTemplate(
+            @Qualifier("memDataBase") RedisConnectionFactory connectionFactory) {
         RedisTemplate<String, Integer> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(connectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());
@@ -118,7 +168,8 @@ public class RedisConfig {
     }
 
     @Bean("cart")
-    public RedisTemplate<String, CartRedis> cartRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    public RedisTemplate<String, CartRedis> cartRedisTemplate(
+            @Qualifier("cartDataBase") RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, CartRedis> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());
@@ -136,7 +187,8 @@ public class RedisConfig {
     }
 
     @Bean("cartList")
-    public RedisTemplate<String, Map<String, String>> cartListRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    public RedisTemplate<String, Map<String, String>> cartListRedisTemplate(
+            @Qualifier("cartDataBase") RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Map<String, String>> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         redisTemplate.setKeySerializer(new GenericToStringSerializer<>(Integer.class));
@@ -146,6 +198,82 @@ public class RedisConfig {
 
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
+    }
+
+//    @Bean("loginState")
+//    public JedisConnectionFactory jedisConnectionFactory() {
+//        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
+//        // 設置Redis服務主機與端口
+//        jedisConnectionFactory.setHostName("localhost");
+//        jedisConnectionFactory.setPort(6379);
+//        // 設置連接的數據庫索引
+//        jedisConnectionFactory.setDatabase(1);
+//        return jedisConnectionFactory;
+//    }
+
+    /**
+     * 顯示寫入Lettuce連線工廠，RedisTemplate預設就是使用Lettuce客戶端的連線工廠，
+     * 此Bean主要是用來設定存入的資料庫索引。
+     * 補充:也可以使用Jedis客戶端連線，但因此專案的pom檔依賴引入為4.3.0版的Jedis，
+     * 與此Spring Data Redis 2.7.0衝突，無法註冊連線，所以不使用
+     * 用於存放管理員相關資料，索引1
+     * 
+     * @return 返回連線工廠，用於註冊login
+     */
+    @Bean("admDataBase")
+    public LettuceConnectionFactory loginStateRedisConnectionFactory() {
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
+        config.setHostName("localhost");
+        config.setPort(6379);
+        config.setDatabase(1);  // 設定使用的 Redis database 索引
+        return new LettuceConnectionFactory(config);
+    }
+
+    @Bean("proDataBase")
+    public LettuceConnectionFactory productRedisConnectionFactory() {
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
+        config.setHostName("localhost");
+        config.setPort(6379);
+        config.setDatabase(4);  // 設定使用的 Redis database 索引
+        return new LettuceConnectionFactory(config);
+    }
+
+    @Bean("memDataBase")
+    public LettuceConnectionFactory memberRedisConnectionFactory() {
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
+        config.setHostName("localhost");
+        config.setPort(6379);
+        config.setDatabase(0);  // 設定使用的 Redis database 索引
+        return new LettuceConnectionFactory(config);
+    }
+
+    @Bean("colDataBase")
+    public LettuceConnectionFactory columnRedisConnectionFactory() {
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
+        config.setHostName("localhost");
+        config.setPort(6379);
+        config.setDatabase(7);  // 設定使用的 Redis database 索引
+        return new LettuceConnectionFactory(config);
+    }
+
+    @Bean("cartDataBase")
+    public LettuceConnectionFactory cartRedisConnectionFactory() {
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
+        config.setHostName("localhost");
+        config.setPort(6379);
+        config.setDatabase(6);  // 設定使用的 Redis database 索引
+        return new LettuceConnectionFactory(config);
+    }
+
+    /**
+     * 給預設RedisTemplate使用的連線，加上Primary優先使用這個bean
+     *
+     * @return 返回Lettuce預設連線
+     */
+    @Bean
+    @Primary
+    public LettuceConnectionFactory redisConnectionFactory() {
+        return new LettuceConnectionFactory(new RedisStandaloneConfiguration("localhost", 6379));
     }
 
 }

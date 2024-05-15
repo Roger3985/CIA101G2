@@ -35,11 +35,12 @@ public class AutoLoginFilter extends HttpFilter {
 
     // String To Integer
     @Autowired
-    @Qualifier("stringInteger")
+    @Qualifier("admStrInt")
     private RedisTemplate<String, Integer> stiRedisTemplate;
 
     // <String, String>
     @Autowired
+    @Qualifier("admStrStr")
     private StringRedisTemplate stringRedisTemplate;
 
     @Override

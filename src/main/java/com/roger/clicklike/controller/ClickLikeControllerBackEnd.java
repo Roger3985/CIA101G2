@@ -3,6 +3,7 @@ package com.roger.clicklike.controller;
 import com.roger.clicklike.entity.ClickLike;
 import com.roger.clicklike.service.ClickLikeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ public class ClickLikeControllerBackEnd {
     private ClickLikeService clickLikeService;
 
     @Autowired
+    @Qualifier("colStrStr")
     private StringRedisTemplate redisTemplate;
 
     /**

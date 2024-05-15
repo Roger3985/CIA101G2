@@ -10,9 +10,10 @@ public interface ProductCategoryService_interface {
 
 	ProductCategory addProductCategory(ProductCategory productCategory);
 
+	List<ProductCategory> getByProductCatName(String productCatName);
 	List<ProductCategory> getAll();
 
-	ProductCategory getOneProductCatagory(Integer pCatNo);
+	ProductCategory getOneProductCategory(Integer pCatNo);
 
 //	Set<Product> getProductsBypCatNo(Integer pCatNo);
 

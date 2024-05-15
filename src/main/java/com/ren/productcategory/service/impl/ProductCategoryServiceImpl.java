@@ -27,21 +27,19 @@ public class ProductCategoryServiceImpl implements ProductCategoryService_interf
 	}
 
 	@Override
-	public ProductCategory getOneProductCatagory(Integer pCatNo) {
-		// TODO Auto-generated method stub
-		return productCategoryRepository.findById(pCatNo).orElse(null);
+	public List<ProductCategory> getByProductCatName(String productCatName) {
+		return productCategoryRepository.findProductCategoriesByProductCatName(productCatName);
+	}
+
+	@Override
+	public ProductCategory getOneProductCategory(Integer productCatNo) {
+		return productCategoryRepository.findById(productCatNo).orElse(null);
 	}
 
 	@Override
 	public List<ProductCategory> getAll() {
 		return productCategoryRepository.findAll();
 	}
-
-//	@Override
-//	public Set<Product> getProductsBypCatNo(Integer pCatNo) {
-//		// TODO Auto-generated method stub
-//		return productRepository.findById(pCatNo);
-//	}
 
 	@Override
 	public ProductCategory updateProductCategory(ProductCategory productCategory) {
@@ -50,7 +48,6 @@ public class ProductCategoryServiceImpl implements ProductCategoryService_interf
 
 	@Override
 	public void deleteProductCategory(Integer pCatNo) {
-		// TODO Auto-generated method stub
 		productCategoryRepository.deleteById(pCatNo);
 	}
 

@@ -28,11 +28,11 @@
             <div class="container-fluid">
                 <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
                 <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
-                <form method="post" th:action="@{updateProduct/update}" th:object="${product}">
+                <form method="post" th:action="@{/backend/product/updateProduct/update}" th:object="${product}">
                     <div class="mb-3 row">
                         <label for="productSelect" class="col-sm-2 col-form-label">商品編號</label>
                         <div class="col-sm-3">
-                            <select size="1" name="productNo" id="productSelect" th:onchange="|updateProductInstantly()|">
+                            <select size="1" name="productNo" id="productSelect" th:field="*{productNo}" th:onchange="|updateProductInstantly()|">
                                 <option th:each="product : ${productList}" th:value="${product.productNo}" th:text="${product.productNo}"></option>
                             </select>
                         </div>
@@ -90,8 +90,8 @@
                         <label for="productStat" class="col-sm-2 col-form-label">商品狀態</label>
                         <div class="col-sm-3">
                             <select size="1" name="productStat" id="productStat" th:field="*{productStat}">
-                                <option th:value="${0}" th:text="上架"></option>
-                                <option th:value="${1}" th:text="下架"></option>
+                                <option th:value="${1}" th:text="上架"></option>
+                                <option th:value="${0}" th:text="下架"></option>
                             </select>
                         </div>
                     </div>
@@ -141,15 +141,12 @@
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
 
 <script th:inline="javascript">
-    // document.addEventListener("DOMContentLoaded", function() {
-    //     // 在這裡放置你的 AJAX 請求代碼
+    // Get傳遞
+    // function updateProductInstantly() {
     //     var selectedProductNo = document.getElementById('productSelect').value;
-    //     sendAjaxRequest(selectedProductNo);
-    // });
     //
-    // function sendAjaxRequest(selectedProductNo) {
     //     var xhr = new XMLHttpRequest();
-    //     xhr.open('POST', '/backend/product/getProductDetails?productNo=' + encodeURIComponent(selectedProductNo), true);
+    //     xhr.open('GET', '/backend/product/updateProduct/' + encodeURIComponent(selectedProductNo), true); // 將POST改為GET，並在URL中傳遞productNo
     //     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     //     xhr.onload = function () {
     //         if (xhr.status === 200) {
@@ -165,6 +162,9 @@
     //             document.getElementById('productSalQty').value = productDetails.productSalQty;
     //             document.getElementById('productComPeople').value = productDetails.productComPeople;
     //             document.getElementById('productComScore').value = productDetails.productComScore;
+    //
+    //             // 手動更新URL
+    //             window.location.href = '/backend/product/updateProduct/' + encodeURIComponent(selectedProductNo);
     //         } else {
     //             console.error('Failed to fetch product details');
     //         }
@@ -173,6 +173,7 @@
     //     xhr.send();
     // }
 
+    // 舊的寫法，用post傳遞
     function updateProductInstantly() {
         var selectedProductNo = document.getElementById('productSelect').value;
 

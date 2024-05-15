@@ -5,6 +5,7 @@ import com.roger.member.repository.MemberRepository;
 import com.roger.member.entity.Member;
 import com.roger.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,7 @@ public class MemberServiceImpl implements MemberService {
      * 自動裝配的 StringRedisTemplate，用於執行與 Redis 資料庫操作，特別是針對字串類型的資料。
      */
     @Autowired
+    @Qualifier("memStrStr")
     private StringRedisTemplate redisTemplate;
 
     /**

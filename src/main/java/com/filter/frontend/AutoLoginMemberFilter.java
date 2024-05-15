@@ -36,14 +36,15 @@ public class AutoLoginMemberFilter extends HttpFilter {
     private MemberServiceImpl memberService;
 
     @Autowired
-    @Qualifier("stringInteger")
-    private RedisTemplate<String, Integer> stringIntegerRedisTemplate;
+    @Qualifier("memStrInt")
+    private RedisTemplate<String, Integer> memStrIntRedisTemplate;
 
     @Autowired
-    @Qualifier("integerLoginStateMember")
+    @Qualifier("memIntLogin")
     private RedisTemplate<Integer, LoginStateMember> integerLoginStateRedisTemplateMember;
 
     @Autowired
+    @Qualifier("memStrStr")
     private StringRedisTemplate stringRedisTemplate;
 
     @Override
@@ -84,7 +85,7 @@ public class AutoLoginMemberFilter extends HttpFilter {
                 String cookieValue = userCookie.get().getValue();
 
                 // 透過 Cookie 值獲得 memNo;
-                Integer memNo = stringIntegerRedisTemplate.opsForValue().get(cookieValue);
+                Integer memNo = memStrIntRedisTemplate.opsForValue().get(cookieValue);
 
                 // 透過會員編號找到會員
                 Member member = memberService.getMemberByMemNo(memNo);

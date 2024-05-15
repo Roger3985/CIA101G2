@@ -5,6 +5,7 @@ import com.roger.member.entity.Member;
 import com.roger.report.entity.Report;
 import com.roger.report.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +27,7 @@ public class ReportControllerBackEnd {
     ReportService reportService;
 
     @Autowired
+    @Qualifier("colStrStr")
     private StringRedisTemplate redisTemplate;
 
     /**

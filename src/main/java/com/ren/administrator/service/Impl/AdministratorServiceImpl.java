@@ -36,14 +36,15 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
     private AdministratorRepository administratorRepository;
 
     @Autowired
-    @Qualifier("stringInteger")
+    @Qualifier("admStrInt")
     private RedisTemplate<String, Integer> stiRedisTemplate;
 
     @Autowired
-    @Qualifier("integerLoginState")
+    @Qualifier("admIntLogin")
     private RedisTemplate<Integer, LoginState> itlRedisTemplate;
 
     @Autowired
+    @Qualifier("admStrStr")
     private StringRedisTemplate stringRedisTemplate;
 
     /**

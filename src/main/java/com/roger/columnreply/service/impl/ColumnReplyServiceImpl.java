@@ -4,6 +4,7 @@ import com.roger.columnreply.entity.ColumnReply;
 import com.roger.columnreply.repository.ColumnReplyRepository;
 import com.roger.columnreply.service.ColumnReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class ColumnReplyServiceImpl implements ColumnReplyService {
      * 自動裝配的 StringRedisTemplate，用於執行與 Redis 資料庫操作，特別是針對字串類型的資料。
      */
     @Autowired
+    @Qualifier("colStrStr")
     private StringRedisTemplate redisTemplate;
 
 

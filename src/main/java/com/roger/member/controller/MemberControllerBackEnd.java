@@ -4,6 +4,7 @@ import com.roger.member.entity.Member;
 import com.roger.member.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,6 +26,7 @@ public class MemberControllerBackEnd {
     private MemberService memberService;
 
     @Autowired
+    @Qualifier("memStrStr")
     private StringRedisTemplate redisTemplate;
 
     // 前往後台管理首頁

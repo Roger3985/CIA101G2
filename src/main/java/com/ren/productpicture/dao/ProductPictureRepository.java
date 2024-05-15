@@ -2,6 +2,7 @@ package com.ren.productpicture.dao;
 
 import com.ren.productpicture.entity.ProductPicture;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,10 +21,11 @@ public interface ProductPictureRepository extends JpaRepository<ProductPicture, 
     List<ProductPicture> findProductPicturesByProduct_ProductNo(Integer productNo);
 
     /**
-     * 根據商品編號刪除商品照片
+     * 根據商品編號刪除該商品所有商品照片
      *
      * @param productNo 欲刪除之商品編號
      */
     @Transactional
+    @Modifying
     void deleteProductPicturesByProduct_ProductNo(Integer productNo);
 }

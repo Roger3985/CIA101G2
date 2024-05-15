@@ -6,6 +6,7 @@ import com.roger.columnarticle.entity.ColumnArticle;
 import com.roger.columnarticle.service.ColumnArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,7 @@ public class ColumnArticleControllerBackEnd {
     AdministratorServiceImpl administratorService;
 
     @Autowired
+    @Qualifier("colStrStr")
     private StringRedisTemplate redisTemplate;
 
     /**
