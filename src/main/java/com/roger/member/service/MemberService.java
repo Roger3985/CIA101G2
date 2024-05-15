@@ -135,6 +135,15 @@ public interface MemberService {
     public boolean forgetPassword(String memMail);
 
     /**
+     * 處理第三方登入賦予隨機密碼的功能。
+     * 此方法接受會員的第三方信箱，並對會員的密碼賦予隨機密碼且發送賦予密碼的相關訊息。
+     *
+     * @param memMail 會員的第三方註冊信箱。
+     * @return 如果賦予密碼的請求成功，則返回 true;否則返回 false
+     */
+    public String setThreeLoginPassword(String memMail);
+
+    /**
      * 停權會員。
      * 此方法根據會員編號停權會員的帳號。
      *
