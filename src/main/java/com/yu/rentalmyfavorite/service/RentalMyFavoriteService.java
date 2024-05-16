@@ -15,7 +15,7 @@ import java.util.Map;
 
         RentalMyFavorite findByMemNo(Integer memNo); //單筆查詢(memNo)
 
-        RentalMyFavorite findByRentalFavTime(DateTimeFormat rentalFavTime); //單筆查詢(rentalFavTime)
+        List<RentalMyFavorite> findByRentalFavTime(DateTimeFormat rentalFavTime); //單筆查詢(rentalFavTime)
 
         RentalMyFavorite findByIdRentalNoAndIdMemNo(Integer rentalNo, Integer memNo);  //複合主鍵查詢
 

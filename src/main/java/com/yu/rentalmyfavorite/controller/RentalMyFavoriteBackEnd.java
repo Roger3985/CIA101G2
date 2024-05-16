@@ -104,7 +104,7 @@ public class RentalMyFavoriteBackEnd {
         return "/backend/rentalmyfavorite/listOneRentalMyFAV"; // 查詢完成後轉交
     }
 
-    
+
     // 處理修改資料
     @PostMapping("updateRentalMyFAV")
     public String updateRentalMyFAV(@Valid RentalMyFavorite rentalMyFavorite, BindingResult result, ModelMap model) {
@@ -166,7 +166,7 @@ public class RentalMyFavoriteBackEnd {
 
         return "/backend/rentalmyfavorite/listAllRentalMyFAV";
     }
-    
+
 }
 
 

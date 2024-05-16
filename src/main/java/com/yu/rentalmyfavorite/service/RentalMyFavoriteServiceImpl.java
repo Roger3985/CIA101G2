@@ -32,24 +32,24 @@ public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
     //單筆查詢(rentalNo)
     @Override
     public RentalMyFavorite findByNo(Integer rentalNo) {
-        return repository.findByRentalNo(rentalNo);
+        return repository.findByRental_RentalNo(rentalNo);
     }
 
     //單筆查詢(memNo)
     @Override
     public RentalMyFavorite findByMemNo(Integer memNo) {
-        return repository.findByMemNo(memNo);
+        return repository.findByMember_MemNo(memNo);
     }
 
     //複合主鍵查詢
     @Override
     public RentalMyFavorite findByIdRentalNoAndIdMemNo(Integer rentalNo, Integer memNo) {
-        return repository.findByIdRentalNoAndIdMemNo(rentalNo, memNo);
+        return repository.findByRental_RentalNoAndMember_MemNo(rentalNo, memNo);
     }
 
     //單筆查詢(rentalFavTime)
     @Override
-    public RentalMyFavorite findByRentalFavTime(DateTimeFormat rentalFavTime){
+    public List<RentalMyFavorite> findByRentalFavTime(DateTimeFormat rentalFavTime){
         return repository.findByRentalFavTime(rentalFavTime);
     }
 

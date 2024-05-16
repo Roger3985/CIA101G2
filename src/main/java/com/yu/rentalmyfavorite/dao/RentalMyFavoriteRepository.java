@@ -19,16 +19,16 @@ import java.util.List;
          * 注意：JpaRepository的泛型為 <T,ID>，所以在使用繼承時，必須定義好 T 與 ID 的型別，也就是 <MemberDTO, Long>。
          */
         @Transactional
-        public RentalMyFavorite findByRentalNo(Integer rentalNo);  //rentalNo查詢
+        RentalMyFavorite findByRental_RentalNo(Integer rentalNo);  //rentalNo查詢
 
         @Transactional
-        public RentalMyFavorite findByMemNo(Integer memNo); //memNo查詢
+        RentalMyFavorite findByMember_MemNo(Integer memNo); //memNo查詢
 
         @Transactional
-        public RentalMyFavorite findByIdRentalNoAndIdMemNo(Integer rentalNo,Integer memNo); //複合主鍵查詢
+        RentalMyFavorite findByRental_RentalNoAndMember_MemNo(Integer rentalNo,Integer memNo); //複合主鍵查詢
 
         @Transactional
-        public RentalMyFavorite findByRentalFavTime(DateTimeFormat rentalFavTime); //rentalFavTime查詢
+        List<RentalMyFavorite> findByRentalFavTime(DateTimeFormat rentalFavTime); //rentalFavTime查詢
 
 
         //        //自定義查詢(使用JPQL語法)
