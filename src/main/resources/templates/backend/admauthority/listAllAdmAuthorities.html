@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>商品清單</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
 
 </head>
 <body id="page-top">
+<div th:replace="backend/component/loading :: loading"></div>
 <!-- Page Wrapper -->
 <div id="wrapper">
     <!-- Sidebar -->
@@ -36,47 +39,19 @@
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>商品編號</th>
-                                    <th>商品類別編號</th>
-                                    <th>商品名稱</th>
-                                    <th>商品資訊</th>
-                                    <th>尺寸</th>
-                                    <th>顏色</th>
-                                    <th>商品單價</th>
-                                    <th>商品狀態</th>
-                                    <th>商品已售出數量</th>
-                                    <th>評價總人數</th>
-                                    <th>評價總星數</th>
+                                    <th>管理員編號</th>
+                                    <th>權限編號</th>
                                     <th>修改</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <th:block th:each="product : ${productList}">
+                                <th:block th:each="admAuthority : ${admAuthorityList}">
                                     <tr>
-                                        <td th:text="${product.productNo}"></td>
-                                        <td th:text="${product.productCategory.productCatNo}"></td>
-                                        <td th:text="${product.productName}"></td>
-                                        <td th:text="${product.productInfo}"></td>
+                                        <td th:text="${admAuthority.title.titleName}"></td>
+                                        <td th:text="${admAuthority.authorityFunction.authFuncInfo}"></td>
                                         <td>
-                                            <span th:if="${product.productStat == 0}" th:text="XS"></span>
-                                            <span th:if="${product.productStat == 1}" th:text="S"></span>
-                                            <span th:if="${product.productStat == 2}" th:text="M"></span>
-                                            <span th:if="${product.productStat == 3}" th:text="L"></span>
-                                            <span th:if="${product.productStat == 4}" th:text="XL"></span>
-                                            <span th:if="${product.productStat == 5}" th:text="2L"></span>
-                                        </td>
-                                        <td th:text="${product.productColor}"></td>
-                                        <td th:text="${product.productPrice}"></td>
-                                        <td>
-                                            <span th:if="${product.productStat == 0}" th:text="下架"></span>
-                                            <span th:if="${product.productStat == 1}" th:text="上架"></span>
-                                        </td>
-                                        <td th:text="${product.productSalQty}"></td>
-                                        <td th:text="${product.productComPeople}"></td>
-                                        <td th:text="${product.productComScore}"></td>
-                                        <td>
-                                            <form method="get" th:action="@{updateProduct}">
-                                                <input type="hidden" name="productNo" th:value="${product.productNo}">
+                                            <form method="get" th:action="@{updateAdmAuthiroty}">
+                                                <input type="hidden" name="productNo" th:value="${admAuthority.title.titleNo}">
                                                 <button type="submit">
                                                     <i class="far fa-edit"></i>
                                                 </button>

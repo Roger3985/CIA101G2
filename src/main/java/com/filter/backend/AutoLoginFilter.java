@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -24,7 +26,7 @@ import static com.ren.util.Validator.validateURL;
  * 用於確認後台員工登入狀態的過濾器，
  * 主要有二功能:
  * 1.確認登入狀態，如果未登入則導向登入
- * 2.確認自動登入功能
+ * 2.如果使用者有選擇自動登入功能，則執行自動登入
  */
 @Component
 @Order(FIRST_ORDER)
@@ -66,7 +68,8 @@ public class AutoLoginFilter extends HttpFilter {
             if ((loginState = (LoginState) session.getAttribute("loginState")) == null && !userCookie.isPresent()) {
 //                System.out.println("來看看是誰被過濾, session:" + session + ", loginState:" + loginState + ", cookie:" + userCookie);
                 System.out.println("還沒登入哦!");
-                res.sendRedirect(loginPage);
+                String encodedMessage = URLEncoder.encode("您還沒登入哦! 麻煩請先回到首頁登入。", StandardCharsets.UTF_8.toString());
+                res.sendRedirect(loginPage + "?error=" + encodedMessage);
                 return;
             }
             // 第一次登入(自動登入)

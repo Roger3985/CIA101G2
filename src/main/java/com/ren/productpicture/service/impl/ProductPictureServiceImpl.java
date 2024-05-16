@@ -1,5 +1,6 @@
 package com.ren.productpicture.service.impl;
 
+import com.ren.administrator.entity.Administrator;
 import com.ren.productpicture.entity.ProductPicture;
 import com.ren.product.dao.ProductRepository;
 import com.ren.productpicture.dao.ProductPictureRepository;
@@ -7,7 +8,12 @@ import com.ren.productpicture.service.ProductPictureService_interface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
+import java.util.zip.DataFormatException;
+import java.util.zip.Deflater;
+import java.util.zip.Inflater;
 
 @Service
 public class ProductPictureServiceImpl implements ProductPictureService_interface {
@@ -88,5 +94,56 @@ public class ProductPictureServiceImpl implements ProductPictureService_interfac
 	@Override
 	public void deletByProductNo(Integer productNo) {
 		productPictureRepository.deleteProductPicturesByProduct_ProductNo(productNo);
+	}
+
+	public void storeFile(byte[] fileData, ProductPicture productPicture) throws IOException {
+		byte[] compressedData = compress(fileData); // Compress the data
+
+		productPicture.setProductPic(compressedData); // Set the compressed data to the file entity
+		updateProductPicture(productPicture); // Save the file entity to the database
+	}
+
+	public byte[] retrieveFile(Integer productPicNo) {
+		ProductPicture productPicture = getOneProductPicture(productPicNo); // Retrieve the file entity by ID
+		byte[] productPic = null;
+		if ((productPic = productPicture.getProductPic()) != null) {
+			return decompress(productPic); // Decompress and return the data
+		}
+		return null;
+	}
+
+	// Helper method to compress data
+	private byte[] compress(byte[] data) {
+		Deflater deflater = new Deflater();
+		deflater.setInput(data);
+		deflater.finish();
+		byte[] buffer = new byte[1024];
+		int compressedDataLength;
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+			while (!deflater.finished()) {
+				compressedDataLength = deflater.deflate(buffer); // Compress data
+				baos.write(buffer, 0, compressedDataLength); // Write compressed data to output stream
+			}
+			return baos.toByteArray(); // Return compressed data as byte array
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	// Helper method to decompress data
+	private byte[] decompress(byte[] data) {
+		Inflater inflater = new Inflater();
+		inflater.setInput(data);
+		byte[] buffer = new byte[1024];
+		int decompressedDataLength;
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+			while (!inflater.finished()) {
+				decompressedDataLength = inflater.inflate(buffer); // Decompress data
+				baos.write(buffer, 0, decompressedDataLength); // Write decompressed data to output stream
+			}
+			return baos.toByteArray(); // Return decompressed data as byte array
+		} catch (IOException | DataFormatException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

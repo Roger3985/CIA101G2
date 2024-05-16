@@ -7,10 +7,14 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Backend - Login</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+
 
 </head>
 <body class="bg-body-tertiary">
+<div th:replace="backend/component/loading :: loading"></div>
     <div class="container">
         <!-- Outer Row -->
         <div class="row justify-content-center">
@@ -27,6 +31,7 @@
                                     </div>
                                     <form method="post" th:action="@{/backend/loginPage}" th:object="${administrator}" class="user">
                                         <div class="form-group">
+                                            <span th:if="${idError}" th:text="${idError}" class="error" id="idError"></span>
                                             <input type="text" name="userId" th:value="${userId}" class="form-control form-control-user"
                                                 id="userId" aria-describedby="emailHelp"
                                                 placeholder="請輸入用戶名或信箱">
@@ -34,11 +39,12 @@
                                         <div class="form-group">
                                             <input type="password" name="admPwd" class="form-control form-control-user"
                                                 id="admPwd" placeholder="請輸入密碼">
+                                            <span th:if="${pwdError}" th:text="${pwdError}" class="error" id="pwdError"></span>
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
+                                                <input type="checkbox" name="autoLogin" class="custom-control-input" id="customCheck" th:value="${autoLogin}">
                                                 <input type="hidden" name="autoLogin" value="0">
-                                                <input type="checkbox" name="autoLogin" class="custom-control-input" id="customCheck" value="0">
                                                 <label class="custom-control-label" for="customCheck">Remember Me</label>
                                             </div>
                                         </div>
@@ -53,6 +59,8 @@
                                     <div class="text-center">
                                         <a class="small" th:href="@{/backend/register}">Create an Account!</a>
                                     </div>
+                                    <!-- Logout Modal-->
+                                    <div th:replace="backend/component/logout :: logout"></div>
                                 </div>
                             </div>
                         </div>
@@ -64,15 +72,44 @@
     <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
     <!-- jQuery code -->
     <script>
-        $(document).ready(function() {
-            $('#customCheck').change(function() {
+        document.addEventListener("DOMContentLoaded", function() {
+            const autoLoginCheckbox = document.getElementById("customCheck");
+            autoLoginCheckbox.addEventListener("change", function() {
                 if (this.checked) {
-                    $(this).val("1");
+                    this.value = "1";
                 } else {
-                    $(this).val("0");
+                    this.value = "0";
                 }
             });
         });
+
+        $(document).ready(function() {
+            // 檢查 URL 中是否有錯誤訊息參數
+            const urlParams = new URLSearchParams(window.location.search);
+            const errorMsg = urlParams.get('error');
+
+            if (errorMsg) {
+                alert(decodeURIComponent(errorMsg));
+                // 清除URL中的error參數
+                urlParams.delete('error');
+                window.history.replaceState(null, null, '?' + urlParams.toString() + window.location.hash);
+            }
+        });
+
+        // $(document).ready(function() {
+        //     // 檢查 session 中是否有錯誤訊息參數
+        //     const errorMessage = /*[[${session.errorMessage}]]*/ '';
+        //     if (errorMessage) {
+        //         alert(errorMessage);
+        //         // 清除 session 中的錯誤訊息
+        //         $.ajax({
+        //             url: '/backend/clearErrorMessage',
+        //             type: 'POST'
+        //         });
+        //     }
+        //
+        // });
+
     </script>
 </body>
 
