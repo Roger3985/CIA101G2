@@ -28,10 +28,10 @@ function connect() {
     }
 
     webSocket.onmessage = function (event) {
-        console.log("我收到後端的資料了"+event);
+        console.log("我收到後端的資料了" + event);
         var jsonObj = JSON.parse(event.data);
         var message = jsonObj.message;
-        console.log("我收到後端的資料了"+message);
+        console.log("我收到後端的資料了" + message);
         const messageContainer = document.createElement('div');
         messageContainer.innerHTML = message;
         chatArea.appendChild(messageContainer);
@@ -40,25 +40,27 @@ function connect() {
 
 
 }
-messageInput.addEventListener("keyup", function (e){
-    if(e.which == 13){
+
+messageInput.addEventListener("keyup", function (e) {
+    if (e.which == 13) {
         el_msg_btn.click();
     }
+
 })
 
 var el_msg_btn = document.getElementById("msg_btn");
-el_msg_btn.addEventListener("click", function (){
+el_msg_btn.addEventListener("click", function () {
     const messageContent = messageInput.value.trim();
     console.log(messageContent);
-    if(messageContent == ""){
+    if (messageContent == "") {
         alert("請輸入訊息");
-    }else{
+    } else {
         const messageContainer = document.createElement('div');
         messageContainer.innerHTML = messageContent;
         chatArea.appendChild(messageContainer);
         messageInput.value = '';
         var jsonobj = {
-            message : messageContent
+            message: messageContent
         }
         webSocket.send(JSON.stringify(jsonobj))
     }
