@@ -21,6 +21,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
@@ -970,8 +971,8 @@ public class MemberControllerFrontEnd {
      * @param member    要更新的 Member 物件，包含前端表單提交的會員信息。
      * @param result    用於驗證 Member 物件的 BindingResult。
      * @param modelMap  用於存儲和傳遞模型數據的 ModelMap。
-     * @param country   會員所在的國家。
-     * @param district  會員所在的地區。
+     * // @param country   會員所在的國家。
+     * / @param district  會員所在的地區。
      * @param session   用於管理用戶會話的 HttpSession。
      * @return          驗證結果，如果有誤則返回前端更新會員頁面的重定向 URL，否則返回會員中心頁面的重定向 URL。
      * @throws IOException 當無法從 MultipartFile 讀取資料時拋出。
@@ -982,9 +983,11 @@ public class MemberControllerFrontEnd {
                                @Validated(CreateWithout.class) Member member,
                                BindingResult result,
                                ModelMap modelMap,
-                               @RequestParam("country") String country,
-                               @RequestParam("district") String district,
-                               HttpSession session) throws IOException {
+                               HttpSession session,
+                               RedirectAttributes redirectAttributes) throws IOException {
+//                               @RequestParam("country") String country,
+//                               @RequestParam("district") String district,
+
 
         // 獲取當前會話中的舊會員資料
         Member oldSession = (Member) session.getAttribute("loginsuccess");
@@ -1005,9 +1008,9 @@ public class MemberControllerFrontEnd {
         }
 
         // 設置會員的完整地址
-        String detailAdd = member.getMemAdd();
+//        String detailAdd = member.getMemAdd();
 //        member.setMemAdd(detailAdd);
-        member.setMemAdd(country + " " + district + " " + detailAdd);
+        member.setMemAdd(member.getMemAdd());
 
          // 如果有會員圖片，將其存儲到 member 物件中
          member.setMemPic(part.isEmpty() ? memberService.findByNo(member.getMemNo()).getMemPic() : part.getBytes());
@@ -1019,20 +1022,36 @@ public class MemberControllerFrontEnd {
 
 //        member.setMemStat(member.getMemStat());
 
+        // 假如新的密碼跟舊的密碼不一樣，會寄信到會員信箱
+        if (!member.getMemPwd().equals(memberService.getMemberByMemNo(member.getMemNo()).getMemPwd())) {
+            memberService.verifyMail(member.getMemMail(), "密碼已經重新設定，請妥善保管", "你設置的新密碼為:", member.getMemPwd());
+        }
+
         // 將會員重置後的密碼加密
         member.setMemPwd(memberService.hashPassword(member.getMemPwd()));
 
         // 如果驗證失敗或模型數據中存在重複項，則返回前端更新會員頁面
         if (result.hasErrors() || modelMap.get("duplicateAccount") != null || modelMap.get("duplicateMobile") != null || modelMap.get("duplicateMail") != null) {
-            member.setMemAdd(detailAdd);
+//            member.setMemAdd(detailAdd);
             modelMap.addAttribute("member", member);
             return "frontend/member/updateMember";
+        }
+
+        // 假如舊的信箱跟新的信箱不一樣驗證狀態重新設置
+        if (!member.getMemMail().equals(memberService.getMemberByMemNo(member.getMemNo()).getMemMail())) {
+            member.setMemStat((byte) 0);
         }
 
         // 更新會員資料並將新會員資料存入會話
         Member newData = memberService.edit(member);
         session.setAttribute("loginsuccess", newData);
-        return "redirect:/frontend/member/memberCenter";
+
+        // 原本成功後重定向回會員個人資訊中心，但為了前端可以吃到成功更新的事件就要 return，然後讓前端去抓取這個物件，再去進行 ajax 跳轉
+        redirectAttributes.addAttribute("updatesuccess", true);
+        return "redirect:/frontend/member/memberData";
+//        modelMap.addAttribute("updatesuccess", true);
+
+//        return "/frontend/member/updateMember";
     }
 
     /**
@@ -1148,7 +1167,8 @@ public class MemberControllerFrontEnd {
         varifyData.setMemStat((byte)1);
         varifyData = memberService.edit(varifyData);
         session.setAttribute("loginsuccess", varifyData);
-        return "redirect:" + uri;
+//        return "redirect:" + uri;
+        return "redirect:/frontend/member/memberData";
     }
 
     /**
@@ -1250,6 +1270,9 @@ public class MemberControllerFrontEnd {
         member.setMemPwd(memberService.hashPassword(newPassword));
         memberService.edit(member);
 
+        // 修改密碼成功會寄信到會員信箱
+        memberService.verifyMail(member.getMemMail(), "密碼已經重新設定，請妥善保管", "你設置的新密碼為:", newPassword);
+
         // 更新會話中的會員訊息
         session.setAttribute("loginsuccess", member);
 
@@ -1318,7 +1341,7 @@ public class MemberControllerFrontEnd {
 
         // 檢查新會員名稱是否為空白
         if (newMemberName.isEmpty()) {
-            modelMap.addAttribute("emptyNemMemberName");
+            modelMap.addAttribute("emptyNemMemberName","新會員名稱不可為空白，請重新輸入!");
         } else if (!newMemberName.matches(MEMBER_NAME_PATTERN)) {
             // 檢查會員新名稱是否符合正則表達式
             modelMap.addAttribute("newMemberNameError", "會員姓名: 只能是中、英文字母、數字和_，且只能在2~10位");
@@ -1568,7 +1591,7 @@ public class MemberControllerFrontEnd {
      * 接收舊會員信箱和新會員信箱的請求參數。
      * 如果輸入的舊會員信箱或新會員信箱不符合要求，將在模型中添加相應的錯誤消息，
      * 並返回到變更會員信箱的頁面，讓會員重新輸入。
-     * 如果變更成功，將更新會員信箱，並在會話中更新會員信息。
+     * 如果變更成功，將更新會員信箱且將驗證狀態設置為未驗證，並在會話中更新會員信息。
      *
      * @param oldMemberMail 舊會員信箱。
      * @param newMemberMail 新會員信箱。
@@ -1618,6 +1641,11 @@ public class MemberControllerFrontEnd {
 
         // 將會員的信箱設置為新的信箱
         member.setMemMail(newMemberMail);
+
+        // 將會員的驗證狀態設置為未驗證
+        member.setMemStat((byte) 0);
+
+        // 更新會員
         memberService.edit(member);
 
         // 更新會話中的會員訊息
@@ -1683,7 +1711,7 @@ public class MemberControllerFrontEnd {
         if (oldMemberAddress.isEmpty()) {
             modelMap.addAttribute("emptyoldMemberAddress", "舊會員地址不可為空白，請重新輸入!");
         } else if (!member.getMemAdd().equals(oldMemberAddress)) {
-            // 檢查就會員地址是否輸入正確
+            // 檢查舊會員地址是否輸入正確
             modelMap.addAttribute("oldMemberAddressError", "會員地址輸入有誤，請重新輸入!");
         }
 
@@ -1704,6 +1732,93 @@ public class MemberControllerFrontEnd {
 
         // 將會員的地址設置為新的地址
         member.setMemAdd(newMemberAddress);
+        memberService.edit(member);
+
+        // 更新會話中的會員訊息
+        session.setAttribute("loginsuccess", member);
+
+        // 重定向到個人資訊頁面
+        return "redirect:/frontend/member/memberData";
+    }
+
+    /**
+     * 前往變更會員信用卡頁面。
+     * 此方法處理 HTTP GET 請求到 '/frontend/member/newMemberCreditCard' URL 路徑，
+     * 並將當前會員的信用卡預填到舊信用卡欄位中，返回變更會員信用卡頁面的視圖。
+     *
+     * @param modelMap 包含模型屬性的 'ModelMap'。
+     * @param session 會話物件，用於儲存和訪問會員訊息。
+     * @return 變更會員信用卡頁面的視圖名稱。
+     */
+    @GetMapping("/newMemberCreditCard")
+    public String newMemberCreditCard(ModelMap modelMap,
+                                      HttpSession session) {
+
+        // 從會話中獲取當前登錄的會員訊息
+        Member member = (Member) session.getAttribute("loginsuccess");
+
+        // 將會員舊信用卡添加到模型中，以便在前端頁面中預填
+        modelMap.addAttribute("oldMemberCreditCard", member.getMemCard());
+
+        // 返回變更會員信用卡頁面的視圖名稱
+        return "frontend/member/changeMemberCreditCard";
+    }
+
+    /**
+     * 會員信用卡的正則表達式
+     */
+    private static final String MEMBER_CREDITCARD_PATTERN = "^[0-9]{15,19}$";
+
+    /**
+     * 處理會員信用卡變更請求。
+     * 此方法處理 HTTP POST 請求到 '/frontend/member/changeMemberCreditCard' URL 路徑，
+     * 接收舊會員信用卡和新會員信用卡的請求參數。
+     * 如果輸入的舊會員信用卡或新會員信用卡不符合要求，將在模型中添加相應的錯誤消息，
+     * 並返回到變更會員信用卡的頁面，讓會員重新輸入。
+     * 如果變更成功，將更新會員信用卡，並在會話中更新會員信息。
+     *
+     * @param oldMemberCreditCard 舊會員信用卡。
+     * @param newMemberCreditCard 新會員信用卡。
+     * @param modelMap 包含模型屬性的 'ModelMap'。
+     * @param session 用於存儲和訪問會員訊息的會話對象。
+     * @return 如果模型中存在錯誤，返回到變更會員信用卡頁面；否則重定向到個人資訊頁面。
+     */
+    @PostMapping("/changeMemberCreditCard")
+    public String changeMemberCreditCard(@RequestParam(value = "oldMemberCreditCard", required = false) String oldMemberCreditCard,
+                                         @RequestParam("newMemberCreditCard") String newMemberCreditCard,
+                                         ModelMap modelMap,
+                                         HttpSession session) {
+
+        // 從會話中獲取當前登錄的會員訊息
+        Member member = (Member) session.getAttribute("loginsuccess");
+
+        // 檢查舊會員信用卡是否為空白
+        if (oldMemberCreditCard != null) {
+            if (oldMemberCreditCard.isEmpty()) {
+                modelMap.addAttribute("emptyoldMemberCreditCard", "舊會員信用卡不可為空白，請重新輸入!");
+            } else if (!member.getMemAdd().equals(oldMemberCreditCard)) {
+                // 檢查舊會員信用哪是否輸入正確
+                modelMap.addAttribute("oldMemberCreditCardError", "會員信用卡輸入有誤，請重新輸入!");
+            }
+        }
+
+        // 檢查會員新信用卡是否為空白
+        if (newMemberCreditCard.isEmpty()) {
+            modelMap.addAttribute("emptyNewMemberCreditCard", "會員新的信用卡不可為空白，請重新輸入!");
+        } else if (!newMemberCreditCard.matches(MEMBER_CREDITCARD_PATTERN)) {
+            // 檢查會員新信用卡是否符合正則表達式
+            modelMap.addAttribute("newMemberCreditCardError", "信用卡卡號應只包含 15 到 19 位數字");
+        }
+
+        // 如果模型存在錯誤，返回變更會員信用卡頁面
+        if (!modelMap.isEmpty()) {
+            // 將舊會員信用卡重新添加到模型中
+            modelMap.addAttribute("oldMemberCreditCard", oldMemberCreditCard);
+            return "frontend/member/changeMemberCreditCard";
+        }
+
+        // 將會員的信用卡設置為新的信用卡
+        member.setMemCard(newMemberCreditCard);
         memberService.edit(member);
 
         // 更新會話中的會員訊息

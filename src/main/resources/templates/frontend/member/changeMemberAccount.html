@@ -1,97 +1,116 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" th:href="@{/css/public/elementmodel/elementStyles.css}" />
-    <link rel="stylesheet" th:href="@{/css/fronend/navForMemCenter/navForMemCenter.css}" />
-    <style>
-        body {
-            /*             font-family: Arial, sans-serif; */
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0px;
-            text-align: center;
-        }
+<html lang="en" data-bs-theme="light" xmlns:th="http://www.thymeleaf.org">
 
-        h1 {
-            color: #333;
-        }
-
-        table {
-            border-collapse: collapse;
-            /*             width: 60%; */
-            margin: 20px auto;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
-        }
-
-        table,
-        th,
-        td {
-            border: 1px solid #333;
-        }
-
-        th,
-        td {
-            padding: 12px;
-            padding-right: 100px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #ddd;
-        }
-
-        span.error {
-            color: red;
-        }
-
-        #the_file {
-            display: none;
-        }
-
-    </style>
-    <title>變更會員名稱</title>
+<head><!-- metas -->
+    <meta charset="utf-8">
+    <meta name="author" content="pxdraft">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <!-- title -->
+    <title>ShopApp - eCommerce Bootstrap 5 Template</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <!-- CSS Template -->
+    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
 </head>
+
 <body>
-<!--<div th:insert="~{/frontend/navForMemCenter/navForMemCenter :: nav}"></div>-->
-<main>
-    <h1>修改資料</h1>
-    <form method="post" th:action="@{changeMemberAccount}" enctype="multipart/form-data">
-        <table style="width: 100%">
-            <tr>
-                <th>項目</th>
-                <th>資料</th>
-
-            </tr>
-            <tr>
-                <td><label for="oldMemberAccount">舊會員帳號<b>*</b>：</label></td>
-                <td>
-                    <input type="text" id="oldMemberAccount" name="oldMemberAccount" title="請輸入舊會員帳號" th:value="${oldMemberAccount}">
-                    <br>
-                    <span  th:text="${oldMemberAccountError}" class="error" id="oldMemberAccount.errors"></span>
-                    <span  th:text="${emptyoldMemberAccount}" class="error" id="emptyOldMemberName.empty"></span>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="newMemberAccount">新會員帳號<b>*</b>：</label></td>
-                <td>
-                    <input type="text" id="newMemberAccount" name="newMemberAccount" title="請輸入新的會員帳號">
-                    <br>
-                    <span  th:text="${newMemberAccountError}" class="error" id="newMemberAccount.errors"></span>
-                    <span  th:text="${sameMemberAccountError}" class="error" id="sameMemberAccount.errors"></span>
-                    <span  th:text="${emptyNemMemberAccount}" class="error" id="emptyNemMemberAccount.empty"></span>
-                </td>
-            </tr>
-        </table>
-        <input type="submit" class="submit" value="變更會員帳號">
-    </form>
-</main>
-
-<script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
-<script th:src="@{/js/public/tableModel/dateInput.js}"></script>
-<script th:src="@{/js/backend/rentapp/addRentApp.js}"></script>
+<!-- 通用插件 -->
+<th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block>
+<!-- 通用插件 -->
+    <!--
+    ========================
+        Wrapper
+    ========================
+    -->
+    <div class="wrapper">
+        <!-- header height -->
+        <div class="header-height-bar" style="min-height: 104.865px;"></div>
+        <!-- Header -->
+        <header th:replace="frontend/component/header :: header"></header>
+        <!-- End Header -->
+        <!-- Main -->
+        <main>
+            <!-- Breadcrumb -->
+            <div class="py-3 bg-gray-100">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 my-2">
+                            <h1 class="m-0 h4 text-center text-lg-start">Profile</h1>
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
+                                <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/}"><i
+                                            class="bi bi-home"></i>Home</a></li>
+                                <li class="breadcrumb-item text-nowrap active" aria-current="page">Profile</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End Breadcrumb --><!-- Table -->
+            <div class="py-6">
+                <div class="container">
+                    <div class="row"><!-- Profile Menu -->
+                        <th:block th:insert="~{frontend/member/component/profile-menu.html}"></th:block><!-- Profile Menu -->
+                        <div class="col-lg-8 col-xxl-9">
+                            <div class="card">
+                                <div class="card-header py-3">
+                                    <h5 class="m-0">Change your Acccount</h5>
+                                </div>
+                                <div class="card-body p-4">
+                                    <form th:action="@{changeMemberAccount}" method="post" enctype="multipart/form-data">
+                                        <div class="row">
+                                            <div class="col-sm-12 mb-3">
+                                                <div class="form-group"><label for="oldMemberAccount" class="form-label">
+                                                    Old Member Account
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                    <input type="text" id="oldMemberAccount" name="oldMemberAccount" placeholder="請輸入舊會員帳號" class="form-control" th:value="${oldMemberAccount}">
+                                                    <span th:text="${oldMemberAccountError}" class="error" id="oldMemberAccount.errors" style="color: red;"></span>
+                                                    <span th:text="${emptyoldMemberAccount}" class="error" id="emptyOldMemberName.empty" style="color: red;"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 mb-3">
+                                                <div class="form-group">
+                                                    <label for="newMemberAccount" class="form-label">
+                                                        New Member Account
+                                                        <span class="text-danger">*</span>
+                                                    </label>
+                                                    <input type="text" id="newMemberAccount" name="newMemberAccount" placeholder="請輸入新的會員帳號" class="form-control">
+                                                    <span th:text="${newMemberAccountError}" class="error" id="newMemberAccount.errors" style="color: red;"></span>
+                                                    <span th:text="${sameMemberAccountError}" class="error" id="sameMemberAccount.errors" style="color: red;"></span>
+                                                    <span th:text="${emptyNemMemberAccount}" class="error" id="emptyNemMemberAccount.empty" style="color: red;"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 pt-2">
+                                                <button class="btn btn-primary">Change Member Account</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <th:block th:insert="~{frontend/member/component/profile-button.html}"></th:block>
+                            </div>
+                        </div>
+                        <!-- End Content -->
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- End Main -->
+        <!-- Footer -->
+        <footer th:replace="frontend/component/footer :: footer"></footer>
+        <!-- End Footer -->
+    </div>
+    <!--
+    ========================
+       End Wrapper
+    ========================
+    -->
+    <!-- script start -->
+    <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
+    <!-- End script start -->
 </body>
+
 </html>
