@@ -7,6 +7,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Backend - Login</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
 
 
@@ -80,6 +82,34 @@
                 }
             });
         });
+
+        $(document).ready(function() {
+            // 檢查 URL 中是否有錯誤訊息參數
+            const urlParams = new URLSearchParams(window.location.search);
+            const errorMsg = urlParams.get('error');
+
+            if (errorMsg) {
+                alert(decodeURIComponent(errorMsg));
+                // 清除URL中的error參數
+                urlParams.delete('error');
+                window.history.replaceState(null, null, '?' + urlParams.toString() + window.location.hash);
+            }
+        });
+
+        // $(document).ready(function() {
+        //     // 檢查 session 中是否有錯誤訊息參數
+        //     const errorMessage = /*[[${session.errorMessage}]]*/ '';
+        //     if (errorMessage) {
+        //         alert(errorMessage);
+        //         // 清除 session 中的錯誤訊息
+        //         $.ajax({
+        //             url: '/backend/clearErrorMessage',
+        //             type: 'POST'
+        //         });
+        //     }
+        //
+        // });
+
     </script>
 </body>
 

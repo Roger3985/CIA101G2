@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -66,7 +68,8 @@ public class AutoLoginFilter extends HttpFilter {
             if ((loginState = (LoginState) session.getAttribute("loginState")) == null && !userCookie.isPresent()) {
 //                System.out.println("來看看是誰被過濾, session:" + session + ", loginState:" + loginState + ", cookie:" + userCookie);
                 System.out.println("還沒登入哦!");
-                res.sendRedirect(loginPage);
+                String encodedMessage = URLEncoder.encode("您還沒登入哦! 麻煩請先回到首頁登入。", StandardCharsets.UTF_8.toString());
+                res.sendRedirect(loginPage + "?error=" + encodedMessage);
                 return;
             }
             // 第一次登入(自動登入)

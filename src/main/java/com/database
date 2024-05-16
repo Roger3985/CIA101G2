@@ -234,7 +234,7 @@ INSERT INTO Administrator (admNo, admPwd, admName, admStat, admEmail, titleNo, a
 (8, 'password8', '黃國倉', 1, 'admin8@gmail.com', 1, '1995-12-24', null, '1', 1, 0, '2024-05-05 22:00:00'),
 (9, 'password9', '周船熊', 0, 'admin9@gmail.com', 3, '2002-05-06', null, '1', 0, 1, '2015-01-05 19:00:00'),
 (10, 'password10', '王小明', 0, 'admin10@gmail.com', 4, '2015-04-09', null, '1', 1, 0, '2024-05-05 12:00:00'),
-(11, '123456', 'ciren', 0, 'admin11@gmail.com', 4, '2015-04-09', null, '1', 1, 0, '2024-05-05 12:00:00');
+(11, '123456', 'ciren', 0, 'ciren22007524@gmail.com', 4, '2015-04-09', null, '1', 1, 0, '2024-05-05 12:00:00');
 
 -- 創建客服紀錄表格
 CREATE TABLE ServiceRecord(

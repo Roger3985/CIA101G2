@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -51,7 +53,8 @@ public class LoginStateFilter extends HttpFilter {
 //                res.setContentType("application/json");
 //                res.getWriter().write("{\"error\": \"發生異常，請重新登入。\"}");
 //                res.getWriter().flush();
-                res.sendRedirect(loginPage);
+                String encodedMessage = URLEncoder.encode("發生異常，麻煩請您重新登入。", StandardCharsets.UTF_8.toString());
+                res.sendRedirect(loginPage + "?error=" + encodedMessage);
                 return;
             }
             // 如果當前SessionID與Redis資料庫內的SessionID不同，則代表為不同裝置登入，強制登出
@@ -80,7 +83,8 @@ public class LoginStateFilter extends HttpFilter {
 //                res.getWriter().write("{\"error\": \"偵測到您已在其他裝置登入，請重新登入。\"}");
 //                res.getWriter().flush();
                 // 重導回首頁
-                res.sendRedirect(loginPage);
+                String encodedMessage = URLEncoder.encode("偵測到您已在其他裝置登入，麻煩請您重新登入。", StandardCharsets.UTF_8.toString());
+                res.sendRedirect(loginPage + "?error=" + encodedMessage);
                 return;
             }
         }

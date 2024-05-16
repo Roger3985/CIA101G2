@@ -4,12 +4,10 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>新增商品</title>
+	<!-- Favicon -->
+	<link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
 	<th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
-	<style>
-		.error {
-			font-size: 12px; /* 調整字體大小 */
-		}
-	</style>
+
 </head>
 
 <body id="page-top">
@@ -133,39 +131,6 @@
 <div th:replace="backend/component/logout :: logout"></div>
 
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
-<script>
-	// 即時更新內容
-	// document.addEventListener("DOMContentLoaded", function() {
-	//     // 在這裡放置你的 AJAX 請求代碼
-	//     var selectedProductNo = document.getElementById('productSelect').value;
-	//     sendAjaxRequest(selectedProductNo);
-	// });
-	//
-	// function sendAjaxRequest(selectedProductNo) {
-	//     var xhr = new XMLHttpRequest();
-	//     xhr.open('POST', '/backend/product/getProductDetails?productNo=' + encodeURIComponent(selectedProductNo), true);
-	//     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-	//     xhr.onload = function () {
-	//         if (xhr.status === 200) {
-	//             var productDetails = JSON.parse(xhr.responseText);
-	//
-	//             document.getElementById('productCatNo').value = productDetails.productCategory.productCatNo;
-	//             document.getElementById('productName').value = productDetails.productName;
-	//             document.getElementById('productInfo').value = productDetails.productInfo;
-	//             document.getElementById('productSize').value = productDetails.productSize;
-	//             document.getElementById('productColor').value = productDetails.productColor;
-	//             document.getElementById('productPrice').value = productDetails.productPrice;
-	//             document.getElementById('productStat').value = productDetails.productStat;
-	//             document.getElementById('productSalQty').value = productDetails.productSalQty;
-	//             document.getElementById('productComPeople').value = productDetails.productComPeople;
-	//             document.getElementById('productComScore').value = productDetails.productComScore;
-	//         } else {
-	//             console.error('Failed to fetch product details');
-	//         }
-	//     };
-	//
-	//     xhr.send();
-	// }
-</script>
+
 </body>
 </html>

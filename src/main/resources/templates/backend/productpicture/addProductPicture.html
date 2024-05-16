@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{backend/component/plugin/backendplugin.html :: css}">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <!-- Custom styles for this page -->
-    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
 
 </head>
 <body id="page-top">
@@ -53,12 +54,6 @@
 <div th:replace="backend/component/logout :: logout"></div>
 
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
-<!-- Page level plugins -->
-<script th:src="@{/backend/vendor/datatables/jquery.dataTables.min.js}"></script>
-<script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-<!-- Page level custom scripts -->
-<script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
-
 
 </body>
 </html>

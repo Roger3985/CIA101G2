@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>更新商品</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
-    <style>
-        .error {
-            font-size: 12px; /* 調整字體大小 */
-        }
-    </style>
+
 </head>
 <body id="page-top">
 <div th:replace="backend/component/loading :: loading"></div>
@@ -134,37 +132,6 @@
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
 
 <script th:inline="javascript">
-    // document.addEventListener("DOMContentLoaded", function() {
-    //     // 在這裡放置你的 AJAX 請求代碼
-    //     var selectedAdministratorNo = document.getElementById('administratorSelect').value;
-    //     sendAjaxRequest(selectedAdministratorNo);
-    // });
-    //
-    // function sendAjaxRequest(selectedAdministratorNo) {
-    //     var xhr = new XMLHttpRequest();
-    //     xhr.open('POST', '/backend/administrator/getAdministratorDetails?administratorNo=' + encodeURIComponent(selectedAdministratorNo), true);
-    //     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    //     xhr.onload = function () {
-    //         if (xhr.status === 200) {
-    //             var administratorDetails = JSON.parse(xhr.responseText);
-    //
-    //             document.getElementById('administratorCatNo').value = administratorDetails.administratorCategory.administratorCatNo;
-    //             document.getElementById('administratorName').value = administratorDetails.administratorName;
-    //             document.getElementById('administratorInfo').value = administratorDetails.administratorInfo;
-    //             document.getElementById('administratorSize').value = administratorDetails.administratorSize;
-    //             document.getElementById('administratorColor').value = administratorDetails.administratorColor;
-    //             document.getElementById('administratorPrice').value = administratorDetails.administratorPrice;
-    //             document.getElementById('administratorStat').value = administratorDetails.administratorStat;
-    //             document.getElementById('administratorSalQty').value = administratorDetails.administratorSalQty;
-    //             document.getElementById('administratorComPeople').value = administratorDetails.administratorComPeople;
-    //             document.getElementById('administratorComScore').value = administratorDetails.administratorComScore;
-    //         } else {
-    //             console.error('Failed to fetch administrator details');
-    //         }
-    //     };
-    //
-    //     xhr.send();
-    // }
 
     function updateAdministratorInstantly() {
         var selectedAdministratorNo = document.getElementById('administratorSelect').value;

@@ -220,6 +220,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
         updateAdministrator(administrator);
         // 刪除Redis內的登入資料
         deleteRedisData(administrator.getAdmNo());
+
     }
 
     /**
@@ -254,30 +255,6 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
             itlRedisTemplate.delete(key);
         }
     }
-
-    //    @Override
-//    public void uploadPhoto(Integer admNo,byte[] admPhoto) {
-//        administratorRepository.upload(admNo, admPhoto);
-//    }
-//
-//    @Override
-//    public String photoSticker(Integer admNo) {
-//        // 將byte[]陣列(二進制資料)轉成Base64(字串)傳到前端的src屬性即可轉成圖片顯示
-//        byte[] admPhoto = administratorRepository.photoSticker(admNo);
-//        String photoBase64 = null;
-//        if (admPhoto != null) {
-//            Base64.Encoder encoder = Base64.getEncoder();
-//            photoBase64 = encoder.encodeToString(admPhoto);
-//        } else {
-//            photoBase64 = ""; // 或其他預設值
-//        }
-//        return photoBase64;
-//    }
-//
-//    @Override
-//    public void ChangePhoto(Integer admNo, byte[] admPhoto) {
-//        administratorRepository.ChangePhoto(admNo, admPhoto);
-//    }
 
     /**
      * 用於找回密碼時寄出預設密碼的信件
@@ -314,14 +291,14 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
             // 創建新郵件
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(myGmail));
-            System.out.println("設置發件人成功");
+            System.out.println("message.setFrom(new InternetAddress(myGmail)) 設置發件人成功");
 
             // 設定郵件的收件人
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
-            System.out.println("收件人設定成功");
+            System.out.println("message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email)) 收件人設定成功");
 
             message.setSubject(emailSubject);
-            System.out.println("郵件主旨設定成功");
+            System.out.println("message.setSubject(emailSubject) 郵件主旨設定成功");
 
             // 生成新密碼
             String newPwd = generateRandomString(12);
@@ -329,7 +306,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
 
             // 設定郵件的內容，包括新密碼
             message.setText(forgotPwdContent + newPwd);
-            System.out.println("郵件內容設定成功");
+            System.out.println("message.setText(forgotPwdContent + newPwd) 郵件內容設定成功");
 
             // 發送郵件
             Transport.send(message);
