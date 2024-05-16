@@ -85,13 +85,12 @@ public class ProductPictureController {
         byte[] upfile = file.getBytes();
         String fileType = file.getContentType();
         productPicture.setMimeType(fileType);
-        productPicture.setProductPicNo(1);
         System.out.println(fileType);
         // 檢查檔案類別，如果是jpeg or png等已壓縮檔案，直接上傳，如果不是，執行壓縮
         if (validateFileType(fileType)) {
             System.out.println("不需要壓縮!");
             productPicture.setProductPic(upfile);
-            productPictureSvc.updateProductPicture(productPicture);
+            productPictureSvc.addProductPicture(productPicture);
         } else {
             System.out.println("看來需要壓縮哦!");
             productPictureSvc.storeFile(upfile, productPicture);
