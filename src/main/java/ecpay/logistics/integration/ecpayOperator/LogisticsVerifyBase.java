@@ -23,7 +23,7 @@ import ecpay.logistics.integration.errorMsg.ErrorMessage;
 import ecpay.logistics.integration.exception.EcpayException;
 
 public class LogisticsVerifyBase {
-	protected String confPath = "/ecpay/logistics/integration/config/ECpayLogistics.xml";
+	protected String confPath = "/ECpayLogistics.xml";
 	protected Document doc;
 	public LogisticsVerifyBase(){
 		URL fileURL = this.getClass().getResource(confPath);

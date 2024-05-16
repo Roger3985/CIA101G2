@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>後台ListAllNews</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>編號</th>
+        <th>標題</th>
+        <th>內容</th>
+        <th>發布時間</th>
+        <th>修改</th>
+        <th>刪除</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="news : ${newsListData}">
+        <tr>
+            <td th:text="${news.newsNo}"></td>
+            <td th:text="${news.newsTitle}"></td>
+            <td th:text="${news.newsContent}"></td>
+            <td th:text="${news.postTime}"></td>
+            <td>
+                <form method="post" th:action="@{/backend/news/updateNews}">
+                    <button th:onclick="'editNews(' + ${news.newsNo} + ')'" name="newsNo"  th:value="${news.newsNo}">
+                        <i class="far fa-edit"></i>
+                    </button>
+                </form>
+            </td>
+            <td>
+                <form method="post" th:action="@{/backend/news/delete}">
+                    <button th:onclick="'editNews(' + ${news.newsNo} + ')'" name="newsNo"  th:value="${news.newsNo}">
+                        <i class="far fa-edit"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+
+
+</body>
+</html>

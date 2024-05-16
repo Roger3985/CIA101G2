@@ -25,9 +25,9 @@
             <div class="container-fluid">
                 <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
                 <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
-                <li>輸入租借品訂單資料 : </li>
+                <li>租借訂單資料 : </li>
                 <form method="post" th:action="@{/backend/rentalorder/update}">
-                    <label>租借訂單編號 : </label>
+                    <label>訂單編號 : </label>
                     <input type="text" name="rentalOrdNo" th:value="${rentalOrdNo}" readonly>
 <!--                    <span th:name="rentalOrdNo" th:text="${rentalOrdNo}"></span>-->
                     <br>
@@ -50,13 +50,13 @@
                     <input type="text" name="rentalRcvPhone" th:value="${rentalRcvPhone}" readonly>
                     <br>
                     <label>取貨方式</label>
-                    <input type="text" name="rentalTakeMethod" th:value="${rentalTakeMethod}" readonly>
+                    <input type="text" name="rentalTakeMethod" th:value="${rentalTakeMethod == 1 ? '店取' : '宅配'}" readonly>
                     <br>
                     <label>宅配地址</label>
                     <input type="text" name="rentalAddr" th:value="${rentalAddr}" readonly>
                     <br>
                     <label>付款方式</label>
-                    <input type="text" name="rentalPayMethod" th:value="${rentalPayMethod}" readonly>
+                    <input type="text" name="rentalPayMethod" th:value="${rentalPayMethod == 1 ? '綠界' : '現場付款'}" readonly>
                     <br>
                     <label>訂單總金額</label>
                     <input type="text" name="rentalAllPrice" th:value="${rentalAllPrice}" readonly>

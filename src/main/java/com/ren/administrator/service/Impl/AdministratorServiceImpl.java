@@ -17,12 +17,15 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
-import java.util.Base64;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.DataFormatException;
+import java.util.zip.Deflater;
+import java.util.zip.Inflater;
 
 
 import static com.ren.util.Constants.*;
@@ -217,6 +220,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
         updateAdministrator(administrator);
         // 刪除Redis內的登入資料
         deleteRedisData(administrator.getAdmNo());
+
     }
 
     /**
@@ -252,30 +256,6 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
         }
     }
 
-    //    @Override
-//    public void uploadPhoto(Integer admNo,byte[] admPhoto) {
-//        administratorRepository.upload(admNo, admPhoto);
-//    }
-//
-//    @Override
-//    public String photoSticker(Integer admNo) {
-//        // 將byte[]陣列(二進制資料)轉成Base64(字串)傳到前端的src屬性即可轉成圖片顯示
-//        byte[] admPhoto = administratorRepository.photoSticker(admNo);
-//        String photoBase64 = null;
-//        if (admPhoto != null) {
-//            Base64.Encoder encoder = Base64.getEncoder();
-//            photoBase64 = encoder.encodeToString(admPhoto);
-//        } else {
-//            photoBase64 = ""; // 或其他預設值
-//        }
-//        return photoBase64;
-//    }
-//
-//    @Override
-//    public void ChangePhoto(Integer admNo, byte[] admPhoto) {
-//        administratorRepository.ChangePhoto(admNo, admPhoto);
-//    }
-
     /**
      * 用於找回密碼時寄出預設密碼的信件
      *
@@ -284,6 +264,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
      */
     @Override
     public boolean sendEmail(String email) {
+
         try {
             System.out.println("開始寄信");
 
@@ -310,25 +291,22 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
             // 創建新郵件
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(myGmail));
-            System.out.println("設置發件人成功");
+            System.out.println("message.setFrom(new InternetAddress(myGmail)) 設置發件人成功");
 
             // 設定郵件的收件人
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
-            System.out.println("收件人設定成功");
+            System.out.println("message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email)) 收件人設定成功");
 
-            // 設定郵件的主旨
-            String emailSubject = "Your Password Reset Request";
             message.setSubject(emailSubject);
-            System.out.println("郵件主旨設定成功");
+            System.out.println("message.setSubject(emailSubject) 郵件主旨設定成功");
 
             // 生成新密碼
             String newPwd = generateRandomString(12);
             System.out.println("新密碼生成成功: " + newPwd);
 
             // 設定郵件的內容，包括新密碼
-            String forgotPwdContent = "Your new password is: ";
             message.setText(forgotPwdContent + newPwd);
-            System.out.println("郵件內容設定成功");
+            System.out.println("message.setText(forgotPwdContent + newPwd) 郵件內容設定成功");
 
             // 發送郵件
             Transport.send(message);
@@ -360,7 +338,69 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
         return false;
     }
 
+    /**
+     * 用壓縮的方式將圖片存到資料庫
+     *
+     * @param fileData 上傳資料
+     * @param administrator 管理員Entity
+     * @throws IOException 執行壓縮時有使用到io相關的API，因此使用此方法會拋出IOException
+     */
+    public void storeFile(byte[] fileData, Administrator administrator) throws IOException {
+        byte[] compressedData = compress(fileData); // Compress the data
 
+        administrator.setAdmPhoto(compressedData); // Set the compressed data to the file entity
+        administratorRepository.save(administrator); // Save the file entity to the database
+    }
+
+    /**
+     * 將存在資料庫的圖片解壓縮
+     *
+     * @param admNo 根據管理員編號取得解壓縮的圖片
+     * @return 返回解壓縮的byte[]
+     */
+    public byte[] retrieveFile(Integer admNo) {
+        Administrator administrator = getOneAdministrator(admNo); // Retrieve the file entity by ID
+        byte[] admPhoto = null;
+        if ((admPhoto = administrator.getAdmPhoto()) != null) {
+            return decompress(admPhoto); // Decompress and return the data
+        }
+        return null;
+    }
+
+    // Helper method to compress data
+    private byte[] compress(byte[] data) {
+        Deflater deflater = new Deflater();
+        deflater.setInput(data);
+        deflater.finish();
+        byte[] buffer = new byte[1024];
+        int compressedDataLength;
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            while (!deflater.finished()) {
+                compressedDataLength = deflater.deflate(buffer); // Compress data
+                baos.write(buffer, 0, compressedDataLength); // Write compressed data to output stream
+            }
+            return baos.toByteArray(); // Return compressed data as byte array
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Helper method to decompress data
+    private byte[] decompress(byte[] data) {
+        Inflater inflater = new Inflater();
+        inflater.setInput(data);
+        byte[] buffer = new byte[1024];
+        int decompressedDataLength;
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            while (!inflater.finished()) {
+                decompressedDataLength = inflater.inflate(buffer); // Decompress data
+                baos.write(buffer, 0, decompressedDataLength); // Write decompressed data to output stream
+            }
+            return baos.toByteArray(); // Return decompressed data as byte array
+        } catch (IOException | DataFormatException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
 

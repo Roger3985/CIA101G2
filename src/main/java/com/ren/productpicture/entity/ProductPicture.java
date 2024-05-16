@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ren.product.entity.Product;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -15,11 +17,12 @@ public class ProductPicture implements java.io.Serializable {
     private Integer productPicNo;
     @ManyToOne
     @JsonManagedReference
-    @NotEmpty(message = "請選擇商品編號")
     @JoinColumn(name = "productno", referencedColumnName = "productno")
     private Product product;
     @Column(name = "productpic", columnDefinition = "longblob")
     private byte[] productPic;
+    @Column(name = "mimetype")
+    private String mimeType;
 
     public ProductPicture() {
     }
@@ -37,6 +40,19 @@ public class ProductPicture implements java.io.Serializable {
         this.productPicNo = productPicNo;
         this.product = product;
         this.productPic = productPic;
+    }
+
+    public ProductPicture(Product product, byte[] productPic, String mimeType) {
+        this.product = product;
+        this.productPic = productPic;
+        this.mimeType = mimeType;
+    }
+
+    public ProductPicture(Integer productPicNo, Product product, byte[] productPic, String mimeType) {
+        this.productPicNo = productPicNo;
+        this.product = product;
+        this.productPic = productPic;
+        this.mimeType = mimeType;
     }
 
     public Integer getProductPicNo() {
@@ -61,5 +77,13 @@ public class ProductPicture implements java.io.Serializable {
 
     public void setProductPic(byte[] productPic) {
         this.productPic = productPic;
+    }
+
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
     }
 }

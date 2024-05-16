@@ -20,7 +20,7 @@
     <style>
 
         span.successMsg {
-        /* 確保初始狀態為隱藏，以便fadeIn能正常工作 */
+            /* 確保初始狀態為隱藏，以便fadeIn能正常工作 */
             display: none;
         }
 
@@ -90,7 +90,7 @@
                                     <div class="shop-category-list collapse show" id="shop_categories">
                                         <ul class="nav flex-column">
                                             <li class="nav-item">
-                                                <a th:href="@{/rental/rentalShop}" class="nav-link active">所有租借品</a>
+                                                <a th:href="@{/frontend/rental/rentalShop}" class="nav-link active">所有租借品</a>
                                             </li>
 
                                             <li class="nav-item">
@@ -272,7 +272,7 @@
                                 <div class="dropdown">
                                     <a class="btn btn-none btn-sm border dropdown-toggle text-mode" href="#"
                                        role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
-                                       aria-expanded="false">Short by</a>
+                                       aria-expanded="false">選擇排序</a>
                                     <ul class="dropdown-menu dropdown-menu-end shadow"
                                         aria-labelledby="dropdownMenuLink">
                                         <li>
@@ -282,10 +282,10 @@
                                             <a class="dropdown-item" href="#">最熱門</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" id="low_to_high" th:href="@{/sortAllPrice/{sortType}}" th:onclick="'javascript:sortBy(\'low_to_high\')'">價格由低到高</a>
+                                            <a class="dropdown-item" id="low_to_high" th:href="@{/frontend/rental/sortAllPrice/{sortType}}">價格由低到高</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" id="high_to_low"  th:href="@{/sortAllPrice/{sortType}}" th:onclick="'javascript:sortBy(\'high_to_low\')'">價格由高到低</a>
+                                            <a class="dropdown-item" id="high_to_low"  th:href="@{/frontend/rental/sortAllPrice/{sortType}}">價格由高到低</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -388,23 +388,7 @@
 <!-- script start -->
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
 <!-- End script start -->
-<script th:inline="javascript">
-    function sortBy(sortType) {
-        var url = "/frontend/rental/sortAllPrice?sortType=" + sortType;
 
-        $.get(url, function(html) {
-            console.log(this);
-            alert("成功");
-            // 將響應的 HTML 插入到頁面中
-            // $("#sortAllPrice").html(html);
-        }).fail(function() {
-            console.error('There has been a problem with your request');
-            alert("失敗");
-        });
-    }
-</script>
-</body>
-</html>
 <!--<script>-->
 <!--    function sortBy(sortType) { //sortType參數定義是對應上面的low_to_high或high_to_low-->
 <!--        let url = "/frontend/rental/sortAllPrice?sortType=" + sortType;-->
@@ -427,80 +411,63 @@
 <!--</script>-->
 
 <script>
+
+    /*
+     * 選擇排序方式：價格
+     * 使用jQuery抓取點擊事件，前台發送清求。
+     * 最後依後台判斷選擇方式並回傳對應的資料。
+    */
     $(document).ready(function() {
-        $("#low_to_high").click(function(event) {
-            // alert("點選low_to_high");
-            event.preventDefault(); // 阻止默认的链接跳转行为
-
-            var sortType = $(this).data("sortType"); // 获取自定义属性 data-sort-type 的值
-            sortBy(sortType); // 调用 sortBy 函数进行排序
+        $('.dropdown-item').click(function(event) {
+            event.preventDefault(); // 阻止表單默認提交行為
+            let id = $(this).attr('id');
+            let sortType = id === "low_to_high" ? "low_to_high" : "high_to_low";
+            window.location.href = "/frontend/rental/sortAllPrice/" + sortType;
         });
-
-        $("#high_to_low").click(function(event) {
-            // alert("點選high_to_low");
-            event.preventDefault(); // 阻止默认的链接跳转行为
-
-            var sortType = $(this).data("sortType"); // 获取自定义属性 data-sort-type 的值
-            sortBy(sortType); // 调用 sortBy 函数进行排序
-        });
-
-        function sortBy(sortType) {
-            var url = "/frontend/rental/sortAllPrice?sortType=" + sortType;
-
-            $.get(url, function(html) {
-                // 将响应的 HTML 插入到页面中
-                $("#sortAllPrice").html(html);
-            }).fail(function() {
-                console.error('There has been a problem with your request');
-            });
-        }
+    });
 
 
+    /*----------------------------右翰寫的加入購物車跟追蹤方法----------------------------------*/
+    // 339
+    $(document).on("click", "a.btn_addToCart", function (e) {
 
+        e.preventDefault();
+        /*
+         * 拼接動態前置路徑 (為適應上雲時路徑變化)
+         * window.location.protocol = 當前頁面所使用之通訊協定 (ex : http: 、 https:)
+         * window.location.host = 當前頁面主機名和連接阜號 (ex : localhost:8080)
+        */
+        let baseUrl = window.location.protocol + "//" + window.location.host;
+        let apiPath = "/backend/rentalorder/setToCart";
+        let $this = $(this);
+        // span.rentalNo
+        let rentalNo = $this.closest("div.rental").find("span.rentalNo").text().trim();
+        let memNo = 1;
 
+        let data = {
+            "rentalNo" : rentalNo,
+            "memNo" : memNo
+        };
 
-        /*----------------------------右翰寫的加入購物車跟追蹤方法----------------------------------*/
-        // 339
-        $(document).on("click", "a.btn_addToCart", function (e) {
-
-            e.preventDefault();
-            /*
-             * 拼接動態前置路徑 (為適應上雲時路徑變化)
-             * window.location.protocol = 當前頁面所使用之通訊協定 (ex : http: 、 https:)
-             * window.location.host = 當前頁面主機名和連接阜號 (ex : localhost:8080)
-            */
-            let baseUrl = window.location.protocol + "//" + window.location.host;
-            let apiPath = "/backend/rentalorder/setToCart";
-            let $this = $(this);
-            // span.rentalNo
-            let rentalNo = $this.closest("div.rental").find("span.rentalNo").text().trim();
-            let memNo = 1;
-
-            let data = {
-                "rentalNo" : rentalNo,
-                "memNo" : memNo
-            };
-
-            fetch(baseUrl + apiPath, {
-                method : "POST",
-                headers : {
-                    "Content-Type" : "application/json"
-                },
-                body : JSON.stringify(data)
-            }).then(function (response) {
-                // console.log(response)
-                return response.text();
-            }).then(function (rentalName) {
-                // console.log(rentalName);
-                // console.log(this);
-                $this.closest("div.rental").find("span.successMsg").text("已將" + rentalName + "加入購物車!").fadeIn(0).delay(500).fadeOut(500);
-            })
-
+        fetch(baseUrl + apiPath, {
+            method : "POST",
+            headers : {
+                "Content-Type" : "application/json"
+            },
+            body : JSON.stringify(data)
+        }).then(function (response) {
+            // console.log(response)
+            return response.text();
+        }).then(function (rentalName) {
+            // console.log(rentalName);
+            // console.log(this);
+            $this.closest("div.rental").find("span.successMsg").text("已將" + rentalName + "加入購物車!").fadeIn(0).delay(500).fadeOut(500);
         })
 
         /*----------------------------右翰寫的加入購物車跟追蹤方法----------------------------------*/
 
     });
 </script>
+<script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
 </body>
 </html>

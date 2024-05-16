@@ -1,183 +1,361 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" th:href="@{/css/public/elememtmodel/elementStyles.css}">;
-    <link rel="stylesheet" th:href="@{/css/frontend/navForMemCenter/navForMemCenter.css}" />
-    <style>
-        body {
-            /*             font-family: Arial, sans-serif; */
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0px;
-            text-align: center;
-        }
+<html lang="en" data-bs-theme="light" xmlns:th="http://www.thymeleaf.org">
 
-        h1 {
-            color: #333;
-        }
-
-        table {
-            border-collapse: collapse;
-            /*             width: 60%; */
-            margin: 20px auto;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
-        }
-
-        table,
-        th,
-        td {
-            border: 1px solid #333;
-        }
-
-        th,
-        td {
-            padding: 12px;
-            padding-right: 100px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #ddd;
-        }
-
-        span.error {
-            color: red;
-        }
-
-        #the_file {
-            display: none;
-        }
-
-    </style>
-    <title>Fall衣Love修改頁面</title>
+<head><!-- metas -->
+    <meta charset="utf-8">
+    <meta name="author" content="pxdraft">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <!-- title -->
+    <title>ShopApp - eCommerce Bootstrap 5 Template</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <!-- CSS Template -->
+    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
 </head>
+
 <body>
-    <div th:insert="~{/frontend/navForMemCenter/navForMemCenter :: nav}"></div>
-    <main>
-        <h1>修改資料</h1>
-        <form method="post" th:action="@{updateMember}" th:object="${data}" enctype="multipart/form-data">
-            <table style="width: 100px">
-                <tr>
-                    <td>項目</td>
-                    <td>資料</td>
-                </tr>
-            </table>
-            <input type="hidden" th:field="*{memNo}">
-            <div class="input-box">
-                <label>姓名：<b>*</b></label>
-                <input type="text" placeholder="請輸入姓名" th:field="*{memName}" />
-                <span th:if="${#fields.hasErrors('memName')}" th:errors="*{memName}" class="error"></span>
-            </div>
-
-            <div class="input-box">
-                <label>會員帳號：<b>*</b></label>
-                <input type="text" placeholder="請輸入會員帳號" th:field="*{memAcc}" />
-                <span  th:if="${#fields.hasErrors('memAcc')}" th:errors="*{memAcc}" class="error" id="ename.errors"></span>
-                <span th:text="${duplicateAccount}" class="error" id="duplicateAccount.error"></span>
-            </div>
-
-            <div class="input-box">
-                <label>會員密碼：<b>*</b></label>
-                <input type="password" placeholder="請輸入會員密碼" th:field="*{memPwd}"/>
-                <span  th:if="${#fields.hasErrors('memPwd')}" th:errors="*{memPwd}" class="error" id="memPwd.errors"></span>
-            </div>
-
-            <div class="column">
-                <div class="input-box">
-                    <label>手機號碼：<b>*</b></label>
-                    <input type="text" placeholder="例：0912345678" th:field= "*{memMob}" />
-                    <span th:if="${#fields.hasErrors('memMob')}" th:errors="*{memMob}" class="error"></span>
-                    <span th:text="${duplicateMobile}" class="error" id="duplicateMobile.error"></span>
-                </div>
-            </div>
-            <div class="gender-box">
-                <h3>性別：<b>*</b></h3>
-                <div class="gender-option">
-                    <div class="gender">
-                        <input type="radio" id="check-male"  th:field="*{memGender}" th:value="0"/>
-                        <label for="check-male">男性</label>
-                    </div>
-                    <div class="gender">
-                        <input type="radio" id="check-female"  th:field="*{memGender}" th:value="1"/>
-                        <label for="check-female">女性</label>
+<!-- 通用插件 -->
+<th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block>
+<!-- 通用插件 -->
+    <!--
+    ========================
+        Wrapper
+    ========================
+    -->
+    <div class="wrapper">
+        <!-- header height -->
+        <div class="header-height-bar" style="min-height: 104.865px;"></div>
+        <!-- Header -->
+        <header th:replace="frontend/component/header :: header"></header>
+        <!-- End Header -->
+        <!-- Main -->
+        <main>
+            <!-- Breadcrumb -->
+            <div class="py-3 bg-gray-100">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 my-2">
+                            <h1 class="m-0 h4 text-center text-lg-start">Profile</h1>
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
+                                <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/}"><i
+                                            class="bi bi-home"></i>Home</a></li>
+                                <li class="breadcrumb-item text-nowrap active" aria-current="page">Profile</li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <span th:if="${#fields.hasErrors('memGender')}" th:errors="*{memGender}" class="error"></span>
-
-            <div class="input-box">
-                <label>信箱:<b>*</b></label>
-                <div class="email-input-container">
-                    <input type="text" placeholder="會員信箱" th:field="*{memMail}" />
-                </div>
-                <span th:if="${#fields.hasErrors('memMail')}" th:errors="*{memMail}" class="error" id="email.errors"></span>
-                <span th:text="${duplicateMail}" class="error" id="duplicateMail.error"></span>
-            </div>
-
-            <div class="input-box address">
-                <label>地址：<b>*</b></label>
-                <div class="column">
-                    <div class="select-box dropdown">
-                        <select name="country" id="country_box">
-                            <option value="">選擇縣市</option>
-                        </select>
+            </div><!-- End Breadcrumb --><!-- Table -->
+            <div class="py-6">
+                <div class="container">
+                    <div class="row"><!-- Profile Menu -->
+                        <th:block th:insert="~{frontend/member/component/profile-menu.html}"></th:block><!-- Profile Menu -->
+                        <div class="col-lg-8 col-xxl-9">
+                            <div class="card mb-5">
+                                <div class="card-header py-3">
+                                    <h5 class="m-0">Profile Update</h5>
+                                </div>
+                                <div class="card-body">
+<!--                                    <form method="post" th:action="@{newPicture}" enctype="multipart/form-data" onsubmit="return handleAvatarUpload(event)" class="row g-3 align-items-center">-->
+<!--                                        <label for="avatarInput" class="col-auto col-form-label">Profile Photo (單獨修改)</label>-->
+<!--                                        <div class="col-auto">-->
+<!--                                            <input type="file" name="chaPic" class="form-control" id="avatarInput" accept="image/*">-->
+<!--                                        </div>-->
+<!--                                        <div class="col-auto">-->
+<!--                                            <input type="submit" value="上傳新圖片" class="form-control btn btn-primary">-->
+<!--                                        </div>-->
+<!--                                    </form>-->
+<!--                                    <br>-->
+                                    <form method="post" th:action="@{updateMember}" th:object="${data}" enctype="multipart/form-data">
+                                        <span th:if="${updatesuccess}" id="successMessage">成功更新，準備回到個人資訊網頁</span>
+                                        <input type="text" th:field="*{memNo}" style="display: none">
+                                        <div class="row">
+                                            <div class="col-sm-6 mb-3"><label class="form-label">
+                                                Name
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                                <input type="text" class="form-control" th:field="*{memName}" placeholder="請輸入姓名" style="color: black;">
+                                                <span th:if="${#fields.hasErrors('memName')}" th:errors="*{memName}" class="error" style="color: red;"></span>
+                                            </div>
+                                            <div class="col-sm-6 mb-3"><label class="form-label">
+                                                Account
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                                <input type="text" class="form-control" th:field="*{memAcc}" placeholder="請輸入帳號" style="color: black;">
+                                                <span  th:if="${#fields.hasErrors('memAcc')}" th:errors="*{memAcc}" class="error" id="ename.errors" style="color: red;"></span>
+                                                <span th:text="${duplicateAccount}" class="error" id="duplicateAccount.error" style="color: red;"></span>
+                                            </div>
+                                            <div class="col-sm-6 mb-3"><label class="form-label">
+                                                Password
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                                <input type="password" class="form-control" th:field="*{memPwd}" name="memPwd" placeholder="請輸入密碼" style="color: black;">
+                                                <span  th:if="${#fields.hasErrors('memPwd')}" th:errors="*{memPwd}" class="error" id="memPwd.errors" style="color: red;"></span>
+                                            </div>
+                                            <div class="col-sm-6 mb-3"><label class="form-label">
+                                                Phone
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                                <input type="text" class="form-control" th:field= "*{memMob}" placeholder="請輸入電話" style="color: black;">
+                                                <span th:if="${#fields.hasErrors('memMob')}" th:errors="*{memMob}" class="error" style="color: red;"></span>
+                                                <span th:text="${duplicateMobile}" class="error" id="duplicateMobile.error" style="color: red;"></span>
+                                            </div>
+                                            <div class="col-sm-6 mb-3">
+                                                <div class="form-group">
+                                                    <label class="form-label">
+                                                        Gender
+                                                        <span class="text-danger">*</span>
+                                                    </label>
+                                                    <div class="gender-option">
+                                                        <div class="gender">
+                                                            <select id="memGender" name="memGender" class="form-control" th:field="*{memGender}">
+                                                                <option value="1">男性</option>
+                                                                <option value="2">女性</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <span th:if="${#fields.hasErrors('memGender')}" th:errors="*{memGender}" class="error" style="color: red;"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 mb-3"><label class="form-label">
+                                                Email
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                                <input type="email" class="form-control" th:field="*{memMail}" placeholder="請輸入信箱" style="color: black;">
+                                                <span th:if="${#fields.hasErrors('memMail')}" th:errors="*{memMail}" class="error" id="email.errors" style="color: red;"></span>
+                                                <span th:text="${duplicateMail}" class="error" id="duplicateMail.error" style="color: red;"></span>
+                                            </div>
+                                            <div class="col-sm-6 mb-3"><label class="form-label">
+                                                Birthday
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                                <input type="date" class="form-control" th:field="*{memBd}" style="color: black;">
+                                                <span th:if="${#fields.hasErrors('memBd')}" th:errors="*{memBd}" class="error" style="color: red;"></span>
+                                            </div>
+                                            <div class="col-sm-6 mb-3"><label class="form-label">
+                                                Address
+                                                <span class="text-danger">*</span>
+                                            </label>
+<!--                                                <div class="column">-->
+<!--                                                    <div class="select-box dropdown">-->
+<!--                                                        <select name="country" id="country_box" class="form-control">-->
+<!--                                                            <option value="">選擇縣市</option>-->
+<!--                                                        </select>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="select-box dropdown">-->
+<!--                                                        <select name="district" id="district_box" class="form-control">-->
+<!--                                                            <option value="">選擇鄉鎮市區</option>-->
+<!--                                                        </select>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+                                                <input type="text" class="form-control" placeholder="請輸入詳細地址" th:field="*{memAdd}" id="country"/>
+                                                <span th:if="${#fields.hasErrors('memAdd')}" th:errors="*{memAdd}" class="error" style="color: red;"></span>
+                                            </div>
+                                            <div class="col-sm-6 mb-3"><label class="form-label">
+                                                Credit card
+                                                <span class="text-black">*</span>
+                                            </label>
+                                                <input type="text" class="form-control" th:field="*{memCard}" placeholder="請輸入信用卡號 (可選填)" style="color: black;">
+                                                <span th:if="${#fields.hasErrors('memCard')}" th:errors="*{memCard}" class="error" style="color: red;"></span>
+                                            </div>
+                                            <div class="col-sm-6 mb-3">
+                                                <label class="form-label" th:if="${session.loginsuccess.getMemStat() == 0}">
+                                                    驗證狀態
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <label class="form-label" th:if="${session.loginsuccess.getMemStat() == 1}">
+                                                    驗證狀態
+                                                    <span class="text-bg-light">*</span>
+                                                </label>
+                                                <a th:href="@{varifyMailByOneMember}">
+                                                    <input type="button" class="form-control" th:if="${session.loginsuccess.getMemStat() == 0}" value="尚未驗證，點擊此連結進行驗證" style="text-align: left; color: red;" onmouseover="this.style.color='pink';" onmouseout="this.style.color='red';">
+                                                </a>
+                                                <input type="text" class="form-control" th:if="${session.loginsuccess.getMemStat() == 1}" value="已驗證" readonly style="color: black;">
+                                                <span th:if="${#fields.hasErrors('memStat')}" th:errors="*{memStat}" class="error" style="color: red;"></span>
+                                            </div>
+                                            <input type="hidden" th:field="*{memStat}" name="memStat">
+                                            <input type="file" th:field= "*{memPic}" id="the_file" style="display: none;">
+                                            <input type="text" th:field="*{memberJoinTime}" style="display: none;">
+                                            <div class="row justify-content-center">
+                                                <input type="submit" class="btn btn-outline-dark btn-lg btn-block" value="修改資料" style="width: 660px;">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <th:block th:insert="~{frontend/member/component/profile-button.html}"></th:block>
+                            </div>
+                        </div>
+                        <!-- End Content -->
                     </div>
-                    <div class="select-box dropdown">
-                        <select name="district" id="district_box">
-                            <option value="">選擇鄉鎮市區</option>
-                        </select>
-                    </div>
                 </div>
-                <input type="text" placeholder="請輸入詳細地址" th:field= "*{memAdd}"/>
-                <span th:if="${#fields.hasErrors('memAdd')}" th:errors="*{memAdd}" class="error"></span>
             </div>
+        </main>
+        <!-- End Main -->
+        <!-- Footer -->
+        <footer th:replace="frontend/component/footer :: footer"></footer>
+        <!-- End Footer -->
+    </div>
+    <!--
+    ========================
+       End Wrapper
+    ========================
+    -->
+    <!-- script start -->
+    <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
+    <!-- End script start -->
+    <script>
 
-            <div class="input-box">
-                <label>生日:<b>*</b></label>
-                <input type="date" placeholder="請輸入生日" th:field="*{memBd}" />
-                <span th:if="${#fields.hasErrors('memBd')}" th:errors="*{memBd}" class="error"></span>
-            </div>
+        let choose_file_el = document.getElementById("choose_file");
+        choose_file_el.addEventListener("click", function () {
+            let my_input = document.getElementById("the_file");
+            my_input.click(); //input type=flie 被點
+        });
+        window.addEventListener("load", function () {
+            var the_file_element = document.getElementById("the_file");
+            the_file_element.addEventListener("change", function (e) {
+                let that = this;
+                let ul_el = document.querySelector(".picture_list");
+                ul_el.innerHTML = "";
 
-            <div class="input-box">
-                <label>信用卡號:<b>*</b></label>
-                <input type="text" placeholder="請輸入信用卡卡號" th:field="*{memCard}" />
-                <span th:if="${#fields.hasErrors('memCard')}" th:errors="*{memCard}" class="error"></span>
-            </div>
-            <br>
-            <div class="input-box">
-                <label>驗證狀態:</label>
-                <b>
-                    <span th:text="${data.memStat == 0 ? '未驗證' : data.memStat == 1 ? '已驗證' : '未驗證'}"></span>
-                </b>
-                <input type="hidden" th:field="*{memStat}" name="memStat">
-                <span th:if="${#fields.hasErrors('memStat')}" th:errors="${data.memStat}" class="error"></span>
-            </div>
-            <br>
+                for (let i = 0; i < this.files.length; i++) {
+                    let reader = new FileReader();
+                    reader.readAsDataURL(this.files[i]);
+                    reader.addEventListener("load", function () {
+                        let li_html2 = `<li>
 
-            <input type="file" th:field= "*{memPic}" id="the_file">
-            <input type="hidden" th:field="*{memberJoinTime}">
+                                                <input type="submit" class="submit" value="儲存">
+                                        </li>`;
 
-            <!--            <input type="hidden" th:field="*{memName}">-->
-            <!--            <input type="hidden" th:field="*{memAcc}">-->
-            <!--            <input type="hidden" th:field="*{memPwd}">-->
-            <!--            <input type="hidden" th:field="*{memMob}">-->
-            <!--            <input type="hidden" th:field="*{memGender}">-->
-            <!--            <input type="hidden" th:field="*{memMail}">-->
-            <!--            <input type="hidden" th:field="*{memAdd}">-->
+                        let html_img = document.getElementById("pic");
+                        let html_newImg = document.createElement("img");
+                        html_newImg.src = `${this.result}`;
+                        html_newImg.id = "changeImg";
+                        html_newImg.style = "width: 100%; height: 100%";
+                        let html_oldImg = document.getElementById("memImg");
+                        if (html_oldImg === null) {
+                            html_oldImg = document.getElementById("changeImg")
+                        }
+                        console.log(html_oldImg);
 
-            <input type="submit" class="submit" value="修改資料">
+                        html_img.replaceChild(html_newImg, html_oldImg);
 
-        </form>
-    </main>
+                        ul_el.insertAdjacentHTML("beforeend", li_html2);
+                    });
+                }
+            });
+        });
 
-    <button id="button" class="ui-state-default ui-corner-all" style="display: none;">註冊會員</button>
-    <script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
-    <script th:src="@{/js/public/tableModel/dateInput.js}"></script>
-    <script th:src="@{/js/backend/rentapp/addRentApp.js}"></script>
+        // 處理表單提交並使用 AJAX 上傳新圖片
+        function handleAvatarUpload(event) {
+            event.preventDefault(); // 阻止默認提交行為
 
+            // 使用 FormData 收集表單數據
+            const formData = new FormData(event.target);
+
+            // 使用 fetch 發送 POST 請求
+            fetch('/frontend/member/newPicture', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json()) // 將回應解析為 JSON 格式
+                .then(data => {
+                    if (data.success) {
+                        // 上傳成功：更新頁面上的大頭貼圖片
+                        const avatarElement = document.getElementById('memberAvatar');
+                        avatarElement.src = data.newAvatarUrl; // 更新圖片的 src 屬性
+
+                        // 顯示成功消息
+                        alert('上傳成功！');
+
+                        // 在上傳成功後進行重定向
+                        window.location.href = '/frontend/member/memberData';
+                    } else {
+                        // 上傳失敗：顯示錯誤消息
+                        console.error('上傳失敗:', data.error);
+                        alert('上傳失敗，請重試。');
+                    }
+                })
+                .catch(error => {
+                    // 請求過程中的錯誤處理
+                    console.error('錯誤:', error);
+                    alert('發生錯誤，請稍後重試。');
+                });
+        }
+    </script>
+    <script>
+        // 定義一個函數，用於顯示成功消息彈窗
+        function showSuccessMessage() {
+            // 創建一個新的 div 元素
+            var popup = document.createElement('div');
+            // 設置 div 元素的內容（繁體中文）
+            popup.innerHTML = '修改成功，準備回到個人資訊網頁';
+            // 添加一些樣式
+            popup.style.backgroundColor = '#007FFF';
+            popup.style.color = 'white';
+            popup.style.padding = '10px';
+            popup.style.position = 'fixed';
+            popup.style.top = '50%';
+            popup.style.left = '50%';
+            popup.style.transform = 'translate(-50%, -50%)';
+            popup.style.zIndex = '9999';
+            popup.style.borderRadius = '5px';
+            popup.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.5)';
+            popup.style.fontFamily = 'Arial, sans-serif';
+            // 將 div 元素添加到文檔中
+            document.body.appendChild(popup);
+
+            // 一秒後自動關閉彈窗並重定向到會員資訊頁面
+            setTimeout(function() {
+                popup.remove();
+                window.location.href = '/frontend/member/memberData';
+            }, 1000);
+        }
+
+        // 檢查是否有成功消息元素存在
+        var successMessage = document.getElementById('successMessage');
+        if (successMessage) {
+            // 成功消息存在，呼叫函數以顯示成功消息彈窗
+            showSuccessMessage();
+        }
+    </script>
+    <script>
+        // 定義一個函數，用於顯示成功消息彈窗並禁用輸入元素
+        function showSuccessMessageAndDisableInputs() {
+            // 創建一個新的 div 元素
+            var popup = document.createElement('div');
+            // 設置 div 元素的內容（繁體中文）
+            popup.innerHTML = '修改成功，準備回到個人資訊網頁';
+            // 添加一些樣式...
+            // ...
+
+            // 禁用所有的輸入元素
+            var inputs = document.getElementsByTagName('input');
+            for (var i = 0; i < inputs.length; i++) {
+                inputs[i].disabled = true;
+            }
+
+            // 將 div 元素添加到文檔中
+            document.body.appendChild(popup);
+
+            // 一秒後自動關閉彈窗並重定向到會員資訊頁面
+            setTimeout(function() {
+                popup.remove();
+                window.location.href = '/frontend/member/memberData';
+            }, 1000);
+        }
+
+        // 檢查是否有成功消息元素存在
+        var successMessage = document.getElementById('successMessage');
+        if (successMessage) {
+            // 成功消息存在，呼叫函數以顯示成功消息彈窗並禁用輸入元素
+            showSuccessMessageAndDisableInputs();
+        }
+
+    </script>
 </body>
+
 </html>

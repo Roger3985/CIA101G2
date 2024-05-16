@@ -55,6 +55,12 @@ public class RentalServiceImpl implements RentalService {
 		return repository.findQueryByRentalColor(rentalColor);
 	}
 
+	//處理查詢(依租借品的狀態)
+	@Override
+	public List<Rental> findByStat(Byte rentalStat) {
+		return repository.findQueryByRentalStat(rentalStat);
+	}
+
 	//關鍵字查詢(依租借品的名稱 "模糊查詢")
 	@Override
 	public List<Rental> getRentalName(String rentalName) {
@@ -68,16 +74,16 @@ public class RentalServiceImpl implements RentalService {
 	}
 
 
-	//金額由大到小
+	//金額由大到小 (取得租借清單，以價格的降冪後返回)
 	@Override
 	public List<Rental> findAllSortDESC() {
 		return repository.findAll(Sort.by("rentalPrice").descending());
 	}
 
-	//金額由小到大
+	//金額由小到大 (取得租借清單，以價格的升冪後返回)
 	@Override
 	public List<Rental> findAllSort() {
-		return repository.findAll(Sort.by("rentalPrice"));
+		return repository.findAll(Sort.by("rentalPrice").ascending());
 	}
 
 
@@ -102,11 +108,7 @@ public class RentalServiceImpl implements RentalService {
 		return null;
 	}
 
-	//以rentalStat查詢
-	@Override
-	public List<Rental> findByStat(Byte rentalStat) {
-		return repository.findQueryByRentalStat(rentalStat);
-	}
+
 
 	/**
 	 * 根據給定的查詢條件搜尋租賃資訊並傳回結果清單。
