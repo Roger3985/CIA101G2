@@ -1,314 +1,268 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <link rel="stylesheet" th:href="@{/css/backend/member/try.css}" />
-      <link rel="stylesheet" th:href="@{/css/backend/member/try2.css}" />
-    <link rel="stylesheet" th:href="@{/css/public/elementmodel/elementStyles.css}" />
-    <link rel="stylesheet" th:href="@{/css/frontend/navForMemCenter/navForMemCenter.css}" />
-    <title>會員基本資料</title>
+<html lang="en" data-bs-theme="light" xmlns:th="http://www.thymeleaf.org">
 
+<head><!-- metas -->
+    <meta charset="utf-8">
+    <meta name="author" content="pxdraft">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <!-- title -->
+    <title>ShopApp - eCommerce Bootstrap 5 Template</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <!-- CSS Template -->
+    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
     <style>
-        body {
-            /*             font-family: Arial, sans-serif; */
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0px;
-            display: flex;
-            flex-direction: row;
-            /*             text-align: center; */
+        #preview {
+            max-width: 100px;
+            max-height: 100px;
+            margin-top: 10px;
+            /*border: 1px solid #ccc;*/
+            /*padding: 5px;*/
         }
-
-        h1 {
-            color: red;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 60%;
-            margin: 0px auto;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 50vw;
-            text-align: right;
-        }
-
-        table,
-        th,
-        td {
-            border: 1px solid #333;
-        }
-
-        th,
-        td {
-            padding: 12px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #ddd;
-        }
-
-        .fly {
-            display: flex;
-            justify-content: space-around;
-        }
-
-
-
-        ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        ul>li {
-            display: inline-block;
-            vertical-align: top;
-        }
-
-        #the_file {
-            display: none;
-        }
-
-        #changeImg {
-            width: auto;
-            height: 200px;
-            border-radius: 50%;
-        }
-
-        .avatar-container {
-            text-align: center;
-            padding: 50px;
-        }
-
-        .avatar {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 4px solid #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        body {
-            text-align: center;
-        }
-
-        button, input.submit {
-            background-color: #5bc0de;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        input.submit:hover {
-            background-color: #0056b3;
-        }
-
-        /*.container .test {*/
-        /*    display: flex;*/
-        /*    justify-content: flex-start;*/
-        /*}*/
-
     </style>
 </head>
+
 <body>
-    <div>
-        <div th:insert="~{/frontend/navForMemCenter/navForMemCenter :: nav}"></div>
-        <div class="tittleBoard"><span class="tittleBoard">會員基本資料</span></div>
-        <table id="example" class="display">
-            <thead>
-            <tr>
-                <th>項目</th>
-                <th>資料</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>會員大頭貼</td>
-                <th:block>
-                    <td>
-                        <!-- 顯示會員大頭貼 -->
-                        <img th:src="@{/frontend/member/picture(memno=${myData.memNo})}" id="memberAvatar" style="width: 100px; height: 100px;" alt="會員大頭貼">
-                        <!-- 上傳表單 -->
-                        <form method="post" th:action="@{newPicture}" enctype="multipart/form-data" onsubmit="return handleAvatarUpload(event)">
-                            <input type="file" name="chaPic" id="avatarInput" accept="image/*">
-                            <input type="submit" value="上傳新頭貼">
-                        </form>
-                    </td>
-                </th:block>
-            </tr>
-            <tr>
-                <td>會員編號</td>
-                <td th:text="${myData.memNo}"></td>
-            </tr>
-            <tr>
-                <td>姓名</td>
-                <td style="justify-content: flex-start">
-                    <div class="container" style="display: flex; justify-content: flex-start;">
-                        <div class="test">
-                            <span th:text="${myData.memName}"></span>
+<!-- 通用插件 -->
+<th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block>
+<!-- 通用插件 -->
+    <!--
+    ========================
+        Wrapper
+    ========================
+    -->
+    <div class="wrapper">
+        <!-- header height -->
+        <div class="header-height-bar" style="min-height: 104.865px;"></div>
+        <!-- Header -->
+        <header th:replace="frontend/component/header :: header"></header>
+        <!-- End Header -->
+        <!-- Main -->
+        <main>
+            <!-- Breadcrumb -->
+            <div class="py-3 bg-gray-100">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 my-2">
+                            <h1 class="m-0 h4 text-center text-lg-start">Profile</h1>
                         </div>
-                        <div class="test" style="margin-left: 15px;">
-                            <form th:action="@{newMemberName}" method="get">
-                                <input type="submit" value="變更會員姓名" class="submit">
-                            </form>
+                        <div class="col-lg-6 my-2">
+                            <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
+                                <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/}"><i
+                                            class="bi bi-home"></i>Home</a></li>
+                                <li class="breadcrumb-item text-nowrap active" aria-current="page">Profile</li>
+                            </ol>
                         </div>
                     </div>
-                </td>
-            </tr>
-            <tr>
-                <td>會員帳號</td>
-                <td style="justify-content: flex-start">
-                    <div class="container"  style="display: flex; justify-content: flex-start;">
-                        <div class="test">
-                            <span th:text="${myData.memAcc}"></span>
-                        </div>
-                        <div class="test" style="margin-left: 15px;">
-                            <form th:action="@{newMemberAccount}" method="get">
-                                <input type="submit" value="變更會員帳號" class="submit">
-                            </form>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>會員密碼</td>
-                <td style="justify-content: flex-start">
-                    <div class="container"  style="display: flex; justify-content: flex-start;">
-                        <div class="test">
-                            <span th:text="${myData.memPwd}"></span>
-                        </div>
-                        <div class="test" style="margin-left: 15px;">
-                            <form th:action="@{newPassword}" method="get">
-                                <input type="submit" value="變更密碼" class="submit">
-                            </form>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>手機號碼</td>
-                <td style="justify-content: flex-start">
-                    <div class="container"  style="display: flex; justify-content: flex-start;">
-                        <div class="test">
-                            <span th:text="${myData.memMob}"></span>
-                        </div>
-                        <div class="test" style="margin-left: 15px;">
-                            <form th:action="@{newMemberMobile}" method="get">
-                                <input type="submit" value="變更會員電話" class="submit">
-                            </form>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>性別</td>
-                <td>
-                    <span th:if="${myData.memGender == 1}" th:text="男性"></span>
-                    <span th:if="${myData.memGender == 2}" th:text="女性"></span>
-                </td>
-            </tr>
-            <tr>
-                <td>會員信箱</td>
-                <td style="justify-content: flex-start">
-                    <div class="container"  style="display: flex; justify-content: flex-start;">
-                        <div class="test">
-                            <span th:text="${myData.memMail}"></span>
-                        </div>
-                        <div class="test" style="margin-left: 15px;">
-                            <form th:action="@{newMemberMail}" method="get">
-                                <input type="submit" value="變更會員信箱" class="submit">
-                            </form>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>聯絡地址</td>
-                <td style="justify-content: flex-start">
-                    <div class="container"  style="display: flex; justify-content: flex-start;">
-                        <div class="test">
-                            <span th:text="${myData.memAdd}"></span>
-                        </div>
-                        <div class="test" style="margin-left: 15px;">
-                            <form th:action="@{newMemberAddress}" method="get">
-                                <input type="submit" value="變更會員地址" class="submit">
-                            </form>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>會員生日</td>
-                <td th:text="${myData.memBd}"></td>
-            </tr>
-            <tr>
-                <td>註冊日期</td>
-                <td th:text="${myData.memberJoinTime}"></td>
-                <!-- 				<td> -->
-                <!-- 					<span th:if="${myData.memStatus == 0}" th:text="未驗證"></span> -->
-                <!-- 					<span th:if="${myData.memStatus == 1}" th:text="正常"></span> -->
-                <!-- 					<span th:if="${myData.memStatus ==2}" th:text="停權"></span>				 -->
-                <!-- 				</td> -->
-            </tr>
-            <tr th:if="${myData.memStat == 0}">
-                <td>驗證狀態</td>
-                <td style="justify-content: flex-start">
-                    <div class="container" style="display: flex; justify-content: flex-start; ">
-                        <div class="test">
-                            <span>未驗證</span>
-                        </div>
-                        <div class="test" style="margin-left: 15px;">
-                            <form th:action="@{varifyMailByOneMember}" method="get">
-                                <input type="submit" value="重新發送驗證郵件" class="submit">
-                            </form>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr th:if="${myData.memStat == 1}">
-                <td>驗證狀態</td>
-                <td  th:text="已驗證"></td>
-            <tr>
-<!--            <tr>-->
-<!--                <td>最後上線時間</td>-->
-<!--                <td th:if="${myData.lastLoginTime != null}" th:text="${#dates.format(myData.lastLoginTime, 'yyyy/MM/dd HH:mm:ss')}"></td>-->
-<!--            </tr>-->
+                </div>
+            </div><!-- End Breadcrumb --><!-- Table -->
+            <div class="py-6">
+                <div class="container">
+                    <div class="row">
+                        <th:block th:insert="~{frontend/member/component/profile-menu.html}"></th:block><!-- Profile Menu -->
+                        <div class="col-lg-8 col-xxl-9">
+                            <div class="card mb-5">
+                                <!-- 判斷是否有更新成功的屬性 -->
+                                <div th:if="${param.updatesuccess != null}" style="text-align: center; margin-top: 50px; color: green;" >
+                                    更新成功
+                                </div>
+                                <div class="card-header py-3">
+                                    <h5 class="m-0">Profile Update (想單獨修改可以點擊表格中的資料)</h5>
+                                </div>
+                                <div class="card-body">
+<!--                                    <div class="row justify-content-center align-items-center">-->
+<!--                                        <div class="col-md-3 text-end">-->
+<!--                                            <h5 class="m-0">會員大頭照: </h5>-->
+<!--                                        </div>-->
+<!--                                        <div class="col-md-3 text-start">-->
+<!--                                            <img th:src="@{/frontend/member/picture(memno=${myData.memNo})}" id="memberAvatar" style="width: 100px; height: 100px; border: 1px solid #ccc;" alt="會員大頭貼">-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <br>-->
+                                    <form method="post" th:action="@{newPicture}" enctype="multipart/form-data" onsubmit="return handleAvatarUpload(event)" class="row g-3 align-items-center">
+                                        <label for="avatarInput" class="col-auto col-form-label">Change Profile Photo</label>
+                                        <div class="col-auto">
+                                            <input type="file" name="chaPic" class="form-control" id="avatarInput" accept="image/*">
+                                        </div>
+                                        <div class="col-auto">
+                                            <input type="submit" value="上傳新圖片" class="form-control btn btn-primary">
+                                        </div>
+                                    </form>
+                                    <div id="preview"></div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-sm-6 mb-3"><label class="form-label">
+                                            Name
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                            <a th:href="@{newMemberName}">
+                                                <input type="button" class="form-control" th:value="${session.loginsuccess.getMemName()}" readonly style="text-align: left; color: black;" onmouseover="this.style.color='red';" onmouseout="this.style.color='black';">
+                                            </a>
+                                        </div>
+                                        <div class="col-sm-6 mb-3"><label class="form-label">
+                                            Account
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                            <a th:href="@{newMemberAccount}">
+                                                <input type="button" class="form-control" th:value="${session.loginsuccess.getMemAcc()}" readonly style="text-align: left; color: black;" onmouseover="this.style.color='red';" onmouseout="this.style.color='black';">
+                                            </a>
+                                        </div>
+                                        <div class="col-sm-6 mb-3"><label class="form-label">
+                                            Password
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                            <a th:href="@{newPassword}">
+                                                <input type="button" class="form-control" value="**************" readonly style="text-align: left; color: black;" onmouseover="this.style.color='red';" onmouseout="this.style.color='black';">
+                                            </a>
+                                        </div>
+                                        <div class="col-sm-6 mb-3"><label class="form-label">
+                                            Phone
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                            <a th:href="@{newMemberMobile}">
+                                                <input type="button" class="form-control" th:value="${session.loginsuccess.getMemMob()}" readonly style="text-align: left; color: black;" onmouseover="this.style.color='red';" onmouseout="this.style.color='black';">
+                                            </a>
+                                        </div>
+                                        <div class="col-sm-6 mb-3">
+                                            <label class="form-label">
+                                                Gender
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" class="form-control" th:if="${session.loginsuccess.getMemGender() == 1}" value="男性" readonly style="color: black;">
+                                            <input type="text" class="form-control" th:if="${session.loginsuccess.getMemGender() == 2}" value="女性" readonly style="color: black;">
+                                        </div>
+                                        <div class="col-sm-6 mb-3"><label class="form-label">
+                                            Email
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                            <a th:href="@{newMemberMail}">
+                                                <input type="button" class="form-control" th:value="${session.loginsuccess.getMemMail()}" readonly style="text-align: left; color: black;" onmouseover="this.style.color='red';" onmouseout="this.style.color='black';">
+                                            </a>
+                                        </div>
+                                        <div class="col-sm-6 mb-3"><label class="form-label">
+                                            Birthday
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                            <input type="text" class="form-control" th:value="${session.loginsuccess.getMemBd()}" readonly style="color: black;">
+                                        </div>
+                                        <div class="col-sm-6 mb-3"><label class="form-label">
+                                            Address
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                            <a th:href="@{newMemberAddress}">
+                                                <input type="button" class="form-control" th:value="${session.loginsuccess.getMemAdd()}" readonly style="text-align: left; color: black;" onmouseover="this.style.color='red';" onmouseout="this.style.color='black';">
+                                            </a>
+                                        </div>
+                                        <div class="col-sm-6 mb-3"><label class="form-label">
+                                            Credit card
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                            <a th:href="@{newMemberCreditCard}">
+                                                <input type="button" class="form-control" th:value="${session.loginsuccess.getMemCard()}" readonly style="text-align: left; color: black;" onmouseover="this.style.color='red';" onmouseout="this.style.color='black';">
+                                            </a>
+                                        </div>
+                                        <div class="col-sm-6 mb-3">
+                                            <label class="form-label" th:if="${session.loginsuccess.getMemStat() == 0}">
+                                                驗證狀態
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <label class="form-label" th:if="${session.loginsuccess.getMemStat() == 1}">
+                                                驗證狀態
+                                                <span class="text-bg-light">*</span>
+                                            </label>
+                                            <a th:href="@{varifyMailByOneMember}">
+                                                <input type="button" class="form-control" th:if="${session.loginsuccess.getMemStat() == 0 && session.loginsuccess.getProvider() == null}" value="尚未驗證，點擊進行驗證，以便建立第三方服務" style="text-align: left; color: red;" onmouseover="this.style.color='pink';" onmouseout="this.style.color='red';">
+                                                <input type="button" class="form-control" th:if="${session.loginsuccess.getMemStat() == 0 && session.loginsuccess.getProvider() != null}" value="尚未驗證，點擊進行驗證" style="text-align: left; color: red;" onmouseover="this.style.color='pink';" onmouseout="this.style.color='red';">
+                                            </a>
+                                            <input type="text" class="form-control" th:if="${session.loginsuccess.getMemStat() == 1}" value="已驗證" readonly style="color: black;">
+                                        </div>
+                                        <div class="col-sm-6 mb-3">
+                                            <form method="get" th:action="@{updateData}">
+                                                <input type="hidden" name="memNo" th:value="${myData.memNo}" readonly style="display: none;">
+                                                <div class="col-12 pt-2">
+                                                    <button type="submit" class="btn btn-primary">前往修改會員資料</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="col-sm-6 mb-3">
+                                            <label class="form-label" th:if="${session.loginsuccess.getMemStat() == 1 && session.loginsuccess.getProvider() == null}">
+                                                尚未有第三方連結，選擇以下進行連結，建立快速登入
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <label class="form-label" th:if="${session.loginsuccess.getProvider() != null}">
+                                                已經建立的第三方連結
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" class="form-control" th:if="${session.loginsuccess.getProvider() == 0}" value="Line" readonly style="color: black;">
+                                            <input type="text" class="form-control" th:if="${session.loginsuccess.getProvider() == 1}" value="Google" readonly style="color: black;">
+                                            <div>
+                                                <form id="buildAuthUrlForm" th:action="@{/google/buildAuthUrlByAlreadyLogin}"  spellcheck="false" th:if="${session.loginsuccess.getMemStat() == 1 && session.loginsuccess.getProvider() == null}">
+                                                    <div class="col">
+                                                        <button class="btn w-100 btn-mode" type="submit" ><i
+                                                                class="bi bi-google me-2"></i> Google
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                                <form id="exchangeTokenForm" method="post" th:action="@{/google/exchangeTokenByAlreadyLogin}" spellcheck="false">
+                                                    <div>
+                                                        <label style="vertical-align: top;"></label>
+                                                        <textarea id="code" name="code" rows="3" cols="60" type="text"></textarea>
+                                                    </div>
+                                                    <div>
+                                                        <button type="submit" id="content"></button>
+                                                    </div>
+                                                </form>
+                                                <div>
+                                                    <p id="exchangeTokenForm-outputStatus"></p>
+                                                    <p id="exchangeTokenForm-output" class="output-json"></p>
+                                                </div>
+                                                <div class="api-form">
+                                                <form id="getGoogleUserForm" th:action="@{/google/getGoogleUserByAlreadyLogin}" spellcheck="false" name="accessToken">
+                                                    <p style="font-weight: 700">
+                                                    <div>
+                                                        <label style="vertical-align: top;"></label>
+                                                        <textarea id="getGoogleUserForm-accessToken" rows="6" cols="60" type="text"></textarea>
+                                                    </div>
+                                                    <button type="submit" id="getUserForm"></button>
+                                                </form>
+                                                <div>
+                                                    <!--                                                <p>返回結果：</p>-->
+                                                    <p id="getGoogleUserForm-outputStatus"></p>
+                                                    <p id="getGoogleUserForm-output" class="output-json">.</p>
+                                                </div>
+                                        </div>
 
-                <td>修改會員資料</td>
-                <td >
-                    <form method="get" th:action="@{updateData}">
-                        <input type="hidden" name= "memNo" th:text="${myData.memNo}" readonly>
-                        <input type="submit" value="修改" class="submit">
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+<!--                                        <form method="get" th:action="@{updateData}">-->
+<!--                                            <input type="hidden" name="memNo" th:value="${myData.memNo}" readonly style="display: none;">-->
+<!--                                            <div class="col-12 pt-2">-->
+<!--                                                <button type="submit" class="btn btn-primary">前往修改會員資料</button>-->
+<!--                                            </div>-->
+<!--                                        </form>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Content -->
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- End Main -->
+        <!-- Footer -->
+        <footer th:replace="frontend/component/footer :: footer"></footer>
+        <!-- End Footer -->
     </div>
-    <br>
-    <script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
-    <!--   	<script th:src="@{/js/BackStage/mem/the.js}"></script> -->
-    <!--   	<script th:src="@{/js/BackStage/mem/the2.js}"></script> -->
-    <script th:src="@{/js/public/tableModel/dateInput.js}"></script>
-    <script th:src="@{/js/FrontEnd/navForMemCenter/navForMemCenter.js}"></script>
-
-    </main>
+    <!--
+    ========================
+       End Wrapper
+    ========================
+    -->
+    <!-- script start -->
+    <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
+    <!-- End script start -->
     <script>
 
         let choose_file_el = document.getElementById("choose_file");
@@ -319,11 +273,6 @@
         window.addEventListener("load", function () {
             var the_file_element = document.getElementById("the_file");
             the_file_element.addEventListener("change", function (e) {
-                // 寫在這
-                //   console.log(this);
-                //   console.log(this.files);
-                //   console.log(this.files[0]);
-                //   console.log(this.files[0].name);
                 let that = this;
                 let ul_el = document.querySelector(".picture_list");
                 ul_el.innerHTML = "";
@@ -332,17 +281,10 @@
                     let reader = new FileReader();
                     reader.readAsDataURL(this.files[i]);
                     reader.addEventListener("load", function () {
-//             console.log(this.result);
-                        //寫法1
-                        // let li_html = "";
-                        // li_html += "<li>";
-                        // li_html += "<img src = '" + this.result + "' class = 'preview'/>";
-                        // li_html += "</li>";
-                        //寫法2
                         let li_html2 = `<li>
 
-                                            <input type="submit" class="submit" value="儲存">
-                                    </li>`;
+                                                <input type="submit" class="submit" value="儲存">
+                                        </li>`;
 
                         let html_img = document.getElementById("pic");
                         let html_newImg = document.createElement("img");
@@ -362,7 +304,6 @@
                 }
             });
         });
-
 
         // 處理表單提交並使用 AJAX 上傳新圖片
         function handleAvatarUpload(event) {
@@ -400,7 +341,300 @@
                     alert('發生錯誤，請稍後重試。');
                 });
         }
+    </script>
+    <script>
+        document.getElementById('avatarInput').addEventListener('change', function() {
+            var preview = document.getElementById('preview');
+            var file = this.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function() {
+                var img = new Image();
+                img.src = reader.result;
+                img.style.maxWidth = '100%';
+                img.style.maxHeight = '100%';
+                preview.innerHTML = '';
+                preview.appendChild(img);
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.innerHTML = 'No image selected';
+            }
+        });
+    </script>
+    <script>
+        document.getElementById("buildAuthUrlForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            // 指定 http method、url
+            const http = new XMLHttpRequest();
+            const method = "GET";
+            const url = "http://localhost:8080/google/buildAuthUrlByAlreadyLogin";
+            http.open(method, url);
+
+            // 發出 http request 請求
+            http.send();
+
+            http.onreadystatechange = (e) => {
+                var a = document.getElementById("buildAuthUrlForm-a");
+                a.setAttribute("href", http.responseText);
+            }
+        });
+
+        document.getElementById("exchangeTokenForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            // 指定 http method、url
+            const http = new XMLHttpRequest();
+            const method = "POST";
+            const url = "http://localhost:8080/google/exchangeTokenByAlreadyLogin";
+            http.open(method, url);
+
+            // 添加 request body 中的參數
+            var data = {
+                "code": document.getElementById("code").value
+            }
+
+            // 發出 http request 請求
+            http.setRequestHeader("Content-Type", "application/json");
+            http.send(JSON.stringify(data));
+
+            http.onreadystatechange = (e) => {
+                var outputStatus = document.getElementById("exchangeTokenForm-outputStatus");
+                var output = document.getElementById("exchangeTokenForm-output");
+                showOutput(http, outputStatus, output);
+            }
+        });
+
+        document.getElementById("getGoogleUserForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            // 指定 http method、url
+            const http = new XMLHttpRequest();
+            const method = "POST";
+            // const url = "https://www.googleapis.com/oauth2/v2/userinfo";
+            const url = "http://localhost:8080/google/getGoogleUserByAlreadyLogin";
+            http.open(method, url);
+
+            // 添加 acces token 的值在 Authorization header 中
+            const accessToken = document.getElementById("getGoogleUserForm-accessToken").value;
+            http.setRequestHeader("Authorization", "Bearer " + accessToken);
+
+            // 發出 http request 請求
+            http.setRequestHeader("Content-Type", "application/json");
+            http.send(JSON.stringify(accessToken));
+            // http.send();
+
+            http.onreadystatechange = (e) => {
+                var outputStatus = document.getElementById("getGoogleUserForm-outputStatus");
+                var output = document.getElementById("getGoogleUserForm-output");
+                showOutput(http, outputStatus, output);
+            }
+        });
+
+        document.getElementById("refreshTokenForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            // 指定 http method、url
+            const http = new XMLHttpRequest();
+            const method = "POST";
+            const url = "http://localhost:8080/google/refreshTokenByAlreadyLogin";
+            http.open(method, url);
+
+            // 添加 request body 中的參數
+            var data = {
+                "refreshToken": document.getElementById("refreshToken").value
+            }
+
+            // 發出 http request 請求
+            http.setRequestHeader("Content-Type", "application/json");
+            http.send(JSON.stringify(data));
+
+            http.onreadystatechange = (e) => {
+                var outputStatus = document.getElementById("refreshTokenForm-outputStatus");
+                var output = document.getElementById("refreshTokenForm-output");
+                showOutput(http, outputStatus, output);
+            }
+        });
+
+        function showOutput(http, outputStatus, output) {
+            outputStatus.style.backgroundColor = "#D0D0D0";
+            outputStatus.innerHTML = http.status;
+
+            output.style.backgroundColor = "#D0D0D0";
+            try {
+                output.innerHTML = JSON.stringify(JSON.parse(http.responseText), null, 4);
+            } catch (e) {
+                output.innerHTML = http.responseText;
+            }
+        }
 
     </script>
+    <script>
+        document.getElementById("buildAuthUrlForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            // 指定 http method、url
+            const http = new XMLHttpRequest();
+            const method = "GET";
+            const url = "http://localhost:8080/google/buildAuthUrlByAlreadyLogin";
+            http.open(method, url);
+
+            // 發出 http request 請求
+            http.send();
+
+            http.onreadystatechange = (e) => {
+                if (http.readyState === 4 && http.status === 200) {
+                    // 獲取返回結果
+                    var returnUrl = http.responseText;
+                    // 跳轉到 Google 驗證頁面
+                    window.location.href = returnUrl;
+                }
+            };
+        });
+    </script>
+    <script>
+        // 解析 URL 中的 code 值
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+
+        // 如果 URL 中包含 code 參數且表單存在
+        if (code != null) {
+            // 將 code 值填入表單的 textarea 中
+            document.getElementById("code").value = code;
+
+            console.log("輸入框有值，自動提交表單");
+
+            // 自動提交表單
+            document.getElementById("content").click();
+
+            // 彈出成功消息
+            alert("建立第三方連結成功");
+        }
+    </script>
+    <script>
+        // 獲取包含 JSON 資料的元素
+        var exchangeTokenFormOutput = document.getElementById("exchangeTokenForm-output");
+
+        // 解析 JSON 格式資料
+        var tokenData = JSON.parse(exchangeTokenFormOutput.textContent);
+
+        // 獲取 access_token
+        var accessToken = tokenData.access_token;
+
+        // 現在你可以使用 accessToken 進行後續操作
+        console.log("Access Token:", accessToken);
+
+        // 將 access_token 填入相應的 textarea 中
+        document.getElementById("getGoogleUserForm-accessToken").value = accessToken;
+
+        // 提交表單
+        document.getElementById("getUserForm").click();
+
+
+        // 發送 AJAX 請求到購物主頁
+        const http = new XMLHttpRequest();
+        const method = "GET";
+        const url = "/frontend/member/memberData"; // 個人主頁的 URL
+        http.open(method, url);
+        http.send();
+
+        http.onreadystatechange = (e) => {
+            // 如果請求成功，跳轉到個人主頁
+            if (http.readyState === 4 && http.status === 200) {
+                window.location.href = url;
+            }
+        };
+    </script>
+
+<style>
+    .title a {
+        font-size: 18px;
+        text-decoration: none;
+    }
+
+    .title span {
+        background-color: #EA4335;
+        color: #FFFFFF;
+        border-radius: 5px;
+        padding: 1px 8px 1px 8px;
+    }
+
+    .connect-button {
+        background-color: #EA4335;
+        color: #FFFFFF;
+        width: fit-content;
+        border-radius: 5px;
+        padding: 3px 8px 3px 8px;
+        margin: 0 0 20px 0;
+    }
+
+    .api-form {
+        display: inline-block;
+        padding: 0 20px 0 20px;
+        margin: 0 0 20px 0;
+        border: 1px solid #000000;
+
+        button {
+            display: block;
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+        }
+    }
+
+    .output-json {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    a.show-url {
+        &::after {
+            content: attr(href);
+        }
+    }
+
+    ul {
+        padding-inline-start: 20px;
+    }
+
+    li {
+        padding: 5px 0 5px 0;
+    }
+
+    body {
+        margin: 0 20px 50px 20px;
+    }
+
+    #code {
+        display: none; /* 隱藏代碼輸入框 */
+    }
+
+    #exchangeTokenForm button[type="submit"] {
+        display: none; /* 隱藏送出按鈕 */
+    }
+
+    /* 隱藏 exchangeTokenForm-outputStatus 元素 */
+    #exchangeTokenForm-outputStatus,
+        /* 隱藏 exchangeTokenForm-output 元素 */
+    #exchangeTokenForm-output,
+        /* 隱藏 getGoogleUserForm-outputStatus 元素 */
+    #getGoogleUserForm-outputStatus,
+        /* 隱藏 getGoogleUserForm-output 元素 */
+    #getGoogleUserForm-output,
+        /* 隱藏 getUserForm 元素 */
+    #getUserForm,
+        /* 隱藏 getGoogleUserForm-accessToken 元素 */
+    #getGoogleUserForm-accessToken,
+        /* 隱藏 getGoogleUserForm-output 元素的外框 */
+    .api-form {
+        display: none; /* 設置 display 屬性為 none，隱藏元素 */
+    }
+
+
+</style>
+
 </body>
+
 </html>

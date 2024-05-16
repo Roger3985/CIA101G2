@@ -45,9 +45,9 @@
                     <li class="dropdown nav-item"><a href="#" class="nav-link">關於我們</a> <label
                             class="px-dropdown-toggle mob-menu"></label>
                         <ul class="dropdown-menu left shadow-lg">
-                            <li><a class="dropdown-item" href="../pages/faq.html">常見問題</a></li>
+                            <li><a class="dropdown-item" th:href="@{/frontend/news/selectNews}">最新消息</a></li>
                             <li><a class="dropdown-item" href="../pages/policy.html">隱私政策</a></li>
-                            <li><a class="dropdown-item" href="../pages/support.html">聯繫客服</a></li>
+                            <li><a class="dropdown-item" th:href="@{/frontend/service/frontendServiceChat}">聯繫客服</a></li>
                             <li><a class="dropdown-item" href="../pages/contact-us.html">聯繫我們</a></li>
                         </ul>
                     </li>
@@ -85,11 +85,18 @@
                                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
                     class="fi-user"></i></a>
                 <div class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="dropdown_myaccount">
-                    <a class="dropdown-item" th:href="@{/frontend/member/loginMember}" th:unless="${session.loginsuccess}">Login</a>
-                    <a class="dropdown-item" th:href="@{/frontend/member/addMemberData}" th:unless="${session.loginsuccess}">Register</a>
-                    <a class="dropdown-item" href="#" th:if="${session.loginsuccess}">Wishlist</a>
-                    <a class="dropdown-item" th:href="@{/frontend/member/memberData}" th:if="${session.loginsuccess}">My account</a>
-                    <a class="dropdown-item" th:href="@{/frontend/member/logoutMember}" th:if="${session.loginsuccess}">Logout</a>
+                    <div class="d-flex flex-column align-items-center">
+                        <a class="dropdown-item" th:href="@{/frontend/member/loginMember}" th:unless="${session.loginsuccess}">Login</a>
+                        <a class="dropdown-item" th:href="@{/frontend/member/addMemberData}" th:unless="${session.loginsuccess}">Register</a>
+                        <img th:src="@{/frontend/member/picture(memno=${session.loginsuccess.getMemNo()})}"
+                             id="memberAvatar"
+                             style="width: 80px; height: 80px; border: 1px solid #ccc;"
+                             alt="會員大頭貼"
+                             th:if="${session.loginsuccess}">
+                        <a class="dropdown-item" href="#" th:if="${session.loginsuccess}">Wishlist</a>
+                        <a class="dropdown-item" th:href="@{/frontend/member/memberData}" th:if="${session.loginsuccess}">My account</a>
+                        <a class="dropdown-item" th:href="@{/frontend/member/logoutMember}" th:if="${session.loginsuccess}">Logout</a>
+                    </div>
                 </div>
             </div><!-- Wishlist -->
             <div class="nav-item d-none d-xl-block"><a class="nav-link" href="#"><i class="fi-heart"></i></a></div>

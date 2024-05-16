@@ -1,6 +1,5 @@
 package com.iting.productorderdetail.controller.backend;
 
-import com.iting.productorder.entity.ProductOrder;
 import com.iting.productorderdetail.entity.ProductOrderDetail;
 import com.iting.productorderdetail.service.ProductOrderDetailService;
 import com.roger.member.entity.uniqueAnnotation.Create;
@@ -20,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -31,12 +32,19 @@ public class ProductOrderDetailController {
     @Autowired
     ProductOrderDetailService productOrderDetailSvc;
 
+    @GetMapping("listAllProductOrderDetail")
+    public String listAllProductOrderDetail(Model model) {
+        return "backend/productorderdetail/listAllProductOrderDetail";
+    }
 
-
+    @GetMapping("updateChooseProductOrderDetail")
+    public String updateChooseProductOrderDetail(Model model) {
+        return "backend/productorderdetail/updateChooseProductOrderDetail";
+    }
 
 //跳轉到查詢全部訂單明細listAllProductOrderDetail.html
     @GetMapping("selectProductOrderDetail")
-    public String listAllProductOrderDetail(Model model) {
+    public String selectProductOrderDetail(Model model) {
         return "backend/productorderdetail/listAllProductOrderDetail";
     }
 //跳轉到該新增addProductOrderDetail.html頁面
@@ -68,7 +76,8 @@ public class ProductOrderDetailController {
 
         List<ProductOrderDetail> productOrderDetail = productOrderDetailSvc.findByCompositeKey(Integer.valueOf(productOrdNo));
 
-        model.addAttribute("productOrderDetail", productOrderDetail);
+        model.addAttribute("productOrderDetailListData", productOrderDetail);
+
         return "backend/productorderdetail/productorderdetail";
 }
 
@@ -118,6 +127,26 @@ public class ProductOrderDetailController {
 
 
 
+    @GetMapping("/getSome")
+    public String getSome(@RequestParam(required = false) Integer productOrdNo,
+                           @RequestParam(required = false) Integer productNo,
+
+                           ModelMap model) {
+
+       if (productOrdNo != null) {
+          List<ProductOrderDetail> productOrderDetailListData=productOrderDetailSvc.findByCompositeKey(productOrdNo);
+           model.addAttribute("productOrderDetailListData",productOrderDetailListData);
+           model.addAttribute("getSome",true);
+        }
+        if (productNo != null) {
+            List<ProductOrderDetail> productOrderDetailListData=productOrderDetailSvc.findByProductNo(productNo);
+            model.addAttribute("productOrderDetailListData",productOrderDetailListData);
+            model.addAttribute("getSome",true);
+        }
+
+        return "backend/productorderdetail/updateChooseProductOrderDetail";
+
+    }
 
 
 
@@ -148,7 +177,47 @@ public class ProductOrderDetailController {
 
         List<ProductOrderDetail> list = productOrderDetailSvc.getAll();
         return list;
-    }}
+    }
+
+    @ModelAttribute("ListData")
+    protected List<ProductOrderDetail> ListData(Model model) {
+        List<ProductOrderDetail> list = productOrderDetailSvc.getAll();
+
+        // 创建一个集合来跟踪已经出现过的ProductOrdNo
+        Set<Integer> seenProductOrdNo = new HashSet<>();
+        List<ProductOrderDetail> uniqueList = new ArrayList<>();
+
+        for (ProductOrderDetail detail : list) {
+            if (seenProductOrdNo.add(detail.getCompositeKey().getProductOrdNo())) {
+
+                // 如果ProductOrdNo是第一次出现，则将其添加到uniqueList中
+                uniqueList.add(detail);
+            }
+        }
+
+        return uniqueList;
+    }
+    @ModelAttribute("ListData2")
+    protected List<ProductOrderDetail> ListData2(Model model) {
+        List<ProductOrderDetail> list = productOrderDetailSvc.getAll();
+
+        // 创建一个集合来跟踪已经出现过的ProductNo
+        Set<Integer> seenProductNo = new HashSet<>();
+        List<ProductOrderDetail> uniqueList = new ArrayList<>();
+
+        for (ProductOrderDetail detail : list) {
+            if (seenProductNo.add(detail.getCompositeKey().getProductNo())) {
+
+                // 如果ProductNo是第一次出现，则将其添加到uniqueList中
+                uniqueList.add(detail);
+            }
+        }
+
+        return uniqueList;
+    }
+
+
+}
 
 
 

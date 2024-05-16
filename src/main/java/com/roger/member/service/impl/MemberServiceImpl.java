@@ -311,7 +311,7 @@ public class MemberServiceImpl implements MemberService {
 
         String authCode = getAuthCode();
         // 發送第三方登入隨機密碼簡訊
-        verifyMail(memMail, "恭喜你利用第三方登入且註冊成功，Fall衣Love為你設置一組隨機密碼", "你的隨機密碼為:", authCode);
+        verifyMail(memMail, "恭喜你利用第三方服務快速註冊成功", "此為快速創建會員，故建議到會員資訊中心修改相關資訊，Fall衣Love官方也為你設置一組隨機密碼，你的隨機密碼為:", authCode);
 
         return authCode;
     }

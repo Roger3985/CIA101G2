@@ -1,0 +1,10 @@
+<div class="row">
+    <div class="col-sm-6 offset-sm-8 mb-3"> <!-- 使用 offset 將列移動到右側 -->
+        <form method="get" th:action="@{memberData}">
+            <input type="hidden" name="memNo" th:value="${memNo}" readonly style="display: none;">
+            <div class="col-12 pt-2">
+                <button type="submit" class="btn btn-outline-dark btn-lg btn-block">Go Back to Profile info</button>
+            </div>
+        </form>
+    </div>
+</div>

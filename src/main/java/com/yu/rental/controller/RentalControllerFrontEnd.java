@@ -37,19 +37,23 @@ public class RentalControllerFrontEnd {
     // 測試區 //
 
     //排序方法：價格低~高、價格高~低
-    @GetMapping("/sortAllPrice/{sortType}")
+    @GetMapping("/rental/sortAllPrice/{sortType}")
     public String sortAllPrice(@PathVariable("sortType") String sortType, Model model) {
 
         //判斷選擇哪種方式
         if("low_to_high".equals(sortType)){
             List<Rental> sortList = rentalService.findAllSort();
-            model.addAttribute("sortList", sortList); // 顯示價格由小到大
+            for (Rental rental : sortList) {
+                 System.out.println(rental.getRentalName() +":"+rental.getRentalPrice());
+            }
+
+            model.addAttribute("rentalListData", sortList); // 顯示價格由小到大
         } else if("high_to_low".equals(sortType)){
             List<Rental> sortDESCList = rentalService.findAllSortDESC();
-            model.addAttribute("sortDESCList", sortDESCList); // 顯示價格由大到小
+            model.addAttribute("rentalListData", sortDESCList); // 顯示價格由大到小
         } else {
             List<Rental> defaultSortList = rentalService.findAllSort();
-            model.addAttribute("defaultSortList", defaultSortList); // 預設價格由小到大
+            model.addAttribute("rentalListData", defaultSortList); // 預設價格由小到大
         }
 
         return "/frontend/rental/sortAllPrice"; // 查詢完成後轉交

@@ -14,14 +14,8 @@ public class RentalPic implements java.io.Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY) //有設立AUTO_INCREMENT
     private Integer rentalPicNo;
 
-    @Column(name="rentalpic", columnDefinition = "longblob")
-    private byte[] rentalPic;
-
-    public RentalPic(Integer rentalPicNo, byte[] rentalPic, Rental rental) {
-        this.rentalPicNo = rentalPicNo;
-        this.rentalPic = rentalPic;
-        this.rental = rental;
-    }
+    @Column(name="rentalfile", columnDefinition = "longblob")
+    private byte[] rentalFile;
 
     @ManyToOne
     @JsonManagedReference
@@ -29,6 +23,12 @@ public class RentalPic implements java.io.Serializable {
     private Rental rental;
 
     public RentalPic(){}
+
+    public RentalPic(Integer rentalPicNo, byte[] rentalFile, Rental rental) {
+        this.rentalPicNo = rentalPicNo;
+        this.rentalFile = rentalFile;
+        this.rental = rental;
+    }
 
     public Integer getRentalPicNo() {
         return rentalPicNo;
@@ -38,12 +38,12 @@ public class RentalPic implements java.io.Serializable {
         this.rentalPicNo = rentalPicNo;
     }
 
-    public byte[] getRentalPic() {
-        return rentalPic;
+    public byte[] getRentalFile() {
+        return rentalFile;
     }
 
-    public void setRentalPic(byte[] rentalPic) {
-        this.rentalPic = rentalPic;
+    public void setRentalFile(byte[] rentalFile) {
+        this.rentalFile = rentalFile;
     }
 
     public Rental getRental() {
@@ -53,4 +53,6 @@ public class RentalPic implements java.io.Serializable {
     public void setRental(Rental rental) {
         this.rental = rental;
     }
+
+
 }

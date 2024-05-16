@@ -40,25 +40,27 @@
                     </div>
                     <div class="a">
                         <ul>
-                            <form id="form" method="post" th:action="@{updateRental}" th:object="${rental}">
+                            <form id="form" method="post" th:action="@{updateRentalPic}" th:object="${rentalPic}" enctype="multipart/form-data">
                                 <li>
                                     租借品照片編號:
-                                    <input value="0" type="text" name="rentalPicNo" th:field="*{rentalPic.rentalPicNo}" style="border:0px ; font-weight: bold;" readonly /><br/>
+                                    <input value="0" type="text" name="rentalPicNo" th:field="*{rentalPicNo}" style="border:0px ; font-weight: bold;" readonly /><br/>
                                 </li><br>
                                 <li>
                                     選擇租借品編號:
-                                    <select name="rentalNo" id="rentalNo" th:field="*{rentalPic.rentalNo}"> <!--th:field，表單元素&數據綁定-->
-                                        <option value="3" selected>請選擇</option>
-                                        <option th:each="rentalPic : ${rentalCatListData}" th:value="${rentalPic.rentalNo}" th:text="${rentalPic.rentalNo}" />
+                                    <select name="rentalNo" id="rentalNo" th:field="*{rental.rentalNo}"> <!--th:field，表單元素&數據綁定-->
+                                        <option value="1" selected>請選擇</option>
+                                        <option th:each="rentalPic : ${rentalPicListData}" th:value="${rentalPic.rental.rentalNo}" th:text="${rentalPic.rental.rentalNo}" />
                                     </select>
+                                    <span class="error" th:if="${#fields.hasErrors('rental.rentalNo')}" th:errors="*{rental.rentalNo}" id="rental.rentalNo.errors"></span>
                                 </li><br>
                                 <li>
                                     上傳租借品照片:
-                                    <input type="file" th:field="*{rentalPic.rentalPic}" onclick="previewImage()" multiple="multiple" />
-                                    <div id="blob_holder"><img th:src="@{/rentalPic/DBGifReader} + '?rentalPicNo=' + ${rentalPic.rentalPicNo}" width="100px"></div>
+                                    <input value="2" type="file" name="rentalFile" th:field="*{rentalFile}" onclick="previewImage()" multiple="multiple" />
+                                    <div id="blob_holder"><img th:src="@{/backend/rentalpic/DBGifReader} + '?rentalPicNo=' + ${rentalPic.rentalPicNo}" width="100px"></div>
+                                </li>
                                 <input type="submit" id="updateBtn" value="送出">
                                 <input type="hidden" name="rentalPicNo" th:value="${rentalPic.rentalPicNo}">
-                                <input type="hidden" name="rentalNo" th:value="${rental.rentalNo}">
+                                <input type="hidden" name="rentalNo" th:value="${rentalPic.rental.rentalNo}">
                             </form>
                         </ul>
                     </div>
@@ -99,7 +101,7 @@
         'image/gif' : true
     };
     function previewImage() {
-        var upfile1 = document.getElementById("upFiles");
+        var upfile1 = document.getElementById("rentalFile");
         upfile1.addEventListener("change", function(event) {
             var files = event.target.files || event.dataTransfer.files;
             for (var i = 0; i < files.length; i++) {
@@ -132,41 +134,42 @@
         }
     }
 </script>
-<script>
-    // 若要做到不點選按鈕即時更新，可以使用WebSocket的方式
-    $(document).ready(function (){
-
-        // 觸發submit事件，取得選擇的內容，轉為json格式
-        $("#updateBtn").on("submit",function(e){
-            e.preventDefault(); //阻止提交表單
-
-            //資料打包
-            var updateData = {
-                rentalNo: parseInt($('#rentalNo').val()),
-                rentalName: $('#rentalName').val(),
-                rentalPrice: parseFloat($('#rentalPrice').val()),
-                rentalSize: parseInt($('#rentalSize').val()),
-                rentalColor: $('#rentalColor').val(),
-                rentalInfo: $('#rentalInfo').val(),
-                rentalStat: parseFloat($('#rentalStat').val()),
-                rentalCatNo: parseInt($('#rentalCatNo').val()),
-                action: "updateRental"
-            };
-
-            fetch("/backend/rental/updateRental", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(updateData)
-            }).then(function (response){
-                return response.text();
-            }).then(function (rentalNo){
-                alert(rentalNo + "新增成功");
-            })
-        });
-    });
-</script>
 </body>
 </html>
+<!--    // 若要做到不點選按鈕即時更新，可以使用WebSocket的方式-->
+<!--    $(document).ready(function (){-->
+
+<!--        // 觸發submit事件，取得選擇的內容，轉為json格式-->
+<!--        $("#updateBtn").on("submit",function(e){-->
+<!--            e.preventDefault(); //阻止提交表單-->
+
+<!--            //資料打包-->
+<!--            var updateData = {-->
+<!--                rentalNo: parseInt($('#rentalNo').val()),-->
+<!--                rentalName: $('#rentalName').val(),-->
+<!--                rentalPrice: parseFloat($('#rentalPrice').val()),-->
+<!--                rentalSize: parseInt($('#rentalSize').val()),-->
+<!--                rentalColor: $('#rentalColor').val(),-->
+<!--                rentalInfo: $('#rentalInfo').val(),-->
+<!--                rentalStat: parseFloat($('#rentalStat').val()),-->
+<!--                rentalCatNo: parseInt($('#rentalCatNo').val()),-->
+<!--                action: "updateRental"-->
+<!--            };-->
+
+<!--            fetch("/backend/rental/updateRental", {-->
+<!--                method: "POST",-->
+<!--                headers: {"Content-Type": "application/json"},-->
+<!--                body: JSON.stringify(updateData)-->
+<!--            }).then(function (response){-->
+<!--                return response.text();-->
+<!--            }).then(function (rentalNo){-->
+<!--                alert(rentalNo + "新增成功");-->
+<!--            })-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
 <!--$.ajax({-->
 <!--type: "POST",-->
 <!--url: "/backend/rental/addRental", //請求的URL-->

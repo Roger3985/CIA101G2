@@ -43,6 +43,7 @@
             margin-right: auto;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
@@ -50,6 +51,7 @@
 
     <form th:action="@{/frontend/productorder/insertProductOrderSuccess}" method="post"  onsubmit="return dosubmit();">
         <tbody>
+
         <div>
             <label>會員編號:</label>
             <input type="text" th:name="memNo"th:field="*{productOrder.member.memNo}"  onclick="hideContent('productOrder.member.memNo.errors');"><br/>
@@ -105,23 +107,23 @@
         </div>
         <div>
             <label>訂單總金額:</label>
-            <input type="text" th:name="productAllPrice" th:field="*{productOrder.productAllPrice}" onclick="hideContent('productOrder.productAllPrice.errors');" /><br/>
+            <input type="text" id="productAllPrice" th:name="productAllPrice" th:value="${productOrder.productAllPrice}" readonly/><br/>
             <span th:if="${#fields.hasErrors('productOrder.productAllPrice')}" th:errors="*{productOrder.productAllPrice}" class="error" id="productAllPrice.errors"></span>
         </div>
         <div>
             <label>優惠券編號:</label>
-            <input type="text"  th:field="*{productOrder.coupon.coupNo}" onclick="hideContent('productOrder.coupon.coupNo.errors');"  /><br/>
-            <span th:if="${#fields.hasErrors('productOrder.coupon.coupNo')}" th:errors="*{productOrder.coupon.coupNo}" class="error" id="coupon.coupNo.errors"></span>
+            <input type="text" id="coupNo" th:field="*{productOrder.coupon.coupNo}" th:name="coupNo"  th:onchange="|updatePriceInstantly()|" onclick="hideContent('productOrder.coupon.errors');" /><br/>
+            <span th:if="${#fields.hasErrors('productOrder.coupon')}" th:errors="*{productOrder.coupon}" class="error" id="productOrder.coupon.errors"></span>
         </div>
 
         <div>
             <label>優惠券折價總和:</label>
-            <input type="text" th:field="*{productOrder.productDisc}" onclick="hideContent('productOrder.productDisc.errors');" /><br/>
+            <input type="text" id="productDisc"  th:field="*{productOrder.productDisc}"  readonly /><br/>
             <span th:if="${#fields.hasErrors('productOrder.productDisc')}" th:errors="*{productOrder.productDisc}" class="error" id="productDisc.errors"></span>
         </div>
         <div>
             <label>訂單實付金額:</label>
-            <input type="text" th:name="productOrder.productRealPrice" th:field="*{productOrder.productRealPrice}" onclick="hideContent('productOrder.productRealPrice.errors');" /><br/>
+            <input type="text" id="productRealPrice"  th:name="productOrder.productRealPrice" th:value="${productOrder.productRealPrice}"readonly /><br/>
             <span th:if="${#fields.hasErrors('productOrder.productRealPrice')}" th:errors="*{productOrder.productRealPrice}" class="error" id="productRealPrice.errors"></span>
         </div>
 <!--        <div>-->
@@ -243,41 +245,38 @@
 <!--</script>-->
 <script th:inline="javascript">
 
-    // $(function() {
-    //
-    //     fetch('/backend/productorder/getFromCart?memNo=?')  // 發出 GET 請求
-    //         .then(response => response.json())  // 解析 JSON  這邊等於.then(function(response) {return response.json();})
-    //         .then(data => { // 這邊等於 .then(function(data) {...})
-    //             const table = $('#dataTable').DataTable();  // 初始化 DataTable
-    //             for (const key in data) { //
-    //                 const item = data[key]; // item = 包含每一個商品的詳細資訊的物件
-    //                 table.row.add([  // 添加行到 DataTable
-    //                     item['rentalNo'],
-    //                     item['rentalCatNo'],
-    //                     item['rentalName'],
-    //                     item['rentalPrice'],
-    //                     item['rentalSize'],
-    //                     item['rentalColor'],
-    //                     item['rentalInfo'],
-    //                     item['rentalStat'],
-    //                     '<button class="btn btn-sm btn-primary"><i class="fa-solid fa-plus"></i></button>' +
-    //                     ' <button class="btn btn-sm btn-danger"><i class="fa-solid fa-minus"></i></button>'
-    //                 ]).draw(false);  // 繪製表格，但不重設分頁
-    //             }
-    //         })
-    //         .catch(error => console.error('Error loading cart data:', error));
-    //
-    // });
+    function updatePriceInstantly() {
+        var coupNo = document.getElementById('coupNo').value; // 获取优惠券编号的值
+        var productDisc = document.getElementById('productDisc').value; // 获取产品折扣的值
+        var productRealPrice = document.getElementById('productRealPrice').value; // 获取产品实际价格的值
+        var productAllPrice = document.getElementById('productAllPrice').value; // 获取产品总价格的值
 
-    // var isCommitted = false;//表单是否已经提交标识，默认为false
-    // function dosubmit(){
-    //     if(isCommitted==false){
-    //         isCommitted = true;//提交表单后，将表单是否已经提交标识设置为true
-    //         return true;//返回true让表单正常提交
-    //     }else{
-    //         return false;//返回false那么表单将不提交
-    //     }
-    // }
+        // 发送 AJAX 请求更新数量到后端
+        $.ajax({
+            type: 'POST',
+            url: '/frontend/cart/coupNoInstantly',
+            data: {
+                coupNo: coupNo,
+                productDisc: productDisc,
+                productRealPrice: productRealPrice,
+                productAllPrice: productAllPrice
+            },
+            success: function(data) {
+                console.log("更新優惠券總價成功");
+
+                // 在这里，你可以根据后端返回的数据更新前端页面上对应的元素，例如更新实际价格和折扣价格的显示
+                document.getElementById('productRealPrice').value = data.productRealPrice;
+                document.getElementById('productDisc').value = data.productDisc;
+            },
+            error: function() {
+                console.error('更新失败');
+            }
+        });
+    }
+    function hideContent(elementId) {
+        document.getElementById(elementId).style.display = "none";
+    }
+
 
 </script>
 

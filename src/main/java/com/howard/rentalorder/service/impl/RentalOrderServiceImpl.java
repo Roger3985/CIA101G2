@@ -274,25 +274,7 @@ public class RentalOrderServiceImpl implements RentalOrderService {
 
     }
 
-    public String shipping(Integer rentalOrdNo, Timestamp rentalOrdTime, BigDecimal rentalAllDepPrice
-                            , String rentalRcvName) { // 出貨
 
-        AllInOne all = new AllInOne("");
-        CreateCVSObj obj = new CreateCVSObj();
-        obj.setMerchantTradeNo( String.valueOf(rentalOrdNo) );
-        obj.setMerchantTradeDate( String.valueOf(rentalOrdTime) );
-        obj.setLogisticsType("HOME");
-        obj.setLogisticsSubType("TCAT");
-        obj.setGoodsAmount( String.valueOf(rentalAllDepPrice) );
-        obj.setSenderName( "howard" );
-        obj.setReceiverName( rentalRcvName );
-        obj.setServerReplyURL( "http://localhost:8080/backend/index" );
-        obj.setClientReplyURL( "http://localhost:8080/backend/index" );
-
-
-
-        return "";
-    }
 
 
 }

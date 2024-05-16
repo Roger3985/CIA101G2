@@ -14,9 +14,12 @@ public interface ProductOrderDetailRepository extends JpaRepository<ProductOrder
     @Query(value = "SELECT * FROM productorderdetail WHERE productOrdNo = ?1", nativeQuery = true)
     List<ProductOrderDetail> findByCompositeKey(Integer productOrdNo);
 
+    @Query(value = "SELECT * FROM productorderdetail WHERE productNo = ?1", nativeQuery = true)
+    List<ProductOrderDetail> findByProductNo(Integer productNo);
 
 
-@Query(value = "select * from productorderdetail p where p.productOrdNo = :productOrdNo and p.productNo = :productNo", nativeQuery = true)
+
+    @Query(value = "select * from productorderdetail p where p.productOrdNo = :productOrdNo and p.productNo = :productNo", nativeQuery = true)
     ProductOrderDetail findByproductOrdNoAndproductNo(@Param("productOrdNo") Integer productOrdNo, @Param("productNo") Integer productNo);
 
 

@@ -38,7 +38,7 @@ public class RentalControllerBackEnd {
 
     //顯示全部租借品頁面 (後台)
     @GetMapping("/listAllRental")
-    public String listAllRental(ModelMap model) {
+    public String listAllRental() {
         return "/backend/rental/listAllRental";
     }
 

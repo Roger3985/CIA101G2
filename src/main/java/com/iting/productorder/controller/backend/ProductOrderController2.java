@@ -121,7 +121,8 @@ public String insert(@Validated(Create.class) ProductOrder productOrder, Binding
 
     @PostMapping("update")
     public String update(@Validated(Create.class) ProductOrder productOrder, BindingResult result, ModelMap model,
-                         @RequestParam(name="coupon.coupNo") String coupNo) {
+                         @RequestParam(name="coupon.coupNo") String coupNo ,@RequestParam(name = "member.memNo")
+                         String memNo) {
         result = removeFieldError(productOrder, result, "upFiles");
 
         if (coupNo == null || coupNo.isEmpty()) {
@@ -135,7 +136,7 @@ public String insert(@Validated(Create.class) ProductOrder productOrder, Binding
         if (result.hasErrors()) {
             return "backend/productorder/update_productorder_input";
         }
-
+        productOrder.setMemNo(Integer.valueOf(memNo));
         productOrderSvc.updateProductOrder(productOrder);
 
         productOrder = productOrderSvc.getOneProductOrder(Integer.valueOf(productOrder.getProductOrdNo()));

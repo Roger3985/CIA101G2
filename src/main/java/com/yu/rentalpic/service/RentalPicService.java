@@ -7,14 +7,25 @@ import java.util.Map;
 
     public interface RentalPicService {
 
-        RentalPic addRentalPic(Integer rNo, byte[] rPic);
+        List<RentalPic> findAll();  //全部查詢(RentalPic)
 
-        RentalPic updateRentalPic(Integer rNo, byte[] rPic);
+        RentalPic findByRentalPicNo(Integer rentalPicNo);//單筆查詢(rentalPicNo)
+
+        RentalPic findByRentalRentalNo(Integer rentalNo); //單筆查詢(rentalNo)
+
+//----------------------------------------------------------------------------------------------------------------------
+//主要為後端使用：增查改
+
+        RentalPic addRentalPic(RentalPic rentalPic); //新增
+//    RentalPic addRentalPic(Integer rNo, byte[] rPic); //新增
+
+        RentalPic updateRentalPic(RentalPic rentalPic); //新增
+//    RentalPic updateRentalPic(Integer rNo, byte[] rPic); //修改
 
 
-        RentalPic getOneRentalPic(Integer rPicNo);//單筆查詢
+        public void changePicture(RentalPic rentalPic, byte[] rentalFile); //更改圖片
 
-        List<RentalPic> getAll();  //萬用複合查詢
+
 
 
         List<RentalPic> getByCompositeQuery(Map<String, String[]> map); //複合查詢

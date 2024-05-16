@@ -11,13 +11,6 @@ import java.util.List;
 
 public interface CartService {
 
-//    public List<Cart> findByCompositeKey(Integer memNo);
-//   public void updateCart(Cart cart);
-//    public void addCart(Cart cart);
-//    public List<Cart> findByCompositeKeyProductNoAndCompositeKeyMemNo(Integer productNo,Integer memNo);
-//    public void deleteBymemNo(Integer memNo) ;
-//    public void deleteBymemNoAndProductNo(Integer productNo,Integer memNo) ;
-
     public void addCart(List<CartRedis> cart);
     public void updateCart(CartRedis cartRedis);
    public void deleteBymemNo(Integer memNo);
@@ -27,4 +20,5 @@ public interface CartService {
 //    public void createOrderFromCart(Integer memNo);
 //public List<CartRedis> findByCompositeKey(CartRedis cartRedis);
 public void addCart(CartRedis cart);
+    public void updateCart(Integer productNo,Integer memNo,Integer productBuyQty);
 }
