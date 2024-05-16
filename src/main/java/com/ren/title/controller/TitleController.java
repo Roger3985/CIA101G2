@@ -19,6 +19,11 @@ public class TitleController {
     @Autowired
     private TitleServiceImpl titleSvc;
 
+    @GetMapping
+    public String toSelectTitle() {
+        return "backend/title/selectTitle";
+    }
+
     @GetMapping("/listOneTitle")
     public String listOne(@PathVariable Integer titleNo) {
         return "/backend/title/listOneTitle";

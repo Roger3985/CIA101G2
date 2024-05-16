@@ -56,8 +56,8 @@ CREATE TABLE Member
     memPwd         VARCHAR(32)  NOT NULL,
     memMob         VARCHAR(20)  NOT NULL UNIQUE,
     memGender      TINYINT      NULL,
-    memMail        VARCHAR(40)  NOT NULL UNIQUE,
-    memAdd         VARCHAR(100) NOT NULL,
+    memMail        VARCHAR(40)  NOT NULL,
+    memAdd         VARCHAR(100) NOT NULL UNIQUE,
     memBd          DATE         NULL,
     memCard        VARCHAR(19)  NULL,
     provider       TINYINT      NULL,
@@ -234,7 +234,7 @@ INSERT INTO Administrator (admNo, admPwd, admName, admStat, admEmail, titleNo, a
 (8, 'password8', '黃國倉', 1, 'admin8@gmail.com', 1, '1995-12-24', null, '1', 1, 0, '2024-05-05 22:00:00'),
 (9, 'password9', '周船熊', 0, 'admin9@gmail.com', 3, '2002-05-06', null, '1', 0, 1, '2015-01-05 19:00:00'),
 (10, 'password10', '王小明', 0, 'admin10@gmail.com', 4, '2015-04-09', null, '1', 1, 0, '2024-05-05 12:00:00'),
-(11, '123456', 'ciren', 0, 'admin11@gmail.com', 4, '2015-04-09', null, '1', 1, 0, '2024-05-05 12:00:00');
+(11, '123456', 'ciren', 0, 'ciren22007524@gmail.com', 4, '2015-04-09', null, '1', 1, 0, '2024-05-05 12:00:00');
 
 -- 創建客服紀錄表格
 CREATE TABLE ServiceRecord(
@@ -475,7 +475,28 @@ INSERT INTO product (productCatNo, productName, productInfo, productSize, produc
 (2166, '男士運動褲', '適合運動穿著的男士運動褲', 3, '黑色', 25, 1, 700, 400, 2, null, null),
 (3679, '女士外套', '時尚的女士外套，適合春季穿著', 1, '粉色', 60, 1, 800, 500, 1, null, null),
 (1851, '男士長袖T恤', '舒適的男士長袖T恤，適合秋冬季節穿著', 4, '白色', 20, 0, 200, 100, 4, null, null),
-(4223, '女士短裙', '可愛的女士短裙，適合夏季穿著', 2, '黃色', 30, 1, 300, 150, 3, null, null);
+(4223, '女士短裙', '可愛的女士短裙，適合夏季穿著', 2, '黃色', 30, 1, 300, 150, 3, null, null),
+(1644, '男士襯衫', '優質材料製成的男士襯衫，適合正式場合', 2, '白色', 29, 1, 450, 230, 4, null, null),
+(4133, '女士連衣裙', '輕柔面料的女士連衣裙，適合春季', 3, '藍色', 65, 1, 540, 210, 5, null, null),
+(1321, '男士西裝', '經典剪裁的男士西裝，展現專業形象', 1, '灰色', 190, 1, 320, 160, 3, null, null),
+(4566, '女士牛仔褲', '時尚設計的女士牛仔褲，日常必備', 3, '黑色', 45, 1, 250, 130, 4, null, null),
+(1782, '男士外套', '保暖性強的男士外套，冬季選擇', 2, '黑色', 75, 1, 420, 220, 4, null, null),
+(3311, '女士針織衫', '多色選擇的女士針織衫，秋冬季節穿著', 3, '黑色', 30, 1, 680, 340, 5, null, null),
+(2166, '男士運動褲', '輕便舒適的男士運動褲，健身房必備', 4, '灰色', 35, 0, 550, 275, 3, null, null),
+(3679, '女士外套', '春季新款的女士外套，時尚潮流', 2, '紅色', 85, 1, 770, 385, 2, null, null),
+(1851, '男士長袖T恤', '經典款的男士長袖T恤，百搭款式', 3, '藍色', 22, 1, 330, 165, 5, null, null),
+(4223, '女士短裙', '清新風格的女士短裙，適合外出旅遊', 1, '綠色', 40, 1, 410, 205, 4, null, null),
+(1644, '男士襯衫', '商務休閒款的男士襯衫，多色可選', 3, '綠色', 28, 1, 670, 335, 2, null, null),
+(4133, '女士連衣裙', '夏季涼快的女士連衣裙，色彩豐富', 2, '黃色', 55, 1, 590, 295, 1, null, null),
+(1321, '男士西裝', '商務正裝的男士西裝，精緻工藝', 4, '藍色', 210, 0, 310, 155, 2, null, null),
+(4566, '女士牛仔褲', '舒適耐穿的女士牛仔褲，休閒必備', 1, '粉色', 42, 1, 190, 95, 3, null, null),
+(1782, '男士外套', '運動風格的男士外套，適合多種活動', 3, '紅色', 82, 1, 360, 180, 5, null, null),
+(3311, '女士針織衫', '柔軟舒適的女士針織衫，多色選擇', 1, '紅色', 38, 0, 720, 360, 1, null, null),
+(2166, '男士運動褲', '運動型男士運動褲，功能性強', 2, '藍色', 27, 1, 650, 325, 5, null, null),
+(3679, '女士外套', '輕薄款的女士外套，適合早秋季節', 4, '藍色', 70, 1, 820, 410, 3, null, null),
+(1851, '男士長袖T恤', '休閒款的男士長袖T恤，多款式選擇', 2, '灰色', 23, 0, 240, 120, 2, null, null),
+(4223, '女士短裙', '時尚款的女士短裙，適合各種聚會', 3, '藍色', 35, 1, 310, 155, 4, null, null);
+
 
 -- 創建 ProductPicture 表格
 CREATE TABLE ProductPicture
@@ -483,18 +504,19 @@ CREATE TABLE ProductPicture
     productPicNo         INT              NOT NULL   PRIMARY KEY   AUTO_INCREMENT,
     productNo            INT              NOT NULL,
     productPic           LONGBLOB,
+    mimeType			 VARCHAR(100)     NULL,
     CONSTRAINT FK_ProductPicture_productNo foreign key(productNo) REFERENCES Product(productNo)
 );
 
-INSERT INTO  ProductPicture  (productNo,productPic) VALUES
-(1,'null'),
-(2,'null'),
-(3,'null'),
-(3,''),
-(7,'null'),
-(6,'null'),
-(10,'null'),
-(4,'null');
+INSERT INTO  ProductPicture  (productNo,productPic,mimeType) VALUES
+(1,'null', 'null'),
+(2,'null', 'null'),
+(3,'null', 'null'),
+(3,'', 'null'),
+(7,'null', 'null'),
+(6,'null', 'null'),
+(10,'null', 'null'),
+(4,'null', 'null');
 
 -- 創建 ProductOrder 表格
 CREATE TABLE ProductOrder
@@ -636,12 +658,12 @@ CREATE TABLE RentalPic
 (
     rentalPicNo      INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     rentalNo	        INT NOT NULL,
-    rentalPic        LONGBLOB,
+    rentalFile        LONGBLOB,
     CONSTRAINT FK_RentalPic_rentalNo FOREIGN KEY (rentalNo) REFERENCES Rental (rentalNo)
 )
 AUTO_INCREMENT = 1;
 
-INSERT INTO RentalPic(rentalPicNo, rentalNo, rentalPic) VALUES
+INSERT INTO RentalPic(rentalPicNo, rentalNo, rentalFile) VALUES
 (1, 5001, 'null'),
 (2, 5011, 'null'),
 (3, 5038, 'null'),

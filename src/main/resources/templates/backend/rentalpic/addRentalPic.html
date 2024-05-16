@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>新增租借品類別資料</title>
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <style>
         *{
@@ -40,22 +40,22 @@
                     </div>
                     <div class="a">
                         <ul>
-                            <form method="post" th:action="@{addRentalCategory}" th:object="${rentalPic}" enctype="multipart/form-data">
+                            <form method="post" th:action="@{addRentalPic}" th:object="${rentalPic}" enctype="multipart/form-data">
                                 <li>
                                     選擇租借品編號:
-                                    <select name="rentalNo" id="rentalNo" th:field="*{rentalPic.rentalNo}"> <!--th:field，表單元素&數據綁定-->
-                                        <option value="3" selected>請選擇</option>
-                                        <option th:each="rentalPic : ${rentalCatListData}" th:value="${rentalPic.rentalNo}" th:text="${rentalPic.rentalNo}" />
+                                    <select name="rentalNo" id="rentalNo" th:field="*{rental.rentalNo}"> <!--th:field，表單元素&數據綁定-->
+                                        <option value="0" selected>請選擇</option>
+                                        <option th:each="rentalPic : ${rentalPicListData}" th:value="${rentalPic.rental.rentalNo}" th:text="${rentalPic.rental.rentalNo}" />
                                     </select>
-                                    <span class="error" th:if="${#fields.hasErrors('rentalPic.rentalNo')}" th:errors="*{rentalPic.rentalNo}" id="rentalPic.rentalNo.errors"></span>
-                                </li>
+                                    <span class="error" th:if="${#fields.hasErrors('rental.rentalNo')}" th:errors="*{rental.rentalNo}" id="rental.rentalNo.errors"></span>
+                                </li><br>
                                 <li>
                                     上傳租借品照片:
-                                    <input type="file" th:field="*{rentalPic.rentalPic}" onclick="previewImage()" multiple="multiple" onchange="hideContent('rentalPic.rentalPic.errors');" />
-                                    <span  th:if="${#fields.hasErrors('rentalPic.rentalPic')}" th:errors="*{rentalPic.rentalPic}" class="error" id="rentalPic.rentalPic"></span>
+                                    <input type="file" name="rentalFile" th:field="*{rentalFile}" onclick="previewImage()" multiple="multiple" onchange="hideContent('rentalFile.errors');" />
+<!--                                    <span  th:if="${#fields.hasErrors('rentalFile')}" th:errors="*{rentalFile}" class="error" id="rentalFile.errors"></span>-->
                                     <div id="blob_holder"></div>
-                                </li>
-                                <input type="submit" value="送出"><!-- 送出成功跳轉listAll -->
+                                </li><br>
+                                <input type="submit" id="submit" value="送出"><!-- 送出成功跳轉listAll -->
                             </form>
                         </ul>
                     </div>
@@ -79,51 +79,110 @@
 
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
 <script th:src="@{/static/jquery/jquery-3.7.1.min.js}"></script>
-<script>
-<!--    照片上傳-預覽用-->
-    var filereader_support = typeof FileReader != 'undefined';
+
+
+<script type="text/javascript">
+    function hideContent(d) {
+        document.getElementById(d).style.display = "none";
+    }
+
+    //照片上傳-預覽用
+    let filereader_support = typeof FileReader != 'undefined';
     if (!filereader_support) {
-    alert("No FileReader support");
+        alert("No FileReader support");
     }
     acceptedTypes = {
-    'image/png' : true,
-    'image/jpeg' : true,
-    'image/gif' : true
+        'image/png' : true,
+        'image/jpeg' : true,
+        'image/gif' : true
     };
     function previewImage() {
-    var upfile1 = document.getElementById("upFiles");
-    upfile1.addEventListener("change", function(event) {
-    var files = event.target.files || event.dataTransfer.files;
-    for (var i = 0; i < files.length; i++) {
-    previewfile(files[i])
-    }
-    }, false);
+        let upfile1 = document.getElementById("rentalFile");
+        upfile1.addEventListener("change", function(event) {
+            let files = event.target.files || event.dataTransfer.files;
+            for (let i = 0; i < files.length; i++) {
+                previewfile(files[i])
+            }
+        }, false);
     }
     function previewfile(file) {
-    if (filereader_support === true && acceptedTypes[file.type] === true) {
-    var reader = new FileReader();
-    reader.onload = function(event) {
-    var image = new Image();
-    image.src = event.target.result;
-    image.width = 100;
-    image.height = 75;
-    image.border = 2;
-    if (blob_holder.hasChildNodes()) {
-    blob_holder.removeChild(blob_holder.childNodes[0]);
-    }
-    blob_holder.appendChild(image);
-    };
-    reader.readAsDataURL(file);
-    document.getElementById('submit').disabled = false;
-    } else {
-    blob_holder.innerHTML = "<div  style='text-align: left;'>" + "● filename: " + file.name
-        + "<br>" + "● ContentTyp: " + file.type
-        + "<br>" + "● size: " + file.size + "bytes"
-        + "<br>" + "● 上傳ContentType限制: <b> <font color=red>image/png、image/jpeg、image/gif </font></b></div>";
-    document.getElementById('submit').disabled = true;
-    }
+        if (filereader_support === true && acceptedTypes[file.type] === true) {
+            let reader = new FileReader();
+            reader.onload = function(event) {
+                let image = new Image();
+                image.src = event.target.result;
+                image.width = 200;
+
+                image.border = 2;
+                if (blob_holder.hasChildNodes()) {
+                    blob_holder.removeChild(blob_holder.childNodes[0]);
+                }
+                blob_holder.appendChild(image);
+            };
+            reader.readAsDataURL(file);
+            document.getElementById('submit').disabled = false;
+        } else {
+            blob_holder.innerHTML = "<div  style='text-align: left;'>" + "● filename: " + file.name
+                + "<br>" + "● ContentTyp: " + file.type
+                + "<br>" + "● size: " + file.size + "bytes"
+                + "<br>" + "● 上傳ContentType限制: <b> <font color=red>image/png、image/jpeg、image/gif </font></b></div>";
+            document.getElementById('submit').disabled = true;
+        }
     }
 </script>
+</body>
+</html>
+
+<!--<script type="text/javascript">-->
+<!--    function hideContent(d) {-->
+<!--        document.getElementById(d).style.display = "none";-->
+<!--    }-->
+
+<!--    //照片上傳-預覽用-->
+<!--    let filereader_support = typeof FileReader != 'undefined';-->
+<!--    if (!filereader_support) {-->
+<!--        alert("No FileReader support");-->
+<!--    }-->
+<!--    acceptedTypes = {-->
+<!--        'image/png' : true,-->
+<!--        'image/jpeg' : true,-->
+<!--        'image/gif' : true-->
+<!--    };-->
+<!--    function previewImage() {-->
+<!--        var upfile1 = document.getElementById("rentalFile");-->
+<!--        upfile1.addEventListener("change", function(event) {-->
+<!--            var files = event.target.files || event.dataTransfer.files;-->
+<!--            for (var i = 0; i < files.length; i++) {-->
+<!--                previewfile(files[i])-->
+<!--            }-->
+<!--        }, false);-->
+<!--    }-->
+<!--    function previewfile(file) {-->
+<!--        if (filereader_support === true && acceptedTypes[file.type] === true) {-->
+<!--            var reader = new FileReader();-->
+<!--            reader.onload = function(event) {-->
+<!--                var image = new Image();-->
+<!--                image.src = event.target.result;-->
+<!--                image.width = 100;-->
+<!--                image.height = 75;-->
+<!--                image.border = 2;-->
+<!--                if (blob_holder.hasChildNodes()) {-->
+<!--                    blob_holder.removeChild(blob_holder.childNodes[0]);-->
+<!--                }-->
+<!--                blob_holder.appendChild(image);-->
+<!--            };-->
+<!--            reader.readAsDataURL(file);-->
+<!--            document.getElementById('submit').disabled = false;-->
+<!--        } else {-->
+<!--            blob_holder.innerHTML = "<div  style='text-align: left;'>" + "● filename: " + file.name-->
+<!--                + "<br>" + "● ContentTyp: " + file.type-->
+<!--                + "<br>" + "● size: " + file.size + "bytes"-->
+<!--                + "<br>" + "● 上傳ContentType限制: <b> <font color=red>image/png、image/jpeg、image/gif </font></b></div>";-->
+<!--            document.getElementById('submit').disabled = true;-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
+
 <!--<script>-->
 <!--    function addRentalCategory(){-->
 <!--        //-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;打包資料(start)-->
@@ -149,5 +208,3 @@
 <!--        })-->
 <!--    }-->
 <!--</script>-->
-</body>
-</html>

@@ -13,10 +13,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +27,9 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.ren.util.Constants.*;
 import static com.ren.util.RandomStringGenerator.generateRandomString;
@@ -131,23 +131,26 @@ public class BackendIndexController {
 
         // 判斷是否有無這個帳號
         if (administrator == null) {
-            model.addAttribute("message", "不存在此用戶");
+            model.addAttribute("idError", "不存在此用戶");
             return "backend/login";
         }
 
         Integer failTimes = getFailedTimes();
         // 密碼嘗試次數最多5次，如果錯誤次數少於等於5次，檢查密碼是否正確；若超過5次，直接導回去頁面
-        if (failTimes <= 5) {
+        if (failTimes < 5) {
             // 判斷密碼是否正確
             if (!admPwd.equals(administrator.getAdmPwd())) {
-                model.addAttribute("message", "密碼錯誤!");
                 // 執行登入失敗方法，將登入失敗次數記入Session
                 failTimes = loginFailed(failTimes);
-                session.setAttribute("failTimes", failTimes);
+                if (failTimes == 5) {
+                    model.addAttribute("pwdError", "您已達嘗試次數上限，請過30分鐘後再嘗試");
+                } else {
+                    model.addAttribute("pwdError", "密碼錯誤，剩餘嘗試次數: " + (5 - failTimes));
+                }
                 return "backend/login";
             }
         } else {
-            model.addAttribute("message", "您已超過嘗試次數，請等30分鐘後再嘗試");
+            model.addAttribute("pwdError", "您已超過嘗試次數，請等30分鐘後再嘗試");
             return "backend/login";
         }
 
@@ -164,7 +167,7 @@ public class BackendIndexController {
 
         // 確認密碼正確後，回傳登入成功訊息，並將administrator存入session
         model.addAttribute("message", "登入成功!");
-
+        System.out.println(autoLogin);
         // 確認使用者是否要自動登入
         if (autoLogin == YES) {
             // 生成名為autoLogin的cookie，其值設置為一個亂數生成的字符串，分別存入給使用者與redis資料庫，做身分核對
@@ -224,6 +227,7 @@ public class BackendIndexController {
             return "backend/forgotPassword";
         }
         System.out.println("成功");
+//        RedirectAttributesModelMap
         return "redirect:/backend/login";
     }
 
@@ -233,12 +237,24 @@ public class BackendIndexController {
      * @param session 傳入當前會話Session
      * @return 重導到登入頁面
      */
-    @GetMapping("logout")
-    public String logout(HttpSession session) {
+    @GetMapping("/logout")
+    public String logout(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
         // 獲取登入狀態物件
         LoginState loginState = (LoginState) session.getAttribute("loginState");
         // 執行Service的登出方法，修改資料庫內的登入狀態與刪除Redis內的登入狀態資料
         administratorSvc.logout(loginState);
+
+        // 移除cookie
+        Optional<Cookie> userCookie = Optional.ofNullable(req.getCookies())
+                .flatMap(this::userCookie);
+        if (userCookie.isPresent()) {
+            // 從Optional中獲取Cookie物件
+            Cookie deleteCookie = userCookie.get();
+            // 將Cookie期限設為0,並新增到BackendIndexController新增時的路徑，即可註銷Cookie
+            deleteCookie.setMaxAge(0);
+            deleteCookie.setPath(req.getContextPath() + "/backend");
+            res.addCookie(deleteCookie);
+        }
         // 註銷session
         session.invalidate();
 
@@ -256,6 +272,12 @@ public class BackendIndexController {
     @GetMapping
     public String search() {
         return "";
+    }
+
+    @PostMapping("/clearErrorMessage")
+    @ResponseBody
+    public void clearErrorMessage(HttpSession session) {
+        session.removeAttribute("errorMessage");
     }
 
     /**
@@ -332,6 +354,33 @@ public class BackendIndexController {
         }
         // 返回修改後的 BindingResult
         return result;
+    }
+
+    /**
+     * 搜尋使用者是否已有登入的記錄
+     *
+     * @param cookies 傳入使用者的cookies，並於後續使用Stream的filter方法，
+     *                於方法內呼叫自定義check()方法將含使用者登入資訊的cookies過濾，
+     *                並使用findFirst()方法找出第一個符合條件的Cookie
+     * @return 返回Optional物件，如果沒有找到符合條件的cookie，則返回含null的Optional物件
+     */
+    private Optional<Cookie> userCookie(Cookie[] cookies) {
+        return Stream.of(cookies)
+                .filter(cookie -> check(cookie))
+                .findFirst();
+    }
+
+    /**
+     * 判斷是否有登入資訊
+     * 1.從cookie裡面先尋找是否有名字為"autoLogin"的cookie
+     * 2.其值為在登入時自動生成的亂數，分別存入Cookie("autoLogin", random)、Redis資料庫(random, admNo)
+     * 3.在LoginState過濾器中，主要用途為找到"autoLogin"的Cookie，並把他註銷，讓使用者重新登入
+     *
+     * @param cookie 傳入Cookie物件，並呼叫Cookie的getter方法確認使否有符合登入資訊的Cookie
+     * @return 如果兩者都符合則返回true，沒有則返回false
+     */
+    private boolean check(Cookie cookie) {
+        return "autoLogin".equals(cookie.getName());
     }
 
 }

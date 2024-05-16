@@ -82,7 +82,10 @@
                                         <span th:if="${productOrder.productPayMethod == 2}">現場付款</span>
                                     </td>
                                     <td th:text="${productOrder.productAllPrice}"></td>
-                                    <td th:text="${productOrder.coupon.coupNo}"></td>
+                                    <td th:if="${productorder.coupon != null}">
+                                        <span th:if="${productorder.coupon.coupNo == 1}">未使用優惠券</span>
+                                        <span th:unless="${productorder.coupon.coupNo == 1}" th:text="${productorder.coupon.coupNo}"></span>
+                                    </td>
                                     <td th:text="${productOrder.productDisc}"></td>
                                     <td th:text="${productOrder.productRealPrice}"></td>
                                     <td th:text="${productOrder.productOrdTime}"></td>

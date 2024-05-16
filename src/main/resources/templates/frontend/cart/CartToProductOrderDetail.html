@@ -43,21 +43,15 @@
             margin-right: auto;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
-    <div align="center">
-        <h2>商品訂單資料新增 - addProductorder.html</h2>
-        <h3><a class="navbar-brand" th:href="@{/productorder/select_page}"><img th:src="@{/images/back1.gif}">回查詢頁</a></h3>
-    </div>
-</nav>
-
 <div align="center">
-    <h3><b>所有欄位皆為必填欄位</b></h3>
 
-    <form th:action="@{/frontend/productorder/insertProductOrderSuccess}" method="post" >
+    <form th:action="@{/frontend/productorder/insertProductOrderSuccess}" method="post"  onsubmit="return dosubmit();">
         <tbody>
+
         <div>
             <label>會員編號:</label>
             <input type="text" th:name="memNo"th:field="*{productOrder.member.memNo}"  onclick="hideContent('productOrder.member.memNo.errors');"><br/>
@@ -113,23 +107,23 @@
         </div>
         <div>
             <label>訂單總金額:</label>
-            <input type="text" th:name="productAllPrice" th:field="*{productOrder.productAllPrice}" onclick="hideContent('productOrder.productAllPrice.errors');" /><br/>
+            <input type="text" id="productAllPrice" th:name="productAllPrice" th:value="${productOrder.productAllPrice}" readonly/><br/>
             <span th:if="${#fields.hasErrors('productOrder.productAllPrice')}" th:errors="*{productOrder.productAllPrice}" class="error" id="productAllPrice.errors"></span>
         </div>
         <div>
             <label>優惠券編號:</label>
-            <input type="text"  th:field="*{productOrder.coupon.coupNo}" onclick="hideContent('productOrder.coupon.coupNo.errors');"  /><br/>
-            <span th:if="${#fields.hasErrors('productOrder.coupon.coupNo')}" th:errors="*{productOrder.coupon.coupNo}" class="error" id="coupon.coupNo.errors"></span>
+            <input type="text" id="coupNo" th:field="*{productOrder.coupon.coupNo}" th:name="coupNo"  th:onchange="|updatePriceInstantly()|" onclick="hideContent('productOrder.coupon.errors');" /><br/>
+            <span th:if="${#fields.hasErrors('productOrder.coupon')}" th:errors="*{productOrder.coupon}" class="error" id="productOrder.coupon.errors"></span>
         </div>
 
         <div>
             <label>優惠券折價總和:</label>
-            <input type="text" th:field="*{productOrder.productDisc}" onclick="hideContent('productOrder.productDisc.errors');" /><br/>
+            <input type="text" id="productDisc"  th:field="*{productOrder.productDisc}"  readonly /><br/>
             <span th:if="${#fields.hasErrors('productOrder.productDisc')}" th:errors="*{productOrder.productDisc}" class="error" id="productDisc.errors"></span>
         </div>
         <div>
             <label>訂單實付金額:</label>
-            <input type="text" th:name="productOrder.productRealPrice" th:field="*{productOrder.productRealPrice}" onclick="hideContent('productOrder.productRealPrice.errors');" /><br/>
+            <input type="text" id="productRealPrice"  th:name="productOrder.productRealPrice" th:value="${productOrder.productRealPrice}"readonly /><br/>
             <span th:if="${#fields.hasErrors('productOrder.productRealPrice')}" th:errors="*{productOrder.productRealPrice}" class="error" id="productRealPrice.errors"></span>
         </div>
 <!--        <div>-->
@@ -137,30 +131,8 @@
 <!--            <input type="text" th:field="*{productOrdTime}" onclick="hideContent('productOrdTime.errors');" /><br/>-->
 <!--            <span th:if="${#fields.hasErrors('productOrdTime')}" th:errors="*{productOrdTime}" class="error" id="productOrdTime.errors"></span>-->
 <!--        </div>-->
-        <div>
-            <label>訂單狀態:</label>
-            <select th:field="*{productOrder.productOrdStat}">
-                <option th:value="0" th:text="訂單取消" />
-                <option th:value="10" th:text="揀貨中" />
-                <option th:value="20" th:text="配送中" />
-                <option th:value="30" th:text="等待取貨" />
-                <option th:value="40" th:text="訂單成立" />
-                <option th:value="50" th:text="訂單完成" />
-                <option th:value="81" th:text="申請換貨" />
-                <option th:value="82" th:text="換貨中" />
-                <option th:value="83" th:text="申請退貨退款" />
-                <option th:value="84" th:text="退款中" />
-            </select>
 
-        </div>
-        <div>
-            <label>付款狀態:</label>
-            <select th:field="*{productOrder.productStat}">
-                <option th:value="0" th:text="未付款" />
-                <option th:value="1" th:text="已付款" />
-            </select>
-            <br/>
-        </div>
+
         </tbody>
 
 
@@ -189,12 +161,14 @@
             <td th:name="productOrderDetail.productPrice" th:text="${productOrderDetail.productPrice}"></td>
             <td th:name="productOrderDetail.productOrdQty" th:text="${productOrderDetail.productOrdQty}"></td>
             <td  th:name="productOrderDetail.productRealPrice" th:text="${productOrderDetail.productRealPrice}"></td>
-
         </tr>
     </th:block>
     </tbody>
 </table>
-<button type="submit" class="btn btn-primary" id="submit">確定購買</button>
+<button type="submit" class="btn btn-primary" id="submit">
+    <input type="hidden" name="memNo" th:value="${productOrder.member.memNo}" />
+    確定購買
+</button>
     </form>
 
 
@@ -271,31 +245,38 @@
 <!--</script>-->
 <script th:inline="javascript">
 
-    $(function() {
+    function updatePriceInstantly() {
+        var coupNo = document.getElementById('coupNo').value; // 获取优惠券编号的值
+        var productDisc = document.getElementById('productDisc').value; // 获取产品折扣的值
+        var productRealPrice = document.getElementById('productRealPrice').value; // 获取产品实际价格的值
+        var productAllPrice = document.getElementById('productAllPrice').value; // 获取产品总价格的值
 
-        fetch('/backend/productorder/getFromCart?memNo=?')  // 發出 GET 請求
-            .then(response => response.json())  // 解析 JSON  這邊等於.then(function(response) {return response.json();})
-            .then(data => { // 這邊等於 .then(function(data) {...})
-                const table = $('#dataTable').DataTable();  // 初始化 DataTable
-                for (const key in data) { //
-                    const item = data[key]; // item = 包含每一個商品的詳細資訊的物件
-                    table.row.add([  // 添加行到 DataTable
-                        item['rentalNo'],
-                        item['rentalCatNo'],
-                        item['rentalName'],
-                        item['rentalPrice'],
-                        item['rentalSize'],
-                        item['rentalColor'],
-                        item['rentalInfo'],
-                        item['rentalStat'],
-                        '<button class="btn btn-sm btn-primary"><i class="fa-solid fa-plus"></i></button>' +
-                        ' <button class="btn btn-sm btn-danger"><i class="fa-solid fa-minus"></i></button>'
-                    ]).draw(false);  // 繪製表格，但不重設分頁
-                }
-            })
-            .catch(error => console.error('Error loading cart data:', error));
+        // 发送 AJAX 请求更新数量到后端
+        $.ajax({
+            type: 'POST',
+            url: '/frontend/cart/coupNoInstantly',
+            data: {
+                coupNo: coupNo,
+                productDisc: productDisc,
+                productRealPrice: productRealPrice,
+                productAllPrice: productAllPrice
+            },
+            success: function(data) {
+                console.log("更新優惠券總價成功");
 
-    });
+                // 在这里，你可以根据后端返回的数据更新前端页面上对应的元素，例如更新实际价格和折扣价格的显示
+                document.getElementById('productRealPrice').value = data.productRealPrice;
+                document.getElementById('productDisc').value = data.productDisc;
+            },
+            error: function() {
+                console.error('更新失败');
+            }
+        });
+    }
+    function hideContent(elementId) {
+        document.getElementById(elementId).style.display = "none";
+    }
+
 
 </script>
 

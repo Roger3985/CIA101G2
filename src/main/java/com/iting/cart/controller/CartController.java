@@ -134,6 +134,8 @@
 package com.iting.cart.controller;
 
 
+import com.chihyun.coupon.entity.Coupon;
+import com.chihyun.coupon.model.CouponService;
 import com.iting.cart.entity.CartRedis;
 import com.iting.cart.service.CartService;
 import com.iting.productorder.entity.ProductOrder;
@@ -141,6 +143,7 @@ import com.iting.productorder.service.ProductOrderService;
 import com.roger.member.entity.uniqueAnnotation.Create;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -156,9 +159,8 @@ import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.stream.Collectors;
 @Controller
 @Validated
@@ -166,6 +168,8 @@ import java.util.stream.Collectors;
 public class CartController {
     @Autowired
     CartService cartSvc;
+    @Autowired
+    CouponService couponService;
 
 
     @GetMapping("addcart")
@@ -198,27 +202,6 @@ public String Cart(HttpSession session, ModelMap model) {
     // 返回购物车页面
     return "frontend/cart/Cart";
 }
-
-
-//    @GetMapping("select_page")
-//    public String select_page() {
-//        return "frontend/cart/CartSelectPage";
-//    }
-////    @GetMapping("cartbymemno")
-////    public String cartbymemno() {
-////        return "frontend/cart/cartbymemno";
-////    }
-
-//    @PostMapping("/deletecartsuccess")
-//    public String delete(@RequestParam(name="memNo") Integer memNo,
-//                         @RequestParam(name="productNo") Integer productNo,
-//                         ModelMap model) {
-//
-//        cartSvc.deleteBymemNoAndProductNo(memNo, productNo);
-//        List<CartRedis> updatedCartList = cartSvc.findByCompositeKey(memNo);
-//        model.addAttribute("cartListData", updatedCartList);
-//        return "frontend/cart/Cart";
-//    }
 
     @PostMapping("addcartsuccess")
     public String insert(@Validated(Create.class) CartRedis cartRedis, BindingResult result, @RequestParam(name="memNo") Integer memNo, ModelMap model) {
@@ -291,36 +274,53 @@ public String Cart(HttpSession session, ModelMap model) {
 
 
 
+    @PostMapping("/coupNoInstantly")
+    @ResponseBody
+    public Map<String, String> coupNoInstantly(@RequestParam("coupNo") String coupNo,
+                                               @RequestParam("productAllPrice") String productAllPrice,
+                                               HttpSession session) {
+        Map<String, String> response = new HashMap<>();
 
-//        @PostMapping("/updateQuantity")
-//        @ResponseBody
-//        public String updateQuantity(@RequestParam("productNo") String productNo,
-//                                     @RequestParam("memNo") String memNo,
-//                                     @RequestParam("quantity") int quantity) {
-//            // 这里可以编写更新商品数量的逻辑，例如更新数据库中的商品数量
-//            // 你可以使用 productNo 和 memNo 来确定要更新的商品和会员
-//            // quantity 是新的商品数量
-//
-//            // 这里只是简单地返回一个成功的消息，你应该根据实际情况返回相应的结果
-//            return "Quantity updated successfully";
-//
-//    }
+        Coupon coupon = couponService.getOneCoupon(Integer.valueOf(coupNo));
 
-    @PostMapping("/deleteInstantly")
-    public String deleteInstantly(@RequestParam("productNo") Integer productNo,
-                                  @RequestParam("memNo") Integer memNo,
-                                  HttpSession session,
-                                  ModelMap model) {
+        BigDecimal totalPrice = new BigDecimal(productAllPrice);
+        BigDecimal productRealPrice = coupon.getCoupDisc().multiply(totalPrice);
+        String realPriceStr = productRealPrice.toString();
 
-        // 执行删除操作
-        cartSvc.deleteBymemNoAndProductNo(memNo, productNo);
-        // 获取更新后的购物车数据
+        BigDecimal productDisc = totalPrice.subtract(productRealPrice);
+        String productDiscStr = productDisc.toString();
 
-        // 返回购物车页面
-        session.setAttribute("memNo", memNo);
-        return "redirect:/frondend/cart/Cart";
+        response.put("productRealPrice", realPriceStr);
+        response.put("productDisc", productDiscStr);
+
+        return response;
     }
 
+
+
+    @PostMapping("/deleteInstantly")
+@ResponseBody
+public List<CartRedis> deleteInstantly(@RequestParam("productNo") Integer productNo,
+                                       @RequestParam("memNo") Integer memNo,
+                                       HttpSession session) {
+    cartSvc.deleteBymemNoAndProductNo(memNo, productNo);
+    List<CartRedis> cartRedisList = cartSvc.findByCompositeKey(memNo);
+    session.setAttribute("memNo", memNo);
+    System.out.println("即时更新成功");
+    return cartRedisList;
+}
+    @PostMapping("/updateBackendQuantity")
+    @ResponseBody
+    public List<CartRedis> updateBackendQuantity(@RequestParam("productNo") Integer productNo,
+                                           @RequestParam("memNo") Integer memNo,
+                                           @RequestParam("productBuyQty")Integer productBuyQty,
+                                           HttpSession session) {
+       cartSvc.updateCart(productNo,memNo,productBuyQty);
+        session.setAttribute("memNo", memNo);
+        List<CartRedis> cartRedisList = cartSvc.findByCompositeKey(memNo);
+        System.out.println("即时更新成功");
+        return cartRedisList;
+    }
 
 
 }

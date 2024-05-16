@@ -25,7 +25,6 @@ public class Product {
     private Integer productNo;
     @ManyToOne
     @JsonManagedReference
-    @NotEmpty(message = "請選擇商品類別編號")
     @JoinColumn(name = "productcatno", referencedColumnName = "productcatno")
     private ProductCategory productCategory;
     @NotEmpty(message="商品名稱: 請勿空白")
@@ -35,7 +34,7 @@ public class Product {
     @NotEmpty(message="商品資訊: 請勿空白")
     @Column(name = "productinfo")
     private String productInfo;
-    @NotEmpty(message="請選擇商品尺寸")
+    @NotNull(message="請選擇商品尺寸")
     @Min(value = 0, message = "商品尺寸只能是XS、S、M、L、XL、2L")
     @Max(value = 5, message = "商品尺寸只能是XS、S、M、L、XL、2L")
     @Column(name = "productsize")
@@ -49,16 +48,18 @@ public class Product {
     @DecimalMax(value = "99999.99", message = "商品價格: 不能超過{value}")
     @Column(name = "productprice")
     private BigDecimal productPrice;
-    @NotEmpty(message="請選擇商品狀態")
+    @NotNull(message="請選擇商品狀態")
     @Column(name = "productstat")
     private Byte productStat;
-    @NotEmpty(message = "請輸入商品售出數量")
+    @NotNull(message = "請輸入商品售出數量")
+    @Min(value = 0, message = "請輸入商品售出數量")
     @Column(name = "productsalqty")
     private Integer productSalQty;
-    @NotEmpty(message = "請輸入評價人數")
+    @NotNull(message = "請輸入評價人數")
+    @Min(value = 0, message = "請輸入評價人數")
     @Column(name = "productcompeople")
     private Integer productComPeople;
-    @NotEmpty(message = "請輸入商品評價分數")
+    @NotNull(message = "請輸入商品評價分數")
     @Digits(integer = 1, fraction = 2)
     @DecimalMin(value = "0.01", message = "評分請填0.00 ~ 5.00的分數")
     @DecimalMax(value = "5.00", message = "評分請填0.00 ~ 5.00的分數")

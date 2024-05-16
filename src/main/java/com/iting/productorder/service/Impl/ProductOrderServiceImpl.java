@@ -96,7 +96,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         productOrder.setProductAddr(productOrder.getMember().getMemAdd());
 
         Coupon coupon;
-        if (productOrder.getCoupon() != null && productOrder.getCoupon().getCoupNo() != null) {
+        if (productOrder.getCoupon() != null ) {
             coupon = couponService.getOneCoupon(productOrder.getCoupon().getCoupNo());
         } else {
             // 如果 coupon 或 coupNo 为空，则设置 coupon 为 id 为 1 的默认优惠券

@@ -28,16 +28,29 @@
                 <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
                 <li><a th:href="@{listAllRentalOrder}">所有</a> 租借訂單 <br> <br></li>
 
-                <li>用 PK 查詢 : </li>
+                <li>輸入查詢條件 : </li>
                 <form method="get" th:action="@{getOnAny}">
-                    <label>選擇會員編號</label>
-                    <select  id="memNo" name="memNo">
-                        <option th:each="order : ${orderList}" th:value="${order.getMember().getMemNo()}" th:text="${order.getMember().getMemNo()}"></option>
+                    <label>會員編號</label>
+                    <input  id="memNo" name="memNo">
+                    <br>
+                    <label>訂單狀態</label>
+                    <select id="rentalOrdStat" name="rentalOrdStat">
+                        <option selected disabled>請選擇</option>
+                        <option value="0">訂單取消</option>
+                        <option value="10">揀貨中</option>
+                        <option value="20">配送中</option>
+                        <option value="30">等待取貨</option>
+                        <option value="40">訂單成立</option>
+                        <option value="50">訂單完成</option>
+                        <option value="81">申請換貨</option>
+                        <option value="82">換貨中</option>
                     </select>
                     <br>
-                    <label>選擇訂單編號</label>
-                    <select id="rentalOrdNo" name="rentalOrdNo">
-                        <option th:each="order : ${orderList}" th:value="${order.getrentalOrdNo()}" th:text="${order.getrentalOrdNo()}" th:data-member="${order.getMember().getMemNo()}"></option>
+                    <label>付款狀態</label>
+                    <select id="rentalPayStat" name="rentalPayStat">
+                        <option selected disabled>請選擇</option>
+                        <option value="0">未付款</option>
+                        <option value="1">已付款</option>
                     </select>
                     <br>
                     <button type="submit" >
@@ -83,25 +96,25 @@
 
 <script>
 
-    $(function () {
-
-        $("#memNo").change(function () {
-
-            let memNo = $(this).val(); // 會員編號選項當前被選取的值
-            let rentalOrdNos = $("select#rentalOrdNo option"); // 選取所有訂單編號
-
-            rentalOrdNos.each(function () {
-                let option = $(this); // 其中一個訂單編號選項
-                if (option.attr("data-member") === memNo) { // 如果等於會員選項
-                    option.show();
-                } else {
-                    option.hide();
-                }
-            });
-
-        });
-
-    });
+    // $(function () {
+    //
+    //     $("#memNo").change(function () {
+    //
+    //         let memNo = $(this).val(); // 會員編號選項當前被選取的值
+    //         let rentalOrdNos = $("select#rentalOrdNo option"); // 選取所有訂單編號
+    //
+    //         rentalOrdNos.each(function () {
+    //             let option = $(this); // 其中一個訂單編號選項
+    //             if (option.attr("data-member") === memNo) { // 如果等於會員選項
+    //                 option.show();
+    //             } else {
+    //                 option.hide();
+    //             }
+    //         });
+    //
+    //     });
+    //
+    // });
 
 </script>
 

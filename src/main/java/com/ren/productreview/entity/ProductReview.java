@@ -59,10 +59,8 @@ public class ProductReview {
     @Embeddable
     public static class CompositeProductReview implements Serializable {
         private static final long serialVersionUID = 1L;
-        @NotEmpty(message = "請選擇商品編號")
         @Column(name = "productno")
         private Integer productNo;
-        @NotEmpty(message = "請選擇會員編號")
         @Column(name = "memno")
         private Integer memNo;
 

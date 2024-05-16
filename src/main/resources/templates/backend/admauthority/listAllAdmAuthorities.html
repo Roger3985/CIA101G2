@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>商品清單</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
 
 </head>
 <body id="page-top">
+<div th:replace="backend/component/loading :: loading"></div>
 <!-- Page Wrapper -->
 <div id="wrapper">
     <!-- Sidebar -->
@@ -36,19 +39,19 @@
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>職位編號</th>
-                                    <th>功能權限編號</th>
+                                    <th>管理員編號</th>
+                                    <th>權限編號</th>
                                     <th>修改</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <th:block th:each="admAuthority : ${admAuthorityList}">
                                     <tr>
-                                        <td th:text="${admAuthority.compositeAdmAuthority.titleNo}"></td>
-                                        <td th:text="${admAuthority.compositeAdmAuthority.authFuncNo}"></td>
+                                        <td th:text="${admAuthority.title.titleName}"></td>
+                                        <td th:text="${admAuthority.authorityFunction.authFuncInfo}"></td>
                                         <td>
-                                            <form method="get" th:action="@{updateProduct}">
-                                                <input type="hidden" name="productNo" th:value="${admAuthority.compositeAdmAuthority}">
+                                            <form method="get" th:action="@{updateAdmAuthiroty}">
+                                                <input type="hidden" name="productNo" th:value="${admAuthority.title.titleNo}">
                                                 <button type="submit">
                                                     <i class="far fa-edit"></i>
                                                 </button>

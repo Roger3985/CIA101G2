@@ -26,7 +26,7 @@ import java.util.Set;
 public class ProductOrderDetailController2 {
     @Autowired
     ProductOrderDetailService productOrderDetailSvc;
- @PostMapping("productorderdetail")
+    @PostMapping("productorderdetail")
     public String getOne_For_Display(@RequestParam("productOrdNo") Integer productOrdNo, ModelMap model){
 
         List<ProductOrderDetail> productOrderDetail = productOrderDetailSvc.findByCompositeKey(productOrdNo);
@@ -69,13 +69,26 @@ public class ProductOrderDetailController2 {
     }
     @PostMapping("/senddetailInstantly")
     public String senddetailInstantly(@RequestParam("productComContent") String productComContent,
-                                      @RequestParam("productScore") Integer productScore,
+                                      @RequestParam(value = "productScore", required = false) String productScore,
                                       @RequestParam("productNo") Integer productNo,
                                       @RequestParam("productOrdNo") Integer productOrdNo,
                                       ModelMap model) {
         ProductOrderDetail productOrderDetail2 = productOrderDetailSvc.findByproductOrdNoAndproductNo(productOrdNo, productNo);
         productOrderDetail2.setProductComContent(productComContent);
-        productOrderDetail2.setProductScore(productScore);
+
+        if (productScore != null && !productScore.isEmpty()) {
+            try {
+                int score = Integer.parseInt(productScore);
+                productOrderDetail2.setProductScore(score);
+            } catch (NumberFormatException e) {
+                // 如果無法解析為整數，您可以採取適當的處理措施，這裡假設設置為空值
+                productOrderDetail2.setProductScore(null);
+            }
+        } else {
+            // 如果productScore為空，將其設置為空值
+            productOrderDetail2.setProductScore(null);
+        }
+
         productOrderDetailSvc.updateProductOrderDetail(productOrderDetail2);
 
         List<ProductOrderDetail> productOrderDetailList = productOrderDetailSvc.findByCompositeKey(productOrdNo);
@@ -83,6 +96,7 @@ public class ProductOrderDetailController2 {
 
         return "frontend/cart/ProductScorce";
     }
+
 
 
 }

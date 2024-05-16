@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import static com.ren.util.Constants.*;
 import static com.ren.util.Regex.*;
@@ -61,18 +63,27 @@ public class FunctionFilter extends HttpFilter {
                     // 職位沒有比打工仔還大
                     if (!(titleNo > PARTJOB)) {
                         reject(req, res);
+                        String encodedMessage = URLEncoder.encode("您沒有權限!", StandardCharsets.UTF_8.toString());
+                        res.sendRedirect(loginPage + "?error=" + encodedMessage);
+                        return;
                     }
                     break;
                 case "UPDATE":
                     // 職位沒有比全職員工大
                     if (!(titleNo > FULLTIME)) {
                         reject(req, res);
+                        String encodedMessage = URLEncoder.encode("您沒有權限!", StandardCharsets.UTF_8.toString());
+                        res.sendRedirect(loginPage + "?error=" + encodedMessage);
+                        return;
                     }
                     break;
                 case "DELETE":
                     // 職位沒有比經理大
                     if (!(titleNo > MANAGER)) {
                         reject(req, res);
+                        String encodedMessage = URLEncoder.encode("您沒有權限!", StandardCharsets.UTF_8.toString());
+                        res.sendRedirect(loginPage + "?error=" + encodedMessage);
+                        return;
                     }
                     break;    
             }
