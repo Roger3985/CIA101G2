@@ -42,7 +42,6 @@ public class Administrator {
     @JoinColumn(name = "titleno", referencedColumnName = "titleno")
     private Title title;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")
-    @NotNull(message = "入職時間不可留空!")
     @Column(name = "admhiredate")
     private Date admHireDate;
     @Column(name = "admphoto", columnDefinition = "blob")

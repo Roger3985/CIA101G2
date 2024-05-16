@@ -26,6 +26,7 @@ import javax.validation.Valid;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -70,22 +71,32 @@ public class BackendIndexController {
     }
 
     /**
+     * 註冊管理員，預設為最低權限
      *
-     *
-     * @param administrator
-     * @param result
-     * @param model
+     * @param administrator 管理員Entity
+     * @param result 若輸入不符合格式，將錯誤訊息取出渲染到前端
+     * @param model 將錯誤訊息與輸入的Entity(避免讓使用者重複輸入)渲染到前端
      * @return
      */
-    @PostMapping("/signup")
-    public String signUp(@Valid Administrator administrator, BindingResult result, ModelMap model) {
+    @PostMapping("/signUp")
+    public String signUp(@Valid Administrator administrator, @RequestParam("repeatPwd") String repeatPwd, BindingResult result, ModelMap model) {
+        // 判斷密碼與二次密碼是否相同
+        if (!administrator.getAdmPwd().equals(repeatPwd)) {
+            model.addAttribute("", "密碼與二次密碼不符!");
+            // 順便將其他異常訊息帶回去
+            if (result.hasErrors()) {
+                model.addAttribute("administrator", administrator);
+                model.addAttribute("errors", result.getAllErrors());
+            }
+            return "backend/administrator/addAdministrator";
+        }
+        // 確認是否有無錯誤訊息
         if (result.hasErrors()) {
             model.addAttribute("administrator", administrator);
             model.addAttribute("errors", result.getAllErrors());
             return "backend/administrator/addAdministrator";
-        } else {
-            System.out.println("新增成功");
         }
+
         administratorSvc.register(administrator);
 
         return "redirect:/backend/login";
@@ -274,11 +285,11 @@ public class BackendIndexController {
         return "";
     }
 
-    @PostMapping("/clearErrorMessage")
-    @ResponseBody
-    public void clearErrorMessage(HttpSession session) {
-        session.removeAttribute("errorMessage");
-    }
+//    @PostMapping("/clearErrorMessage")
+//    @ResponseBody
+//    public void clearErrorMessage(HttpSession session) {
+//        session.removeAttribute("errorMessage");
+//    }
 
     /**
      * 記錄密碼輸入錯誤的次數，

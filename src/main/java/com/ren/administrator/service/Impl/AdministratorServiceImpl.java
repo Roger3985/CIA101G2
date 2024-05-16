@@ -71,12 +71,12 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
     @Override
     public Administrator register(Administrator administrator) {
         // 填入預設的資料
-        administrator.setAdmStat(Byte.valueOf("1"));
-        administrator.getTitle().setTitleNo(4);
-        administrator.setAdmHireDate(new Date(new java.util.Date().getTime()));
+        administrator.setAdmStat(ACTIVE);
+//        administrator.getTitle().setTitleNo(4);
+//        administrator.setAdmHireDate(new Date(new java.util.Date().getTime()));
         administrator.setAdmSalt("1");
-        administrator.setAdmLogin(Byte.valueOf("0"));
-        administrator.setAdmLogout(Byte.valueOf("1"));
+        administrator.setAdmLogin(LOGIN_STATE_LOGOUT);
+        administrator.setAdmLogout(LOGOUT_STATE_LOGOUT);
         return addAdministrator(administrator);
     }
 
