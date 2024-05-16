@@ -13,9 +13,9 @@ import java.util.Set;
 @Entity
 @Table(name = "servicerecord")
 public class ServiceRecord {
-	@Id
+    @Id
     @Column(name = "recordno")
-	private Integer recordNo;
+    private Integer recordNo;
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "admno", referencedColumnName = "admno")

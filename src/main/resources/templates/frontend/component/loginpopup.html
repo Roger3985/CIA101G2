@@ -35,7 +35,7 @@
                         </div>
                         <div class="row align-items-center">
                             <div class="col-sm-4">
-                                <button  id="click" type="submit" class="btn btn-dark">Login</button>
+                                <button type="submit" class="btn btn-dark">Login</button>
                             </div>
                             <div class="col-sm-8 text-sm-end">
                                 <span class="text-muted">Don't have an account?
@@ -49,4 +49,35 @@
         </div>
     </div>
 </div>
+<!-- End Login Popup  -->
+<script>
+    $('#loginForm').submit(function(event) {
+        // 防止表單默認提交
+        event.preventDefault();
 
+        // 獲取表單數據
+        var formData = $(this).serialize();
+
+        // 發送 POST 請求到後端控制器
+        $.ajax({
+            type: "POST",
+            url: "/frontend/member/loginPageByPopup",
+            data: formData,
+            contentType: 'application/x-www-form-urlencoded',
+            success: function(response) {
+                // 登入成功處理
+                $('#errorMessage').text(''); // 清除錯誤消息
+                // 可以執行其他操作，例如關閉彈窗或重定向
+                $('#topbarlogin').modal('hide');
+                // 在這裡可以添加其他處理邏輯，例如重定向或刷新頁面
+            },
+            error: function(xhr, status, error) {
+                // 登入失敗處理
+                // 顯示錯誤消息
+                var errorMessage = JSON.parse(xhr.responseText);
+                $('#errorMessage').text(errorMessage.message);
+                // 在這裡可以添加其他失敗處理邏輯，例如清除表單數據或保留輸入內容
+            }
+        });
+    });
+</script>

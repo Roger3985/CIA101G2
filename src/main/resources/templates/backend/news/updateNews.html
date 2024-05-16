@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>updateNews</title>
+</head>
+<body>
+    <form th:action="@{update}" method="post" th:object="${news}">
+
+        <div>
+            <label>編號</label>
+            <input type="text" th:field="*{newsNo}" readonly="readonly" /><br>
+        </div>
+
+        <div>
+            <label>標題</label>
+            <input type="text" th:field="*{newsTitle}" onclick="hideContent('newsTitle.errors')"/><br>
+            <span th:if="${#fields.hasErrors('newsTitle')}" th:errors="*{newsTitle}" class="error"></span>
+        </div>
+
+        <div>
+            <label>內容</label>
+            <input type="text" th:field="*{newsContent}" onclick="hideContent('newsContent.errors')"/><br>
+            <span th:if="${#fields.hasErrors('newsContent')}" th:errors="*{newsContent}" class="error"></span>
+        </div>
+
+        <div>
+            <label>發布時間</label>
+            <input type="datetime-local" th:field="*{postTime}" onclick="hideContent('postTime.errors')" /><br>
+            <span th:if="${#fields.hasErrors('postTime')}" th:errors="*{postTime}" class="error"></span>
+        </div>
+
+        <div>
+            <button type="submit" id="submit"> 送出修改 </button>
+        </div>
+    </form>
+
+</body>
+</html>

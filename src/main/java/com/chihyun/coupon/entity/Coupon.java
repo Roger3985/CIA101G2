@@ -43,7 +43,7 @@ public class Coupon {
     private Timestamp coupExpDate;
 
     @NotNull(message = "發放日期: 請勿空白")
-    @Future(message = "優惠券發放日期: 不得早於今天日期")
+//    @Future(message = "優惠券發放日期: 不得早於今天日期")
     @Column(name = "coupreldate")
     private Timestamp coupRelDate;
 

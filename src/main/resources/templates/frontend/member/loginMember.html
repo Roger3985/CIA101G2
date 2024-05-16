@@ -59,7 +59,7 @@
                                     <h3 class="h4 mb-0">Login</h3>
                                 </div>
                                 <div class="card-body">
-                                    <form method="post" th:action="@{loginPage}" th:unless="${session.loginsuccess}">
+                                    <form method="post" th:action="@{loginPage}">
                                         <div style="text-align: center;">
                                             <span th:text="*{message}" style="color: red;" class="error" id="message.errors"></span>
                                             <span th:text="*{noFun}" style="color: red;" class="error" id="noFun.errors"></span>
@@ -91,26 +91,25 @@
                                             <button type="submit" class="btn btn-primary w-100">Log in</button>
                                         </div>
                                     </form>
-                                    <div class="text-center pt-4 pb-5" style="" th:unless="${session.loginsuccess}"><span
+                                    <div class="text-center pt-4 pb-5" style=""><span
                                             class="px-3 bg-body d-inline-block align-top lh-sm">OR</span>
                                         <div class="border-bottom mt-n3"></div>
                                     </div>
                                     <div class="row g-2">
                                         <br>
-                                        <div class="col" th:unless="${session.loginsuccess}">
+                                        <div class="col">
                                             <button class="btn w-100 btn-mode" type="button"><i
                                                     class="bi bi-facebook me-2"></i> Facebook
                                             </button>
                                         </div>
 
-                                        <form id="buildAuthUrlForm" th:action="@{/google/buildAuthUrl}"  spellcheck="false" th:unless="${session.loginsuccess}">
+                                        <form id="buildAuthUrlForm" th:action="@{/google/buildAuthUrl}"  spellcheck="false">
                                             <div class="col">
                                                 <button class="btn w-100 btn-mode" type="submit" ><i
                                                         class="bi bi-google me-2"></i> Google
                                                 </button>
                                             </div>
                                         </form>
-                                        <a th:href="@{/}" th:if="${session.loginsuccess}">登入成功，點此開始購物</a>
 <!--                                        <h3>使用 access_token 請求，取得使用者在 Google 中的數據</h3>-->
                                         <div class="api-form">
                                             <form id="getGoogleUserForm" th:action="@{/google/getGoogleUser}" spellcheck="false" name="accessToken">
@@ -327,8 +326,7 @@
         // 自動提交表單
         document.getElementById("content").click();
 
-        // 彈出成功消息
-        alert("第三方登入成功");
+        alert("第三方登入成功")
     }
 
     // // 添加表單提交事件監聽器
@@ -402,21 +400,10 @@
 
     // 提交表單
     document.getElementById("getUserForm").click();
-
-
-    // 發送 AJAX 請求到購物主頁
-    const http = new XMLHttpRequest();
-    const method = "GET";
-    const url = "/"; // 購物主頁的 URL
-    http.open(method, url);
-    http.send();
-
-    http.onreadystatechange = (e) => {
-        // 如果請求成功，跳轉到購物主頁
-        if (http.readyState === 4 && http.status === 200) {
-            window.location.href = url;
-        }
-    };
+</script>
+<script>
+    // 前端處理重定向
+    // window.location.href = .headers.get('Location');
 </script>
 
 <style>
