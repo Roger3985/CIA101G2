@@ -1,4 +1,4 @@
 package com.yu.rentalset.controller;
 
-public class RentSetServlet {
+public class RentSetControllerBackEnd {
 }

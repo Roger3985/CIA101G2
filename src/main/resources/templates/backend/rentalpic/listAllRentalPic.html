@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>所有租借品照片</title>
   <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
   <!-- Custom styles for this page -->
   <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
@@ -33,7 +33,7 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
           <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">租借品照片</h6>
+            <h6 class="m-0 font-weight-bold text-primary">所有租借品照片</h6>
           </div>
           <div class="card-body">
             <div class="table-responsive">
@@ -42,22 +42,24 @@
                 <tr>
                   <th>租借品照片編號</th>
                   <th>租借品編號</th>
-                  <th>租借品照片</th>
+                  <th>租借品照片1</th>
+                  <th>租借品照片2</th>
+                  <th>修改</th>
                 </tr>
                 </thead>
                 <tbody>
-                <th:block th:each="rentalPic : ${rentalPicList}">
+                <th:block th:each="rentalPic : ${rentalPicListData}">
                   <tr>
                     <td th:text="${rentalPic.rentalPicNo}"></td>
-                    <td th:text="${rentalPic.rentalNo}"></td>
-                    <td th:text="${rentalPic.rentalPic}"></td>
+                    <td th:text="${rentalPic.rental.rentalNo}"></td>
+                    <td><img th:src="@{/backend/rentalpic/DBGifReader} + '?rentalPicNo=' + ${rentalPic.rentalPicNo}" width="100px"></td>
                     <td>
                       <form method="post" th:action="@{getOneUpdate}">
                         <button type="submit" value="修改">
                           <i class="fa-solid fa-pen-to-square"></i>
                           <input type="hidden" name="rentalPicNo" value="${rentalPic.rentalPicNo}">
-                          <input type="hidden" name="rentalNo" value="${rental.rentalNo}">
-                          <input type="hidden" name="rentalPic" value="${rentalPic.rentalPic}">
+<!--                          <input type="hidden" name="rentalNo" value="${rental.rentalNo}">-->
+<!--                          <input type="hidden" name="rentalPic" value="${rentalPic.rentalPic}">-->
                         </button>
                       </form>
                     </td>
@@ -92,6 +94,13 @@
 <script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 <!-- Page level custom scripts -->
 <script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
-
+<script>
+  function showImage(fileName){
+    let imgContainer = document.getElementById('imgContainer');
+    let imgElement = document.createElement('img');
+    imgElement.src = 'resources/static/icons/frontend/rental' + fileName;
+    imgContainer.appendChild(imgElement);
+  }
+</script>
 </body>
 </html>

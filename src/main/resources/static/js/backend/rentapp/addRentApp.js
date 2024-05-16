@@ -171,9 +171,9 @@ function previewImage() {
 }
 function previewfile(file) {
     if (filereader_support === true && acceptedTypes[file.type] === true) {
-        var reader = new FileReader();
+        let reader = new FileReader();
         reader.onload = function(event) {
-            var image = new Image();
+            let image = new Image();
             image.src = event.target.result;
             image.width = 200;
 

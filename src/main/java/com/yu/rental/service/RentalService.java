@@ -26,7 +26,7 @@ public interface RentalService {
 
     public Rental getRentalColor(String rentalColor); //以rentalColor查詢
 
-
+    public List<Rental> findByStat(Byte rentalStat);//單筆查詢(rentalStat) //以rentalStat查詢租借品狀態
 
 //----------------------------------------------------------------------------------------------------------------------
     //主要為後端使用：增查改
@@ -40,5 +40,5 @@ public interface RentalService {
 
     public List<Rental> searchRentals(Map<String, String[]> paramsMap); //複合查詢
 
-    public List<Rental> findByStat(Byte rentalStat);//單筆查詢(rentalNo)
+
 }

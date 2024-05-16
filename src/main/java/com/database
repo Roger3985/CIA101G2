@@ -636,12 +636,12 @@ CREATE TABLE RentalPic
 (
     rentalPicNo      INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     rentalNo	        INT NOT NULL,
-    rentalPic        LONGBLOB,
+    rentalFile        LONGBLOB,
     CONSTRAINT FK_RentalPic_rentalNo FOREIGN KEY (rentalNo) REFERENCES Rental (rentalNo)
 )
 AUTO_INCREMENT = 1;
 
-INSERT INTO RentalPic(rentalPicNo, rentalNo, rentalPic) VALUES
+INSERT INTO RentalPic(rentalPicNo, rentalNo, rentalFile) VALUES
 (1, 5001, 'null'),
 (2, 5011, 'null'),
 (3, 5038, 'null'),

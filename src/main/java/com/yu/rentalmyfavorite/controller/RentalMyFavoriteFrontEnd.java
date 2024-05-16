@@ -1,4 +1,4 @@
 package com.yu.rentalmyfavorite.controller;
 
-public class RentalMyFAVBackEnd {
+public class RentalMyFavoriteFrontEnd {
 }

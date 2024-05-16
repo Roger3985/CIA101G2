@@ -29,8 +29,8 @@ public class RentalCategoryControllerBackEnd {
 
 
 	//顯示index.html
-	@GetMapping("/backend/index")
-	public String index() {
+	@GetMapping("/backendIndex")
+	public String backendIndex() {
 		return "/backend/index";
 	}
 	
@@ -76,7 +76,6 @@ public class RentalCategoryControllerBackEnd {
 		List<RentalCategory> rentalCatList =rentalCategoryService.findAll();
 		model.addAttribute("rentalCatList", rentalCatList);
 		model.addAttribute("rentalCategory", rentalCatList.get(0));
-		//		model.addAttribute("rentalCategory", rentalCategoryService.findAll());
 		return "/backend/rentalcategory/updateRentalCategory";
 	}
 
@@ -155,7 +154,7 @@ public class RentalCategoryControllerBackEnd {
 
 
 	// 處理修改資料
-	@PostMapping("updateRentalCategory")/////////////////////////////////////////////////////////////////////////////////////待處理(頁面可顯示，但沒選項)
+	@PostMapping("updateRentalCategory")
 	public String updateRentalCategory(@Valid RentalCategory rentalCategory, BindingResult result, ModelMap model) {
 
 		if (rentalCategory != null) {
