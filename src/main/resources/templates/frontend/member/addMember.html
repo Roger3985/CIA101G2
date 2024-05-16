@@ -175,6 +175,7 @@
                                                     <input type="file" name="memPic" th:field="*{memPic}" class="form-control" id="picture_1"/>
 <!--                                                    <span th:if="${#fields.hasErrors('memPic')}" th:errors="*{memPic}" class="error" id="memPic.errors"></span>-->
                                                 </div>
+                                                <div id="preview"></div>
                                                 <div class="form-check mb-4"><input class="form-check-input" type="checkbox"
                                                                                     value="" id="form2Example3" checked="checked">
                                                     <label class="form-check-label" for="form2Example3">By register, I read
@@ -216,6 +217,34 @@
     <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
     <!-- End script start -->
     <script th:src="@{/js/backend/rentapp/addRentApp.js}"></script>
+
+    <!-- 此為預覽圖片的 js -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var fileInput = document.getElementById('picture_1');
+            var preview = document.getElementById('preview');
+
+            fileInput.addEventListener('change', function() {
+                var file = this.files[0];
+                var reader = new FileReader();
+
+                reader.onload = function() {
+                    var img = document.createElement('img');
+                    img.src = reader.result;
+                    img.style.maxWidth = '20%';
+                    img.style.maxHeight = '20%';
+                    preview.innerHTML = '';
+                    preview.appendChild(img);
+                };
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.innerHTML = '未選擇圖片';
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -41,7 +41,7 @@
                         </div>
                         <div class="col-lg-6 my-2">
                             <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
-                                <li class="breadcrumb-item"><a class="text-nowrap" href="#"><i
+                                <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/}"><i
                                             class="bi bi-home"></i>Home</a></li>
                                 <li class="breadcrumb-item text-nowrap active" aria-current="page">varify</li>
                             </ol>
@@ -64,7 +64,7 @@
                                             <div class="col-md-6 offset-md-3">
                                                 <div class="d-flex flex-column align-items-center"> <!-- 使用 d-flex 和 align-items-center 使元素垂直居中 -->
                                                     <div class="form-group col-md-12 d-flex"> <!-- 使用 col-md-12 和 d-flex 使元素佔據整個父元素寬度並水平對齊 -->
-                                                        <input type="text" placeholder="輸入驗證碼" class="form-control flex-grow-1" name="sendMail"> <!-- 使用 flex-grow-1 使元素佔據所有可用水平空間 -->
+                                                        <input type="text" placeholder="輸入驗證碼" class="form-control flex-grow-1" name="sendMail" style="width: 300px"> <!-- 使用 flex-grow-1 使元素佔據所有可用水平空間 -->
                                                         <button type="submit" class="btn btn-primary ml-2">送出</button> <!-- 添加 ml-2 來設置按鈕和輸入框之間的間距 -->
                                                     </div>
                                                     <div class="form-group col-md-12" style="text-align: center;"> <!-- 使用 col-md-12 使錯誤訊息佔據整個父元素寬度 -->

@@ -52,40 +52,39 @@
             </div><!-- End Breadcrumb --><!-- Table -->
             <div class="py-6">
                 <div class="container">
-                    <div class="row">
+                    <div class="row"><!-- Profile Menu -->
                         <th:block th:insert="~{frontend/member/component/profile-menu.html}"></th:block><!-- Profile Menu -->
                         <div class="col-lg-8 col-xxl-9">
                             <div class="card">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0">Change your Mobile</h5>
+                                    <h5 class="m-0">Change your Credit Card</h5>
                                 </div>
                                 <div class="card-body p-4">
-                                    <form th:action="@{changeMemberMobile}" method="post" enctype="multipart/form-data">
+                                    <form th:action="@{changeMemberCreditCard}" method="post" enctype="multipart/form-data">
                                         <div class="row">
-                                            <div class="col-sm-12 mb-3">
-                                                <div class="form-group"><label for="oldMemberMobile" class="form-label">
-                                                    Old Member Mobile
+                                            <div class="col-sm-12 mb-3" th:if="${oldMemberCreditCard != null}">
+                                                <div class="form-group"><label for="oldMemberCreditCard" class="form-label">
+                                                    Old Member Credit Card
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                    <input type="text" id="oldMemberMobile" name="oldMemberMobile" placeholder="請輸入舊會員電話" class="form-control" th:value="${oldMemberMobile}">
-                                                    <span  th:text="${oldMemberMobileError}" class="error" id="oldMemberMobile.errors" style="color: red;"></span>
-                                                    <span  th:text="${emptyoldMemberMobile}" class="error" id="emptyoldMemberMobile.empty" style="color: red;"></span>
+                                                    <input type="text" id="oldMemberCreditCard" name="oldMemberCreditCard" placeholder="請輸入舊會員信用卡號碼" class="form-control" th:value="${oldMemberCreditCard}">
+                                                    <span  th:text="${oldMemberCreditCardError}" class="error" id="oldMemberCreditCard.errors" style="color: red;"></span>
+                                                    <span  th:text="${emptyoldMemberCreditCard}" class="error" id="emptyoldMemberCreditCard.errors" style="color: red;"></span>
                                                 </div>
                                             </div>
                                             <div class="col-sm-12 mb-3">
                                                 <div class="form-group">
-                                                    <label for="newMemberMobile" class="form-label">
-                                                        New Member Mobile
+                                                    <label for="newMemberCreditCard" class="form-label">
+                                                        New Member Credit Card
                                                         <span class="text-danger">*</span>
                                                     </label>
-                                                    <input type="text" id="newMemberMobile" name="newMemberMobile" placeholder="請輸入新的會員電話" class="form-control">
-                                                    <span  th:text="${newMemberMobileError}" class="error" id="newMemberMobile.errors" style="color: red;"></span>
-                                                    <span  th:text="${sameMemberMobileError}" class="error" id="sameMemberMobile.errors" style="color: red;"></span>
-                                                    <span  th:text="${emptyNewMemberMobile}" class="error" id="emptyNewMemberMobile.empty" style="color: red;"></span>
+                                                    <input type="text" id="newMemberCreditCard" name="newMemberCreditCard" placeholder="請輸入新的會員信用卡號碼" class="form-control">
+                                                    <span  th:text="${newMemberCreditCardError}" class="error" id="newMemberCreditCard.errors" style="color: red;"></span>
+                                                    <span  th:text="${emptyNewMemberCreditCard}" class="error" id="emptyNewMemberCreditCard.empty" style="color: red;"></span>
                                                 </div>
                                             </div>
                                             <div class="col-12 pt-2">
-                                                <button class="btn btn-primary">Change Member Mobile</button>
+                                                <button class="btn btn-primary">Change Member Credit Card</button>
                                             </div>
                                         </div>
                                     </form>
