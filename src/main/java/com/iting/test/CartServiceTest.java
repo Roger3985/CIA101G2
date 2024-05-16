@@ -19,12 +19,9 @@ public class CartServiceTest {
         JedisPool jedisPool = initializeJedisPool(); // Initialize your JedisPool
         CartServiceImpl cart=new CartServiceImpl();
         // Assuming you want to get cart items for member with memNo 11
-        List<CartRedis> cartItems = cart.findByCompositeKey(3);
+        cart.updateCart(7, 3, 2);
+       System.out.println(cart);
 
-        // Print out the cart items
-        for (CartRedis cartItem : cartItems) {
-            System.out.println(cartItem);
-        }
     }
 
 

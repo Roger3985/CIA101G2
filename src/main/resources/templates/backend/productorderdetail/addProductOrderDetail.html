@@ -1,163 +1,193 @@
 
 
 
-
-
-
-
-
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>商品訂單資料新增 </title>
-
-
-    <style type="text/css">
-
-        button {
-            padding: 5px;
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品訂單資料新增</title>
+    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+    <style>
+        .error {
+            font-size: 12px; /* 調整字體大小 */
         }
-        form {
-            display: table;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
         }
-        form div {
-            display: table-row;
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
         }
-        label, input, span, select {
-            display: table-cell;
-            margin: 5px;
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        select {
+            width: 20%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .text-center {
             text-align: left;
         }
-        input[type=text], input[type=password], select, textarea {
-            width: 200px;
-            margin: 5px;
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
         }
-        form div div {
-            display: table-cell;
-        }
-        .center {
-            margin-left: auto;
-            margin-right: auto;
+
+        .btn:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
-<body>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">
-    <div align="center"> <h2>商品訂單資料新增</h2>
-        <h3><a class="navbar-brand" th:href="@{/backend/productorder/selectProductOrder}"><img th:src="@{/images/back1.gif}">回查詢頁</a></h3></div>
-</nav>
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                <form th:action="@{insertproductOrderDetail}" method="post" th:object="${productOrderDetail}" class="my-form">
+                    <div class="form-group">
+                        <label>商品訂單編號:</label>
+                        <input type="text" th:field="*{compositeKey.productOrdNo}" onclick="hideContent('compositeKey.productOrdNo.errors');" />
+                        <span th:if="${#fields.hasErrors('compositeKey.productOrdNo')}" th:errors="*{compositeKey.productOrdNo}" class="error"></span>
+                    </div>
 
-<div align="center">
-    <h3><b></b></h3>
-    <form th:action="@{insertproductOrderDetail}" method="post" th:object="${productOrderDetail}" >
-        <div>
-            <label>商品訂單編號:</label>
-            <input type="text" th:field="*{compositeKey.productOrdNo}" onclick="hideContent('compositeKey.productOrdNo.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('compositeKey.productOrdNo')}" th:errors="*{compositeKey.productOrdNo}" class="error" id="compositeKey.productOrdNo.errors"></span>
-        </div>
-        <div>
-            <label>商品編號:</label>
-            <input type="text" th:field="*{compositeKey.productNo}" onclick="hideContent('compositeKey.productNo.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('compositeKey.productNo')}" th:errors="*{compositeKey.productNo}" class="error" id="compositeKey.productNo.errors"></span>
-        </div>
-        <div>
-            <label>商品單價:</label>
-            <input type="text" th:field="*{productPrice}" onclick="hideContent('productPrice.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}" class="error" id="productPrice.errors"></span>
-        </div>
-        <div>
-            <label>購買數量:</label>
-            <input type="text" th:field="*{productOrdQty}" onclick="hideContent('productOrdQty.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('productOrdQty')}" th:errors="*{productOrdQty}" class="error" id="productOrdQty.errors"></span>
-        </div>
-        <div>
-            <label>訂單實付金額:</label>
-            <input type="text" th:field="*{productRealPrice}" onclick="hideContent('productRealPrice.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('productRealPrice')}" th:errors="*{productRealPrice}" class="error" id="productRealPrice.errors"></span>
-        </div>
-        <div>
-            <label>評價內容:</label>
-            <input type="text" th:field="*{productComContent}" onclick="hideContent('productComContent.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('productComContent')}" th:errors="*{productComContent}" class="error" id="productComContent.errors"></span>
-        </div>
-        <div>
-            <label>評價星等:</label>
-            <select th:field="*{productScore}">
-                <option th:value="1" th:text="一顆星" />
-                <option th:value="2" th:text="兩顆星" />
-                <option th:value="3" th:text="三顆星" />
-                <option th:value="4" th:text="四顆星" />
-                <option th:value="5" th:text="五顆星" />
-            </select>
-            <br/>
-            <span th:if="${#fields.hasErrors('productScore')}" th:errors="*{productScore}" class="error" id="productScore.errors"></span>
-        </div>
+                    <div class="form-group">
+                        <label>商品編號:</label>
+                        <input type="text" th:field="*{compositeKey.productNo}" onclick="hideContent('compositeKey.productNo.errors');" />
+                        <span th:if="${#fields.hasErrors('compositeKey.productNo')}" th:errors="*{compositeKey.productNo}" class="error"></span>
+                    </div>
 
-        <div>
-            <div></div>
-            <div><button type="submit" id="submit"> 送出新增 </button></div>
-            <div></div>
-        </div>
-    </form>
+                    <div class="form-group">
+                        <label>商品單價:</label>
+                        <input type="text" th:field="*{productPrice}" onclick="hideContent('productPrice.errors');" />
+                        <span th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}" class="error"></span>
+                    </div>
 
+                    <div class="form-group">
+                        <label>購買數量:</label>
+                        <input type="text" th:field="*{productOrdQty}" onclick="hideContent('productOrdQty.errors');" />
+                        <span th:if="${#fields.hasErrors('productOrdQty')}" th:errors="*{productOrdQty}" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>訂單實付金額:</label>
+                        <input type="text" th:field="*{productRealPrice}" onclick="hideContent('productRealPrice.errors');" />
+                        <span th:if="${#fields.hasErrors('productRealPrice')}" th:errors="*{productRealPrice}" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>評價內容:</label>
+                        <input type="text" th:field="*{productComContent}" onclick="hideContent('productComContent.errors');" />
+                        <span th:if="${#fields.hasErrors('productComContent')}" th:errors="*{productComContent}" class="error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>評價星等:</label>
+                        <select th:field="*{productScore}">
+                            <option th:value="1">一顆星</option>
+                            <option th:value="2">兩顆星</option>
+                            <option th:value="3">三顆星</option>
+                            <option th:value="4">四顆星</option>
+                            <option th:value="5">五顆星</option>
+                        </select>
+                        <span th:if="${#fields.hasErrors('productScore')}" th:errors="*{productScore}" class="error"></span>
+                    </div>
+
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn">送出新增</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="backend/component/bottom :: bottom"></footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
 </div>
+<!-- End of Page Wrapper -->
 
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
 
-<!-- JavaScript part -->
-<!--<script type="text/javascript">-->
-<!--    //清除提示信息-->
-<!--    function hideContent(d) {-->
-<!--        document.getElementById(d).style.display = "none";-->
-<!--    }-->
-
-<!--    //照片上傳-預覽用-->
-<!--    var filereader_support = typeof FileReader != 'undefined';-->
-<!--    if (!filereader_support) {-->
-<!--        alert("No FileReader support");-->
-<!--    }-->
-<!--    acceptedTypes = {-->
-<!--        'image/png' : true,-->
-<!--        'image/jpeg' : true,-->
-<!--        'image/gif' : true-->
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+<!--<script>-->
+<!--    window.onload = function() {-->
+<!--        updatePriceInstantly(); // 确保在页面加载时执行一次-->
+<!--        document.getElementById('coupNo').onchange = updatePriceInstantly;-->
+<!--        document.getElementById('productAllPrice').onchange = updatePriceInstantly;-->
 <!--    };-->
-<!--    function previewImage() {-->
-<!--        var upfile1 = document.getElementById("upFiles");-->
-<!--        upfile1.addEventListener("change", function(event) {-->
-<!--            var files = event.target.files || event.dataTransfer.files;-->
-<!--            for (var i = 0; i < files.length; i++) {-->
-<!--                previewfile(files[i])-->
+
+<!--    function updatePriceInstantly() {-->
+<!--        var selectedcoupNo = document.getElementById('coupNo').value;-->
+<!--        var productAllPrice = document.getElementById('productAllPrice').value;-->
+
+<!--        var xhr = new XMLHttpRequest();-->
+<!--        var params = 'coupNo=' + encodeURIComponent(selectedcoupNo) + '&productAllPrice=' + encodeURIComponent(productAllPrice);-->
+<!--        xhr.open('POST', '/backend/productorder/coupNoInstantly', true);-->
+<!--        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');-->
+
+<!--        xhr.onload = function () {-->
+<!--            if (xhr.status === 200) {-->
+<!--                var productOrderData = JSON.parse(xhr.responseText);-->
+
+<!--                // 更新页面上的产品折扣和实际价格-->
+<!--                document.getElementById('productDisc').value = productOrderData.productDisc;-->
+<!--                document.getElementById('productRealPrice').value = productOrderData.productRealPrice;-->
+<!--            } else {-->
+<!--                console.error('获取产品订单详情失败');-->
 <!--            }-->
-<!--        }, false);-->
-<!--    }-->
-<!--    function previewfile(file) {-->
-<!--        if (filereader_support === true && acceptedTypes[file.type] === true) {-->
-<!--            var reader = new FileReader();-->
-<!--            reader.onload = function(event) {-->
-<!--                var image = new Image();-->
-<!--                image.src = event.target.result;-->
-<!--                image.width = 100;-->
-<!--                image.height = 75;-->
-<!--                image.border = 2;-->
-<!--                if (blob_holder.hasChildNodes()) {-->
-<!--                    blob_holder.removeChild(blob_holder.childNodes[0]);-->
-<!--                }-->
-<!--                blob_holder.appendChild(image);-->
-<!--            };-->
-<!--            reader.readAsDataURL(file);-->
-<!--            document.getElementById('submit').disabled = false;-->
-<!--        } else {-->
-<!--            blob_holder.innerHTML = "<div  style='text-align: left;'>" + "● filename: " + file.name-->
-<!--                + "<br>" + "● ContentTyp: " + file.type-->
-<!--                + "<br>" + "● size: " + file.size + "bytes"-->
-<!--                + "<br>" + "● 上傳ContentType限制: <b> <font color=red>image/png、image/jpeg、image/gif </font></b></div>";-->
-<!--            document.getElementById('submit').disabled = true;-->
-<!--        }-->
+<!--        };-->
+
+<!--        xhr.send(params);-->
 <!--    }-->
 <!--</script>-->
 
 </body>
+
+
+
+
 </html>
