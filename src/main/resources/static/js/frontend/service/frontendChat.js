@@ -21,18 +21,82 @@ console.log("endPointURL=" + endPointURL);
 const msgBody = document.querySelector("#chat-area");
 let webSocket;
 
+document.getElementById("messageForm").addEventListener("submit", function (e){
+    e.preventDefault();
+})
+
 function connect() {
     webSocket = new WebSocket(endPointURL);
     webSocket.onopen = function (event) {
         console.log("frontend connect Suceess!");
+        connection = true;
+        // let jsonobj = {
+        //     type: "openChatroom",
+        //     sender: "userName",
+        //     receiver: "userName"
+        // }
+        // webSocket.send(JSON.stringify(jsonobj));
     }
 
-    webSocket.onmessage = function (event){
-        let message = event.data;
-        console.log(data);
+    webSocket.onmessage = function (event) {
+        console.log("我收到後端的資料了"+event);
+        var jsonObj = JSON.parse(event.data);
+        var message = jsonObj.message;
+        console.log("我收到後端的資料了"+message);
+        const messageContainer = document.createElement('div');
+        messageContainer.innerHTML = message;
+        chatArea.appendChild(messageContainer);
+        // chatArea.value = chatArea.value + message;
     }
-
 
 }
+
+messageInput.addEventListener("keyup", function (e){
+    if(e.which == 13){
+        el_msg_btn.click();
+    }
+})
+
+var el_msg_btn = document.getElementById("msg_btn");
+el_msg_btn.addEventListener("click", function (){
+    const messageContent = messageInput.value.trim();
+    console.log(messageContent);
+    if(messageContent == ""){
+        alert("請輸入訊息");
+    }else{
+        const messageContainer = document.createElement('div');
+        messageContainer.innerHTML = messageContent;
+        chatArea.appendChild(messageContainer);
+        messageInput.value = '';
+        var jsonobj = {
+            message : messageContent
+        }
+        webSocket.send(JSON.stringify(jsonobj))
+    }
+})
+
+
+// function buildMessage(data) {
+//     const messageContainer = document.createElement('div');
+//     messageContainer.classList.add('message');
+//     let jsonObj = data;
+//     let showMsg = jsonObj.message;
+//     let time = jsonObj.time;
+//     let content = '';
+//     if (jsonObj.sender === userName) {
+//         messageContainer.classList.add('sender');
+//         content =
+//             '<p>' + showMsg + '</p>' +
+//             '<time>' + time + '</time>';
+//     } else {
+//         messageContainer.classList.add('receiver');
+//         content =
+//             '<p>' + showMsg + '</p>' +
+//             '<time>' + time + '</time>';
+//     }
+//     div.innerHTML = content;
+//     chatArea.appendChild(div);
+//     chatArea.scrollTop = chatArea.scrollHeight;
+// }
 
 

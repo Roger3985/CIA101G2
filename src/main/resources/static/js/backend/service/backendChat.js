@@ -24,20 +24,51 @@ let webSocket;
 function connect() {
     webSocket = new WebSocket(endPointURL);
     webSocket.onopen = function (event) {
-        console.log("connect Suceess!");
+        console.log("backend connect Suceess!");
     }
 
     webSocket.onmessage = function (event) {
-        let event_data = event.data;
-        console.log(event_data);
-        buildMessage(event_data.data);
+        console.log("我收到後端的資料了"+event);
+        var jsonObj = JSON.parse(event.data);
+        var message = jsonObj.message;
+        console.log("我收到後端的資料了"+message);
+        const messageContainer = document.createElement('div');
+        messageContainer.innerHTML = message;
+        chatArea.appendChild(messageContainer);
+        // chatArea.value = chatArea.value + message;
     }
 
 
 }
+messageInput.addEventListener("keyup", function (e){
+    if(e.which == 13){
+        el_msg_btn.click();
+    }
+})
 
-function buildMessage(data){
-
-}
+var el_msg_btn = document.getElementById("msg_btn");
+el_msg_btn.addEventListener("click", function (){
+    const messageContent = messageInput.value.trim();
+    console.log(messageContent);
+    if(messageContent == ""){
+        alert("請輸入訊息");
+    }else{
+        const messageContainer = document.createElement('div');
+        messageContainer.innerHTML = messageContent;
+        chatArea.appendChild(messageContainer);
+        messageInput.value = '';
+        var jsonobj = {
+            message : messageContent
+        }
+        webSocket.send(JSON.stringify(jsonobj))
+    }
+})
+// function buildMessage(data){
+//     const messageContainer = document.createElement('div');
+//     messageContainer.classList.add('message');
+//     let jsonObj =data;
+//     let showMsg = jsonObj.message;
+//     let time = jsonObj
+// }
 
 
