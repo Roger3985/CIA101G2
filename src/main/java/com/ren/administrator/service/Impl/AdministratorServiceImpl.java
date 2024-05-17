@@ -190,7 +190,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
             administrator = updateAdministrator(administrator);
         }
         Integer admNo = administrator.getAdmNo();
-        LoginState loginState = new LoginState(admNo, sessionID, administrator.getAdmLogin(), administrator.getAdmLogout(), administrator.getAdmActiveTime(), administrator.getTitle().getTitleNo());
+        LoginState loginState = new LoginState(admNo, administrator.getAdmName(), administrator.getAdmEmail(), sessionID, administrator.getAdmLogin(), administrator.getAdmLogout(), administrator.getAdmActiveTime(), administrator.getTitle().getTitleNo());
         // 將登入狀態放入Redis資料庫，供LoginStateFilter於每次發出請求時做登入狀態驗證
         storeLoginstateInRedis(admNo, loginState);
 

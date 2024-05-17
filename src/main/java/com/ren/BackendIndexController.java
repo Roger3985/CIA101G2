@@ -152,6 +152,10 @@ public class BackendIndexController {
                         HttpServletRequest req,
                         HttpServletResponse res,
                         ModelMap model) {
+        if (userId == null || userId.trim().equals("")) {
+            model.addAttribute("idError", "請輸入用戶名或註冊信箱!");
+            return "backend/login";
+        }
 
         // 宣告管理員與管理員編號，於後續參數驗證後賦值
         Administrator administrator = null;
