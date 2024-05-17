@@ -39,9 +39,13 @@ public class AdmAuthorityController {
      * @return 前往listOne頁面
      */
     @GetMapping("/listOneAdmAuthority")
-    public String getAdmAuthority(@RequestParam Integer titleNo,@RequestParam Integer authFuncNo, BindingResult result, ModelMap model) {
+    public String getAdmAuthority(@RequestParam Integer titleNo,
+                                  @RequestParam Integer authFuncNo,
+                                  BindingResult result,
+                                  ModelMap model) {
         if (result.hasErrors()) {
-
+            model.addAttribute("errorMsg", "查無此資料");
+            return "redirect:/backend/";
         }
         AdmAuthority admAuthority = admAuthoritySvc.getOneAdmAuthority(titleNo, authFuncNo);
         model.addAttribute("admAuthority", admAuthority);
@@ -49,9 +53,9 @@ public class AdmAuthorityController {
     }
 
     /**
+     * 前往所有管理員權限清單
      *
-     *
-     * @return
+     * @return 前往所有管理員權限
      */
     @GetMapping("/listAllAdmAuthorities")
     public String getAllAdmAuthorities() {
@@ -64,11 +68,10 @@ public class AdmAuthorityController {
     }
 
     @PostMapping("/addAdmAuthority")
-    public String addAdmAuthority(@Valid AdmAuthority admAuthority, BindingResult result, ModelMap model) {
-//        if (result.hasErrors()) {
-//            model.addAttribute();
-//        }
-//
+    public String addAdmAuthority(@Valid AdmAuthority admAuthority,
+                                  ModelMap model) {
+
+
         return "";
     }
 

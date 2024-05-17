@@ -27,7 +27,7 @@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">管理員登入</h1>
                                     </div>
                                     <form method="post" th:action="@{/backend/loginPage}" th:object="${administrator}" class="user">
                                         <div class="form-group">
@@ -43,9 +43,9 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
-                                                <input type="checkbox" name="autoLogin" class="custom-control-input" id="customCheck" th:value="${autoLogin}">
+                                                <input type="checkbox" name="autoLogin" class="custom-control-input" id="customCheck" value="1" th:checked="${autoLogin == 1}">
                                                 <input type="hidden" name="autoLogin" value="0">
-                                                <label class="custom-control-label" for="customCheck">Remember Me</label>
+                                                <label class="custom-control-label" for="customCheck">自動登入</label>
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
@@ -54,13 +54,33 @@
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" th:href="@{/backend/forgotPassword}">Forgot Password?</a>
+                                        <a class="small" th:href="@{/backend/forgotPassword}">忘記密碼?</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" th:href="@{/backend/register}">Create an Account!</a>
+                                        <a class="small" th:href="@{/backend/register}">申請管理員帳號</a>
                                     </div>
                                     <!-- Logout Modal-->
                                     <div th:replace="backend/component/logout :: logout"></div>
+
+                                    <!-- 登出訊息 -->
+                                    <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="alertModalLabel">提示</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body" id="alertModalBody">
+                                                    <!-- 這裡將顯示錯誤訊息 -->
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="confirmButton">確定</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -74,7 +94,13 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const autoLoginCheckbox = document.getElementById("customCheck");
+
+            // 恢復 checkbox 狀態
+            autoLoginCheckbox.checked = localStorage.getItem("autoLogin") === "true";
+
+            // 監聽 checkbox 的變化並保存狀態
             autoLoginCheckbox.addEventListener("change", function() {
+                localStorage.setItem("autoLogin", this.checked);
                 if (this.checked) {
                     this.value = "1";
                 } else {
@@ -83,10 +109,39 @@
             });
         });
 
+        // alert
+        // window.alert = function(name) {
+        //     var iframe = document.createElement("IFRAME");
+        //     iframe.style.display = "none";
+        //     iframe.setAttribute("src", 'data:text/plain,');
+        //     document.documentElement.appendChild(iframe);
+        //     window.frames[0].window.alert(name);
+        //     iframe.parentNode.removeChild(iframe);
+        // };
+        //
+        // $(document).ready(function() {
+        //     // 檢查 URL 中是否有錯誤訊息參數
+        //     const urlParams = new URLSearchParams(window.location.search);
+        //     const errorMsg = urlParams.get('error');
+        //
+        //     if (errorMsg) {
+        //         alert(decodeURIComponent(errorMsg));
+        //         // 清除URL中的error參數
+        //         urlParams.delete('error');
+        //         window.history.replaceState(null, null, '?' + urlParams.toString() + window.location.hash);
+        //     }
+        // });
+
+        window.alert = function(name) {
+            document.getElementById('alertModalBody').innerText = name;
+            $('#alertModal').modal('show');
+        };
+
         $(document).ready(function() {
             // 檢查 URL 中是否有錯誤訊息參數
             const urlParams = new URLSearchParams(window.location.search);
             const errorMsg = urlParams.get('error');
+            const successMsg = urlParams.get('success');
 
             if (errorMsg) {
                 alert(decodeURIComponent(errorMsg));
@@ -94,21 +149,28 @@
                 urlParams.delete('error');
                 window.history.replaceState(null, null, '?' + urlParams.toString() + window.location.hash);
             }
-        });
 
-        // $(document).ready(function() {
-        //     // 檢查 session 中是否有錯誤訊息參數
-        //     const errorMessage = /*[[${session.errorMessage}]]*/ '';
-        //     if (errorMessage) {
-        //         alert(errorMessage);
-        //         // 清除 session 中的錯誤訊息
-        //         $.ajax({
-        //             url: '/backend/clearErrorMessage',
-        //             type: 'POST'
-        //         });
-        //     }
-        //
-        // });
+            if (successMsg) {
+                alert(decodeURIComponent(successMsg));
+                // 清除URL中的error參數
+                urlParams.delete('success');
+                window.history.replaceState(null, null, '?' + urlParams.toString() + window.location.hash);
+            }
+
+            // 當模態框顯示時，按下 Enter 鍵觸發「確定」按鈕的點擊事件
+            $('#alertModal').on('shown.bs.modal', function() {
+                $(document).on('keydown', function(event) {
+                    if (event.key === 'Enter') {
+                        $('#confirmButton').click();
+                    }
+                });
+            });
+
+            // 當模態框隱藏時，移除 Enter 鍵的事件監聽
+            $('#alertModal').on('hidden.bs.modal', function() {
+                $(document).off('keydown');
+            });
+        });
 
     </script>
 </body>

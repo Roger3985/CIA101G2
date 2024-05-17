@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,7 @@ import javax.servlet.ServletException;
 import java.security.Principal;
 
 @Configuration
+@EnableAsync
 @ComponentScan(basePackages = {"com.*"})
 @EnableJpaRepositories("com.*")
 @EntityScan(basePackages = {"com.*"})

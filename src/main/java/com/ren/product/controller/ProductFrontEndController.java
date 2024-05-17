@@ -37,9 +37,14 @@ public class ProductFrontEndController {
     private ProductReviewServiceImpl productReviewSvc;
 
     // 前往商品瀏覽頁面
-    @GetMapping("/selectProduct")
-    public String toBrowse() {
-        return "frontend/product/selectProduct";
+    @GetMapping("/visitProduct")
+    public String toVisitProduct() {
+        return "frontend/product/visitProduct";
+    }
+
+    @GetMapping("oneProduct")
+    public String toOneProduct() {
+        return "frontend/product/oneProduct";
     }
 
     @GetMapping

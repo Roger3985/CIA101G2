@@ -147,15 +147,23 @@
         $('#productSelect').on('change', updateProductInstantly);
     });
 
+    // axios
     function updateProductInstantly() {
         console.log("即時更新觸發");
-        var selectedProductNo = $('#productSelect').val();  // 使用 jQuery 獲取選中的商品編號
+        var selectedProductNo = $('#productSelect').val(); // 使用 jQuery 獲取選中的商品編號
 
-        $.ajax({
-            url: '/backend/product/getProductInstantly?productNo=' + encodeURIComponent(selectedProductNo),
-            type: 'POST',
-            contentType: 'application/x-www-form-urlencoded',
-            success: function(productDetails) {
+        axios({
+            method: 'post',
+            url: '/backend/product/getProductInstantly',
+            params: {
+                productNo: encodeURIComponent(selectedProductNo)
+            },
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+            .then(function (response) {
+                var productDetails = response.data;
                 // 更新 DOM 元素的值
                 $('#productCatNo').val(productDetails.productCategory.productCatNo);
                 $('#productName').val(productDetails.productName);
@@ -167,12 +175,40 @@
                 $('#productSalQty').val(productDetails.productSalQty);
                 $('#productComPeople').val(productDetails.productComPeople);
                 $('#productComScore').val(productDetails.productComScore);
-            },
-            error: function(xhr, status, error) {
+            })
+            .catch(function (error) {
                 console.error('Failed to fetch product details: ' + error);
-            }
-        });
+            });
     }
+
+
+    // // ajax
+    // function updateProductInstantly() {
+    //     console.log("即時更新觸發");
+    //     var selectedProductNo = $('#productSelect').val();  // 使用 jQuery 獲取選中的商品編號
+    //
+    //     $.ajax({
+    //         url: '/backend/product/getProductInstantly?productNo=' + encodeURIComponent(selectedProductNo),
+    //         type: 'POST',
+    //         contentType: 'application/x-www-form-urlencoded',
+    //         success: function(productDetails) {
+    //             // 更新 DOM 元素的值
+    //             $('#productCatNo').val(productDetails.productCategory.productCatNo);
+    //             $('#productName').val(productDetails.productName);
+    //             $('#productInfo').val(productDetails.productInfo);
+    //             $('#productSize').val(productDetails.productSize);
+    //             $('#productColor').val(productDetails.productColor);
+    //             $('#productPrice').val(productDetails.productPrice);
+    //             $('#productStat').val(productDetails.productStat);
+    //             $('#productSalQty').val(productDetails.productSalQty);
+    //             $('#productComPeople').val(productDetails.productComPeople);
+    //             $('#productComScore').val(productDetails.productComScore);
+    //         },
+    //         error: function(xhr, status, error) {
+    //             console.error('Failed to fetch product details: ' + error);
+    //         }
+    //     });
+    // }
 </script>
 
 </body>

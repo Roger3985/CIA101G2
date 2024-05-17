@@ -26,6 +26,8 @@ public interface Constants {
     byte LOGOUT_STATE_LOGOUT = 1;
     byte OnShelf = 1;
     byte OffShelf = 0;
+    byte ACTIVE = 1;
+    byte INACTIVE = 0;
 
     /**
      * 首頁路徑
@@ -36,6 +38,11 @@ public interface Constants {
      * 登入頁面路徑
      */
     String loginPage = "/backend/login";
+
+    /**
+     * 登入頁面路徑
+     */
+    String errorRedirect = "/backend/login?error=";
 
     /**
      * 註冊頁面路徑

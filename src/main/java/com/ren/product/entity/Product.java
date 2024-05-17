@@ -39,11 +39,11 @@ public class Product {
     @Max(value = 5, message = "商品尺寸只能是XS、S、M、L、XL、2L")
     @Column(name = "productsize")
     private Integer productSize;
-    @NotEmpty(message="商品顏色: 請勿空白")
+    @NotNull(message="商品顏色: 請勿空白")
     @Pattern(regexp = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$", message = "商品顏色: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間")
     @Column(name = "productcolor")
     private String productColor;
-    @NotEmpty(message="商品價格: 請勿空白")
+    @NotNull(message="商品價格: 請勿空白")
     @DecimalMin(value = "100.00", message = "商品價格: 不能小於{value}")
     @DecimalMax(value = "99999.99", message = "商品價格: 不能超過{value}")
     @Column(name = "productprice")
@@ -60,9 +60,9 @@ public class Product {
     @Column(name = "productcompeople")
     private Integer productComPeople;
     @NotNull(message = "請輸入商品評價分數")
-    @Digits(integer = 1, fraction = 2)
-    @DecimalMin(value = "0.01", message = "評分請填0.00 ~ 5.00的分數")
-    @DecimalMax(value = "5.00", message = "評分請填0.00 ~ 5.00的分數")
+    @Digits(integer = 1, fraction = 2, message = "評分請填入 0.00 ~ 5.00 的分數")
+    @DecimalMin(value = "0.01", message = "評分請填入 0.00 ~ 5.00 的分數")
+    @DecimalMax(value = "5.00", message = "評分請填入 0.00 ~ 5.00 的分數")
     @Column(name = "productcomscore")
     private BigDecimal productComScore;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = "yyyy-MM-dd HH:mm:ss")

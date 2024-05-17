@@ -1,8 +1,14 @@
 <!-- Footer -->
-<footer th:fragment="bottom" class="sticky-footer bg-white">
+<th:block th:fragment="bottom">
+<div>
+    <span th:text="'在線人數' + ${application.onlineUsers}"></span>
+    <span th:text="'在線管理員人數' + ${application.onlineAdms}"></span>
+</div>
+<footer class="sticky-footer bg-white">
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
             <span>Copyright &copy; Your Website 2020</span>
         </div>
     </div>
 </footer>
+</th:block>

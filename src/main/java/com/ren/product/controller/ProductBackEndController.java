@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -222,6 +223,36 @@ public class ProductBackEndController {
         // 過濾掉指定字段的錯誤信息
         List<FieldError> errorsListToKeep = result.getFieldErrors().stream()
                 .filter(fieldname -> !fieldname.getField().equals(removedFieldname))
+                .collect(Collectors.toList());
+        // 創建新的 BindingResult，關聯 Entity 物件
+        result = new BeanPropertyBindingResult(product, "product");
+        // 將過濾後的錯誤信息添加到新的 BindingResult 中
+        for (FieldError fieldError : errorsListToKeep) {
+            result.addError(fieldError);
+        }
+        // 返回修改後的 BindingResult
+        return result;
+    }
+
+    private BindingResult removeAllErrors(Product product, BindingResult result) {
+
+        List<String> list = new ArrayList<>();
+
+        list.add("productName");
+        list.add("productInfo");
+        list.add("productSize");
+        list.add("productColor");
+        list.add("productPrice");
+        list.add("productStat");
+        list.add("productSalQty");
+        list.add("productComPeople");
+        list.add("productComScore");
+        list.add("productOnShelf");
+        list.add("productOffShelf");
+
+        // 過濾這個Entity所有的錯誤訊息
+        List<FieldError> errorsListToKeep = result.getFieldErrors().stream()
+                .filter(fieldname -> !fieldname.getField().equals(list.contains(fieldname)))
                 .collect(Collectors.toList());
         // 創建新的 BindingResult，關聯 Entity 物件
         result = new BeanPropertyBindingResult(product, "product");

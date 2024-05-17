@@ -1,29 +1,71 @@
 package com.listener;
 
-import com.ren.administrator.entity.Administrator;
-import com.ren.administrator.service.Impl.AdministratorServiceImpl;
+import com.ren.administrator.dto.LoginState;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.util.List;
+import java.io.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class InitializerListener implements ServletContextListener {
 
+    // 重啟時載入線上人數資源用
+    private static final String ONLINE_USERS_FILE = "onlineUsers.dat";
+
+    // RedisTemplate，用來計算線上人數用
     @Autowired
-    private AdministratorServiceImpl administratorSvc;
+    @Qualifier("admStrLogin")
+    private RedisTemplate<String, LoginState> admRedisTemplate;
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        // 新增用於記數在線人數
-        sce.getServletContext().setAttribute("onlineUsers", 0);
-
+        // 獲得ServletContext物件
+        ServletContext context = sce.getServletContext();
+        // 載入線上人數，存入ServletContext
+        AtomicInteger onlineUsers = loadOnlineUsersCounter();
+        context.setAttribute("onlineUsers", onlineUsers);
+        // 統計放入Redis資料庫內的登入狀態數量(登入人數)，存入ServletContext
+        AtomicInteger onlineAdms = new AtomicInteger(admRedisTemplate.keys("*").size());
+        context.setAttribute("onlineAdms", onlineAdms);
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        ServletContextListener.super.contextDestroyed(sce);
+        ServletContext context = sce.getServletContext();
+        // 將在線人數存入，當應用程式重啟時可讀取而不遺失資料
+        AtomicInteger onlineUsers = (AtomicInteger) context.getAttribute("onlineUsers");
+        saveOnlineUsersCounter(onlineUsers);
+    }
+
+    /**
+     * 讀取上次關閉應用程式時儲存的資料
+     *
+     * @return 返回線上人數
+     */
+    private AtomicInteger loadOnlineUsersCounter() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(ONLINE_USERS_FILE))) {
+            return (AtomicInteger) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            return new AtomicInteger(0);
+        }
+    }
+
+    /**
+     * 當應用程式關閉時，存入線上人數資料
+     *
+     * @param onlineUsers 傳入線上人數，做儲存用
+     */
+    private void saveOnlineUsersCounter(AtomicInteger onlineUsers) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ONLINE_USERS_FILE))) {
+            oos.writeObject(onlineUsers);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
