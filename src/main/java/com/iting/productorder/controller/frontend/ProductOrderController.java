@@ -114,7 +114,7 @@ public class ProductOrderController {
 //    }
 @PostMapping("/coupNoInstantly")
 @ResponseBody
-public ResponseEntity<String> updatePriceInstantly(@RequestParam("coupon.coupNo") String coupNo,
+public ResponseEntity<String> updatePriceInstantly(@RequestParam("coupno.coupNo") String coupNo,
                                                    @RequestParam("productAllPrice") BigDecimal productAllPrice) {
     // 如果coupNo为null或者空字符串，则设为默认值1
     int couponNumber = 1; // 默认值
