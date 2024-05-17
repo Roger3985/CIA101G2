@@ -9,11 +9,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -184,6 +187,70 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<Member> findAll() {
         return memberRepository.findAll();
+    }
+
+    /**
+     * 根據提供的條件查詢通知。
+     */
+    @Override
+    public List<Member> getByAttributes(Map<String, Object> map) {
+
+        if (map.isEmpty()) {
+            return memberRepository.findAll();
+        }
+
+        Integer memNo = null;
+        String memName = null;
+        String memAcc = null;
+        String memPwd = null;
+        String memMob = null;
+        Byte memGender = null;
+        String memMail = null;
+        String memAdd = null;
+        Date memBd = null;
+        String memCard = null;
+        Byte provider = null;
+        String clientID = null;
+        String displayName = null;
+        Timestamp memberJoinTime = null;
+        Byte memStat = null;
+        byte[] memPic = null;
+
+        if (map.containsKey("memNo")) {
+            memNo = (Integer) map.get("memNo");
+        } else if (map.containsKey("memName")) {
+            memName = (String) map.get("memName");
+        } else if (map.containsKey("memAcc")) {
+            memAcc = (String) map.get("memAcc");
+        } else if (map.containsKey("memPwd")) {
+            memPwd = (String) map.get("memPwd");
+        } else if (map.containsKey("memMob")) {
+            memMob = (String) map.get("memMob");
+        } else if (map.containsKey("memGender")) {
+            memGender = (Byte) map.get("memGender");
+        } else if (map.containsKey("memMail")) {
+            memMail = (String) map.get("memMail");
+        } else if (map.containsKey("memAdd")) {
+            memAdd = (String) map.get("memAdd");
+        } else if (map.containsKey("memBd")) {
+            memBd = (Date) map.get("memBd");
+        } else if (map.containsKey("memCard")) {
+            memCard = (String) map.get("memCard");
+        } else if (map.containsKey("provider")) {
+            provider = (Byte) map.get("provider");
+        } else if (map.containsKey("clientID")) {
+            clientID = (String) map.get("clientID");
+        } else if (map.containsKey("displayName")) {
+            displayName = (String) map.get("displayName");
+        } else if (map.containsKey("memberJoinTime")) {
+            memberJoinTime = (Timestamp) map.get("memberJoinTime");
+        } else if (map.containsKey("memStat")) {
+            memStat = (Byte) map.get("memStat");
+        } else if (map.containsKey("memPic")) {
+            memPic = (byte[]) map.get("memPic");
+        }
+
+        return memberRepository.findByAttributes(memNo, memName, memAcc, memPwd, memMob, memGender, memMail, memAdd, memBd, memCard, provider, clientID, displayName, memberJoinTime, memStat, memPic);
     }
 
     /**

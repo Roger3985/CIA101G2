@@ -52,7 +52,7 @@ public class Member implements java.io.Serializable {
     private String memAcc;
 
     @NotBlank(message = "會員密碼: 請勿空白")
-    @ValidMemPassword(groups = {Create.class, CreateWithout.class})
+    @ValidMemPassword(groups = {Create.class})
     @Column(name = "mempwd")
     private String memPwd;
 

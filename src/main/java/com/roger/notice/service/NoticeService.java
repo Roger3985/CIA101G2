@@ -66,5 +66,11 @@ public interface NoticeService {
      */
     public List<Notice> findNoticesByMemberMemNo(Integer memNo);
 
+    /**
+     * 根據提供的條件查詢通知。
+     *
+     * @param map 包含查詢條件的映射。
+     * @return 符合條件的通知列表。
+     */
     public List<Notice> getByAttributes(Map<String, Object> map);
 }

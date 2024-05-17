@@ -44,7 +44,7 @@
                                     <th>email</th>
                                     <th>聯絡地址</th>
                                     <th>會員生日</th>
-<!--                                    <th>第三方平台註冊</th>-->
+                                    <th>第三方平台</th>
                                     <th>帳號狀態</th>
                                     <th>會員大頭貼</th>
                                     <th>權限修改</th>
@@ -65,7 +65,11 @@
                                         <td th:text="${member.memMail}"></td>
                                         <td th:text="${member.memAdd}"></td>
                                         <td th:text="${member.memBd}"></td>
-<!--                                        <td th:text="${member.provider}"></td>-->
+                                        <td>
+                                            <span th:if="${member.provider == null}" th:text="未申請第三方服務"></span>
+                                            <span th:if="${member.provider == 0}" th:text="Line"></span>
+                                            <span th:if="${member.provider == 1}" th:text="Google"></span>
+                                        </td>
                                         <td>
                                             <span th:if="${member.memStat == 0}" th:text="未驗證"></span>
                                             <span th:if="${member.memStat == 1}" th:text="已驗證"></span>
