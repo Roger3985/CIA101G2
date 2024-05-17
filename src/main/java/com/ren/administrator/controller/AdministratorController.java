@@ -100,9 +100,9 @@ public class AdministratorController {
 
     // 從listAll那前往
     @GetMapping("/updateAdministrator/{administratorNo}")
-    public String toUpdateAdministrator(ModelMap model, @PathVariable Integer administratorNo) {
+    public String toUpdateAdministrator(ModelMap model, @PathVariable Integer admNo) {
 
-        model.addAttribute("administrator", administratorSvc.getOneAdministrator(administratorNo));
+        model.addAttribute("administrator", administratorSvc.getOneAdministrator(admNo));
 
         return "backend/administrator/updateAdministrator";
     }
