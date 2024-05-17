@@ -4,11 +4,10 @@ import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 
     @Repository
@@ -28,9 +27,19 @@ import java.util.List;
         RentalMyFavorite findByRental_RentalNoAndMember_MemNo(Integer rentalNo,Integer memNo); //複合主鍵查詢
 
         @Transactional
-        List<RentalMyFavorite> findByRentalFavTime(DateTimeFormat rentalFavTime); //rentalFavTime查詢
+        List<RentalMyFavorite> findByRentalFavTime(Timestamp rentalFavTime); //rentalFavTime查詢
 
-
+        @Transactional
+        @Query("SELECT FAV FROM RentalMyFavorite FAV WHERE " +
+                "(:rentalNo IS NULL OR FAV.rental.rentalNo = :rentalNo) AND " +
+                "(:memNo IS NULL OR FAV.member.memNo = :memNo) AND " +
+                "(:rentalFavTime IS NULL OR FAV.rentalFavTime = :rentalFavTime)")
+        List<RentalMyFavorite> searchRentalMyFAVs(@Param("rentalNo") Integer rentalNo,
+                                                  @Param("memNo") Integer memNo,
+                                                  @Param("rentalFavTime") Timestamp rentalFavTime);
+    }
+        
+        
         //        //自定義查詢(使用JPQL語法)
     //        @Query("SELECT re FROM RentalMyFavorite re WHERE re.rentalCatNo = :rentalCatNo")
     //        List<RentalMyFavorite> findQueryByRentalCatNo(@Param("rentalCatNo") Integer rentalCatNo);
@@ -48,4 +57,3 @@ import java.util.List;
     //        @Query("SELECT re FROM RentalMyFavorite re WHERE re.rentalDesPrice = :rentalDesPrice")
     //        List<RentalMyFavorite> findQueryByRentalDesPrice(@Param("rentalDesPrice") BigDecimal rentalDesPrice);
 
-    }

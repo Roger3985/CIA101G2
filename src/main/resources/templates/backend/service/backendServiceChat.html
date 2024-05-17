@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/backend/service/chat.css}">
+    <link rel="stylesheet" th:href="@{/css/backend/service/backendChat.css}">
     <title>後台即時客服</title>
 
 </head>
 <body onload="connect();">
-
 <h2>後台即時客服系統</h2>
 
 <div class="user-form" id="username-page">
     <h2>Enter Chatroom</h2>
     <form id="usernameForm">
 
-        <label for="fullname">Name:</label>
-        <input type="text" id="fullname" name="realname" required>
+        <label for="username">Name:</label>
+        <input type="text" id="username" name="username" required>
 
         <button type="submit">Enter Chatroom</button>
     </form>
@@ -25,14 +24,14 @@
 <div class="chat-container" id="chat-page">
     <div class="users-list">
         <div class="users-list-container">
-            <h2>客服清單</h2>
+            <h2>Online Users</h2>
             <ul id="connectedUsers">
             </ul>
         </div>
-        <div>
-            <p id="connected-user-fullname"></p>
-            <a class="logout" href="javascript:void(0)" id="logout">Logout</a>
-        </div>
+        <!--        <div>-->
+        <!--            <p id="connected-user-fullname"></p>-->
+        <!--            <a class="logout" href="javascript:void(0)" id="logout">Logout</a>-->
+        <!--        </div>-->
     </div>
 
     <div class="chat-area">
@@ -42,7 +41,7 @@
         <form id="messageForm" name="messageForm">
             <div class="message-input">
                 <input autocomplete="off" type="text" id="message" placeholder="Type your message...">
-                <button id="msg_btn">Send</button>
+                <button type="button" id="msg_btn">Send</button>
             </div>
         </form>
     </div>

@@ -5,6 +5,7 @@ import com.roger.member.entity.Member;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 public interface MemberService {
 
@@ -101,6 +102,14 @@ public interface MemberService {
      * @return 包含所有會員的 List<Member> 列表。
      */
     public List<Member> findAll();
+
+    /**
+     * 根據提供的條件查詢通知。
+     *
+     * @param map 包含查詢條件的映射。
+     * @return 符合條件的會員列表。
+     */
+    public List<Member> getByAttributes(Map<String, Object> map);
 
     /**
      * 信箱驗證。

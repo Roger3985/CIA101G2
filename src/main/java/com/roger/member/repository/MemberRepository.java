@@ -7,7 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -42,6 +46,41 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
      */
     @Transactional
     public Member findByMemMob(String memMob);
+
+    @Transactional
+    @Query("SELECT m FROM Member m WHERE " +
+            "(:memNo IS NULL OR m.memNo = :memNo) AND " +
+            "(:memName IS NULL OR m.memName = :memName) AND " +
+            "(:memAcc IS NULL OR m.memAcc = :memAcc) AND " +
+            "(:memPwd IS NULL OR m.memPwd = :memPwd) AND " +
+            "(:memMob IS NULL OR m.memMob = :memMob) AND " +
+            "(:memGender IS NULL OR m.memGender = :memGender) AND " +
+            "(:memMail IS NULL OR m.memMail = :memMail) AND " +
+            "(:memAdd IS NULL OR m.memAdd = :memAdd) AND " +
+            "(:memBd IS NULL OR m.memBd = :memBd) AND " +
+            "(:memCard IS NULL OR m.memCard = :memCard) AND " +
+            "(:provider IS NULL OR m.provider = :provider) AND " +
+            "(:clientID IS NULL OR m.clientID = :clientID) AND " +
+            "(:displayName IS NULL OR m.displayName = :displayName) AND " +
+            "(:memberJoinTime IS NULL OR m.memberJoinTime = :memberJoinTime) AND " +
+            "(:memStat IS NULL OR m.memStat = :memStat) AND" +
+            "(:memPic IS NULL OR m.memPic = :memPic)")
+    List<Member> findByAttributes(@Param(value = "memNo") Integer memNo,
+                                 @Param(value = "memName") String memName,
+                                 @Param(value = "memAcc") String memAcc,
+                                 @Param(value = "memPwd") String memPwd,
+                                 @Param(value = "memMob") String memMob,
+                                 @Param(value = "memGender") Byte memGender,
+                                 @Param(value = "memMail") String memMail,
+                                 @Param(value = "memAdd") String memAdd,
+                                 @Param(value = "memBd") Date memBd,
+                                 @Param(value = "memCard") String memCard,
+                                 @Param(value = "provider") Byte provider,
+                                 @Param(value = "clientID") String clientID,
+                                 @Param(value = "displayName") String displayName,
+                                 @Param(value = "memberJoinTime") Timestamp memberJoinTime,
+                                 @Param(value = "memStat") Byte memStat,
+                                 @Param(value = "memPic") byte[] memPic);
 
     /**
      * 判斷指定的電子郵件是否存在於會員資料庫中。

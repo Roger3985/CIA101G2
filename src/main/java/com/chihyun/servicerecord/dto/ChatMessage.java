@@ -1,4 +1,4 @@
-package com.chihyun.servicerecord.entity;
+package com.chihyun.servicerecord.dto;
 
 import lombok.Getter;
 import lombok.Setter;

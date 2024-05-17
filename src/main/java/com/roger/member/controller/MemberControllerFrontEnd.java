@@ -1022,13 +1022,17 @@ public class MemberControllerFrontEnd {
 
 //        member.setMemStat(member.getMemStat());
 
+        // 這邊不能更新密碼，更新密碼要到單獨更新頁面
+        member.setMemPwd(memberService.getMemberByMemNo(member.getMemNo()).getMemPwd());
+
         // 假如新的密碼跟舊的密碼不一樣，會寄信到會員信箱
-        if (!member.getMemPwd().equals(memberService.getMemberByMemNo(member.getMemNo()).getMemPwd())) {
-            memberService.verifyMail(member.getMemMail(), "密碼已經重新設定，請妥善保管", "你設置的新密碼為:", member.getMemPwd());
-        }
+
+//        if (!member.getMemPwd().equals(memberService.getMemberByMemNo(member.getMemNo()).getMemPwd())) {
+//            memberService.verifyMail(member.getMemMail(), "密碼已經重新設定，請妥善保管", "你設置的新密碼為:", member.getMemPwd());
+//        }
 
         // 將會員重置後的密碼加密
-        member.setMemPwd(memberService.hashPassword(member.getMemPwd()));
+//        member.setMemPwd(memberService.hashPassword(member.getMemPwd()));
 
         // 如果驗證失敗或模型數據中存在重複項，則返回前端更新會員頁面
         if (result.hasErrors() || modelMap.get("duplicateAccount") != null || modelMap.get("duplicateMobile") != null || modelMap.get("duplicateMail") != null) {
@@ -1046,12 +1050,14 @@ public class MemberControllerFrontEnd {
         Member newData = memberService.edit(member);
         session.setAttribute("loginsuccess", newData);
 
-        // 原本成功後重定向回會員個人資訊中心，但為了前端可以吃到成功更新的事件就要 return，然後讓前端去抓取這個物件，再去進行 ajax 跳轉
-        redirectAttributes.addAttribute("updatesuccess", true);
-        return "redirect:/frontend/member/memberData";
-//        modelMap.addAttribute("updatesuccess", true);
+        // 前端顯示更新成功
+//        redirectAttributes.addAttribute("updatesuccess", "更新成功");
+//        return "redirect:/frontend/member/memberData";
 
-//        return "/frontend/member/updateMember";
+        // 原本成功後重定向回會員個人資訊中心，但為了前端可以吃到成功更新的事件就要 return，然後讓前端去抓取這個物件，再去進行 ajax 跳轉
+        modelMap.addAttribute("updatesuccess", true);
+
+        return "/frontend/member/updateMember";
     }
 
     /**
@@ -1229,7 +1235,8 @@ public class MemberControllerFrontEnd {
                                  @RequestParam("newPassword") String newPassword,
                                  @RequestParam("againNewPassword") String againNewPassword,
                                  ModelMap modelMap,
-                                 HttpSession session) {
+                                 HttpSession session,
+                                 RedirectAttributes redirectAttributes) {
 
         // 從會話中獲取當前登入的會員訊息
         Member member = (Member) session.getAttribute("loginsuccess");
@@ -1275,6 +1282,9 @@ public class MemberControllerFrontEnd {
 
         // 更新會話中的會員訊息
         session.setAttribute("loginsuccess", member);
+
+        // 顯示更新訊息在頁面
+        redirectAttributes.addAttribute("updatesuccess", "密碼已經重新設定，請妥善保管");
 
         // 重定向到個人資訊頁面
         return "redirect:/frontend/member/memberData";
@@ -1326,7 +1336,8 @@ public class MemberControllerFrontEnd {
     public String changeMemberName(@RequestParam("oldMemberName") String oldMemberName,
                                    @RequestParam("newMemberName") String newMemberName,
                                    ModelMap modelMap,
-                                   HttpSession session) {
+                                   HttpSession session,
+                                   RedirectAttributes redirectAttributes) {
 
         // 從會話中獲取當前登錄的會員訊息
         Member member = (Member) session.getAttribute("loginsuccess");
@@ -1362,6 +1373,9 @@ public class MemberControllerFrontEnd {
 
         // 更新會話中的會員訊息
         session.setAttribute("loginsuccess", member);
+
+        // 顯示更新訊息在頁面
+        redirectAttributes.addAttribute("updatesuccess", "會員姓名更新成功");
 
         // 重定向到個人資訊頁面
         return "redirect:/frontend/member/memberData";
@@ -1413,7 +1427,8 @@ public class MemberControllerFrontEnd {
     public String changeMemberAccount(@RequestParam("oldMemberAccount") String oldMemberAccount,
                                       @RequestParam("newMemberAccount") String newMemberAccount,
                                       ModelMap modelMap,
-                                      HttpSession session) {
+                                      HttpSession session,
+                                      RedirectAttributes redirectAttributes) {
 
         // 從會話中獲取當前登錄的會員訊息
         Member member = (Member) session.getAttribute("loginsuccess");
@@ -1455,6 +1470,9 @@ public class MemberControllerFrontEnd {
 
         // 更新會話中的會員訊息
         session.setAttribute("loginsuccess", member);
+
+        // 顯示更新訊息在頁面
+        redirectAttributes.addAttribute("updatesuccess", "會員帳號更新成功");
 
         // 重定向到個人資訊頁面
         return "redirect:/frontend/member/memberData";
@@ -1507,7 +1525,8 @@ public class MemberControllerFrontEnd {
     public String changeMemberMobile(@RequestParam("oldMemberMobile") String oldMemberMobile,
                                      @RequestParam("newMemberMobile") String newMemberMobile,
                                      ModelMap modelMap,
-                                     HttpSession session) {
+                                     HttpSession session,
+                                     RedirectAttributes redirectAttributes) {
 
         // 從會話中獲取當前登錄的會員訊息
         Member member = (Member) session.getAttribute("loginsuccess");
@@ -1552,6 +1571,9 @@ public class MemberControllerFrontEnd {
 
         // 更新會話中的會員訊息
         session.setAttribute("loginsuccess", member);
+
+        // 顯示更新訊息在頁面
+        redirectAttributes.addAttribute("updatesuccess", "會員電話更新成功");
 
         // 重定向到個人資訊頁面
         return "redirect:/frontend/member/memberData";
@@ -1603,7 +1625,8 @@ public class MemberControllerFrontEnd {
     public String changeMemberMail(@RequestParam("oldMemberMail") String oldMemberMail,
                                    @RequestParam("newMemberMail") String newMemberMail,
                                    ModelMap modelMap,
-                                   HttpSession session) {
+                                   HttpSession session,
+                                   RedirectAttributes redirectAttributes) {
 
         // 從會話中獲取當前登錄的會員訊息
         Member member = (Member) session.getAttribute("loginsuccess");
@@ -1650,6 +1673,9 @@ public class MemberControllerFrontEnd {
 
         // 更新會話中的會員訊息
         session.setAttribute("loginsuccess", member);
+
+        // 顯示更新訊息在頁面
+        redirectAttributes.addAttribute("updatesuccessMail", "會員信箱更新成功");
 
         // 重定向到個人資訊頁面
         return "redirect:/frontend/member/memberData";
@@ -1702,7 +1728,8 @@ public class MemberControllerFrontEnd {
     public String changeMemberAddress(@RequestParam("oldMemberAddress") String oldMemberAddress,
                                       @RequestParam("newMemberAddress") String newMemberAddress,
                                       ModelMap modelMap,
-                                      HttpSession session) {
+                                      HttpSession session,
+                                      RedirectAttributes redirectAttributes) {
 
         // 從會話中獲取當前登錄的會員訊息
         Member member = (Member) session.getAttribute("loginsuccess");
@@ -1736,6 +1763,9 @@ public class MemberControllerFrontEnd {
 
         // 更新會話中的會員訊息
         session.setAttribute("loginsuccess", member);
+
+        // 顯示更新訊息在頁面
+        redirectAttributes.addAttribute("updatesuccess", "會員地址更新成功");
 
         // 重定向到個人資訊頁面
         return "redirect:/frontend/member/memberData";
@@ -1787,7 +1817,8 @@ public class MemberControllerFrontEnd {
     public String changeMemberCreditCard(@RequestParam(value = "oldMemberCreditCard", required = false) String oldMemberCreditCard,
                                          @RequestParam("newMemberCreditCard") String newMemberCreditCard,
                                          ModelMap modelMap,
-                                         HttpSession session) {
+                                         HttpSession session,
+                                         RedirectAttributes redirectAttributes) {
 
         // 從會話中獲取當前登錄的會員訊息
         Member member = (Member) session.getAttribute("loginsuccess");
@@ -1823,6 +1854,9 @@ public class MemberControllerFrontEnd {
 
         // 更新會話中的會員訊息
         session.setAttribute("loginsuccess", member);
+
+        // 顯示更新訊息在頁面
+        redirectAttributes.addAttribute("updatesuccess", "會員信用卡更新成功");
 
         // 重定向到個人資訊頁面
         return "redirect:/frontend/member/memberData";

@@ -1,7 +1,6 @@
-//package com.yu.rentalset.service;
+//package com.yu.rentSet.service;
 //
-//import com.yu.rental.entity.Rental;
-//import com.yu.rentalset.entity.RentSet;
+//import com.yu.rentSet.entity.RentSet;
 //
 //import java.util.List;
 //import java.util.Map;
@@ -23,6 +22,6 @@
 //
 //        RentSet updateRentSet(RentSet rentSet); //修改
 //
-//        List<RentSet> getByCompositeQuery(Map<String, String[]> map); //複合查詢
+//        public List<RentSet> searchRentSets(Map<String, Object> map); //複合查詢
 //
 //    }

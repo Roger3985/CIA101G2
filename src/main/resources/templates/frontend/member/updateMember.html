@@ -90,10 +90,10 @@
                                                 <span th:text="${duplicateAccount}" class="error" id="duplicateAccount.error" style="color: red;"></span>
                                             </div>
                                             <div class="col-sm-6 mb-3"><label class="form-label">
-                                                Password
+                                                Password (無法在此修改，請到單獨頁面修改)
                                                 <span class="text-danger">*</span>
                                             </label>
-                                                <input type="password" class="form-control" th:field="*{memPwd}" name="memPwd" placeholder="請輸入密碼" style="color: black;">
+                                                <input type="password" class="form-control" name="memPwd" placeholder="*************" readonly style="color: black;">
                                                 <span  th:if="${#fields.hasErrors('memPwd')}" th:errors="*{memPwd}" class="error" id="memPwd.errors" style="color: red;"></span>
                                             </div>
                                             <div class="col-sm-6 mb-3"><label class="form-label">
@@ -177,6 +177,7 @@
                                                 <input type="text" class="form-control" th:if="${session.loginsuccess.getMemStat() == 1}" value="已驗證" readonly style="color: black;">
                                                 <span th:if="${#fields.hasErrors('memStat')}" th:errors="*{memStat}" class="error" style="color: red;"></span>
                                             </div>
+                                            <input type="hidden" th:field="*{memPwd}" name="memPwd">
                                             <input type="hidden" th:field="*{memStat}" name="memStat">
                                             <input type="file" th:field= "*{memPic}" id="the_file" style="display: none;">
                                             <input type="text" th:field="*{memberJoinTime}" style="display: none;">

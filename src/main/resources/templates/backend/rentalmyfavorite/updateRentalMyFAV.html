@@ -40,28 +40,25 @@
                     </div>
                     <div class="a">
                         <ul>
-                            <form id="form" method="post" th:action="@{updateRentalFAV}" th:object="${rentalMyFAV}">
+                            <form id="form" method="post" th:action="@{/backend/rentalmyfavorite/addRentalMyFAV}" th:object="${rentalMyFavorite}">
                                 <li>
                                     租借品編號:
-                                    <input value="0" type="text" name="rentalNo" th:field="*{rentalNo}" style="border:0px ; font-weight: bold;" readonly /><br/>
+                                    <input value="0" type="text" name="rentalNo" th:field="*{rental.rentalNo}" style="border:0px ; font-weight: bold;" readonly /><br/>
                                 </li><br>
                                 <li>
                                     選擇會員編號:
                                     <select name="memNo">
                                         <option>請選擇</option>
-                                        <option th:each="rental : ${rentalListData}" th:value="${rental.memNo}" th:text="${rental.memNo}" />
+                                        <option th:each="member : ${memberListData}" th:value="${rentalMyFavorite.member.memNo}" th:text="${rentalMyFavorite.member.memNo}" />
                                     </select><br>
+                                    <span class="error" th:if="${#fields.hasErrors('member.memNo')}" th:errors="*{member.memNo}" id="member.memNo.errors">會員編號錯誤</span>
                                 </li>
                                 <li>
                                     選擇加入我的最愛時間:
-                                    <select name="rentalFavTime">
-                                        <option>請選擇</option>
-                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalFavTime}" th:text="${rental.rentalFavTime}" />
-                                    </select><br>
-                                </li>
+                                    <input type="datetime-local" name="rentalFavTime" th:field="*{rentalFavTime}" onclick="hideContent('rentalFavTime.errors');" id="rentalFavTime_el"/><br/>
+                                    <span class="error" th:if="${#fields.hasErrors('rentalFavTime')}" th:errors="*{rentalFavTime}" id="rentalFavTime.errors">時間錯誤</span>
+                                </li><br>
                                 <input type="submit" id="updateBtn" value="送出">
-                                <input type="hidden" name="rentalNo" value="${rental.rentalNo}">
-                                <input type="hidden" name="memNo" value="${rentalMyFAV.memNo}">
                             </form>
                         </ul>
                     </div>
@@ -84,40 +81,45 @@
 <div th:replace="backend/component/logout :: logout"></div>
 
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
-<script th:src="@{/static/jquery/jquery-3.7.1.min.js}"></script>
-<script>
-    // 若要做到不點選按鈕即時更新，可以使用WebSocket的方式
-    $(document).ready(function (){
-
-        // 觸發submit事件，取得選擇的內容，轉為json格式
-        $("#updateBtn").on("submit",function(e){
-            e.preventDefault(); //阻止提交表單
-
-            //資料打包
-            var updateData = {
-                rentalNo: parseInt($('#rentalNo').val()),
-                rentalName: $('#rentalName').val(),
-                rentalPrice: parseFloat($('#rentalPrice').val()),
-                rentalSize: parseInt($('#rentalSize').val()),
-                rentalColor: $('#rentalColor').val(),
-                rentalInfo: $('#rentalInfo').val(),
-                rentalStat: parseFloat($('#rentalStat').val()),
-                rentalCatNo: parseInt($('#rentalCatNo').val()),
-                action: "updateRental"
-            };
-
-            fetch("/backend/rental/updateRental", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(updateData)
-            }).then(function (response){
-                return response.text();
-            }).then(function (rentalNo){
-                alert(rentalNo + "新增成功");
-            })
-        });
-    });
+<script th:src="@{/static/jquery/jquery-3.7.1.min.js}"></script><script>
+    let now = new Date();
+    let dateTime = now.toLocaleString();
+    document.getElementById("datetime").innerHTML = dateTime;
 </script>
+
+<!--<script>-->
+<!--    // 若要做到不點選按鈕即時更新，可以使用WebSocket的方式-->
+<!--    $(document).ready(function (){-->
+
+<!--        // 觸發submit事件，取得選擇的內容，轉為json格式-->
+<!--        $("#updateBtn").on("submit",function(e){-->
+<!--            e.preventDefault(); //阻止提交表單-->
+
+<!--            //資料打包-->
+<!--            var updateData = {-->
+<!--                rentalNo: parseInt($('#rentalNo').val()),-->
+<!--                rentalName: $('#rentalName').val(),-->
+<!--                rentalPrice: parseFloat($('#rentalPrice').val()),-->
+<!--                rentalSize: parseInt($('#rentalSize').val()),-->
+<!--                rentalColor: $('#rentalColor').val(),-->
+<!--                rentalInfo: $('#rentalInfo').val(),-->
+<!--                rentalStat: parseFloat($('#rentalStat').val()),-->
+<!--                rentalCatNo: parseInt($('#rentalCatNo').val()),-->
+<!--                action: "updateRental"-->
+<!--            };-->
+
+<!--            fetch("/backend/rental/updateRental", {-->
+<!--                method: "POST",-->
+<!--                headers: {"Content-Type": "application/json"},-->
+<!--                body: JSON.stringify(updateData)-->
+<!--            }).then(function (response){-->
+<!--                return response.text();-->
+<!--            }).then(function (rentalNo){-->
+<!--                alert(rentalNo + "新增成功");-->
+<!--            })-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
 </body>
 </html>
 <!--$.ajax({-->

@@ -42,12 +42,15 @@ public class NoticeControllerBackEnd {
     }
 
     /**
-     * 通過會員編號查詢會員的所有通知，並將通知列表添加到模型中。
+     * 通過不同的查詢條件查詢會員的通知列表，並將結果添加到模型中。
      * 返回視圖名稱，用於渲染查詢結果的頁面。
      *
-     * @param memNo 會員編號，用於查詢該會員的所有通知。
-     * @param modelMap 用於在頁面中存儲和傳遞數據。
-     * @return 視圖名稱 "backend/notice/selectOnePage" 用於渲染查詢結果的頁面。
+     * @param memNo      會員編號，用於查詢該會員的所有通知。(可選)
+     * @param notContent 通知內容。(可選)
+     * @param notTime    通知時間。(可選)
+     * @param notStat    通知狀態。(可選)
+     * @param modelMap   用於在頁面中存儲和傳遞數據。
+     * @return 視圖名稱 "backend/notice/selectNotice"，用於渲染查詢結果的頁面。
      */
     @GetMapping("/getOnAny")
     public String getOnAny(@RequestParam(value = "memNo", required = false) Integer memNo,

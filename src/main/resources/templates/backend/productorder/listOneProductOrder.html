@@ -78,8 +78,11 @@
                                     </td>
                                     <td th:text="${productOrder.productAddr}"></td>
                                     <td>
-                                        <span th:if="${productOrder.productPayMethod == 1}">綠界</span>
-                                        <span th:if="${productOrder.productPayMethod == 2}">現場付款</span>
+                                        <span th:if="${productOrder.productPayMethod == 1}">線上刷卡</span>
+                                        <span th:if="${productOrder.productPayMethod == 2}">超商繳款</span>
+                                        <span th:if="${productOrder.productPayMethod == 3}">ATM付款</span>
+                                        <span th:if="${productOrder.productPayMethod == 4}">匯款</span>
+                                        <span th:if="${productOrder.productPayMethod == 5}">現場付款</span>
                                     </td>
                                     <td th:text="${productOrder.productAllPrice}"></td>
                                     <td th:if="${productorder.coupon != null}">

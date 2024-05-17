@@ -1,14 +1,10 @@
-//package com.yu.rentalset.service;
+//package com.yu.rentSet.service;
 //
-//import com.yu.rental.dao.RentalRepository;
-//import com.yu.rental.service.RentalService;
-//import com.yu.rentalset.dao.RentSetRepository;
-//import com.yu.rentalset.entity.RentSet;
+//import com.yu.rentSet.dao.RentSetRepository;
+//import com.yu.rentSet.entity.RentSet;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Service;
 //
-//import javax.persistence.EntityManager;
-//import javax.persistence.PersistenceContext;
 //import java.util.List;
 //import java.util.Map;
 //
@@ -18,12 +14,6 @@
 //    @Autowired //自動裝配
 //    private RentSetRepository repository;
 //
-//    /**
-//     * PersistenceContext注解用于注入一个EntityManager对象，
-//     * 使得我们可以在RentalService类中使用这个entityManager对象执行持久化操作，例如保存、更新、删除实体对象，以及执行JPQL查询等。
-//     */
-//    @PersistenceContext
-//    private EntityManager entityManager;
 //
 //    //全部查詢(RentSet)
 //    @Override
@@ -34,7 +24,7 @@
 //    //單筆查詢(rentalOrdNo)
 //    @Override
 //    public RentSet findByRentalOrdNo(Integer rentalOrdNo) {
-//        return repository.findByRentalOrdNo(rentalOrdNo);
+//        return repository.findByRentalOrder_RentalOrdNo(rentalOrdNo);
 //    }
 //
 //    //單筆查詢(rentalSetName)
@@ -67,7 +57,27 @@
 //
 //    //複合查詢
 //    @Override
-//    public List<RentSet> getByCompositeQuery(Map<String, String[]> map) {
-//        return null;
+//    public List<RentSet> searchRentSets(Map<String, Object> map) {
+//
+//        if (map.isEmpty()) {
+//            return repository.findAll();
+//        }
+//
+//        Integer rentalOrdNo = null;
+//        String rentalSetName = null;
+//        Byte rentalSetDays = null;
+//
+//        if (map.containsKey("rentalOrdNo")) {
+//            rentalOrdNo = (Integer) map.get("rentalOrdNo");
+//        } else if (map.containsKey("rentalSetName")) {
+//            rentalSetName = (String) map.get("rentalSetName");
+//        } else if (map.containsKey("rentalSetDays")) {
+//            rentalSetDays = (Byte) map.get("rentalSetDays");
+//        }
+//
+//        return repository.searchRentSets(rentalOrdNo, rentalSetName, rentalSetDays);
 //    }
+//
+//
+//
 //}

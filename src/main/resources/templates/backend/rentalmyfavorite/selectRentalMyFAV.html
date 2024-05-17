@@ -45,8 +45,8 @@
                                     選擇租借品編號:
                                     <select name="rentalNo">
                                         <option>請選擇</option>
-                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalNo}" th:text="${rental.rentalNo}" />
-                                    </select>
+                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalNo}" th:text="${rental.rentalNo} + '-[' + ${rental.rentalName} + ']'" />
+                                    </select><br>
                                     <input type="submit" value="送出">
                                 </form><br>
                             </li>
@@ -55,18 +55,8 @@
                                     選擇會員編號:
                                     <select name="memNo">
                                         <option>請選擇</option>
-                                        <option th:each="rental : ${rentalListData}" th:value="${rental.memNo}" th:text="${rental.memNo}" />
-                                    </select>
-                                    <input type="submit" value="送出">
-                                </form><br>
-                            </li>
-                            <li>
-                                <form method="post" th:action="@{getOneDisplay}">
-                                    選擇加入我的最愛時間:
-                                    <select name="rentalFavTime">
-                                        <option>請選擇</option>
-                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalFavTime}" th:text="${rental.rentalFavTime}" />
-                                    </select>
+                                        <option th:each="member : ${memberListData}" th:value="${member.memNo}" th:text="${member.memNo} + '-[' + ${member.memName} + ']'" />
+                                    </select><br>
                                     <input type="submit" value="送出">
                                 </form><br>
                             </li>
@@ -74,27 +64,30 @@
                             <!--  萬用複合查詢(開始)  -->
                             <font color=blue>萬用複合查詢:</font><br>
                             <li>
-                                <form method="post" th:action="@{search}" th:object="${rental}">
+                                <form method="get" th:action="@{search}">
                                     選擇租借品編號:
-                                    <select name="rentalNo" th:field="*{rentalNo}">
+                                    <select name="rentalNo">
                                         <option value="1">請選擇</option>
                                         <option th:each="rental : ${rentalListData}" th:value="${rental.rentalNo}" th:text="${rental.rentalNo}" />
                                     </select><br>
                                     選擇會員編號:
                                     <select name="memNo">
                                         <option>請選擇</option>
-                                        <option th:each="rental : ${rentalListData}" th:value="${rental.memNo}" th:text="${rental.memNo}" />
+                                        <option th:each="member : ${memberListData}" th:value="${rentalMyFavorite.member.memNo}" th:text="${rentalMyFavorite.member.memNo}"></option>
                                     </select><br>
                                     選擇加入我的最愛時間:
-                                    <select name="rentalFavTime">
-                                        <option>請選擇</option>
-                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalFavTime}" th:text="${rental.rentalFavTime}" />
-                                    </select><br>
+                                    <input name="rentalFavTime" type="date"><br>
                                     <input type="submit" value="送出"/>
                                 </form>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <div th:if="${search}">
+                                            <div th:insert="~{/backend/rentalmyfavorite/listOneRentalMyFAV :: listOneRentalMyFAV}"></div>
+                                        </div>
+                                    </table>
+                                </div>
                             </li>
                         </ul>
-                        <li><a th:href="@{listAllRental}">查詢所有我的最愛清單</a><br><br></li>
                     </div>
                 </div>
                 <!-- /.container-fluid -->

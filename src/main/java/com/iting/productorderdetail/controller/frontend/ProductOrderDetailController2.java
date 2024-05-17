@@ -34,6 +34,16 @@ public class ProductOrderDetailController2 {
         model.addAttribute("productOrderDetails", productOrderDetail);
         return "frontend/cart/ProductScorce";
     }
+//訂單想在同一頁面插入
+//    @GetMapping("/productorderdetail")
+//    public String getOne_For_Display(@RequestParam("productOrdNo") Integer productOrdNo, ModelMap model){
+//
+//        List<ProductOrderDetail> productOrderDetail = productOrderDetailSvc.findByCompositeKey(productOrdNo);
+//
+//        model.addAttribute("productOrderDetails", productOrderDetail);
+//        model.addAttribute("getDetails",true);
+//        return "frontend/cart/CartEnd";
+//    }
 
 
 
@@ -65,6 +75,7 @@ public class ProductOrderDetailController2 {
     protected List<ProductOrderDetail> referenceListData(Model model) {
 
         List<ProductOrderDetail> list = productOrderDetailSvc.getAll();
+
         return list;
     }
     @PostMapping("/senddetailInstantly")

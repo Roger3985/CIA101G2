@@ -4,7 +4,7 @@
 <head th:insert="~{backend/component/plugin/backendplugin.html :: css}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>後台租借訂單</title>
+    <title>商品租借訂單</title>
     <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
 
@@ -28,7 +28,7 @@
                 <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
                 <li><a th:href="@{listAllRentalOrder}">所有</a> 租借訂單 <br> <br></li>
 
-                <li>用 PK 查詢 : </li>
+                <li>查詢 : </li>
                 <form method="get" th:action="@{getOnAny}">
                     <label>選擇訂單編號</label>
                     <select name="rentalOrdNo">
