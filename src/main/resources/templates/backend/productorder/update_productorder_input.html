@@ -102,8 +102,11 @@
                         <label for="productPayMethod" class="col-sm-2 col-form-label">付款方式</label>
                         <div class="col-sm-3">
                             <select size="1" name="productPayMethod" id="productPayMethod" th:field="*{productPayMethod}">
-                                <option th:value="1" th:text="綠界" /></option>
-                                <option th:value="2" th:text="現場付款" /></option>
+                                <option th:value="1" th:text="線上刷卡" /></option>
+                                <option th:value="2" th:text="超商繳款" /></option>
+                                <option th:value="3" th:text="ATM付款" /></option>
+                                <option th:value="4" th:text="匯款" /></option>
+                                <option th:value="5" th:text="現場付款" /></option>
                             </select>
                         </div>
                     </div>

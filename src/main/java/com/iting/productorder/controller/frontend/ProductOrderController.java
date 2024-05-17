@@ -2,6 +2,8 @@ package com.iting.productorder.controller.frontend;
 
 import com.chihyun.coupon.entity.Coupon;
 import com.chihyun.coupon.model.CouponService;
+import com.chihyun.mycoupon.entity.MyCoupon;
+import com.chihyun.mycoupon.model.MyCouponService;
 import com.google.gson.JsonObject;
 import com.iting.cart.entity.CartRedis;
 import com.iting.cart.service.CartService;
@@ -48,6 +50,9 @@ public class ProductOrderController {
     ProductOrderDetailService productOrderDetailService;
     @Autowired
     CouponService couponService;
+    @Autowired
+    MyCouponService myCouponService;
+
 
     @PostMapping("insertOrder")
     public String insertOrder(@Validated(Create.class) CartRedis cartRedis, BindingResult result, ModelMap model, HttpSession session,@RequestParam("memNo") Integer memNo) {
@@ -58,27 +63,39 @@ public class ProductOrderController {
         productOrder.setMember(member);
         productOrder.setProductOrdStat(Byte.valueOf((byte)40));
         productOrder.setProductStat(Byte.valueOf((byte)0));
-        Coupon coupon=new Coupon();
-        model.addAttribute("coupon", coupon);
+       List<MyCoupon> myCoupons= myCouponService.getAllMyCouponMem(memNo);
+       model.addAttribute("coupons", myCoupons);
         model.addAttribute("productOrder", productOrder);
         session.setAttribute("productOrder", productOrder); // 將訂單存儲在會話中
         return "frontend/cart/CartToProductOrderDetail";
     }
 
+
     @PostMapping("insertProductOrderSuccess")
-    public String insertProductOrderSuccess(@Valid ProductOrder productOrder,@RequestParam("memNo") Integer memNo, ModelMap model) {
+    public String insertProductOrderSuccess(@Valid ProductOrder productOrder,@RequestParam("memNo") Integer memNo, ModelMap model,@RequestParam("coupNo") Integer coupNo) {
 //        result = removeFieldError(productOrder, result, "upFiles");
 //        if (result.hasErrors() ) {
 //            return "frontend/cart/CartToProductOrderDetail";
 //        }
         /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
+        productOrder.setCoupon(couponService.getOneCoupon(coupNo));
         productOrderSvc.addOneProductOrderSuccess(productOrder);
-        List<ProductOrder> list= productOrderSvc.findByMember(memNo);
-        model.addAttribute("productorderListData", list);
+//        List<ProductOrder> list= productOrderSvc.findByMember(memNo);
+//        model.addAttribute("productorderListData", list);
 //        model.addAttribute("success", "- (新增成功)");
         cartSve.deleteBymemNo(memNo);
+        return "frontend/cart/ProductOrderSuccess";
+    }
+    @GetMapping("CartEnd")
+    public String CartEnd(ModelMap model, HttpServletRequest request) {
+        // 从会话中获取memNo
+        Integer memNo = (Integer) request.getSession().getAttribute("memNo");
+        // 使用memNo执行您的逻辑
+        List<ProductOrder> list = productOrderSvc.findByMember(memNo);
+        model.addAttribute("productorderListData", list);
         return "frontend/cart/CartEnd";
     }
+
     @PostMapping("MemberGetAll")
     public String getAll(@RequestParam("productOrdNo") Integer productOrdNo,@RequestParam("productNo") Integer productNo, ModelMap model) {
         ProductOrderDetail productOrderDetail= productOrderDetailService.findByproductOrdNoAndproductNo(productOrdNo,productNo);
@@ -97,7 +114,7 @@ public class ProductOrderController {
 //    }
 @PostMapping("/coupNoInstantly")
 @ResponseBody
-public ResponseEntity<String> updatePriceInstantly(@RequestParam("coupon.coupNo") String coupNo,
+public ResponseEntity<String> updatePriceInstantly(@RequestParam("coupno.coupNo") String coupNo,
                                                    @RequestParam("productAllPrice") BigDecimal productAllPrice) {
     // 如果coupNo为null或者空字符串，则设为默认值1
     int couponNumber = 1; // 默认值

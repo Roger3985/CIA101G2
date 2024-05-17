@@ -1,255 +1,466 @@
+<html lang="zxx" data-bs-theme="light" xmlns="http://www.w3.org/1999/html">
 
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>商品訂單資料新增 </title>
-
-
-    <style type="text/css">
-
-        button {
-            padding: 5px;
+<head><!-- metas -->
+    <meta charset="utf-8">
+    <meta name="author" content="pxdraft">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <!-- title -->
+    <title>ShopApp - eCommerce Bootstrap 5 Template</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <!-- CSS Template -->
+    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+    <style>
+        .coupon {
+            padding: 20px;
+            background-color: #fff;
+            border: 2px dashed #f69314;
+            border-radius: 10px;
+            font-size: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
-        form {
-            display: table;
+
+        .coupon:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
-        form div {
-            display: table-row;
+
+        .coupon strong {
+            font-size: 24px;
+            color: #f69314;
+            margin-top: 10px;
+            display: block;
         }
-        label, input, span, select {
-            display: table-cell;
-            margin: 5px;
-            text-align: left;
+
+        .coupon p {
+            margin: 0;
+            color: #333;
         }
-        input[type=text], input[type=password], select, textarea {
-            width: 200px;
-            margin: 5px;
+
+        /* Custom styles for the coupon */
+        .left, .right {
+            background-color: #f69314;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            transform: rotate(-90deg);
         }
-        form div div {
-            display: table-cell;
+
+        .right {
+            transform: rotate(90deg);
         }
+
         .center {
-            margin-left: auto;
-            margin-right: auto;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        /* Input style */
+        input[type=text] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            margin-top: 20px;
+            width: 300px;
+        }
+
+        input[type=submit] {
+            padding: 10px 20px;
+            background-color: #f69314;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
         }
     </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
 <body>
+<!-- 通用插件 -->
+<th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block>
+<!-- 通用插件 -->
+<!--
+    ========================
+        Wrapper
+    ========================
+    -->
+<div class="wrapper">
+    <!-- heder height -->
+    <div class="header-height-bar" style="min-height: 104.865px;"></div>
+    <!-- Header -->
+    <!-- Header -->
+    <header th:replace="frontend/component/header :: header"></header>
+    <!-- End Header -->
+    <!-- Main -->
+    <main>
+        <!-- Page Title -->
+        <div class="bg-no-repeat bg-cover bg-right-center position-relative"
+             style="background-image: url(../../assets/img/fashion2/home-banner-3.jpg);">
+            <div class="position-absolute top-0 end-0 start-0 bottom-0 opacity-3 bg-dark"></div>
+            <!-- Header Height Bar -->
+            <div class="header-height-bar border-bottom opacity-3" style="min-height: 104.865px;"></div>
+            <div class="container py-6 position-relative">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 my-2">
+                        <h1 class="m-0 h4 text-center text-lg-start text-white">Your cart</h1>
+                    </div>
+                    <div class="col-lg-6 my-2">
+                        <ol
+                                class="breadcrumb breadcrumb-light m-0 small justify-content-center justify-content-lg-end">
+                            <li class="breadcrumb-item"><a class="text-nowrap" href="#">Home</a></li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page">Your cart</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End Page Title --><!-- Section -->
+        <section class="section">
+            <div class="container">
+                <div class="row align-items-start">
+                    <div class="col-md-7"><!-- Form -->
+                        <form th:action="@{/frontend/productorder/insertProductOrderSuccess}" method="post"  onsubmit="return dosubmit();">
+                            <h6 class="mb-4 h3">寄送資訊</h6>
+                            <tbody>
 
-<div align="center">
+                            <div>
+                                <label>會員編號:</label>
+                                <input type="text" th:name="memNo"th:field="*{productOrder.member.memNo}"  onclick="hideContent('productOrder.member.memNo.errors');"><br/>
+                            </div>
 
-    <form th:action="@{/frontend/productorder/insertProductOrderSuccess}" method="post"  onsubmit="return dosubmit();">
-        <tbody>
+                            <div>
+                                <label>訂購人姓名:</label>
+                                <input class="form-control" type="text" th:name="productByrName"th:field="*{productOrder.member.memName}" onclick="hideContent('productOrder.member.memName.errors');" /><br/>
+                                <span  th:if="${#fields.hasErrors('productOrder.member.memName')}" th:errors="*{member.memName}" class="error" id="productByrName.errors"></span>
+                            </div>
 
-        <div>
-            <label>會員編號:</label>
-            <input type="text" th:name="memNo"th:field="*{productOrder.member.memNo}"  onclick="hideContent('productOrder.member.memNo.errors');"><br/>
-        </div>
+                            <div>
+                                <label>訂購人手機號碼:</label>
+                                <input class="form-control" type="text"th:name="productByrPhone" th:field="*{productOrder.member.memMob}" onclick="hideContent('productOrder.member.memMob.errors');" /><br/>
+                                <span  th:if="${#fields.hasErrors('productOrder.member.memMob')}" th:errors="*{productOrder.member.memMob}" class="error" id="productByrPhone.errors"></span>
+                            </div>
 
-        <div>
-            <label>訂購人姓名:</label>
-            <input type="text" th:name="productByrName"th:field="*{productOrder.member.memName}" onclick="hideContent('productOrder.member.memName.errors');" /><br/>
-            <span  th:if="${#fields.hasErrors('productOrder.member.memName')}" th:errors="*{member.memName}" class="error" id="productByrName.errors"></span>
-        </div>
+                            <div>
+                                <label>訂購人Email:</label>
+                                <input class="form-control" type="email" th:name="productByrEmail" placeholder="請輸入電子信箱"th:field="*{productOrder.member.memMail}" onclick="hideContent('productOrder.member.memMail.errors');" required /><br/>
+                                <span th:if="${#fields.hasErrors('productOrder.member.memMail')}" th:errors="*{productOrder.member.memMail}" class="error" id="productByrEmail.errors"></span>
+                            </div>
 
-        <div>
-            <label>訂購人手機號碼:</label>
-            <input type="text"th:name="productByrPhone" th:field="*{productOrder.member.memMob}" onclick="hideContent('productOrder.member.memMob.errors');" /><br/>
-            <span  th:if="${#fields.hasErrors('productOrder.member.memMob')}" th:errors="*{productOrder.member.memMob}" class="error" id="productByrPhone.errors"></span>
-        </div>
-
-        <div>
-            <label>訂購人Email:</label>
-            <input type="email" th:name="productByrEmail" th:field="*{productOrder.member.memMail}" onclick="hideContent('productOrder.member.memMail.errors');" required /><br/>
-            <span th:if="${#fields.hasErrors('productOrder.member.memMail')}" th:errors="*{productOrder.member.memMail}" class="error" id="productByrEmail.errors"></span>
-        </div>
-
-        <div>
-            <label>收件人姓名:</label>
-            <input type="text" th:field="*{productOrder.productRcvName}" onclick="hideContent('productOrder.productRcvName.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('productOrder.productRcvName')}" th:errors="*{productOrder.productRcvName}" class="error" id="productRcvName.errors"></span>
-        </div>
-        <div>
-            <label>收件人手機號碼:</label>
-            <input type="text" th:field="*{productOrder.productRcvPhone}" onclick="hideContent('productOrder.productRcvPhone.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('productOrder.productRcvPhone')}" th:errors="*{productOrder.productRcvPhone}" class="error" id="productRcvPhone.errors"></span>
-        </div>
-        <div>
-            <label>取貨方式:</label>
-            <select th:field="*{productOrder.productTakeMethod}">
-                <option th:value="1" th:text="店取" />
-                <option th:value="2" th:text="宅配" />
-                <option th:value="3" th:text="超商取貨" />
-            </select><br/>
-        </div>
-        <div>
-            <label>宅配住址:</label>
-            <input type="text" th:field="*{productOrder.member.memAdd}" onclick="hideContent('productOrder.member.memAdd.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('productOrder.member.memAdd')}" th:errors="*{productOrder.member.memAdd}" class="error" id="productAddr.errors"></span>
-        </div>
-        <div>
-            <label>付款方式:</label>
-            <select th:field="*{productOrder.productPayMethod}">
-                <option th:value="1" th:text="綠界" />
-                <option th:value="2" th:text="現場付款" />
-            </select><br/>
-        </div>
-        <div>
-            <label>訂單總金額:</label>
-            <input type="text" id="productAllPrice" th:name="productAllPrice" th:value="${productOrder.productAllPrice}" readonly/><br/>
-            <span th:if="${#fields.hasErrors('productOrder.productAllPrice')}" th:errors="*{productOrder.productAllPrice}" class="error" id="productAllPrice.errors"></span>
-        </div>
-        <div>
-            <label>優惠券編號:</label>
-            <input type="text" id="coupNo" th:field="*{productOrder.coupon.coupNo}" th:name="coupNo"  th:onchange="|updatePriceInstantly()|" onclick="hideContent('productOrder.coupon.errors');" /><br/>
-            <span th:if="${#fields.hasErrors('productOrder.coupon')}" th:errors="*{productOrder.coupon}" class="error" id="productOrder.coupon.errors"></span>
-        </div>
-
-        <div>
-            <label>優惠券折價總和:</label>
-            <input type="text" id="productDisc"  th:field="*{productOrder.productDisc}"  readonly /><br/>
-            <span th:if="${#fields.hasErrors('productOrder.productDisc')}" th:errors="*{productOrder.productDisc}" class="error" id="productDisc.errors"></span>
-        </div>
-        <div>
-            <label>訂單實付金額:</label>
-            <input type="text" id="productRealPrice"  th:name="productOrder.productRealPrice" th:value="${productOrder.productRealPrice}"readonly /><br/>
-            <span th:if="${#fields.hasErrors('productOrder.productRealPrice')}" th:errors="*{productOrder.productRealPrice}" class="error" id="productRealPrice.errors"></span>
-        </div>
-<!--        <div>-->
-<!--            <label>下單時間:</label>-->
-<!--            <input type="text" th:field="*{productOrdTime}" onclick="hideContent('productOrdTime.errors');" /><br/>-->
-<!--            <span th:if="${#fields.hasErrors('productOrdTime')}" th:errors="*{productOrdTime}" class="error" id="productOrdTime.errors"></span>-->
-<!--        </div>-->
-
-
-        </tbody>
-
-
-
-
-<table id="example" class="display" style="width: 100%">
-    <thead >
-    <tr style="background-color:#CCCCFF">
-<!--        <th>商品訂單編號</th>-->
-        <th>商品編號</th>
-        <th>商品單價</th>
-        <th>購買數量</th>
-        <th>訂單實付金額</th>
-        <!--        <th>評價內容</th>-->
-        <!--        <th>評價星等</th>-->
-        <!--        <th>修改</th>-->
-
-    </tr>
-    </thead>
-
-    <tbody>
-    <th:block th:each="productOrderDetail : ${productOrder.ProductOrderDetails}">
-        <tr>
-<!--            <td th:text="${productOrderDetail.compositeKey.productOrdNo}"></td>-->
-            <td th:text="${productOrderDetail.compositeKey.productNo}"></td>
-            <td th:name="productOrderDetail.productPrice" th:text="${productOrderDetail.productPrice}"></td>
-            <td th:name="productOrderDetail.productOrdQty" th:text="${productOrderDetail.productOrdQty}"></td>
-            <td  th:name="productOrderDetail.productRealPrice" th:text="${productOrderDetail.productRealPrice}"></td>
-        </tr>
-    </th:block>
-    </tbody>
-</table>
-<button type="submit" class="btn btn-primary" id="submit">
-    <input type="hidden" name="memNo" th:value="${productOrder.member.memNo}" />
-    確定購買
-</button>
-    </form>
+                            <div>
+                                <label>收件人姓名:</label>
+                                <input class="form-control" type="text" th:field="*{productOrder.productRcvName}" placeholder="請輸入全名" onclick="hideContent('productOrder.productRcvName.errors');" /><br/>
+                                <span th:if="${#fields.hasErrors('productOrder.productRcvName')}" th:errors="*{productOrder.productRcvName}" class="error" id="productRcvName.errors"></span>
+                            </div>
+                            <div>
+                                <label>收件人手機號碼:</label>
+                                <input class="form-control" type="text" th:field="*{productOrder.productRcvPhone}" placeholder="請輸入手機號碼" onclick="hideContent('productOrder.productRcvPhone.errors');" /><br/>
+                                <span th:if="${#fields.hasErrors('productOrder.productRcvPhone')}" th:errors="*{productOrder.productRcvPhone}" class="error" id="productRcvPhone.errors"></span>
+                            </div>
+                            <div>
+                                <label>取貨方式:</label>
+                                <select class="form-control" th:field="*{productOrder.productTakeMethod}">
+                                    <option th:value="1" th:text="店取" />
+                                    <option th:value="2" th:text="宅配" />
+                                    <option th:value="3" th:text="超商取貨" />
+                                </select><br/>
+                            </div>
+                            <div>
+                                <label>宅配住址:</label>
+                                <input class="form-control" type="text" th:field="*{productOrder.member.memAdd}" onclick="hideContent('productOrder.member.memAdd.errors');" /><br/>
+                                <span th:if="${#fields.hasErrors('productOrder.member.memAdd')}" th:errors="*{productOrder.member.memAdd}" class="error" id="productAddr.errors"></span>
+                            </div>
+                            <div>
+                                <label>付款方式:</label>
+                                <select class="form-control" th:field="*{productOrder.productPayMethod}">
+                                    <option th:value="1" th:text="線上刷卡" />
+                                    <option th:value="2" th:text="超商繳款" />
+                                    <option th:value="3" th:text="ATM付款" />
+                                    <option th:value="4" th:text="匯款" />
+                                    <option th:value="5" th:text="現場付款" />
+                                </select><br/>
+                            </div>
+                            <!--                            <div>-->
+                            <!--                                <label>訂單總金額:</label>-->
+                            <!--                                <input class="form-control" type="text" id="productAllPrice" th:name="productAllPrice" th:value="${productOrder.productAllPrice}" readonly/><br/>-->
+                            <!--                                <span th:if="${#fields.hasErrors('productOrder.productAllPrice')}" th:errors="*{productOrder.productAllPrice}" class="error" id="productAllPrice.errors"></span>-->
+                            <!--                            </div>-->
+                            <!--                            <div>-->
+                            <!--                                <label>優惠券編號:</label>-->
+                            <!--                                <input class="form-control" type="text" id="coupNo" th:field="*{productOrder.coupon.coupNo}" th:name="coupNo"  th:onchange="|updatePriceInstantly()|" onclick="hideContent('productOrder.coupon.errors');" /><br/>-->
+                            <!--                                <span th:if="${#fields.hasErrors('productOrder.coupon')}" th:errors="*{productOrder.coupon}" class="error" id="productOrder.coupon.errors"></span>-->
+                            <!--                            </div>-->
 
 
-<!--    <tbody>-->
-<!--    <th:block th:each="productOrder : ${productOrder}">-->
-<!--        <tr>-->
-<!--&lt;!&ndash;            <td th:text="${productOrderDetail.compositeKey.productOrdNo}"></td>&ndash;&gt;-->
-<!--&lt;!&ndash;            <td th:text="${productOrderDetail.compositeKey.productNo}"></td>&ndash;&gt;-->
-<!--            <td th:text="${productOrderDetail.productPrice}"></td>-->
-<!--            <td th:text="${productOrderDetail.productOrdQty}"></td>-->
-<!--            <td th:text="${productOrderDetail.productRealPrice}"></td>-->
-<!--            <td th:text="${productOrderDetail.productComContent}"></td>-->
-<!--            <td th:text="${productOrderDetail.productScore}"></td>-->
-<!--            <td>-->
-<!--                <form method="post" th:action="@{/backend/productorderdetail/getOne_For_Update}" style="margin-bottom: 0px;">-->
-<!--                    <input type="submit" value="修改">-->
-<!--                    <input type="hidden" name="productOrdNo" th:value="${productOrderDetail.compositeKey.productOrdNo}">-->
-<!--                    <input type="hidden" name="productNo" th:value="${productOrderDetail.compositeKey.productNo}"></form>-->
-<!--            </td>-->
-<!--        </tr>-->
-<!--    </th:block>-->
-<!--    </tbody>-->
 
-<!-- JavaScript part -->
-<!--<script type="text/javascript">-->
-<!--    //清除提示信息-->
-<!--    function hideContent(d) {-->
-<!--        document.getElementById(d).style.display = "none";-->
-<!--    }-->
 
-<!--    //照片上傳-預覽用-->
-<!--    var filereader_support = typeof FileReader != 'undefined';-->
-<!--    if (!filereader_support) {-->
-<!--        alert("No FileReader support");-->
-<!--    }-->
-<!--    acceptedTypes = {-->
-<!--        'image/png' : true,-->
-<!--        'image/jpeg' : true,-->
-<!--        'image/gif' : true-->
-<!--    };-->
-<!--    function previewImage() {-->
-<!--        var upfile1 = document.getElementById("upFiles");-->
-<!--        upfile1.addEventListener("change", function(event) {-->
-<!--            var files = event.target.files || event.dataTransfer.files;-->
-<!--            for (var i = 0; i < files.length; i++) {-->
-<!--                previewfile(files[i])-->
-<!--            }-->
-<!--        }, false);-->
-<!--    }-->
-<!--    function previewfile(file) {-->
-<!--        if (filereader_support === true && acceptedTypes[file.type] === true) {-->
-<!--            var reader = new FileReader();-->
-<!--            reader.onload = function(event) {-->
-<!--                var image = new Image();-->
-<!--                image.src = event.target.result;-->
-<!--                image.width = 100;-->
-<!--                image.height = 75;-->
-<!--                image.border = 2;-->
-<!--                if (blob_holder.hasChildNodes()) {-->
-<!--                    blob_holder.removeChild(blob_holder.childNodes[0]);-->
-<!--                }-->
-<!--                blob_holder.appendChild(image);-->
-<!--            };-->
-<!--            reader.readAsDataURL(file);-->
-<!--            document.getElementById('submit').disabled = false;-->
-<!--        } else {-->
-<!--            blob_holder.innerHTML = "<div  style='text-align: left;'>" + "● filename: " + file.name-->
-<!--                + "<br>" + "● ContentTyp: " + file.type-->
-<!--                + "<br>" + "● size: " + file.size + "bytes"-->
-<!--                + "<br>" + "● 上傳ContentType限制: <b> <font color=red>image/png、image/jpeg、image/gif </font></b></div>";-->
-<!--            document.getElementById('submit').disabled = true;-->
-<!--        }-->
-<!--    }-->
-<!--</script>-->
+                            </tbody>
+
+                            <h6 class="mb-4 h3">商品訂單明細</h6><!-- Shipping details -->
+                            <div class="table-responsive mb-6">
+                                <table class="table table-bordered table-hover mb-0">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="form-check"><input class="form-check-input"
+                                                                           name="shipping" type="radio" id="checkoutShippingStandard">
+                                                <label class="form-check-label"
+                                                       for="checkoutShippingStandard">Standard Shipping</label>
+                                            </div>
+                                        </td>
+                                        <td>Delivery in 5 - 7 working days</td>
+                                        <td>$8.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="form-check"><input class="form-check-input"
+                                                                           name="shipping" type="radio" id="checkoutShippingExpress">
+                                                <label class="form-check-label"
+                                                       for="checkoutShippingExpress">Express Shipping</label></div>
+                                        </td>
+                                        <td>Delivery in 3 - 5 working days</td>
+                                        <td>$12.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="form-check"><input class="form-check-input"
+                                                                           name="shipping" type="radio" id="checkoutShippingShort">
+                                                <label class="form-check-label" for="checkoutShippingShort">1 -
+                                                    2 Shipping</label></div>
+                                        </td>
+                                        <td>Delivery in 1 - 2 working days</td>
+                                        <td>$18.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="form-check"><input class="form-check-input"
+                                                                           name="shipping" type="radio" id="checkoutShippingFree">
+                                                <label class="form-check-label" for="checkoutShippingFree">Free
+                                                    Shipping</label></div>
+                                        </td>
+                                        <td>Living won't the He one every subdue meat replenish face was you
+                                            morning firmament darkness.</td>
+                                        <td>$0.00</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div><!-- Address -->
+                            <!--                            <div class="mb-5">&lt;!&ndash; Checkbox &ndash;&gt;-->
+                            <!--                                <div class="form-check"><input class="form-check-input"-->
+                            <!--                                                               id="checkout_Shipping_Address" type="checkbox"> <label-->
+                            <!--                                        class="form-check-label" data-bs-toggle="collapse"-->
+                            <!--                                        data-bs-target="#checkout_Shipping_AddressCollapse"-->
+                            <!--                                        for="checkout_Shipping_Address">Ship to a different address?</label></div>-->
+                            <!--                                &lt;!&ndash; Collapse &ndash;&gt;-->
+                            <!--                                <div class="collapse" id="checkout_Shipping_AddressCollapse">-->
+                            <!--                                    <div class="row gy-4 pt-3">-->
+                            <!--                                        <div class="col-12"><label class="form-label"-->
+                            <!--                                                                   for="checkout_Shipping_Address_Country">Country *</label> <input-->
+                            <!--                                                class="form-control" id="checkout_Shipping_Address_Country"-->
+                            <!--                                                type="text" placeholder="Country"></div>-->
+                            <!--                                        <div class="col-12"><label class="form-label"-->
+                            <!--                                                                   for="checkout_Shipping_AddressLine_One">Address Line 1 *</label>-->
+                            <!--                                            <input class="form-control" id="checkout_Shipping_AddressLine_One"-->
+                            <!--                                                   type="text" placeholder="Address Line 1"></div>-->
+                            <!--                                        <div class="col-12"><label class="form-label"-->
+                            <!--                                                                   for="checkout_Shipping_AddressLine_Two">Address Line 2</label>-->
+                            <!--                                            <input class="form-control" id="checkout_Shipping_AddressLine_Two"-->
+                            <!--                                                   type="text" placeholder="Address Line 2 (optional)"></div>-->
+                            <!--                                        <div class="col-6"><label class="form-label"-->
+                            <!--                                                                  for="checkout_Shipping_Address_Town">Town / City *</label> <input-->
+                            <!--                                                class="form-control" id="checkout_Shipping_Address_Town" type="text"-->
+                            <!--                                                placeholder="Town / City"></div>-->
+                            <!--                                        <div class="col-6"><label class="form-label"-->
+                            <!--                                                                  for="checkout_Shipping_Address_ZIP">ZIP / Postcode *</label> <input-->
+                            <!--                                                class="form-control" id="checkout_Shipping_Address_ZIP" type="text"-->
+                            <!--                                                placeholder="ZIP / Postcode"></div>-->
+                            <!--                                        <div class="col-12">&lt;!&ndash; Button &ndash;&gt; <button class="btn btn-outline-mode"-->
+                            <!--                                                                                    type="submit">Save Address</button></div>-->
+                            <!--                                    </div>-->
+                            <!--                                </div>-->
+                            <!--                            </div>&lt;!&ndash; Heading &ndash;&gt;-->
+                            <!--                            <h6 class="mb-4 h3">Payment</h6>&lt;!&ndash; List group &ndash;&gt;-->
+                            <!--                            <div class="list-group mb-5 accordion" id="payment-methods">-->
+                            <!--                                <div class="list-group-item py-3">&lt;!&ndash; Radio &ndash;&gt;-->
+                            <!--                                    <div class="form-check mb-0">&lt;!&ndash; Input &ndash;&gt; <input-->
+                            <!--                                            class="form-check-input collapsed" id="checkout_Payment_Card"-->
+                            <!--                                            name="payment" type="radio" data-bs-toggle="collapse"-->
+                            <!--                                            data-bs-action="show"-->
+                            <!--                                            data-bs-target="#checkout_Payment_CardCollapse">&lt;!&ndash; Label &ndash;&gt; <label-->
+                            <!--                                            class="form-check-label fw-500 stretched-link"-->
+                            <!--                                            for="checkout_Payment_Card">Credit Card <img class="ml-2"-->
+                            <!--                                                                                         src="../../assets/img/cart/cards.svg" alt="..."></label></div>-->
+                            <!--                                </div>-->
+                            <!--                                <div class="list-group-item py-0 collapse" id="checkout_Payment_CardCollapse"-->
+                            <!--                                     data-bs-parent="#payment-methods">&lt;!&ndash; Form &ndash;&gt;-->
+                            <!--                                    <div class="row py-4 g-3">-->
+                            <!--                                        <div class="col-12"><input class="form-control"-->
+                            <!--                                                                   id="checkout_Payment_CardNumber" type="text"-->
+                            <!--                                                                   placeholder="Card Number *" required=""></div>-->
+                            <!--                                        <div class="col-12"><input class="form-control"-->
+                            <!--                                                                   id="checkout_Payment_CardName" type="text"-->
+                            <!--                                                                   placeholder="Name on Card *" required=""></div>-->
+                            <!--                                        <div class="col-12 col-md-4"><select class="form-select"-->
+                            <!--                                                                             id="checkoutPaymentMonth">-->
+                            <!--                                            <option>January</option>-->
+                            <!--                                            <option>February</option>-->
+                            <!--                                            <option>March</option>-->
+                            <!--                                        </select></div>-->
+                            <!--                                        <div class="col-12 col-md-4"><select class="form-select"-->
+                            <!--                                                                             id="checkout_Payment_CardYear">-->
+                            <!--                                            <option>2017</option>-->
+                            <!--                                            <option>2018</option>-->
+                            <!--                                            <option>2019</option>-->
+                            <!--                                        </select></div>-->
+                            <!--                                        <div class="col-12 col-md-4">-->
+                            <!--                                            <div class="input-group input-group-merge"><input class="form-control"-->
+                            <!--                                                                                              id="checkout_Payment_CardCVV" type="text" placeholder="CVV *"-->
+                            <!--                                                                                              required="">-->
+                            <!--                                                <div class="input-group-append"><span class="input-group-text"-->
+                            <!--                                                                                      data-bs-toggle="tooltip" data-bs-placement="top"-->
+                            <!--                                                                                      aria-label="The CVV Number on your credit card or debit card is a 3 digit number on VISA, MasterCard and Discover branded credit and debit cards."-->
+                            <!--                                                                                      data-bs-original-title="The CVV Number on your credit card or debit card is a 3 digit number on VISA, MasterCard and Discover branded credit and debit cards."><i-->
+                            <!--                                                        class="bi bi-info-circle"></i></span></div>-->
+                            <!--                                            </div>-->
+                            <!--                                        </div>-->
+                            <!--                                    </div>-->
+                            <!--                                </div>-->
+                            <!--                                <div class="list-group-item py-3">&lt;!&ndash; Radio &ndash;&gt;-->
+                            <!--                                    <div class="form-check mb-0">&lt;!&ndash; Input &ndash;&gt; <input-->
+                            <!--                                            class="form-check-input collapsed" id="checkout_Payment_Paypal"-->
+                            <!--                                            name="payment" type="radio" data-bs-toggle="collapse"-->
+                            <!--                                            data-bs-action="hide"-->
+                            <!--                                            data-bs-target="#checkout_Payment_PayPalCollapse">&lt;!&ndash; Label &ndash;&gt; <label-->
+                            <!--                                            class="form-check-label stretched-link"-->
+                            <!--                                            for="checkout_Payment_Paypal"><img-->
+                            <!--                                            src="../../assets/img/cart/paypal.svg" alt="..."></label></div>-->
+                            <!--                                </div>-->
+                            <!--                                <div class="list-group-item py-0 collapse" id="checkout_Payment_PayPalCollapse"-->
+                            <!--                                     data-bs-parent="#payment-methods">-->
+                            <!--                                    <div class="p-3">-->
+                            <!--                                        <p class="mb-0 text-body">By clicking on the button below you will be-->
+                            <!--                                            redirected to your PayPal account to complete the payment.</p>-->
+                            <!--                                    </div>-->
+                            <!--                                </div>-->
+                            <!--                            </div>&lt;!&ndash; Notes &ndash;&gt; <label class="form-label" for="checkout_Billing_First_Name">Order-->
+                            <!--                                Notes (optional)</label> <textarea class="form-control mb-4 mb-md-0 font-size-xs"-->
+                            <!--                                                                   rows="5" placeholder="Order Notes"></textarea>-->
+
+                            <!--                    </div>-->
+                            <div class="col-md-5 col-lg-4 offset-lg-1 sticky-lg-top sticky-lg-top-header"
+                                 style="top: 114.094px;">
+                                <h6 class="mb-4 h3">商品訂單明細</h6>
+                                <ul class="list-group mb-6">
+                                    <!-- 使用th:each內聯屬性來處理遍歷 -->
+                                    <li class="list-group-item p-3" th:each="productOrderDetail : ${productOrder.ProductOrderDetails}">
+                                        <div class="row g-2">
+
+                                            <!--                                    <div class="col-3 col-md-2">&lt;!&ndash; Image &ndash;&gt;-->
+                                            <!--                                        <a href="#"><img src="../../assets/img/fashion2/product-2.jpg" alt="..." class="img-fluid"></a>-->
+                                            <!--                                    </div>-->
+                                            <div class="col"><!-- Title -->
+                                                <div class="fw-600">
+                                                    <!--                                            <a class="text-mode" href="#">-->
+                                                    <!-- 在這裡添加您想要顯示的訂單明細資料 -->
+                                                    <span th:text="${productOrderDetail.product.productName}" style="font-size: larger;"></span>
+                                                    &nbsp&nbsp&nbsp 規格:<span th:text="${productOrderDetail.product.productColor}"></span>
+                                                    <span th:if="${productOrderDetail.product.productSize == 0}">XS</span>
+                                                    <span th:if="${productOrderDetail.product.productSize == 1}">S</span>
+                                                    <span th:if="${productOrderDetail.product.productSize == 2}">M</span>
+                                                    <span th:if="${productOrderDetail.product.productSize == 3}">L</span>
+                                                    <span th:if="${productOrderDetail.product.productSize == 4}">XL</span>
+                                                    <span th:if="${productOrderDetail.product.productSize == 5}">2L</span>
+                                                    <!--                                            </a>-->
+                                                </div>
+                                                <!--Footer -->
+                                                <div class="d-flex align-items-center">
+                                                    <span>價錢:</span> &nbsp&nbsp&nbsp
+                                                    <span th:text="'$&nbsp' + ${productOrderDetail.productPrice}"></span>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <span>數量:</span> &nbsp&nbsp&nbsp
+                                                    <span th:text="${productOrderDetail.productOrdQty} +'&nbsp個' "></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <label class="mb-4 h3" for="coupNo">請輸入優惠券編號</label>
+                                <div class="col-sm-3 form-control">
+                                    <select class="form-control" size="1" name="coupNo" id="coupNo" onchange="updatePriceInstantly()">
+                                        <option value="1">請選擇</option>
+                                        <!-- 使用 Thymeleaf 循环来动态生成选项 -->
+                                        <option th:each="mycoupon : ${coupons}" th:value="${mycoupon.coupon.coupNo}"
+                                                th:text="${mycoupon.coupon.coupNo + ' 號優惠券折數: ' + mycoupon.coupon.coupDisc}">
+                                        </option>
+                                    </select>
+
+                                </div>
+
+                                </br>
+                                <div class="card bg-gray-100">
+                                    <div class="card-body py-0 px-4">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item d-flex bg-transparent px-0 py-3">
+                                                <span>總價：</span>
+                                                <span class="ms-auto" id="productAllPrice" th:text="${productOrder.productAllPrice}" th:value="${productOrder.productAllPrice}"></span>
+                                            </li>
+                                            <li class="list-group-item d-flex bg-transparent px-0 py-3">
+                                                <span>折價：</span>
+                                                <span class="ms-auto"  id="productDisc"  th:text="${productOrder.productDisc}" th:value="${productOrder.productDisc}"></span>
+                                            </li>
+                                            <li class="list-group-item d-flex bg-transparent px-0 py-3 fs-lg fw-600">
+                                                <span>實際金額：</span>
+                                                <span class="ms-auto" id="productRealPrice"  th:text="${productOrder.productRealPrice}" th:value="${productOrder.productRealPrice}"></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="pt-4"><button type="submit" class="btn btn-primary w-100">確定購買</button>
+                                    <input type="hidden" name="memNo" th:value="${productOrder.member.memNo}" />
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Section -->
+    </main>
+
+    <!-- End Main -->
+
+    <!-- Footer -->
+    <footer th:replace="frontend/component/footer :: footer"></footer>
+    <!-- End Footer -->
+</div>
+<!--
+    ========================
+       End Wrapper
+    ========================
+    -->
+<!-- script start -->
+<th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
+<!-- End script start -->
 <script th:inline="javascript">
 
     function updatePriceInstantly() {
         var coupNo = document.getElementById('coupNo').value; // 获取优惠券编号的值
-        var productDisc = document.getElementById('productDisc').value; // 获取产品折扣的值
-        var productRealPrice = document.getElementById('productRealPrice').value; // 获取产品实际价格的值
-        var productAllPrice = document.getElementById('productAllPrice').value; // 获取产品总价格的值
+        var productDisc = document.getElementById('productDisc').innerText; // 获取产品折扣的值
+        var productRealPrice = document.getElementById('productRealPrice').innerText; // 获取产品实际价格的值
+        var productAllPrice = document.getElementById('productAllPrice').innerText; // 获取产品总价格的值
 
         // 发送 AJAX 请求更新数量到后端
         $.ajax({
@@ -265,20 +476,18 @@
                 console.log("更新優惠券總價成功");
 
                 // 在这里，你可以根据后端返回的数据更新前端页面上对应的元素，例如更新实际价格和折扣价格的显示
-                document.getElementById('productRealPrice').value = data.productRealPrice;
-                document.getElementById('productDisc').value = data.productDisc;
+                document.getElementById('productRealPrice').innerText = data.productRealPrice;
+                document.getElementById('productDisc').innerText = data.productDisc;
             },
             error: function() {
                 console.error('更新失败');
             }
         });
     }
-    function hideContent(elementId) {
-        document.getElementById(elementId).style.display = "none";
-    }
+
 
 
 </script>
-
 </body>
+
 </html>

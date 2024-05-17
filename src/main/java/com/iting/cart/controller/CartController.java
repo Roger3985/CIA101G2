@@ -164,7 +164,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 @Controller
 @Validated
-@RequestMapping("/frontend/cart")
+@RequestMapping("/frontend")
 public class CartController {
     @Autowired
     CartService cartSvc;
@@ -172,7 +172,7 @@ public class CartController {
     CouponService couponService;
 
 
-    @GetMapping("addcart")
+    @GetMapping("/cart/addcart")
     public String addcart(ModelMap model) {
         CartRedis cartRedis = new CartRedis();
 
@@ -180,37 +180,39 @@ public class CartController {
         return "frontend/cart/addCart";
     }
 
+//    @GetMapping("/cart/productOrderSuccess")
+//    public String productOrderSuccess(ModelMap model) {
+//        return "frontend/cart/ProductOrderSuccess";
+//    }
+
+
+
 //
-@GetMapping("Cart")
+@GetMapping("/cart/Cart")
 public String Cart(HttpSession session, ModelMap model) {
     // 从会话中获取 memNo 的值
  
     Integer memNo = (Integer) session.getAttribute("memNo");
 
-    // 如果 memNo 为空，则需要进行相应的处理，比如重定向到登录页面或者给出提示信息
     if (memNo == null) {
-        // 处理 memNo 为空的情况，比如重定向到登录页面
+
         return "redirect:/login";
     }
 
-    // 根据 memNo 获取购物车数据
     List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNo);
 
-    // 将购物车数据添加到模型中
     model.addAttribute("cartListData", cartListData);
 
-    // 返回购物车页面
     return "frontend/cart/Cart";
 }
 
-    @PostMapping("addcartsuccess")
+//加入商品至購物車
+    @PostMapping("/cart/addcartsuccess")
     public String insert(@Validated(Create.class) CartRedis cartRedis, BindingResult result, @RequestParam(name="memNo") Integer memNo, ModelMap model) {
         if (result.hasErrors()) {
             model.addAttribute("errors", result.getFieldErrors());
             return "frontend/cart/addCart";
         } else {
-
-
                 cartSvc.updateCart(cartRedis);
                 List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNo);
                 model.addAttribute("cartListData", cartListData);
@@ -274,7 +276,7 @@ public String Cart(HttpSession session, ModelMap model) {
 
 
 
-    @PostMapping("/coupNoInstantly")
+    @PostMapping("/cart/coupNoInstantly")
     @ResponseBody
     public Map<String, String> coupNoInstantly(@RequestParam("coupNo") String coupNo,
                                                @RequestParam("productAllPrice") String productAllPrice,
@@ -298,7 +300,7 @@ public String Cart(HttpSession session, ModelMap model) {
 
 
 
-    @PostMapping("/deleteInstantly")
+    @PostMapping("/cart/deleteInstantly")
 @ResponseBody
 public List<CartRedis> deleteInstantly(@RequestParam("productNo") Integer productNo,
                                        @RequestParam("memNo") Integer memNo,
@@ -309,7 +311,7 @@ public List<CartRedis> deleteInstantly(@RequestParam("productNo") Integer produc
     System.out.println("即时更新成功");
     return cartRedisList;
 }
-    @PostMapping("/updateBackendQuantity")
+    @PostMapping("/cart/updateBackendQuantity")
     @ResponseBody
     public List<CartRedis> updateBackendQuantity(@RequestParam("productNo") Integer productNo,
                                            @RequestParam("memNo") Integer memNo,
