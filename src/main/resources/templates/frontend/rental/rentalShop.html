@@ -427,46 +427,158 @@
     });
 
 
-    /*----------------------------右翰寫的加入購物車跟追蹤方法----------------------------------*/
-    // 339
-    $(document).on("click", "a.btn_addToCart", function (e) {
+    /*----------------------------右翰寫的方法----------------------------------*/
 
-        e.preventDefault();
-        /*
-         * 拼接動態前置路徑 (為適應上雲時路徑變化)
-         * window.location.protocol = 當前頁面所使用之通訊協定 (ex : http: 、 https:)
-         * window.location.host = 當前頁面主機名和連接阜號 (ex : localhost:8080)
-        */
+    $(function () {
+
         let baseUrl = window.location.protocol + "//" + window.location.host;
-        let apiPath = "/backend/rentalorder/setToCart";
-        let $this = $(this);
-        // span.rentalNo
-        let rentalNo = $this.closest("div.rental").find("span.rentalNo").text().trim();
-        let memNo = 1;
+        let rentalAllPrice = 0;
+        let rentalAllDepPrice = 0;
 
-        let data = {
-            "rentalNo" : rentalNo,
-            "memNo" : memNo
-        };
+        function getAll() {
 
-        fetch(baseUrl + apiPath, {
-            method : "POST",
-            headers : {
-                "Content-Type" : "application/json"
-            },
-            body : JSON.stringify(data)
-        }).then(function (response) {
-            // console.log(response)
-            return response.text();
-        }).then(function (rentalName) {
-            // console.log(rentalName);
-            // console.log(this);
-            $this.closest("div.rental").find("span.successMsg").text("已將" + rentalName + "加入購物車!").fadeIn(0).delay(500).fadeOut(500);
-        })
+            // items.length = 0;
+            rentalAllPrice = 0;
+            rentalAllDepPrice = 0;
+            let apiPath = "/backend/rentalorder/";
+            let memNo = 1;
 
-        /*----------------------------右翰寫的加入購物車跟追蹤方法----------------------------------*/
+            fetch(baseUrl + apiPath + "getFromCart?memNo=" + memNo)
+                .then(function (response) {
+                    return response.json();
+                }).then(function (data) {
 
-    });
+                let itemContainer = $("ul.list-unstyled");
+                // console.log(itemContainer);
+                // 每次更新前清空，放購物車資訊的 ul
+                itemContainer.empty();
+
+                let totalItems = Object.keys(data).length; // 計算購物車商品數量
+                $("span[data-cart-items]").attr("data-cart-items", totalItems); // 更新購物車商品數量圖示
+
+                /*
+                 * 遍歷陣列裡每個元素，每個元素都是一對 key, item，以下舉例 :
+                 * [陣列1, 陣列2]
+                 * 陣列1 => ["member : 1 : cartItem : 5011", {rentalCatNo : "5", rentalColor : "深卡其色"...}]
+                */
+                Object.entries(data).forEach(([key, item]) => {
+
+                    // if (item.rentalStat === "0") {
+                    //     items.push(item.rentalNo);
+                    // }
+
+                    // 拼接首頁購物車區塊小明細
+                    if (item.rentalStat === "0") {
+
+                        let cartItem = $("<li>", {
+                            "class" : "py-2"
+                        }).appendTo(itemContainer);
+                        let firstDiv = $("<div>", {
+                            "class" : "row align-items-center"
+                        }).appendTo(cartItem);
+                        let aDiv = $("<div>", {
+                            "class" : "col-4"
+                        }).appendTo(firstDiv);
+                        let aForItemImage = $("<a>", {
+                            "href" : "#"
+                        }).appendTo(aDiv);
+                        let itemImage = $("<img>", {
+                            "class" : "img-fluid border",
+                            "th:src" : "@{/frontend/assets/img/fashion/product-x-1.jpg}",
+                            "alt" : "..."
+                        }).appendTo(aForItemImage);
+                        let divForInfo = $("<div>", {
+                            "class" : "col-8"
+                        }).appendTo(firstDiv);
+
+
+                        /*
+                         <ul class="list-unstyled m-0 p-0">
+                            <li class="py-2">
+                                <div class="row align-items-center">
+                                    <div class="col-4"> adiv
+                                        <!-- Image -->
+                                        <a href="#"> aForItemImage
+                                            <img class="img-fluid border" th:src="@{/frontend/assets/img/fashion/product-x-1.jpg}" alt="...">
+                                        </a>
+                                    </div>
+                                    <div class="col-8"> divForInfo
+                                        <!-- Title -->
+                                        <p class="mb-2">
+                                            <a class="text-mode fw-500" href="#">這裡是品名</a>
+                                            <span class="m-0 text-muted w-100 d-block">這裡是價格</span>
+                                        </p>
+                                        <!--Footer -->
+                                        <div class="d-flex align-items-center">
+                                            <!-- Remove -->
+                                            <a class="small text-mode ms-auto" href="#!">
+                                                <i class="bi bi-x"></i> Remove
+                                            </a>
+                                        </div>
+                                    </div> // div col-8 結束
+                                </div>
+                            </li>
+                         */
+
+                        rentalAllPrice += parseFloat(item.rentalPrice);
+                        rentalAllDepPrice += parseFloat(item.rentalDesPrice);
+
+                    }
+
+                });
+
+                // console.log(items);
+                $("span.rentalAllPrice").text(rentalAllPrice);
+                $("span.rentalAllDepPrice").text(rentalAllDepPrice);
+                $("span.totalPrice").text( (rentalAllPrice + rentalAllDepPrice) );
+
+            });
+
+        } // getAll()結束
+        // 進來頁面就先取一次
+        getAll();
+
+        // 加入購物車 339
+        $(document).on("click", "a.btn_addToCart", function (e) {
+
+            e.preventDefault();
+            /*
+             * 拼接動態前置路徑 (為適應上雲時路徑變化)
+             * window.location.protocol = 當前頁面所使用之通訊協定 (ex : http: 、 https:)
+             * window.location.host = 當前頁面主機名和連接阜號 (ex : localhost:8080)
+            */
+            let apiPath = "/backend/rentalorder/setToCart";
+            let $this = $(this);
+            // span.rentalNo
+            let rentalNo = $this.closest("div.rental").find("span.rentalNo").text().trim();
+            let memNo = 1;
+
+            let data = {
+                "rentalNo" : rentalNo,
+                "memNo" : memNo
+            };
+
+            fetch(baseUrl + apiPath, {
+                method : "POST",
+                headers : {
+                    "Content-Type" : "application/json"
+                },
+                body : JSON.stringify(data)
+            }).then(function (response) {
+                // console.log(response)
+                return response.text();
+            }).then(function (rentalName) {
+                // console.log(rentalName);
+                // console.log(this);
+                $this.closest("div.rental").find("span.successMsg").text("已將" + rentalName + "加入購物車!").fadeIn(0).delay(500).fadeOut(500);
+            })
+
+        }); // 加入購物車方法結束
+
+    }); // DOMContentLoaded 結束
+
+    /*----------------------------右翰寫的方法----------------------------------*/
+
 </script>
 <script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
 </body>

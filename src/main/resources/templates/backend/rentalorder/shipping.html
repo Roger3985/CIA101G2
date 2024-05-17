@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{backend/component/plugin/backendplugin.html :: css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>出貨</title>
+    <!-- Custom styles for this page -->
+    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
+
+</head>
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+
+<!--                <div class="table-responsive">-->
+<!--                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">-->
+<!--                        <thead>-->
+<!--                            <tr>-->
+<!--                                -->
+<!--                            </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody>-->
+
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+
+                <div id="shippingParams" style="
+                            border: 3px solid gray;
+                            display: inline-block;
+                            box-shadow:
+                            0 0 10px rgba(128, 128, 128, 0.5),   /* 中等灰色，半透明 */
+                            0 0 20px rgba(128, 128, 128, 0.3),   /* 淡灰色，更透明 */
+                            0 0 30px rgba(128, 128, 128, 0.1);">
+                    <p style="margin: 5px">物流編號 : <span th:text="${AllPayLogisticsID}"></span></p>
+                    <p style="margin: 5px">託運單號 : <span th:text="${BookingNote}"></span></p>
+                    <p style="margin: 5px">目前物流狀態 : <span th:text="${RtnCode}"></span></p>
+                    <p  style="margin: 5px">訂單處理狀態 : <span th:text="${RtnMsg}" style="color: red"></span></p>
+                    <p style="margin: 5px">交易金額 : <span th:text="${GoodsAmount}"></span></p>
+                    <p style="margin: 5px">物流類型 : <span th:text="${LogisticsType}"></span></p>
+                    <p style="margin: 5px">物流子類型 : <span th:text="${LogisticsSubType}"></span></p>
+                    <p style="margin: 5px">(測試用)廠商編號 : <span th:text="${MerchantID}"></span></p>
+                    <p style="margin: 5px">廠商交易編號 : <span th:text="${MerchantTradeNo}"></span></p>
+                    <p style="margin: 5px">收件人地址 : <span th:text="${ReceiverAddress}"></span></p>
+                    <p style="margin: 5px">收件人手機號碼 : <span th:text="${ReceiverCellPhone}"></span></p>
+                    <p style="margin: 5px">收件人姓名 : <span th:text="${ReceiverName}"></span></p>
+
+                    <p style="margin: 5px">檢查碼 : <span th:text="${CheckMacValue}"></span></p>
+
+                </div>
+                <!--
+                1|AllPayLogisticsID=2652829&
+                BookingNote=100831979040&
+                CheckMacValue=8B86A608D80D7D3D17B5E5DEC96FAE96&
+                CVSPaymentNo=&
+                CVSValidationNo=&
+                GoodsAmount=7000&
+                LogisticsSubType=TCAT&
+                LogisticsType=HOME&
+                MerchantID=2000132&
+                MerchantTradeNo=GW2405161430281392&
+                ReceiverAddress=32041桃園市中壢區復興路46號8樓&
+                ReceiverCellPhone=0923561207&
+                ReceiverEmail=&
+                ReceiverName=John&
+                ReceiverPhone=&
+                RtnCode=300&
+                RtnMsg=訂單處理中(已收到訂單資料)&
+                UpdateStatusDate=2024/05/16 14:30:28
+                -->
+
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="backend/component/bottom :: bottom"></footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
+
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+<!-- Page level plugins -->
+<script th:src="@{/backend/vendor/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+<!-- Page level custom scripts -->
+<script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
+
+<script>
+
+
+
+</script>
+
+</body>
+</html>

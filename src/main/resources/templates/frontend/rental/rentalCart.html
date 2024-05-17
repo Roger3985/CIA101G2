@@ -15,6 +15,35 @@
     <!-- CSS Template -->
     <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
 
+    <style>
+
+        .disabled-item {
+            position: relative; /* 確保能夠容納絕對定位的子元素 */
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.7); /* 白色半透明 */
+            color: black; /* 文本顏色改為黑色以增強可讀性 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            pointer-events: none; /* 禁用遮罩層上的點擊事件，以允許對底層元素進行操作 */
+        }
+
+        /* 遮罩層內的按鈕樣式 */
+        .overlay button {
+            pointer-events: auto; /* 啟用按鈕的點擊事件 */
+        }
+
+
+    </style>
+
 </head>
 
 <body>
@@ -118,22 +147,23 @@
                             <!-- Order Total -->
                             <div class="card">
                                 <div class="card-header bg-transparent py-3">
-                                    <h6 class="m-0 h5">訂單總金額</h6>
+                                    <h6 class="m-0 h5">小計(可結帳)</h6>
                                 </div>
                                 <div class="card-body">
 
                                     <ul class="list-unstyled">
                                         <li class="d-flex justify-content-between align-items-center mb-2">
-                                            <h6 class="me-2 text-body">總租金</h6><span
-                                                class="text-end">$265.00</span>
+                                            <h6 class="me-2 text-body">總租金</h6>
+                                            <span class="text-end rentalAllPrice"></span>
                                         </li>
                                         <li class="d-flex justify-content-between align-items-center mb-2">
-                                            <h6 class="me-2 text-body">總押金</h6><span class="text-end">$265.00</span>
+                                            <h6 class="me-2 text-body">總押金</h6>
+                                            <span class="text-end rentalAllDepPrice"></span>
                                         </li>
                                         <li
                                             class="d-flex justify-content-between align-items-center border-top pt-3 mt-3">
-                                            <h6 class="me-2">合計</h6><span
-                                                class="text-end text-mode">$265.00</span>
+                                            <h6 class="me-2">合計</h6>
+                                            <span class="text-end text-mode totalPrice"></span>
                                         </li>
                                     </ul>
                                     <div class="pt-2 pb-4">
@@ -178,132 +208,179 @@
         let baseUrl = window.location.protocol + "//" + window.location.host;
         let apiPath = "/backend/rentalorder";
         let memNo = 1;
+        let rentalAllPrice = 0;
+        let rentalAllDepPrice = 0;
 
         function getAll() {
 
-                fetch(baseUrl + apiPath + "/getFromCart?memNo=" + memNo)
-                    .then(function (response) {
-                        return response.json();
-                    }).then(function (data) {
+            rentalAllPrice = 0;
+            rentalAllDepPrice = 0;
 
-                    const container = $("div#cartItemsContainer");
-                    container.empty();  // 清除先前的内容
+            fetch(baseUrl + apiPath + "/getFromCart?memNo=" + memNo)
+                .then(function (response) {
+                    return response.json();
+                }).then(function (data) {
 
-                    let totalItems = Object.keys(data).length; // 計算購物車商品數量
-                    $("span[data-cart-items]").attr("data-cart-items", totalItems); // 更新購物車商品數量圖示
-                    // console.log(data);
-                    // console.log(Object.entries(data));
-                   /* 遍歷陣列裡每個元素，每個元素都是一對 key, item，以下舉例
-                    *
-                    * [陣列1, 陣列2]
-                    * 陣列1 => ["member : 1 : cartItem : 5011", {rentalCatNo : "5", rentalColor : "深卡其色"...}]
-                   */
-                    Object.entries(data).forEach(([key, item]) => {
+                const container = $("div#cartItemsContainer");
+                container.empty();  // 清除先前的内容
 
-                        let rentalSize = "";
-                        switch (item.rentalSize) { // 把 size 數字換成對應英文
-                            case "0" :
-                                rentalSize = "XS"
-                                break;
-                            case "1" :
-                                rentalSize = "S"
-                                break;
-                            case "2" :
-                                rentalSize = "M"
-                                break;
-                            case "3" :
-                                rentalSize = "L"
-                                break;
-                            case "4" :
-                                rentalSize = "XL"
-                                break;
-                            case "5" :
-                                rentalSize = "2L"
-                                break;
-                        }
+                let totalItems = Object.keys(data).length; // 計算購物車商品數量
+                $("span[data-cart-items]").attr("data-cart-items", totalItems); // 更新購物車商品數量圖示
+                // console.log(data);
+                // console.log(Object.entries(data));
+               /* 遍歷陣列裡每個元素，每個元素都是一對 key, item，以下舉例
+                *
+                * [陣列1, 陣列2]
+                * 陣列1 => ["member : 1 : cartItem : 5011", {rentalCatNo : "5", rentalColor : "深卡其色"...}]
+               */
+                Object.entries(data).forEach(([key, item]) => {
 
-                        // 創造一個 div，並給予模板需要的 class
-                        let productDiv = $("<div>", {
-                            "class" : "d-flex align-items-center flex-row w-100 pb-3 mb-3 border-bottom cartItem",
-                            "data-rentalNo" : item.rentalNo
-                        });
-                        let link = $("<a>" , {
-                            "class" : "d-inline-block flex-shrink-0 me-3",
-                            "href" : "#"
-                        }).appendTo(productDiv);
-                        let img = $("<img>", {
-                            "src" : "../../assets/img/fashion2/product-1.jpg",
-                            "width" : "120",
-                            "alt" : "Product"
-                        }).appendTo(link);
-                        let infoDiv = $("<div>", {
-                            "class" : "d-flex flex-column flex-sm-row col"
-                        }).appendTo(productDiv);
-                        let detailsDiv = $("<div>", {
-                            "class" : "pe-sm-2"
-                        }).appendTo(infoDiv);
-                        let title = $("<h3>", {
-                            "class" : "product-title fs-5 mb-1"
-                        }).appendTo(detailsDiv);
-                        let titleLink = $("<a>", {
-                            "class" : "",
-                            "href" : "#",
-                            "text" : item.rentalName
-                        }).appendTo(title);
-                        let sizeDiv = $("<div>", {
-                            "class" : "small",
-                            "html" : "<span class=\"text-muted me-2\">尺寸 :</span>" + rentalSize
-                        }).appendTo(detailsDiv);
-                        let colorDiv = $("<div>", {
-                            "class" : "small",
-                            "html" : "<span class=\"text-muted me-2\">顏色 :</span>" + item.rentalColor
-                        }).appendTo(detailsDiv);
-                        let priceDiv = $("<div>", {
-                            "class" : "lead pt-1",
-                            "text" : item.rentalPrice
-                        }).appendTo(detailsDiv);
-                        // 114
-                        let actionDiv = $("<div>", {
-                            "class": "pt-2 pt-sm-0 d-flex d-sm-block ms-sm-auto"
-                        }).appendTo(infoDiv);
+                    let rentalSize = "";
+                    switch (item.rentalSize) { // 把 size 數字換成對應英文
+                        case "0" :
+                            rentalSize = "XS"
+                            break;
+                        case "1" :
+                            rentalSize = "S"
+                            break;
+                        case "2" :
+                            rentalSize = "M"
+                            break;
+                        case "3" :
+                            rentalSize = "L"
+                            break;
+                        case "4" :
+                            rentalSize = "XL"
+                            break;
+                        case "5" :
+                            rentalSize = "2L"
+                            break;
+                    }
 
-                        let qtyLabel = $("<label>", {
-                            "class": "form-label d-none d-sm-inline-block",
-                            "text": "數量"
-                        }).appendTo(actionDiv);
+                    // 創造一個 div，並給予模板需要的 class
 
-                        let qtyDiv = $("<div>", {
-                            "class": "cart-qty-01"
-                        }).appendTo(actionDiv);
+                    // 創建商品被借走時的特效物件
 
-                        let decBtn = $("<div>", {
-                            "class": "dec qty-btn qty_btn",
-                            "html": "<i class='bi bi-caret-up-fill'></i>"
-                        }).appendTo(qtyDiv);
-
-                        let qtyInput = $("<input>", {
-                            "class": "cart-qty-input form-control",
-                            "type": "text",
-                            "name": "qtybutton",
-                            "value": "1"
-                        }).appendTo(qtyDiv);
-
-                        let incBtn = $("<div>", {
-                            "class": "inc qty-btn qty_btn",
-                            "html": "<i class='bi bi-caret-down-fill'></i>"
-                        }).appendTo(qtyDiv);
-
-                        let removeBtn = $("<button>", {
-                            "class": "btn btn-link px-0 text-danger ms-auto",
-                            "type": "button",
-                            "html": "<i class='bi-trash3 me-2 delItem'></i><span class='delItem'>移除</span>"
-                        }).appendTo(actionDiv);
-
-                        container.append(productDiv);
-
+                    let productDiv = $("<div>", {
+                        "class" : "d-flex align-items-center flex-row w-100 pb-3 mb-3 border-bottom cartItem",
+                        "data-rentalNo" : item.rentalNo,
                     });
 
+                    if (item.rentalStat !== "0") {
+                        productDiv.addClass("disabled-item");
+
+                        let overlayDiv = $("<div>", {
+                            "class" : "overlay"
+                        }).appendTo(productDiv);
+
+                        $("<span>", {
+                            "text": "商品被搶先預約了...還是先加入追蹤?",
+                            "class": "overlay-text"
+                        }).appendTo(overlayDiv);
+
+                        $("<button>", {
+                            "class": "btn btn-sm btn-light",
+                            "text": "追蹤",
+                            "click": function() {
+                                alert("追蹤功能尚未實現");
+                            }
+                        }).appendTo(overlayDiv);
+
+                    }
+
+
+                    // 繼續創建正常商品資訊物件
+
+                    let link = $("<a>" , {
+                        "class" : "d-inline-block flex-shrink-0 me-3",
+                        "href" : "#"
+                    }).appendTo(productDiv);
+                    let img = $("<img>", {
+                        "src" : "../../assets/img/fashion2/product-1.jpg",
+                        "width" : "120",
+                        "alt" : "Product"
+                    }).appendTo(link);
+                    let infoDiv = $("<div>", {
+                        "class" : "d-flex flex-column flex-sm-row col"
+                    }).appendTo(productDiv);
+                    let detailsDiv = $("<div>", {
+                        "class" : "pe-sm-2"
+                    }).appendTo(infoDiv);
+                    let title = $("<h3>", {
+                        "class" : "product-title fs-5 mb-1"
+                    }).appendTo(detailsDiv);
+                    let titleLink = $("<a>", {
+                        "class" : "",
+                        "href" : "#",
+                        "text" : item.rentalName
+                    }).appendTo(title);
+                    let sizeDiv = $("<div>", {
+                        "class" : "small",
+                        "html" : "<span class=\"text-muted me-2\">尺寸 :</span>" + rentalSize
+                    }).appendTo(detailsDiv);
+                    let colorDiv = $("<div>", {
+                        "class" : "small",
+                        "html" : "<span class=\"text-muted me-2\">顏色 :</span>" + item.rentalColor
+                    }).appendTo(detailsDiv);
+                    let quanDiv = $("<div>", {
+                        "class" : "small",
+                        "html" : "<span class=\"text-muted me-2\">數量 : 1</span>"
+                    }).appendTo(detailsDiv);
+                    let priceDiv = $("<div>", {
+                        "class" : "lead pt-1",
+                        "text" : item.rentalPrice
+                    }).appendTo(detailsDiv);
+                    // 114
+                    let actionDiv = $("<div>", {
+                        "class": "pt-2 pt-sm-0 d-flex d-sm-block ms-sm-auto"
+                    }).appendTo(infoDiv);
+
+                    let qtyLabel = $("<label>", {
+                        "class": "form-label d-none d-sm-inline-block",
+                        "text": ""
+                    }).appendTo(actionDiv);
+
+                    let qtyDiv = $("<div>", {
+                        "class": "cart-qty-01"
+                    }).appendTo(actionDiv);
+
+                    let decBtn = $("<div>", {
+                        "class": "dec qty-btn qty_btn",
+                        "html": "<i class='bi bi-caret-up-fill'></i>"
+                    }).appendTo(qtyDiv);
+
+                    let qtyInput = $("<input>", {
+                        "class": "cart-qty-input form-control",
+                        "type": "text",
+                        "name": "qtybutton",
+                        "value": "1"
+                    }).appendTo(qtyDiv);
+
+                    let incBtn = $("<div>", {
+                        "class": "inc qty-btn qty_btn",
+                        "html": "<i class='bi bi-caret-down-fill'></i>"
+                    }).appendTo(qtyDiv);
+
+                    let removeBtn = $("<button>", {
+                        "class": "btn btn-link px-0 text-danger ms-auto",
+                        "type": "button",
+                        "html": "<i class='bi-trash3 me-2 delItem'></i><span class='delItem'>移除</span>"
+                    }).appendTo(actionDiv);
+
+                    container.append(productDiv);
+
+                    if (item.rentalStat === "0") {
+                        rentalAllPrice += parseFloat(item.rentalPrice);
+                        rentalAllDepPrice += parseFloat(item.rentalDesPrice);
+                    }
+
                 });
+
+                $("span.rentalAllPrice").text(rentalAllPrice);
+                $("span.rentalAllDepPrice").text(rentalAllDepPrice);
+                $("span.totalPrice").text( (rentalAllPrice + rentalAllDepPrice) );
+
+            });
 
         } // getAll()結束
         getAll();
@@ -331,7 +408,7 @@
 
             }
 
-        }) // 刪除購物車商品結束
+        }); // 刪除購物車商品結束
 
     }); // DOMContentLoaded結束
 
