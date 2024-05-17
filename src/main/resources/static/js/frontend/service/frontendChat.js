@@ -100,27 +100,5 @@ el_msg_btn.addEventListener("click", function () {
 })
 
 
-// function buildMessage(data) {
-//     const messageContainer = document.createElement('div');
-//     messageContainer.classList.add('message');
-//     let jsonObj = data;
-//     let showMsg = jsonObj.message;
-//     let time = jsonObj.time;
-//     let content = '';
-//     if (jsonObj.sender === userName) {
-//         messageContainer.classList.add('sender');
-//         content =
-//             '<p>' + showMsg + '</p>' +
-//             '<time>' + time + '</time>';
-//     } else {
-//         messageContainer.classList.add('receiver');
-//         content =
-//             '<p>' + showMsg + '</p>' +
-//             '<time>' + time + '</time>';
-//     }
-//     div.innerHTML = content;
-//     chatArea.appendChild(div);
-//     chatArea.scrollTop = chatArea.scrollHeight;
-// }
 
 
