@@ -180,6 +180,13 @@ public class CartController {
         return "frontend/cart/addCart";
     }
 
+//    @GetMapping("/cart/productOrderSuccess")
+//    public String productOrderSuccess(ModelMap model) {
+//        return "frontend/cart/ProductOrderSuccess";
+//    }
+
+
+
 //
 @GetMapping("/cart/Cart")
 public String Cart(HttpSession session, ModelMap model) {
@@ -199,15 +206,13 @@ public String Cart(HttpSession session, ModelMap model) {
     return "frontend/cart/Cart";
 }
 
-
+//加入商品至購物車
     @PostMapping("/cart/addcartsuccess")
     public String insert(@Validated(Create.class) CartRedis cartRedis, BindingResult result, @RequestParam(name="memNo") Integer memNo, ModelMap model) {
         if (result.hasErrors()) {
             model.addAttribute("errors", result.getFieldErrors());
             return "frontend/cart/addCart";
         } else {
-
-
                 cartSvc.updateCart(cartRedis);
                 List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNo);
                 model.addAttribute("cartListData", cartListData);

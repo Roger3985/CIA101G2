@@ -10,6 +10,8 @@ import com.iting.productorder.service.ProductOrderService;
 import com.iting.productorderdetail.dao.ProductOrderDetailRepository;
 import com.iting.productorderdetail.entity.ProductOrderDetail;
 import com.iting.productorderdetail.service.ProductOrderDetailService;
+import com.ren.product.entity.Product;
+import com.ren.product.service.impl.ProductServiceImpl;
 import com.roger.member.entity.Member;
 import com.roger.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,8 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     ProductOrderDetailService productOrderDetailService;
     @Autowired
     CouponService couponService;
+    @Autowired
+    ProductServiceImpl productService;
     @Override
     public List<ProductOrder> findByMember(Integer memNo){
         return repository.findByMember(memNo);
@@ -63,6 +67,8 @@ public class ProductOrderServiceImpl implements ProductOrderService {
             // 設定訂單明細相關屬性
             ProductOrderDetail.CompositeDetail compositeKey = new ProductOrderDetail.CompositeDetail();
             compositeKey.setProductNo(cartItem.getProductNo());
+            Product product= productService.getOneProduct(cartItem.getProductNo());
+            orderDetail.setProduct(product);
             orderDetail.setCompositeKey(compositeKey);
             orderDetail.setProductPrice(cartItem.getProductPrice());
             orderDetail.setProductOrdQty(cartItem.getProductBuyQty());
@@ -102,8 +108,9 @@ public class ProductOrderServiceImpl implements ProductOrderService {
             // 如果 coupon 或 coupNo 为空，则设置 coupon 为 id 为 1 的默认优惠券
             coupon = couponService.getOneCoupon(1);
         }
-        productOrder.getCoupon().setCoupNo(coupon.getCoupNo());
+
         BigDecimal discount = coupon.getCoupDisc();
+        productOrder.setProductDisc(discount);
         BigDecimal totalPrice = productOrder.getProductAllPrice();
        productOrder.setProductRealPrice(discount.multiply(totalPrice));
         Set<ProductOrderDetail> orderDetails = new HashSet<>();
