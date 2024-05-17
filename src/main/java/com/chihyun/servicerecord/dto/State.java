@@ -3,6 +3,7 @@ package com.chihyun.servicerecord.dto;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class State {
 
@@ -10,9 +11,9 @@ public class State {
 
     private String user;
 
-    private List<Map<String, String>> userList;
+    private Set<String> userList;
 
-    public State(String type, String user, List<Map<String, String>> userList) {
+    public State(String type, String user, Set<String> userList) {
         this.type = type;
         this.user = user;
         this.userList = userList;
@@ -34,11 +35,11 @@ public class State {
         this.user = user;
     }
 
-    public List<Map<String, String>> getUserList() {
+    public Set<String> getUserList() {
         return userList;
     }
 
-    public void setUserList(List<Map<String, String>> userList) {
+    public void setUserList(Set<String> userList) {
         this.userList = userList;
     }
 }

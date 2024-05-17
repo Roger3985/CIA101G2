@@ -18,6 +18,10 @@ public class ChatMessage {
         this.message = message;
     }
 
+    public ChatMessage() {
+
+    }
+
 
     public String getType() {
         return type;

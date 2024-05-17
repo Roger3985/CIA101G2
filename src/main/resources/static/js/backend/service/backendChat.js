@@ -6,6 +6,11 @@ const messageInput = document.querySelector('#message');
 const connectingElement = document.querySelector('.connecting');
 const chatArea = document.querySelector('#chat-messages');
 
+document.getElementById("messageForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+})
+
+
 // 設定websocket連線
 const HostPoint = `/chat/host`;
 const localhost = window.location.host;
@@ -18,11 +23,7 @@ console.log("path=" + path);
 console.log("webCtx=" + endPointURL);
 console.log("endPointURL=" + endPointURL);
 
-document.getElementById("messageForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-})
 
-let webSocket;
 
 function connect() {
     webSocket = new WebSocket(endPointURL);
@@ -32,17 +33,21 @@ function connect() {
 
     webSocket.onmessage = function (event) {
         console.log("我收到後端的資料了" + event);
+        console.log(event);
         var jsonObj = JSON.parse(event.data);
         var message = jsonObj.message;
-        console.log("我收到後端的資料了" + message);
-        const messageContainer = document.createElement('div');
-        messageContainer.innerHTML = message;
-        chatArea.appendChild(messageContainer);
+        if(message != undefined){
+            console.log("我收到後端onMesssage的資料了" + message);
+            const messageContainer = document.createElement('div');
+            messageContainer.innerHTML = message;
+            chatArea.appendChild(messageContainer);
+        }
+
     }
 }
 
 messageInput.addEventListener("keyup", function (e) {
-    console.log(e.which);
+    // console.log(e.which);
     if(e.which == 13){
         el_msg_btn.click();
     }
@@ -50,7 +55,6 @@ messageInput.addEventListener("keyup", function (e) {
 
 var el_msg_btn = document.getElementById("msg_btn");
 el_msg_btn.addEventListener("click", function () {
-    console.log("c9");
     const messageContent = messageInput.value.trim();
     console.log(messageContent);
     if (messageContent == "") {
@@ -61,6 +65,8 @@ el_msg_btn.addEventListener("click", function () {
         chatArea.appendChild(messageContainer);
         messageInput.value = '';
         var jsonobj = {
+            sender: host,
+            receiver: `${userName}`,
             message: messageContent
         }
         webSocket.send(JSON.stringify(jsonobj))

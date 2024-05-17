@@ -64,13 +64,17 @@ function connect() {
 
     webSocket.onmessage = function (event) {
         console.log("我收到後端的資料了" + event);
+        console.log(event);
         var jsonObj = JSON.parse(event.data);
         var message = jsonObj.message;
-        console.log("我收到後端的資料了" + message);
-        const messageContainer = document.createElement('div');
-        messageContainer.innerHTML = message;
-        chatArea.appendChild(messageContainer);
-        // chatArea.value = chatArea.value + message;
+        if(message!==undefined){
+            console.log("我收到後端的資料了" + message);
+            const messageContainer = document.createElement('div');
+            messageContainer.innerHTML = message;
+            chatArea.appendChild(messageContainer);
+            // chatArea.value = chatArea.value + message;
+        }
+
     }
 }
 
@@ -93,7 +97,7 @@ el_msg_btn.addEventListener("click", function () {
         chatArea.appendChild(messageContainer);
         messageInput.value = '';
         var jsonobj = {
-            sender: `${userName}`, message: messageContent
+            sender: `${userName}`, message: messageContent, receiver: "host"
         }
         webSocket.send(JSON.stringify(jsonobj));
     }
