@@ -5,6 +5,7 @@ import com.ren.administrator.service.Impl.AdministratorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.util.List;
@@ -17,8 +18,10 @@ public class InitializerListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        // 新增用於記數在線人數
-        sce.getServletContext().setAttribute("onlineUsers", 0);
+        // 獲得ServletConext物件
+        ServletContext context = sce.getServletContext();
+        // 新增一個用於記錄在線管理員的參數
+        context.setAttribute("onlineAdministrators", 0);
 
     }
 

@@ -63,8 +63,6 @@ public class FunctionFilter extends HttpFilter {
                     // 職位沒有比打工仔還大
                     if (!(titleNo > PARTJOB)) {
                         reject(req, res);
-                        String encodedMessage = URLEncoder.encode("您沒有權限!", StandardCharsets.UTF_8.toString());
-                        res.sendRedirect(loginPage + "?error=" + encodedMessage);
                         return;
                     }
                     break;
@@ -72,8 +70,6 @@ public class FunctionFilter extends HttpFilter {
                     // 職位沒有比全職員工大
                     if (!(titleNo > FULLTIME)) {
                         reject(req, res);
-                        String encodedMessage = URLEncoder.encode("您沒有權限!", StandardCharsets.UTF_8.toString());
-                        res.sendRedirect(loginPage + "?error=" + encodedMessage);
                         return;
                     }
                     break;
@@ -81,8 +77,6 @@ public class FunctionFilter extends HttpFilter {
                     // 職位沒有比經理大
                     if (!(titleNo > MANAGER)) {
                         reject(req, res);
-                        String encodedMessage = URLEncoder.encode("您沒有權限!", StandardCharsets.UTF_8.toString());
-                        res.sendRedirect(loginPage + "?error=" + encodedMessage);
                         return;
                     }
                     break;    

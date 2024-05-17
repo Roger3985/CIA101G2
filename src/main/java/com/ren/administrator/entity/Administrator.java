@@ -30,7 +30,6 @@ public class Administrator {
     @NotEmpty(message = "管理員名稱不可空白")
     @Column(name = "admname")
     private String admName;
-    @NotNull(message = "請選擇在職狀態")
     @Column(name = "admstat")
     private Byte admStat;
     @NotEmpty(message = "請填入信箱!")
@@ -48,10 +47,8 @@ public class Administrator {
     private byte[] admPhoto;
     @Column(name = "admsalt")
     private String admSalt;
-    @NotNull(message = "請選擇登入狀態")
     @Column(name = "admlogin")
     private Byte admLogin;
-    @NotNull(message = "請選擇登出狀態")
     @Column(name = "admlogout")
     private Byte admLogout;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = "yyyy-MM-dd HH:mm:ss")
@@ -77,6 +74,12 @@ public class Administrator {
 
     public Administrator(Integer admNo) {
         this.admNo = admNo;
+    }
+
+    public Administrator(String admPwd, String admName, String admEmail) {
+        this.admPwd = admPwd;
+        this.admName = admName;
+        this.admEmail = admEmail;
     }
 
     public Administrator(String admPwd, String admName, Byte admStat, String admEmail, Title title, Date admHireDate, byte[] admPhoto, String admSalt, Byte admLogin, Byte admLogout, Timestamp admActiveTime) {

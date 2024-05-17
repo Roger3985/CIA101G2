@@ -135,6 +135,14 @@ public class RedisConfig {
         return stringRedisTemplate;
     }
 
+    @Bean("chatStrStr")
+    public StringRedisTemplate chatStrRedisTemplate(
+            @Qualifier("chatDataBase") RedisConnectionFactory connectionFactory) {
+        StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();
+        stringRedisTemplate.setConnectionFactory(connectionFactory);
+        return stringRedisTemplate;
+    }
+
     /**
      * 透過CookieValue(String)來將存在Redis資料庫內的存有使用者編號的資料取出
      *
@@ -262,6 +270,15 @@ public class RedisConfig {
         config.setHostName("localhost");
         config.setPort(6379);
         config.setDatabase(6);  // 設定使用的 Redis database 索引
+        return new LettuceConnectionFactory(config);
+    }
+
+    @Bean("chatDataBase")
+    public LettuceConnectionFactory chatRedisConnectionFactory() {
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
+        config.setHostName("localhost");
+        config.setPort(6379);
+        config.setDatabase(8);  // 設定使用的 Redis database 索引
         return new LettuceConnectionFactory(config);
     }
 

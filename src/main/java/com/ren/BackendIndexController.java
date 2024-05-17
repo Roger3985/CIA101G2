@@ -14,6 +14,7 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import javax.servlet.http.Cookie;
@@ -23,8 +24,11 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
+import java.net.URLEncoder;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,10 +80,14 @@ public class BackendIndexController {
      * @param administrator 管理員Entity
      * @param result 若輸入不符合格式，將錯誤訊息取出渲染到前端
      * @param model 將錯誤訊息與輸入的Entity(避免讓使用者重複輸入)渲染到前端
-     * @return
+     * @return 錯誤時會forward回註冊頁面，成功時會重導到登錄頁面
      */
     @PostMapping("/signUp")
-    public String signUp(@Valid Administrator administrator, @RequestParam("repeatPwd") String repeatPwd, BindingResult result, ModelMap model) {
+    public String signUp(@Valid Administrator administrator,
+                         @RequestParam("repeatPwd") String repeatPwd,
+                         BindingResult result,
+                         ModelMap model,
+                         RedirectAttributes redirectAttributes) {
         // 判斷密碼與二次密碼是否相同
         if (!administrator.getAdmPwd().equals(repeatPwd)) {
             model.addAttribute("", "密碼與二次密碼不符!");
@@ -88,16 +96,17 @@ public class BackendIndexController {
                 model.addAttribute("administrator", administrator);
                 model.addAttribute("errors", result.getAllErrors());
             }
-            return "backend/administrator/addAdministrator";
+            return "backend/register";
         }
         // 確認是否有無錯誤訊息
         if (result.hasErrors()) {
             model.addAttribute("administrator", administrator);
             model.addAttribute("errors", result.getAllErrors());
-            return "backend/administrator/addAdministrator";
+            return "backend/register";
         }
 
         administratorSvc.register(administrator);
+        redirectAttributes.addAttribute("success", "帳號申請成功!");
 
         return "redirect:/backend/login";
     }
@@ -108,11 +117,31 @@ public class BackendIndexController {
      * @return forward to backend login
      */
     @GetMapping("/login")
-    public String toLogin(Model model) {
-        model.addAttribute("administrator", new Administrator());
+    public String toLogin() {
+        System.out.println("實際是我被執行哦");
         return "backend/login";
     }
 
+    /**
+     * 登入頁面
+     * 1.使用者可以輸入用戶名稱或Email，與密碼登入後台頁面
+     * 2.密碼錯誤只能嘗試5次，當超過5次時會鎖定30分鐘
+     * 3.提供自動登入服務，當使用者勾選自動登入時，將會在使用者的瀏覽器存入辨識使用者身分的cookie，
+     * ，並存入相同的資料到Redis資料庫，日後可透過這個cookie辨識使用者身分，在Redis資料庫內搜尋是否
+     * 有相關的使用者登入記錄，當確認有相關記錄時，會在AutoLogin Filter執行登入方法，詳情可查看
+     * AutoLoginFilter，有提供相關聯的業務邏輯。
+     *
+     * @param userId 使用者輸入ID，後續透過正則表達式辨識輸入為信箱格式還是用戶名
+     * @param admPwd 使用者密碼，使用Redis記錄錯誤次數，每當登入錯誤時會將嘗試次數記錄在Redis資料庫，
+     *               並設定資料生命週期為30分，超過5次時則不予以嘗試機會。
+     * @param autoLogin 當使用者勾選自動登入時，此值為1，不溝選擇預設為0
+     * @param session 使用者會話，設計為當使用者登入期間會在Session內存入名為loginState登入狀態的DTO，
+     *                因登入成功在邏輯上應該要有登入狀態，因此在這個方法內傳入用來存入loginState這個DTO。
+     * @param req 用來獲取ServletContext()路徑，當設置Cookie的路徑時可以使用
+     * @param res 用來將Cookie加進response傳回給前端
+     * @param model 將錯誤訊息與administrator物件傳回前端渲染
+     * @return 失敗會回到登入頁面(原頁面)，成功則重導到首頁
+     */
     @PostMapping("/loginPage")
     public String login(@RequestParam String userId,
                         @RequestParam String admPwd,
@@ -199,9 +228,9 @@ public class BackendIndexController {
     }
 
     /**
+     * 前往忘記密碼頁面
      *
-     *
-     * @return
+     * @return forward到忘記密碼頁面
      */
     @GetMapping("/forgotPassword")
     public String toForgotPwd() {
@@ -216,9 +245,11 @@ public class BackendIndexController {
      * @return 錯誤則會forward到原網址，成功則會重導至登入頁面
      */
     @PostMapping("/sendEmail")
-    public String forgotPwd(@RequestParam String email, ModelMap model) {
+    public String forgotPwd(@RequestParam String email,
+                            ModelMap model,
+                            RedirectAttributes redirectAttributes) {
 
-        if (email.equals("")) {
+        if (email.trim().equals("")) {
             model.addAttribute("errorMessage", "請勿空白!");
             return "backend/forgotPassword";
         }
@@ -237,8 +268,13 @@ public class BackendIndexController {
             model.addAttribute("errorMessage", "發生錯誤，請重新嘗試");
             return "backend/forgotPassword";
         }
-        System.out.println("成功");
-//        RedirectAttributesModelMap
+        System.out.println("信件成功寄出!");
+        // 將參數以請求參數的方式透過url傳到重定向後的網頁
+        redirectAttributes.addAttribute("success", "信件成功寄出!");
+        // 也可以用以下寫法
+        // String successMsg = URLEncoder.encode("信件成功寄出!", StandardCharsets.UTF_8.toString());
+        // return "redirect:/backend/login" + "?success=" + successMsg;
+        // 另有方法addFlashAttribute，是將資料存到Session
         return "redirect:/backend/login";
     }
 
@@ -249,7 +285,9 @@ public class BackendIndexController {
      * @return 重導到登入頁面
      */
     @GetMapping("/logout")
-    public String logout(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+    public String logout(HttpSession session,
+                         HttpServletRequest req,
+                         HttpServletResponse res) {
         // 獲取登入狀態物件
         LoginState loginState = (LoginState) session.getAttribute("loginState");
         // 執行Service的登出方法，修改資料庫內的登入狀態與刪除Redis內的登入狀態資料
@@ -284,12 +322,6 @@ public class BackendIndexController {
     public String search() {
         return "";
     }
-
-//    @PostMapping("/clearErrorMessage")
-//    @ResponseBody
-//    public void clearErrorMessage(HttpSession session) {
-//        session.removeAttribute("errorMessage");
-//    }
 
     /**
      * 記錄密碼輸入錯誤的次數，
@@ -351,7 +383,9 @@ public class BackendIndexController {
      * @param removedFieldname 要去除錯誤信息的字段名稱。
      * @return 更新後的 BindingResult，其中去除了指定字段的錯誤信息。
      */
-    private BindingResult removeFieldError(Administrator administrator, BindingResult result, String removedFieldname) {
+    private BindingResult removeFieldError(Administrator administrator,
+                                           BindingResult result,
+                                           String removedFieldname) {
 
         // 過濾掉指定字段的錯誤信息
         List<FieldError> errorsListToKeep = result.getFieldErrors().stream()

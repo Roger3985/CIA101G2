@@ -38,8 +38,13 @@ public class ProductFrontEndController {
 
     // 前往商品瀏覽頁面
     @GetMapping("/visitProduct")
-    public String toBrowse() {
+    public String toVisitProduct() {
         return "frontend/product/visitProduct";
+    }
+
+    @GetMapping("oneProduct")
+    public String toOneProduct() {
+        return "frontend/product/oneProduct";
     }
 
     @GetMapping

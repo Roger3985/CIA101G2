@@ -43,7 +43,7 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
-                                                <input type="checkbox" name="autoLogin" class="custom-control-input" id="customCheck" th:value="${autoLogin}">
+                                                <input type="checkbox" name="autoLogin" class="custom-control-input" id="customCheck" value="1" th:checked="${autoLogin == 1}">
                                                 <input type="hidden" name="autoLogin" value="0">
                                                 <label class="custom-control-label" for="customCheck">自動登入</label>
                                             </div>
@@ -94,7 +94,13 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const autoLoginCheckbox = document.getElementById("customCheck");
+
+            // 恢復 checkbox 狀態
+            autoLoginCheckbox.checked = localStorage.getItem("autoLogin") === "true";
+
+            // 監聽 checkbox 的變化並保存狀態
             autoLoginCheckbox.addEventListener("change", function() {
+                localStorage.setItem("autoLogin", this.checked);
                 if (this.checked) {
                     this.value = "1";
                 } else {
@@ -103,6 +109,7 @@
             });
         });
 
+        // alert
         // window.alert = function(name) {
         //     var iframe = document.createElement("IFRAME");
         //     iframe.style.display = "none";
@@ -134,11 +141,19 @@
             // 檢查 URL 中是否有錯誤訊息參數
             const urlParams = new URLSearchParams(window.location.search);
             const errorMsg = urlParams.get('error');
+            const successMsg = urlParams.get('success');
 
             if (errorMsg) {
                 alert(decodeURIComponent(errorMsg));
                 // 清除URL中的error參數
                 urlParams.delete('error');
+                window.history.replaceState(null, null, '?' + urlParams.toString() + window.location.hash);
+            }
+
+            if (successMsg) {
+                alert(decodeURIComponent(successMsg));
+                // 清除URL中的error參數
+                urlParams.delete('success');
                 window.history.replaceState(null, null, '?' + urlParams.toString() + window.location.hash);
             }
 

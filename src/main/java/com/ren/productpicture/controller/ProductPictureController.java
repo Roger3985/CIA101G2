@@ -52,14 +52,26 @@ public class ProductPictureController {
         return "/backend/productpicture/listAllProductPicture";
     }
 
-    @PostMapping("/addProductPicture")
-    public String addProductPicture(@RequestBody ProductPicture productPicture) {
-        return "/backend/productpicture/addProductPicture";
+    @GetMapping("/addProductPicture")
+    public String toAddProductPicture(Model model) {
+        model.addAttribute("productPicture", new ProductPicture());
+        return "backend/productpicture/addProductPicture";
+    }
+
+    @GetMapping("/addProductPicture/add")
+    public String AddProductPicture(@Valid ProductPicture productPicture, BindingResult result, ModelMap model) {
+        if (result.hasErrors()) {
+            model.addAttribute("productPicture", productPicture);
+            model.addAttribute("errors", result.getAllErrors());
+            return "backend/productpicture/addProductPicture";
+        }
+
+        return "redirect:/backend/productpicture/listAllProductPictures";
     }
 
     @PutMapping("/updateProductPicture")
     public String updateProductPicture(@PathVariable Integer productCatNo, @RequestBody ProductPicture productPicture) {
-        return "/backend/productpicture/updateProductPicture";
+        return "backend/productpicture/updateProductPicture";
     }
 
     @DeleteMapping("/delete={productPicNo}")

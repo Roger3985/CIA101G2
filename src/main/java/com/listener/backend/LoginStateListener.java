@@ -1,12 +1,10 @@
 package com.listener.backend;
 
 import com.ren.administrator.dto.LoginState;
-import com.ren.administrator.entity.Administrator;
 import com.ren.administrator.service.Impl.AdministratorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;

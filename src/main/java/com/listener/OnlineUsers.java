@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 用於計算當前在線人數: 於ServletContextListener的contextInitialized方法內新增onlineUsers的屬性，
@@ -15,17 +16,25 @@ import javax.servlet.http.HttpSessionListener;
 @Component
 public class OnlineUsers implements HttpSessionListener {
 
+    private static final String ONLINE_USERS = "onlineUsers";
+
     @Override
     public void sessionCreated(HttpSessionEvent se) {
         ServletContext context = se.getSession().getServletContext();
-        Integer onlineUsers = (Integer) context.getAttribute("onlineUsers");
-        context.setAttribute("onlineUsers", onlineUsers + 1);
+        AtomicInteger onlineUsers = (AtomicInteger) context.getAttribute(ONLINE_USERS);
+        if (onlineUsers == null) {
+            onlineUsers = new AtomicInteger(0);
+            context.setAttribute(ONLINE_USERS, onlineUsers);
+        }
+        onlineUsers.incrementAndGet();
     }
 
     @Override
     public void sessionDestroyed(HttpSessionEvent se) {
         ServletContext context = se.getSession().getServletContext();
-        Integer onlineUsers = (Integer) context.getAttribute("onlineUsers");
-        context.setAttribute("onlineUsers", onlineUsers - 1);
+        AtomicInteger onlineUsers = (AtomicInteger) context.getAttribute(ONLINE_USERS);
+        if (onlineUsers != null && onlineUsers.get() > 0) {
+            onlineUsers.decrementAndGet();
+        }
     }
 }

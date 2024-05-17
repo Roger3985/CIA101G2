@@ -1,9 +1,13 @@
 package com.ren.administrator.dto;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.HttpSessionBindingListener;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class LoginState implements Serializable {
+public class LoginState implements Serializable, HttpSessionBindingListener {
 
     // 管理員登入狀態DTO，用於確認登入狀態
     // 將Service查詢單項資料封包進這個DTO內
@@ -100,5 +104,31 @@ public class LoginState implements Serializable {
 
     public void setAdmNo(Integer admNo) {
         this.admNo = admNo;
+    }
+
+
+    // 在線管理員計數器
+    private static final String ONLINE_ADMS = "onlineAdms";
+
+    @Override
+    public void valueBound(HttpSessionBindingEvent event) {
+        ServletContext context = event.getSession().getServletContext();
+        AtomicInteger onlineAdms = (AtomicInteger) context.getAttribute(ONLINE_ADMS);
+
+        if (onlineAdms == null) {
+            onlineAdms = new AtomicInteger(0);
+            context.setAttribute(ONLINE_ADMS, onlineAdms);
+        }
+        onlineAdms.incrementAndGet();
+        System.out.println("管理員已登入");
+    }
+
+    @Override
+    public void valueUnbound(HttpSessionBindingEvent event) {
+        ServletContext context = event.getSession().getServletContext();
+        AtomicInteger onlineAdms = (AtomicInteger) context.getAttribute(ONLINE_ADMS);
+        if (onlineAdms != null && onlineAdms.get() > 0) {
+            onlineAdms.decrementAndGet();
+        }
     }
 }
