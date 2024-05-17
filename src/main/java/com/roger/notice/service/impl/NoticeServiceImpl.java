@@ -51,6 +51,9 @@ public class NoticeServiceImpl implements NoticeService {
         return noticeRepository.findNoticesByMemberMemNo(memNo);
     }
 
+    /**
+     * 根據提供的條件查詢通知。
+     */
     @Override
     public List<Notice> getByAttributes(Map<String, Object> map) {
 

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>查詢會員資料</title>
+    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+    <!-- Custom styles for this page -->
+    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
+</head>
+<body id="page-top">
+<main>
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+        <!-- End of Sidebar -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                <nav th:replace="backend/component/nav :: nav"></nav>
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                    <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">查詢會員資料:</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <li>單一查詢</li>
+                                <form method="get" th:action="@{getOnAnyMember}">
+                                    <label>選擇會員編號</label>
+                                    <select name="memNo">
+                                        <option th:each="member : ${memListData}" th:value="${member.memNo}" th:text="${member.memNo}"></option>
+                                    </select>
+                                    <button type="submit">
+                                        送出查詢
+                                    </button>
+                                </form>
+                                <form method="get" th:action="@{getOnAnyMember}">
+                                    <label>選擇會員姓名</label>
+                                    <select name="memName">
+                                        <option th:each="member : ${memListData}" th:value="${member.memName}" th:text="${member.memName}"></option>
+                                    </select>
+                                    <button type="submit">
+                                        送出查詢
+                                    </button>
+                                </form>
+                                <form method="get" th:action="@{getOnAnyMember}">
+                                    <label>選擇會員帳號</label>
+                                    <select name="memAcc">
+                                        <option th:each="member : ${memListData}" th:value="${member.memAcc}" th:text="${member.memAcc}"></option>
+                                    </select>
+                                    <button type="submit">
+                                        送出查詢
+                                    </button>
+                                </form>
+                                <form method="get" th:action="@{getOnAnyMember}">
+                                    <label>選擇手機號碼</label>
+                                    <select name="memMob">
+                                        <option th:each="member : ${memListData}" th:value="${member.memMob}" th:text="${member.memMob}"></option>
+                                    </select>
+                                    <button type="submit">
+                                        送出查詢
+                                    </button>
+                                </form>
+                                <form method="get" th:action="@{getOnAnyMember}">
+                                    <label>選擇性別</label>
+                                    <select name="memGender">
+                                        <option th:each="member : ${memListData}" th:value="${member.memGender}" th:text="${member.memGender == 1 ? '男性' : '女性'}"></option>
+                                    </select>
+                                    <button type="submit">
+                                        送出查詢
+                                    </button>
+                                </form>
+                                <form method="get" th:action="@{getOnAnyMember}">
+                                    <label>選擇信箱</label>
+                                    <select name="memMail">
+                                        <option th:each="member : ${memListData}" th:value="${member.memMail}" th:text="${member.memMail}"></option>
+                                    </select>
+                                    <button type="submit">
+                                        送出查詢
+                                    </button>
+                                </form>
+                                <form method="get" th:action="@{getOnAnyMember}">
+                                    <label>選擇地址</label>
+                                    <select name="memAdd">
+                                        <option th:each="member : ${memListData}" th:value="${member.memAdd}" th:text="${member.memAdd}"></option>
+                                    </select>
+                                    <button type="submit">
+                                        送出查詢
+                                    </button>
+                                </form>
+                                <form method="get" th:action="@{getOnAnyMember}">
+                                    <label>選擇會員生日</label>
+                                    <select name="memBd">
+                                        <option th:each="member : ${memListData}" th:value="${member.memBd}" th:text="${member.memBd}"></option>
+                                    </select>
+                                    <button type="submit">
+                                        送出查詢
+                                    </button>
+                                </form>
+                                <form method="get" th:action="@{getOnAnyMember}">
+                                    <label>選擇會員信用卡</label>
+                                    <select name="memCard">
+                                        <option th:each="member : ${memListData}" th:value="${member.memCard}" th:text="${member.memCard}"></option>
+                                    </select>
+                                    <button type="submit">
+                                        送出查詢
+                                    </button>
+                                </form>
+                                <form method="get" th:action="@{getOnAnyMember}">
+                                    <label>第三方平台</label>
+                                    <select name="provider">
+                                        <option th:each="member : ${memListData}" th:value="${member.provider}">
+                                            <span th:switch="${member.provider}">
+                                                <span th:case="null">未使用第三方服務</span>
+                                                <span th:case="0">Line</span>
+                                                <span th:case="1">Google</span>
+                                            </span>
+                                        </option>
+                                    </select>
+                                    <button type="submit">
+                                        送出查詢
+                                    </button>
+                                </form>
+                                <form method="get" th:action="@{getOnAnyMember}">
+                                    <label>第三方用戶資料</label>
+                                    <select name="clientID">
+                                        <option th:each="member : ${memListData}" th:value="${member.clientID}" th:text="${member.clientID}"></option>
+                                    </select>
+                                    <button type="submit">
+                                        送出查詢
+                                    </button>
+                                </form>
+                                <form method="get" th:action="@{getOnAnyMember}">
+                                    <label>第三方平台顯示名稱</label>
+                                    <select name="displayName">
+                                        <option th:each="member : ${memListData}" th:value="${member.displayName}" th:text="${member.displayName}"></option>
+                                    </select>
+                                    <button type="submit">
+                                        送出查詢
+                                    </button>
+                                </form>
+                                <form method="get" th:action="@{getOnAnyMember}">
+                                    <label>會員註冊完成時間</label>
+                                    <select name="memberJoinTime">
+                                        <option th:each="member : ${memListData}" th:value="${member.memberJoinTime}" th:text="${member.memberJoinTime}"></option>
+                                    </select>
+                                    <button type="submit">
+                                        送出查詢
+                                    </button>
+                                </form>
+                                <form method="get" th:action="@{getOnAnyMember}">
+                                    <label>會員驗證狀態</label>
+                                    <select name="memStat">
+                                        <option th:each="member : ${memListData}" th:value="${member.memStat}">
+                                            <span th:switch="${member.memStat}">
+                                                <span th:case="0">未驗證</span>
+                                                <span th:case="1">已驗證</span>
+                                                <span th:case="2">已停權</span>
+                                            </span>
+                                        </option>
+                                    </select>
+                                    <button type="submit">送出查詢</button>
+                                </form>
+                                <form method="get" th:action="@{getOnAnyMember}">
+                                    <label>會員註冊完成時間</label>
+                                    <select name="memberJoinTime">
+                                        <option th:each="member : ${memListData}" th:value="${member.memberJoinTime}" th:text="${member.memberJoinTime}"></option>
+                                    </select>
+                                    <button type="submit">
+                                        送出查詢
+                                    </button>
+                                </form>
+<!--                                <form method="get" th:action="@{getOnAnyMember}">-->
+<!--                                    <label>會員圖片</label>-->
+<!--                                    <img th:src="@{/backend/member/picture} + '?memno=' + ${member.memNo}" width="50px" height="50px">-->
+<!--                                    <button type="submit">送出查詢</button>-->
+<!--                                </form>-->
+                                <br>
+                                <li>複雜查詢</li>
+                                <form method="get" th:action="@{getOnAnyMember}">
+                                    <label>選擇會員編號</label>
+                                    <select name="memNo">
+                                        <option th:each="member : ${memListData}" th:value="${member.memNo}" th:text="${member.memNo}"></option>
+                                    </select>
+                                    <label>選擇會員姓名</label>
+                                    <select name="memName">
+                                        <option th:each="member : ${memListData}" th:value="${member.memName}" th:text="${member.memName}"></option>
+                                    </select>
+                                    <label>選擇會員帳號</label>
+                                    <select name="memAcc">
+                                        <option th:each="member : ${memListData}" th:value="${member.memAcc}" th:text="${member.memAcc}"></option>
+                                    </select>
+                                    <label>選擇手機號碼</label>
+                                    <select name="memMob">
+                                        <option th:each="member : ${memListData}" th:value="${member.memMob}" th:text="${member.memMob}"></option>
+                                    </select>
+                                    <label>選擇性別</label>
+                                    <select name="memGender">
+                                        <option th:each="member : ${memListData}" th:value="${member.memGender}" th:text="${member.memGender == 1 ? '男性' : '女性'}"></option>
+                                    </select>
+                                    <label>選擇信箱</label>
+                                    <select name="memMail">
+                                        <option th:each="member : ${memListData}" th:value="${member.memMail}" th:text="${member.memMail}"></option>
+                                    </select>
+                                    <label>選擇地址</label>
+                                    <select name="memAdd">
+                                        <option th:each="member : ${memListData}" th:value="${member.memAdd}" th:text="${member.memAdd}"></option>
+                                    </select>
+                                    <label>選擇會員生日</label>
+                                    <select name="memBd">
+                                        <option th:each="member : ${memListData}" th:value="${member.memBd}" th:text="${member.memBd}"></option>
+                                    </select>
+                                    <label>選擇會員信用卡</label>
+                                    <select name="memCard">
+                                        <option th:each="member : ${memListData}" th:value="${member.memCard}" th:text="${member.memCard}"></option>
+                                    </select>
+                                    <label>第三方平台</label>
+                                    <select name="provider">
+                                        <option th:each="member : ${memListData}" th:value="${member.provider}">
+                                            <span th:switch="${member.provider}">
+                                                <span th:case="null">未使用第三方服務</span>
+                                                <span th:case="0">Line</span>
+                                                <span th:case="1">Google</span>
+                                            </span>
+                                        </option>
+                                    </select>
+                                    <label>第三方用戶資料</label>
+                                    <select name="clientID">
+                                        <option th:each="member : ${memListData}" th:value="${member.clientID}" th:text="${member.clientID}"></option>
+                                    </select>
+                                    <label>第三方平台顯示名稱</label>
+                                    <select name="displayName">
+                                        <option th:each="member : ${memListData}" th:value="${member.displayName}" th:text="${member.displayName}"></option>
+                                    </select>
+                                    <label>會員註冊完成時間</label>
+                                    <select name="memberJoinTime">
+                                        <option th:each="member : ${memListData}" th:value="${member.memberJoinTime}" th:text="${member.memberJoinTime}"></option>
+                                    </select>
+                                    <label>會員驗證狀態</label>
+                                    <select name="memStat">
+                                        <option th:each="member : ${memListData}" th:value="${member.memStat}">
+                                            <span th:switch="${member.memStat}">
+                                                <span th:case="0">未驗證</span>
+                                                <span th:case="1">已驗證</span>
+                                                <span th:case="2">已停權</span>
+                                            </span>
+                                        </option>
+                                    </select>
+                                    <label>會員註冊完成時間</label>
+                                    <select name="memberJoinTime">
+                                        <option th:each="member : ${memListData}" th:value="${member.memberJoinTime}" th:text="${member.memberJoinTime}"></option>
+                                    </select>
+                                    <br>
+                                    <button type="submit">
+                                        送出查詢
+                                    </button>
+                                </form>
+                                <br>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <div th:if="${getOnAnyMember}">
+                                            <div th:insert="~{/backend/member/listOneMember :: listOneMember}"></div>
+                                        </div>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer th:replace="backend/component/bottom :: bottom"></footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+    <!-- Logout Modal-->
+    <div th:replace="backend/component/logout :: logout"></div>
+
+    <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+    <!-- Page level plugins -->
+    <script th:src="@{/backend/vendor/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+    <!-- Page level custom scripts -->
+    <script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script>
+        // 當頁面載入時執行
+        window.onload = function() {
+            // 獲取所有下拉選單元素
+            var selects = document.querySelectorAll('select');
+
+            // 遍歷每個下拉選單
+            selects.forEach(function(select) {
+                // 獲取選項集合
+                var options = select.options;
+
+                // 創建一個空的物件來存儲已出現的值
+                var uniqueValues = {};
+
+                // 遍歷選項，將唯一值添加到物件中
+                for (var i = 0; i < options.length; i++) {
+                    uniqueValues[options[i].value] = options[i].text;
+                }
+
+                // 清空下拉選單
+                select.innerHTML = '';
+
+                // 將物件中的唯一值添加回下拉選單
+                for (var value in uniqueValues) {
+                    var option = document.createElement('option');
+                    option.value = value;
+                    option.text = uniqueValues[value];
+                    select.appendChild(option);
+                }
+            });
+        };
+    </script>
+</main>
+</body>
+</html>

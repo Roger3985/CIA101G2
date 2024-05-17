@@ -2,6 +2,7 @@ package com.roger.member.controller;
 
 import com.roger.member.entity.Member;
 import com.roger.member.service.MemberService;
+import com.roger.notice.entity.Notice;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,7 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -60,6 +65,119 @@ public class MemberControllerBackEnd {
         List<Member> list = memberService.findAll();
         return list;
     }
+
+    /**
+     * 前往查詢會員的頁面。
+     */
+    @GetMapping("/getMemberData")
+    public String getMemberData(@ModelAttribute("member") Member member,
+                                ModelMap modelMap) {
+        // 返回視圖名稱
+        return "backend/member/selectMember";
+    }
+
+    /**
+     * 複合查詢。
+     * 通過多個條件進行會員查詢，並將查詢結果添加到模型中。
+     * 返回視圖名稱，用於渲染查詢結果的頁面。
+     *
+     * @param memNo           會員編號。(可選)
+     * @param memName         會員姓名。(可選)
+     * @param memAcc          會員帳號。(可選)
+     * @param memPwd          會員密碼。(可選)
+     * @param memMob          會員手機號碼。(可選)
+     * @param memGender       會員性別。(可選)
+     * @param memMail         會員郵箱。(可選)
+     * @param memAdd          會員地址。(可選)
+     * @param memBd           會員生日。(可選)
+     * @param memCard         會員卡號。(可選)
+     * @param provider        提供者。(可選)
+     * @param clientID        客戶端ID。(可選)
+     * @param displayName     顯示名稱。(可選)
+     * @param memberJoinTime  會員加入時間。(可選)
+     * @param memStat         會員狀態。(可選)
+     * @param memPic          會員照片。(可選)
+     * @param modelMap        用於在頁面中存儲和傳遞數據。
+     * @return 視圖名稱 "backend/member/selectMember" 用於渲染查詢結果的頁面。
+     */
+    @GetMapping("/getOnAnyMember")
+    public String getOnAnyMember(@RequestParam(value = "memNo", required = false) Integer memNo,
+                                 @RequestParam(value = "memName", required = false) String memName,
+                                 @RequestParam(value = "memAcc", required = false) String memAcc,
+                                 @RequestParam(value = "memPwd", required = false) String memPwd,
+                                 @RequestParam(value = "memMob", required = false) String memMob,
+                                 @RequestParam(value = "memGender", required = false) Byte memGender,
+                                 @RequestParam(value = "memMail", required = false) String memMail,
+                                 @RequestParam(value = "memAdd", required = false) String memAdd,
+                                 @RequestParam(value = "memBd", required = false) Date memBd,
+                                 @RequestParam(value = "memCard", required = false) String memCard,
+                                 @RequestParam(value = "provider", required = false) Byte provider,
+                                 @RequestParam(value = "clientID", required = false) String clientID,
+                                 @RequestParam(value = "displayName", required = false) String displayName,
+                                 @RequestParam(value = "memberJoinTime", required = false) Timestamp memberJoinTime,
+                                 @RequestParam(value = "memStat", required = false) Byte memStat,
+                                 @RequestParam(value = "memPic",required = false) byte[] memPic,
+                                 ModelMap modelMap) {
+
+        Map<String, Object> map = new HashMap<>();
+
+        if (memNo != null) {
+            map.put("memNo", memNo);
+        }
+        if (memName != null) {
+            map.put("memName", memName);
+        }
+        if (memAcc != null) {
+            map.put("memAcc", memAcc);
+        }
+        if (memPwd != null) {
+            map.put("memPwd", memPwd);
+        }
+        if (memMob != null) {
+            map.put("memMob", memMob);
+        }
+        if (memGender != null) {
+            map.put("memGender", memGender);
+        }
+        if (memMail != null) {
+            map.put("memMail", memMail);
+        }
+        if (memAdd != null) {
+            map.put("memAdd", memAdd);
+        }
+        if (memBd != null) {
+            map.put("memBd", memBd);
+        }
+        if (memCard != null) {
+            map.put("memCard", memCard);
+        }
+        if (provider != null) {
+            map.put("provider", provider);
+        }
+        if (clientID != null) {
+            map.put("clientID", clientID);
+        }
+        if (displayName != null) {
+            map.put("displayName", displayName);
+        }
+        if (memberJoinTime != null) {
+            map.put("memberJoinTime", memberJoinTime);
+        }
+        if (memStat != null) {
+            map.put("memStat", memStat);
+        }
+        if (memPic != null) {
+            map.put("memPic", memPic);
+        }
+
+        List<Member> memberList = memberService.getByAttributes(map);
+
+        modelMap.addAttribute("memberList", memberList);
+        modelMap.addAttribute("getOnAnyMember", "true");
+
+        return "backend/member/selectMember";
+    }
+
 
     /**
      * 停權指定的會員帳號並立即登出該會員。
@@ -112,6 +230,60 @@ public class MemberControllerBackEnd {
         // 重定向到會員列表頁面
         return "redirect:/backend/member/memberlist";
     }
+
+    /**
+     * 在查詢頁面停權指定的會員帳號並立即登出該會員。
+     * 此方法接受會員編號 (`memNo`) 作為參數，並使用 `memberService.banMem()` 方法進行會員帳號停權處理。
+     * 停權成功後，該方法將會員編號存儲在 Redis 中，標記為 "noFun"。
+     * 此外，該方法會立即終止該會員的會話，從而強制登出該會員。
+     *
+     * @param memNo 要停權的會員編號。
+     * @param session HTTP 會話 (`HttpSession`) 用於終止該會員的會話。
+     * @return 回到會員查詢頁面。
+     */
+    @PostMapping("/banMemberBySelect")
+    public String banMemberBySelect(@ModelAttribute("memNo") String memNo, HttpSession session) {
+        // 停權會員
+        memberService.banMem(Integer.valueOf(memNo));
+        redisTemplate.opsForValue().set("noFun:members" + memNo, memNo);
+
+        // 終止該會員的會話
+        session.invalidate();
+
+        // 回到會員查詢頁面
+        return "backend/member/selectMember";
+    }
+
+    /**
+     * 在查詢頁面復權指定會員帳號並恢復會員的會話。
+     * 此方法通過接受會員編號(`memNo`)作為參數，使用`memberService.findByNo()`方法查找會員對象，
+     * 然後將該會員的帳號狀態設置為已驗證(狀態值為1)，並使用`memberService.edit()`方法更新會員信息。
+     *
+     * @param memNo 要復權的會員編號。
+     * @param session 要恢復的 HTTP 會話。
+     * @return 回到會員查詢頁面。
+     */
+    @PostMapping("/reMemberBySelect")
+    public String reMemberBySelect(@ModelAttribute("memNo") String memNo, HttpSession session) {
+
+        // 復權會員
+        Member member = memberService.findByNo(Integer.valueOf(memNo));
+        member.setMemStat(Byte.valueOf("1"));
+        memberService.edit(member);
+
+        // 檢查 Redis 中的鍵是否存在，如果存在則刪除
+        String key = "noFun:members" + memNo;
+        if (Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
+            redisTemplate.delete(key);
+        }
+
+        // 恢復會員會話
+        session.setAttribute("loginsuccess", member);
+
+        // 回到會員查詢頁面
+        return "backend/member/selectMember";
+    }
+
 
     /**
      * 圖片處理方法。

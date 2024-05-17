@@ -44,6 +44,13 @@
                                 </thead>
                                 <tbody>
                                 <div th:fragment="listOneNotice">
+                                    <tr>
+                                        <th>會員通知編號</th>
+                                        <th>會員編號</th>
+                                        <th>通知內容</th>
+                                        <th>發送時間</th>
+                                        <th>讀取狀態</th>
+                                    </tr>
                                     <th:block th:each="notice : ${noticeList}">
                                         <tr>
                                             <td th:text="${notice.motNo}"></td>
