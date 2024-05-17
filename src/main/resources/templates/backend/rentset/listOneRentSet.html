@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>所有租借方案</title>
+    <title>查看租借方案(單筆)</title>
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
@@ -33,7 +33,7 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">所有租借方案</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">查看租借方案(單筆)</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -47,27 +47,16 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <th:block th:each="rentalSet : ${rentalSetListData}" > <!--th:block 用來包裝使用-->
-                                        <tr>
-                                            <td th:text="${rentalSet.rentalOrdNo}"></td>
-                                            <td th:text="${rentalSet.rentalSetName}"></td>
-                                            <td>
-                                                <span th:if="${rentalSet.rentalSetDays == 0}" th:text="7天"></span>
-                                                <span th:if="${rentalSet.rentalSetDays == 1}" th:text="14天"></span>
-                                            </td>
-                                            <td>
-                                                <!-- 觸發submit，跳轉th:action指定頁面 -->
-                                                <form method="post" th:action="@{getOneUpdate}">
-                                                    <button type="submit" value="修改">
-                                                        <i class="fa-solid fa-pen-to-square"></i>
-                                                        <input type="hidden" name="rentalOrdNo" value="${rentalSet.rentalOrdNo}">
-                                                        <input type="hidden" name="rentalSetName" value="${rentalSet.rentalSetName}">
-                                                        <input type="hidden" name="rentalSetDays" value="${rentalSet.rentalSetDays}">
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    </th:block>
+                                <th:block th:each="rentSet : ${rentSetList}" > <!--th:block 用來包裝使用-->
+                                    <tr>
+                                        <td th:text="${rentSet.rentalOrdNo}"></td>
+                                        <td th:text="${rentSet.rentalSetName}"></td>
+                                        <td>
+                                            <span th:if="${rentSet.rentalSetDays == 0}" th:text="7天"></span>
+                                            <span th:if="${rentSet.rentalSetDays == 1}" th:text="14天"></span>
+                                        </td>
+                                    </tr>
+                                </th:block>
                                 </tbody>
                             </table>
                         </div>

@@ -1,7 +1,9 @@
-//package com.yu.rentalset.dao;
+//package com.yu.rentSet.dao;
 //
-//import com.yu.rentalset.entity.RentSet;
+//import com.yu.rentSet.entity.RentSet;
 //import org.springframework.data.jpa.repository.JpaRepository;
+//import org.springframework.data.jpa.repository.Query;
+//import org.springframework.data.repository.query.Param;
 //import org.springframework.stereotype.Repository;
 //import org.springframework.transaction.annotation.Transactional;
 //
@@ -16,7 +18,7 @@
 //     * 注意：JpaRepository的泛型為 <T,ID>，所以在使用繼承時，必須定義好 T 與 ID 的型別，也就是 <MemberDTO, Long>。
 //     */
 //    @Transactional
-//    public RentSet findByRentalOrdNo(Integer rentalOrdNo); //rentalOrdNo查詢
+//    public RentSet findByRentalOrder_RentalOrdNo(Integer rentalOrdNo); //rentalOrdNo查詢
 //
 //    @Transactional
 //    public RentSet findByRentalSetName(String rentalSetName); //rentalSetName查詢
@@ -25,7 +27,13 @@
 //    public RentSet findByRentalSetDays(Byte rentalSetDays); //單筆查詢(rentalSetDays)
 //
 //
-//
-//
-//    }
+//    @Transactional
+//    @Query("SELECT rset FROM RentSet rset WHERE " +
+//            "(:rentalOrdNo IS NULL OR rset.rentalOrder.rentalOrdNo = :rentalOrdNo) AND " +
+//            "(:rentalSetName IS NULL OR rset.rentalSetName = :memNo) AND " +
+//            "(:rentalSetDays IS NULL OR rset.rentalSetDays = :rentalSetDays)")
+//    List<RentSet> searchRentSets(@Param("rentalOrdNo") Integer rentalOrdNo,
+//                                 @Param("rentalSetName") String rentalSetName,
+//                                 @Param("rentalSetDays") Byte rentalSetDays);
+//}
 //

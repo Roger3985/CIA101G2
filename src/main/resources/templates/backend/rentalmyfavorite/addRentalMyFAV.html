@@ -40,28 +40,31 @@
                     </div>
                     <div class="a">
                         <ul>
-                            <form id="form" method="post" th:action="@{updateRentalFAV}" th:object="${rentalMyFAV}">
+                            <form id="form1" method="post" th:action="@{/backend/rentalmyfavorite/addRentalMyFAV}" th:object="${rentalMyFavorite}">
                                 <li>
-                                    租借品編號:
-                                    <input value="0" type="text" name="rentalNo" th:field="*{rentalNo}" style="border:0px ; font-weight: bold;" readonly /><br/>
+                                    <span>選擇租借品編號:</span>
+                                    <select name="rentalNo" id="rentalNo">
+                                        <option>請選擇</option>
+                                        <option th:each="rental : ${rentalListData}" th:value="${rentalMyFavorite.rental.rentalNo}" th:text="${rentalMyFavorite.rental.rentalNo} + '-[' + ${rental.rentalName} + ']'" />
+                                    </select><br>
+                                    <span class="error" th:if="${#fields.hasErrors('rental.rentalNo')}" th:errors="*{rental.rentalNo}" id="rental.rentalNo.errors">會員編號錯誤</span>
                                 </li><br>
                                 <li>
-                                    選擇會員編號:
-                                    <select name="memNo">
+                                    <span>選擇會員編號:</span>
+                                    <select name="memNo" id="memNo">
                                         <option>請選擇</option>
-                                        <option th:each="rental : ${rentalListData}" th:value="${rental.memNo}" th:text="${rental.memNo}" />
+                                        <option th:each="member : ${memberListData}" th:value="${member.memNo}" th:text="${member.memNo} + '-[' + ${member.memName} + ']'" />
                                     </select><br>
+                                    <span class="error" th:if="${#fields.hasErrors('member.memNo')}" th:errors="*{member.memNo}" id="member.memNo.errors">會員編號錯誤</span>
                                 </li>
+                                <br>
                                 <li>
-                                    選擇加入我的最愛時間:
-                                    <select name="rentalFavTime">
-                                        <option>請選擇</option>
-                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalFavTime}" th:text="${rental.rentalFavTime}" />
-                                    </select><br>
-                                </li>
-                                <input type="submit" id="updateBtn" value="送出">
-                                <input type="hidden" name="rentalNo" value="${rental.rentalNo}">
-                                <input type="hidden" name="memNo" value="${rentalMyFAV.memNo}">
+                                    <span>選擇加入我的最愛時間:</span>
+                                    <input  id="rentalFavTime" type="datetime-local" name="rentalFavTime" th:field="*{rentalFavTime}" onclick="hideContent('rentalFavTime.errors');"/>
+                                    <br/>
+                                    <span class="error" th:if="${#fields.hasErrors('rentalFavTime')}" th:errors="*{rentalFavTime}" id="rentalFavTime.errors">時間錯誤</span>
+                                </li><br>
+                                <input type="submit" id="submit" value="送出">
                             </form>
                         </ul>
                     </div>
@@ -84,59 +87,114 @@
 <div th:replace="backend/component/logout :: logout"></div>
 
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
-<script th:src="@{/static/jquery/jquery-3.7.1.min.js}"></script>
-
+<script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
 
 <script>
 
-    // 若要做到不點選按鈕即時更新，可以使用WebSocket的方式
-    $(document).ready(function (){
+    //使用fetch()，處理傳遞參數
+    document.getElementById("form1").addEventListener("submit", (event) => {
+        alert("已點選");
+        event.preventDefault();  //阻止預設行為
 
-        // 觸發submit事件，取得選擇的內容，轉為json格式
-        $("#addRentalBtn").on("submit",function(e){
-            e.preventDefault(); //阻止提交表單
+        // 獲取表單數據
+        const rentalNo = document.getElementById("rentalNo").value;
+        const memNo = document.getElementById("memNo").value;
+        const rentalFavTime = document.getElementById("rentalFavTime").value;
+        console.log(rentalFavTime);
 
-            //資料打包
-            var addData = {
-                rentalName: $('#rentalName').val(),
-                rentalPrice: parseFloat($('#rentalPrice').val()),
-                rentalSize: parseInt($('#rentalSize').val()),
-                rentalColor: $('#rentalColor').val(),
-                rentalInfo: $('#rentalInfo').val(),
-                rentalStat: parseFloat($('#rentalStat').val()),
-                rentalCatNo: parseInt($('#rentalCatNo').val()),
-                action: "addRental"
-            };
+        const rentalFavTimeTimestamp = new Date(rentalFavTime);
 
-            fetch("/backend/rental/addRental", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(addData)
-            }).then(function (response){
-                return response.text();
-            }).then(function (rentalNo){
-                alert(rentalNo + "新增成功");
+        console.log(rentalFavTimeTimestamp);
+
+        //取得數據
+        const data = {
+            rentalNo: parseInt(rentalNo),
+            memNo: parseInt(memNo),
+            rentalFavTime: rentalFavTimeTimestamp
+        }
+
+
+        // 使用 Fetch API 發送請求 (設定請求方式"POST"、請求網址、處理方式)
+        fetch("http://localhost:8080/backend/rentalmyfavorite/addRentalMyFAV", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)// 傳送內容須轉換為字串
+        })
+            //成功處理(.then)
+            .then(response => response.text())
+            .then(text => {
+                //找到ID為form1-li的<li>元素，並將其href屬性設置為伺服器回應的文本內容（text）
+                let li = document.getElementById("form1-li");
+                li.setAttribute("href", text);
             })
-        });
+
+            //錯誤處理(.catch)
+            .catch(error => console.error("Error:", error));
     });
+    // $(document).ready(function() {
+    //     $("#form1").submit(function(event) {
+    //         alert("已點選");
+    //         event.preventDefault();  // 阻止預設行為
+    //
+    //         // 獲取表單數據
+    //         const rentalNo = $("#rentalNo").val();
+    //         const memNo = $("#memNo").val();
+    //         const rentalFavTime = $("#rentalFavTime").val();
+    //
+    //         // 將日期時間字符串轉換為時間戳
+    //         const rentalFavTimeTimestamp = new Date(rentalFavTime).getTime();
+    //
+    //         // 取得數據
+    //         const data = {
+    //             rentalNo: parseInt(rentalNo),
+    //             memNo: parseInt(memNo),
+    //             rentalFavTime: rentalFavTimeTimestamp
+    //         };
+    //
+    //         // 使用 Axios 發送請求
+    //         axios.post("http://localhost:8080/backend/rentalmyfavorite/addRentalMyFAV", data, {
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             }
+    //         })
+    //             .then(function(response) {
+    //                 // 處理成功響應
+    //                 // 將返回的文本設置為相應元素的 href 屬性
+    //                 $("#form1-li").attr("href", response.data);
+    //             })
+    //             .catch(function(error) {
+    //                 // 處理錯誤
+    //                 console.error("Error:", error);
+    //             });
+    //     });
+    // });
+
 </script>
 </body>
 </html>
-<!--$.ajax({-->
-<!--type: "POST",-->
-<!--url: "/backend/rental/addRental", //請求的URL-->
-<!--headers: {-->
-<!--"Content-Type": "application/json"-->
-<!--},-->
-<!--data: JSON.stringify(addData),-->
-<!--success: function (response) {-->
-<!--alert("請求成功")-->
-<!--// response.json();-->
-<!--response.text();-->
-<!--},-->
-<!--error:function(xhr, status, error){-->
-<!--alert("請求失敗")-->
-<!--console.error(xhr.responseText);-->
-<!--$('#responseMessage').html("Error occurred while adding rental.");-->
-<!--}-->
-<!--});-->
+
+
+
+<!--// // 使用const宣告(不會被重新指定值)，請求方式、請求網址、處理方式( true：非同步處理 , false：同步處理 ))-->
+<!--// const http = new XMLHttpRequest(); // 宣告一個 xhr 物件-->
+<!--// const method = "POST";-->
+<!--// const url = "http://localhost:8080/backend/rentalmyfavorite/addRentalMyFAV";-->
+<!--// http.open(method, url); //在 open 放入「請求方法」以及「目標」-->
+<!--//-->
+<!--//-->
+<!--// //設置請求標頭-->
+<!--// http.setRequestHeader("Content-Type", "application/json");-->
+<!--//-->
+<!--// http.send(JSON.stringify(data));// 發出 http request 請求-->
+<!--//-->
+<!--// //處理伺服器回應 (XMLHttpRequest的狀態改變時，觸發onreadystatechange事件)-->
+<!--// //判斷如果狀態碼是200 (成功畫面)，找到ID為form1-li的<li>元素，並將其href屬性設置為伺服器回應的文本內容（http.responseText）-->
+<!--    // http.onreadystatechange = () => {-->
+<!--    //     if (http.readyState === XMLHttpRequest.DONE && http.status === 200) {-->
+<!--    //         let li = document.getElementById("form1-li");-->
+<!--    //         li.setAttribute("href", http.responseText);-->
+<!--    //     }-->
+<!--    // }-->
+

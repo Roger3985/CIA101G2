@@ -40,7 +40,7 @@
                     </div>
                     <div class="a">
                         <ul>
-                            <form method="post" th:action="@{addRentalPic}" th:object="${rentalPic}" enctype="multipart/form-data">
+                            <form id="form1" method="post" th:action="@{addRentalPic}" th:object="${rentalPic}" enctype="multipart/form-data">
                                 <li>
                                     選擇租借品編號:
                                     <select name="rentalNo" id="rentalNo" th:field="*{rental.rentalNo}"> <!--th:field，表單元素&數據綁定-->
@@ -81,11 +81,7 @@
 <script th:src="@{/static/jquery/jquery-3.7.1.min.js}"></script>
 
 
-<script type="text/javascript">
-    function hideContent(d) {
-        document.getElementById(d).style.display = "none";
-    }
-
+<script>
     //照片上傳-預覽用
     let filereader_support = typeof FileReader != 'undefined';
     if (!filereader_support) {
@@ -105,106 +101,29 @@
             }
         }, false);
     }
-    function previewfile(file) {
-        if (filereader_support === true && acceptedTypes[file.type] === true) {
-            let reader = new FileReader();
-            reader.onload = function(event) {
-                let image = new Image();
-                image.src = event.target.result;
-                image.width = 200;
 
-                image.border = 2;
-                if (blob_holder.hasChildNodes()) {
-                    blob_holder.removeChild(blob_holder.childNodes[0]);
-                }
-                blob_holder.appendChild(image);
-            };
-            reader.readAsDataURL(file);
-            document.getElementById('submit').disabled = false;
-        } else {
-            blob_holder.innerHTML = "<div  style='text-align: left;'>" + "● filename: " + file.name
-                + "<br>" + "● ContentTyp: " + file.type
-                + "<br>" + "● size: " + file.size + "bytes"
-                + "<br>" + "● 上傳ContentType限制: <b> <font color=red>image/png、image/jpeg、image/gif </font></b></div>";
-            document.getElementById('submit').disabled = true;
+    //使用fetch()發送非同步請求，傳遞資料至後端
+    document.getElementById("form1").addEventListener("submit", (event) => {
+        event.preventDefault(); //阻止預設行為
+
+        // 使用const宣告(不會被重新指定值)，請求方式、請求網址、處理方式( true：非同步處理 , false：同步處理 ))
+        const http = new XMLHttpRequest();
+        const method = "POST";
+        const url = "http://localhost:8080/backend/rentalpic/addRentalPic";
+        http.open(method, url); //在 open 放入「請求方法」以及「目標」
+
+        http.send();// 發出 http request 請求
+
+        //處理伺服器回應 (XMLHttpRequest的狀態改變時，觸發onreadystatechange事件)
+        http.onreadystatechange = (e) => {
+
+            //判斷如果狀態碼是200 (成功畫面)，找到ID為form1-a的<a>元素，並將其href屬性設置為伺服器回應的文本內容（http.responseText）
+            if (http.readyState === XMLHttpRequest.DONE && http.status === 200) {
+                let a = document.getElementById("form1-a");
+                a.setAttribute("href", http.responseText);
+            }
         }
-    }
+    });
 </script>
 </body>
 </html>
-
-<!--<script type="text/javascript">-->
-<!--    function hideContent(d) {-->
-<!--        document.getElementById(d).style.display = "none";-->
-<!--    }-->
-
-<!--    //照片上傳-預覽用-->
-<!--    let filereader_support = typeof FileReader != 'undefined';-->
-<!--    if (!filereader_support) {-->
-<!--        alert("No FileReader support");-->
-<!--    }-->
-<!--    acceptedTypes = {-->
-<!--        'image/png' : true,-->
-<!--        'image/jpeg' : true,-->
-<!--        'image/gif' : true-->
-<!--    };-->
-<!--    function previewImage() {-->
-<!--        var upfile1 = document.getElementById("rentalFile");-->
-<!--        upfile1.addEventListener("change", function(event) {-->
-<!--            var files = event.target.files || event.dataTransfer.files;-->
-<!--            for (var i = 0; i < files.length; i++) {-->
-<!--                previewfile(files[i])-->
-<!--            }-->
-<!--        }, false);-->
-<!--    }-->
-<!--    function previewfile(file) {-->
-<!--        if (filereader_support === true && acceptedTypes[file.type] === true) {-->
-<!--            var reader = new FileReader();-->
-<!--            reader.onload = function(event) {-->
-<!--                var image = new Image();-->
-<!--                image.src = event.target.result;-->
-<!--                image.width = 100;-->
-<!--                image.height = 75;-->
-<!--                image.border = 2;-->
-<!--                if (blob_holder.hasChildNodes()) {-->
-<!--                    blob_holder.removeChild(blob_holder.childNodes[0]);-->
-<!--                }-->
-<!--                blob_holder.appendChild(image);-->
-<!--            };-->
-<!--            reader.readAsDataURL(file);-->
-<!--            document.getElementById('submit').disabled = false;-->
-<!--        } else {-->
-<!--            blob_holder.innerHTML = "<div  style='text-align: left;'>" + "● filename: " + file.name-->
-<!--                + "<br>" + "● ContentTyp: " + file.type-->
-<!--                + "<br>" + "● size: " + file.size + "bytes"-->
-<!--                + "<br>" + "● 上傳ContentType限制: <b> <font color=red>image/png、image/jpeg、image/gif </font></b></div>";-->
-<!--            document.getElementById('submit').disabled = true;-->
-<!--        }-->
-<!--    }-->
-<!--</script>-->
-
-<!--<script>-->
-<!--    function addRentalCategory(){-->
-<!--        //-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;打包資料(start)-->
-<!--        let rentalCatData = {-->
-<!--            rentalCatName: $('#rentalCatName').val(),-->
-<!--            rentalStockQty:parseInt($('#rentalStockQty').value()),-->
-<!--            rentalRentedQty:parseInt($('#rentalRentedQty').value()),-->
-<!--            rentalDesPrice:parseFloat($('#rentalDesPrice').value()),-->
-<!--            action:"addRentalCategory"-->
-<!--        }-->
-
-<!--        $.ajax({-->
-<!--            url:"addRentalCategory",-->
-<!--            type:"POST",-->
-<!--            data:JSON.stringify(rentalCatData),-->
-<!--            contentType:"application/json",-->
-<!--            success:function (data){-->
-<!--                alert("請求成功")-->
-<!--            },-->
-<!--            error:function (data) {-->
-<!--                alert("請求失敗")-->
-<!--            }-->
-<!--        })-->
-<!--    }-->
-<!--</script>-->

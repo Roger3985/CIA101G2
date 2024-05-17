@@ -11,11 +11,11 @@ import java.util.Map;
 
         List<RentalMyFavorite> findAll();  //全部查詢(RentalMyFavorite)
 
-        RentalMyFavorite findByNo(Integer rentalNo); //單筆查詢(rentalNo)
+        RentalMyFavorite findByRentalNo(Integer rentalNo); //單筆查詢(rentalNo)
 
         RentalMyFavorite findByMemNo(Integer memNo); //單筆查詢(memNo)
 
-        List<RentalMyFavorite> findByRentalFavTime(DateTimeFormat rentalFavTime); //單筆查詢(rentalFavTime)
+        List<RentalMyFavorite> findByRentalFavTime(Timestamp rentalFavTime); //單筆查詢(rentalFavTime)
 
         RentalMyFavorite findByIdRentalNoAndIdMemNo(Integer rentalNo, Integer memNo);  //複合主鍵查詢
 
@@ -26,7 +26,8 @@ import java.util.Map;
 
         RentalMyFavorite updateRentalFav(RentalMyFavorite rentalMyFavorite); //修改
 
-        List<RentalMyFavorite> getByCompositeQuery(Map<String, String[]> map); //複合查詢
+        List<RentalMyFavorite> searchRentalMyFAVs(Map<String, Object> map); //複合查詢
+
 
 
 
