@@ -8,6 +8,59 @@
     <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
 
+<!--    <style>-->
+<!--        /* 按鈕樣式 */-->
+<!--        .shipping {-->
+<!--            padding: 10px 20px;-->
+<!--            background-color: #4CAF50;-->
+<!--            color: white;-->
+<!--            border: none;-->
+<!--            cursor: pointer;-->
+<!--            font-size: 16px;-->
+<!--        }-->
+<!--        /* 燈箱樣式 */-->
+<!--        .modal {-->
+<!--            display: none; /* 默認隱藏 */-->
+<!--            position: fixed; /* 固定位置 */-->
+<!--            z-index: 1; /* 顯示在最上層 */-->
+<!--            left: 0;-->
+<!--            top: 0;-->
+<!--            width: 100%; /* 滿屏 */-->
+<!--            height: 100%; /* 滿屏 */-->
+<!--            overflow: hidden; /* 禁用滾動 */-->
+<!--            background-color: rgba(0,0,0,0.4); /* 透明黑色背景 */-->
+<!--            display: flex; /* 使用Flexbox */-->
+<!--            align-items: center; /* 垂直居中 */-->
+<!--            justify-content: center; /* 水平居中 */-->
+<!--        }-->
+<!--        /* 燈箱內容樣式 */-->
+<!--        .modal-content {-->
+<!--            background-color: #fefefe;-->
+<!--            padding: 20px;-->
+<!--            border: 1px solid #888;-->
+<!--            width: 50%; /* 寬度 */-->
+<!--            height: 50%; /* 高度 */-->
+<!--            box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* 添加陰影效果 */-->
+<!--            position: relative; /* 相對定位 */-->
+<!--        }-->
+<!--        /* 關閉按鈕樣式 */-->
+<!--        .close {-->
+<!--            color: #aaa;-->
+<!--            position: absolute;-->
+<!--            top: 10px;-->
+<!--            right: 10px;-->
+<!--            font-size: 28px;-->
+<!--            font-weight: bold;-->
+<!--        }-->
+<!--        .close:hover,-->
+<!--        .close:focus {-->
+<!--            color: black;-->
+<!--            text-decoration: none;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+<!--    </style>-->
+
+
 </head>
 <body id="page-top">
 <!-- Page Wrapper -->
@@ -37,28 +90,28 @@
                                 <thead>
                                 <tr>
                                     <th>訂單編號</th>
-                                    <th>會員編號</th>
-                                    <th>訂購人姓名</th>
-                                    <th>訂購人手機號碼</th>
-                                    <th>訂購人Email</th>
-                                    <th>收件人姓名</th>
-                                    <th>收件人手機號碼</th>
+<!--                                    <th>會員編號</th>-->
+<!--                                    <th>訂購人姓名</th>-->
+<!--                                    <th>訂購人手機號碼</th>-->
+<!--                                    <th>訂購人Email</th>-->
+<!--                                    <th>收件人姓名</th>-->
+<!--                                    <th>收件人手機號碼</th>-->
                                     <th>取貨方式</th>
-                                    <th>宅配住址</th>
+<!--                                    <th>宅配住址</th>-->
                                     <th>付款方式</th>
-                                    <th>訂單總金額</th>
-                                    <th>押金總金額</th>
-                                    <th>下單時間</th>
-                                    <th>預計租借日期</th>
-                                    <th>預計歸還日期</th>
-                                    <th>實際歸還日期</th>
+                                    <th>租金<div></div>總金額</th>
+                                    <th>押金<div></div>總金額</th>
+<!--                                    <th>下單時間</th>-->
+<!--                                    <th>預計租借日期</th>-->
+<!--                                    <th>預計歸還日期</th>-->
+<!--                                    <th>實際歸還日期</th>-->
                                     <th>付款狀態</th>
                                     <th>訂單狀態</th>
                                     <th>歸還狀態</th>
                                     <th>歸還註記</th>
-                                    <th>賠償金額</th>
-                                    <th></th>
-                                    <th></th>
+                                    <th>賠償<div></div>金額</th>
+                                    <th>詳情<div></div>&修改</th>
+                                    <th>出貨</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -66,29 +119,29 @@
                                     <tr>
 
                                         <td th:text="${order.getrentalOrdNo()}"></td>
-                                        <td th:text="${order.getMember().getMemNo()}"></td>
-                                        <td th:text="${order.getrentalByrName()}"></td>
-                                        <td th:text="${order.getrentalByrPhone()}"></td>
-                                        <td th:text="${order.getrentalByrEmail()}"></td>
-                                        <td th:text="${order.getrentalRcvName()}"></td>
-                                        <td th:text="${order.getrentalRcvPhone()}"></td>
+<!--                                        <td th:text="${order.getMember().getMemNo()}"></td>-->
+<!--                                        <td th:text="${order.getrentalByrName()}"></td>-->
+<!--                                        <td th:text="${order.getrentalByrPhone()}"></td>-->
+<!--                                        <td th:text="${order.getrentalByrEmail()}"></td>-->
+<!--                                        <td th:text="${order.getrentalRcvName()}"></td>-->
+<!--                                        <td th:text="${order.getrentalRcvPhone()}"></td>-->
                                         <td th:text="${order.getrentalTakeMethod() == 1 ? '店取' : '宅配'}"></td>
-                                        <td th:text="${order.getrentalAddr()}"></td>
+<!--                                        <td th:text="${order.getrentalAddr()}"></td>-->
                                         <td th:text="${order.getrentalPayMethod() == 1 ? '綠界' : '現場付款'}"></td>
                                         <td th:text="${order.getrentalAllPrice()}"></td>
                                         <td th:text="${order.getrentalAllDepPrice()}"></td>
-                                        <td th:text="${order.getrentalOrdTime()}"></td>
-                                        <td th:text="${order.getrentalDate()}"></td>
-                                        <td th:text="${order.getrentalBackDate()}"></td>
-                                        <td th:text="${order.getrentalRealBackDate()}"></td>
+<!--                                        <td th:text="${order.getrentalOrdTime()}"></td>-->
+<!--                                        <td th:text="${order.getrentalDate()}"></td>-->
+<!--                                        <td th:text="${order.getrentalBackDate()}"></td>-->
+<!--                                        <td th:text="${order.getrentalRealBackDate()}"></td>-->
                                         <td th:text="${order.getrentalPayStat() == 1 ? '已付款' : '未付款'}"></td>
                                         <td th:switch="${order.getrentalOrdStat()}">
-                                            <span th:case="'0'">訂單取消</span>
+                                            <span th:case="'0'">取消</span>
                                             <span th:case="'10'">揀貨中</span>
                                             <span th:case="'20'">配送中</span>
                                             <span th:case="'30'">等待取貨</span>
                                             <span th:case="'40'">訂單成立</span>
-                                            <span th:case="'50'">訂單完成</span>
+                                            <span th:case="'50'" style="color: green">完成</span>
                                             <span th:case="'81'">申請換貨</span>
                                             <span th:case="'82'">換貨中</span>
                                         </td>
@@ -104,7 +157,10 @@
                                             </form>
                                         </td>
                                         <td>
-                                            <button class="shipping" type="button">出貨</button>
+                                            <form>
+                                                <input type="hidden" id="rentalOrdNo" th:value="${order.getrentalOrdNo()}">
+                                                <button class="shipping" type="button" th:disabled="${order.getrentalOrdStat() != 10 and order.getrentalOrdStat() != 40}">出貨</button>
+                                            </form>
                                         </td>
 
                                     </tr>
@@ -113,7 +169,17 @@
                             </table>
                         </div>
                     </div>
-
+                    <div id="logisticsFormContainer" ></div> <!-- 放物流的 -->
+                    <!-- 以下燈箱 -->
+<!--                    <div id="myModal" class="modal">-->
+<!--                        <div class="modal-content">-->
+<!--                            <span class="close" onclick="closeModal()">&times;</span>-->
+<!--                            <h2>輸入手機號碼</h2>-->
+<!--                            <input type="text" id="phoneNumber" placeholder="請輸入手機號碼" style="width: 100%; padding: 10px; margin-top: 10px;">-->
+<!--                            <button type="button" onclick="submitPhoneNumber()" style="margin-top: 10px; padding: 10px 20px;">提交</button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <!-- 以上燈箱 -->
                 </div>
             </div>
             <!-- /.container-fluid -->
@@ -139,6 +205,95 @@
 <script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 <!-- Page level custom scripts -->
 <script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
+
+<script>
+
+    $(function () {
+
+        let baseUrl = window.location.protocol + "//" + window.location.host;
+        let apiPath = "/backend/rentalorder/";
+        let rentalOrdNo = $("input#rentalOrdNo").val();
+        let logisticsFormContainer = $("#logisticsFormContainer");
+
+        $("button.shipping").on("click", function () {
+
+            fetch(baseUrl + apiPath + "createShippingOrder?rentalOrdNo=" + rentalOrdNo, {
+                method : "POST",
+                headers: {
+                    "Content-Type" : "application/x-www-form-urlencoded",
+                    "Accept": "text/html"// 預期返回的是HTML
+                }
+            }).then(function (response) {
+                console.log(response);
+                return response.text();
+            }).then(function (data) {
+
+                // console.log(data);
+                let cleanData = data.substring(data.indexOf("|") + 1);
+                let queryParams = new URLSearchParams(cleanData);
+
+                let form = $("<form>", {
+                    "action" : baseUrl + apiPath + "shipping",
+                    "method" : "GET",
+                    "target" : "_blank"
+                }).appendTo(document.body);
+
+                queryParams.forEach((value, key) => {
+
+                    $("<input>", {
+
+                        "type" : "hidden",
+                        "name" : key,
+                        "value" : value
+
+                    }).appendTo(form);
+
+                });
+
+                form.submit();
+
+            }); // then 結束
+
+        }); // 送出物流訂單請求結束
+
+
+    }); // DOMContentLoaded 結束
+
+
+
+
+
+
+    /*-------------------- 燈箱 --------------------*/
+    // // 開啟燈箱
+    // function openModal() {
+    //     document.getElementById('myModal').style.display = 'block';
+    // }
+    //
+    // // 關閉燈箱
+    // function closeModal() {
+    //     document.getElementById('myModal').style.display = 'none';
+    // }
+    //
+    // // 提交手機號碼
+    // function submitPhoneNumber() {
+    //     var phoneNumber = document.getElementById('phoneNumber').value;
+    //     alert('手機號碼已提交: ' + phoneNumber);
+    //     closeModal();
+    // }
+    //
+    // // 點擊燈箱外部區域關閉燈箱
+    // window.onclick = function(event) {
+    //     var modal = document.getElementById('myModal');
+    //     if (event.target === modal) {
+    //         closeModal();
+    //     }
+    // }
+
+
+
+</script>
+
 
 </body>
 </html>

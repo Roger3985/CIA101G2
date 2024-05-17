@@ -1,18 +1,16 @@
 package com.howard.rentalorder.controller;
 
-import com.howard.rentalorder.dto.GetOrderOnAny;
-import com.howard.rentalorder.dto.SetToCart;
-import com.howard.rentalorder.service.impl.RentalOrderShippingService;
-import com.roger.member.entity.Member;
-import com.roger.member.repository.MemberRepository;
-import com.yu.rental.dao.RentalRepository;
 import com.howard.rentalorder.dto.RentalOrderRequest;
+import com.howard.rentalorder.dto.SetToCart;
 import com.howard.rentalorder.entity.RentalOrder;
 import com.howard.rentalorder.service.impl.RentalCartServiceImpl;
 import com.howard.rentalorder.service.impl.RentalOrderServiceImpl;
+import com.howard.rentalorder.service.impl.RentalOrderShippingService;
 import com.howard.rentalorderdetails.service.impl.RentalOrderDetailsServiceImpl;
+import com.roger.member.entity.Member;
+import com.roger.member.repository.MemberRepository;
+import com.yu.rental.dao.RentalRepository;
 import com.yu.rental.entity.Rental;
-import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +18,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -75,19 +71,19 @@ public class RentalOrderController {
 
     /*--------------------------處理跳轉頁面請求的方法-------------------------------*/
 
-    // 去 商城 首頁
+    // 去 租借商城 首頁
     @GetMapping("/toRentalShop")
     public String toRentalShop() {
         return "/frontend/rental/rentalShop";
     }
 
-    // 去 購物車 畫面
+    // 去 租借商城的購物車 畫面
     @GetMapping("/rentalCart")
     public String toRentalCart() {
         return "/frontend/rental/rentalCart";
     }
 
-    // 去 結帳 頁面
+    // 去 租借商城的結帳 頁面
     @GetMapping("/toRentalPayment")
     public String toRentalPayment() {
         return "/frontend/rental/rentalPayment";
@@ -201,8 +197,8 @@ public class RentalOrderController {
         order.setrentalRealBackDate(new Timestamp(System.currentTimeMillis()));
         // 付款狀態 = 0(未付款)(此為初步實作，之後由創建訂單時付款與否決定狀態)
         order.setrentalPayStat((byte) 0);
-        // 訂單狀態 = 40(訂單成立)
-        order.setrentalOrdStat((byte) 40);
+        // 訂單狀態 = 10(撿貨中)
+        order.setrentalOrdStat((byte) 10);
         // 歸還狀態 = 0(未歸還)
         order.setRtnStat((byte) 0);
         // 歸還註記(因為資料庫設定NotNull，所以先設定為"尚未歸還")
@@ -216,6 +212,8 @@ public class RentalOrderController {
                         .toList();
         // 把購物車清空
         cartService.deleteFromCart(order.getMemNo(), rentalNoList);
+        // 更新 Redis 裡其他購物車資料，有加入明細裡的商品的，租借品狀態改為 1 (已預約)
+        cartService.updateCart(rentalNoList, "rentalStat", "1");
         // 回傳帶有付款畫面 html 的 form 字串
         return ResponseEntity.status(HttpStatus.CREATED).body(form);
 
@@ -376,7 +374,6 @@ public class RentalOrderController {
         map.put("rentalInfo", rental.getRentalInfo());
         map.put("rentalStat", String.valueOf(rental.getRentalStat()));
         cartService.setToCart(setToCart.getMemNo(), map);
-        System.out.println(rental.getRentalName());
         return ResponseEntity.status(HttpStatus.CREATED).body(rental.getRentalName());
 
     }
@@ -406,24 +403,13 @@ public class RentalOrderController {
     /*----------------------------有關購物車的方法----------------------------------*/
 
 
-    /*----------------------------練習串接綠界api的方法----------------------------------*/
+    /*----------------------------有關物流的方法----------------------------------*/
 
-//    @PostMapping("/ecpayCheckout")
-//    @ResponseBody
-//    public String ecpayCheckout() {
-//
-//        String aioCheckOutALLForm = service.ecpayCheckout();
-//        return aioCheckOutALLForm;
-//
-//    }
-
-    // 物流
+    // 出貨
     @PostMapping("/createShippingOrder")
-    public ResponseEntity<?> createShippingOrder() {
-        System.out.println("有進來controller");
-        String formHTML = shippingService.shipping();
-        System.out.println("service方法有執行完喔!!");
-
+    public ResponseEntity<?> createShippingOrder(@RequestParam Integer rentalOrdNo) {
+        System.out.println("有進來controller方法");
+        String formHTML = shippingService.shipping(rentalOrdNo);
         return ResponseEntity.status(HttpStatus.OK).body(formHTML);
 
     }
@@ -431,6 +417,14 @@ public class RentalOrderController {
     @PostMapping("/testToRentalCart")
     public String rentalCart() {
         return "/frontend/rental/rentalCart";
+    }
+
+    @GetMapping("/shipping")
+    public String shippingStatus(HttpServletRequest req, ModelMap model) {
+
+        req.getParameterMap().forEach((key, value) ->model.addAttribute(key, value[0]));
+        return "/backend/rentalorder/shipping";
+
     }
 
 
