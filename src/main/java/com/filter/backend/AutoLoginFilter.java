@@ -18,8 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.ren.util.Constants.FIRST_ORDER;
-import static com.ren.util.Constants.loginPage;
+import static com.ren.util.Constants.*;
 import static com.ren.util.Validator.validateURL;
 
 /**
@@ -37,12 +36,12 @@ public class AutoLoginFilter extends HttpFilter {
 
     // String To Integer
     @Autowired
-    @Qualifier("admStrInt")
+    @Qualifier("cookieStrInt")
     private RedisTemplate<String, Integer> stiRedisTemplate;
 
     // <String, String>
     @Autowired
-    @Qualifier("admStrStr")
+    @Qualifier("cookieStrStr")
     private StringRedisTemplate stringRedisTemplate;
 
     @Override
@@ -69,7 +68,7 @@ public class AutoLoginFilter extends HttpFilter {
 //                System.out.println("來看看是誰被過濾, session:" + session + ", loginState:" + loginState + ", cookie:" + userCookie);
                 System.out.println("還沒登入哦!");
                 String encodedMessage = URLEncoder.encode("您還沒登入哦! 麻煩請先回到首頁登入。", StandardCharsets.UTF_8.toString());
-                res.sendRedirect(loginPage + "?error=" + encodedMessage);
+                res.sendRedirect(errorRedirect + encodedMessage);
                 return;
             }
             // 第一次登入(自動登入)

@@ -3,10 +3,10 @@ package com.ren;
 import com.ren.administrator.entity.Administrator;
 import com.ren.administrator.dto.LoginState;
 import com.ren.administrator.service.Impl.AdministratorServiceImpl;
-import com.roger.member.entity.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -15,7 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,14 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
-import java.net.URLEncoder;
 import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,8 +39,16 @@ import static com.ren.util.Validator.validateEmail;
 public class BackendIndexController {
 
     @Autowired
-    @Qualifier("admStrInt")
+    @Qualifier("cookieStrInt")
     private RedisTemplate<String, Integer> stiRedisTemplate;
+
+    @Autowired
+    @Qualifier("failIP")
+    private RedisTemplate<String, Integer> ipRedisTemplate;
+
+    @Autowired
+    @Qualifier("cookieStrStr")
+    private StringRedisTemplate cookieRedisTemplate;
 
     @Autowired
     private AdministratorServiceImpl administratorSvc;
@@ -219,6 +221,7 @@ public class BackendIndexController {
             cookie.setPath(req.getContextPath() + "/backend");
             res.addCookie(cookie);
             stiRedisTemplate.opsForValue().set(random, admNo);
+            session.setAttribute("random", random);
             System.out.println("cookie存入");
         }
 
@@ -303,6 +306,9 @@ public class BackendIndexController {
             deleteCookie.setMaxAge(0);
             deleteCookie.setPath(req.getContextPath() + "/backend");
             res.addCookie(deleteCookie);
+            // 刪除Redis內的cookie資料
+            cookieRedisTemplate.delete(deleteCookie.getValue());
+
         }
         // 註銷session
         session.invalidate();
@@ -337,12 +343,12 @@ public class BackendIndexController {
             String ipAddress = localHost.getHostAddress();
             // 如果密碼輸入失敗次數為0
             if (failTimes == 0) {
-                stiRedisTemplate.opsForValue().set(ipAddress, ++failTimes);
-                stiRedisTemplate.expire(ipAddress, Duration.ofMinutes(30));
+                ipRedisTemplate.opsForValue().set(ipAddress, ++failTimes);
+                ipRedisTemplate.expire(ipAddress, Duration.ofMinutes(30));
             } else {
-                failTimes = stiRedisTemplate.opsForValue().get(ipAddress);
-                stiRedisTemplate.opsForValue().set(ipAddress, ++failTimes);
-                stiRedisTemplate.expire(ipAddress, Duration.ofMinutes(30));
+                failTimes = ipRedisTemplate.opsForValue().get(ipAddress);
+                ipRedisTemplate.opsForValue().set(ipAddress, ++failTimes);
+                ipRedisTemplate.expire(ipAddress, Duration.ofMinutes(30));
             }
 
             System.out.println("本地主機的 IP 地址：" + ipAddress + ", 密碼輸入錯誤次數" + failTimes);
@@ -363,8 +369,8 @@ public class BackendIndexController {
             // 取得使用者IP
             InetAddress localHost = InetAddress.getLocalHost();
             String ipAddress = localHost.getHostAddress();
-            if (stiRedisTemplate.hasKey(ipAddress)) {
-                failTimes = stiRedisTemplate.opsForValue().get(ipAddress);
+            if (ipRedisTemplate.hasKey(ipAddress)) {
+                failTimes = ipRedisTemplate.opsForValue().get(ipAddress);
             } else {
                 failTimes = 0;
             }

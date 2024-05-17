@@ -40,6 +40,11 @@ public interface Constants {
     String loginPage = "/backend/login";
 
     /**
+     * 登入頁面路徑
+     */
+    String errorRedirect = "/backend/login?error=";
+
+    /**
      * 註冊頁面路徑
      */
     String registerPage = "/backend/register";

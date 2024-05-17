@@ -250,8 +250,21 @@ public class AdministratorController {
         return "backend/administrator/jobList";
     }
 
-    // 未經核准的資料會先放在redis，核准之後才存進去
-    @PostMapping()
+    // 同意該管理員的權限要求
+    @PostMapping("/authPermit")
+    public String authRequest(@RequestParam("admNo") Integer admNo,
+                              @RequestParam("titleNo") Integer titleNo,
+                              HttpSession session) {
+        LoginState loginState = (LoginState) session.getAttribute("loginState");
+        // 將Redis內的權限提高到請求的權限
+        loginState.setTitleNo(titleNo);
+        administratorSvc.storeLoginstateInRedis(admNo, loginState);
+
+        return "redirect:/backend/administrator/jobList";
+    }
+
+    // 權限附予
+    @PostMapping("")
     public String jobList() {
 
 

@@ -39,16 +39,8 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
     private AdministratorRepository administratorRepository;
 
     @Autowired
-    @Qualifier("admStrInt")
-    private RedisTemplate<String, Integer> stiRedisTemplate;
-
-    @Autowired
     @Qualifier("admIntLogin")
     private RedisTemplate<Integer, LoginState> itlRedisTemplate;
-
-    @Autowired
-    @Qualifier("admStrStr")
-    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 管理員新增管理員資料
