@@ -2,20 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" th:href="@{/css/backend/service/chat.css}">
+    <link rel="stylesheet" th:href="@{/css/frontend/service/frontendChat.css}">
     <title>前台客服</title>
 
 </head>
-<body onload="connect();">
+<body>
 <h2>前台即時客服系統</h2>
 
-<!--<div class="user-form" id="username-page">-->
-<!--    <h2>Enter Chatroom</h2>-->
-<!--    <form id="usernameForm">-->
-
-<!--        <button type="submit">Enter Chatroom</button>-->
-<!--    </form>-->
-<!--</div>-->
+<div class="user-form" id="username-page">
+    <h2>Enter Chatroom</h2>
+    <form id="usernameForm">
+        <label for="username">Name:</label>
+        <input type="text" id="username" name="userName" required>
+        <button type="submit">Enter Chatroom</button>
+    </form>
+</div>
 
 <div class="chat-container" id="chat-page">
 
