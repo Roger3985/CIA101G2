@@ -1,6 +1,4 @@
-package com.yu.rentalset.entity;
-
-import com.yu.rental.entity.Rental;
+package com.yu.rentSet.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;

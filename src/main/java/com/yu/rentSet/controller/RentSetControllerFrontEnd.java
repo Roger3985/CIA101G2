@@ -1,4 +1,4 @@
-package com.yu.rentalset.controller;
+package com.yu.rentSet.controller;
 
 public class RentSetControllerFrontEnd {
 }

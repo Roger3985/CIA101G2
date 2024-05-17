@@ -46,20 +46,11 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <th:block th:each="rentalMyFAV : ${rentalMyFAVList}">
+                                <th:block th:each="rentalMyFavorite : ${rentalMyFAVList}">
                                     <tr>
-                                        <td th:text="${rentalMyFAV.rentalNo}"></td>
-                                        <td th:text="${rentalMyFAV.memNo}"></td>
-                                        <td th:text="${rentalMyFAV.rentalFavTime}"></td>
-                                        <td>
-                                            <form method="post" th:action="@{getOneUpdate}">
-                                                <button type="submit" value="修改">
-                                                    <i class="fa-solid fa-pen-to-square"></i>
-                                                    <input type="hidden" name="rentalNo" value="${rental.rentalNo}">
-                                                    <input type="hidden" name="memNo" value="${rentalMyFAV.memNo}">
-                                                </button>
-                                            </form>
-                                        </td>
+                                        <td th:text="${rentalMyFavorite.rental.rentalNo} + '-[' + ${rentalMyFavorite.rental.rentalName} + ']'"></td>
+                                        <td th:text="${rentalMyFavorite.member.memNo} + '-[' + ${rentalMyFavorite.member.memName} + ']'"></td>
+                                        <td th:text="${rentalMyFavorite.rentalFavTime}"></td>
                                     </tr>
                                 </th:block>
                                 </tbody>
