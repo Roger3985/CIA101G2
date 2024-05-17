@@ -244,10 +244,18 @@ public class AdministratorController {
         }
     }
 
-    // 可以看到所有新增與修改的變更
+    // 工作清單網頁，可以看到所有新增與修改的變更與申請
     @GetMapping("/jobList")
     public String toJobList() {
         return "backend/administrator/jobList";
+    }
+
+    // 權限附予
+    @PostMapping("")
+    public String jobList() {
+
+
+        return "redirect:/backend/administrator/jobList";
     }
 
     // 同意該管理員的權限要求
@@ -259,14 +267,6 @@ public class AdministratorController {
         // 將Redis內的權限提高到請求的權限
         loginState.setTitleNo(titleNo);
         administratorSvc.storeLoginstateInRedis(admNo, loginState);
-
-        return "redirect:/backend/administrator/jobList";
-    }
-
-    // 權限附予
-    @PostMapping("")
-    public String jobList() {
-
 
         return "redirect:/backend/administrator/jobList";
     }

@@ -23,6 +23,14 @@ public class InitializerListener implements ServletContextListener {
     @Qualifier("admStrLogin")
     private RedisTemplate<String, LoginState> admRedisTemplate;
 
+    /**
+     * 當ServletContext啟動時，執行以下功能同步應用程式資料:
+     * 1.同步在線人數(當應用程式因某些原因重啟時不會遺失資料)
+     * (1)讀取上次應用程式關閉時統計的在線人數，存入ServletContext同步在線人數
+     * (2)讀取Redis內儲存的在線人數資料，存入ServletContext同步在線人數
+     *
+     * @param sce Information about the ServletContext that was initialized
+     */
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         // 獲得ServletContext物件
@@ -35,6 +43,12 @@ public class InitializerListener implements ServletContextListener {
         context.setAttribute("onlineAdms", onlineAdms);
     }
 
+    /**
+     * 當ServletContext關閉時，執行以下功能同步資料或關閉資源，或儲存檔案留作下次開始應用程式使用:
+     * 1.儲存線上人數檔案，於下次開始時讀取在線人數而不會導致資料遺失
+     *
+     * @param sce Information about the ServletContext that was destroyed
+     */
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         ServletContext context = sce.getServletContext();
