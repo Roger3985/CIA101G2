@@ -18,7 +18,10 @@ console.log("path=" + path);
 console.log("webCtx=" + endPointURL);
 console.log("endPointURL=" + endPointURL);
 
-const msgBody = document.querySelector("#chat-area");
+document.getElementById("messageForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+})
+
 let webSocket;
 
 function connect() {
@@ -35,21 +38,19 @@ function connect() {
         const messageContainer = document.createElement('div');
         messageContainer.innerHTML = message;
         chatArea.appendChild(messageContainer);
-        // chatArea.value = chatArea.value + message;
     }
-
-
 }
 
 messageInput.addEventListener("keyup", function (e) {
-    if (e.which == 13) {
+    console.log(e.which);
+    if(e.which == 13){
         el_msg_btn.click();
     }
-
-})
+});
 
 var el_msg_btn = document.getElementById("msg_btn");
 el_msg_btn.addEventListener("click", function () {
+    console.log("c9");
     const messageContent = messageInput.value.trim();
     console.log(messageContent);
     if (messageContent == "") {
@@ -64,13 +65,6 @@ el_msg_btn.addEventListener("click", function () {
         }
         webSocket.send(JSON.stringify(jsonobj))
     }
-})
-// function buildMessage(data){
-//     const messageContainer = document.createElement('div');
-//     messageContainer.classList.add('message');
-//     let jsonObj =data;
-//     let showMsg = jsonObj.message;
-//     let time = jsonObj
-// }
+});
 
 
