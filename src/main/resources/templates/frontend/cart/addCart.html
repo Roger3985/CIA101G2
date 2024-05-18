@@ -7,88 +7,6 @@
 
 
 
-<!--<!DOCTYPE html>-->
-<!--<html xmlns:th="http://www.thymeleaf.org">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
-<!--    <title>新增商品至購物車 </title>-->
-
-
-<!--    <style type="text/css">-->
-
-<!--        button {-->
-<!--            padding: 5px;-->
-<!--        }-->
-<!--        form {-->
-<!--            display: table;-->
-<!--        }-->
-<!--        form div {-->
-<!--            display: table-row;-->
-<!--        }-->
-<!--        label, input, span, select {-->
-<!--            display: table-cell;-->
-<!--            margin: 5px;-->
-<!--            text-align: left;-->
-<!--        }-->
-<!--        input[type=text], input[type=password], select, textarea {-->
-<!--            width: 200px;-->
-<!--            margin: 5px;-->
-<!--        }-->
-<!--        form div div {-->
-<!--            display: table-cell;-->
-<!--        }-->
-<!--        .center {-->
-<!--            margin-left: auto;-->
-<!--            margin-right: auto;-->
-<!--        }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-
-<!--<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">-->
-<!--    <div align="center"> <h2>新增商品至購物車 - addCart.html</h2>-->
-<!--        <h3><a class="navbar-brand" th:href="@{/productorder/select_page}"><img th:src="@{/images/back1.gif}">回查詢頁</a></h3></div>-->
-<!--</nav>-->
-
-<!--<div align="center">-->
-<!--    <h3><b>所有欄位皆為必填欄位</b></h3>-->
-<!--    <form th:action="@{/cart/addcartsuccess}" method="post" th:object="${cartRedis}" >-->
-<!--        <div>-->
-<!--            <label>商品編號:</label>-->
-<!--            <input type="text" th:field="*{productNo}" onclick="hideContent('productNo.errors');" /><br/>-->
-<!--            <span th:if="${#fields.hasErrors('productNo')}" th:errors="*{productNo}" class="error" id="productNo.errors"></span>-->
-<!--        </div>-->
-<!--        <div>-->
-<!--            <label>會員編號:</label>-->
-<!--            <input type="text" th:field="*{memNo}" onclick="hideContent('memNo.errors');" /><br/>-->
-<!--            <span th:if="${#fields.hasErrors('memNo')}" th:errors="*{memNo}" class="error" id="memNo.errors"></span>-->
-<!--        </div>-->
-
-<!--        <div>-->
-<!--            <label>購買數量:</label>-->
-<!--            <input type="text" th:field="*{productBuyQty}" onclick="hideContent('productOrdQty.errors');" /><br/>-->
-<!--            <span th:if="${#fields.hasErrors('productBuyQty')}" th:errors="*{productBuyQty}" class="error" id="productOrdQty.errors"></span>-->
-<!--        </div>-->
-<!--        <div>-->
-<!--            <div></div>-->
-<!--            <div><button type="submit" id="submit"> 送出新增 </button></div>-->
-<!--            <div></div>-->
-<!--        </div>-->
-<!--    </form>-->
-
-<!--</div>-->
-
-<!--</body>-->
-<!--</html>-->
-
-
-
-
-
-
-
-
 <!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
 <!--&lt;!&ndash;<html xmlns:th="http://www.thymeleaf.org">&ndash;&gt;-->
 <!--&lt;!&ndash;<head>&ndash;&gt;-->
@@ -135,16 +53,16 @@
 
 <!--&lt;!&ndash;<div align="center">&ndash;&gt;-->
 <!--&lt;!&ndash;    <h3><b>所有欄位皆為必填欄位</b></h3>&ndash;&gt;-->
-<!--&lt;!&ndash;    <form th:action="@{/cart/addcartsuccess}" method="post" th:object="${cart}" >&ndash;&gt;-->
+<!--&lt;!&ndash;    <form th:action="@{/cart/addcartsuccess}" method="post" th:object="${cartRedis}" >&ndash;&gt;-->
 <!--&lt;!&ndash;        <div>&ndash;&gt;-->
 <!--&lt;!&ndash;            <label>商品編號:</label>&ndash;&gt;-->
-<!--&lt;!&ndash;            <input type="text" th:field="*{compositeKey.productNo}" onclick="hideContent('compositeKey.productNo.errors');" /><br/>&ndash;&gt;-->
-<!--&lt;!&ndash;            <span th:if="${#fields.hasErrors('compositeKey.productNo')}" th:errors="*{compositeKey.productNo}" class="error" id="compositeKey.productNo.errors"></span>&ndash;&gt;-->
+<!--&lt;!&ndash;            <input type="text" th:field="*{productNo}" onclick="hideContent('productNo.errors');" /><br/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <span th:if="${#fields.hasErrors('productNo')}" th:errors="*{productNo}" class="error" id="productNo.errors"></span>&ndash;&gt;-->
 <!--&lt;!&ndash;        </div>&ndash;&gt;-->
 <!--&lt;!&ndash;        <div>&ndash;&gt;-->
 <!--&lt;!&ndash;            <label>會員編號:</label>&ndash;&gt;-->
-<!--&lt;!&ndash;            <input type="text" th:field="*{compositeKey.memNo}" onclick="hideContent('compositeKey.memNo.errors');" /><br/>&ndash;&gt;-->
-<!--&lt;!&ndash;            <span th:if="${#fields.hasErrors('compositeKey.memNo')}" th:errors="*{compositeKey.memNo}" class="error" id="compositeKey.memNo.errors"></span>&ndash;&gt;-->
+<!--&lt;!&ndash;            <input type="text" th:field="*{memNo}" onclick="hideContent('memNo.errors');" /><br/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <span th:if="${#fields.hasErrors('memNo')}" th:errors="*{memNo}" class="error" id="memNo.errors"></span>&ndash;&gt;-->
 <!--&lt;!&ndash;        </div>&ndash;&gt;-->
 
 <!--&lt;!&ndash;        <div>&ndash;&gt;-->
@@ -163,149 +81,231 @@
 
 <!--&lt;!&ndash;</body>&ndash;&gt;-->
 <!--&lt;!&ndash;</html>&ndash;&gt;-->
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新增商品</title>
-    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
-    <style>
-        .error {
-            font-size: 12px; /* 調整字體大小 */
-        }
-    </style>
-</head>
-
-<body id="page-top">
-<!-- Page Wrapper -->
-<div id="wrapper">
-    <!-- Sidebar -->
-    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
-    <!-- End of Sidebar -->
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-        <!-- Main Content -->
-        <div id="content">
-            <!-- Topbar -->
-            <nav th:replace="backend/component/nav :: nav"></nav>
-            <!-- End of Topbar -->
-            <!-- Begin Page Content -->
-            <div class="container-fluid">
-                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
-                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
-                <form method="post" th:action="@{addcartsuccess}" th:object="${cartRedis}">
-                    <div>
-                        <label>商品編號:</label>
-                        <input type="text" th:field="*{productNo}" onclick="hideContent('productNo.errors');" /><br/>
-                        <span th:if="${#fields.hasErrors('productNo')}" th:errors="*{productNo}" class="error" id="productNo.errors"></span>
-                    </div>
-                    <div>
-                        <label>會員編號:</label>
-                        <input type="text" th:field="*{memNo}" onclick="hideContent('memNo.errors');" /><br/>
-                        <span th:if="${#fields.hasErrors('memNo')}" th:errors="*{memNo}" class="error" id="memNo.errors"></span>
-                    </div>
-
-                    <div>
-                        <label>購買數量:</label>
-                        <input type="text" th:field="*{productBuyQty}" onclick="hideContent('productOrdQty.errors');" /><br/>
-                        <span th:if="${#fields.hasErrors('productBuyQty')}" th:errors="*{productBuyQty}" class="error" id="productOrdQty.errors"></span>
-                    </div>
 
 
-                    <div class="mb-3 row">
-                        <label for="productName" class="col-sm-2 col-form-label">商品名稱</label>
-                        <div class="col-sm-3">
-                            <input type="text" th:field="*{productName}" class="form-control" name="productName" id="productName">
-                            <span th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}" class="error" id="productName.errors"></span>
-                        </div>
-                    </div>
-
-                    <div class="mb-3 row">
-                        <label for="productSize" class="col-sm-2 col-form-label">尺寸</label>
-                        <div class="col-sm-3">
-                            <select size="1" name="productSize" id="productSize" th:field="*{productSize}">
-                                <option th:value="${0}" th:text="XS"></option>
-                                <option th:value="${1}" th:text="S"></option>
-                                <option th:value="${2}" th:text="M"></option>
-                                <option th:value="${3}" th:text="L"></option>
-                                <option th:value="${4}" th:text="XL"></option>
-                                <option th:value="${5}" th:text="2L"></option>
-                            </select>
-
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="productColor" class="col-sm-2 col-form-label">顏色</label>
-                        <div class="col-sm-3">
-                            <input type="text" th:field="*{productColor}" class="form-control" name="productColor" id="productColor">
-                            <span th:if="${#fields.hasErrors('productColor')}" th:errors="*{productColor}" class="error" id="productColor.errors"></span>
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="productPrice" class="col-sm-2 col-form-label">商品單價</label>
-                        <div class="col-sm-3">
-                            <input type="text" th:field="*{productPrice}" class="form-control" name="productPrice" id="productPrice">
-                            <span th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}" class="error" id="productPrice.errors"></span>
-                        </div>
-                    </div>
 
 
-                    <div>
-                        <div><button type="submit" id="submit"> 送出新增 </button></div>
-                    </div>
-                </form>
-            </div>
-            <!-- /.container-fluid -->
-        </div>
-        <!-- End of Main Content -->
 
-        <!-- Footer -->
-        <footer th:replace="backend/component/bottom :: bottom"></footer>
-        <!-- End of Footer -->
-    </div>
-    <!-- End of Content Wrapper -->
-</div>
-<!-- End of Page Wrapper -->
 
-<!-- Scroll to Top Button-->
-<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
-<!-- Logout Modal-->
-<div th:replace="backend/component/logout :: logout"></div>
 
-<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
-<!--<script>-->
-<!--    document.addEventListener("DOMContentLoaded", function() {-->
-<!--        // 在這裡放置你的 AJAX 請求代碼-->
-<!--        var selectedProductNo = document.getElementById('productSelect').value;-->
-<!--        sendAjaxRequest(selectedProductNo);-->
-<!--    });-->
 
-<!--    function sendAjaxRequest(selectedProductNo) {-->
-<!--        var xhr = new XMLHttpRequest();-->
-<!--        xhr.open('POST', '/backend/product/getProductDetails?productNo=' + encodeURIComponent(selectedProductNo), true);-->
-<!--        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');-->
-<!--        xhr.onload = function () {-->
-<!--            if (xhr.status === 200) {-->
-<!--                var productDetails = JSON.parse(xhr.responseText);-->
+<!--&lt;!&ndash;&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;<html xmlns:th="http://www.thymeleaf.org">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;<head>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    <meta charset="UTF-8">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    <title>新增商品至購物車 </title>&ndash;&gt;&ndash;&gt;-->
 
-<!--                document.getElementById('productCatNo').value = productDetails.productCategory.productCatNo;-->
-<!--                document.getElementById('productName').value = productDetails.productName;-->
-<!--                document.getElementById('productInfo').value = productDetails.productInfo;-->
-<!--                document.getElementById('productSize').value = productDetails.productSize;-->
-<!--                document.getElementById('productColor').value = productDetails.productColor;-->
-<!--                document.getElementById('productPrice').value = productDetails.productPrice;-->
-<!--                document.getElementById('productStat').value = productDetails.productStat;-->
-<!--                document.getElementById('productSalQty').value = productDetails.productSalQty;-->
-<!--                document.getElementById('productComPeople').value = productDetails.productComPeople;-->
-<!--                document.getElementById('productComScore').value = productDetails.productComScore;-->
-<!--            } else {-->
-<!--                console.error('Failed to fetch product details');-->
-<!--            }-->
-<!--        };-->
 
-<!--        xhr.send();-->
-<!--    }-->
-<!--</script>-->
-</body>
-</html>
+<!--&lt;!&ndash;&lt;!&ndash;    <style type="text/css">&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;        button {&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            padding: 5px;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        }&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        form {&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            display: table;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        }&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        form div {&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            display: table-row;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        }&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        label, input, span, select {&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            display: table-cell;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            margin: 5px;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            text-align: left;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        }&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        input[type=text], input[type=password], select, textarea {&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            width: 200px;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            margin: 5px;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        }&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        form div div {&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            display: table-cell;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        }&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        .center {&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            margin-left: auto;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            margin-right: auto;&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        }&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    </style>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;</head>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;<body>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;<nav class="navbar navbar-expand-md navbar-dark bg-success fixed-top justify-content-center">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    <div align="center"> <h2>新增商品至購物車 - addCart.html</h2>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <h3><a class="navbar-brand" th:href="@{/productorder/select_page}"><img th:src="@{/images/back1.gif}">回查詢頁</a></h3></div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;</nav>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;<div align="center">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    <h3><b>所有欄位皆為必填欄位</b></h3>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    <form th:action="@{/cart/addcartsuccess}" method="post" th:object="${cart}" >&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <label>商品編號:</label>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <input type="text" th:field="*{compositeKey.productNo}" onclick="hideContent('compositeKey.productNo.errors');" /><br/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <span th:if="${#fields.hasErrors('compositeKey.productNo')}" th:errors="*{compositeKey.productNo}" class="error" id="compositeKey.productNo.errors"></span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <label>會員編號:</label>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <input type="text" th:field="*{compositeKey.memNo}" onclick="hideContent('compositeKey.memNo.errors');" /><br/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <span th:if="${#fields.hasErrors('compositeKey.memNo')}" th:errors="*{compositeKey.memNo}" class="error" id="compositeKey.memNo.errors"></span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;        <div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <label>購買數量:</label>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <input type="text" th:field="*{productBuyQty}" onclick="hideContent('productOrdQty.errors');" /><br/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <span th:if="${#fields.hasErrors('productBuyQty')}" th:errors="*{productBuyQty}" class="error" id="productOrdQty.errors"></span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <div></div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <div><button type="submit" id="submit"> 送出新增 </button></div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <div></div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;    </form>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;</body>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;</html>&ndash;&gt;&ndash;&gt;-->
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>新增商品</title>-->
+<!--    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>-->
+<!--    <style>-->
+<!--        .error {-->
+<!--            font-size: 12px; /* 調整字體大小 */-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+
+<!--<body id="page-top">-->
+<!--&lt;!&ndash; Page Wrapper &ndash;&gt;-->
+<!--<div id="wrapper">-->
+<!--    &lt;!&ndash; Sidebar &ndash;&gt;-->
+<!--    <ul th:replace="backend/component/sidebar :: sidebar"></ul>-->
+<!--    &lt;!&ndash; End of Sidebar &ndash;&gt;-->
+<!--    &lt;!&ndash; Content Wrapper &ndash;&gt;-->
+<!--    <div id="content-wrapper" class="d-flex flex-column">-->
+<!--        &lt;!&ndash; Main Content &ndash;&gt;-->
+<!--        <div id="content">-->
+<!--            &lt;!&ndash; Topbar &ndash;&gt;-->
+<!--            <nav th:replace="backend/component/nav :: nav"></nav>-->
+<!--            &lt;!&ndash; End of Topbar &ndash;&gt;-->
+<!--            &lt;!&ndash; Begin Page Content &ndash;&gt;-->
+<!--            <div class="container-fluid">-->
+<!--                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>-->
+<!--                &lt;!&ndash; 內容請填這裡~~~~~~~~~~~~~~~ &ndash;&gt;-->
+<!--                <form method="post" th:action="@{addcartsuccess}" th:object="${cartRedis}">-->
+<!--                    <div>-->
+<!--                        <label>商品編號:</label>-->
+<!--                        <input type="text" th:field="*{productNo}" onclick="hideContent('productNo.errors');" /><br/>-->
+<!--                        <span th:if="${#fields.hasErrors('productNo')}" th:errors="*{productNo}" class="error" id="productNo.errors"></span>-->
+<!--                    </div>-->
+<!--                    <div>-->
+<!--                        <label>會員編號:</label>-->
+<!--                        <input type="text" th:field="*{memNo}" onclick="hideContent('memNo.errors');" /><br/>-->
+<!--                        <span th:if="${#fields.hasErrors('memNo')}" th:errors="*{memNo}" class="error" id="memNo.errors"></span>-->
+<!--                    </div>-->
+
+<!--                    <div>-->
+<!--                        <label>購買數量:</label>-->
+<!--                        <input type="text" th:field="*{productBuyQty}" onclick="hideContent('productOrdQty.errors');" /><br/>-->
+<!--                        <span th:if="${#fields.hasErrors('productBuyQty')}" th:errors="*{productBuyQty}" class="error" id="productOrdQty.errors"></span>-->
+<!--                    </div>-->
+
+
+<!--                    <div class="mb-3 row">-->
+<!--                        <label for="productName" class="col-sm-2 col-form-label">商品名稱</label>-->
+<!--                        <div class="col-sm-3">-->
+<!--                            <input type="text" th:field="*{productName}" class="form-control" name="productName" id="productName">-->
+<!--                            <span th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}" class="error" id="productName.errors"></span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="mb-3 row">-->
+<!--                        <label for="productSize" class="col-sm-2 col-form-label">尺寸</label>-->
+<!--                        <div class="col-sm-3">-->
+<!--                            <select size="1" name="productSize" id="productSize" th:field="*{productSize}">-->
+<!--                                <option th:value="${0}" th:text="XS"></option>-->
+<!--                                <option th:value="${1}" th:text="S"></option>-->
+<!--                                <option th:value="${2}" th:text="M"></option>-->
+<!--                                <option th:value="${3}" th:text="L"></option>-->
+<!--                                <option th:value="${4}" th:text="XL"></option>-->
+<!--                                <option th:value="${5}" th:text="2L"></option>-->
+<!--                            </select>-->
+
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="mb-3 row">-->
+<!--                        <label for="productColor" class="col-sm-2 col-form-label">顏色</label>-->
+<!--                        <div class="col-sm-3">-->
+<!--                            <input type="text" th:field="*{productColor}" class="form-control" name="productColor" id="productColor">-->
+<!--                            <span th:if="${#fields.hasErrors('productColor')}" th:errors="*{productColor}" class="error" id="productColor.errors"></span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="mb-3 row">-->
+<!--                        <label for="productPrice" class="col-sm-2 col-form-label">商品單價</label>-->
+<!--                        <div class="col-sm-3">-->
+<!--                            <input type="text" th:field="*{productPrice}" class="form-control" name="productPrice" id="productPrice">-->
+<!--                            <span th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}" class="error" id="productPrice.errors"></span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+
+<!--                    <div>-->
+<!--                        <div><button type="submit" id="submit"> 送出新增 </button></div>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; /.container-fluid &ndash;&gt;-->
+<!--        </div>-->
+<!--        &lt;!&ndash; End of Main Content &ndash;&gt;-->
+
+<!--        &lt;!&ndash; Footer &ndash;&gt;-->
+<!--        <footer th:replace="backend/component/bottom :: bottom"></footer>-->
+<!--        &lt;!&ndash; End of Footer &ndash;&gt;-->
+<!--    </div>-->
+<!--    &lt;!&ndash; End of Content Wrapper &ndash;&gt;-->
+<!--</div>-->
+<!--&lt;!&ndash; End of Page Wrapper &ndash;&gt;-->
+
+<!--&lt;!&ndash; Scroll to Top Button&ndash;&gt;-->
+<!--<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>-->
+<!--&lt;!&ndash; Logout Modal&ndash;&gt;-->
+<!--<div th:replace="backend/component/logout :: logout"></div>-->
+
+<!--<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>-->
+<!--&lt;!&ndash;<script>&ndash;&gt;-->
+<!--&lt;!&ndash;    document.addEventListener("DOMContentLoaded", function() {&ndash;&gt;-->
+<!--&lt;!&ndash;        // 在這裡放置你的 AJAX 請求代碼&ndash;&gt;-->
+<!--&lt;!&ndash;        var selectedProductNo = document.getElementById('productSelect').value;&ndash;&gt;-->
+<!--&lt;!&ndash;        sendAjaxRequest(selectedProductNo);&ndash;&gt;-->
+<!--&lt;!&ndash;    });&ndash;&gt;-->
+
+<!--&lt;!&ndash;    function sendAjaxRequest(selectedProductNo) {&ndash;&gt;-->
+<!--&lt;!&ndash;        var xhr = new XMLHttpRequest();&ndash;&gt;-->
+<!--&lt;!&ndash;        xhr.open('POST', '/backend/product/getProductDetails?productNo=' + encodeURIComponent(selectedProductNo), true);&ndash;&gt;-->
+<!--&lt;!&ndash;        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');&ndash;&gt;-->
+<!--&lt;!&ndash;        xhr.onload = function () {&ndash;&gt;-->
+<!--&lt;!&ndash;            if (xhr.status === 200) {&ndash;&gt;-->
+<!--&lt;!&ndash;                var productDetails = JSON.parse(xhr.responseText);&ndash;&gt;-->
+
+<!--&lt;!&ndash;                document.getElementById('productCatNo').value = productDetails.productCategory.productCatNo;&ndash;&gt;-->
+<!--&lt;!&ndash;                document.getElementById('productName').value = productDetails.productName;&ndash;&gt;-->
+<!--&lt;!&ndash;                document.getElementById('productInfo').value = productDetails.productInfo;&ndash;&gt;-->
+<!--&lt;!&ndash;                document.getElementById('productSize').value = productDetails.productSize;&ndash;&gt;-->
+<!--&lt;!&ndash;                document.getElementById('productColor').value = productDetails.productColor;&ndash;&gt;-->
+<!--&lt;!&ndash;                document.getElementById('productPrice').value = productDetails.productPrice;&ndash;&gt;-->
+<!--&lt;!&ndash;                document.getElementById('productStat').value = productDetails.productStat;&ndash;&gt;-->
+<!--&lt;!&ndash;                document.getElementById('productSalQty').value = productDetails.productSalQty;&ndash;&gt;-->
+<!--&lt;!&ndash;                document.getElementById('productComPeople').value = productDetails.productComPeople;&ndash;&gt;-->
+<!--&lt;!&ndash;                document.getElementById('productComScore').value = productDetails.productComScore;&ndash;&gt;-->
+<!--&lt;!&ndash;            } else {&ndash;&gt;-->
+<!--&lt;!&ndash;                console.error('Failed to fetch product details');&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+<!--&lt;!&ndash;        };&ndash;&gt;-->
+
+<!--&lt;!&ndash;        xhr.send();&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+<!--&lt;!&ndash;</script>&ndash;&gt;-->
+<!--</body>-->
+<!--</html>-->

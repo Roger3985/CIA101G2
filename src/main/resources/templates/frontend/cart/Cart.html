@@ -26,125 +26,129 @@
     Wrapper
 ========================
 -->
-<div class="wrapper">
-    <!-- Header -->
-    <header th:replace="frontend/component/header :: header"></header>
-    <!-- End Header -->
-    <!-- Main -->
-    <main>
-        <!-- Page Title -->
-        <div class="bg-no-repeat bg-cover bg-right-center position-relative">
-            <div class="position-absolute top-0 end-0 start-0 bottom-0 opacity-3 bg-dark"></div>
-            <!-- Header Height Bar -->
-            <div class="header-height-bar border-bottom opacity-3" style="min-height: 104.865px;"></div>
-            <div class="container py-6 position-relative">
-                <div class="row align-items-center">
-                    <div class="col-lg-6 my-2">
-                        <h1 class="m-0 h4 text-center text-lg-start text-white">Your cart</h1>
-                    </div>
-                    <div class="col-lg-6 my-2">
-                        <ol
-                                class="breadcrumb breadcrumb-light m-0 small justify-content-center justify-content-lg-end">
-                            <li class="breadcrumb-item"><a class="text-nowrap" href="#">Home</a></li>
-                            <li class="breadcrumb-item text-nowrap active" aria-current="page">Your cart</li>
-                        </ol>
-                    </div>
+
+<!-- Header -->
+<header th:replace="frontend/component/header :: header"></header>
+<!-- End Header -->
+<!-- Main -->
+<main>
+    <!-- Page Title -->
+    <div class="bg-no-repeat bg-cover bg-right-center position-relative">
+        <div class="position-absolute top-0 end-0 start-0 bottom-0 opacity-3 bg-dark"></div>
+        <!-- Header Height Bar -->
+        <div class="header-height-bar border-bottom opacity-3" style="min-height: 104.865px;"></div>
+        <div class="container py-6 position-relative">
+            <div class="row align-items-center">
+                <div class="col-lg-6 my-2">
+                    <h1 class="m-0 h4 text-center text-lg-start text-white">Your cart</h1>
+                </div>
+                <div class="col-lg-6 my-2">
+                    <ol
+                            class="breadcrumb breadcrumb-light m-0 small justify-content-center justify-content-lg-end">
+                        <li class="breadcrumb-item"><a class="text-nowrap" href="#">Home</a></li>
+                        <li class="breadcrumb-item text-nowrap active" aria-current="page">Your cart</li>
+                    </ol>
                 </div>
             </div>
         </div>
-    </main>
-        <!-- End Page Title -->
-        <!-- Section -->
+    </div>
+</main>
+<!-- End Page Title -->
+<!-- Section -->
+<!--    <p style="display: none" th:text="${memNo}" id="memNo"></p>-->
+<form th:action="@{/frontend/productorder/insertOrder}" method="post" th:object="${cartListData}"
+      onsubmit="return validateForm()">>
+    <table class="table">
+        <thead>
+        <tr>
+            <!--                <th>會員編號</th>-->
+            <th>商品圖片</th>
+            <th>商品</th>
+            <th>顏色</th>
+            <th>大小</th>
+            <th>單價</th>
+            <th>數量</th>
+            <th>總計</th>
+            <th>操作</th>
+        </tr>
+        </thead>
 
-        <form th:action="@{/frontend/productorder/insertOrder}" method="post" th:object="${cartListData}">
-            <table class="table">
-                <thead>
-                <tr>
-                    <!--                <th>會員編號</th>-->
-                    <!--                <th>商品編號</th>-->
-                    <th>商品</th>
-                    <th>顏色</th>
-                    <th>大小</th>
-                    <th>單價</th>
-                    <th>數量</th>
-                    <th>總計</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
+        <tbody class="align-middle" id="CartData">
+        <th:block th:each="cart, stat : ${cartListData}">
 
-                <tbody class="align-middle" id="parentOfProductAllPrice">
-                <th:block th:each="cart: ${cartListData}">
-                    <tr class="productitm">
+            <tr class="productitm">
+                <td>
+                    <img th:src="'data:image/jpeg;base64,' + ${session.productImages[stat.index]}"
+                         alt="Product Picture"/>
+                </td>
+                <td class="align-middle" th:id="productName" th:text="${cart.productName}"></td>
+                <td class="align-middle" th:id="productColor" th:text="${cart.productColor}"></td>
+                <td id="productSize">
+                    <span th:if="${cart.productSize == 0}">XS</span>
+                    <span th:if="${cart.productSize == 1}">S</span>
+                    <span th:if="${cart.productSize == 2}">M</span>
+                    <span th:if="${cart.productSize == 3}">L</span>
+                    <span th:if="${cart.productSize == 4}">XL</span>
+                    <span th:if="${cart.productSize == 5}">2L</span>
+                </td>
+                <td class="price" th:id="productPrice" name="productPrice" th:text="${cart.productPrice}"></td>
+                <td class="align-middle">
+                    <div class="cart-qty-01">
+                        <button type="button" class="inc qty-btn" onclick="updateQuantity(this, -1)">
+                            <i class="bi bi-caret-down-fill"></i>
+                        </button>
+                        <input class="cart-qty-input form-control" type="text" name="productBuyQty"
+                               th:value="${cart.productBuyQty}" onchange="updateBackendQuantity(this)">
 
-                        <td class="align-middle" th:id="productName" th:text="${cart.productName}"></td>
-                        <td class="align-middle" th:id="productColor" th:text="${cart.productColor}"></td>
-                        <td id="productSize">
-                            <span th:if="${cart.productSize == 0}">XS</span>
-                            <span th:if="${cart.productSize == 1}">S</span>
-                            <span th:if="${cart.productSize == 2}">M</span>
-                            <span th:if="${cart.productSize == 3}">L</span>
-                            <span th:if="${cart.productSize == 4}">XL</span>
-                            <span th:if="${cart.productSize == 5}">2L</span>
-                        </td>
-                        <td class="price" th:id="productPrice" name="productPrice" th:text="${cart.productPrice}"></td>
-                        <td class="align-middle">
-                            <div class="cart-qty-01">
-                                <button type="button" class="inc qty-btn" onclick="updateQuantity(this, -1)">
-                                    <i class="bi bi-caret-down-fill"></i>
-                                </button>
-                                <input class="cart-qty-input form-control" type="text" name="productBuyQty"
-                                       th:value="${cart.productBuyQty}" onchange="updateBackendQuantity(this)">
-
-                                <button type="button" class="dec qty-btn" onclick="updateQuantity(this, 1)">
-                                    <i class="bi bi-caret-up-fill"></i>
-                                </button>
-                            </div>
-                        </td>
-                        <td class="align-middle " th:id="productAllPrice" name="productAllPrice"
-                            th:text="'$' + ${cart.productBuyQty * cart.productPrice}" th:onchange="updatePrice()"></td>
-                        <td class="align-middle">
-
-                            <input type="hidden" name="productNo" th:value="${cart.productNo}"/>
-                            <input type="hidden" name="memNo" th:value="${cart.memNo}"/>
-                            <button class="btn btn-link px-0 text-danger btn btn-sm btn-primary btn-remove"
-                                    type="button" onclick="deleteProduct(this)">
-                                <i class="bi-trash3 me-2"></i>
-                                <span class="">Remove</span>
-                            </button>
-                        </td>
-                    </tr>
-                </th:block>
-                </tbody>
-
-            </table>
-
-            <div class="card">
-                <div class="card-header bg-transparent py-3">
-                    <h6 class="m-0 h5">商品金額</h6>
-                </div>
-                <div class="card-body">
-                    <ul class="list-unstyled">
-                        <li class="d-flex justify-content-between align-items-center mb-2">
-                            <h6 class="me-2 text-body">商品總金額</h6>
-                            <h6 class="font-weight-medium text-end" id="allprice"></h6>
-                        </li>
-                    </ul>
-                    <div class="pt-2 pb-4">
-                        <div class="d-flex">
-
-                            <button class="btn btn-dark btn-sm ms-2">結帳</button>
-                        </div>
+                        <button type="button" class="dec qty-btn" onclick="updateQuantity(this, 1)">
+                            <i class="bi bi-caret-up-fill"></i>
+                        </button>
                     </div>
+                </td>
+                <td class="align-middle " th:id="productAllPrice" name="productAllPrice"
+                    th:text="'$' + ${cart.productBuyQty * cart.productPrice}" th:onchange="updatePrice()"></td>
+                <td class="align-middle">
 
+                    <input type="hidden" name="productNo" th:value="${cart.productNo}"/>
+                    <input type="hidden" name="memNo" th:value="${cart.memNo}"/>
+                    <button class="btn btn-link px-0 text-danger btn btn-sm btn-primary btn-remove"
+                            type="button" onclick="deleteProduct(this)">
+                        <i class="bi-trash3 me-2"></i>
+                        <span class="">Remove</span>
+                    </button>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+
+    </table>
+
+    <div class="card">
+        <div class="card-header bg-transparent py-3">
+            <h6 class="m-0 h5">商品金額</h6>
+        </div>
+        <div class="card-body">
+            <ul class="list-unstyled">
+                <li class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="me-2 text-body">商品總金額</h6>
+                    <h6 class="font-weight-medium text-end" id="allprice"></h6>
+                </li>
+            </ul>
+            <div class="pt-2 pb-4">
+                <div class="d-flex">
+
+                    <button class="btn btn-dark btn-sm ms-2">結帳</button>
                 </div>
             </div>
-        </form>
 
-            <div class="col-md-4 mb-5">
-                <h5 class="font-weight-bold text-dark mb-4">Newsletter</h5>
+        </div>
+    </div>
+</form>
 
-            </div>
+<div class="col-md-4 mb-5">
+    <h5 class="font-weight-bold text-dark mb-4">Newsletter</h5>
 
+</div>
 
 
 <!-- End Section -->
@@ -180,7 +184,7 @@
 
 <!-- Template Javascript -->
 
-<script>
+<script th:inline="javascript">
 
     function updateQuantity(button, change) {
         var input = button.parentNode.querySelector('.cart-qty-input');
@@ -201,7 +205,8 @@
         totalPriceElement.textContent = '$' + total;
         updateAllPrice()
     }
-    window.onload = function() {
+
+    window.onload = function () {
         updateAllPrice();
     };
 
@@ -209,7 +214,7 @@
         var allPriceElements = document.querySelectorAll('#productAllPrice');
         var totalPrice = 0;
         // 遍历每个商品的总价元素，并累加到总价中
-        allPriceElements.forEach(function(element) {
+        allPriceElements.forEach(function (element) {
             var price = parseFloat(element.textContent.replace('$', ''));
             totalPrice += price;
         });
@@ -217,7 +222,6 @@
         var totalPriceElement = document.getElementById('allprice');
         totalPriceElement.textContent = '$' + totalPrice;
     }
-
 
 
     function updateBackendQuantity(input) {
@@ -235,16 +239,15 @@
                 memNo: memNo,
                 productNo: productNo,
             },
-            success: function(data) {
+            success: function (data) {
                 console.log("更新成功");
                 updateTotalPrice(); // 更新总价
             },
-            error: function() {
+            error: function () {
                 console.error('更新失败');
             }
         });
     }
-
 
     function deleteProduct(button) {
         var row = button.closest('.productitm');
@@ -259,15 +262,32 @@
                 productNo: productNo,
                 memNo: memNo
             },
-            success: function(data) {
+            success: function (data) {
                 row.remove(); // 删除对应行
                 console.log("删除成功");
-                updateTotalPrice(); // 更新总价
+                updateAllPrice(); // 更新总价
+                location.reload(); // 重新加载页面
             },
-            error: function() {
+            error: function () {
                 console.error('删除失败');
             }
         });
+    }
+
+    // 检查是否有商品
+    function checkCartNotEmpty() {
+        var cartItems = /*[[ ${cartListData} ]]*/ []; // 从Thymeleaf中获取购物车数据
+        if (cartItems.length === 0) {
+            // 没有商品时触发警告
+            alert("您的購物車為空，請先添加商品！");
+            return false; // 返回 false 阻止表单提交
+        }
+        return true; // 返回 true 表示可以提交表单
+    }
+
+    // 表单提交前的验证
+    function validateForm() {
+        return checkCartNotEmpty(); // 调用检查购物车是否为空的函数
     }
 
 </script>

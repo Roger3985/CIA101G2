@@ -72,10 +72,17 @@ import com.iting.cart.entity.CartRedis;
 import com.iting.cart.redis.JedisPoolUtil;
 import com.iting.cart.service.CartService;
 
+import com.ren.product.entity.Product;
+import com.ren.product.service.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -85,22 +92,25 @@ import java.math.BigDecimal;
 
 @Service("CartService")
 public class CartServiceImpl implements CartService {
-
+    @Autowired
+    ProductServiceImpl productService;
     @Autowired
     private CartRepository repository;
 
     private final JedisPool jedisPool = JedisPoolUtil.getJedisPool();
+
     @Override
     public void addCart(CartRedis cart) {
         try (Jedis jedis = jedisPool.getResource()) {
             String cartKey = "cart:" + cart.getMemNo();
             String productKey = cart.generateId(cart.getProductNo(), cart.getMemNo());
+            Product product = productService.getOneProduct(cart.getProductNo());
             jedis.hset(productKey, "memNo", String.valueOf(cart.getMemNo()));
-            jedis.hset(productKey, "productNo", String.valueOf(cart.getProductNo()));
-            jedis.hset(productKey, "productName", String.valueOf(cart.getProductName()));
-            jedis.hset(productKey, "productSize",String.valueOf (cart.getProductSize()));
-            jedis.hset(productKey, "productColor", String.valueOf(cart.getProductColor()));
-            jedis.hset(productKey, "productPrice", String.valueOf(cart.getProductPrice()));
+            jedis.hset(productKey, "productNo", String.valueOf(product.getProductNo()));
+            jedis.hset(productKey, "productName", String.valueOf(product.getProductName()));
+            jedis.hset(productKey, "productSize", String.valueOf(product.getProductSize()));
+            jedis.hset(productKey, "productColor", String.valueOf(product.getProductColor()));
+            jedis.hset(productKey, "productPrice", String.valueOf(product.getProductPrice()));
             jedis.hset(productKey, "productBuyQty", String.valueOf(cart.getProductBuyQty()));
 
             jedis.sadd(cartKey, productKey);
@@ -108,6 +118,7 @@ public class CartServiceImpl implements CartService {
             e.printStackTrace();
         }
     }
+
     @Override
     public void addCart(List<CartRedis> cartList) {
         try (Jedis jedis = jedisPool.getResource()) {
@@ -151,22 +162,22 @@ public class CartServiceImpl implements CartService {
         }
 
 
-}
+    }
+
     @Override
-    public void updateCart(Integer productNo,Integer memNo,Integer productBuyQty) {
+    public void updateCart(Integer productNo, Integer memNo, Integer productBuyQty) {
         try (Jedis jedis = jedisPool.getResource()) {
-            CartRedis cartRedis=new CartRedis();
+            CartRedis cartRedis = new CartRedis();
             String productKey = cartRedis.generateId(productNo, memNo);
             jedis.hset(productKey, "productBuyQty", String.valueOf(productBuyQty));
-            }
-
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
 
     }
-//    @Override
+
+    //    @Override
 //    public void deleteBymemNo(Integer memNo) {
 //        try (Jedis jedis = jedisPool.getResource()) {
 //            // 删除整个用户的购物车，需要知道用户的 id
@@ -178,21 +189,22 @@ public class CartServiceImpl implements CartService {
 //        }
 //    }
 //
-@Override
-public void deleteBymemNoAndProductNo(Integer memNo, Integer productNo) {
+    @Override
+    public void deleteBymemNoAndProductNo(Integer memNo, Integer productNo) {
 
-    try (Jedis jedis = jedisPool.getResource()) {
-        // 生成 memNo 和 productNo 鍵
-        String productKey = "cart:" + memNo + ":" + productNo;
-        // 從購物車中刪除商品資訊
+        try (Jedis jedis = jedisPool.getResource()) {
+            // 生成 memNo 和 productNo 鍵
+            String productKey = "cart:" + memNo + ":" + productNo;
+            // 從購物車中刪除商品資訊
 
-        jedis.del(productKey);
+            jedis.del(productKey);
 
-    } catch (Exception e) {
+        } catch (Exception e) {
 
-        e.printStackTrace();
+            e.printStackTrace();
+        }
     }
-}
+
     @Override
     public void deleteBymemNo(Integer memNo) {
         try (Jedis jedis = jedisPool.getResource()) {
@@ -207,7 +219,6 @@ public void deleteBymemNoAndProductNo(Integer memNo, Integer productNo) {
             e.printStackTrace();
         }
     }
-
 
 
     @Override
@@ -274,7 +285,6 @@ public void deleteBymemNoAndProductNo(Integer memNo, Integer productNo) {
         return cartItems;
     }
 
-
 //    @Override
 //    public void createOrderFromCart(Integer memNo) {
 //        // Retrieve cart items from Redis
@@ -297,10 +307,9 @@ public void deleteBymemNoAndProductNo(Integer memNo, Integer productNo) {
 //    }
 
 
-
-        private String generateProductKey(Integer productNo) {
-            return "product:" + productNo;
-        }
+    private String generateProductKey(Integer productNo) {
+        return "product:" + productNo;
+    }
 
 }
 //    }

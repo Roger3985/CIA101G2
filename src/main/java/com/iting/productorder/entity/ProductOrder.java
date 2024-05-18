@@ -26,20 +26,20 @@ public class ProductOrder {
     private Member member;
 
     @Column(name = "productbyrname")
-//    @NotBlank(message = "訂購人姓名: 請勿空白")
+    @NotBlank(message = "訂購人姓名: 請勿空白")
     @Pattern(regexp = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_\\s)]{4,40}$", message = "姓名: 只能是中、英文字母、數字、_ 和空格")
     private String productByrName;
 
 
     @Column(name = "productbyrphone")
-//    @NotBlank(message="訂購人手機: 請勿空白")
-    @Pattern(regexp = "^[((0-9)]{4,20}$", message = "只能是數字")
+    @NotBlank(message = "訂購人手機: 請勿空白")
+    @Pattern(regexp = "^[0-9]{4,20}$", message = "只能是數字")
     private String productByrPhone;
 
 
     @Column(name = "productbyremail")
     @Email(message="請填入正確信箱格式")
-//    @NotBlank(message="訂購人信箱: 請勿空白")
+    @NotBlank(message="訂購人信箱: 請勿空白")
     private String productByrEmail;
 
     @Column(name = "productrcvname")
