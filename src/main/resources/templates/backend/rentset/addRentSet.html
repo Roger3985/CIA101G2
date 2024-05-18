@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新增租借方案</title>
+    <title>新增租借方案資料</title>
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <style>
         *{
@@ -36,36 +36,40 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">新增租借方案</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">新增租借方案資料</h6>
                     </div>
                     <div class="a">
-                        <ul>
+                        <div>
                             <form id="form" method="post" th:action="@{addRentSet}" th:object="${rentSet}">
-                                <li>
-                                    選擇租借品訂單編號:
+                                <div>
+                                    <label>選擇租借品訂單編號:</label>
                                     <select name="rentalOrdNo" id="rentalOrdNo" th:field="*{rentalOrdNo}"> <!--th:field，表單元素&數據綁定-->
-                                        <option value="3" selected>請選擇</option>
-                                        <option th:each="rentalOrder : ${rentalOrderListData}" th:value="${rentalOrder.rentalOrdNo}" th:text="${rentalOrder.rentalOrdNo}" />
+                                        <option value="0">請選擇</option>
+                                        <option th:each="rentalOrder : ${rentalOrderListData}" th:value="${rentSet.rentalOrder.rentalOrdNo}"
+                                                th:text="${rentSet.rentalOrder.rentalOrdNo}" />
                                     </select>
                                     <span class="error" th:if="${#fields.hasErrors('rentalOrdNo')}" th:errors="*{rentalOrdNo}" id="rentalOrdNo.errors">租借品訂單編號錯誤</span>
-                                </li><br>
-                                <li>
-                                    輸入方案名稱:
-                                    <input type="text" id="rentalSetName" name="rentalSetName"  th:field="*{rentalSetName}" onclick="hideContent('rentalSetName.errors');" /><br/>
+                                </div><br>
+                                <div>
+                                    <label>選擇方案名稱:</label>
+                                    <select id="rentalSetName" name="rentalSetName" th:field="*{rentalSetName}"> <!--th:field，表單元素&數據綁定-->
+                                        <option value="1">請選擇</option>
+                                        <option th:each="rentSet : ${rentSetListData}" th:value="${rentSet.rentalSetName}" th:text="${rentSet.rentalSetName}"/>
+                                    </select>
                                     <span class="error" th:if="${#fields.hasErrors('rentalSetName')}" th:errors="*{rentalSetName}" id="rentalSetName.errors">方案名稱錯誤</span>
-                                </li><br>
-                                <li>
-                                    選擇租借天數:
+                                </div><br>
+                                <div>
+                                    <label>選擇租借天數:</label>
                                     <select name="rentalSetDays" id="rentalSetDays">
-                                        <option value="1" selected>請選擇</option>
+                                        <option value="2" selected>請選擇</option>
                                         <option value="0" th:selected="${rentSet.rentalSetDays == 0}">7天</option>
                                         <option value="1" th:selected="${rentSet.rentalSetDays == 1}">14天</option>
                                     </select><br>
                                     <span class="error" th:if="${#fields.hasErrors('rentalSetDays')}" th:errors="*{rentalSetDays}" id="rentalSetDays.errors">租借天數錯誤</span>
-                                </li><br>
+                                </div><br>
                                 <input type="submit" id="addBtn" value="送出">
                             </form>
-                        </ul>
+                        </div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -86,38 +90,32 @@
 <div th:replace="backend/component/logout :: logout"></div>
 
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
-<script th:src="@{/static/jquery/jquery-3.7.1.min.js}"></script>
+<script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
 
 
 <script>
 
-    // 若要做到不點選按鈕即時更新，可以使用WebSocket的方式
     $(document).ready(function (){
-
         // 觸發submit事件，取得選擇的內容，轉為json格式
-        $("#addRentalBtn").on("submit",function(e){
+        $("#addBtn").on("submit",function(e){
             e.preventDefault(); //阻止提交表單
 
             //資料打包
-            var addData = {
-                rentalName: $('#rentalName').val(),
-                rentalPrice: parseFloat($('#rentalPrice').val()),
-                rentalSize: parseInt($('#rentalSize').val()),
-                rentalColor: $('#rentalColor').val(),
-                rentalInfo: $('#rentalInfo').val(),
-                rentalStat: parseFloat($('#rentalStat').val()),
+            const addData = {
                 rentalOrdNo: parseInt($('#rentalOrdNo').val()),
-                action: "addRental"
+                rentalSetName: $('#rentalSetName').val(),
+                rentalSetDays: parseFloat($('#rentalSetDays').val()),
+                action: "addRentSet"
             };
 
-            fetch("/backend/rental/addRental", {
+            fetch("/backend/rentset/addRentSet", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(addData)
             }).then(function (response){
                 return response.text();
-            }).then(function (rentalNo){
-                alert(rentalNo + "新增成功");
+            }).then(function (rentalOrdNo){
+                alert(rentalOrdNo + "新增成功");
             })
         });
     });

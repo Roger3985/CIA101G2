@@ -39,24 +39,24 @@
                         <h6 class="m-0 font-weight-bold text-primary">修改租借品資料</h6>
                     </div>
                     <div class="a">
-                        <ul>
-                            <form id="form" method="post" th:action="@{getOneUpdate}" th:object="${rental}">
-                                <li>
-                                    租借品編號:
-                                    <input value="0" type="text" name="rentalNo" th:field="*{rentalNo}" style="border:0px ; font-weight: bold;" readonly /><br/>
-                                </li><br>
-                                <li>
-                                    輸入租借品名稱:
+                        <div>
+                            <form id="form" method="post" th:action="@{updateRental}" th:object="${rental}">
+                                <div>
+                                    <label>租借品編號:</label>
+                                    <input value="0" type="text" id="rentalNo" name="rentalNo" th:field="*{rentalNo}" style="border:0px ; font-weight: bold;" readonly /><br/>
+                                </div><br>
+                                <div>
+                                    <label>輸入租借品名稱:</label>
                                     <input value="1" type="text" id="rentalName" name="rentalName" th:field="*{rentalName}" onclick="hideContent('rentalName.errors');" /><br/>
                                     <span class="error" th:if="${#fields.hasErrors('rentalName')}" th:errors="*{rentalName}" id="rentalName.errors">租借品名稱錯誤</span>
-                                </li><br>
-                                <li>
-                                    輸入單價:
+                                </div><br>
+                                <div>
+                                    <label>輸入單價:</label>
                                     <input value="2" type="text" id="rentalPrice" name="rentalPrice"  th:field="*{rentalPrice}" onclick="hideContent('rentalPrice.errors');" /><br/>
                                     <span class="error" th:if="${#fields.hasErrors('rentalPrice')}" th:errors="*{rentalPrice}" id="rentalPrice.errors">租借品單價錯誤</span>
-                                </li><br>
-                                <li>
-                                    選擇尺寸:
+                                </div><br>
+                                <div>
+                                    <label>選擇尺寸:</label>
                                     <select value="3" name="rentalSize" id="rentalSize">
                                         <option value="0" selected>請選擇</option>
                                         <option value="1" th:selected="${rental.rentalSize == 0}">XS</option>
@@ -67,19 +67,19 @@
                                         <option value="6" th:selected="${rental.rentalSize == 5}">2L</option>
                                     </select><br>
                                     <span class="error" th:if="${#fields.hasErrors('rentalSize')}" th:errors="*{rentalSize}" id="rentalSize.errors">尺寸錯誤</span>
-                                </li><br>
-                                <li>
-                                    輸入租借品顏色:
+                                </div><br>
+                                <div>
+                                    <label>輸入租借品顏色:</label>
                                     <input value="4" type="text" id="rentalColor" name="rentalColor" th:field="*{rentalColor}" onclick="hideContent('rentalColor.errors');" /><br/>
                                     <span class="error" th:if="${#fields.hasErrors('rentalColor')}" th:errors="*{rentalColor}" id="rentalColor.errors">顏色錯誤</span>
-                                </li><br>
-                                <li>
-                                    輸入租借品資訊:
+                                </div><br>
+                                <div>
+                                    <label>輸入租借品資訊:</label>
                                     <input value="5" type="text" id="rentalInfo" name="rentalInfo" th:field="*{rentalInfo}" onclick="hideContent('rentalInfo.errors');" /><br/>
                                     <span class="error" th:if="${#fields.hasErrors('rentalInfo')}" th:errors="*{rentalInfo}" id="rentalInfo.errors">租借品資訊錯誤</span>
-                                </li><br>
-                                <li>
-                                    選擇租借品狀態:
+                                </div><br>
+                                <div>
+                                    <label>選擇租借品狀態:</label>
                                     <select value="6" name="rentalStat" id="rentalStat">
                                         <option value="0" selected>請選擇</option>
                                         <option value="1" th:selected="${rental.rentalStat == 0}">上架</option>
@@ -90,20 +90,20 @@
                                         <option value="6" th:selected="${rental.rentalStat == 5}">下架</option>
                                     </select><br>
                                     <span class="error" th:if="${#fields.hasErrors('rentalStat')}" th:errors="*{rentalStat}" id="rentalStat.errors">租借品狀態錯誤</span>
-                                </li><br>
-                                <li>
-                                    選擇租借品類別編號:
+                                </div><br>
+                                <div>
+                                    <label>選擇租借品類別編號:</label>
                                     <select value="7" name="rentalCatNo" id="rentalCatNo" th:field="*{rentalCategory.rentalCatNo}"> <!--th:field，表單元素&數據綁定-->
                                         <option value="0" selected>請選擇</option>
-                                        <option value="1" th:each="rentalCategory : ${rentalCatListData}" th:value="${rentalCategory.rentalCatNo}" th:text="${rentalCategory.rentalCatNo}" />
+                                        <option value="1" th:each="rentalCategory : ${rentalCatListData}" th:value="${rental.rentalCategory.rentalCatNo}" th:text="${rental.rentalCategory.rentalCatNo}" />
                                     </select>
                                     <span class="error" th:if="${#fields.hasErrors('rentalCategory.rentalCatNo')}" th:errors="*{rentalCategory.rentalCatNo}" id="rentalCategory.rentalCatNo.errors"></span>
-                                </li>
+                                </div>
                                 <input type="submit" id="updateBtn" value="送出">
                                 <input type="hidden" name="rentalNo" th:value="${rental.rentalNo}">
                                 <input type="hidden" name="rentalCatNo" th:value="${rental.rentalCategory.rentalCatNo}">
                             </form>
-                        </ul>
+                        </div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -124,7 +124,7 @@
 <div th:replace="backend/component/logout :: logout"></div>
 
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
-<script th:src="@{/static/jquery/jquery-3.7.1.min.js}"></script>
+<script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
 <script>
     // 若要做到不點選按鈕即時更新，可以使用WebSocket的方式
     $(document).ready(function (){
@@ -134,7 +134,7 @@
             e.preventDefault(); //阻止提交表單
 
             //資料打包
-            var updateData = {
+            const updateData = {
                 rentalNo: parseInt($('#rentalNo').val()),
                 rentalName: $('#rentalName').val(),
                 rentalPrice: parseFloat($('#rentalPrice').val()),
@@ -153,28 +153,10 @@
             }).then(function (response){
                 return response.text();
             }).then(function (rentalNo){
-                alert(rentalNo + "新增成功");
+                alert(rentalNo + "修改成功");
             })
         });
     });
 </script>
 </body>
 </html>
-<!--$.ajax({-->
-<!--type: "POST",-->
-<!--url: "/backend/rental/addRental", //請求的URL-->
-<!--headers: {-->
-<!--"Content-Type": "application/json"-->
-<!--},-->
-<!--data: JSON.stringify(addData),-->
-<!--success: function (response) {-->
-<!--alert("請求成功")-->
-<!--// response.json();-->
-<!--response.text();-->
-<!--},-->
-<!--error:function(xhr, status, error){-->
-<!--alert("請求失敗")-->
-<!--console.error(xhr.responseText);-->
-<!--$('#responseMessage').html("Error occurred while adding rental.");-->
-<!--}-->
-<!--});-->

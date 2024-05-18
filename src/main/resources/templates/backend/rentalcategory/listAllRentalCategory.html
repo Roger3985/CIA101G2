@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>查詢租借品類別資料</title>
+    <title>查詢所有租借品類別資料</title>
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
@@ -36,7 +36,7 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">查詢租借品類別資料</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">查詢所有租借品類別資料</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -60,11 +60,10 @@
                                         <td th:text="${rentalCategory.rentalRentedQty}"></td>
                                         <td th:text="${rentalCategory.rentalDesPrice}"></td>
                                         <td>
-                                            <!-- 觸發submit，跳轉th:action指定頁面 -->
-                                            <form method="post" th:action="@{getOne_For_Update}">
-                                                <button type="submit" value="送出">
-                                                    <i class="fa-solid fa-pen-to-square"></i>
-                                                    <input type="hidden" name="rentalCatNo" value="${rentalCategory.rentalCatNo}">
+                                            <form method="post" th:action="@{getOneUpdate}">
+                                                <button type="submit" value="修改">
+                                                    <i class="far fa-edit"></i>
+                                                    <input type="hidden" name="rentalCatNo" th:value="${rentalCategory.rentalCatNo}">
                                                 </button>
                                             </form>
                                         </td>

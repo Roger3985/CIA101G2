@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -59,13 +60,29 @@ public class RentalPicServiceImpl implements RentalPicService {
 
     //複合查詢
     @Override
-    public List<RentalPic> getByCompositeQuery(Map<String, String[]> map) {
-        return null;
+    public List<RentalPic> searchRentalPics(Map<String, Object> map) {
+        if (map.isEmpty()) {
+            return repository.findAll();
+        }
+
+        Integer rentalPicNo = null;
+        Integer rentalNo = null;
+        byte[] rentalFile = null;
+
+        if (map.containsKey("rentalPicNo")) {
+            rentalPicNo = (Integer) map.get("rentalPicNo");
+        } else if (map.containsKey("rentalNo")) {
+            rentalNo = (Integer) map.get("rentalNo");
+        } else if (map.containsKey("rentalFile")) {
+            rentalFile = (byte[]) map.get("rentalFile");
+        }
+
+        return repository.searchRentalPics(rentalPicNo, rentalNo, rentalFile);
     }
 
-    //變更會員大頭貼
+    //修改照片
     @Override
-    public void changePicture(RentalPic rentalPic, byte[] rentalFile) {
+    public void updatePicture(RentalPic rentalPic, byte[] rentalFile) {
         repository.updateRentalFileById(rentalPic.getRentalPicNo(), rentalFile);
     }
 }

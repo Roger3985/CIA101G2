@@ -7,29 +7,29 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
-    public interface RentalMyFavoriteService {
+public interface RentalMyFavoriteService {
 
-        List<RentalMyFavorite> findAll();  //全部查詢(RentalMyFavorite)
+    List<RentalMyFavorite> findAll();  //全部查詢(RentalMyFavorite)
 
-        RentalMyFavorite findByRentalNo(Integer rentalNo); //單筆查詢(rentalNo)
+    RentalMyFavorite findByRentalNo(Integer rentalNo); //單筆查詢(rentalNo)
 
-        RentalMyFavorite findByMemNo(Integer memNo); //單筆查詢(memNo)
+    RentalMyFavorite findByMemNo(Integer memNo); //單筆查詢(memNo)
 
-        List<RentalMyFavorite> findByRentalFavTime(Timestamp rentalFavTime); //單筆查詢(rentalFavTime)
+    List<RentalMyFavorite> findByRentalFavTime(Timestamp rentalFavTime); //單筆查詢(rentalFavTime)
 
-        RentalMyFavorite findByIdRentalNoAndIdMemNo(Integer rentalNo, Integer memNo);  //複合主鍵查詢
+    RentalMyFavorite findByIdRentalNoAndIdMemNo(Integer rentalNo, Integer memNo);  //複合主鍵查詢
 
 //----------------------------------------------------------------------------------------------------------------------
 //主要為後端使用：增查改
 
-        RentalMyFavorite addRentalFav(RentalMyFavorite rentalMyFavorite); //新增
+    RentalMyFavorite addRentalFav(RentalMyFavorite rentalMyFavorite); //新增
 
-        RentalMyFavorite updateRentalFav(RentalMyFavorite rentalMyFavorite); //修改
+    RentalMyFavorite updateRentalFav(RentalMyFavorite rentalMyFavorite); //修改
 
-        List<RentalMyFavorite> searchRentalMyFAVs(Map<String, Object> map); //複合查詢
-
-
+    List<RentalMyFavorite> searchRentalMyFAVs(Map<String, Object> map); //複合查詢
 
 
 
-    }
+
+
+}

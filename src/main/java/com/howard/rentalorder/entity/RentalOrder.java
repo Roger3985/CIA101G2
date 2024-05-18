@@ -69,7 +69,7 @@ public class RentalOrder implements Serializable {
     @OneToMany(mappedBy = "rentalOrder", cascade = CascadeType.ALL)
     private Set<RentalOrderDetails> rentalOrderDetailses;
 
-/*----------------------getter、setter--------------------------*/
+    /*----------------------getter、setter--------------------------*/
 
     public Integer getrentalOrdNo() {
         return rentalOrdNo;
@@ -240,7 +240,7 @@ public class RentalOrder implements Serializable {
         this.rentalOrderDetailses = rentalOrderDetailses;
     }
 
-/*--------------------------聯合映射用的 getter、setter( member 是主表)------------------------------*/
+    /*--------------------------聯合映射用的 getter、setter( member 是主表)------------------------------*/
     public Member getMember() {
         return this.member;
     }

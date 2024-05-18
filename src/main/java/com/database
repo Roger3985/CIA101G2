@@ -683,31 +683,31 @@ INSERT INTO RentalPic(rentalPicNo, rentalNo, rentalFile) VALUES
 (5, 5375, 'null');
 
 -- 創建租借品訂單表格
-CREATE TABLE RentalOrder
-(
-    rentalOrdNo  INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    memNo   INT NOT NULL,
-    rentalByrName    VARCHAR(20) NOT NULL,
-    rentalByrPhone   VARCHAR(10) NOT NULL,
-    rentalByrEmail   VARCHAR(40) NOT NULL,
-    rentalRcvName    VARCHAR(20),
-    rentalRcvPhone   VARCHAR(10),
-    rentalTakeMethod TINYINT     NOT NULL,
-    rentalAddr       VARCHAR(100),
-    rentalPayMethod  TINYINT     NOT NULL,
-    rentalAllPrice   DECIMAL(6,0)    NOT NULL,
-    rentalAllDepPrice    DECIMAL(6,0)    NOT NULL,
-    rentalOrdTime    DATETIME    NOT NULL,
-    rentalDate       DATETIME    NOT NULL,
-    rentalBackDate   DATETIME    NOT NULL,
-    rentalRealBackDate   DATETIME    NOT NULL,
-    rentalPayStat    TINYINT     NOT NULL,
-    rentalOrdStat    TINYINT     NOT NULL,
-    rtnStat     TINYINT     NOT NULL,
-    rtnRemark   VARCHAR(300)    NOT NULL,
+CREATE TABLE RentalOrder (
+    rentalOrdNo INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    memNo INT NOT NULL,
+    rentalByrName VARCHAR(20) NOT NULL,
+    rentalByrPhone VARCHAR(10) NOT NULL,
+    rentalByrEmail VARCHAR(40) NOT NULL,
+    rentalRcvName VARCHAR(20),
+    rentalRcvPhone VARCHAR(10),
+    rentalTakeMethod TINYINT NOT NULL,
+    rentalAddr VARCHAR(100),
+    rentalPayMethod TINYINT NOT NULL,
+    rentalAllPrice DECIMAL(6,0) NOT NULL,
+    rentalAllDepPrice DECIMAL(6,0) NOT NULL,
+    rentalOrdTime DATETIME NOT NULL,
+    rentalDate DATETIME NOT NULL,
+    rentalBackDate DATETIME NOT NULL,
+    rentalRealBackDate DATETIME NOT NULL,
+    rentalPayStat TINYINT NOT NULL,
+    rentalOrdStat TINYINT NOT NULL,
+    rtnStat TINYINT NOT NULL,
+    rtnRemark VARCHAR(300) NOT NULL,
     rtnCompensation DECIMAL(6,0),
-    CONSTRAINT FK_RentalOrder_memNo FOREIGN KEY(memNo) REFERENCES Member (memNo)
+    CONSTRAINT FK_RentalOrder_memNo FOREIGN KEY(memNo) REFERENCES Member(memNo)
 );
+
 INSERT INTO RentalOrder (memNo, rentalByrName, rentalByrPhone, rentalByrEmail, rentalRcvName, rentalRcvPhone, rentalTakeMethod, rentalAddr, rentalPayMethod,
                          rentalAllPrice, rentalAllDepPrice, rentalOrdTime, rentalDate, rentalBackDate, rentalRealBackDate, rentalPayStat, rentalOrdStat,
                          rtnStat, rtnRemark, rtnCompensation)
@@ -748,14 +748,14 @@ VALUES (1, 5001, 1500, 1500),
        (4, 5011, 1200, 2000);
 
 -- 租借方案
-CREATE TABLE RentSet
-(
-    rentalOrdNo      INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    rentalSetName    VARCHAR(20) NOT NULL,
-    rentalSetDays    TINYINT NOT NULL,
-    CONSTRAINT FK_RentSet_rentalOrdNo FOREIGN KEY (rentalOrdNo) REFERENCES RentalOrder (rentalOrdNo)
-)
-AUTO_INCREMENT = 0;
+CREATE TABLE RentSet (
+    rentalOrdNo INT NOT NULL,
+    rentalSetName VARCHAR(20) NOT NULL,
+    rentalSetDays TINYINT NOT NULL,
+    CONSTRAINT PK_RentSet_rentalOrdNo PRIMARY KEY(rentalOrdNo),
+    CONSTRAINT FK_RentSet_rentalOrdNo FOREIGN KEY (rentalOrdNo) REFERENCES RentalOrder(rentalOrdNo)
+);
+
 
 INSERT INTO RentSet(rentalOrdNo, rentalSetName, rentalSetDays)
 VALUES(2, '租借7日', 0),

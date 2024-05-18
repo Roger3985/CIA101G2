@@ -315,18 +315,18 @@
                     <a class="dropdown-item dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">租借品</a>
                     <ul class="dropdown-menu border-info">
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/rental/listAllRental}" data-breadcrumb="首頁 - 租借品 - 查詢所有資料" data-breadcrumb-url="/ - /backend/rental - /backend/rental/listAllRental"><i class="fas fa-search"></i><span> 查詢所有資料</span></a></li>
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/rental/select_page}" data-breadcrumb="首頁 - 租借品 - 查詢資料" data-breadcrumb-url="/ - /backend/rental - /backend/rental/select_page"><i class="fas fa-search"></i> <span> 查詢資料</span></a></li>
+                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/rental/selectPage}" data-breadcrumb="首頁 - 租借品 - 查詢資料" data-breadcrumb-url="/ - /backend/rental - /backend/rental/selectPage"><i class="fas fa-search"></i> <span> 查詢資料</span></a></li>
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/rental/addRental}" data-breadcrumb="首頁 - 租借品 - 新增資料" data-breadcrumb-url="/ - /backend/rental - /backend/rental/addRental"><i class="fas fa-plus"></i> <span> 新增資料</span></a></li>
-                        <li><a class="dropdown-item" th:href="@{/backend/rental/updateRental}" data-breadcrumb="首頁 - 租借品 - 修改資料" data-breadcrumb-url="/ - /backend/rental - /backend/rental/updateRental"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
+                        <li><a class="dropdown-item" th:href="@{/backend/rental/selectPage}" data-breadcrumb="首頁 - 租借品 - 修改資料" data-breadcrumb-url="/ - /backend/rental - /backend/rental/selectPage"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
                     </ul>
                 </div>
                 <div class="dropright">
                     <a class="dropdown-item dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">租借品類別</a>
                     <ul class="dropdown-menu border-info">
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalcategory/listAllRentalCategory}" data-breadcrumb="首頁 - 租借品類別 - 查詢所有資料" data-breadcrumb-url="/ - /backend/rentalcategory - /backend/rentalcategory/listAllRentalCategory"><i class="fas fa-search"> </i> <span> 查詢所有資料</span></a></li>
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalcategory/select_RentalCategory_page}" data-breadcrumb="首頁 - 租借品類別 - 查詢資料" data-breadcrumb-url="/ - /backend/rentalcategory - /backend/rentalcategory/select_RentalCategory_page"><i class="fas fa-search"> </i><span> 查詢資料</span></a></li>
+                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalcategory/selectRentalCategory}" data-breadcrumb="首頁 - 租借品類別 - 查詢資料" data-breadcrumb-url="/ - /backend/rentalcategory - /backend/rentalcategory/selectRentalCategory"><i class="fas fa-search"> </i><span> 查詢資料</span></a></li>
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalcategory/addRentalCategory}" data-breadcrumb="首頁 - 租借品類別 - 新增資料" data-breadcrumb-url="/ - /backend/rentalcategory - /backend/rentalcategory/addRentalCategory"><i class="fas fa-plus"></i> <span> 新增資料</span></a></li>
-                        <li><a class="dropdown-item" th:href="@{/backend/rentalcategory/updateRentalCategory}" data-breadcrumb="首頁 - 租借品類別 - 修改資料" data-breadcrumb-url="/ - /backend/rentalcategory - /backend/rentalcategory/updateRentalCategory"><i class="fas fa-edit"></i> <span> 修改資料</span></a></li>
+                        <li><a class="dropdown-item" th:href="@{/backend/rentalcategory/selectRentalCategory}" data-breadcrumb="首頁 - 租借品類別 - 修改資料" data-breadcrumb-url="/ - /backend/rentalcategory - /backend/rentalcategory/selectRentalCategory"><i class="fas fa-edit"></i> <span> 修改資料</span></a></li>
                     </ul>
                 </div>
                 <div class="dropright">
@@ -335,17 +335,17 @@
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalpic/listAllRentalPic}" data-breadcrumb="首頁 - 租借品照片 - 查詢所有資料" data-breadcrumb-url="/ - /backend/rentalpic - /backend/rentalpic/listAllRentalPic"><i class="fas fa-search"></i><span> 查詢所有資料</span></a></li>
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalpic/selectRentalPic}" data-breadcrumb="首頁 - 租借品照片 - 查詢資料" data-breadcrumb-url="/ - /backend/rentalpic - /backend/rentalpic/selectRentalPic"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalpic/addRentalPic}" data-breadcrumb="首頁 - 租借品照片 - 新增資料" data-breadcrumb-url="/ - /backend/rentalpic - /backend/rentalpic/addRentalPic"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
-                        <li><a class="dropdown-item" th:href="@{/backend/rentalpic/updateRentalPic}" data-breadcrumb="首頁 - 租借品照片 - 修改資料" data-breadcrumb-url="/ - /backend/rentalpic - /backend/rentalpic/updateRentalPic"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
+                        <li><a class="dropdown-item" th:href="@{/backend/rentalpic/selectRentalPic}" data-breadcrumb="首頁 - 租借品照片 - 修改資料" data-breadcrumb-url="/ - /backend/rentalpic - /backend/rentalpic/selectRentalPic"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
                     </ul>
                 </div>
                 <div class="dropright">
                     <a class="dropdown-item dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">租借品訂單</a>
                     <ul class="dropdown-menu border-info">
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalorder/selectRentalOrder}"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
-<!--                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalorder/addRentalOrder}"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>-->
-<!--                        <li><a class="dropdown-item" th:href="@{/backend/rentalorder/updateRentalOrder}"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>-->
-<!--                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalorder/addToCart}"><i class="fas fa-plus"> </i> <span> 加入購物車</span></a></li>-->
-<!--                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalorder/toRentalCart}"><i class="fas fa-search"> </i> <span> 查看購物車</span></a></li>-->
+                        <!--                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalorder/addRentalOrder}"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>-->
+                        <!--                        <li><a class="dropdown-item" th:href="@{/backend/rentalorder/updateRentalOrder}"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>-->
+                        <!--                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalorder/addToCart}"><i class="fas fa-plus"> </i> <span> 加入購物車</span></a></li>-->
+                        <!--                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalorder/toRentalCart}"><i class="fas fa-search"> </i> <span> 查看購物車</span></a></li>-->
                     </ul>
                 </div>
                 <div class="dropright">
@@ -370,7 +370,7 @@
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalmyfavorite/listAllRentalMyFAV}" data-breadcrumb="首頁 - 租借品我的最愛 - 查詢所有資料" data-breadcrumb-url="/ - /backend/rentalmyfavorite - /backend/rentalmyfavorite/listAllRentalMyFAV"><i class="fas fa-search"> </i> <span> 查詢所有資料</span></a></li>
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalmyfavorite/selectRentalMyFAV}" data-breadcrumb="首頁 - 租借品我的最愛 - 查詢資料" data-breadcrumb-url="/ - /backend/rentalmyfavorite - /backend/rentalmyfavorite/selectRentalMyFAV"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalmyfavorite/addRentalMyFAV}" data-breadcrumb="首頁 - 租借品我的最愛 - 新增資料" data-breadcrumb-url="/ - /backend/rentalmyfavorite - /backend/rentalmyfavorite/addRentalMyFAV"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
-                        <li><a class="dropdown-item" th:href="@{/backend/rentalmyfavorite/updateRentalMyFAV}" data-breadcrumb="首頁 - 租借品我的最愛 - 修改資料" data-breadcrumb-url="/ - /backend/rentalmyfavorite - /backend/rentalmyfavorite/updateRentalMyFAV"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
+                        <li><a class="dropdown-item" th:href="@{/backend/rentalmyfavorite/selectRentalMyFAV}" data-breadcrumb="首頁 - 租借品我的最愛 - 修改資料" data-breadcrumb-url="/ - /backend/rentalmyfavorite - /backend/rentalmyfavorite/selectRentalMyFAV"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
                     </ul>
                 </div>
                 <div class="dropright">
@@ -379,7 +379,7 @@
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentset/listAllRentSet}" data-breadcrumb="首頁 - 租借品方案 - 查詢所有資料" data-breadcrumb-url="/ - /backend/rentset - /backend/rentset/listAllRentSet"><i class="fas fa-search"> </i> <span> 查詢所有資料</span></a></li>
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentset/selectRentSet}" data-breadcrumb="首頁 - 租借品方案 - 查詢資料" data-breadcrumb-url="/ - /backend/rentset - /backend/rentset/selectRentSet"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentset/addRentSet}" data-breadcrumb="首頁 - 租借品方案 - 新增資料" data-breadcrumb-url="/ - /backend/rentset - /backend/rentset/addRentSet"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
-                        <li><a class="dropdown-item" th:href="@{/backend/rentset/updateRentSet}" data-breadcrumb="首頁 - 租借品方案 - 修改資料" data-breadcrumb-url="/ - /backend/rentset - /backend/rentset/updateRentSet"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
+                        <li><a class="dropdown-item" th:href="@{/backend/rentset/selectRentSet}" data-breadcrumb="首頁 - 租借品方案 - 修改資料" data-breadcrumb-url="/ - /backend/rentset - /backend/rentset/selectRentSet"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
                     </ul>
                 </div>
             </div>

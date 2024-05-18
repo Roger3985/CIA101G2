@@ -47,7 +47,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <th:block th:each="rentSet : ${rentSetList}" > <!--th:block 用來包裝使用-->
+                                <th:block th:each="rentSet : ${rentSetListData}" > <!--th:block 用來包裝使用-->
                                     <tr>
                                         <td th:text="${rentSet.rentalOrdNo}"></td>
                                         <td th:text="${rentSet.rentalSetName}"></td>
@@ -56,10 +56,10 @@
                                             <span th:if="${rentSet.rentalSetDays == 1}" th:text="14天"></span>
                                         </td>
                                         <td>
-                                            <form method="post" th:action="@{/backend/rentset/updateRentSet}">
-                                                <button th:onclick="'updateRentSet(' + ${rentSet.rentalOrdNo} + ')' " name="rentalOrdNo"
-                                                        th:value="${rentSet.rentalOrdNo}">
+                                            <form method="post" th:action="@{getOneUpdate}">
+                                                <button type="submit" value="修改">
                                                     <i class="far fa-edit"></i>
+                                                    <input type="hidden" name="rentalOrdNo" th:value="${rentSet.rentalOrdNo}">
                                                 </button>
                                             </form>
                                         </td>
