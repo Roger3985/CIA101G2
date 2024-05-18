@@ -215,7 +215,7 @@ CREATE TABLE Administrator
     admEmail VARCHAR(40) NOT NULL UNIQUE,
     titleNo INT NULL,
     admHireDate DATE NULL,
-    admPhoto BLOB NULL,
+    admPhoto LONGBLOB NULL,
     admSalt VARCHAR(12) NOT NULL,
     admLogin TINYINT NULL,
     admLogout TINYINT NULL,

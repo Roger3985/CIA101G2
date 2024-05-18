@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Demo</title>
+</head>
+<body>
+<h1>後台管理員推播系統</h1>
+<button onclick="sendMessage()">發送消息</button>
+<div id="messages"></div>
+
+<!--<script>-->
+<!--    // 建立WebSocket連接-->
+<!--    const socket = new WebSocket("ws://localhost:8080/admin");-->
+
+<!--    socket.onopen = function(event) {-->
+<!--        console.log("WebSocket 連接已建立");-->
+<!--    };-->
+
+<!--    socket.onmessage = function(event) {-->
+<!--        console.log("收到服務端消息: ", event.data);-->
+<!--        document.getElementById("messages").innerHTML += "<p>" + event.data + "</p>";-->
+<!--    };-->
+
+<!--    socket.onclose = function(event) {-->
+<!--        console.log("WebSocket 連接已關閉");-->
+<!--    };-->
+
+<!--    function sendMessage() {-->
+<!--        if (socket.readyState === WebSocket.OPEN) {-->
+<!--            socket.send("這是一個測試消息");-->
+<!--        } else {-->
+<!--            console.log("WebSocket 連接未開啟");-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+<script>
+    var socket = new SockJS('/admin');
+    var stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, function (frame) {
+        console.log('已連接: ' + frame);
+        stompClient.subscribe('/topic/parttime', function (message) {
+            showMessage(message.body);
+        });
+        stompClient.subscribe('/topic/fulltime', function (message) {
+            showMessage(message.body);
+        });
+        stompClient.subscribe('/topic/manager', function (message) {
+            showMessage(message.body);
+        });
+        stompClient.subscribe('/topic/boss', function (message) {
+            showMessage(message.body);
+        });
+    });
+
+    function sendMessage() {
+        var message = "來自客戶端的訊息";
+        stompClient.send("/company/sendMessage", {}, message);
+    }
+
+    function showMessage(message) {
+        var messagesDiv = document.getElementById('messages');
+        var messageElement = document.createElement('p');
+        messageElement.textContent = message;
+        messagesDiv.appendChild(messageElement);
+    }
+</script>
+</body>
+</html>

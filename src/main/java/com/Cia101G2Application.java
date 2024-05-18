@@ -8,6 +8,7 @@ import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -20,6 +21,7 @@ import javax.servlet.ServletException;
 import java.security.Principal;
 
 @Configuration
+@EnableAspectJAutoProxy
 @EnableAsync
 @ComponentScan(basePackages = {"com.*"})
 @EnableJpaRepositories("com.*")

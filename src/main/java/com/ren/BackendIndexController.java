@@ -2,7 +2,7 @@ package com.ren;
 
 import com.ren.administrator.entity.Administrator;
 import com.ren.administrator.dto.LoginState;
-import com.ren.administrator.service.Impl.AdministratorServiceImpl;
+import com.ren.administrator.service.impl.AdministratorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -436,6 +436,11 @@ public class BackendIndexController {
      */
     private boolean check(Cookie cookie) {
         return "autoLogin".equals(cookie.getName());
+    }
+
+    @GetMapping("/webTest")
+    public String toWebTest() {
+        return "backend/webTest";
     }
 
 }
