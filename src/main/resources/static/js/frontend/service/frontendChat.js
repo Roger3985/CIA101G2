@@ -57,7 +57,7 @@ function connect() {
         console.log("frontend connect Suceess!");
         connection = true;
         let jsonobj = {
-            type: "openChatroom", sender: `${userName}`, receiver: "host"
+            type: "stateA", sender: `${userName}`, receiver: "host",
         }
         webSocket.send(JSON.stringify(jsonobj));
     }
@@ -67,7 +67,7 @@ function connect() {
         console.log(event);
         var jsonObj = JSON.parse(event.data);
         var message = jsonObj.message;
-        if(message!==undefined){
+        if (message !== undefined) {
             console.log("我收到後端的資料了" + message);
             const messageContainer = document.createElement('div');
             messageContainer.innerHTML = message;
@@ -97,7 +97,8 @@ el_msg_btn.addEventListener("click", function () {
         chatArea.appendChild(messageContainer);
         messageInput.value = '';
         var jsonobj = {
-            sender: `${userName}`, message: messageContent, receiver: "host"
+            type: "chatMsgB", sender: `${userName}`, receiver: "host", message: messageContent,
+            // timestamp: Date()
         }
         webSocket.send(JSON.stringify(jsonobj));
     }

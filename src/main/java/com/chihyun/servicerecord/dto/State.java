@@ -14,7 +14,7 @@ public class State {
     private Set<String> userList;
 
     public State(String type, String user, Set<String> userList) {
-        this.type = type;
+        this.type = type; //DATA A B
         this.user = user;
         this.userList = userList;
     }

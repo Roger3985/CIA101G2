@@ -10,12 +10,14 @@ public class ChatMessage {
     private String sender;
     private String receiver;
     private String message;
+    private long timestamp;
 
-    public ChatMessage(String type, String sender, String receiver, String message) {
+    public ChatMessage(String type, String sender, String receiver, String message, long timestamp) {
         this.type = type;
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
+        this.timestamp = timestamp;
     }
 
     public ChatMessage() {
@@ -53,5 +55,13 @@ public class ChatMessage {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }
