@@ -74,12 +74,11 @@
         </thead>
 
         <tbody class="align-middle" id="CartData">
-        <th:block th:each="cart, stat : ${cartListData}">
-
+        <th:block th:each="cart : ${cartListData}">
             <tr class="productitm">
                 <td>
-                    <img th:src="'data:image/jpeg;base64,' + ${session.productImages[stat.index]}"
-                         alt="Product Picture"/>
+                    <img th:src="'data:image/png;base64,' + ${session['productImage' + cart.productNo]}"
+                         alt="Product Picture" style="width: auto; height: 80px;"/>
                 </td>
                 <td class="align-middle" th:id="productName" th:text="${cart.productName}"></td>
                 <td class="align-middle" th:id="productColor" th:text="${cart.productColor}"></td>
@@ -191,8 +190,8 @@
         var newValue = parseInt(input.value) + change;
         if (newValue >= 1) {
             input.value = newValue;
-            updateBackendQuantity(input); // 调用更新后端数量函数
-            updateTotal(input); // 更新商品总价
+            updateBackendQuantity(input); // 呼叫更新後端數量函數
+            updateTotal(input); // 更新商品總價
         }
     }
 
@@ -200,8 +199,8 @@
         var quantity = parseInt(input.value);
         var priceElement = input.closest('.productitm').querySelector('#productPrice');
         var totalPriceElement = input.closest('.productitm').querySelector('#productAllPrice');
-        var price = parseFloat(priceElement.textContent.replace('$', '')); // 获取商品单价并转换为浮点数
-        var total = price * quantity; // 计算总价
+        var price = parseFloat(priceElement.textContent.replace('$', '')); // 獲取商品單價並轉換為浮點數
+        var total = price * quantity; // 計算總價
         totalPriceElement.textContent = '$' + total;
         updateAllPrice()
     }
@@ -213,12 +212,12 @@
     function updateAllPrice() {
         var allPriceElements = document.querySelectorAll('#productAllPrice');
         var totalPrice = 0;
-        // 遍历每个商品的总价元素，并累加到总价中
+        // 遍歷每個商品的總價元素，並累加到總價中
         allPriceElements.forEach(function (element) {
             var price = parseFloat(element.textContent.replace('$', ''));
             totalPrice += price;
         });
-        // 更新显示总价的元素
+        // 更新顯示總價的元素
         var totalPriceElement = document.getElementById('allprice');
         totalPriceElement.textContent = '$' + totalPrice;
     }
@@ -230,7 +229,7 @@
         var memNo = row.querySelector('input[name="memNo"]').value;
         var productBuyQty = input.value;
 
-        // 发送 AJAX 请求更新数量到后端
+        // 發送 AJAX 請求更新數量到後端
         $.ajax({
             type: 'POST',
             url: '/frontend/cart/updateBackendQuantity',
@@ -241,10 +240,10 @@
             },
             success: function (data) {
                 console.log("更新成功");
-                updateTotalPrice(); // 更新总价
+                updateTotalPrice(); // 更新總價
             },
             error: function () {
-                console.error('更新失败');
+                console.error('更新失敗');
             }
         });
     }
@@ -254,7 +253,7 @@
         var productNo = row.querySelector('input[name="productNo"]').value;
         var memNo = row.querySelector('input[name="memNo"]').value;
 
-        // 发送 AJAX 请求删除商品
+        // 發送 AJAX 請求刪除商品
         $.ajax({
             type: 'POST',
             url: '/frontend/cart/deleteInstantly',
@@ -263,34 +262,35 @@
                 memNo: memNo
             },
             success: function (data) {
-                row.remove(); // 删除对应行
-                console.log("删除成功");
-                updateAllPrice(); // 更新总价
-                location.reload(); // 重新加载页面
+                row.remove(); // 刪除對應行
+                console.log("刪除成功");
+                updateAllPrice(); // 更新總價
+                location.reload(); // 重新載入頁面
             },
             error: function () {
-                console.error('删除失败');
+                console.error('刪除失敗');
             }
         });
     }
 
-    // 检查是否有商品
+    // 檢查是否有商品
     function checkCartNotEmpty() {
-        var cartItems = /*[[ ${cartListData} ]]*/ []; // 从Thymeleaf中获取购物车数据
+        var cartItems = /*[[ ${cartListData} ]]*/ []; // 從Thymeleaf中獲取購物車數據
         if (cartItems.length === 0) {
-            // 没有商品时触发警告
+            // 沒有商品時觸發警告
             alert("您的購物車為空，請先添加商品！");
-            return false; // 返回 false 阻止表单提交
+            return false; // 返回 false 阻止表單提交
         }
-        return true; // 返回 true 表示可以提交表单
+        return true; // 返回 true 表示可以提交表單
     }
 
-    // 表单提交前的验证
+    // 表單提交前的驗證
     function validateForm() {
-        return checkCartNotEmpty(); // 调用检查购物车是否为空的函数
+        return checkCartNotEmpty(); // 呼叫檢查購物車是否為空的函數
     }
 
 </script>
+
 </body>
 
 </html>

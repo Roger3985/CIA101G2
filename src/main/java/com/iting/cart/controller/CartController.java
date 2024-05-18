@@ -138,19 +138,15 @@ import com.chihyun.coupon.entity.Coupon;
 import com.chihyun.coupon.model.CouponService;
 import com.iting.cart.entity.CartRedis;
 import com.iting.cart.service.CartService;
-import com.iting.productorder.entity.ProductOrder;
-import com.iting.productorder.service.ProductOrderService;
-import com.ren.product.entity.Product;
+
 import com.ren.product.service.impl.ProductServiceImpl;
-import com.ren.productcategory.entity.ProductCategory;
-import com.ren.productcategory.service.impl.ProductCategoryServiceImpl;
 import com.ren.productpicture.entity.ProductPicture;
 import com.ren.productpicture.service.impl.ProductPictureServiceImpl;
 import com.roger.member.entity.Member;
 import com.roger.member.entity.uniqueAnnotation.Create;
+import oracle.sql.BLOB;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -166,6 +162,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -253,20 +250,21 @@ public class CartController {
             cartRedis.setMemNo((Integer) memNo); // 将memNo强制转换为Integer类型
             List<CartRedis> cartListData = cartSvc.findByCompositeKey((Integer) memNo); // 将memNo强制转换为Integer类型
 
-            List<String> base64Images = new ArrayList<>();
+
             for (CartRedis cartItem : cartListData) {
                 Integer cartProductNo = cartItem.getProductNo();
                 List<ProductPicture> productPictures = productPictureService.getByProductNo(cartProductNo);
                 if (productPictures != null && !productPictures.isEmpty()) {
                     ProductPicture firstProductPicture = productPictures.get(0);
                     byte[] firstPic = firstProductPicture.getProductPic();
+                    Integer productNo=firstProductPicture.getProduct().getProductNo();
                     String base64Image = Base64.getEncoder().encodeToString(firstPic);
-                    base64Images.add(base64Image);
-                } else {
-                    base64Images.add(""); // 如果没有图片，添加空字符串
+                    if (session.getAttribute("productImage"+productNo)==null){
+                        session.setAttribute("productImage"+productNo, base64Image);}
+
                 }
             }
-            session.setAttribute("productImages", base64Images);
+
 
             model.addAttribute("cartListData", cartListData);
 
@@ -408,7 +406,8 @@ public class CartController {
                 ProductPicture firstProductPicture = productPictures.get(0);
                 byte[] firstPic = firstProductPicture.getProductPic();
                 String base64Image = Base64.getEncoder().encodeToString(firstPic);
-                session.setAttribute("productImage", base64Image);
+                if (session.getAttribute("productImage"+productNo)==null){
+                    session.setAttribute("productImage"+productNo, base64Image);}
             }
 
             List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNo);
@@ -420,4 +419,6 @@ public class CartController {
             e.printStackTrace();
         }
         return response;
-    }}
+    }
+
+}
