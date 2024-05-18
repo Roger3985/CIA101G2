@@ -136,12 +136,12 @@
 <!--                                        <td th:text="${order.getrentalRealBackDate()}"></td>-->
                                         <td th:text="${order.getrentalPayStat() == 1 ? '已付款' : '未付款'}"></td>
                                         <td th:switch="${order.getrentalOrdStat()}">
-                                            <span th:case="'0'">取消</span>
-                                            <span th:case="'10'">揀貨中</span>
-                                            <span th:case="'20'">配送中</span>
-                                            <span th:case="'30'">等待取貨</span>
+                                            <span th:case="'0'" style="color: red">取消</span>
+                                            <span th:case="'10'" style="color: #0a53be">揀貨中</span>
+                                            <span th:case="'20'" style="color : saddlebrown">配送中</span>
+                                            <span th:case="'30'" style="color: coral">等待取貨</span>
                                             <span th:case="'40'">訂單成立</span>
-                                            <span th:case="'50'" style="color: green">完成</span>
+                                            <span th:case="'50'" style="color : green">完成</span>
                                             <span th:case="'81'">申請換貨</span>
                                             <span th:case="'82'">換貨中</span>
                                         </td>
@@ -212,10 +212,13 @@
 
         let baseUrl = window.location.protocol + "//" + window.location.host;
         let apiPath = "/backend/rentalorder/";
-        let rentalOrdNo = $("input#rentalOrdNo").val();
+
         let logisticsFormContainer = $("#logisticsFormContainer");
 
-        $("button.shipping").on("click", function () {
+        $("button.shipping").on("click", function (e) {
+            // console.log(e.target);
+            let rentalOrdNo = $(e.target).closest("form").find("input#rentalOrdNo").val();
+            console.log(rentalOrdNo);
 
             fetch(baseUrl + apiPath + "createShippingOrder?rentalOrdNo=" + rentalOrdNo, {
                 method : "POST",

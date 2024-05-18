@@ -1,17 +1,13 @@
 package com.howard.rentalorder.service.impl;
 
 import com.howard.rentalorder.entity.RentalOrder;
-import ecpay.logistics.integration.domain.CreateCVSObj;
 import ecpay.logistics.integration.AllInOne;
 import ecpay.logistics.integration.domain.CreateHomeObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Component
@@ -20,7 +16,11 @@ public class RentalOrderShippingService {
     @Autowired
     private RentalOrderServiceImpl orderService;
 
-    public String shipping(Integer rentalOrdNo) { // 出貨
+    @Autowired
+    private LogisticsStateService logisticsStateService;
+
+    // 出貨
+    public String shipping(Integer rentalOrdNo) {
 
         Map<String, Object> map = new HashMap<>();
         map.put("rentalOrdNo", rentalOrdNo);
@@ -47,6 +47,9 @@ public class RentalOrderShippingService {
         obj.setServerReplyURL( "http://localhost:8080/backend/rentalorder/testToRentalCart" ); // 訂單狀態從這通知
 //        obj.setClientReplyURL( "http://localhost:8080/backend/rentalorder/testToRentalCart" );
         String formHTML = all.create(obj);
+
+        // 先把物流基本資料送進 Redis，用來放綠界回傳更新的物流狀態
+        logisticsStateService.setLogisticsState(rentalOrder, formHTML);
 
         return formHTML;
     }
