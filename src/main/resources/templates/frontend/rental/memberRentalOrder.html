@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zxx" data-bs-theme="light">
+
+<head>
+    <!-- metas -->
+    <meta charset="utf-8">
+    <meta name="author" content="pxdraft">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <!-- title -->
+    <title>ShopApp - eCommerce Bootstrap 5 Template</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <!-- CSS Template -->
+    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        /*.timeline::before {*/
+        /*    content: '';*/
+        /*    position: absolute;*/
+        /*    top: 50%;*/
+        /*    left: 0;*/
+        /*    width: 100%; !*--已付款=3.5、配送中=26.5、租用中=50、已歸還=73.5、完成=96.5--*!*/
+        /*    height: 4px;*/
+        /*    background-color: gray; !*#28a745*!*/
+        /*    z-index: 1;*/
+        /*}*/
+
+        .timeline-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .timeline-step .outer-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 4px solid #28a745; /*#28a745*/
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-step .inner-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #28a745;
+            font-size: 24px;
+        }
+
+        .timeline-step p {
+            text-align: center;
+        }
+
+        /* Custom colors for each status */
+        .status-10 .timeline::before {
+            background-color: #6c757d;
+        }
+
+        .status-10 .outer-circle,
+        .status-10 .inner-circle {
+            border-color: #6c757d;
+            color: #6c757d;
+        }
+
+        .status-20 .timeline::before,
+        .status-20 .outer-circle,
+        .status-20 .inner-circle {
+            background-color: #28a745;
+            border-color: #28a745;
+            color: #28a745;
+        }
+
+        .status-30 .timeline::before,
+        .status-30 .outer-circle,
+        .status-30 .inner-circle {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #007bff;
+        }
+
+        .status-40 .timeline::before,
+        .status-40 .outer-circle,
+        .status-40 .inner-circle {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #ffc107;
+        }
+
+        .status-50 .timeline::before,
+        .status-50 .outer-circle,
+        .status-50 .inner-circle {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+            color: #17a2b8;
+        }
+
+        .timeline-container {
+            position: relative;
+            padding-left: 40px;
+            margin: 20px 0;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 30px;
+            bottom: 0;
+            width: 2px;
+            background: gray;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 22px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: gray;
+        }
+
+        .timeline-item.active::before {
+            background: #28a745;
+        }
+
+        .timeline-content {
+            margin-left: 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-content p {
+            margin: 0;
+        }
+
+        .timeline-date {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .btn-get-started {
+            display: block;
+            margin: 20px auto;
+            width: 200px;
+            text-align: center;
+            background-color: rgb(220, 53, 69);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+    </style>
+</head>
+
+<body class="status-[[${rentalOrder.getrentalOrdStat()}]]">
+<!-- 通用插件 -->
+<th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block>
+<!-- 通用插件 -->
+
+<!-- ======================== Wrapper ========================= -->
+<div class="wrapper">
+    <!-- header height -->
+    <div class="header-height-bar" style="min-height: 104.865px;"></div>
+    <!-- Header -->
+    <header th:replace="frontend/component/header :: header"></header>
+    <!-- End Header -->
+
+    <!-- Main -->
+    <main>
+        <!-- Breadcrumb -->
+        <div class="py-3 bg-gray-100">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 my-2">
+                        <h1 class="m-0 h4 text-center text-lg-start" th:text="'訂單編號 : ' + ${rentalOrder.getrentalOrdNo()}"></h1>
+                    </div>
+                    <div class="col-lg-6 my-2">
+                        <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
+                            <li class="breadcrumb-item"><a class="text-nowrap" href="#"><i class="bi bi-home"></i>租借訂單清單</a></li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page">您的訂單</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Breadcrumb -->
+
+        <!-- Table -->
+        <div class="py-6">
+            <div class="container">
+                <div class="row">
+                    <!-- Profile Menu -->
+
+                    <!-- End Profile Menu -->
+
+                    <!-- Content -->
+                    <div class="col-lg-12">
+
+                        <!-- Order Timeline -->
+                        <div class="bg-body border shadow-lg p-4 mb-5">
+                            <h4>訂單進度</h4>
+
+                            <div class="timeline" th:data-stat="${rentalOrder.getrentalOrdStat()}">
+
+                                <div class="timeline-step">
+                                    <div class="outer-circle c1">
+                                        <div class="inner-circle">
+                                            <i class="bi bi-credit-card"></i>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <p>訂單已付款<br><small></small></p>
+                                </div>
+
+                                <div class="timeline-step">
+                                    <div class="inner-circle">
+                                        <i class="bi bi-chevron-double-right c1toc2"></i>
+                                    </div>
+                                    <br>
+                                    <p><br><small></small></p>
+                                </div>
+
+                                <div class="timeline-step">
+                                    <div class="outer-circle c2">
+                                        <div class="inner-circle">
+                                            <i class="bi bi-truck"></i>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <p>商品配送中<br><small></small></p>
+                                </div>
+
+                                <div class="timeline-step">
+                                    <div class="inner-circle">
+                                        <i class="bi bi-chevron-double-right c2toc3"></i>
+                                    </div>
+                                    <br>
+                                    <p><br><small></small></p>
+                                </div>
+
+                                <div class="timeline-step">
+                                    <div class="outer-circle c3">
+                                        <div class="inner-circle">
+                                            <i class="bi bi-alarm"></i>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <p>商品租用中<br><small></small></p>
+                                </div>
+
+                                <div class="timeline-step">
+                                    <div class="inner-circle">
+                                        <i class="bi bi-chevron-double-right c3toc4"></i>
+                                    </div>
+                                    <br>
+                                    <p><br><small></small></p>
+                                </div>
+
+                                <div class="timeline-step">
+                                    <div class="outer-circle c4">
+                                        <div class="inner-circle">
+                                            <i class="bi bi-file-earmark-text"></i>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <p>商品已歸還<br><small></small></p>
+                                </div>
+
+                                <div class="timeline-step">
+                                    <div class="inner-circle">
+                                        <i class="bi bi-chevron-double-right c4toc5"></i>
+                                    </div>
+                                    <br>
+                                    <p><br><small></small></p>
+                                </div>
+
+                                <div class="timeline-step">
+                                    <div class="outer-circle c5">
+                                        <div class="inner-circle">
+                                            <i class="bi bi-check-circle"></i>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <p>訂單已完成<br><small></small></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Order Details -->
+                        <div class="bg-body border shadow-lg p-4">
+                            <h4>訂單詳情</h4>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>收件地址</h5>
+                                    <span>
+                                            <span th:text="${rentalOrder.getrentalRcvName()}"></span>
+                                            <br>
+                                            <span th:text="${rentalOrder.getrentalRcvPhone()}"></span>
+                                            <br>
+                                            <span th:text="${rentalOrder.getrentalAddr()}"></span>
+                                        </span>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>訂單摘要</h5>
+                                    <p th:text="'總租金 : $' + ${rentalOrder.getrentalAllPrice()}"></p>
+                                    <p th:text="'總押金 : $' + ${rentalOrder.getrentalAllDepPrice()}"></p>
+                                    <p th:text="'合計 : $' + ${rentalOrder.getrentalAllPrice() + rentalOrder.getrentalAllDepPrice()}"><strong>總金額: $299</strong></p>
+                                </div>
+                            </div>
+
+                            <h4>物流狀態</h4>
+                            <div class="timeline-container" style="display: inline-block">
+                                <div class="timeline-item active">
+                                    <div class="timeline-icon" style="margin-top: 25px"></div>
+                                    <div class="timeline-content">
+                                        <p>配送完畢</p>
+                                    </div>
+                                </div>
+<!--                                <div class="timeline-item">-->
+<!--                                    <div class="timeline-icon"></div>-->
+<!--                                    <div class="timeline-content">-->
+<!--                                        <p>包裹已配達買家取件門市 - 中壢元化 - 智取店</p>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+                                <div class="timeline-item">
+                                    <div class="timeline-icon"></div>
+                                    <div class="timeline-content">
+                                        <p>轉運中</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-icon"></div>
+                                    <div class="timeline-content">
+                                        <p>訂單上傳處理中</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-icon"></div>
+                                    <div class="timeline-content">
+                                        <p>處理中(已收到訂單資料)</p>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="button-container" style="display: inline-block; margin-left: 300px">
+                                <button class="btn-get-started btn btn-primary flex-shrink-0"><strong>再買一次</strong></button>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5>商品詳情</h5>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>商品名稱</th>
+                                            <th>數量</th>
+                                            <th>租金</th>
+                                            <th>押金</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <th:block th:each="detail : ${rentalOrder.getRentalOrderDetailses()}">
+                                            <tr>
+                                                <td th:text="${detail.getRental().getRentalName()}"></td>
+                                                <td>1</td>
+                                                <td th:text="${detail.getRentalPrice()}"></td>
+                                                <td th:text="${detail.getRentalDesPrice()}"></td>
+                                            </tr>
+                                        </th:block>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Content -->
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- End Main -->
+
+    <!-- Footer -->
+    <footer th:replace="frontend/component/footer :: footer"></footer>
+    <!-- End Footer -->
+</div>
+<!-- ======================== End Wrapper ========================= -->
+
+<!-- script start -->
+<th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
+<!-- End script start -->
+
+<script>
+    // 進度顯示 168
+    let divForOrderStat = $("div.timeline");
+    let orderStat = divForOrderStat.attr("data-stat");
+    let c2 = $("div.c2");
+    let c3 = $("div.c3");
+    let c4 = $("div.c4");
+    let c5 = $("div.c5");
+    let c2toc3 = $("i.c2toc3");
+    let c3toc4 = $("i.c3toc4");
+    let c4toc5 = $("i.c4toc5");
+
+    switch (orderStat) {
+        case "10": // 已付款
+            c2.css("border", "4px solid gray");
+            c2.find("i").css("color", "gray");
+            c3.css("border", "4px solid gray");
+            c3.find("i").css("color", "gray");
+            c4.css("border", "4px solid gray");
+            c4.find("i").css("color", "gray");
+            c5.css("border", "4px solid gray");
+            c5.find("i").css("color", "gray");
+
+            c2toc3.css("color", "gray");
+            c3toc4.css("color", "gray");
+            c4toc5.css("color", "gray");
+            break;
+
+        case "20": // 配送中
+            c3.css("border", "4px solid gray");
+            c3.find("i").css("color", "gray");
+            c4.css("border", "4px solid gray");
+            c4.find("i").css("color", "gray");
+            c5.css("border", "4px solid gray");
+            c5.find("i").css("color", "gray");
+
+            c3toc4.css("color", "gray");
+            c4toc5.css("color", "gray");
+            break;
+
+        case "40": // 租用中
+            c4.css("border", "4px solid gray");
+            c4.find("i").css("color", "gray");
+            c5.css("border", "4px solid gray");
+            c5.find("i").css("color", "gray");
+
+            c4toc5.css("color", "gray");
+            break;
+
+        case "30": // 已歸還
+            c5.css("border", "4px solid gray");
+            c5.find("i").css("color", "gray");
+            break;
+    }
+</script>
+
+</body>
+
+</html>

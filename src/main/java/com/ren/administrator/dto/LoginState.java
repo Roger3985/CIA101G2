@@ -13,6 +13,10 @@ public class LoginState implements Serializable, HttpSessionBindingListener {
     // 將Service查詢單項資料封包進這個DTO內
     private Integer admNo;
 
+    private String admName;
+
+    private String admEmail;
+
     private String jsessionid;
 
     private Byte admLogin;
@@ -26,12 +30,52 @@ public class LoginState implements Serializable, HttpSessionBindingListener {
     public LoginState() {
     }
 
+    public LoginState(String admName, String admEmail, String jsessionid, Byte admLogin, Byte admLogout, Timestamp admActiveTime, Integer titleNo) {
+        this.admName = admName;
+        this.admEmail = admEmail;
+        this.jsessionid = jsessionid;
+        this.admLogin = admLogin;
+        this.admLogout = admLogout;
+        this.admActiveTime = admActiveTime;
+        this.titleNo = titleNo;
+    }
+
+    public LoginState(Integer admNo, String admName, String admEmail, String jsessionid, Byte admLogin, Byte admLogout, Timestamp admActiveTime, Integer titleNo) {
+        this.admNo = admNo;
+        this.admName = admName;
+        this.admEmail = admEmail;
+        this.jsessionid = jsessionid;
+        this.admLogin = admLogin;
+        this.admLogout = admLogout;
+        this.admActiveTime = admActiveTime;
+        this.titleNo = titleNo;
+    }
+
     public LoginState(Integer admNo) {
         this.admNo = admNo;
     }
 
     public LoginState(String jsessionid) {
         this.jsessionid = jsessionid;
+    }
+
+    public LoginState(String admName, String jsessionid, Byte admLogin, Byte admLogout, Timestamp admActiveTime, Integer titleNo) {
+        this.admName = admName;
+        this.jsessionid = jsessionid;
+        this.admLogin = admLogin;
+        this.admLogout = admLogout;
+        this.admActiveTime = admActiveTime;
+        this.titleNo = titleNo;
+    }
+
+    public LoginState(Integer admNo, String admName, String jsessionid, Byte admLogin, Byte admLogout, Timestamp admActiveTime, Integer titleNo) {
+        this.admNo = admNo;
+        this.admName = admName;
+        this.jsessionid = jsessionid;
+        this.admLogin = admLogin;
+        this.admLogout = admLogout;
+        this.admActiveTime = admActiveTime;
+        this.titleNo = titleNo;
     }
 
     public LoginState(Integer admNo, String jsessionid, Byte admLogin, Byte admLogout, Timestamp admActiveTime, Integer titleNo) {
@@ -106,6 +150,21 @@ public class LoginState implements Serializable, HttpSessionBindingListener {
         this.admNo = admNo;
     }
 
+    public String getAdmName() {
+        return admName;
+    }
+
+    public void setAdmName(String admName) {
+        this.admName = admName;
+    }
+
+    public String getAdmEmail() {
+        return admEmail;
+    }
+
+    public void setAdmEmail(String admEmail) {
+        this.admEmail = admEmail;
+    }
 
     // 在線管理員計數器
     private static final String ONLINE_ADMS = "onlineAdms";

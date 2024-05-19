@@ -43,7 +43,7 @@ public class Administrator {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")
     @Column(name = "admhiredate")
     private Date admHireDate;
-    @Column(name = "admphoto", columnDefinition = "blob")
+    @Column(name = "admphoto", columnDefinition = "longblob")
     private byte[] admPhoto;
     @Column(name = "admsalt")
     private String admSalt;

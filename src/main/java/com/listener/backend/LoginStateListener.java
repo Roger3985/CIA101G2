@@ -1,7 +1,7 @@
 package com.listener.backend;
 
 import com.ren.administrator.dto.LoginState;
-import com.ren.administrator.service.Impl.AdministratorServiceImpl;
+import com.ren.administrator.service.impl.AdministratorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -43,6 +43,7 @@ public class LoginStateListener implements HttpSessionListener {
                 // 如果當前SessionID與LoginState的SessionID相同，執行登出方法
                 if (session.getId().equals(loginState.getJsessionid())) {
                     administratorSvc.logout(loginState);
+
                 }
             }
         }

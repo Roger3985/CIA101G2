@@ -2,6 +2,8 @@ package com.ren.admauthority.controller;
 
 import com.ren.admauthority.entity.AdmAuthority;
 import com.ren.admauthority.service.impl.AdmAuthorityServiceImpl;
+import com.ren.authorityfunction.service.impl.AuthorityFunctionServiceImpl;
+import com.ren.title.service.impl.TitleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,12 @@ public class AdmAuthorityController {
 
     @Autowired
     private AdmAuthorityServiceImpl admAuthoritySvc;
+
+    @Autowired
+    private TitleServiceImpl titleSvc;
+
+    @Autowired
+    private AuthorityFunctionServiceImpl authorityFunctionSvc;
 
     /**
      * 前往職位權限管理頁面
@@ -63,25 +71,27 @@ public class AdmAuthorityController {
     }
 
     @GetMapping("/addAdmAuthority")
-    public String toAddAdmAuthority() {
+    public String toAddAdmAuthority(ModelMap model) {
+        model.addAttribute("admAuthority", new AdmAuthority());
+        model.addAttribute("titleList", titleSvc.getAll());
+        model.addAttribute("authFunctionList", authorityFunctionSvc.getAll());
         return "backend/admauthority/addAdmAuthority";
     }
 
     @PostMapping("/addAdmAuthority")
     public String addAdmAuthority(@Valid AdmAuthority admAuthority,
                                   ModelMap model) {
+        admAuthoritySvc.addAdmAuthority(admAuthority);
 
-
-        return "";
+        return "redirect:/backend/admauthority/listAllAdmAuthorities";
     }
 
     @PutMapping("/updateAdmAuthority")
-    public String updateAdmAuthority(@PathVariable Integer titleNo, @RequestBody AdmAuthority admAuthority) {
-        // Ensure the productNo in the path matches the productNo in the request body
-        if (!titleNo.equals(admAuthority.getTitle().getTitleNo())) {
-            throw new IllegalArgumentException("Path variable productNo must match the productNo in the request body");
-        }
-        return "";
+    public String updateAdmAuthority(@Valid AdmAuthority admAuthority,
+                                     ModelMap model) {
+        admAuthoritySvc.updateAdmAuthority(admAuthority);
+
+        return "redirect:/backend/admauthority/listAllAdmAuthorities";
     }
 
     @DeleteMapping("/delete")

@@ -7,6 +7,7 @@ public class ChatMessage {
     private String sender;
 
     public enum MessageType {
+        IMAGE_AND_CHAT,
         IMAGE,
         CHAT,
         JOIN,

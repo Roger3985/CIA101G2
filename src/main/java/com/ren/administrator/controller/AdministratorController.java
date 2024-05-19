@@ -2,7 +2,7 @@ package com.ren.administrator.controller;
 
 import com.ren.administrator.dto.LoginState;
 import com.ren.administrator.entity.Administrator;
-import com.ren.administrator.service.Impl.AdministratorServiceImpl;
+import com.ren.administrator.service.impl.AdministratorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,14 +17,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.ren.util.Constants.FIRST;
@@ -98,9 +96,9 @@ public class AdministratorController {
 
     // 從listAll那前往
     @GetMapping("/updateAdministrator/{administratorNo}")
-    public String toUpdateAdministrator(ModelMap model, @PathVariable Integer administratorNo) {
+    public String toUpdateAdministrator(ModelMap model, @PathVariable Integer admNo) {
 
-        model.addAttribute("administrator", administratorSvc.getOneAdministrator(administratorNo));
+        model.addAttribute("administrator", administratorSvc.getOneAdministrator(admNo));
 
         return "backend/administrator/updateAdministrator";
     }
@@ -183,39 +181,43 @@ public class AdministratorController {
     }
 
     @GetMapping("/profile")
-    public String toProfile() {
-
+    public String toProfile(HttpSession session,
+                            ModelMap model) {
+        LoginState loginState = (LoginState) session.getAttribute("loginState");
+        Administrator administrator = administratorSvc.getOneAdministrator(loginState.getAdmNo());
+        model.addAttribute("administrator", administrator);
         return "backend/administrator/profile";
     }
 
-//    // 直接上傳
-//    @PostMapping("/upload")
-//    public ResponseEntity<String> uploadFile(@Valid Administrator administrator,BindingResult result,ModelMap model,
-//            @RequestParam("admPhoto") MultipartFile file) throws IOException {
-//            administrator.setAdmPhoto(file.getBytes());
-//            return ResponseEntity.status(HttpStatus.OK).body("File uploaded successfully.");
-//    }
-
     /**
-     * 將上傳檔案壓縮存進資料庫
+     * 將上傳圖檔存進資料庫
      *
      * @param administrator 傳入管理員Entity更新
      * @param result 錯誤訊息
      * @param model 用於將錯誤訊息傳回前端渲染
      * @param file 上傳檔案
      * @return 成功則返回上傳成功訊息，失敗則返回上傳失敗訊息
+     * @throws IOException 使用MultipartFile的getBytes()方法拋出
      */
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@Valid Administrator administrator,BindingResult result,ModelMap model,
-                                             @RequestParam("admPhoto") MultipartFile file) throws IOException {
-            byte[] upfile = null;
-            if (file.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("沒有上傳檔案");
-            }
-            administratorSvc.storeFile(file.getBytes(), administrator);
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body("檔案上傳成功");
+    public ResponseEntity<Map<String, Object>> uploadFile(HttpSession session,
+                                                          ModelMap model,
+                                                          @RequestParam("admPhoto") MultipartFile file) throws IOException {
+
+        if (file.isEmpty()) {
+            model.addAttribute("status", "error");
+            model.addAttribute("message", "沒有上傳圖片");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(model);
+        }
+        LoginState loginState = (LoginState) session.getAttribute("loginState");
+        Administrator administrator = administratorSvc.getOneAdministrator(loginState.getAdmNo());
+        administratorSvc.storeFile(file.getBytes(), administrator);
+
+        model.addAttribute("status", "success");
+        model.addAttribute("message", "圖片上傳成功");
+        model.addAttribute("admNo", administrator.getAdmNo());
+
+        return ResponseEntity.status(HttpStatus.OK).body(model);
     }
 
     @GetMapping("/download/{admNo}")
@@ -244,10 +246,17 @@ public class AdministratorController {
         }
     }
 
-    // 可以看到所有新增與修改的變更
+    // 工作清單網頁，可以看到所有新增與修改的變更與申請
     @GetMapping("/jobList")
     public String toJobList() {
         return "backend/administrator/jobList";
+    }
+
+    // 權限附予
+    @PostMapping("")
+    public String jobList() {
+
+        return "redirect:/backend/administrator/jobList";
     }
 
     // 同意該管理員的權限要求
@@ -263,21 +272,15 @@ public class AdministratorController {
         return "redirect:/backend/administrator/jobList";
     }
 
-    // 權限附予
-    @PostMapping("")
-    public String jobList() {
-
-
-        return "redirect:/backend/administrator/jobList";
-    }
-
     // 審核註冊
     // 設立四種權限
     // 唯讀，可查詢跟新增，可查詢跟新增跟修改，可查詢跟新增跟修改跟刪除這四個階級
 
     // 寄出修改通知
-//    @PostMapping("/")
-//    public
+    @PostMapping("/sendPermit")
+    public String sendPermit() {
+        return "";
+    }
 
     // 核准下級請求
 
