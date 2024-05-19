@@ -143,6 +143,7 @@ public class MemberControllerFrontEnd {
     public String logoutMember(HttpSession session, ModelMap modelMap) {
         session.removeAttribute("loginsuccess");
         session.removeAttribute("notice");
+        session.removeAttribute("unreadNoticeCount");
         System.out.println("登出成功");
         return "redirect:/";
     }
@@ -320,6 +321,9 @@ public class MemberControllerFrontEnd {
             } else if (validateAccout(identifier)){
                 // 帳號登入
                 modelMap.addAttribute("message", "沒有該會員帳號，請確認您的帳號。");
+            } else {
+                // 其他錯誤
+                modelMap.addAttribute("message", "會員帳號跟信箱有誤請重新確認");
             }
             return "frontend/member/loginMember";
         }
@@ -386,14 +390,22 @@ public class MemberControllerFrontEnd {
 
         // FIXME 修改
         // 獲取會員的通知
-        Notice notice = noticeService.getOneByMember(loginData);
+        List<Notice> noticeList = noticeService.findNoticesByMemberMemNo(existingMember.getMemNo());
+
+        // 獲取未讀取通知的數量
+        int unreadNoticeCount = noticeService.getUnreadNoticeCount(existingMember);
+
+        System.out.println(noticeList);
 
         // 從會話中移除 "URI" 屬性，以避免重複重定向
         session.removeAttribute("URI");
 
         // 登入成功後，將會員訊息和通知訊息儲存到會話中
         session.setAttribute("loginsuccess", loginData);
-        session.setAttribute("notice", notice);
+        session.setAttribute("noticeList", noticeList);
+        session.setAttribute("unreadNoticeCount", unreadNoticeCount);
+
+        System.out.println(unreadNoticeCount);
 
         System.out.println("autoLoginMember: " + autoLoginMember);
 
@@ -654,6 +666,9 @@ public class MemberControllerFrontEnd {
 //            } else if (validateAccout(identifier)){
 //                // 帳號登入
 //                modelMap.addAttribute("message", "沒有該會員帳號，請確認您的帳號。");
+//            } else {
+//                // 其他錯誤
+//                modelMap.addAttribute("message", "會員帳號跟信箱有誤請重新確認");
 //            }
 //            return "frontend/member/loginMember";
 //        }
@@ -720,7 +735,7 @@ public class MemberControllerFrontEnd {
 //
 //        // FIXME 修改
 //        // 獲取會員的通知
-//        Notice notice = noticeService.getOneByMember(loginData);
+//        Notice notice = noticeService.getOneByMember(existingMember);
 //
 //        // 從會話中移除 "URI" 屬性，以避免重複重定向
 //        session.removeAttribute("URI");

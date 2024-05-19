@@ -36,4 +36,30 @@ public interface NoticeRepository extends JpaRepository<Notice, Integer> {
                                  @Param("notContent") String notContent,
                                  @Param("notTime") Timestamp notTime,
                                  @Param("notStat") Byte notStat);
+
+    /**
+     * 統計特定會員具有指定狀態的通知數量。
+     *
+     * @param member 會員對象，用於查詢其相關的通知。
+     * @param notStat 通知狀態 (例如: 0 表示未讀，1 表示已讀)。
+     * @return 具有指定狀態的通知數量。
+     */
+    public int countByMemberAndNotStat(Member member, byte notStat);
+
+    /**
+     * 查詢具有指定狀態的所有通知。
+     *
+     * @param notStat 通知的狀態。
+     * @return 具有指定狀態的通知列表。
+     */
+    List<Notice> findNoticesByNotStat(byte notStat);
+
+    /**
+     * 根據會員的 memNo 檢索通知。
+     *
+     * @param memNo 會員的 memNo。
+     * @return 與會員 memNo 相關聯的通知。
+     */
+    Notice getNoticeByMember_MemNo(Integer memNo);
+
 }

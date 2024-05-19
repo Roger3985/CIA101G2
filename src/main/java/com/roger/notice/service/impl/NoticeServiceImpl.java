@@ -36,6 +36,15 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     /**
+     * 根據會員編號取得通知。
+    */
+    @Override
+    public Notice getOneByMemNo(Integer memNo) {
+        return noticeRepository.getNoticeByMember_MemNo(memNo);
+    }
+
+
+    /**
      * 從資料庫中查找所有 Notice 實例。
      */
     @Override
@@ -77,6 +86,24 @@ public class NoticeServiceImpl implements NoticeService {
         }
 
         return noticeRepository.findByAttribute(memNo, notContent, notTime, notStat);
+    }
+
+    /**
+     * 獲取未讀通知的數量。
+     */
+    @Override
+    public int getUnreadNoticeCount(Member member) {
+        byte unreadState = 0; // 0 表示為未讀狀態
+        return noticeRepository.countByMemberAndNotStat(member, unreadState);
+    }
+
+    /**
+     * 獲取所有未讀通知。
+     */
+    @Override
+    public List<Notice> getUnreadNotices() {
+        byte unreadStat = 0; // 0 表示為未讀狀態
+        return noticeRepository.findNoticesByNotStat(unreadStat);
     }
 
     /**

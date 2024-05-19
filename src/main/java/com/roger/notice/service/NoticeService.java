@@ -29,6 +29,14 @@ public interface NoticeService {
     public Notice updateNotice(Notice notice);
 
     /**
+     * 根據會員編號取得通知。
+     *
+     * @param memNo 會員編號。
+     * @return 與提供的會員編號相關聯的通知，如果找不到則返回 null。
+     */
+    Notice getOneByMemNo(Integer memNo);
+
+    /**
      * 根據給定的 Member 查找對應的 Notice。
      * 該方法根據傳入的 Member 物件查找對應的 Notice 實例。返回的 Notice 實例可能是與
      * 該 Member 相關的最新通知或其他特定條件下的通知。
@@ -73,4 +81,18 @@ public interface NoticeService {
      * @return 符合條件的通知列表。
      */
     public List<Notice> getByAttributes(Map<String, Object> map);
+
+    /**
+     * 獲取未讀通知的數量。
+     *
+     * @return 未讀通知的數量。
+     */
+    public int getUnreadNoticeCount(Member member);
+
+    /**
+     * 獲取所有未讀通知。
+     *
+     * @return 未讀通知列表。
+     */
+    public List<Notice> getUnreadNotices();
 }
