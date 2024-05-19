@@ -164,8 +164,11 @@ public class BackendIndexController {
         // 確認是否為信箱格式，true則透過信箱搜尋使用者資訊，false則透過管理員編號搜尋使用者資訊
         if (validateEmail(userId)) {
             administrator = administratorSvc.getOneAdministrator(userId);
-            // 獲得管理員編號，之後存入Redis資料庫使用
-            admNo = administrator.getAdmNo();
+            // 確認是否有無這個資料
+            if (administrator != null) {
+                // 獲得管理員編號，之後存入Redis資料庫使用
+                admNo = administrator.getAdmNo();
+            }
         } else {
             // 將管理員編號轉成 Integer，供Service方法使用
             admNo = Integer.valueOf(userId);
@@ -322,9 +325,11 @@ public class BackendIndexController {
 
 
     // 最新消息推播
-    @GetMapping("/")
-    public String news() {
-        return "";
+    @GetMapping("/getUserTitle")
+    @ResponseBody
+    public String getUserTitle(HttpSession session) {
+        LoginState loginState = (LoginState) session.getAttribute("loginState");
+        return loginState.getTitleNo().toString();
     }
 
     // 站內搜尋
