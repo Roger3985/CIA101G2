@@ -55,7 +55,7 @@ function onError(error) {
 
 function sendMessage(event) {
     var messageContent = messageInput.value.trim();
-    if(messageContent || fileDataUrl && stompClient) {
+    if((messageContent || fileDataUrl) && stompClient) {
         var chatMessage = {
             sender: username,
             content: messageContent, // 只傳送文字訊息
@@ -65,9 +65,24 @@ function sendMessage(event) {
             chatMessage.type = 'IMAGE'; // 如果有圖片，將訊息類型設置為圖片
             chatMessage.content = fileDataUrl; // 並將 Data URL 設置為內容
         }
+
+        // 如果同時有訊息內容和選擇了文件，將訊息類型設定為同時包含文字和圖片，並將訊息內容設定為訊息內容和文件的 Data URL
+        if (messageContent && fileDataUrl) {
+            console.log("Message content:", messageContent);
+            console.log("File data URL:", fileDataUrl);
+            chatMessage.type = 'IMAGE_AND_CHAT';
+            chatMessage.content = JSON.stringify({
+                text: messageContent,
+                image: fileDataUrl
+            });
+        }
         stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
         messageInput.value = ''; // 清除訊息輸入框中的內容
         fileDataUrl = ''; // 清除 fileDataUrl 變數
+
+        // 清空預覽圖片
+        var previewImg = document.getElementById('preview');
+        previewImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChQG/A8ABKzSURBVGiRlZZ9UFTVVYvWra1QXaqPvWtWmUqaLUpUqalpClSopSqqZQWqo+lRdVXUwmmg0Fqg9xaVZqapWq6q1qE2rXZamqKqkqqi5SWlWbq1qmpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/Kl';
     }
     event.preventDefault();
 }
@@ -117,17 +132,64 @@ function onMessageReceived(payload) {
         messageElement.appendChild(textElement);
 
     } else if (message.type === 'IMAGE') {
+        messageElement.classList.add('chat-message');
+
+        var avatarElement = document.createElement('i');
+        var avatarText = document.createTextNode(message.sender[0]);
+        avatarElement.appendChild(avatarText);
+        avatarElement.style['background-color'] = getAvatarColor(message.sender);
+
+        messageElement.appendChild(avatarElement);
+
+        var usernameElement = document.createElement('span');
+        var usernameText = document.createTextNode(message.sender);
+        usernameElement.appendChild(usernameText);
+        messageElement.appendChild(usernameElement);
+
         // 顯示圖片而不顯示文字
         var imageElement = document.createElement('img');
         imageElement.src = message.content;
         imageElement.classList.add('small-image');
         messageElement.appendChild(imageElement);
+
+    } else if (message.type === 'IMAGE_AND_CHAT') {
+        messageElement.classList.add('chat-message');
+
+        var avatarElement = document.createElement('i');
+        var avatarText = document.createTextNode(message.sender[0]);
+        avatarElement.appendChild(avatarText);
+        avatarElement.style['background-color'] = getAvatarColor(message.sender);
+        messageElement.appendChild(avatarElement);
+
+        var usernameElement = document.createElement('span');
+        var usernameText = document.createTextNode(message.sender);
+        usernameElement.appendChild(usernameText);
+        messageElement.appendChild(usernameElement);
+
+        // 解析文字和圖片資訊
+        var contentObject = JSON.parse(message.content);
+
+        // 從解析後的對象中獲取文字和圖片資訊
+        var text = contentObject.text;
+        var image = contentObject.image;
+
+        // 顯示圖片
+        var imageElement = document.createElement('img');
+        imageElement.src = image;
+        imageElement.classList.add('small-image');
+        messageElement.appendChild(imageElement);
+
+        // 顯示文字
+        var textElement = document.createElement('p');
+        var messageText = document.createTextNode(text);
+        textElement.appendChild(messageText);
+        messageElement.appendChild(textElement);
     }
+
 
     messageArea.appendChild(messageElement);
     messageArea.scrollTop = messageArea.scrollHeight;
 }
-
 
 
 function getAvatarColor(messageSender) {
@@ -139,23 +201,6 @@ function getAvatarColor(messageSender) {
     return colors[index];
 }
 
-function previewFile() {
-    var files = document.querySelector("#file").files;
-    if (files.length > 0) {
-        var fileReader = new FileReader();
-        fileReader.readAsDataURL(files[0]);
-        fileReader.onload = function (e) {
-            fileDataUrl = e.target.result;
-            var messageInput = document.querySelector('#message');
-            var imageElement = document.createElement('img');
-            imageElement.src = fileDataUrl;
-            // Clear previous content
-            messageInput.value = '';
-            // Append the image to the message input
-            messageInput.appendChild(imageElement);
-        };
-    }
-}
 
 usernameForm.addEventListener('submit', connect, true)
 messageForm.addEventListener('submit', sendMessage, true)

@@ -138,12 +138,15 @@ import com.chihyun.coupon.entity.Coupon;
 import com.chihyun.coupon.model.CouponService;
 import com.iting.cart.entity.CartRedis;
 import com.iting.cart.service.CartService;
-import com.iting.productorder.entity.ProductOrder;
-import com.iting.productorder.service.ProductOrderService;
+
+import com.ren.product.service.impl.ProductServiceImpl;
+import com.ren.productpicture.entity.ProductPicture;
+import com.ren.productpicture.service.impl.ProductPictureServiceImpl;
+import com.roger.member.entity.Member;
 import com.roger.member.entity.uniqueAnnotation.Create;
+import oracle.sql.BLOB;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -159,6 +162,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -167,9 +171,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/frontend")
 public class CartController {
     @Autowired
+    ProductServiceImpl productService;
+    @Autowired
     CartService cartSvc;
     @Autowired
     CouponService couponService;
+    @Autowired
+    ProductPictureServiceImpl productPictureService;
 
 
     @GetMapping("/cart/addcart")
@@ -187,39 +195,81 @@ public class CartController {
 
 
 
+    //
+//    @GetMapping("/cart/addcartsuccess")
+//    public String insert(@Validated(Create.class) CartRedis cartRedis,HttpSession session, Model model) {
+//        // 从会话中获取 memNo 的值
+//        Member member = (Member) session.getAttribute("user");
+//        if (member == null) {
+//            session.setAttribute("location", "/frontend/cart/addcartsuccess");
+//            return "redirect:/login";
+//        }
+//        Integer memNo = member.getMemNo();
+//        cartSvc.updateCart(cartRedis);
+//        List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNo);
+//        model.addAttribute("cartListData", cartListData);
+//        return getCart(memNo, model, "/frontend/cart/Cart");
+//    }
+//    private String getCart(Integer memNo, Model model, String viewName) {
+//        List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNo);
 //
-@GetMapping("/cart/Cart")
-public String Cart(HttpSession session, ModelMap model) {
-    // 从会话中获取 memNo 的值
- 
-    Integer memNo = (Integer) session.getAttribute("memNo");
+////         檢查購物車是否為空
+//        if (cartListData.isEmpty()) {
+//            model.addAttribute("cartListData", true);
+//        }
+//        // Calculate the total
+//        int total = 0;
+//        for (CartRedis item : cartRedisList) {
+//            total += item.getSubtotalAmount();
+//        }
+//        int shippingCost = total > 500 ? 0 : 100;
 
-    if (memNo == null) {
+        // Add total to the model
+//        model.addAttribute("total", total);
+//        model.addAttribute("shippingCost", shippingCost);
+//        model.addAttribute("cartListData", cartListData);
+//        model.addAttribute("memNo", memNo);
+//        return viewName;
+//    }
+    //加入商品至購物車
+        @GetMapping("/cart/addcartsuccess")
+        public String insert(@Validated(Create.class) CartRedis cartRedis, BindingResult result, ModelMap model, HttpSession session) {
+            Member member=new Member();
+            member.setMemNo(2);
+            session.setAttribute("member",member);
+            Object memNo = 0; // 声明并初始化memNo为Object类型
 
-        return "redirect:/login";
-    }
+            if (session.getAttribute("member") == null) {
+                memNo = session.getAttribute("memNo"); // 将memNo设为session中的memNo值
+            } else {
+                member = (Member) session.getAttribute("member"); // 强制转换为Member类型
+                memNo = member.getMemNo();
+            }
 
-    List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNo);
+            // 将memNo设置在cartRedis中
+            cartRedis.setMemNo((Integer) memNo); // 将memNo强制转换为Integer类型
+            List<CartRedis> cartListData = cartSvc.findByCompositeKey((Integer) memNo); // 将memNo强制转换为Integer类型
 
-    model.addAttribute("cartListData", cartListData);
 
-    return "frontend/cart/Cart";
-}
+            for (CartRedis cartItem : cartListData) {
+                Integer cartProductNo = cartItem.getProductNo();
+                List<ProductPicture> productPictures = productPictureService.getByProductNo(cartProductNo);
+                if (productPictures != null && !productPictures.isEmpty()) {
+                    ProductPicture firstProductPicture = productPictures.get(0);
+                    byte[] firstPic = firstProductPicture.getProductPic();
+                    Integer productNo=firstProductPicture.getProduct().getProductNo();
+                    String base64Image = Base64.getEncoder().encodeToString(firstPic);
+                    if (session.getAttribute("productImage"+productNo)==null){
+                        session.setAttribute("productImage"+productNo, base64Image);}
+                    model.addAttribute("productImage"+productNo, base64Image);
+                }
+            }
 
-//加入商品至購物車
-    @PostMapping("/cart/addcartsuccess")
-    public String insert(@Validated(Create.class) CartRedis cartRedis, BindingResult result, @RequestParam(name="memNo") Integer memNo, ModelMap model) {
-        if (result.hasErrors()) {
-            model.addAttribute("errors", result.getFieldErrors());
-            return "frontend/cart/addCart";
-        } else {
-                cartSvc.updateCart(cartRedis);
-                List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNo);
-                model.addAttribute("cartListData", cartListData);
-                return "frontend/cart/Cart";
 
+            model.addAttribute("cartListData", cartListData);
+
+            return "frontend/cart/Cart";
         }
-    }
 
 
 
@@ -279,8 +329,8 @@ public String Cart(HttpSession session, ModelMap model) {
     @PostMapping("/cart/coupNoInstantly")
     @ResponseBody
     public Map<String, String> coupNoInstantly(@RequestParam("coupNo") String coupNo,
-                                               @RequestParam("productAllPrice") String productAllPrice,
-                                               HttpSession session) {
+                                               @RequestParam("productAllPrice") String productAllPrice
+                                               ) {
         Map<String, String> response = new HashMap<>();
 
         Coupon coupon = couponService.getOneCoupon(Integer.valueOf(coupNo));
@@ -301,28 +351,74 @@ public String Cart(HttpSession session, ModelMap model) {
 
 
     @PostMapping("/cart/deleteInstantly")
-@ResponseBody
-public List<CartRedis> deleteInstantly(@RequestParam("productNo") Integer productNo,
-                                       @RequestParam("memNo") Integer memNo,
-                                       HttpSession session) {
-    cartSvc.deleteBymemNoAndProductNo(memNo, productNo);
-    List<CartRedis> cartRedisList = cartSvc.findByCompositeKey(memNo);
-    session.setAttribute("memNo", memNo);
-    System.out.println("即时更新成功");
-    return cartRedisList;
-}
+    @ResponseBody
+    public List<CartRedis> deleteInstantly(@RequestParam("productNo") Integer productNo,
+                                           @RequestParam("memNo") Integer memNo,
+                                           HttpSession session) {
+        cartSvc.deleteBymemNoAndProductNo(memNo, productNo);
+        List<CartRedis> cartRedisList = cartSvc.findByCompositeKey(memNo);
+        session.setAttribute("memNo", memNo);
+        System.out.println("即时更新成功");
+        return cartRedisList;
+    }
     @PostMapping("/cart/updateBackendQuantity")
     @ResponseBody
     public List<CartRedis> updateBackendQuantity(@RequestParam("productNo") Integer productNo,
-                                           @RequestParam("memNo") Integer memNo,
-                                           @RequestParam("productBuyQty")Integer productBuyQty,
-                                           HttpSession session) {
-       cartSvc.updateCart(productNo,memNo,productBuyQty);
+                                                 @RequestParam("memNo") Integer memNo,
+                                                 @RequestParam("productBuyQty")Integer productBuyQty,
+                                                 HttpSession session) {
+        cartSvc.updateCart(productNo,memNo,productBuyQty);
         session.setAttribute("memNo", memNo);
         List<CartRedis> cartRedisList = cartSvc.findByCompositeKey(memNo);
         System.out.println("即时更新成功");
         return cartRedisList;
     }
 
+
+    @PostMapping("/cart/addproducttocart")
+    @ResponseBody
+    public Map<String, String> addProductToCart(@RequestParam("productNo") String productNo,
+                                                @RequestParam("productBuyQty") String productBuyQty,
+                                                HttpSession session,
+                                                Model model) {
+        Map<String, String> response = new HashMap<>();
+        Integer memNo;
+        if (session.getAttribute("member") == null) {
+            String sessionId = session.getId();
+            memNo = Math.abs(sessionId.hashCode());
+            session.setAttribute("memNo", memNo);
+        } else {
+            Member member = (Member) session.getAttribute("member");
+            memNo = member.getMemNo();
+        }
+        try {
+            if (productNo == null || productBuyQty == null) {
+                throw new IllegalArgumentException("Product number and quantity must not be null.");
+            }
+            CartRedis cartRedis = new CartRedis();
+            cartRedis.setMemNo(memNo);
+            cartRedis.setProductNo(Integer.valueOf(productNo));
+            cartRedis.setProductBuyQty(Integer.valueOf(productBuyQty));
+            cartSvc.updateCart(cartRedis);
+
+            List<ProductPicture> productPictures = productPictureService.getByProductNo(Integer.valueOf(productNo));
+            if (productPictures != null && !productPictures.isEmpty()) {
+                ProductPicture firstProductPicture = productPictures.get(0);
+                byte[] firstPic = firstProductPicture.getProductPic();
+                String base64Image = Base64.getEncoder().encodeToString(firstPic);
+                if (session.getAttribute("productImage"+productNo)==null){
+                    session.setAttribute("productImage"+productNo, base64Image);}
+            }
+
+            List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNo);
+            model.addAttribute("cartListData", cartListData);
+            session.setAttribute("cartListData", cartListData);
+            response.put("message", "Success");
+        } catch (Exception e) {
+            response.put("message", "Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return response;
+    }
 
 }

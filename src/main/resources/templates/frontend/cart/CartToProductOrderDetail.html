@@ -131,64 +131,79 @@
             <div class="container">
                 <div class="row align-items-start">
                     <div class="col-md-7"><!-- Form -->
-                        <form th:action="@{/frontend/productorder/insertProductOrderSuccess}" method="post"  onsubmit="return dosubmit();">
+                        <form th:action="@{/frontend/productorder/insertProductOrderSuccess}" method="post"
+                              onsubmit="return dosubmit();">
                             <h6 class="mb-4 h3">寄送資訊</h6>
                             <tbody>
 
-                            <div>
-                                <label>會員編號:</label>
-                                <input type="text" th:name="memNo"th:field="*{productOrder.member.memNo}"  onclick="hideContent('productOrder.member.memNo.errors');"><br/>
-                            </div>
 
                             <div>
-                                <label>訂購人姓名:</label>
-                                <input class="form-control" type="text" th:name="productByrName"th:field="*{productOrder.member.memName}" onclick="hideContent('productOrder.member.memName.errors');" /><br/>
-                                <span  th:if="${#fields.hasErrors('productOrder.member.memName')}" th:errors="*{member.memName}" class="error" id="productByrName.errors"></span>
+                                <label>訂購人姓名: <span class="required">*</span>
+                                </label>
+                                <input class="form-control" type="text" th:name="productByrName" th:id="productByrName"
+                                       th:field="*{productOrder.member.memName}">
+                                <span id="productByrName-error" class="error-message"></span>
                             </div>
+                            <div>
+                                <label>訂購人手機號碼:<span class="required">*</span>
+                                </label>
+                                <input class="form-control" type="text" th:name="productByrPhone"
+                                       th:id="productByrPhone"
+                                       th:field="*{productOrder.member.memMob}">
+                                <span id="productByrPhone-error" class="error-message"></span>
+                            </div>
+                            <div>
+                                <label>訂購人Email:<span class="required">*</span>
+                                </label>
+                                <input class="form-control" type="email" th:name="productByrEmail"
+                                       th:id="productByrEmail"
+                                       placeholder="請輸入電子信箱" th:field="*{productOrder.member.memMail}">
+                                <span id="productByrEmail-error" class="error-message"></span>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="copyInfo" onclick="copyBuyerInfo(this)">
+                                <label for="copyInfo">同訂購人</label>
+                            </div>
+                            <div>
+                                <label>收件人姓名: <span class="unrequired"></span>
+                                </label>
+                                <input class="form-control" type="text" th:name="productRcvName" th:id="productRcvName"
+                                       th:field="*{productOrder.productRcvName}">
+                                <span id="productRcvName-error" class="error-message"></span>
 
-                            <div>
-                                <label>訂購人手機號碼:</label>
-                                <input class="form-control" type="text"th:name="productByrPhone" th:field="*{productOrder.member.memMob}" onclick="hideContent('productOrder.member.memMob.errors');" /><br/>
-                                <span  th:if="${#fields.hasErrors('productOrder.member.memMob')}" th:errors="*{productOrder.member.memMob}" class="error" id="productByrPhone.errors"></span>
-                            </div>
+                                <div>
+                                    <label>收件人手機號碼:<span class="unrequired"></span>
+                                    </label>
+                                    <input class="form-control" type="text" th:name="productByrPhone"
+                                           th:id="productRcvPhone"
+                                           th:field="*{productOrder.productRcvPhone}">
+                                    <span id="productRcvPhone-error" class="error-message"></span>
+                                </div>
 
-                            <div>
-                                <label>訂購人Email:</label>
-                                <input class="form-control" type="email" th:name="productByrEmail" placeholder="請輸入電子信箱"th:field="*{productOrder.member.memMail}" onclick="hideContent('productOrder.member.memMail.errors');" required /><br/>
-                                <span th:if="${#fields.hasErrors('productOrder.member.memMail')}" th:errors="*{productOrder.member.memMail}" class="error" id="productByrEmail.errors"></span>
-                            </div>
-
-                            <div>
-                                <label>收件人姓名:</label>
-                                <input class="form-control" type="text" th:field="*{productOrder.productRcvName}" placeholder="請輸入全名" onclick="hideContent('productOrder.productRcvName.errors');" /><br/>
-                                <span th:if="${#fields.hasErrors('productOrder.productRcvName')}" th:errors="*{productOrder.productRcvName}" class="error" id="productRcvName.errors"></span>
-                            </div>
-                            <div>
-                                <label>收件人手機號碼:</label>
-                                <input class="form-control" type="text" th:field="*{productOrder.productRcvPhone}" placeholder="請輸入手機號碼" onclick="hideContent('productOrder.productRcvPhone.errors');" /><br/>
-                                <span th:if="${#fields.hasErrors('productOrder.productRcvPhone')}" th:errors="*{productOrder.productRcvPhone}" class="error" id="productRcvPhone.errors"></span>
-                            </div>
-                            <div>
                                 <label>取貨方式:</label>
                                 <select class="form-control" th:field="*{productOrder.productTakeMethod}">
-                                    <option th:value="1" th:text="店取" />
-                                    <option th:value="2" th:text="宅配" />
-                                    <option th:value="3" th:text="超商取貨" />
+                                    <option th:value="1" th:text="店取"/>
+                                    <option th:value="2" th:text="宅配"/>
+                                    <option th:value="3" th:text="超商取貨"/>
                                 </select><br/>
                             </div>
-                            <div>
-                                <label>宅配住址:</label>
-                                <input class="form-control" type="text" th:field="*{productOrder.member.memAdd}" onclick="hideContent('productOrder.member.memAdd.errors');" /><br/>
-                                <span th:if="${#fields.hasErrors('productOrder.member.memAdd')}" th:errors="*{productOrder.member.memAdd}" class="error" id="productAddr.errors"></span>
+
+                            <div class="col-md-12">
+                                <div class="checkout-form-list">
+                                    <label>宅配住址: <span class="unrequired"></span></label>
+                                    <input id="productAddr" placeholder="請輸入地址" type="text"
+                                           name="productAddr" th:field="*{productOrder.member.memAdd}">
+                                    <span id="productAddr-error" class="error-message"></span>
+                                </div>
                             </div>
                             <div>
                                 <label>付款方式:</label>
                                 <select class="form-control" th:field="*{productOrder.productPayMethod}">
-                                    <option th:value="1" th:text="線上刷卡" />
-                                    <option th:value="2" th:text="超商繳款" />
-                                    <option th:value="3" th:text="ATM付款" />
-                                    <option th:value="4" th:text="匯款" />
-                                    <option th:value="5" th:text="現場付款" />
+                                    <option th:value="1" th:text="線上刷卡"/>
+                                    <option th:value="2" th:text="超商繳款"/>
+                                    <option th:value="3" th:text="ATM付款"/>
+                                    <option th:value="4" th:text="匯款"/>
+                                    <option th:value="5" th:text="現場付款"/>
                                 </select><br/>
                             </div>
                             <!--                            <div>-->
@@ -203,203 +218,146 @@
                             <!--                            </div>-->
 
 
-
-
                             </tbody>
 
-                            <h6 class="mb-4 h3">商品訂單明細</h6><!-- Shipping details -->
-                            <div class="table-responsive mb-6">
-                                <table class="table table-bordered table-hover mb-0">
-                                    <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="form-check"><input class="form-check-input"
-                                                                           name="shipping" type="radio" id="checkoutShippingStandard">
-                                                <label class="form-check-label"
-                                                       for="checkoutShippingStandard">Standard Shipping</label>
-                                            </div>
-                                        </td>
-                                        <td>Delivery in 5 - 7 working days</td>
-                                        <td>$8.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="form-check"><input class="form-check-input"
-                                                                           name="shipping" type="radio" id="checkoutShippingExpress">
-                                                <label class="form-check-label"
-                                                       for="checkoutShippingExpress">Express Shipping</label></div>
-                                        </td>
-                                        <td>Delivery in 3 - 5 working days</td>
-                                        <td>$12.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="form-check"><input class="form-check-input"
-                                                                           name="shipping" type="radio" id="checkoutShippingShort">
-                                                <label class="form-check-label" for="checkoutShippingShort">1 -
-                                                    2 Shipping</label></div>
-                                        </td>
-                                        <td>Delivery in 1 - 2 working days</td>
-                                        <td>$18.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="form-check"><input class="form-check-input"
-                                                                           name="shipping" type="radio" id="checkoutShippingFree">
-                                                <label class="form-check-label" for="checkoutShippingFree">Free
-                                                    Shipping</label></div>
-                                        </td>
-                                        <td>Living won't the He one every subdue meat replenish face was you
-                                            morning firmament darkness.</td>
-                                        <td>$0.00</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div><!-- Address -->
-                            <!--                            <div class="mb-5">&lt;!&ndash; Checkbox &ndash;&gt;-->
-                            <!--                                <div class="form-check"><input class="form-check-input"-->
-                            <!--                                                               id="checkout_Shipping_Address" type="checkbox"> <label-->
-                            <!--                                        class="form-check-label" data-bs-toggle="collapse"-->
-                            <!--                                        data-bs-target="#checkout_Shipping_AddressCollapse"-->
-                            <!--                                        for="checkout_Shipping_Address">Ship to a different address?</label></div>-->
-                            <!--                                &lt;!&ndash; Collapse &ndash;&gt;-->
-                            <!--                                <div class="collapse" id="checkout_Shipping_AddressCollapse">-->
-                            <!--                                    <div class="row gy-4 pt-3">-->
-                            <!--                                        <div class="col-12"><label class="form-label"-->
-                            <!--                                                                   for="checkout_Shipping_Address_Country">Country *</label> <input-->
-                            <!--                                                class="form-control" id="checkout_Shipping_Address_Country"-->
-                            <!--                                                type="text" placeholder="Country"></div>-->
-                            <!--                                        <div class="col-12"><label class="form-label"-->
-                            <!--                                                                   for="checkout_Shipping_AddressLine_One">Address Line 1 *</label>-->
-                            <!--                                            <input class="form-control" id="checkout_Shipping_AddressLine_One"-->
-                            <!--                                                   type="text" placeholder="Address Line 1"></div>-->
-                            <!--                                        <div class="col-12"><label class="form-label"-->
-                            <!--                                                                   for="checkout_Shipping_AddressLine_Two">Address Line 2</label>-->
-                            <!--                                            <input class="form-control" id="checkout_Shipping_AddressLine_Two"-->
-                            <!--                                                   type="text" placeholder="Address Line 2 (optional)"></div>-->
-                            <!--                                        <div class="col-6"><label class="form-label"-->
-                            <!--                                                                  for="checkout_Shipping_Address_Town">Town / City *</label> <input-->
-                            <!--                                                class="form-control" id="checkout_Shipping_Address_Town" type="text"-->
-                            <!--                                                placeholder="Town / City"></div>-->
-                            <!--                                        <div class="col-6"><label class="form-label"-->
-                            <!--                                                                  for="checkout_Shipping_Address_ZIP">ZIP / Postcode *</label> <input-->
-                            <!--                                                class="form-control" id="checkout_Shipping_Address_ZIP" type="text"-->
-                            <!--                                                placeholder="ZIP / Postcode"></div>-->
-                            <!--                                        <div class="col-12">&lt;!&ndash; Button &ndash;&gt; <button class="btn btn-outline-mode"-->
-                            <!--                                                                                    type="submit">Save Address</button></div>-->
-                            <!--                                    </div>-->
-                            <!--                                </div>-->
-                            <!--                            </div>&lt;!&ndash; Heading &ndash;&gt;-->
-                            <!--                            <h6 class="mb-4 h3">Payment</h6>&lt;!&ndash; List group &ndash;&gt;-->
-                            <!--                            <div class="list-group mb-5 accordion" id="payment-methods">-->
-                            <!--                                <div class="list-group-item py-3">&lt;!&ndash; Radio &ndash;&gt;-->
-                            <!--                                    <div class="form-check mb-0">&lt;!&ndash; Input &ndash;&gt; <input-->
-                            <!--                                            class="form-check-input collapsed" id="checkout_Payment_Card"-->
-                            <!--                                            name="payment" type="radio" data-bs-toggle="collapse"-->
-                            <!--                                            data-bs-action="show"-->
-                            <!--                                            data-bs-target="#checkout_Payment_CardCollapse">&lt;!&ndash; Label &ndash;&gt; <label-->
-                            <!--                                            class="form-check-label fw-500 stretched-link"-->
-                            <!--                                            for="checkout_Payment_Card">Credit Card <img class="ml-2"-->
-                            <!--                                                                                         src="../../assets/img/cart/cards.svg" alt="..."></label></div>-->
-                            <!--                                </div>-->
-                            <!--                                <div class="list-group-item py-0 collapse" id="checkout_Payment_CardCollapse"-->
-                            <!--                                     data-bs-parent="#payment-methods">&lt;!&ndash; Form &ndash;&gt;-->
-                            <!--                                    <div class="row py-4 g-3">-->
-                            <!--                                        <div class="col-12"><input class="form-control"-->
-                            <!--                                                                   id="checkout_Payment_CardNumber" type="text"-->
-                            <!--                                                                   placeholder="Card Number *" required=""></div>-->
-                            <!--                                        <div class="col-12"><input class="form-control"-->
-                            <!--                                                                   id="checkout_Payment_CardName" type="text"-->
-                            <!--                                                                   placeholder="Name on Card *" required=""></div>-->
-                            <!--                                        <div class="col-12 col-md-4"><select class="form-select"-->
-                            <!--                                                                             id="checkoutPaymentMonth">-->
-                            <!--                                            <option>January</option>-->
-                            <!--                                            <option>February</option>-->
-                            <!--                                            <option>March</option>-->
-                            <!--                                        </select></div>-->
-                            <!--                                        <div class="col-12 col-md-4"><select class="form-select"-->
-                            <!--                                                                             id="checkout_Payment_CardYear">-->
-                            <!--                                            <option>2017</option>-->
-                            <!--                                            <option>2018</option>-->
-                            <!--                                            <option>2019</option>-->
-                            <!--                                        </select></div>-->
-                            <!--                                        <div class="col-12 col-md-4">-->
-                            <!--                                            <div class="input-group input-group-merge"><input class="form-control"-->
-                            <!--                                                                                              id="checkout_Payment_CardCVV" type="text" placeholder="CVV *"-->
-                            <!--                                                                                              required="">-->
-                            <!--                                                <div class="input-group-append"><span class="input-group-text"-->
-                            <!--                                                                                      data-bs-toggle="tooltip" data-bs-placement="top"-->
-                            <!--                                                                                      aria-label="The CVV Number on your credit card or debit card is a 3 digit number on VISA, MasterCard and Discover branded credit and debit cards."-->
-                            <!--                                                                                      data-bs-original-title="The CVV Number on your credit card or debit card is a 3 digit number on VISA, MasterCard and Discover branded credit and debit cards."><i-->
-                            <!--                                                        class="bi bi-info-circle"></i></span></div>-->
-                            <!--                                            </div>-->
-                            <!--                                        </div>-->
-                            <!--                                    </div>-->
-                            <!--                                </div>-->
-                            <!--                                <div class="list-group-item py-3">&lt;!&ndash; Radio &ndash;&gt;-->
-                            <!--                                    <div class="form-check mb-0">&lt;!&ndash; Input &ndash;&gt; <input-->
-                            <!--                                            class="form-check-input collapsed" id="checkout_Payment_Paypal"-->
-                            <!--                                            name="payment" type="radio" data-bs-toggle="collapse"-->
-                            <!--                                            data-bs-action="hide"-->
-                            <!--                                            data-bs-target="#checkout_Payment_PayPalCollapse">&lt;!&ndash; Label &ndash;&gt; <label-->
-                            <!--                                            class="form-check-label stretched-link"-->
-                            <!--                                            for="checkout_Payment_Paypal"><img-->
-                            <!--                                            src="../../assets/img/cart/paypal.svg" alt="..."></label></div>-->
-                            <!--                                </div>-->
-                            <!--                                <div class="list-group-item py-0 collapse" id="checkout_Payment_PayPalCollapse"-->
-                            <!--                                     data-bs-parent="#payment-methods">-->
-                            <!--                                    <div class="p-3">-->
-                            <!--                                        <p class="mb-0 text-body">By clicking on the button below you will be-->
-                            <!--                                            redirected to your PayPal account to complete the payment.</p>-->
-                            <!--                                    </div>-->
-                            <!--                                </div>-->
-                            <!--                            </div>&lt;!&ndash; Notes &ndash;&gt; <label class="form-label" for="checkout_Billing_First_Name">Order-->
-                            <!--                                Notes (optional)</label> <textarea class="form-control mb-4 mb-md-0 font-size-xs"-->
-                            <!--                                                                   rows="5" placeholder="Order Notes"></textarea>-->
 
-                            <!--                    </div>-->
-                            <div class="col-md-5 col-lg-4 offset-lg-1 sticky-lg-top sticky-lg-top-header"
-                                 style="top: 114.094px;">
+                                                        <div class="mb-5"><!-- Checkbox -->
+                                                            <div class="form-check"><input class="form-check-input"
+                                                                                           id="checkout_Shipping_Address" type="checkbox"> <label
+                                                                    class="form-check-label" data-bs-toggle="collapse"
+                                                                    data-bs-target="#checkout_Shipping_AddressCollapse"
+                                                                    for="checkout_Shipping_Address">Ship to a different address?</label></div>
+                                                            <!-- Collapse -->
+                                                            <div class="collapse" id="checkout_Shipping_AddressCollapse">
+                                                                <div class="row gy-4 pt-3">
+                                                                    <div class="col-12"><label class="form-label"
+                                                                                               for="checkout_Shipping_Address_Country">Country *</label> <input
+                                                                            class="form-control" id="checkout_Shipping_Address_Country"
+                                                                            type="text" placeholder="Country"></div>
+                                                                    <div class="col-12"><label class="form-label"
+                                                                                               for="checkout_Shipping_AddressLine_One">Address Line 1 *</label>
+                                                                        <input class="form-control" id="checkout_Shipping_AddressLine_One"
+                                                                               type="text" placeholder="Address Line 1"></div>
+                                                                    <div class="col-12"><label class="form-label"
+                                                                                               for="checkout_Shipping_AddressLine_Two">Address Line 2</label>
+                                                                        <input class="form-control" id="checkout_Shipping_AddressLine_Two"
+                                                                               type="text" placeholder="Address Line 2 (optional)"></div>
+                                                                    <div class="col-6"><label class="form-label"
+                                                                                              for="checkout_Shipping_Address_Town">Town / City *</label> <input
+                                                                            class="form-control" id="checkout_Shipping_Address_Town" type="text"
+                                                                            placeholder="Town / City"></div>
+                                                                    <div class="col-6"><label class="form-label"
+                                                                                              for="checkout_Shipping_Address_ZIP">ZIP / Postcode *</label> <input
+                                                                            class="form-control" id="checkout_Shipping_Address_ZIP" type="text"
+                                                                            placeholder="ZIP / Postcode"></div>
+                                                                    <div class="col-12"><!-- Button --> <button class="btn btn-outline-mode"
+                                                                                                                type="submit">Save Address</button></div>
+                                                                </div>
+                                                            </div>
+                                                        </div><!-- Heading -->
+                                                        <h6 class="mb-4 h3">Payment</h6><!-- List group -->
+                                                        <div class="list-group mb-5 accordion" id="payment-methods">
+                                                            <div class="list-group-item py-3"><!-- Radio -->
+                                                                <div class="form-check mb-0"><!-- Input --> <input
+                                                                        class="form-check-input collapsed" id="checkout_Payment_Card"
+                                                                        name="payment" type="radio" data-bs-toggle="collapse"
+                                                                        data-bs-action="show"
+                                                                        data-bs-target="#checkout_Payment_CardCollapse"><!-- Label --> <label
+                                                                        class="form-check-label fw-500 stretched-link"
+                                                                        for="checkout_Payment_Card">Credit Card <img class="ml-2"
+                                                                                                                     src="../../assets/img/cart/cards.svg" alt="..."></label></div>
+                                                            </div>
+                                                            <div class="list-group-item py-0 collapse" id="checkout_Payment_CardCollapse"
+                                                                 data-bs-parent="#payment-methods"><!-- Form -->
+                                                                <div class="row py-4 g-3">
+                                                                    <div class="col-12"><input class="form-control"
+                                                                                               id="checkout_Payment_CardNumber" type="text"
+                                                                                               placeholder="Card Number *" required=""></div>
+                                                                    <div class="col-12"><input class="form-control"
+                                                                                               id="checkout_Payment_CardName" type="text"
+                                                                                               placeholder="Name on Card *" required=""></div>
+                                                                    <div class="col-12 col-md-4"><select class="form-select"
+                                                                                                         id="checkoutPaymentMonth">
+                                                                        <option>January</option>
+                                                                        <option>February</option>
+                                                                        <option>March</option>
+                                                                    </select></div>
+                                                                    <div class="col-12 col-md-4"><select class="form-select"
+                                                                                                         id="checkout_Payment_CardYear">
+                                                                        <option>2017</option>
+                                                                        <option>2018</option>
+                                                                        <option>2019</option>
+                                                                    </select></div>
+                                                                    <div class="col-12 col-md-4">
+                                                                        <div class="input-group input-group-merge"><input class="form-control"
+                                                                                                                          id="checkout_Payment_CardCVV" type="text" placeholder="CVV *"
+                                                                                                                          required="">
+                                                                            <div class="input-group-append"><span class="input-group-text"
+                                                                                                                  data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                                                                  aria-label="The CVV Number on your credit card or debit card is a 3 digit number on VISA, MasterCard and Discover branded credit and debit cards."
+                                                                                                                  data-bs-original-title="The CVV Number on your credit card or debit card is a 3 digit number on VISA, MasterCard and Discover branded credit and debit cards."><i
+                                                                                    class="bi bi-info-circle"></i></span></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="list-group-item py-3"><!-- Radio -->
+                                                                <div class="form-check mb-0"><!-- Input --> <input
+                                                                        class="form-check-input collapsed" id="checkout_Payment_Paypal"
+                                                                        name="payment" type="radio" data-bs-toggle="collapse"
+                                                                        data-bs-action="hide"
+                                                                        data-bs-target="#checkout_Payment_PayPalCollapse"><!-- Label --> <label
+                                                                        class="form-check-label stretched-link"
+                                                                        for="checkout_Payment_Paypal"><img
+                                                                        src="../../assets/img/cart/paypal.svg" alt="..."></label></div>
+                                                            </div>
+                                                            <div class="list-group-item py-0 collapse" id="checkout_Payment_PayPalCollapse"
+                                                                 data-bs-parent="#payment-methods">
+                                                                <div class="p-3">
+                                                                    <p class="mb-0 text-body">By clicking on the button below you will be
+                                                                        redirected to your PayPal account to complete the payment.</p>
+                                                                </div>
+                                                            </div>
+                                                        </div><!-- Notes --> <label class="form-label" for="checkout_Billing_First_Name">Order
+                                                            Notes (optional)</label> <textarea class="form-control mb-4 mb-md-0 font-size-xs"
+                                                                                               rows="5" placeholder="Order Notes"></textarea>
+
+                                                </div>
+                            <div class="col-md-5 col-lg-4 offset-lg-1 " style="top: 114.094px;">
                                 <h6 class="mb-4 h3">商品訂單明細</h6>
                                 <ul class="list-group mb-6">
-                                    <!-- 使用th:each內聯屬性來處理遍歷 -->
+                                    <!-- 使用th:each内联属性来处理遍历 -->
                                     <li class="list-group-item p-3" th:each="productOrderDetail : ${productOrder.ProductOrderDetails}">
                                         <div class="row g-2">
-
-                                            <!--                                    <div class="col-3 col-md-2">&lt;!&ndash; Image &ndash;&gt;-->
-                                            <!--                                        <a href="#"><img src="../../assets/img/fashion2/product-2.jpg" alt="..." class="img-fluid"></a>-->
-                                            <!--                                    </div>-->
-                                            <div class="col"><!-- Title -->
-                                                <div class="fw-600">
-                                                    <!--                                            <a class="text-mode" href="#">-->
-                                                    <!-- 在這裡添加您想要顯示的訂單明細資料 -->
-                                                    <span th:text="${productOrderDetail.product.productName}" style="font-size: larger;"></span>
-                                                    &nbsp&nbsp&nbsp 規格:<span th:text="${productOrderDetail.product.productColor}"></span>
-                                                    <span th:if="${productOrderDetail.product.productSize == 0}">XS</span>
-                                                    <span th:if="${productOrderDetail.product.productSize == 1}">S</span>
-                                                    <span th:if="${productOrderDetail.product.productSize == 2}">M</span>
-                                                    <span th:if="${productOrderDetail.product.productSize == 3}">L</span>
-                                                    <span th:if="${productOrderDetail.product.productSize == 4}">XL</span>
-                                                    <span th:if="${productOrderDetail.product.productSize == 5}">2L</span>
-                                                    <!--                                            </a>-->
-                                                </div>
-                                                <!--Footer -->
-                                                <div class="d-flex align-items-center">
-                                                    <span>價錢:</span> &nbsp&nbsp&nbsp
-                                                    <span th:text="'$&nbsp' + ${productOrderDetail.productPrice}"></span>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                    <span>數量:</span> &nbsp&nbsp&nbsp
-                                                    <span th:text="${productOrderDetail.productOrdQty} +'&nbsp個' "></span>
-                                                </div>
+                                            <div>
+                                                <img th:src="'data:image/png;base64,' + ${session['productImage' + productOrderDetail.product.productNo]}"
+                                                      alt="Product Picture" style="width: auto; height: 80px;"/>
+                                                <span th:text="${productOrderDetail.product.productName}" style="font-size: larger;"></span>
+                                            </div>
+                                            <div>
+                                                &nbsp;&nbsp;&nbsp;規格:<span th:text="${productOrderDetail.product.productColor}"></span>
+                                                <span th:if="${productOrderDetail.product.productSize == 0}">XS</span>
+                                                <span th:if="${productOrderDetail.product.productSize == 1}">S</span>
+                                                <span th:if="${productOrderDetail.product.productSize == 2}">M</span>
+                                                <span th:if="${productOrderDetail.product.productSize == 3}">L</span>
+                                                <span th:if="${productOrderDetail.product.productSize == 4}">XL</span>
+                                                <span th:if="${productOrderDetail.product.productSize == 5}">2L</span>
+                                            </div>
+                                            <!-- Footer -->
+                                            <div class="d-flex align-items-center">
+                                                <span>價錢:</span>&nbsp;&nbsp;&nbsp;
+                                                <span th:text="'$ ' + ${productOrderDetail.productPrice}"></span>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <span>數量:</span>&nbsp;&nbsp;&nbsp;
+                                                <span th:text="${productOrderDetail.productOrdQty} + ' 個'"></span>
                                             </div>
                                         </div>
                                     </li>
                                 </ul>
-
-                                <label class="mb-4 h3" for="coupNo">請輸入優惠券編號</label>
-                                <div class="col-sm-3 form-control">
-                                    <select class="form-control" size="1" name="coupNo" id="coupNo" onchange="updatePriceInstantly()">
+                                <div class="col-sm-3 form-control"><label class="mb-4 h3" for="coupNo">請輸入優惠券編號</label>
+                                    <select class="form-control" size="1" name="coupNo" id="coupNo"
+                                            onchange="updatePriceInstantly()">
                                         <option value="1">請選擇</option>
                                         <!-- 使用 Thymeleaf 循环来动态生成选项 -->
                                         <option th:each="mycoupon : ${coupons}" th:value="${mycoupon.coupon.coupNo}"
@@ -408,30 +366,42 @@
                                     </select>
 
                                 </div>
-
-                                </br>
                                 <div class="card bg-gray-100">
                                     <div class="card-body py-0 px-4">
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item d-flex bg-transparent px-0 py-3">
                                                 <span>總價：</span>
-                                                <span class="ms-auto" id="productAllPrice" th:text="${productOrder.productAllPrice}" th:value="${productOrder.productAllPrice}"></span>
+                                                <span class="ms-auto" id="productAllPrice"
+                                                      th:text="${productOrder.productAllPrice}"
+                                                      th:value="${productOrder.productAllPrice}"></span>
                                             </li>
                                             <li class="list-group-item d-flex bg-transparent px-0 py-3">
                                                 <span>折價：</span>
-                                                <span class="ms-auto"  id="productDisc"  th:text="${productOrder.productDisc}" th:value="${productOrder.productDisc}"></span>
+                                                <span class="ms-auto" id="productDisc"
+                                                      th:text="${productOrder.productDisc}"
+                                                      th:value="${productOrder.productDisc}"></span>
                                             </li>
                                             <li class="list-group-item d-flex bg-transparent px-0 py-3 fs-lg fw-600">
                                                 <span>實際金額：</span>
-                                                <span class="ms-auto" id="productRealPrice"  th:text="${productOrder.productRealPrice}" th:value="${productOrder.productRealPrice}"></span>
+                                                <span class="ms-auto" id="productRealPrice"
+                                                      th:text="${productOrder.productRealPrice}"
+                                                      th:value="${productOrder.productRealPrice}"></span>
                                             </li>
                                         </ul>
                                     </div>
+
+                                    </br>
+
+                                    <div class="pt-4">
+                                        <button type="submit" class="btn btn-primary w-100">確定購買</button>
+                                        <input type="hidden" name="memNo" th:value="${productOrder.member.memNo}"/>
+                                    </div>
                                 </div>
 
-                                <div class="pt-4"><button type="submit" class="btn btn-primary w-100">確定購買</button>
-                                    <input type="hidden" name="memNo" th:value="${productOrder.member.memNo}" />
-                                </div>
+                            </div>
+
+
+
                         </form>
                     </div>
                 </div>
@@ -455,6 +425,29 @@
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
 <!-- End script start -->
 <script th:inline="javascript">
+    // 获取选择框元素
+    var selectElement = document.querySelector('select[name="productOrder.productTakeMethod"]');
+
+    // 添加事件监听器
+    selectElement.addEventListener('change', function () {
+        // 获取选择的值
+        var selectedValue = parseInt(selectElement.value);
+
+        // 获取地址输入框元素
+        var addressInput = document.getElementById("productAddr");
+        var addressError = document.getElementById("productAddr-error");
+
+        // 如果选择的是宅配方式（值为2），则将地址字段设为必填项
+        if (selectedValue === 2) {
+            addressInput.required = true;
+            addressError.textContent = "";
+        } else {
+            addressInput.required = false;
+            addressInput.value = ""; // 清空地址输入框的值
+            addressError.textContent = "";
+        }
+    });
+
 
     function updatePriceInstantly() {
         var coupNo = document.getElementById('coupNo').value; // 获取优惠券编号的值
@@ -472,19 +465,33 @@
                 productRealPrice: productRealPrice,
                 productAllPrice: productAllPrice
             },
-            success: function(data) {
+            success: function (data) {
                 console.log("更新優惠券總價成功");
 
                 // 在这里，你可以根据后端返回的数据更新前端页面上对应的元素，例如更新实际价格和折扣价格的显示
                 document.getElementById('productRealPrice').innerText = data.productRealPrice;
                 document.getElementById('productDisc').innerText = data.productDisc;
             },
-            error: function() {
+            error: function () {
                 console.error('更新失败');
             }
         });
     }
 
+    function copyBuyerInfo(checkbox) {
+        var byrName = document.getElementById("productByrName").value;
+        var byrPhone = document.getElementById("productByrPhone").value;
+        var rcvNameInput = document.getElementById("productRcvName");
+        var rcvPhoneInput = document.getElementById("productRcvPhone");
+
+        if (checkbox.checked) {
+            rcvNameInput.value = byrName;
+            rcvPhoneInput.value = byrPhone;
+        } else {
+            rcvNameInput.value = "";
+            rcvPhoneInput.value = "";
+        }
+    }
 
 
 </script>

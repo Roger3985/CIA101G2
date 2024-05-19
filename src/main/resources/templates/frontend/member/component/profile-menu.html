@@ -2,15 +2,24 @@
 <div class="col-lg-4 pb-4 pb-lg-0 col-xxl-3 pe-xxl-5">
     <div class="bg-body border border-bottom-0 shadow-lg">
         <div class="d-flex p-3 align-items-center">
-            <div class="avatar avatar-lg rounded-circle">
-                <img th:src="@{/frontend/member/picture(memno=${session.loginsuccess.getMemNo()})}"
-                     style="width: 80px; height: 80px; border: 1px solid #ccc;"
-                     alt="會員大頭貼"
-                     th:if="${session.loginsuccess}"></div>
+            <div class="avatar-container">
+                <div class="avatar avatar-lg rounded-circle">
+                    <img th:src="@{/frontend/member/picture(memno=${session.loginsuccess.getMemNo()})}"
+                         style="width: 80px; height: 80px; border: 1px solid #ccc;"
+                         alt="會員大頭貼"
+                         th:if="${session.loginsuccess}">
+                </div>
+                <!-- 第一個表單，用於選擇圖片 -->
+                <div class="col-auto">
+                    <label class="avatar-label">
+                        <i class="bi bi-camera camera-icon"></i>
+                    </label>
+                </div>
+            </div>
             <div class="col ps-3">
-                <h6 class="m-0"><a th:href="@{newMemberName}" style="color: #6c757d;"><th th:text="${session.loginsuccess.getMemName()}" readonly></a></h6>
+                <h6 class="m-0"><a th:href="@{/frontend/member/newMemberName}" style="color: #6c757d;"><th th:text="${session.loginsuccess.getMemName()}" readonly></a></h6>
                 <small>
-                    <a th:href="@{newMemberMail}"><th th:text="${session.loginsuccess.getMemMail()}" readonly></th></a>
+                    <a th:href="@{/frontend/member/newMemberMail}"><th th:text="${session.loginsuccess.getMemMail()}" readonly></th></a>
                 </small>
             </div>
         </div>
@@ -18,11 +27,20 @@
             <h6 class="m-0">Dashboard</h6>
         </div>
         <ul class="list-unstyled mb-0 theme-link">
-            <li class="border-bottom mb-0"><a
-                    class="nav-link-style d-flex align-items-center p-3"
-                    href="account-order.html"><i class="bi bi-bag me-2"></i> Order
+            <li class="border-bottom mb-0">
+                <a class="nav-link-style d-flex align-items-center p-3"
+                    href="account-order.html">
+                    <i class="bi bi-bag me-2"></i> Order
                 <div class="ms-auto badge-pill badge bg-secondary">5</div>
-            </a></li>
+                </a>
+            </li>
+            <li class="border-bottom mb-0">
+                <a class="nav-link-style d-flex align-items-center p-3"
+                   th:href="@{/backend/rentalorder/toMemberRentalOrders}">
+                    <i class="bi bi-bag me-2"></i> 租借訂單
+                    <div class="ms-auto badge-pill badge bg-secondary">5</div>
+                </a>
+            </li>
             <li class="border-bottom mb-0"><a
                     class="nav-link-style d-flex align-items-center p-3"
                     href="account-wishlist.html"><i class="fi-heart me-2"></i>Wishlist
@@ -41,19 +59,23 @@
         <ul class="list-unstyled mb-0 theme-link">
             <li class="border-bottom mb-0"><a
                     class="nav-link-style d-flex align-items-center active p-3"
-                    th:href="@{memberData}"><i class="fi-user me-2"></i>Profile info</a>
+                    th:href="@{/frontend/member/memberData}"><i class="fi-user me-2"></i>Profile info</a>
             </li>
             <li class="border-bottom mb-0"><a
                     class="nav-link-style d-flex align-items-center active p-3"
-                    th:href="@{updateData}"><i class="fi-user me-2"></i>Update Profile info</a>
+                    th:href="@{/frontend/member/updateData}"><i class="fi-user me-2"></i>Update Profile info</a>
             </li>
             <li class="border-bottom mb-0"><a
                     class="nav-link-style d-flex align-items-center p-3"
-                    th:href="@{newPassword}"><i class="bi bi-key me-2"></i></i>Password</a>
+                    th:href="@{/frontend/member/newPassword}"><i class="bi bi-key me-2"></i></i>Password</a>
             </li>
             <li class="border-bottom mb-0"><a
                     class="nav-link-style d-flex align-items-center p-3"
-                    th:href="@{newMemberAddress}"><i class="bi bi-map-fill me-2"></i>Addresses</a>
+                    th:href="@{/frontend/member/newMemberAddress}"><i class="bi bi-map-fill me-2"></i>Addresses</a>
+            </li>
+            <li class="border-bottom mb-0">
+                <a class="nav-link-style d-flex align-items-center active p-3"
+                    th:href="@{/frontend/notice/memberNoticeData}"><i class="bi bi-bell me-2"></i>Notices</a>
             </li>
             <li class="border-bottom mb-0"><a
                     class="nav-link-style d-flex align-items-center p-3"

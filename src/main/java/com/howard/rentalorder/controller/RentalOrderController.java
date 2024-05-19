@@ -3,6 +3,7 @@ package com.howard.rentalorder.controller;
 import com.howard.rentalorder.dto.RentalOrderRequest;
 import com.howard.rentalorder.dto.SetToCart;
 import com.howard.rentalorder.entity.RentalOrder;
+import com.howard.rentalorder.service.impl.LogisticsStateService;
 import com.howard.rentalorder.service.impl.RentalCartServiceImpl;
 import com.howard.rentalorder.service.impl.RentalOrderServiceImpl;
 import com.howard.rentalorder.service.impl.RentalOrderShippingService;
@@ -11,6 +12,8 @@ import com.roger.member.entity.Member;
 import com.roger.member.repository.MemberRepository;
 import com.yu.rental.dao.RentalRepository;
 import com.yu.rental.entity.Rental;
+import ecpay.logistics.integration.AllInOne;
+import ecpay.logistics.integration.domain.QueryLogisticsTradeInfoObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +36,9 @@ import java.util.Map;
 public class RentalOrderController {
 
     /*--------------------------所有方法共用-------------------------------*/
+
+    @Autowired
+    private LogisticsStateService logisticsStateService;
 
     @Autowired
     private RentalOrderShippingService shippingService;
@@ -70,6 +76,24 @@ public class RentalOrderController {
     /*--------------------------所有方法共用-------------------------------*/
 
     /*--------------------------處理跳轉頁面請求的方法-------------------------------*/
+
+    // 去 會員租借訂單 頁面
+    @GetMapping("/toMemberRentalOrders")
+    public String toMemberRentalOrders() {
+        return "/frontend/rental/memberrentalorders";
+    }
+
+    // 去 單一租借訂單 頁面
+    @GetMapping("/toMemberRentalOrder")
+    public String toMemberRentalOrder(@RequestParam Integer rentalOrdNo, ModelMap model) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("rentalOrdNo", rentalOrdNo);
+        RentalOrder rentalOrder = service.getByAttributes(map).get(0);
+        model.addAttribute("rentalOrder", rentalOrder);
+
+        return "/frontend/rental/memberRentalOrder";
+    }
 
     // 去 租借商城 首頁
     @GetMapping("/toRentalShop")
@@ -179,6 +203,11 @@ public class RentalOrderController {
     @PostMapping("/createOrder")
     public ResponseEntity<?> createOrder(@RequestBody @Valid RentalOrderRequest order) {
         /*-------------------------創建訂單時，設定初始參數-------------------------*/
+
+
+        System.out.println("該不會是這裡超出了吧" + order.getrentalAllDepPrice());
+
+
         // 下單時間 = 現在
         order.setrentalOrdTime(new Timestamp(System.currentTimeMillis()));
         // 預計租借日期 = 現在 (此為初步實作，之後由到貨狀態決定)
@@ -248,8 +277,6 @@ public class RentalOrderController {
             map.put("rtnCompensation", rtnCompensation);
         }
         service.update(map);
-
-
 
         return "redirect:/backend/rentalorder/listAllRentalOrder";
 
@@ -353,6 +380,21 @@ public class RentalOrderController {
 
     }
 
+    // 給訂單頁面用的 getOnAny
+    @GetMapping("/getOnAnyForOrdersPage")
+    public String getOnAnyForOrdersPage(@RequestParam(required = false) Byte rentalOrdStat, ModelMap model) {
+
+        Map<String, Object> map = new HashMap<>();
+
+        if (rentalOrdStat != null) {
+            map.put("rentalOrdStat", rentalOrdStat);
+        }
+        List<RentalOrder> orderList = service.getByAttributes(map);
+        model.addAttribute("orderList", orderList);
+        return "frontend/rental/memberrentalorders";
+
+    }
+
     /*---------------------------處理CRUD請求的方法---------------------------------*/
 
     /*----------------------------有關購物車的方法----------------------------------*/
@@ -408,7 +450,12 @@ public class RentalOrderController {
     // 出貨
     @PostMapping("/createShippingOrder")
     public ResponseEntity<?> createShippingOrder(@RequestParam Integer rentalOrdNo) {
-        System.out.println("有進來controller方法");
+        System.out.println("有進來controller方法" + rentalOrdNo);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("rentalOrdNo", rentalOrdNo);
+        RentalOrder order = service.getByAttributes(map).get(0);
+        order.setrentalOrdStat((byte) 20);
         String formHTML = shippingService.shipping(rentalOrdNo);
         return ResponseEntity.status(HttpStatus.OK).body(formHTML);
 
