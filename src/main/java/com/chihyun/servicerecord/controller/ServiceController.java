@@ -54,16 +54,11 @@ public class ServiceController {
         System.out.println(staticChatRedisTemplate);
 
         System.out.println("websocket連線成功");
-        System.out.println("我在onopen取得userName: " + userName);
-        System.out.println("我在onopen取得userSession: " + userSession);
 
         Set<String> userNames = sessionsMap.keySet();
         State stateMessage = new State("stateA", userName, userNames);
-        System.out.println("我在onopen取得userNames: " + userNames);
-        System.out.println("我在onopen取得stateMessage: " + stateMessage);
 
         String stateMessageJson = gson.toJson(stateMessage);
-        System.out.println("我在onopen取得stateMessageJson: " + stateMessage);
 
         Collection<Session> sessions = sessionsMap.values();
         for (Session session : sessions) {
@@ -71,14 +66,12 @@ public class ServiceController {
                 session.getAsyncRemote().sendText(stateMessageJson);
             }
         }
+
     }
 
 
     @OnMessage
     public void onMessage(Session userSession, String message) {
-
-        System.out.println("我在onMessage: " + userSession);
-        System.out.println("我在onMessage: " + message);
 
         ChatMessage chatMessage = gson.fromJson(message, ChatMessage.class);
         String type = chatMessage.getType();
@@ -89,40 +82,51 @@ public class ServiceController {
         System.out.println("我在onMessage receiver: " + receiver);
         String senderkey = new StringBuilder(sender).append(":").append(receiver).toString();
         String receiverkey = new StringBuilder(receiver).append(":").append(sender).toString();
-
         Session receiverSession = sessionsMap.get(receiver);
-//      如果sender:receiver有存在資料庫的key則顯示歷史訊息
+        //      如果sender:receiver有存在資料庫的key則顯示歷史訊息
+        if (type.equals("history")) {
+            List<String> historyData = getHistoryMsg(sender, receiver);
+            String historyMsg = gson.toJson(historyData);
+            System.out.println(historyMsg);
+            ChatMessage cmHistory = new ChatMessage("history", sender, receiver, historyMsg);
+            System.out.println(cmHistory);
+            if (userSession != null && userSession.isOpen()) {
+                System.out.println("我準備要送資料囉");
+                userSession.getAsyncRemote().sendText(gson.toJson(cmHistory));
+//                receiverSession.getAsyncRemote().sendText(gson.toJson(cmHistory));
+                System.out.println("歷史資料送給前端囉");
+            }
+        } else if (type.equals("chatMsgB")) {
 
-        if (receiverSession != null && receiverSession.isOpen()) {
-            // 向目標用戶發送消息
-            receiverSession.getAsyncRemote().sendText(message);
-            if (type.equals("stateA")) {
-                List<String> historyData = getHistoryMsg(sender, receiver);
-                String historyMsg = gson.toJson(historyData);
-                System.out.println(historyMsg);
-                receiverSession.getAsyncRemote().sendText(historyMsg);
+            if (receiverSession != null && receiverSession.isOpen()) {
 
-                if (type.equals("chatMsgB") && !sender.isEmpty() && !msg.isEmpty()) {
-                    System.out.println("我進來了但沒存歐");
-//                saveMessage(senderkey, message);
-//                saveMessage(receiverkey, message);
+                // 向目標用戶發送消息
+                receiverSession.getAsyncRemote().sendText(message);
+
+
+                if (!sender.isEmpty() && !msg.isEmpty()) {
+                    saveMessage(senderkey, message);
+                    saveMessage(receiverkey, message);
                     staticChatMessageRedisTemplate.opsForList().rightPush(senderkey, chatMessage);
                     staticChatMessageRedisTemplate.opsForList().rightPush(receiverkey, chatMessage);
                     System.out.println("我有存哦");
                 }
             }
         }
+
     }
 
-//    private void saveMessage(String key, String message) {
-//        staticChatRedisTemplate.opsForList().rightPush(key, message);
-//    }
+
+    private void saveMessage(String key, String message) {
+        staticChatRedisTemplate.opsForList().rightPush(key, message);
+    }
 
     private List<String> getHistoryMsg(String sender, String receiver) {
         String getKey = new StringBuilder(sender).append(":").append(receiver).toString();
         List<String> historyData = staticChatRedisTemplate.opsForList().range(getKey, 0, -1);
         return historyData;
     }
+
 
 }
 
