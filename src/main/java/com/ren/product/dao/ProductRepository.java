@@ -1,6 +1,7 @@
 package com.ren.product.dao;
 
 import com.ren.product.entity.Product;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -56,6 +57,7 @@ import java.util.Optional;
  * 可根據上述詞綴組合自定義方法查找指定資料
  */
 @Repository
+@Primary
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     // 根據關鍵字搜尋產品

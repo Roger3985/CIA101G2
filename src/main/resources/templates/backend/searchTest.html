@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Search</title>
+</head>
+<body>
+<h1>Search</h1>
+<form th:action="@{/search}" method="get">
+    <input type="text" name="query" placeholder="Enter search term..." required>
+    <button type="submit">Search</button>
+</form>
+
+<h1>Search Results</h1>
+<ul>
+    <!-- 遍歷搜索結果並顯示 -->
+    <li th:each="result : ${results}">
+        <span th:text="${result}">Result</span>
+    </li>
+</ul>
+</body>
+</html>
