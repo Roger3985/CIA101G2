@@ -13,6 +13,7 @@ public class RabbitMQListener {
 
     @RabbitListener(queues = "queue_PartTime")
     public void listenPartTime(String message) {
+        System.out.println("被放進隊列了");
         messagingTemplate.convertAndSend("/topic/parttime", message);
     }
 
