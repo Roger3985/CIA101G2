@@ -4,6 +4,119 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>Spring Boot WebSocket Chat Application</title>
     <link rel="stylesheet" href="/css/chat/main.css" />
+    <style>
+
+        #messageForm {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px; /* Adjust spacing between elements */
+            width: 100%;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            gap: 10px; /* Adjust spacing between input and file input */
+        }
+
+        .form-control {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .custom-file-input {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .custom-file-input input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .custom-file-input button {
+            padding: 10px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .custom-file-input button:hover {
+            background-color: #0056b3;
+        }
+
+        button.primary {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button.primary:hover {
+            background-color: #0056b3;
+        }
+
+        .preview-img {
+            max-width: 50px; /* Adjust the size as needed */
+            max-height: 50px; /* Adjust the size as needed */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .small-image {
+            max-width: 200px; /* Adjust the size as needed */
+            max-height: 200px; /* Adjust the size as needed */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .chat-message {
+            position: relative; /* 設置父元素為相對定位，為絕對定位的子元素提供定位的上下文 */
+        }
+
+        .chat-message img {
+            display: block; /* 讓圖片變為塊級元素，使得可以使用絕對定位 */
+        }
+
+        .chat-message::before {
+            /*content: '11'; !* 添加內容 *!*/
+            position: absolute; /* 設置為絕對定位 */
+            top: 0; /* 距離頂部 0 */
+            left: 0; /* 距離左側 0 */
+            padding: 2px 5px; /* 設置內邊距 */
+            font-size: 12px; /* 設置字體大小 */
+            color: #000; /* 設置文字顏色 */
+            background-color: rgba(255, 255, 255, 0.8); /* 設置背景顏色，這裡使用了半透明白色 */
+            border-radius: 4px; /* 設置圓角 */
+        }
+
+
+
+
+    </style>
 </head>
 <body>
 <noscript>
@@ -39,7 +152,19 @@
             <div class="form-group">
                 <div class="input-group clearfix">
                     <input type="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control"/>
-                    <input type="file" id="file" onchange="previewFile()"/>
+                    <input type="file" id="file" style="display: none" onchange="previewFile()"/>
+
+                    <!-- 自定義的觸發文件選擇的按鈕 -->
+                    <button type="button" onclick="document.getElementById('file').click()">
+                        <i class="bi bi-link-45deg"></i> 選擇圖片
+                    </button>
+
+<!--                    <button type="button" onclick="document.getElementById('file').click()">-->
+<!--                        <i class="bi bi-link-45deg">選擇圖片</i>-->
+<!--                    </button>-->
+                    <!-- 預覽所選文件的元素 -->
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChQG/A8ABKzSURBVGiRlZZ9UFTVVYvWra1QXaqPvWtWmUqaLUpUqalpClSopSqqZQWqo+lRdVXUwmmg0Fqg9xaVZqapWq6q1qE2rXZamqKqkqqi5SWlWbq1qmpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/KlWqU2r3Yqpa1aqWq7q5Zaiq2pUqlWqj1a1atqWqSpVqyqjVZTqv1qZVq/Kl"
+                         id="preview" alt="預覽" style="max-width: 50px; max-height: 50px;">
                 </div>
             </div>
             <button type="submit" class="primary">Send</button>
@@ -50,5 +175,25 @@
 <script src="https://cdn.bootcss.com/sockjs-client/1.1.4/sockjs.min.js"></script>
 <script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>
 <script src="/js/chat/main.js"></script>
+<script>
+    var fileDataUrl = "";
+
+    // 預覽圖片並儲存至 fileDataUrl 變數
+    function previewFile() {
+        var fileInput = document.getElementById('file');
+        var file = fileInput.files[0];
+        var reader = new FileReader();
+
+        reader.onloadend = function () {
+            var previewImg = document.getElementById('preview');
+            previewImg.src = reader.result;
+            fileDataUrl = reader.result; // 儲存圖片的 Data URL
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
 </body>
 </html>

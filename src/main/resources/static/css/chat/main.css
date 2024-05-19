@@ -316,8 +316,5 @@ button.accent {
         margin-top: 10px;
     }
 
-    .small-image {
-        max-width: 10px; /* 設置圖片寬度 */
-        max-height: 10px; /* 設置圖片高度 */
-    }
+
 }

@@ -45,7 +45,7 @@
                     <li class="dropdown nav-item"><a href="#" class="nav-link">關於我們</a> <label
                             class="px-dropdown-toggle mob-menu"></label>
                         <ul class="dropdown-menu left shadow-lg">
-                            <li><a class="dropdown-item" th:href="@{/frontend/news/selectNews}">最新消息</a></li>
+                                <li><a class="dropdown-item" th:href="@{/frontend/news/selectNews}">最新消息</a></li>
                             <li><a class="dropdown-item" href="../pages/policy.html">隱私政策</a></li>
                             <li><a class="dropdown-item" th:href="@{/frontend/service/frontendServiceChat}">聯繫客服</a></li>
                             <li><a class="dropdown-item" href="../pages/contact-us.html">聯繫我們</a></li>
@@ -100,7 +100,36 @@
                         <a class="dropdown-item" th:href="@{/frontend/member/logoutMember}" th:if="${session.loginsuccess}">Logout</a>
                     </div>
                 </div>
-            </div><!-- Wishlist -->
+            </div>
+<!--             Member Notice-->
+            <div class="nav-item dropdown">
+                <a class="nav-link" href="#" role="button" id="dropdown_notice" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="bi bi-bell"></i>
+                    <span class="badge bg-danger" th:text="${session.unreadNoticeCount}" th:if="${session.unreadNoticeCount > 0}"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="dropdown_mynotice">
+                    <div class="d-flex flex-column align-items-center">
+                        <!-- Show login prompt if not logged in -->
+                        <a class="dropdown-item" th:href="@{/frontend/member/loginMember}" th:unless="${session.loginsuccess}">
+                            尚未登入，請登入查看個人訊息
+                        </a>
+                        <!-- Show notifications if logged in and there are notifications -->
+                        <div th:if="${session.loginsuccess}">
+                            <a class="dropdown-item"
+                               th:href="@{/frontend/notice/memberNoticeData}"
+                               th:if="${session.unreadNoticeCount > 0}">
+                                你有未讀通知，請前往查看
+                            </a>
+                            <a class="dropdown-item"
+                               th:href="@{/frontend/notice/memberNoticeData}"
+                               th:if="${session.unreadNoticeCount == 0}">
+                                你沒有未讀訊息，但可以點此查看過往訊息
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Wishlist -->
             <div class="nav-item d-none d-xl-block"><a class="nav-link" href="#"><i class="fi-heart"></i></a></div>
             <!-- Cart -->
             <div class="nav-item"><a class="nav-link" data-bs-toggle="offcanvas" href="#modalMiniCart" role="button"
