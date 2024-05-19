@@ -39,15 +39,18 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     CouponService couponService;
     @Autowired
     ProductServiceImpl productService;
+
     @Override
-    public List<ProductOrder> findByMember(Integer memNo){
+    public List<ProductOrder> findByMember(Integer memNo) {
         return repository.findByMember(memNo);
     }
+
     @Override
     public void addProductOrder(ProductOrder productOrder) {
 
         repository.save(productOrder);
     }
+
     @Override
     public ProductOrder addOneProductOrder(CartRedis cartRedis) {
         // 根據會員編號查詢購物車中的商品
@@ -67,7 +70,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
             // 設定訂單明細相關屬性
             ProductOrderDetail.CompositeDetail compositeKey = new ProductOrderDetail.CompositeDetail();
             compositeKey.setProductNo(cartItem.getProductNo());
-            Product product= productService.getOneProduct(cartItem.getProductNo());
+            Product product = productService.getOneProduct(cartItem.getProductNo());
             orderDetail.setProduct(product);
             orderDetail.setCompositeKey(compositeKey);
             orderDetail.setProductPrice(cartItem.getProductPrice());
@@ -89,7 +92,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     }
 
 
-
     @Override
     public void addOneProductOrderSuccess(ProductOrder productOrder) {
         int orderNoHash = Math.abs(UUID.randomUUID().hashCode());
@@ -102,7 +104,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         productOrder.setProductAddr(productOrder.getMember().getMemAdd());
 
         Coupon coupon;
-        if (productOrder.getCoupon() != null ) {
+        if (productOrder.getCoupon() != null) {
             coupon = couponService.getOneCoupon(productOrder.getCoupon().getCoupNo());
         } else {
             // 如果 coupon 或 coupNo 为空，则设置 coupon 为 id 为 1 的默认优惠券
@@ -112,7 +114,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         BigDecimal discount = coupon.getCoupDisc();
         productOrder.setProductDisc(discount);
         BigDecimal totalPrice = productOrder.getProductAllPrice();
-       productOrder.setProductRealPrice(discount.multiply(totalPrice));
+        productOrder.setProductRealPrice(discount.multiply(totalPrice));
         Set<ProductOrderDetail> orderDetails = new HashSet<>();
         productOrder.setProductOrderDetails(orderDetails);
         List<CartRedis> cartItems = cartService.findByCompositeKey(productOrder.getMemNo());
@@ -142,10 +144,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     }
 
 
-
-
-
-        @Override
+    @Override
     public void updateProductOrder(ProductOrder productOrder) {
         Optional<ProductOrder> existingOrder = repository.findById(productOrder.getProductOrdNo());
         if (existingOrder.isPresent()) {
@@ -163,6 +162,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         Optional<ProductOrder> optional = repository.findById(productOrdNo);
         return optional.orElse(null);  // public T orElse(T other) : 如果值存在就回傳其值，否則回傳other的值
     }
+
     @Override
     public ProductOrder getProductOrderByCoupon(Integer coupNo, Integer productOrdNo) {
         // 根據訂單編號查詢訂單詳情
@@ -190,7 +190,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 
         return productOrder;
     }
-
 
 
 }

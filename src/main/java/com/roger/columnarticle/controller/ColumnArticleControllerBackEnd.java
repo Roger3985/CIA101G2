@@ -1,7 +1,7 @@
 package com.roger.columnarticle.controller;
 
 import com.ren.administrator.entity.Administrator;
-import com.ren.administrator.service.Impl.AdministratorServiceImpl;
+import com.ren.administrator.service.impl.AdministratorServiceImpl;
 import com.roger.columnarticle.entity.ColumnArticle;
 import com.roger.columnarticle.service.ColumnArticleService;
 import lombok.extern.slf4j.Slf4j;

@@ -28,6 +28,11 @@ public interface Constants {
     byte OffShelf = 0;
     byte ACTIVE = 1;
     byte INACTIVE = 0;
+    String TITLE_EMPLOYEE = "1";
+    String TITLE_FULLTIME = "2";
+    String TITLE_MANAGER = "3";
+    String TITLE_BOSS = "4";
+
 
     /**
      * 首頁路徑

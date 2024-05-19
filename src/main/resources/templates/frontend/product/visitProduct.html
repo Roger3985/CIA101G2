@@ -708,6 +708,21 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="productitm">
+                            <input type="hidden" name="productNo" value="1"> <!-- 產品編號 -->
+                            <input type="number" class="productBuyQty" value="1"> <!-- 購買數量 -->
+                            <button class="addToCartBtn" type="submit">
+                                添加到購物車
+                            </button>
+                        </div>
+
+                        <div class="productitm">
+                            <input type="hidden" name="productNo" value="7"> <!-- 產品編號 -->
+                            <input type="number" class="productBuyQty" value="7"> <!-- 購買數量 -->
+                            <button class="addToCartBtn" type="submit">
+                                添加到購物車
+                            </button>
+                        </div>
                         <!-- End Product Box -->
                         <div class="shop-bottom-bar d-flex align-items-center mt-3">
                             <div>Showing: 1 - 12 of 17</div>
@@ -754,7 +769,33 @@
 -->
 <!-- script start -->
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
-<!-- End script start -->
+<!-- End script start --><script>
+    function testAddToCart(event) {
+        var button = event.target;
+        var row = button.closest('.productitm');
+        var productNo = row.querySelector('input[name="productNo"]').value;
+        var productBuyQty = row.querySelector('.productBuyQty').value;
+
+
+        var data = {
+            productNo: productNo,
+            productBuyQty: productBuyQty
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "/frontend/cart/addproducttocart",
+            data: data,
+            success: function(data) {
+                console.log("更新成功");
+            }
+        });
+    }
+    var addToCartButtons = document.querySelectorAll(".addToCartBtn");
+    addToCartButtons.forEach(function(button) {
+        button.addEventListener("click", testAddToCart);
+    });
+</script>
 </body>
 
 </html>

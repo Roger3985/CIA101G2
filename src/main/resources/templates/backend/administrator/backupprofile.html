@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+    <!-- Custom styles for this page -->
+    <link th:href="@{/css/backend/component/profile.css}" rel="stylesheet" />
+    <style>
+        .cover-photo {
+            position: relative;
+            height: 200px; /* 可根據需要調整高度 */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .cover-photo .edit-icon {
+            position: absolute;
+            bottom: 3px;
+            right: 10px;
+            /*background-color: white;*/
+            border-radius: 50%;
+            /*padding-bottom: 0px;*/
+            z-index: 1000; /* 確保圖標在最頂層 */
+        }
+
+        .cover-photo .edit-icon img {
+            width: 35px;
+            height: 35px;
+        }
+
+        .profile-picture {
+            position: relative;
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            overflow: hidden;
+            border-radius: 50%;
+            margin-top: -50px; /* 調整與封面圖片的間距 */
+            border: 3px solid white; /* 添加白色邊框 */
+            background-color: white; /* 確保背景為白色 */
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-picture .edit-icon {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            /*background-color: white;*/
+            border-radius: 50%;
+            padding: 5px;
+            z-index: 1000; /* 確保圖片在最頂層 */
+        }
+
+        .profile-picture .edit-icon img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .profile-picture-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-picture-container .edit-icon {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            /*background-color: white;*/
+            border-radius: 50%;
+            padding-right: 17px;
+            z-index: 1000;
+        }
+
+    </style>
+</head>
+<body id="page-top">
+<div th:replace="backend/component/loading :: loading"></div>
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                <div class="container mt-5">
+                    <!-- Profile Card -->
+                    <div class="profile-card">
+                        <div class="cover-photo" th:style="|background-image: url('@{/backend/administrator/DBGifReader(admNo=${administrator.admNo})}');|">
+                            <div class="edit-icon">
+                                <img th:src="@{/images/backend/camera-fill.svg}" alt="Edit Icon">
+                            </div>
+                        </div>
+                        <div class="profile-info">
+                            <div class="profile-picture-container" id="profilePictureContainer">
+                                <div class="profile-picture" id="profilePicture">
+                                    <img th:src="@{/backend/administrator/DBGifReader} + '?admNo=' + ${administrator.admNo}" alt="Profile Picture">
+                                    <input type="file" id="profileInput" style="display: none;" accept="image/*">
+                                </div>
+                                <div class="edit-icon">
+                                    <img th:src="@{/images/backend/camera-fill.svg}" alt="Edit Icon">
+                                </div>
+                            </div>
+                            <div class="profile-details">
+                                <h2 th:text="${administrator.admName}"></h2>
+                                <p class="email" th:text="${administrator.admEmail}"></p>
+                                <p th:text="${administrator.title.titleName}"></p>
+                            </div>
+                        </div>
+                        <div class="profile-stats">
+                            <div>
+                                <span>150</span>
+                                <p>Follower</p>
+                            </div>
+                            <div>
+                                <span>140</span>
+                                <p>Place Stay</p>
+                            </div>
+                            <div>
+                                <span>45</span>
+                                <p>Reviews</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="tabs-container">
+                        <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">Posts</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="about-me-tab" data-toggle="tab" href="#about-me" role="tab" aria-controls="about-me" aria-selected="false">About Me</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Setting</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="profileTabContent">
+                            <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                                <!-- Posts content -->
+                                <p>Please type what you want....</p>
+                                <button class="btn btn-primary">Post</button>
+                            </div>
+                            <div class="tab-pane fade" id="about-me" role="tabpanel" aria-labelledby="about-me-tab">
+                                <!-- About Me content -->
+                                <p>About Me content here...</p>
+                            </div>
+                            <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                                <!-- Settings content -->
+                                <p>Settings content here...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 內容結束~~~~~~~~~~~~~~~ -->
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+        <!-- Footer -->
+        <footer th:replace="backend/component/bottom :: bottom"></footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
+
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+
+<script th:src="@{/js/backend/component/profile.js}"></script>
+
+<!-- jQuery code -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const profilePicture = document.getElementById("profilePicture");
+        const profileInput = document.getElementById("profileInput");
+
+        profilePicture.addEventListener("click", function() {
+            profileInput.click();
+        });
+
+        profileInput.addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append('admPhoto', file);
+
+                axios.post('/backend/administrator/upload', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+                    .then(response => {
+                        if (response.data.status === 'success') {
+                            profilePicture.querySelector("img").src = `/backend/administrator/DBGifReader?admNo=${response.data.admNo}`;
+                        } else {
+                            console.error('Error:', response.data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error uploading profile picture:', error);
+                    });
+            }
+        });
+
+        const coverPhoto = document.querySelector(".cover-photo");
+        const coverInput = document.createElement("input");
+        coverInput.type = "file";
+        coverInput.style.display = "none";
+        coverInput.accept = "image/*";
+
+        coverPhoto.addEventListener("click", function() {
+            coverInput.click();
+        });
+
+        coverInput.addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append('admPhoto', file);
+
+                axios.post('/upload', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+                    .then(response => {
+                        if (response.data.status === 'success') {
+                            coverPhoto.style.backgroundImage = `url('/backend/administrator/DBGifReader?admNo=${response.data.admNo}')`;
+                        } else {
+                            console.error('Error:', response.data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error uploading cover photo:', error);
+                    });
+            }
+        });
+
+        document.body.appendChild(coverInput);
+    });
+</script>
+</body>
+</html>

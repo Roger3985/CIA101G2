@@ -1,28 +1,21 @@
-package com.ren.administrator.service.Impl;
+package com.ren.administrator.service.impl;
 
+import com.aop.annotation.Monitor;
 import com.ren.administrator.entity.Administrator;
 import com.ren.administrator.service.AdministratorService_interface;
-import com.ren.title.entity.Title;
 import com.ren.administrator.dao.AdministratorRepository;
 import com.ren.administrator.dto.LoginState;
-import com.roger.member.service.impl.MemberServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpSession;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.sql.Date;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -30,7 +23,6 @@ import java.util.zip.Inflater;
 
 import static com.ren.util.Constants.*;
 import static com.ren.util.RandomStringGenerator.generateRandomString;
-import static java.awt.SystemColor.text;
 
 @Service
 public class AdministratorServiceImpl implements AdministratorService_interface {
@@ -179,6 +171,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
      * @param sessionID 用於獲取SessionID，之後拿來核對會話身分
      * @return 返回登入狀態DTO
      */
+    @Monitor(message = "登入")
     @Override
     public LoginState login(Administrator administrator, String sessionID) {
         // Login 1:登入 0:登出 , Logout 1:登出 0:登入
@@ -190,7 +183,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
             administrator = updateAdministrator(administrator);
         }
         Integer admNo = administrator.getAdmNo();
-        LoginState loginState = new LoginState(admNo, sessionID, administrator.getAdmLogin(), administrator.getAdmLogout(), administrator.getAdmActiveTime(), administrator.getTitle().getTitleNo());
+        LoginState loginState = new LoginState(admNo, administrator.getAdmName(), administrator.getAdmEmail(), sessionID, administrator.getAdmLogin(), administrator.getAdmLogout(), administrator.getAdmActiveTime(), administrator.getTitle().getTitleNo());
         // 將登入狀態放入Redis資料庫，供LoginStateFilter於每次發出請求時做登入狀態驗證
         storeLoginstateInRedis(admNo, loginState);
 
@@ -202,6 +195,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
      *
      * @param loginState 傳入登入狀態，執行登出
      */
+    @Monitor(message = "登出")
     @Override
     public void logout(LoginState loginState) {
         Administrator administrator = getOneAdministrator(loginState.getAdmNo());

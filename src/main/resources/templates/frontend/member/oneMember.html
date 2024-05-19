@@ -78,24 +78,39 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-<!--                                    <div class="row justify-content-center align-items-center">-->
-<!--                                        <div class="col-md-3 text-end">-->
-<!--                                            <h5 class="m-0">會員大頭照: </h5>-->
-<!--                                        </div>-->
-<!--                                        <div class="col-md-3 text-start">-->
-<!--                                            <img th:src="@{/frontend/member/picture(memno=${myData.memNo})}" id="memberAvatar" style="width: 100px; height: 100px; border: 1px solid #ccc;" alt="會員大頭貼">-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <br>-->
-                                    <form method="post" th:action="@{newPicture}" enctype="multipart/form-data" onsubmit="return handleAvatarUpload(event)" class="row g-3 align-items-center">
-                                        <label for="avatarInput" class="col-auto col-form-label">Change Profile Photo</label>
-                                        <div class="col-auto">
+                                    <form method="post" th:action="@{/frontend/member/newPicture}" enctype="multipart/form-data" onsubmit="return handleAvatarUpload(event)" class="row g-3 align-items-center">
+<!--                                        <label for="avatarInput" class="col-auto col-form-label" style="display: none">Change Profile Photo</label>-->
+                                        <label for="avatarInput" class="col-auto col-form-label" style="display: none"></label>
+                                        <div class="col-auto" style="display: none">
                                             <input type="file" name="chaPic" class="form-control" id="avatarInput" accept="image/*">
                                         </div>
                                         <div class="col-auto">
                                             <input type="submit" value="上傳新圖片" class="form-control btn btn-primary">
                                         </div>
                                     </form>
+
+                                    <!-- 第二個表單，用於預覽和手動提交 -->
+<!--                                    <form id="previewForm" class="row g-3 align-items-center">-->
+<!--                                        <label for="previewImage" class="col-auto col-form-label" style="display: none"></label>-->
+<!--                                        <div class="col-auto" style="display: none">-->
+<!--                                            <input type="file" id="previewImage" name="chaPic" class="form-control" accept="image/*">-->
+<!--                                        </div>-->
+<!--                                        <div class="col-auto" id="previewContainer">-->
+<!--                                            &lt;!&ndash; 預覽圖片將在此顯示 &ndash;&gt;-->
+<!--                                        </div>-->
+<!--                                        <div class="col-auto">-->
+<!--                                            <input type="submit" value="上傳新圖片" class="form-control btn btn-primary">-->
+<!--                                        </div>-->
+<!--                                    </form>-->
+<!--                                    <form method="post" th:action="@{newPicture}" enctype="multipart/form-data" onsubmit="return handleAvatarUpload(event)" class="row g-3 align-items-center">-->
+<!--                                        <label for="avatarInput" class="col-auto col-form-label" style="display: none"></label>-->
+<!--                                        <div class="col-auto">-->
+<!--                                            <input type="file" name="chaPic" class="form-control" id="avatarInput" accept="image/*" style="display: none">-->
+<!--                                        </div>-->
+<!--                                        <div class="col-auto">-->
+<!--                                            <input type="submit" value="上傳新圖片" class="form-control btn btn-primary">-->
+<!--                                        </div>-->
+<!--                                    </form>-->
                                     <div id="preview"></div>
                                     <br>
                                     <div class="row">
@@ -348,6 +363,84 @@
         }
     </script>
     <script>
+        $(".camera-icon").click(function(){
+            $("#avatarInput").click();
+        })
+
+        // 當用戶選擇圖片後，將其顯示在第二個表單中
+        document.getElementById('avatarInput').addEventListener('change', function(event) {
+            const file = event.target.files[0]; // 獲取所選文件
+
+            const previewImage = document.getElementById('previewImage'); // 第二個表單中的預覽圖片元素
+            const previewFormInput = document.getElementById('previewFormInput'); // 第二個表單中的用於上傳的 input 元素
+
+            // 如果想要在第二個表單中預覽圖片，可以將圖片顯示在預覽圖片元素中
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
+
+<!--    <script>-->
+<!--        document.getElementById('avatarInput').addEventListener('change', function(event) {-->
+<!--            // 獲取所選文件-->
+<!--            const file = event.target.files[0];-->
+
+<!--            // 手動觸發原本的表單提交，將選擇的文件一起提交到伺服器-->
+<!--            document.querySelector('form.row').submit();-->
+<!--        });-->
+<!--    </script>-->
+
+<!--<script>-->
+<!--    // 選擇圖片後的處理函數-->
+<!--    document.getElementById('avatarInput').addEventListener('change', function(event) {-->
+<!--        const file = event.target.files[0];-->
+<!--        const reader = new FileReader();-->
+
+<!--        reader.onload = function(e) {-->
+<!--            const previewContainer = document.getElementById('previewContainer');-->
+<!--            previewContainer.innerHTML = ''; // 清空容器-->
+<!--            const img = document.createElement('img');-->
+<!--            img.src = e.target.result;-->
+<!--            img.style.width = '100px'; // 設置圖片寬度-->
+<!--            img.style.height = '100px'; // 設置圖片高度-->
+<!--            previewContainer.appendChild(img); // 將圖片添加到預覽容器-->
+<!--        };-->
+
+<!--        reader.readAsDataURL(file); // 讀取文件並顯示預覽-->
+<!--    });-->
+
+<!--    // 手動提交預覽表單-->
+<!--    document.getElementById('previewForm').addEventListener('submit', function(event) {-->
+<!--        event.preventDefault(); // 阻止默認提交行為-->
+
+<!--        // 使用 FormData 收集表單數據-->
+<!--        const formData = new FormData(event.target);-->
+
+<!--        // 使用 fetch 發送 POST 請求-->
+<!--        fetch('/frontend/member/newPicture', {-->
+<!--            method: 'POST',-->
+<!--            body: formData-->
+<!--        })-->
+<!--            .then(response => response.json()) // 將回應解析為 JSON 格式-->
+<!--            .then(data => {-->
+<!--                if (data.success) {-->
+<!--                    alert('上傳成功！');-->
+<!--                    window.location.href = '/frontend/member/memberData';-->
+<!--                } else {-->
+<!--                    console.error('上傳失敗:', data.error);-->
+<!--                    alert('上傳失敗，請重試。');-->
+<!--                }-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                console.error('錯誤:', error);-->
+<!--                alert('發生錯誤，請稍後重試。');-->
+<!--            });-->
+<!--    });-->
+<!--</script>-->
+<script>
         document.getElementById('avatarInput').addEventListener('change', function() {
             var preview = document.getElementById('preview');
             var file = this.files[0];

@@ -1,5 +1,6 @@
 package com.config;
 
+import com.chihyun.servicerecord.dto.ChatMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.iting.cart.entity.CartRedis;
@@ -69,6 +70,19 @@ public class RedisConfig {
         redisTemplate.setConnectionFactory(connectionFactory);
         // 設置 Serializer
         redisTemplate.setKeySerializer(new GenericToStringSerializer<>(Integer.class));
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        return redisTemplate;
+    }
+
+    @Bean("chatMemStrMsg")
+    public RedisTemplate<String, ChatMessage> chatMemStrMsgRedisTemplate(
+            @Qualifier("chatMemDataBase") RedisConnectionFactory connectionFactory) {
+        RedisTemplate<String, ChatMessage> redisTemplate = new RedisTemplate<>();
+        // 設置連線
+        redisTemplate.setConnectionFactory(connectionFactory);
+        // 設置Serializer
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
 
         return redisTemplate;
@@ -297,6 +311,16 @@ public class RedisConfig {
         config.setHostName("localhost");
         config.setPort(6379);
         config.setDatabase(8);  // 設定使用的 Redis database 索引
+        return new LettuceConnectionFactory(config);
+    }
+
+    // 用於存放自動登入相關資料
+    @Bean("chatMemDataBase")
+    public LettuceConnectionFactory chatMemRedisConnectionFactory() {
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
+        config.setHostName("localhost");
+        config.setPort(6379);
+        config.setDatabase(9);  // 設定使用的 Redis database 索引
         return new LettuceConnectionFactory(config);
     }
 

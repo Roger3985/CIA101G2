@@ -59,7 +59,8 @@
                                     <h3 class="h4 mb-0">Login</h3>
                                 </div>
                                 <div class="card-body">
-                                    <form method="post" th:action="@{loginPage}">
+                                    <div th:if="${session.loginsuccess}">已經登入，可以開始購物</div>
+                                    <form method="post" th:action="@{loginPage}" th:unless="${session.loginsuccess}">
                                         <div style="text-align: center;">
                                             <span th:text="*{message}" style="color: red;" class="error" id="message.errors"></span>
                                             <span th:text="*{noFun}" style="color: red;" class="error" id="noFun.errors"></span>
@@ -91,11 +92,11 @@
                                             <button type="submit" class="btn btn-primary w-100">Log in</button>
                                         </div>
                                     </form>
-                                    <div class="text-center pt-4 pb-5" style=""><span
+                                    <div class="text-center pt-4 pb-5" style="" th:unless="${session.loginsuccess}"><span
                                             class="px-3 bg-body d-inline-block align-top lh-sm">OR</span>
                                         <div class="border-bottom mt-n3"></div>
                                     </div>
-                                    <div class="row g-2">
+                                    <div class="row g-2" th:unless="${session.loginsuccess}">
                                         <br>
                                         <div class="col">
                                             <button class="btn w-100 btn-mode" type="button"><i
