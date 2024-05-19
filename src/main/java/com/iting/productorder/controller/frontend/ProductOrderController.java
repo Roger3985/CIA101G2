@@ -13,6 +13,8 @@ import com.iting.productorderdetail.entity.ProductOrderDetail;
 import com.iting.productorderdetail.service.ProductOrderDetailService;
 import com.ren.product.entity.Product;
 import com.ren.product.service.impl.ProductServiceImpl;
+import com.ren.productpicture.entity.ProductPicture;
+import com.ren.productpicture.service.impl.ProductPictureServiceImpl;
 import com.roger.member.entity.Member;
 import com.roger.member.entity.uniqueAnnotation.Create;
 import com.roger.member.service.MemberService;
@@ -57,6 +59,8 @@ public class ProductOrderController {
     CouponService couponService;
     @Autowired
     MyCouponService myCouponService;
+    @Autowired
+    ProductPictureServiceImpl productPictureService;
 
 
     @PostMapping("insertOrder")
@@ -84,6 +88,20 @@ public class ProductOrderController {
             List<MyCoupon> filteredCoupons = myCoupons.stream()
                     .filter(coupon -> coupon.getCoupUsedStat() != 1)
                     .collect(Collectors.toList());
+            List<CartRedis> cartListData = cartSvc.findByCompositeKey((Integer) memNo); // 将memNo强制转换为Integer类型
+            for (CartRedis cartItem : cartListData) {
+                Integer cartProductNo = cartItem.getProductNo();
+                List<ProductPicture> productPictures = productPictureService.getByProductNo(cartProductNo);
+                if (productPictures != null && !productPictures.isEmpty()) {
+                    ProductPicture firstProductPicture = productPictures.get(0);
+                    byte[] firstPic = firstProductPicture.getProductPic();
+                    Integer productNo=firstProductPicture.getProduct().getProductNo();
+                    String base64Image = Base64.getEncoder().encodeToString(firstPic);
+                    if (session.getAttribute("productImage"+productNo)==null){
+                        session.setAttribute("productImage"+productNo, base64Image);}
+                    model.addAttribute("productImage"+productNo, base64Image);
+                }
+            }
             model.addAttribute("coupons", filteredCoupons);
             model.addAttribute("productOrder", productOrder);
             session.setAttribute("productOrder", productOrder); // 將訂單存儲在會話中

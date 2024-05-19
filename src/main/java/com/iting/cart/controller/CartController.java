@@ -261,7 +261,7 @@ public class CartController {
                     String base64Image = Base64.getEncoder().encodeToString(firstPic);
                     if (session.getAttribute("productImage"+productNo)==null){
                         session.setAttribute("productImage"+productNo, base64Image);}
-
+                    model.addAttribute("productImage"+productNo, base64Image);
                 }
             }
 
