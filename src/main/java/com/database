@@ -661,7 +661,7 @@ AUTO_INCREMENT = 5001;
 INSERT INTO Rental(rentalNo, rentalCatNo, rentalName, rentalPrice, rentalSize, rentalColor, rentalInfo, rentalStat)
 VALUES(5001, 1, '格紋成套西裝', 15500, '2', '黑色', '款式：劍領 單排釦。適用場合：婚攝 婚宴 宴客 求婚', 1),
       (5011, 1, '雙排扣格紋成套西裝', 12500, '3', '深卡其色', '款式：標準領 單排釦 雙扣。適用場合：婚攝 婚宴 求婚 日常', 2),
-      (5038, 3, '時尚復古斜領緊身晚禮服', 12000, '4', '白色', '款式：斜頸、高腰、泡泡袖。適用場合：婚攝 婚宴 宴客', 0),
+      (5038, 3, '時尚復古斜領緊身晚禮服', 12000, '4', '白色', '款式：斜頸、高腰。適用場合：婚攝 婚宴 宴客', 0),
       (5201, 2, '閃光香檳婚紗', 20000, '1', '白色', '款式：刺繡 蕾絲、V領、薄紗。適用場合：婚攝 婚宴', 1),
       (5375, 2, '露肩緞面婚紗', 18600, '2', '白色', '款式：一字領 緞面。適用場合：婚攝 婚宴', 3);
 
@@ -676,11 +676,11 @@ CREATE TABLE RentalPic
 AUTO_INCREMENT = 1;
 
 INSERT INTO RentalPic(rentalPicNo, rentalNo, rentalFile) VALUES
-(1, 5001, 'null'),
-(2, 5011, 'null'),
-(3, 5038, 'null'),
-(4, 5201, 'null'),
-(5, 5375, 'null');
+(1, 5001, null),
+(2, 5011, null),
+(3, 5038, null),
+(4, 5201, null),
+(5, 5375, null);
 
 -- 創建租借品訂單表格
 CREATE TABLE RentalOrder (

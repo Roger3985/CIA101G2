@@ -45,25 +45,25 @@
                                     <label>選擇租借品編號:</label>
                                     <select name="rentalNo" id="rentalNo">
                                         <option>請選擇</option>
-                                        <option th:each="rentalMyFavorite : ${rentalMyFAVList}" th:value="${rentalMyFavorite.rental.rentalNo}" th:text="${rentalMyFavorite.rental.rentalNo} + '-[' + ${rentalMyFavorite.rental.rentalName} + ']'" />
+                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalNo}" th:text="${rental.rentalNo} + '-[' + ${rental.rentalName} + ']'" />
                                     </select><br>
                                     <span class="error" th:if="${#fields.hasErrors('rental.rentalNo')}" th:errors="*{rental.rentalNo}" id="rental.rentalNo.errors">租借品編號錯誤</span>
                                 </div><br>
-                                <div>
-                                    <label>選擇會員編號:</label>
-                                    <select name="memNo" id="memNo">
-                                        <option>請選擇</option>
-                                        <option th:each="member : ${memberListData}" th:value="${rentalMyFavorite.member.memNo}" th:text="${rentalMyFavorite.member.memNo} + '-[' + ${rentalMyFavorite.member.memName} + ']'" />
-                                    </select><br>
-                                    <span class="error" th:if="${#fields.hasErrors('member.memNo')}" th:errors="*{member.memNo}" id="member.memNo.errors">會員編號錯誤</span>
-                                </div><br>
+<!--                                <div>-->
+<!--                                    <label>選擇會員編號:</label>-->
+<!--                                    <select name="memNo" id="memNo">-->
+<!--                                        <option>請選擇</option>-->
+<!--                                        <option th:each="member : ${memberListData}" th:value="${member.memNo}" th:text="${member.memNo} + '-[' + ${member.memName} + ']'" />-->
+<!--                                    </select><br>-->
+<!--                                    <span class="error" th:if="${#fields.hasErrors('member.memNo')}" th:errors="*{member.memNo}" id="member.memNo.errors">會員編號錯誤</span>-->
+<!--                                </div><br>-->
                                 <div>
                                     <label>選擇加入我的最愛時間:</label>
                                     <input type="datetime-local" id="rentalFavTime" name="rentalFavTime" th:field="*{rentalFavTime}" onclick="hideContent('rentalFavTime.errors');"/>
                                     <br/>
                                     <span class="error" th:if="${#fields.hasErrors('rentalFavTime')}" th:errors="*{rentalFavTime}" id="rentalFavTime.errors">時間錯誤</span>
                                 </div>
-                                <input type="submit" id="addRentalBtn" value="送出">
+                                <input type="submit" id="addBtn" value="送出">
                             </form>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
     $(document).ready(function (){
 
         // 觸發submit事件，取得選擇的內容，轉為json格式
-        $("#addRentalBtn").on("submit",function(e){
+        $("#addBtn").on("submit",function(e){
             e.preventDefault(); //阻止提交表單
 
             //資料打包

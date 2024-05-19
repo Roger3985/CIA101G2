@@ -19,6 +19,8 @@ public interface RentalMyFavoriteService {
 
     RentalMyFavorite findByIdRentalNoAndIdMemNo(Integer rentalNo, Integer memNo);  //複合主鍵查詢
 
+    List<RentalMyFavorite> findByRentalRentalNoAndMemberMemNo(Integer rentalNo, Integer memNo);  //複合主鍵查詢
+
 //----------------------------------------------------------------------------------------------------------------------
 //主要為後端使用：增查改
 
@@ -26,9 +28,11 @@ public interface RentalMyFavoriteService {
 
     RentalMyFavorite updateRentalFav(RentalMyFavorite rentalMyFavorite); //修改
 
+    List<RentalMyFavorite> findByCompositeKey(Integer rentalNo);
+
     List<RentalMyFavorite> searchRentalMyFAVs(Map<String, Object> map); //複合查詢
 
-
+    public void addToWishList(Integer memNo, Map<String, String> map);
 
 
 

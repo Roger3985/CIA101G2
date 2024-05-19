@@ -155,13 +155,16 @@ public class RentalPicControllerBackEnd {
         } else {
             // 如果不為空值，遍歷所有圖片
             for (MultipartFile multipartFile : parts) {
-                byte[] buf = multipartFile.getBytes(); //SpringBoot有提供MultipartFile類負責檔案上傳，藉由getBytes()把檔案轉為位元組陣列
-                rentalPic.setRentalFile(buf); //將位元組陣列儲存到實體對象中
+                if (!multipartFile.isEmpty()) {
+                    RentalPic newRentalPic = new RentalPic(); // 創建新的 RentalPic 對象
+                    byte[] buf = multipartFile.getBytes(); //SpringBoot有提供MultipartFile類負責檔案上傳，藉由getBytes()把檔案轉為位元組陣列
+                    rentalPic.setRentalFile(buf); //將位元組陣列儲存到實體對象中
 
-                // 將資料添加到 ModelMap 中
-                rentalPicService.addRentalPic(rentalPic);
-                rentalPic = rentalPicService.findByRentalPicNo(rentalPic.getRentalPicNo());
-                model.addAttribute("rentalPic", rentalPic);
+                    // 將資料添加到 ModelMap 中
+                    rentalPicService.addRentalPic(newRentalPic);
+                    rentalPic = rentalPicService.findByRentalPicNo(rentalPic.getRentalPicNo());
+                    model.addAttribute("rentalPic", rentalPic);
+                }
             }
         }
         // 如果有驗證錯誤，直接返回錯誤
