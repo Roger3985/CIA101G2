@@ -93,7 +93,6 @@ public class ServiceController {
             if (userSession != null && userSession.isOpen()) {
                 System.out.println("我準備要送資料囉");
                 userSession.getAsyncRemote().sendText(gson.toJson(cmHistory));
-//                receiverSession.getAsyncRemote().sendText(gson.toJson(cmHistory));
                 System.out.println("歷史資料送給前端囉");
             }
         } else if (type.equals("chatMsgB")) {

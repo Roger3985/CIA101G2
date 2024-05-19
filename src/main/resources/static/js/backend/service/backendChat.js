@@ -35,9 +35,12 @@ function connect() {
     }
 
     webSocket.onmessage = function (event) {
-        console.log("我收到後端的資料了" + event);
+        console.log("收到後端的資料了" + event);
         console.log(event);
         var jsonObj = JSON.parse(event.data);
+        console.log(jsonObj);
+        var receiver = jsonObj.receiver;
+        console.log(receiver);
         var message = jsonObj.message;
         var pkType = jsonObj.type;
         console.log(pkType);
@@ -80,11 +83,14 @@ function connect() {
             }
 
         } else if (pkType === "chatMsgB") {
-            let message = jsonObj.message;
-            const messageContainer = document.createElement('div');
-            messageContainer.classList.add("receiver");
-            messageContainer.innerHTML = message;
-            chatArea.appendChild(messageContainer);
+            // 過濾所有來自會員的訊息，僅接收當前聊天室的會員傳送訊息進來
+            if (jsonObj.receiver === memName || jsonObj.sender === memName) {
+                let message = jsonObj.message;
+                const messageContainer = document.createElement('div');
+                messageContainer.classList.add("receiver");
+                messageContainer.innerHTML = message;
+                chatArea.appendChild(messageContainer);
+            }
         }
     }
 }

@@ -56,6 +56,7 @@ function connect() {
         console.log("我在connect: endPointURL=" + endPointURL);
         console.log("frontend connect Suceess!");
         connection = true;
+        // 請求在線會員
         let jsonobj = {
             type: "stateA", sender: `${userName}`, receiver: "host",
         }
