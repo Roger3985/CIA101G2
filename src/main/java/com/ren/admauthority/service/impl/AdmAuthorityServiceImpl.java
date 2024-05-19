@@ -25,6 +25,11 @@ public class AdmAuthorityServiceImpl implements AdmAuthorityService_interface {
         return admAuthorityRepository.save(admAuthority);
     }
 
+
+    public AdmAuthority getAdmAuthority(Integer compositeId) {
+        return admAuthorityRepository.findById(compositeId).orElse(null);
+    }
+
     /**
      * 根據複合主鍵編號查詢管理員權限
      *

@@ -1,11 +1,10 @@
 package com.filter.backend;
 
 import com.ren.administrator.dto.LoginState;
-import com.ren.administrator.service.Impl.AdministratorServiceImpl;
+import com.ren.administrator.service.impl.AdministratorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.annotation.Order;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 

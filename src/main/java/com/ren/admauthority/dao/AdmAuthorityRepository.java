@@ -49,7 +49,7 @@ public interface AdmAuthorityRepository extends JpaRepository<AdmAuthority, Inte
     /**
      * 根據職位編號刪除職位權限
      *
-     * @param titleNo
+     * @param titleNo 管理員編號
      */
     @Transactional
     void deleteAdmAuthoritiesByCompositeAdmAuthority_TitleNo(Integer titleNo);
@@ -57,9 +57,11 @@ public interface AdmAuthorityRepository extends JpaRepository<AdmAuthority, Inte
     /**
      * 根據權限編號刪除職位權限
      *
-     * @param AuthFuncNo
+     * @param AuthFuncNo 權限編號
      */
     @Transactional
     void deleteAdmAuthoritiesByCompositeAdmAuthority_AuthFuncNo(Integer AuthFuncNo);
+
+
 
 }

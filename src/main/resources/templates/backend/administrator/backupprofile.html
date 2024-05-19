@@ -103,8 +103,8 @@
                 <div class="container mt-5">
                     <!-- Profile Card -->
                     <div class="profile-card">
-                        <div class="cover-photo" id="coverPhoto" th:style="|background-image: url('@{/backend/administrator/DBGifReader(admNo=${administrator.admNo})}');|">
-                            <div class="edit-icon" id="coverPhotoEditIcon">
+                        <div class="cover-photo" th:style="|background-image: url('@{/backend/administrator/DBGifReader(admNo=${administrator.admNo})}');|">
+                            <div class="edit-icon">
                                 <img th:src="@{/images/backend/camera-fill.svg}" alt="Edit Icon">
                             </div>
                         </div>
@@ -114,7 +114,7 @@
                                     <img th:src="@{/backend/administrator/DBGifReader} + '?admNo=' + ${administrator.admNo}" alt="Profile Picture">
                                     <input type="file" id="profileInput" style="display: none;" accept="image/*">
                                 </div>
-                                <div class="edit-icon" id="profilePictureEditIcon">
+                                <div class="edit-icon">
                                     <img th:src="@{/images/backend/camera-fill.svg}" alt="Edit Icon">
                                 </div>
                             </div>
@@ -195,10 +195,10 @@
 <!-- jQuery code -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const profilePictureEditIcon = document.getElementById("profilePictureEditIcon");
+        const profilePicture = document.getElementById("profilePicture");
         const profileInput = document.getElementById("profileInput");
 
-        profilePictureEditIcon.addEventListener("click", function() {
+        profilePicture.addEventListener("click", function() {
             profileInput.click();
         });
 
@@ -215,9 +215,7 @@
                 })
                     .then(response => {
                         if (response.data.status === 'success') {
-                            // Add a random query parameter to force reload the image
-                            const newImgUrl = `/backend/administrator/DBGifReader?admNo=${response.data.admNo}&t=${new Date().getTime()}`;
-                            document.querySelector("#profilePicture img").src = newImgUrl;
+                            profilePicture.querySelector("img").src = `/backend/administrator/DBGifReader?admNo=${response.data.admNo}`;
                         } else {
                             console.error('Error:', response.data.message);
                         }
@@ -228,13 +226,13 @@
             }
         });
 
-        const coverPhotoEditIcon = document.getElementById("coverPhotoEditIcon");
+        const coverPhoto = document.querySelector(".cover-photo");
         const coverInput = document.createElement("input");
         coverInput.type = "file";
         coverInput.style.display = "none";
         coverInput.accept = "image/*";
 
-        coverPhotoEditIcon.addEventListener("click", function() {
+        coverPhoto.addEventListener("click", function() {
             coverInput.click();
         });
 
@@ -244,16 +242,14 @@
                 const formData = new FormData();
                 formData.append('admPhoto', file);
 
-                axios.post('/backend/administrator/upload', formData, {
+                axios.post('/upload', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 })
                     .then(response => {
                         if (response.data.status === 'success') {
-                            // Add a random query parameter to force reload the image
-                            const newImgUrl = `/backend/administrator/DBGifReader?admNo=${response.data.admNo}&t=${new Date().getTime()}`;
-                            document.querySelector(".cover-photo").style.backgroundImage = `url(${newImgUrl})`;
+                            coverPhoto.style.backgroundImage = `url('/backend/administrator/DBGifReader?admNo=${response.data.admNo}')`;
                         } else {
                             console.error('Error:', response.data.message);
                         }
