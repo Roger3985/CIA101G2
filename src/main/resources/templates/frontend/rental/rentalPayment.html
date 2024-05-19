@@ -301,9 +301,6 @@
                     return response.json();
                 }).then(function (data) {
 
-                const container = $("div#cartItemsContainer");
-                container.empty();  // 清除先前的内容
-
                 let itemContainer = $(".itemContainer");
                 itemContainer.empty();
 
@@ -318,11 +315,12 @@
                 Object.entries(data).forEach(([key, item]) => {
 
                     if (item.rentalStat === "0") {
-                        items.push(item.rentalNo);
-                    }
 
-                    // 拼接結帳頁面小明細 74
-                    if (item.rentalStat === "0") {
+                        items.push(item.rentalNo);
+                        rentalAllPrice += parseFloat(item.rentalPrice);
+                        rentalAllDepPrice += parseFloat(item.rentalDesPrice);
+
+                        // 拼接結帳頁面小明細 74
 
                         let cartItem = $("<li>", {
                             "class" : "border-bottom mb-0",
@@ -343,9 +341,6 @@
                             "text" : "X"
                         }).appendTo(a);
 
-                        rentalAllPrice += parseFloat(item.rentalPrice);
-                        rentalAllDepPrice += parseFloat(item.rentalDesPrice);
-
                     }
 
                 });
@@ -360,6 +355,7 @@
         } // getAll()結束
         // 進來頁面就先取一次
         getAll();
+        console.log("getall結束後 : " + $("span.rentalAllDepPrice").text());
 
         // 從明細刪除商品
         $(document).on("click", ".delBtn", function () {
@@ -460,14 +456,26 @@
             return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes;
 
         } // 計算預計歸還日期 結束
-
+        // console.log("再次確認 : " + $("span.rentalAllDepPrice").text());
         // 結帳 242
         $(document).on("click", "button.createOrder", function () {
-
+            console.log("按下送出訂單時 : " + $("span.rentalAllDepPrice").text());
             if (items.length === 0) {
                 alert("好像沒有商品可以結帳喔!再去逛逛吧!");
                 return;
             }
+            // console.log("第一道檢查完時 : " + rentalAllDepPrice);
+            if ($("input[name='rentalDate']").val() === "") {
+                alert("請輸入日期!");
+                return;
+            }
+            // console.log("第二道檢查完時 : " + rentalAllDepPrice);
+
+            // let rentalAllDepPriceValue = $("span.rentalAllDepPrice").text();
+
+            // console.log(items.length);
+            // console.log("按下送出訂單時 : " + parseFloat(rentalAllDepPrice) );
+            // console.log("計算得出的總押金 : " + parseFloat(rentalAllDepPriceValue) );
 
             // 創建訂單所需資料
             let formData = {

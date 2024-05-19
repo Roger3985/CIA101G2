@@ -1,24 +1,17 @@
 package com;
 
+import ecpay.logistics.integration.AllInOne;
+import ecpay.logistics.integration.domain.QueryLogisticsTradeInfoObj;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.web.servlet.ServletComponentScan;
-import org.springframework.boot.web.servlet.ServletContextInitializer;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.socket.server.standard.ServerEndpointExporter;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import java.security.Principal;
 
 @Configuration
 @EnableAspectJAutoProxy
@@ -33,6 +26,13 @@ public class Cia101G2Application {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Cia101G2Application.class, args);
+
+		// 測試查詢物流動態
+
+		AllInOne all = new AllInOne();
+		String statUpdated = postQueryLogisticsTradeInfo(all);
+		System.out.println(statUpdated);
+
 	}
 
 //	@Bean
@@ -44,4 +44,11 @@ public class Cia101G2Application {
 //	public void onStartup(ServletContext servletContext) throws ServletException {
 //		servletContext.setInitParameter("org.apache.tomcat.websocket.textBuffer.Size", "1024000");
 //	}
+
+	public static String postQueryLogisticsTradeInfo(AllInOne all){
+		QueryLogisticsTradeInfoObj obj = new QueryLogisticsTradeInfoObj();
+		obj.setAllPayLogisticsID("2659287");
+		return all.queryLogisticsTradeInfo(obj);
+	}
+
 }
