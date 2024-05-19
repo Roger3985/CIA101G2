@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zxx" data-bs-theme="light">
+
+<head>
+    <!-- metas -->
+    <meta charset="utf-8">
+    <meta name="author" content="pxdraft">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <!-- title -->
+    <title>ShopApp - eCommerce Bootstrap 5 Template</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <!-- CSS Template -->
+    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+<!-- 通用插件 -->
+<th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block>
+<!-- 通用插件 -->
+<!-- ======================== Wrapper ========================= -->
+<div class="wrapper">
+    <!-- header height -->
+    <div class="header-height-bar" style="min-height: 104.865px;"></div>
+    <!-- Header -->
+    <header th:replace="frontend/component/header :: header"></header>
+    <!-- End Header -->
+    <!-- Main -->
+    <main>
+        <!-- Breadcrumb -->
+        <div class="py-3 bg-gray-100">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 my-2">
+                        <h1 class="m-0 h4 text-center text-lg-start">訂單已成立</h1>
+                    </div>
+                    <div class="col-lg-6 my-2">
+                        <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
+                            <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/frontend/rental/rentalShop}"><i class="bi bi-home"></i>首頁</a></li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page">訂單成立頁面</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Breadcrumb -->
+        <!-- Table -->
+        <div class="py-6">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <!-- Profile Menu -->
+                    <div class="col-md-8 text-center">
+                        <i class="bi bi-check-circle" style="font-size: 5rem; color: green;"></i>
+                        <h2>已經收到您的訂單，感謝您的購買!</h2>
+                        <h3 th:if="${rentalOrdNo != null}" th:text="'訂單編號 : ' + ${rentalOrdNo}"></h3>
+                        <h3 th:if="${rentalOrdNo == null}" th:text="麻煩依照指定之租借時間至現場取貨"></h3>
+                        <p class="text-muted">訂單後續追蹤部分請至會員頁面</p>
+                        <button class="btn btn-primary d-block w-100 backToShop" type="button">
+                            回首頁 <!--  -->
+                        </button>
+                    </div>
+                    <!-- End Content -->
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- End Main -->
+    <!-- Footer -->
+    <footer th:replace="frontend/component/footer :: footer"></footer>
+    <!-- End Footer -->
+</div>
+<!-- ======================== End Wrapper ========================= -->
+<!-- script start -->
+<th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
+<!-- End script start -->
+</body>
+
+<script>
+    $(function () {
+        let baseUrl = window.location.protocol + "//" + window.location.host;
+        let apiPath = "/backend/rentalorder/";
+        let shopApiPath = "/frontend/rental/rentalShop";
+        let memNo = 1;
+        let rentalAllPrice = 0;
+        let rentalAllDepPrice = 0;
+        let items = [];
+
+        function getAll() {
+            items.length = 0;
+            rentalAllPrice = 0;
+            rentalAllDepPrice = 0;
+
+            fetch(baseUrl + apiPath + "getFromCart?memNo=" + memNo)
+                .then(function (response) {
+                    return response.json();
+                }).then(function (data) {
+                let itemContainer = $(".itemContainer");
+                itemContainer.empty();
+
+                let totalItems = Object.keys(data).length; // 計算購物車商品數量
+                $("span[data-cart-items]").attr("data-cart-items", totalItems); // 更新購物車商品數量圖示
+            });
+        }
+        // 進來頁面就先取一次
+        getAll();
+        
+        $("button.backToShop").on("click", function () {
+           
+            window.location.href = baseUrl + shopApiPath;
+            
+        });
+        
+    }); // DOMContentLoaded結束
+</script>
+
+</html>
