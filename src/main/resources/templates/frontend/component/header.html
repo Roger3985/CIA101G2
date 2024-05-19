@@ -19,10 +19,41 @@
                     </div>
                     <!-- Top link -->
                     <ul class="nav ms-auto ms-lg-3">
+                        <li class="nav-item h-switch dropdown">
+                            <button
+                                    class="theme-switch nav-link text-white dropdown-toggle" id="bd-theme"
+                                    type="button" aria-expanded="false" data-bs-toggle="dropdown"
+                                    data-bs-display="static" style=""><span class="bi my-1 theme-icon-active"
+                                                                            style=""><i class="bi-sun-fill"
+                                                                                        style=""></i> </span><span
+                                    class="d-none">Toggle theme</span></button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme" style="">
+                                <li>
+                                    <button type="button" class="dropdown-item active"
+                                            data-bs-theme-value="light"><span
+                                            class="bi me-2 opacity-50 theme-icon"><i class="bi-sun-fill"></i>
+                                                </span>Light <span class="bi ms-auto d-none"><i
+                                            class="bi-check2"></i></span></button>
+                                </li>
+                                <li>
+                                    <button type="button" class="dropdown-item" data-bs-theme-value="dark"><span
+                                            class="bi me-2 opacity-50 theme-icon"><i
+                                            class="bi-moon-stars-fill"></i> </span>Dark <span
+                                            class="bi ms-auto d-none"><i class="bi-check2"></i></span></button>
+                                </li>
+                                <li>
+                                    <button type="button" class="dropdown-item" data-bs-theme-value="auto"><span
+                                            class="bi me-2 opacity-50 theme-icon"><i class="bi-circle-half"></i>
+                                                </span>Auto <span class="bi ms-auto d-none"><i
+                                            class="bi-check2"></i></span></button>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="nav-item"><a href="#" class="nav-link text-white" data-bs-toggle="modal"
-                                                data-bs-target="#topbarlogin" th:unless="${session.loginsuccess}"><i class="fi-user me-2"></i>Login</a></li>
-<!--                        <li class="nav-item"><a th:href="@{frontend/member/loginpopup.html}" class="nav-link text-white" data-bs-toggle="modal"-->
-<!--                                                data-bs-target="#topbarlogin"><i class="fi-user me-2"></i>Login</a></li>-->
+                                                data-bs-target="#topbarlogin" th:unless="${session.loginsuccess}"><i
+                                class="fi-user me-2"></i>Login</a></li>
+                        <!--                        <li class="nav-item"><a th:href="@{frontend/member/loginpopup.html}" class="nav-link text-white" data-bs-toggle="modal"-->
+                        <!--                                                data-bs-target="#topbarlogin"><i class="fi-user me-2"></i>Login</a></li>-->
                     </ul><!-- Top social -->
                     <div class="nav header-social justify-content-end d-none d-lg-block white-link"><a
                             class="h-social-link" href="#"><i class="bi bi-facebook"></i></a> <a class="h-social-link"
@@ -49,7 +80,8 @@
                         <ul class="dropdown-menu left shadow-lg">
                                 <li><a class="dropdown-item" th:href="@{/frontend/news/selectNews}">最新消息</a></li>
                             <li><a class="dropdown-item" href="../pages/policy.html">隱私政策</a></li>
-                            <li><a class="dropdown-item" th:href="@{/frontend/service/frontendServiceChat}">聯繫客服</a></li>
+                            <li><a class="dropdown-item" th:href="@{/frontend/service/frontendServiceChat}">聯繫客服</a>
+                            </li>
                             <li><a class="dropdown-item" href="../pages/contact-us.html">聯繫我們</a></li>
                         </ul>
                     </li>

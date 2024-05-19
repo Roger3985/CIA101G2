@@ -202,3 +202,10 @@ a.logout {
     color: #fff;
     text-decoration: none;
 }
+.username-replying{
+    box-sizing:border-box;
+    padding: 0 20px;
+    background-clip: content-box;
+    background-color: lightblue;
+    text-align:center
+}
