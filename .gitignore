@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### UserLogin ###
-onlineUsers.dat
+.dat
