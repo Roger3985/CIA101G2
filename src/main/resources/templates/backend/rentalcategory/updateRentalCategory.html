@@ -31,34 +31,33 @@
                     </div>
                     <div class="a">
                         <ul>
-                            <form method="post" th:action="@{updateRentalCategory}" th:object="${rentalCategory}">
+                            <form id="form" method="post" th:action="@{updateRentalCat}" th:object="${rentalCategory}">
                                 <li>
-                                    輸入租借品類別編號:
-                                    <input type="text" name="rentalCatNo" th:field="*{rentalCatNo}" style="border:0px ; font-weight: bold;" readonly /><br/>
+                                    <label>輸入租借品類別編號:</label>
+                                    <input type="text" id="rentalCatNo" name="rentalCatNo" th:field="*{rentalCatNo}" style="border:0px ; font-weight: bold;" readonly /><br/>
                                 </li><br>
                                 <li>
-                                    輸入類別名稱:
-                                    <input type="text" name="rentalCatName" th:field="*{rentalCatName}" onclick="hideContent('rentalCatName.errors');" /><br/>
+                                    <label>輸入類別名稱:</label>
+                                    <input type="text" id="rentalCatName" name="rentalCatName" th:field="*{rentalCatName}" onclick="hideContent('rentalCatName.errors');" /><br/>
                                     <span  th:if="${#fields.hasErrors('rentalCatName')}" th:errors="*{rentalCatName}" class="error" id="rentalCatName.errors"></span>
                                 </li><br>
                                 <li>
-                                    輸入租借品庫存數量:
-                                    <input type="text" name="rentalStockQty" th:field="*{rentalStockQty}" onclick="hideContent('rentalStockQty.errors');" /><br/>
+                                    <label>輸入租借品庫存數量:</label>
+                                    <input type="text" id="rentalStockQty" name="rentalStockQty" th:field="*{rentalStockQty}" onclick="hideContent('rentalStockQty.errors');" /><br/>
                                     <span th:if="${#fields.hasErrors('rentalStockQty')}" th:errors="*{rentalStockQty}" class="error" id="rentalStockQty.errors"></span>
                                 </li><br>
                                 <li>
-                                    輸入租借品已租借數量:
-                                    <input type="text" name="rentalRentedQty" th:field="*{rentalRentedQty}" onclick="hideContent('rentalCatNo.errors');" /><br/>
+                                    <label>輸入租借品已租借數量:</label>
+                                    <input type="text" id="rentalRentedQty" name="rentalRentedQty" th:field="*{rentalRentedQty}" onclick="hideContent('rentalCatNo.errors');" /><br/>
                                     <span th:if="${#fields.hasErrors('rentalRentedQty')}" th:errors="*{rentalRentedQty}" class="error" id="rentalRentedQty.errors"></span>
                                 </li><br>
                                 <li>
-                                    輸入押金:
-                                    <input type="text" name="rentalDesPrice" th:field="*{rentalDesPrice}" onclick="hideContent('rentalDesPrice.errors');" /><br/>
+                                    <label>輸入押金:</label>
+                                    <input type="text" id="rentalDesPrice" name="rentalDesPrice" th:field="*{rentalDesPrice}" onclick="hideContent('rentalDesPrice.errors');" /><br/>
                                     <span th:if="${#fields.hasErrors('rentalDesPrice')}" th:errors="*{rentalDesPrice}" class="error" id="rentalDesPrice.errors"></span>
                                 </li><br><br>
                                 <input type="submit" id="updateBtn" value="送出"><!-- 送出成功跳轉listAll -->
-                                <input type="hidden" name="rentalNo" th:value="${rental.rentalNo}">
-                                <input type="hidden" name="rentalCatNo" th:value="${rental.rentalCategory.rentalCatNo}">
+                                <input type="hidden" name="rentalCatNo" th:value="${rentalCategory.rentalCatNo}">
                             </form>
                         </ul>
                     </div>
@@ -81,7 +80,7 @@
 <div th:replace="backend/component/logout :: logout"></div>
 
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
-<script th:src="@{/static/jquery/jquery-3.7.1.min.js}"></script>
+<script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
 <script>
     // 若要做到不點選按鈕即時更新，可以使用WebSocket的方式
     $(document).ready(function (){
@@ -97,17 +96,17 @@
                 rentalStockQty: parseInt($('#rentalStockQty').val()),
                 rentalRentedQty: parseInt($('#rentalRentedQty').val()),
                 rentalDesPrice: parseFloat($('#rentalDesPrice').val()),
-                action: "updateRental"
+                action: "updateRentalCat"
             };
 
-            fetch("/backend/rentalcategory/updateRental", {
+            fetch("/backend/rentalcategory/updateRentalCategory", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(updateData)
             }).then(function (response){
                 return response.text();
-            }).then(function (rentalNo){
-                alert(rentalNo + "新增成功");
+            }).then(function (rentalCatNo){
+                alert(rentalCatNo + "新增成功");
             })
         });
     });

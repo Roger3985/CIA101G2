@@ -1,5 +1,7 @@
 package com.yu.rentSet.entity;
 
+import com.howard.rentalorder.entity.RentalOrder;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -11,6 +13,11 @@ public class RentSet implements java.io.Serializable {
     @Column(name = "rentalordno")
     @GeneratedValue(strategy = GenerationType.IDENTITY) //有設立AUTO_INCREMENT
     private Integer rentalOrdNo;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "rentalordno", referencedColumnName = "rentalordno")
+    private RentalOrder rentalOrder;
 
     @Column(name = "rentalsetname", length = 20)
     @NotBlank(message="*方案名稱: 請勿空白")
@@ -31,31 +38,43 @@ public class RentSet implements java.io.Serializable {
         this.rentalSetDays = rentalSetDays;
     }
 
-
-    public Integer getrentalOrdNo() {
-        return rentalOrdNo;
-    }
-
-    public void setrentalOrdNo(Integer rentalOrdNo) {
+    public RentSet(Integer rentalOrdNo, RentalOrder rentalOrder, String rentalSetName, Byte rentalSetDays) {
         this.rentalOrdNo = rentalOrdNo;
-    }
-
-    public String getrentalSetName() {
-        return rentalSetName;
-    }
-
-    public void setrentalSetName(String rentalSetName) {
+        this.rentalOrder = rentalOrder;
         this.rentalSetName = rentalSetName;
-    }
-
-    public Byte getrentalSetDays() {
-        return rentalSetDays;
-    }
-
-    public void setrentalSetDays(Byte rentalSetDays) {
         this.rentalSetDays = rentalSetDays;
     }
 
+    public Integer getRentalOrdNo() {
+        return rentalOrdNo;
+    }
+
+    public void setRentalOrdNo(Integer rentalOrdNo) {
+        this.rentalOrdNo = rentalOrdNo;
+    }
+
+    public String getRentalSetName() {
+        return rentalSetName;
+    }
+
+    public void setRentalSetName(String rentalSetName) {
+        this.rentalSetName = rentalSetName;
+    }
+
+    public Byte getRentalSetDays() {
+        return rentalSetDays;
+    }
+
+    public void setRentalSetDays(Byte rentalSetDays) {
+        this.rentalSetDays = rentalSetDays;
+    }
+
+    public RentalOrder getRentalOrder() {
+        return rentalOrder;
+    }
+
+    public void setRentalOrder(RentalOrder rentalOrder) {
+        this.rentalOrder = rentalOrder;
+    }
 
 }
-
