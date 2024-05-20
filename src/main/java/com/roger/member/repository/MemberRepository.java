@@ -83,6 +83,15 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
                                  @Param(value = "memPic") byte[] memPic);
 
     /**
+     * 判斷指定的會員編號是否存在於會員資料庫中。
+     *
+     * @param memNo 要檢查的會員編號。
+     * @return 如果存在具有指定會員編號的會員，則返回 true；否則返回 false。
+     */
+    @Transactional
+    public boolean existsByMemNo(Integer memNo);
+
+    /**
      * 判斷指定的電子郵件是否存在於會員資料庫中。
      * 此方法使用 JpaRepository 的 'existsByMemMail'
      * 方法檢查會員資料庫中是否存在具有指定電子郵件的會員。

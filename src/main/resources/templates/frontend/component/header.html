@@ -105,7 +105,7 @@
                     <li class="dropdown nav-item"><a href="#" class="nav-link">專欄文章</a> <label
                             class="px-dropdown-toggle mob-menu"></label>
                         <ul class="dropdown-menu left shadow-lg">
-                            <li><a class="dropdown-item" href="../blog/blog.html">Blog</a></li>
+                            <li><a class="dropdown-item" th:href="@{/frontend/columnarticle/listAllColumnArticle}">Blog</a></li>
                             <li><a class="dropdown-item" href="../blog/blog-single.html">Blog Single</a></li>
                         </ul>
                     </li>
@@ -135,12 +135,17 @@
                     </div>
                 </div>
             </div>
-<!--             Member Notice-->
+            <!-- Member Notice -->
             <div class="nav-item dropdown">
                 <a class="nav-link" href="#" role="button" id="dropdown_notice" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="bi bi-bell"></i>
-                    <span class="badge bg-danger" th:text="${session.unreadNoticeCount}" th:if="${session.unreadNoticeCount > 0}"></span>
+                    <span style="position: absolute; top: 9px; right: 3px; width: 15px; height: 15px; background-color: red; border-radius: 60%; display: flex; justify-content: center; align-items: center; font-size: 10px; color: white;"
+                            class="badge bg-danger"
+                            th:text="${session.unreadNoticeCount}"
+                            th:if="${session.unreadNoticeCount > 0}">
+                    </span>
                 </a>
+
                 <div class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="dropdown_mynotice">
                     <div class="d-flex flex-column align-items-center">
                         <!-- Show login prompt if not logged in -->
