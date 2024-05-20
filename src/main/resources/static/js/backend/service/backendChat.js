@@ -35,9 +35,13 @@ function connect() {
     }
 
     webSocket.onmessage = function (event) {
-        console.log("我收到後端的資料了" + event);
+        console.log("收到後端的資料了" + event);
         console.log(event);
         var jsonObj = JSON.parse(event.data);
+        console.log(jsonObj);
+        var receiver = jsonObj.receiver;
+        console.log(receiver);
+        var message = jsonObj.message;
         var pkType = jsonObj.type;
         console.log(pkType);
 
@@ -62,13 +66,31 @@ function connect() {
                     let userReplying_el = document.querySelector(".username-replying");
                     userReplying_el.innerHTML = memName;
                     chatArea.innerHTML = '';
+                    //     如果點到的會員有歷史訊息，則在這邊顯示
+                    requestHisoryMsg(memName);
                 });
             }
-        } else {
-            let message = jsonObj.message;
-            const messageContainer = document.createElement('div');
-            messageContainer.innerHTML = message;
-            chatArea.appendChild(messageContainer);
+        } else if (pkType == "history") {
+            var historyMsgs = JSON.parse(message);
+            for (let i = 0; i < historyMsgs.length; i++) {
+                var historyData = JSON.parse(historyMsgs[i]);
+                var showMsg = historyData.message;
+                const messageContainer = document.createElement('div');
+                historyData.sender === "host" ? messageContainer.classList.add("sender") : messageContainer.classList.add("receiver");
+                messageContainer.innerHTML = showMsg;
+                chatArea.appendChild(messageContainer);
+                chatArea.scrollTop = chatArea.scrollHeight;
+            }
+
+        } else if (pkType === "chatMsgB") {
+            // 過濾所有來自會員的訊息，僅接收當前聊天室的會員傳送訊息進來
+            if (jsonObj.receiver === memName || jsonObj.sender === memName) {
+                let message = jsonObj.message;
+                const messageContainer = document.createElement('div');
+                messageContainer.classList.add("receiver");
+                messageContainer.innerHTML = message;
+                chatArea.appendChild(messageContainer);
+            }
         }
     }
 }
@@ -89,7 +111,9 @@ el_msg_btn.addEventListener("click", function () {
     } else {
         const messageContainer = document.createElement('div');
         messageContainer.innerHTML = messageContent;
+        messageContainer.classList.add("sender")
         chatArea.appendChild(messageContainer);
+
         messageInput.value = '';
         var jsonobj = {
             type: "chatMsgB",
@@ -100,6 +124,14 @@ el_msg_btn.addEventListener("click", function () {
         }
         webSocket.send(JSON.stringify(jsonobj))
     }
+    chatArea.scrollTop = chatArea.scrollHeight;
 });
+
+function requestHisoryMsg() {
+    let jsonobj_history = {
+        type: "history", sender: "host", receiver: memName,
+    }
+    webSocket.send(JSON.stringify(jsonobj_history));
+}
 
 

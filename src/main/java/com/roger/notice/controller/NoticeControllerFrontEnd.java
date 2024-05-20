@@ -43,15 +43,22 @@ public class NoticeControllerFrontEnd {
         // 從 HTTP 會話中獲取當前已登入的會員跟通知資料（如果需要的話）
          Member member = (Member) session.getAttribute("loginsuccess");
 
-        // 取得舊的通知訊息 session（如果需要的話）
-         Notice oldNoticeSession = (Notice) session.getAttribute("notice");
-
         // 根據 motNo 從數據庫中獲取新的通知消息
          Notice newNoticeDate = noticeService.getOneNotice(Integer.valueOf(motNo));
          newNoticeDate.setNotStat((byte) 1);
 
+        // 從會話中獲取當前會員的未讀通知列表
+        int unreadNotices = (int) session.getAttribute("unreadNoticeCount");
+
         // 更新通知狀態（如果需要的話）
          noticeService.updateNotice(newNoticeDate);
+
+        // 更新未讀通知消息數量
+        if (unreadNotices != 0) {
+            // 確認通知後未讀消息的數量減一
+            int unreadNoticeCount = unreadNotices - 1;
+            session.setAttribute("unreadNoticeCount", unreadNoticeCount);
+        }
 
         // 更新新的通知消息 session（如果需要的話）
          session.setAttribute("notice", newNoticeDate);

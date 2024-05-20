@@ -196,6 +196,9 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         order.setrentalRcvName(req.getrentalRcvName());
         order.setrentalRcvPhone(req.getrentalRcvPhone());
         order.setrentalTakeMethod(req.getrentalTakeMethod());
+        if (req.getrentalTakeMethod() == (byte) 1) {
+            req.setrentalAddr(null);
+        }
         order.setrentalAddr(req.getrentalAddr());
         order.setrentalPayMethod(req.getrentalPayMethod());
         order.setrentalAllPrice(req.getrentalAllPrice());
@@ -236,6 +239,14 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         }
         // 明細放進訂單主體
         order.setRentalOrderDetailses(details);
+
+
+        // 若沒有呼叫綠界金流方法(rentalPayMethod = 2，也就是現場付款)，則付款狀態(rentalPayStat)維持 0(未付款)
+        if (order.getrentalPayMethod() == (byte) 2) {
+            order.setrentalOrdStat((byte) 30);
+            return "thankForBuying";
+        }
+
         // 拼接綠界成立訂單的商品明細(綠界商品明細規定各品名之間以#區隔)
         String itemNames = String.join("#", rentalNames);
         // 呼叫綠界成立訂單的方法並回傳
@@ -247,10 +258,14 @@ public class RentalOrderServiceImpl implements RentalOrderService {
 
     public String ecpayCheckout(RentalOrder order, String itemNames) {
 
+        if (order.getrentalTakeMethod() == (byte) 1) {
+            order.setrentalOrdStat((byte) 30);
+        }
+
         AllInOne all = new AllInOne("");
         AioCheckOutALL obj = new AioCheckOutALL();
         // 訂單號碼(規定大小寫英文+數字)
-        obj.setMerchantTradeNo( "Member" + order.getMember().getMemName() + order.getrentalOrdNo() + "test" );
+        obj.setMerchantTradeNo( "Member" + order.getMember().getMemName() + order.getrentalOrdNo() + "TTT" );
         // 交易時間(先把毫秒部分切掉)
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         obj.setMerchantTradeDate( sdf.format(order.getrentalOrdTime()) );
@@ -264,7 +279,7 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         obj.setReturnURL("<http://211.23.128.214:5000>");
         obj.setNeedExtraPaidInfo("N");
         // 商店轉跳網址 (Optional)
-        obj.setClientBackURL("http://localhost:8080/backend/rentalorder/rentalCart"); // 問小吳上雲怕爆開(路徑問題)
+        obj.setClientBackURL("http://localhost:8080/backend/rentalorder/thankForBuying?rentalOrdNo=" + order.getrentalOrdNo()); // 問小吳上雲怕爆開(路徑問題)
         String form = all.aioCheckOut(obj, null);
 
         // 付款完後把付款狀態改為 1 (已付款)

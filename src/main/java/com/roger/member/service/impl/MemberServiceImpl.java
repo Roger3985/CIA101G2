@@ -4,11 +4,14 @@ import com.roger.member.dto.LoginStateMember;
 import com.roger.member.repository.MemberRepository;
 import com.roger.member.entity.Member;
 import com.roger.member.service.MemberService;
+import com.roger.notice.entity.Notice;
+import com.roger.notice.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.MessageDigest;
@@ -47,10 +50,14 @@ public class MemberServiceImpl implements MemberService {
     @Qualifier("memStrStr")
     private StringRedisTemplate redisTemplate;
 
+    @Autowired
+    private NoticeService noticeService;
+
     /**
      * 註冊新會員
      */
     @Override
+    @Transactional
     public Member register(Member member) {
         // 將會員的密碼進行加密
         String encryptedPassword = hashPassword(member.getMemPwd());
@@ -69,8 +76,11 @@ public class MemberServiceImpl implements MemberService {
         // 保存新會員資料到資料庫中
         Member newData = memberRepository.save(member);
 
+        System.out.println(newData);
+
         // 返回新的會員資料
         return newData;
+
     }
 
     /**

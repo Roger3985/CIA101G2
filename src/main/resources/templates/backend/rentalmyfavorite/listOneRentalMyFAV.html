@@ -6,7 +6,7 @@
     <title>租借品 - 我的最愛清單 (單筆查詢)</title>
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <!-- Custom styles for this page -->
-    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
+    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
     <style>
         *{
             font-size: 12px; /* 調整字體大小 */
@@ -33,7 +33,7 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">租借品 - 我的最愛清單 (單筆查詢)</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">租借品 - 我的最愛清單</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -43,6 +43,7 @@
                                     <th>租借品編號</th>
                                     <th>會員編號</th>
                                     <th>加入我的最愛時間</th>
+                                    <th>修改</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -51,6 +52,14 @@
                                         <td th:text="${rentalMyFavorite.rental.rentalNo} + '-[' + ${rentalMyFavorite.rental.rentalName} + ']'"></td>
                                         <td th:text="${rentalMyFavorite.member.memNo} + '-[' + ${rentalMyFavorite.member.memName} + ']'"></td>
                                         <td th:text="${rentalMyFavorite.rentalFavTime}"></td>
+                                        <td>
+                                            <form method="post" th:action="@{/backend/rentalmyfavorite/updateRentalMyFAV}">
+                                                <button th:onclick="'updateRentalMyFAV(' + ${rentalMyFavorite.rental.rentalNo} + ')' " name="rentalNo"
+                                                        th:value="${rentalMyFavorite.rental.rentalNo}">
+                                                    <i class="far fa-edit"></i>
+                                                </button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 </th:block>
                                 </tbody>

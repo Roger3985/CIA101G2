@@ -14,6 +14,11 @@
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
     <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+<!--    <style>-->
+<!--        .img-fluid {-->
+<!--            display: none; /* 預設隱藏圖片 */-->
+<!--        }-->
+<!--    </style>-->
 </head>
 
 <body>
@@ -56,101 +61,120 @@
             <div class="container">
                 <div class="row"><!-- Product Gallery -->
                     <div class="col-lg-6 lightbox-gallery product-gallery">
-                        <div
-                                class="swiper swiper_gallery swiper-fade swiper-initialized swiper-horizontal swiper-pointer-events swiper-backface-hidden">
+                        <div class="swiper swiper_gallery swiper-fade swiper-initialized swiper-horizontal swiper-pointer-events swiper-backface-hidden">
                             <div class="swiper-wrapper" id="swiper-wrapper-2f788858255a100c8" aria-live="polite">
                                 <div class="swiper-slide swiper-slide-visible swiper-slide-active" role="group"
                                      aria-label="1 / 6"
                                      style="width: 516px; opacity: 1; transform: translate3d(0px, 0px, 0px);">
-                                    <div class="pd-gallery-slide"><a class="gallery-link"
-                                                                     th:src="@{/icons/frontend/rental/gown1.jpg}"><i
-                                            class="bi bi-arrows-fullscreen"></i></a> <img
-                                            th:src="@{/icons/frontend/rental/suit1.jpg}" th:attr="width=356, height=356"
-                                            class="img-fluid" title="" alt=""></div>
+                                    <div class="pd-gallery-slide">
+                                        <!-- 全螢幕大圖  -->
+                                        <a class="gallery-link" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '.jpg'}"
+                                           th:width="356" th:height="356">
+                                            <i class="bi bi-arrows-fullscreen"></i></a>
+                                        <!-- 一般顯示  -->
+                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '.jpg'}"
+                                             th:width="356" th:height="356" class="img-fluid" title="" alt="">
+                                    </div>
                                 </div>
                                 <div class="swiper-slide swiper-slide-next" role="group" aria-label="2 / 6"
                                      style="width: 516px; opacity: 0; transform: translate3d(-516px, 0px, 0px);">
-                                    <div class="pd-gallery-slide"><a class="gallery-link"
-                                                                     th:src="@{/icons/frontend/rental/1.jpg}" th:attr="width=356, height=356"><i
-                                            class="bi bi-arrows-fullscreen"></i></a> <img
-                                            th:src="@{/icons/frontend/rental/suit1.jpg}" th:attr="width=356, height=356" class="img-fluid"
-                                            title="" alt=""></div>
+                                    <div class="pd-gallery-slide">
+                                        <a class="gallery-link" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '01.jpg'}"
+                                           th:width="356" th:height="356">
+                                            <i class="bi bi-arrows-fullscreen"></i>
+                                        </a>
+                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '01.jpg'}"
+                                             th:width="356" th:height="356" class="img-fluid" title="" alt="">
+                                    </div>
                                 </div>
                                 <div class="swiper-slide" role="group" aria-label="3 / 6"
                                      style="width: 516px; opacity: 0; transform: translate3d(-1032px, 0px, 0px);">
-                                    <div class="pd-gallery-slide"><a class="gallery-link"
-                                                                     th:src="@{/icons/frontend/rental/gown1.jpg}" th:attr="width=356, height=356"><i
-                                            class="bi bi-arrows-fullscreen"></i></a> <img
-                                            th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=356, height=356" class="img-fluid"
-                                            title="" alt=""></div>
+                                    <div class="pd-gallery-slide">
+                                        <a class="gallery-link" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '02.jpg'}"
+                                           th:width="356" th:height="356">
+                                            <i class="bi bi-arrows-fullscreen"></i></a>
+                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '02.jpg'}"
+                                             th:width="356" th:height="356" class="img-fluid" title="" alt="">
+                                    </div>
                                 </div>
                                 <div class="swiper-slide" role="group" aria-label="4 / 6"
                                      style="width: 516px; opacity: 0; transform: translate3d(-1548px, 0px, 0px);">
-                                    <div class="pd-gallery-slide"><a class="gallery-link"
-                                                                     th:src="@{/icons/frontend/rental/gown1.jpg}" th:attr="width=356, height=356" ><i
-                                            class="bi bi-arrows-fullscreen"></i></a> <img
-                                            th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=356, height=356"  class="img-fluid"
-                                            title="" alt=""></div>
+                                    <div class="pd-gallery-slide">
+                                        <a class="gallery-link" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '03.jpg'}"
+                                           th:width="356" th:height="356">
+                                            <i class="bi bi-arrows-fullscreen"></i></a>
+                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '03.jpg'}"
+                                             th:width="356" th:height="356" class="img-fluid" title="" alt="">
+                                    </div>
                                 </div>
                                 <div class="swiper-slide" role="group" aria-label="5 / 6"
                                      style="width: 516px; opacity: 0; transform: translate3d(-2064px, 0px, 0px);">
-                                    <div class="pd-gallery-slide"><a class="gallery-link"
-                                                                     th:src="@{/icons/frontend/rental/gown1.jpg}" th:attr="width=356, height=356" ><i
-                                            class="bi bi-arrows-fullscreen"></i></a> <img
-                                            th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=356, height=356"  class="img-fluid"
-                                            title="" alt=""></div>
+                                    <div class="pd-gallery-slide">
+                                        <a class="gallery-link" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '04.jpg'}"
+                                           th:width="356" th:height="356">
+                                            <i class="bi bi-arrows-fullscreen"></i></a>
+                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '04.jpg'}"
+                                             th:width="356" th:height="356" class="img-fluid" title="" alt="">
+                                    </div>
                                 </div>
                                 <div class="swiper-slide" role="group" aria-label="6 / 6"
                                      style="width: 516px; opacity: 0; transform: translate3d(-2580px, 0px, 0px);">
-                                    <div class="pd-gallery-slide"><a class="gallery-link"
-                                                                     th:src="@{/icons/frontend/rental/gown1.jpg}" th:attr="width=356, height=356" ><i
-                                            class="bi bi-arrows-fullscreen"></i></a> <img
-                                            th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=356, height=356"  class="img-fluid"
-                                            title="" alt=""></div>
+<!--                                    <div class="pd-gallery-slide">-->
+<!--                                        <a class="gallery-link" th:src="@{/icons/frontend/rental/gown1.jpg}" th:attr="width=356, height=356" >-->
+<!--                                            <i class="bi bi-arrows-fullscreen"></i></a> -->
+<!--                                        <img th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=356, height=356"  class="img-fluid"-->
+<!--                                            title="" alt="">-->
+<!--                                    </div>-->
                                 </div>
                             </div>
                             <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
                         </div>
-                        <!--  該商品圖片輪播區(角度變換)  -->
+                        <!--  該商品圖片輪播區  -->
                         <div class="swiper swiper_thumb_gallery product-thumb swiper-initialized swiper-horizontal swiper-pointer-events swiper-free-mode swiper-backface-hidden swiper-thumbs">
                             <div class="swiper-wrapper" id="swiper-wrapper-e8a3f9d6a5818fef" aria-live="polite"
                                  style="transform: translate3d(0px, 0px, 0px);">
                                 <div class="swiper-slide swiper-slide-visible swiper-slide-active swiper-slide-thumb-active"
                                      role="group" aria-label="1 / 6" style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb"><img
-                                            th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=63.2, height=63.2" class="img-fluid"
-                                            title="" alt=""></div>
+                                    <div class="pd-gallery-slide-thumb">
+                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '.jpg'}"
+                                             th:width="63.2" th:height="63.2" class="img-fluid" title="" alt="">
+                                    </div>
                                 </div>
                                 <div class="swiper-slide swiper-slide-visible swiper-slide-next" role="group"
                                      aria-label="2 / 6" style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb"><img
-                                            th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=63.2, height=63.2" class="img-fluid"
-                                            title="" alt=""></div>
+                                    <div class="pd-gallery-slide-thumb">
+                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '01.jpg'}"
+                                             th:width="63.2" th:height="63.2" class="img-fluid" title="" alt="">
+                                    </div>
                                 </div>
                                 <div class="swiper-slide swiper-slide-visible" role="group" aria-label="3 / 6"
                                      style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb"><img
-                                            th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=63.2, height=63.2" class="img-fluid"
-                                            title="" alt=""></div>
+                                    <div class="pd-gallery-slide-thumb">
+                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '02.jpg'}"
+                                             th:width="63.2" th:height="63.2" class="img-fluid" title="" alt="">
+                                    </div>
                                 </div>
                                 <div class="swiper-slide swiper-slide-visible" role="group" aria-label="4 / 6"
                                      style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb"><img
-                                            th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=63.2, height=63.2" class="img-fluid"
-                                            title="" alt=""></div>
+                                    <div class="pd-gallery-slide-thumb">
+                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '03.jpg'}"
+                                             th:width="63.2" th:height="63.2" class="img-fluid" title="" alt="">
+                                    </div>
                                 </div>
                                 <div class="swiper-slide swiper-slide-visible" role="group" aria-label="5 / 6"
                                      style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb"><img
-                                            th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=63.2, height=63.2" class="img-fluid"
-                                            title="" alt=""></div>
+                                    <div class="pd-gallery-slide-thumb">
+                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '04.jpg'}"
+                                             th:width="63.2" th:height="63.2" class="img-fluid" title="" alt="">
+                                    </div>
                                 </div>
-                                <div class="swiper-slide" role="group" aria-label="6 / 6"
-                                     style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb"><img
-                                            th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=63.2, height=63.2" class="img-fluid"
-                                            title="" alt=""></div>
-                                </div>
+<!--                                <div class="swiper-slide" role="group" aria-label="6 / 6"-->
+<!--                                     style="width: 95.2px; margin-right: 10px;">-->
+<!--                                    <div class="pd-gallery-slide-thumb">-->
+<!--                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '.jpg'}"-->
+<!--                                             th:width="63.2" th:height="63.2" class="img-img-fluid" title="" alt="">-->
+<!--                                    </div>-->
+<!--                                </div>-->
                             </div>
                             <div class="swiper-arrow-style-03 swiper-next swiper-next-pd-details_thumb" tabindex="0"
                                  role="button" aria-label="Next slide"
@@ -621,7 +645,7 @@
                                                 href="javascript:void(0)" class="btn btn-outline-primary"><i
                                                 class="fi-eye"></i></a></div>
                                         <div class="product-media"><a href="#"><img class="img-fluid"
-                                                                                    src="../../assets/img/fashion/product-4.jpg" title=""
+                                                                                    src="../../assets/img/fashion/product04.jpg" title=""
                                                                                     alt=""></a>
                                             <div class="product-cart-btn"><a href="#"
                                                                              class="btn btn-primary btn-sm w-100"><i
@@ -761,7 +785,7 @@
                                                 href="javascript:void(0)" class="btn btn-outline-primary"><i
                                                 class="fi-eye"></i></a></div>
                                         <div class="product-media"><a href="#"><img class="img-fluid"
-                                                                                    src="../../assets/img/fashion/product-2.jpg" title=""
+                                                                                    src="../../assets/img/fashion/product02.jpg" title=""
                                                                                     alt=""></a>
                                             <div class="product-cart-btn"><a href="#"
                                                                              class="btn btn-primary btn-sm w-100"><i
@@ -796,7 +820,7 @@
                                                 href="javascript:void(0)" class="btn btn-outline-primary"><i
                                                 class="fi-eye"></i></a></div>
                                         <div class="product-media"><a href="#"><img class="img-fluid"
-                                                                                    src="../../assets/img/fashion/product-3.jpg" title=""
+                                                                                    src="../../assets/img/fashion/product03.jpg" title=""
                                                                                     alt=""></a>
                                             <div class="product-cart-btn"><a href="#"
                                                                              class="btn btn-primary btn-sm w-100"><i
@@ -831,7 +855,7 @@
                                                 href="javascript:void(0)" class="btn btn-outline-primary"><i
                                                 class="fi-eye"></i></a></div>
                                         <div class="product-media"><a href="#"><img class="img-fluid"
-                                                                                    src="../../assets/img/fashion/product-4.jpg" title=""
+                                                                                    src="../../assets/img/fashion/product04.jpg" title=""
                                                                                     alt=""></a>
                                             <div class="product-cart-btn"><a href="#"
                                                                              class="btn btn-primary btn-sm w-100"><i
@@ -972,7 +996,7 @@
                                                 href="javascript:void(0)" class="btn btn-outline-primary"><i
                                                 class="fi-eye"></i></a></div>
                                         <div class="product-media"><a href="#"><img class="img-fluid"
-                                                                                    src="../../assets/img/fashion/product-2.jpg" title=""
+                                                                                    src="../../assets/img/fashion/product02.jpg" title=""
                                                                                     alt=""></a>
                                             <div class="product-cart-btn"><a href="#"
                                                                              class="btn btn-primary btn-sm w-100"><i
@@ -1008,7 +1032,7 @@
                                                 href="javascript:void(0)" class="btn btn-outline-primary"><i
                                                 class="fi-eye"></i></a></div>
                                         <div class="product-media"><a href="#"><img class="img-fluid"
-                                                                                    src="../../assets/img/fashion/product-3.jpg" title=""
+                                                                                    src="../../assets/img/fashion/product03.jpg" title=""
                                                                                     alt=""></a>
                                             <div class="product-cart-btn"><a href="#"
                                                                              class="btn btn-primary btn-sm w-100"><i
@@ -1070,6 +1094,30 @@
 -->
 <!-- script start -->
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
+
+<!--<script>-->
+<!--    document.addEventListener("DOMContentLoaded", function() {-->
+<!--        var images = document.querySelectorAll(".img-fluid");-->
+<!--        var currentIndex = 0;-->
+
+<!--        // 隱藏除了第一張圖片之外的所有圖片-->
+<!--        for (var i = 1; i < images.length; i++) {-->
+<!--        images[i].style.display = "none";-->
+<!--    }-->
+
+<!--    // 啟動輪播-->
+<!--    setInterval(function() {-->
+<!--        // 隱藏當前圖片-->
+<!--        images[currentIndex].style.display = "none";-->
+
+<!--        // 更新索引，循環播放-->
+<!--        currentIndex = (currentIndex + 1) % images.length;-->
+
+<!--        // 顯示新的圖片-->
+<!--        images[currentIndex].style.display = "block";-->
+<!--    }, 3000); // 每 3 秒切換一次圖片-->
+<!--    });-->
+<!--</script>-->
 <!-- End script start -->
 </body>
 

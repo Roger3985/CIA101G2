@@ -42,8 +42,7 @@
                 <tr>
                   <th>租借品照片編號</th>
                   <th>租借品編號</th>
-                  <th>租借品照片1</th>
-                  <th>租借品照片2</th>
+                  <th>租借品照片</th>
                   <th>修改</th>
                 </tr>
                 </thead>
@@ -56,10 +55,8 @@
                     <td>
                       <form method="post" th:action="@{getOneUpdate}">
                         <button type="submit" value="修改">
-                          <i class="fa-solid fa-pen-to-square"></i>
-                          <input type="hidden" name="rentalPicNo" value="${rentalPic.rentalPicNo}">
-<!--                          <input type="hidden" name="rentalNo" value="${rental.rentalNo}">-->
-<!--                          <input type="hidden" name="rentalPic" value="${rentalPic.rentalPic}">-->
+                          <i class="far fa-edit"></i>
+                          <input type="hidden" name="rentalPicNo" th:value="${rentalPic.rentalPicNo}">
                         </button>
                       </form>
                     </td>
@@ -94,13 +91,13 @@
 <script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 <!-- Page level custom scripts -->
 <script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
-<script>
-  function showImage(fileName){
-    let imgContainer = document.getElementById('imgContainer');
-    let imgElement = document.createElement('img');
-    imgElement.src = 'resources/static/icons/frontend/rental' + fileName;
-    imgContainer.appendChild(imgElement);
-  }
-</script>
 </body>
 </html>
+<!--<script>-->
+<!--  function showImage(fileName){-->
+<!--    let imgContainer = document.getElementById('imgContainer');-->
+<!--    let imgElement = document.createElement('img');-->
+<!--    imgElement.src = 'resources/static/icons/frontend/rental' + fileName;-->
+<!--    imgContainer.appendChild(imgElement);-->
+<!--  }-->
+<!--</script>-->

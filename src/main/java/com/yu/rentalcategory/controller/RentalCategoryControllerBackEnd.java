@@ -28,40 +28,40 @@ public class RentalCategoryControllerBackEnd {
 	private RentalCategoryServiceImpl rentalCategoryService;
 
 
-	//顯示index.html
+	//顯示首頁 (後台)
 	@GetMapping("/backendIndex")
 	public String backendIndex() {
 		return "/backend/index";
 	}
-	
 
-	// 顯示後台 select_RentalCategory_page.html
-	@GetMapping("selectPage")
-	public String selectPage(ModelMap model) {
+
+	//顯示查詢頁面 (後台)
+	@GetMapping("selectRentalCategory")
+	public String selectRentalCategory(ModelMap model) {
 		RentalCategory rentalCategory = new RentalCategory();
 		rentalCategory.setRentalCatNo(0); // 初始化RentalCatNo
 		model.addAttribute("rentalCategory", rentalCategory);
-		return "/backend/rentalcategory/select_RentalCategory_page"; //傳至select_rentalCategory_page.html
+		return "/backend/rentalcategory/selectRentalCategory";
 	}
-	
-	//顯示後台 listAllRentalCategory.html
+
+	//顯示全部租借品類別頁面 (後台)
 	@GetMapping("listAllRentalCategory")
 	public String listAllRentalCategory() {
 		return "/backend/rentalcategory/listAllRentalCategory";
 	}
-	
-	
-	//顯示後台 showOneRental.html
-	@GetMapping("listOneRentalCategory")  //required = true：請求參數不可為null(預設)
-	public String listOneRentalCat(@RequestParam(value = "rentalCatNo", required = true) Integer rentalCatNo, ModelMap model) {
-		//建立返回數據的對象
-		RentalCategory rentalCategory = rentalCategoryService.findByCatNo(rentalCatNo);
-		model.addAttribute("rentalCategory", rentalCategory);
-		return "/backend/rentalcategory/listOneRentalCategory";
-	}
 
 
-	//顯示後台 addRental.html
+//	//顯示後台 showOneRental.html
+//	@GetMapping("listOneRentalCategory")  //required = true：請求參數不可為null(預設)
+//	public String listOneRentalCat(@RequestParam(value = "rentalCatNo", required = true) Integer rentalCatNo, ModelMap model) {
+//		//建立返回數據的對象
+//		RentalCategory rentalCategory = rentalCategoryService.findByCatNo(rentalCatNo);
+//		model.addAttribute("rentalCategory", rentalCategory);
+//		return "/backend/rentalcategory/listOneRentalCategory";
+//	}
+
+
+	//顯示新增頁面 (後台)
 	@GetMapping("addRentalCategory")
 	public String addRentalCategory(ModelMap model) {
 		RentalCategory rentalCategory = new RentalCategory();
@@ -70,21 +70,11 @@ public class RentalCategoryControllerBackEnd {
 	}
 
 
-	//顯示後台 updateRental.html
-	@GetMapping("updateRentalCategory")
-	public String updateRentalCategory(ModelMap model) {
-		List<RentalCategory> rentalCatList =rentalCategoryService.findAll();
-		model.addAttribute("rentalCatList", rentalCatList);
-		model.addAttribute("rentalCategory", rentalCatList.get(0));
-		return "/backend/rentalcategory/updateRentalCategory";
-	}
-
-
-	//處理查詢
+	//處理單筆查詢(依rentalCatNo)
 	@PostMapping("getOneDisplay")
-	public String getOneDisplay(@RequestParam("rentalCatNo") String rentalCatNo, ModelMap model) {
+	public String getOneDisplay(@RequestParam(value = "rentalCatNo",required = false) Integer rentalCatNo, ModelMap model) {
 
-		RentalCategory rentalCategory = rentalCategoryService.getOneRentalCat(Integer.valueOf(rentalCatNo));
+		RentalCategory rentalCategory = rentalCategoryService.findByCatNo(rentalCatNo);
 		List<RentalCategory> rentalCatList = rentalCategoryService.findAll();
 		model.addAttribute("rentalCatList", rentalCatList);
 
@@ -92,15 +82,99 @@ public class RentalCategoryControllerBackEnd {
 		model.addAttribute("rental", new Rental());
 		model.addAttribute("rentalList", rentalList);
 
-
 		if (rentalCategory == null) {
-			model.addAttribute("errors", "errors");
-			return "/backend/rentalcategory/select_RentalCategory_page";
+			model.addAttribute("errors", "查無資料");
+			return "/backend/rentalcategory/selectRentalCategory";
 		}
 		model.addAttribute("rentalCategory", rentalCategory);
-		return "/backend/rentalcategory/listOneRentalCategory"; // 查詢完成後轉交listOneRental.html
+		return "/backend/rentalcategory/listOneRentalCategory";
 	}
 
+
+	//處理單筆修改(依rentalCatNo)
+	@PostMapping("getOneUpdate")
+	public String getOneUpdate(@RequestParam("rentalCatNo") Integer rentalCatNo, ModelMap model) {
+
+		RentalCategory rentalCategory = rentalCategoryService.findByCatNo(rentalCatNo);
+		List<RentalCategory> rentalCatList = rentalCategoryService.findAll();
+		model.addAttribute("rentalCatList", rentalCatList);
+
+		List<Rental> rentalList = rentalService.findAll();
+		model.addAttribute("rental", new Rental());
+		model.addAttribute("rentalList", rentalList);
+
+		if (rentalCategory == null) {
+			model.addAttribute("errors", "查無資料");
+			return "/backend/rentalcategory/selectRentalCategory";
+		}
+		model.addAttribute("rentalCategory", rentalCategory);
+		return "/backend/rentalcategory/updateRentalCategory";
+	}
+
+
+	// 處理修改資料
+	@PostMapping("updateRentalCat")
+	public String updateRentalCat(@Validated(RentalCategory.UpdateRentalCatGroup.class) RentalCategory rentalCategory,
+
+								  BindingResult result, ModelMap model) {
+		//驗證方式： 若屬性存在一個以上的驗證註解，為避免在驗證皆未通過。 搭配迴圈輸出完整的錯誤訊息
+		if (rentalCategory != null) {
+			if (result.hasErrors()) { //若有錯誤
+				List<FieldError> fieldErrors = result.getFieldErrors();
+				for (int i = 0, len = fieldErrors.size(); i < len; i++) {
+					FieldError field = fieldErrors.get(i); //依索引值放入個別錯誤
+					model.addAttribute(i + "-" + field.getField(), field.getDefaultMessage()); //出錯的名稱&訊息放入。
+					model.addAttribute("rentalCategory", rentalCategory);
+				}
+				return"/backend/rentalcategory/updateRentalCategory";
+			}
+		}else{
+			return "/backend/rentalcategory/updateRentalCategory";
+		}
+		// 將資料添加到 ModelMap 中
+		rentalCategoryService.updateRentalCat(rentalCategory);
+		rentalCategory = rentalCategoryService.findByCatNo(rentalCategory.getRentalCatNo());
+		model.addAttribute("rentalCategory", rentalCategory);
+		return "/backend/rentalcategory/listOneRentalCategory";
+	}
+
+
+	// 處理新增資料
+	@PostMapping("addRentalCat")
+	public String addRentalCat(@Validated(RentalCategory.AddRentalCatGroup.class) RentalCategory rentalCategory,
+							   BindingResult result, ModelMap model) {
+
+		//驗證方式： 若屬性存在一個以上的驗證註解，為避免在驗證皆未通過。 搭配迴圈輸出完整的錯誤訊息
+		if (rentalCategory != null) {
+			if (result.hasErrors()) {
+				List<FieldError> fieldErrors = result.getFieldErrors();
+				for (int i = 0, len = fieldErrors.size(); i < len; i++) {
+					FieldError field = fieldErrors.get(i); //依索引值放入個別錯誤
+					model.addAttribute(i + "-" + field.getField(), field.getDefaultMessage()); //出錯的名稱&訊息放入。
+					model.addAttribute("rentalCategory", rentalCategory);
+				}
+				return"/backend/rentalcategory/addRentalCategory";
+			}
+		}else{
+			return "/backend/rentalcategory/addRentalCategory";
+		}
+		// 將資料添加到 ModelMap 中
+		rentalCategoryService.addRentalCat(rentalCategory);
+		rentalCategory = rentalCategoryService.findByCatNo(rentalCategory.getRentalCatNo());
+		model.addAttribute("rentalCategory", rentalCategory);
+		return "/backend/rentalcategory/listAllRentalCategory";
+	}
+	/**
+	 *前端透過Ajax方式傳送Json資料，由此處控制器方法來接收JSON資料
+	 *必須使用@RequestBody註釋
+	 */
+//	@PostMapping("/json")
+//	public String handleJson(@RequestBody RentalCategory rentalCategory){
+//		System.out.println(rentalCategory);
+//		return "finish";
+//	}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////待處理	複合查詢
 	/**
 	 * Map中存储了请求参数的键值，键是参数的名称，值是参数的值数组
 	 *通过HttpServletRequest获取了请求的参数Map，并将其传递给searchRentals()方法执行查询。
@@ -116,79 +190,7 @@ public class RentalCategoryControllerBackEnd {
 		model.addAttribute("queryList", queryList);
 		return "/backend/rentalcategory/listAllRentalCategory"; //結果傳至listAllRental
 	}
-
-
-	// 處理新增資料
-	@PostMapping("addRentalCategory")
-	public String addRentalCategory(@Validated(RentalCategory.AddRentalCatGroup.class) RentalCategory rentalCategory, BindingResult result, ModelMap model) {
-
-		if (rentalCategory != null) {
-			if (result.hasErrors()) { //若有錯誤
-				//驗證方式： 若屬性存在一個以上的驗證註解，為避免在驗證皆未通過。 搭配迴圈輸出完整的錯誤訊息
-				List<FieldError> fieldErrors = result.getFieldErrors();
-				for (int i = 0, len = fieldErrors.size(); i < len; i++) {
-					FieldError field = fieldErrors.get(i); //依索引值放入個別錯誤
-					model.addAttribute(i + "-" + field.getField(), field.getDefaultMessage()); //出錯的名稱&訊息放入map。(Message是entity輸入的內容)
-					model.addAttribute("rentalCategory", rentalCategory);
-				}
-				return"/backend/rentalcategory/addRentalCategory";
-			}
-		}else{
-			return "/backend/rental/addRental";
-		}
-		rentalCategoryService.addRentalCat(rentalCategory); //新增
-		rentalCategory = rentalCategoryService.getOneRentalCat(Integer.valueOf(rentalCategory.getRentalCatNo()));
-		model.addAttribute("rentalCategory", rentalCategory);
-		return "/backend/rentalcategory/listAllRentalCategory";
-	}
-	/**
-	 *前端透過Ajax方式傳送Json資料，由此處控制器方法來接收JSON資料
-	 *必須使用@RequestBody註釋
-	 */
-	@PostMapping("/json")
-	public String handleJson(@RequestBody RentalCategory rentalCategory){
-		System.out.println(rentalCategory);
-		return "finish";
-	}
-
-
-
-	// 處理修改資料
-	@PostMapping("updateRentalCategory")
-	public String updateRentalCategory(@Valid RentalCategory rentalCategory, BindingResult result, ModelMap model) {
-
-		if (rentalCategory != null) {
-			if (result.hasErrors()) { //若有錯誤
-				//驗證方式： 若屬性存在一個以上的驗證註解，為避免在驗證皆未通過。 搭配迴圈輸出完整的錯誤訊息
-				List<FieldError> fieldErrors = result.getFieldErrors();
-				for (int i = 0, len = fieldErrors.size(); i < len; i++) {
-					FieldError field = fieldErrors.get(i); //依索引值放入個別錯誤
-					model.addAttribute(i + "-" + field.getField(), field.getDefaultMessage()); //出錯的名稱&訊息放入map。(Message是entity輸入的內容)
-					model.addAttribute("rentalCategory", rentalCategory);
-				}
-				return"/backend/rentalcategory/updateRentalCategory";
-			}
-		}else{
-			return "/backend/rentalcategory/updateRentalCategory";
-		}
-		// 將資料添加到 ModelMap 中
-		rentalCategoryService.updateRentalCat(rentalCategory);
-		rentalCategory = rentalCategoryService.getOneRentalCat(Integer.valueOf(rentalCategory.getRentalCatNo()));
-		model.addAttribute("rentalCategory", rentalCategory);
-		return "/backend/rentalcategory/listOneRentalCategory";
-	}
-
-
-	//處理單筆修改
-	@PostMapping("getOneUpdate")
-	public String getOneUpdate(@RequestParam("rentalNo") String rentalNo, @RequestParam("rentalCatNo") String rentalCatNo, ModelMap model) {
-		Rental rental = rentalService.findByNo(Integer.valueOf(rentalNo));
-		model.addAttribute("rental", rental);
-		RentalCategory rentalCategory = rentalCategoryService.getOneRentalCat(Integer.valueOf(rentalCatNo));
-		model.addAttribute("rentalCategory", rentalCategory);
-		return "/backend/rentalcategory/updateRentalCategory"; // 查詢完成後轉交update_rental_input.html
-	}
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * 因 @ModelAttribute寫在方法上，故將此類別中的@GetMapping Method先加入model.addAttribute("...List",...Service.getAll());
@@ -231,10 +233,4 @@ public class RentalCategoryControllerBackEnd {
 		List<Rental> rentalList = rentalService.findAll();
 		return rentalList; //取得Rental列表
 	}
-
-
-
-
-
-
 }

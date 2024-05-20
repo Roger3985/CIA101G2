@@ -231,7 +231,9 @@
 
                         <!-- Order Timeline -->
                         <div class="bg-body border shadow-lg p-4 mb-5">
-                            <h4>訂單進度</h4>
+                            <h4 style="display: inline-block">訂單進度</h4>
+                            <small style="margin-left: 30px" th:if="${rentalOrder.getrentalOrdStat() == 35}"
+                                    th:text=" '*溫馨提醒，記得於' + ${#dates.format(rentalOrder.getrentalBackDate(), 'yyyy 年 M 月 d 日 HH 時 m 分')} + '前將商品歸還喔!' "></small>
 
                             <div class="timeline" th:data-stat="${rentalOrder.getrentalOrdStat()}">
 
@@ -252,8 +254,18 @@
                                     <br>
                                     <p><br><small></small></p>
                                 </div>
+                                <!--  -->
+                                <div class="timeline-step" th:if="${rentalOrder.getrentalTakeMethod() == 1}">
+                                    <div class="outer-circle c2">
+                                        <div class="inner-circle">
+                                            <i class="bi bi-box"></i>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <p>等待取貨中<br><small></small></p>
+                                </div>
 
-                                <div class="timeline-step">
+                                <div class="timeline-step" th:if="${rentalOrder.getrentalTakeMethod() == 2}">
                                     <div class="outer-circle c2">
                                         <div class="inner-circle">
                                             <i class="bi bi-truck"></i>
@@ -321,7 +333,7 @@
 
                         <!-- Order Details -->
                         <div class="bg-body border shadow-lg p-4">
-                            <h4>訂單詳情</h4>
+                            <h4 class="rentalOrdNoForUpdate" th:id="${rentalOrder.getrentalOrdNo()}">訂單詳情</h4>
                             <br>
                             <div class="row">
                                 <div class="col-md-6">
@@ -342,9 +354,10 @@
                                 </div>
                             </div>
 
-                            <h4>物流狀態</h4>
-                            <div class="timeline-container" style="display: inline-block">
-                                <div class="timeline-item active">
+                            <h4 th:if="${rentalOrder.getrentalTakeMethod() == 2}">物流狀態</h4>
+                            <div th:if="${rentalOrder.getrentalTakeMethod() == 2}" class="timeline-container" style="display: inline-block">
+
+                                <div class="timeline-item finish">
                                     <div class="timeline-icon" style="margin-top: 25px"></div>
                                     <div class="timeline-content">
                                         <p>配送完畢</p>
@@ -356,19 +369,19 @@
 <!--                                        <p>包裹已配達買家取件門市 - 中壢元化 - 智取店</p>-->
 <!--                                    </div>-->
 <!--                                </div>-->
-                                <div class="timeline-item">
+                                <div class="timeline-item transport">
                                     <div class="timeline-icon"></div>
                                     <div class="timeline-content">
                                         <p>轉運中</p>
                                     </div>
                                 </div>
-                                <div class="timeline-item">
+                                <div class="timeline-item uploading">
                                     <div class="timeline-icon"></div>
                                     <div class="timeline-content">
                                         <p>訂單上傳處理中</p>
                                     </div>
                                 </div>
-                                <div class="timeline-item">
+                                <div class="timeline-item process">
                                     <div class="timeline-icon"></div>
                                     <div class="timeline-content">
                                         <p>處理中(已收到訂單資料)</p>
@@ -378,7 +391,10 @@
                             </div>
 
                             <div class="button-container" style="display: inline-block; margin-left: 300px">
-                                <button class="btn-get-started btn btn-primary flex-shrink-0"><strong>再買一次</strong></button>
+                                <button class="btn-get-started btn btn-primary flex-shrink-0 btn_addToCart">
+                                    <strong th:if="${rentalOrder.getrentalOrdStat() == 50}">再租一次</strong>
+                                    <strong th:if="${rentalOrder.getrentalOrdStat() != 50}">再次加入購物車</strong>
+                                </button>
                             </div>
 
                             <div class="row">
@@ -395,7 +411,8 @@
                                         </thead>
                                         <tbody>
                                         <th:block th:each="detail : ${rentalOrder.getRentalOrderDetailses()}">
-                                            <tr>
+<!--                                            <tr class="detail" id="5011"></tr>-->
+                                            <tr class="detail" th:id="${detail.getRental().getRentalNo()}">
                                                 <td th:text="${detail.getRental().getRentalName()}"></td>
                                                 <td>1</td>
                                                 <td th:text="${detail.getRentalPrice()}"></td>
@@ -465,7 +482,19 @@
             c4toc5.css("color", "gray");
             break;
 
-        case "40": // 租用中
+        case "30": // 等待取貨中
+            c3.css("border", "4px solid gray");
+            c3.find("i").css("color", "gray");
+            c4.css("border", "4px solid gray");
+            c4.find("i").css("color", "gray");
+            c5.css("border", "4px solid gray");
+            c5.find("i").css("color", "gray");
+
+            c3toc4.css("color", "gray");
+            c4toc5.css("color", "gray");
+            break;
+
+        case "35": // 租用中
             c4.css("border", "4px solid gray");
             c4.find("i").css("color", "gray");
             c5.css("border", "4px solid gray");
@@ -474,11 +503,77 @@
             c4toc5.css("color", "gray");
             break;
 
-        case "30": // 已歸還
+        case "45": // 已歸還
             c5.css("border", "4px solid gray");
             c5.find("i").css("color", "gray");
             break;
+
     }
+
+    // 再租一次
+    let memNo = 1;
+    let baseUrl = window.location.protocol + "//" + window.location.host;
+    let apiPath = "/backend/rentalorder/";
+    $("button.btn_addToCart").on("click", function () {
+
+        // 取得頁面明細中所有商品編號
+        let rentalNos = [];
+        $("tr.detail").each(function () {
+            rentalNos.push($(this).attr("id"));
+        });
+        // console.log(rentalNos);
+        // 送進購物車
+        let data = {
+            "memNo" : memNo,
+            "rentalNos" : rentalNos
+        };
+        fetch(baseUrl + apiPath + "buyAgain", {
+            method : "POST",
+            headers : {
+                "Content-Type" : "application/json"
+            },
+            body : JSON.stringify(data)
+        }).then(function (response) {
+            return response.text();
+        }).then(function (url) {
+            window.location.href = baseUrl + apiPath + url;
+        })
+
+
+    });
+
+    $(function () {
+
+        let rentalOrdNo = $("h4.rentalOrdNoForUpdate").attr("id");
+        fetch(baseUrl + apiPath + "queryNewStat?memNo=" + memNo + "&rentalOrdNo=" + rentalOrdNo)
+            .then(response => response.text())
+            .then(logisticsStatus => {
+
+                switch (logisticsStatus) {
+
+                    case "300" :
+                        $("div.process").addClass("active");
+                        break;
+
+                    case "310" :
+                        $("div.uploading").addClass("active");
+                        break;
+
+                    case "3001" :
+                        $("div.transport").addClass("active");
+                        break;
+
+                    case "3003" :
+                        $("div.finish").addClass("active");
+                        break;
+
+                }
+
+            });
+
+    });
+
+
 </script>
 
 </body>
