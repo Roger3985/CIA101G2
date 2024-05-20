@@ -18,4 +18,12 @@ public interface ColumnArticleRepository extends JpaRepository<ColumnArticle, In
      */
     @Query("SELECT ca FROM ColumnArticle ca WHERE ca.artNo = :artNo")
     ColumnArticle findColumnArticleByArtNo(@Param("artNo") Integer artNo);
+
+    /**
+     * 判斷是否存在與指定的專欄文章編號相關聯的點讚記錄。
+     *
+     * @param artNo 專欄文章編號。
+     * @return 如果存在與指定專欄文章編號相關聯的點讚記錄，則返回 true；否則返回 false。
+     */
+    public boolean existsByArtNo(Integer artNo);
 }

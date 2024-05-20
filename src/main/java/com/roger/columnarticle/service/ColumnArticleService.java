@@ -51,4 +51,6 @@ public interface ColumnArticleService {
      */
     public ColumnArticle findColumnArticleByArtNo(Integer artNo);
 
+    public boolean likeColumnArticle(Integer memNo, Integer artNo);
+
 }

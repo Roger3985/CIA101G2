@@ -12,4 +12,6 @@ public interface ArticleCollectionService {
      * @return 包含所有專欄文章收藏的 List<ArticleCollection> 列表。
      */
     public List<ArticleCollection> findAll();
+
+
 }
