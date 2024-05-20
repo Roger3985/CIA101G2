@@ -234,9 +234,8 @@ public class CartController {
     //加入商品至購物車
         @GetMapping("/cart/addcartsuccess")
         public String insert(@Validated(Create.class) CartRedis cartRedis, BindingResult result, ModelMap model, HttpSession session) {
-            Member member=new Member();
-            member.setMemNo(2);
-            session.setAttribute("member",member);
+            Member member;
+
             Object memNo = 0; // 声明并初始化memNo为Object类型
 
             if (session.getAttribute("member") == null) {
@@ -383,12 +382,15 @@ public class CartController {
                                                 Model model) {
         Map<String, String> response = new HashMap<>();
         Integer memNo;
+        Member member=new Member();
+        member.setMemNo(3);
+        session.setAttribute("member",member);
         if (session.getAttribute("member") == null) {
             String sessionId = session.getId();
             memNo = Math.abs(sessionId.hashCode());
             session.setAttribute("memNo", memNo);
         } else {
-            Member member = (Member) session.getAttribute("member");
+            member = (Member) session.getAttribute("member");
             memNo = member.getMemNo();
         }
         try {

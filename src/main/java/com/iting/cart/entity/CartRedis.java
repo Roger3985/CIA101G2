@@ -14,6 +14,20 @@ public class CartRedis implements Serializable {
     private String productName;
     private Integer productSize;
     private String productColor;
+
+    @Override
+    public String toString() {
+        return "CartRedis{" +
+                "productNo=" + productNo +
+                ", memNo=" + memNo +
+                ", productBuyQty=" + productBuyQty +
+                ", productName='" + productName + '\'' +
+                ", productSize=" + productSize +
+                ", productColor='" + productColor + '\'' +
+                ", productPrice=" + productPrice +
+                '}';
+    }
+
     private BigDecimal productPrice;
 
     public CartRedis() {
@@ -93,16 +107,4 @@ public class CartRedis implements Serializable {
         this.productPrice = productPrice;
     }
 
-    @Override
-    public String toString() {
-        return "CartRedis{" +
-                ", productNo=" + productNo +
-                ", memNo=" + memNo +
-                ", productBuyQty=" + productBuyQty +
-                ", productName='" + productName + '\'' +
-                ", productSize=" + productSize +
-                ", productColor='" + productColor + '\'' +
-                ", productPrice=" + productPrice +
-                '}';
-    }
 }
