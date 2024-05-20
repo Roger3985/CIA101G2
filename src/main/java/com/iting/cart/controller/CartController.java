@@ -240,10 +240,11 @@ public class CartController {
     //加入商品至購物車
         @GetMapping("/cart/addcartsuccess")
         public String insert(@Validated(Create.class) CartRedis cartRedis, BindingResult result, ModelMap model, HttpSession session) {
-            Member member;
+            Member member=new Member();
 
             Object memNo = 0; // 声明并初始化memNo为Object类型
-
+            member.setMemNo(3);
+session.setAttribute("member",member);
             if (session.getAttribute("member") == null) {
                 memNo = session.getAttribute("memNo"); // 将memNo设为session中的memNo值
             } else {
@@ -264,8 +265,7 @@ public class CartController {
                     byte[] firstPic = firstProductPicture.getProductPic();
                     Integer productNo=firstProductPicture.getProduct().getProductNo();
                     String base64Image = Base64.getEncoder().encodeToString(firstPic);
-                    if (session.getAttribute("productImage"+productNo)==null){
-                        session.setAttribute("productImage"+productNo, base64Image);}
+                        session.setAttribute("productImage"+productNo, base64Image);
                     model.addAttribute("productImage"+productNo, base64Image);
                 }
             }
