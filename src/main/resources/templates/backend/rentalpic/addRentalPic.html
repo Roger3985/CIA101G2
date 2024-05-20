@@ -39,25 +39,25 @@
                         <h6 class="m-0 font-weight-bold text-primary">新增租借品類別資料</h6>
                     </div>
                     <div class="a">
-                        <ul>
-                            <form id="form1" method="post" th:action="@{addRentalPic}" th:object="${rentalPic}" enctype="multipart/form-data">
-                                <li>
+                        <div>
+                            <form id="form" method="post" th:action="@{addRentalPic}" th:object="${rentalPic}" enctype="multipart/form-data">
+                                <div>
                                     選擇租借品編號:
-                                    <select name="rentalNo" id="rentalNo" th:field="*{rental.rentalNo}"> <!--th:field，表單元素&數據綁定-->
+                                    <select id="rentalNo" name="rentalNo" th:field="*{rental.rentalNo}"> <!--th:field，表單元素&數據綁定-->
                                         <option value="0" selected>請選擇</option>
-                                        <option th:each="rentalPic : ${rentalPicListData}" th:value="${rentalPic.rental.rentalNo}" th:text="${rentalPic.rental.rentalNo}" />
+                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalNo}" th:text="${rental.rentalNo} + '-[' + ${rental.rentalName} + ']'" />
                                     </select>
                                     <span class="error" th:if="${#fields.hasErrors('rental.rentalNo')}" th:errors="*{rental.rentalNo}" id="rental.rentalNo.errors"></span>
-                                </li><br>
-                                <li>
+                                </div><br>
+                                <div>
                                     上傳租借品照片:
-                                    <input type="file" name="rentalFile" th:field="*{rentalFile}" onclick="previewImage()" multiple="multiple" onchange="hideContent('rentalFile.errors');" />
-<!--                                    <span  th:if="${#fields.hasErrors('rentalFile')}" th:errors="*{rentalFile}" class="error" id="rentalFile.errors"></span>-->
+                                    <input type="file" id="rentalFile" name="rentalFile" th:field="*{rentalFile}" onclick="previewImage()" multiple="multiple" onchange="hideContent('rentalFile.errors');" />
+                                    <!--                                    <span  th:if="${#fields.hasErrors('rentalFile')}" th:errors="*{rentalFile}" class="error" id="rentalFile.errors"></span>-->
                                     <div id="blob_holder"></div>
-                                </li><br>
-                                <input type="submit" id="submit" value="送出"><!-- 送出成功跳轉listAll -->
+                                </div><br>
+                                <input type="submit" id="addBtn" value="送出">
                             </form>
-                        </ul>
+                        </div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -78,12 +78,11 @@
 <div th:replace="backend/component/logout :: logout"></div>
 
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
-<script th:src="@{/static/jquery/jquery-3.7.1.min.js}"></script>
-
+<script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
 
 <script>
     //照片上傳-預覽用
-    let filereader_support = typeof FileReader != 'undefined';
+    var filereader_support = typeof FileReader != 'undefined';
     if (!filereader_support) {
         alert("No FileReader support");
     }
@@ -92,37 +91,78 @@
         'image/jpeg' : true,
         'image/gif' : true
     };
+
     function previewImage() {
-        let upfile1 = document.getElementById("rentalFile");
+        var upfile1 = document.getElementById("rentalFile");
         upfile1.addEventListener("change", function(event) {
-            let files = event.target.files || event.dataTransfer.files;
-            for (let i = 0; i < files.length; i++) {
+            var files = event.target.files || event.dataTransfer.files;
+            for (var i = 0; i < files.length; i++) {
                 previewfile(files[i])
             }
         }, false);
     }
 
-    //使用fetch()發送非同步請求，傳遞資料至後端
-    document.getElementById("form1").addEventListener("submit", (event) => {
-        event.preventDefault(); //阻止預設行為
+    //previewfile(file) -> 接收檔案物件作為參數，用於預覽檔案的內容
+    function previewfile(file) {
+        //使用filereader_support 和 acceptedTypes 檢查是否支援 FileReader，或是是否格是無誤
+        if (filereader_support === true && acceptedTypes[file.type] === true) {
 
-        // 使用const宣告(不會被重新指定值)，請求方式、請求網址、處理方式( true：非同步處理 , false：同步處理 ))
-        const http = new XMLHttpRequest();
-        const method = "POST";
-        const url = "http://localhost:8080/backend/rentalpic/addRentalPic";
-        http.open(method, url); //在 open 放入「請求方法」以及「目標」
+            //如果符合條件：使用FileReader讀取，並將其轉換為Data URL格式。
+            let reader = new FileReader();
+            reader.onload = function (event) {
+                //建立Image物件，設置其src屬性為Data URL。並設置圖片資訊
+                let image = new Image();
+                image.src = event.target.result;
+                image.width = 200;
+                image.border = 2;
 
-        http.send();// 發出 http request 請求
+                //如果不符合條件，在blob_holder元素中顯示錯誤訊息
+                if (blob_holder.hasChildNodes()) {
+                    blob_holder.removeChild(blob_holder.childNodes[0]);
+                }
 
-        //處理伺服器回應 (XMLHttpRequest的狀態改變時，觸發onreadystatechange事件)
-        http.onreadystatechange = (e) => {
-
-            //判斷如果狀態碼是200 (成功畫面)，找到ID為form1-a的<a>元素，並將其href屬性設置為伺服器回應的文本內容（http.responseText）
-            if (http.readyState === XMLHttpRequest.DONE && http.status === 200) {
-                let a = document.getElementById("form1-a");
-                a.setAttribute("href", http.responseText);
-            }
+                //符合條件，將圖片元素添加到blob_holder元素中，顯示預覽圖。
+                blob_holder.appendChild(image);
+            };
+            reader.readAsDataURL(file);
+            document.getElementById('submit').disabled = false;
+        } else {
+            //根據檔案類型是否符合條件來啟用或禁用提交按鈕
+            blob_holder.innerHTML = "<div  style='text-align: left;'>" + "● filename: " + file.name
+                + "<br>" + "● ContentTyp: " + file.type
+                + "<br>" + "● size: " + file.size + "bytes"
+                + "<br>" + "● 上傳ContentType限制: <b> <font color=red>image/png、image/jpeg、image/jpg </font></b></div>";
+            document.getElementById('submit').disabled = true;
         }
+    }
+
+    //處理新增
+    $(document).ready(function (){
+
+        // 觸發submit事件，取得選擇的內容，轉為json格式
+        $("#addBtn").on("submit",function(e){
+            e.preventDefault(); //阻止提交表單
+
+            //資料打包
+            const addData = {
+                rentalPicNo: parseInt($('#rentalPicNo').val()),
+                rentalNo: parseInt($('#rentalNo').val()),
+                rentalFile: parseFloat($('#rentalStat').val()),
+                action: "addRentalPic"
+            };
+
+            //使用fetch()送出FormData的表單，不需設置 Content-Type
+            fetch("/backend/rental/addRental", {
+                method: "POST",
+                // headers: {"Content-Type": "application/json"},
+                body: addData
+            }).then(response => response.text())
+                .then(response => {
+                    alert(response + "新增成功");
+                }).catch(error => {
+                console.error('Error:', error);
+            });
+        });
     });
 </script>
 </body>

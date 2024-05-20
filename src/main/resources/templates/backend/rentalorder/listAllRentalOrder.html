@@ -99,8 +99,8 @@
                                     <th>取貨方式</th>
 <!--                                    <th>宅配住址</th>-->
                                     <th>付款方式</th>
-                                    <th>租金<div></div>總金額</th>
-                                    <th>押金<div></div>總金額</th>
+                                    <th>訂單<div></div>總金額</th>
+<!--                                    <th>押金<div></div>總金額</th>-->
 <!--                                    <th>下單時間</th>-->
 <!--                                    <th>預計租借日期</th>-->
 <!--                                    <th>預計歸還日期</th>-->
@@ -112,6 +112,7 @@
                                     <th>賠償<div></div>金額</th>
                                     <th>詳情<div></div>&修改</th>
                                     <th>出貨</th>
+                                    <th>退押金</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -128,8 +129,8 @@
                                         <td th:text="${order.getrentalTakeMethod() == 1 ? '店取' : '宅配'}"></td>
 <!--                                        <td th:text="${order.getrentalAddr()}"></td>-->
                                         <td th:text="${order.getrentalPayMethod() == 1 ? '綠界' : '現場付款'}"></td>
-                                        <td th:text="${order.getrentalAllPrice()}"></td>
-                                        <td th:text="${order.getrentalAllDepPrice()}"></td>
+                                        <td th:text="${order.getrentalAllPrice() + order.getrentalAllDepPrice()}"></td>
+<!--                                        <td th:text="${}"></td>-->
 <!--                                        <td th:text="${order.getrentalOrdTime()}"></td>-->
 <!--                                        <td th:text="${order.getrentalDate()}"></td>-->
 <!--                                        <td th:text="${order.getrentalBackDate()}"></td>-->
@@ -140,7 +141,9 @@
                                             <span th:case="'10'" style="color: #0a53be">揀貨中</span>
                                             <span th:case="'20'" style="color : saddlebrown">配送中</span>
                                             <span th:case="'30'" style="color: coral">等待取貨</span>
+                                            <span th:case="'35'" style="color: coral">租用中</span>
                                             <span th:case="'40'">訂單成立</span>
+                                            <span th:case="'45'" style="color: coral">已歸還</span>
                                             <span th:case="'50'" style="color : green">完成</span>
                                             <span th:case="'81'">申請換貨</span>
                                             <span th:case="'82'">換貨中</span>
@@ -159,7 +162,14 @@
                                         <td>
                                             <form>
                                                 <input type="hidden" id="rentalOrdNo" th:value="${order.getrentalOrdNo()}">
-                                                <button class="shipping" type="button" th:disabled="${order.getrentalOrdStat() != 10 and order.getrentalOrdStat() != 40}">出貨</button>
+                                                <button class="shipping" type="button" th:if="${order.getrentalOrdStat() != 20}" th:disabled="${ (order.getrentalOrdStat() != 10 and order.getrentalOrdStat() != 40) || order.getrentalTakeMethod() == 1}">出貨</button>
+                                                <button th:if="${order.getrentalOrdStat() == 20}">追蹤</button>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <form>
+                                                <input type="hidden" th:value="${order.getrentalOrdNo()}">
+                                                <button type="button" th:disabled="${order.getrentalOrdStat() != 50}">退押金</button>
                                             </form>
                                         </td>
 

@@ -22,6 +22,16 @@
                     <a th:href="@{/frontend/member/newMemberMail}"><th th:text="${session.loginsuccess.getMemMail()}" readonly></th></a>
                 </small>
             </div>
+            <form method="post" th:action="@{/frontend/member/newPicture}" enctype="multipart/form-data" onsubmit="return handleAvatarUpload(event)" class="row g-3 align-items-center">
+                <!--                                        <label for="avatarInput" class="col-auto col-form-label" style="display: none">Change Profile Photo</label>-->
+                <label for="avatarInput" class="col-auto col-form-label" style="display: none"></label>
+                <div class="col-auto" style="display: none">
+                    <input type="file" name="chaPic" class="form-control" id="avatarInput" accept="image/*">
+                </div>
+                <div class="col-auto">
+                    <input type="submit" value="確認上傳新圖片" class="form-control btn btn-primary" style="font-size: 0.8em; padding: 5px 10px;">
+                </div>
+            </form>
         </div>
         <div class="bg-gray-200 p-3 border-bottom border-top">
             <h6 class="m-0">Dashboard</h6>
@@ -52,6 +62,26 @@
                 Tickets
                 <div class="ms-auto badge-pill badge bg-secondary">0</div>
             </a></li>
+            <li class="border-bottom mb-0">
+                <a class="nav-link-style d-flex align-items-center p-3"
+                    th:href="@{/frontend/notice/memberNoticeData}"><i class="bi bi-bell me-2"></i>Notices
+                <div class="ms-auto badge-pill badge bg-secondary" th:text="${session.unreadNoticeCount}"></div>
+            </a></li>
+<!--            <li class="border-bottom mb-0">-->
+<!--                <a class="nav-link-style d-flex align-items-center p-3"-->
+<!--                   th:href="@{/frontend/notice/memberNoticeData}"><i class="bi bi-clipboard2-heart me-2"></i>ColumnArticle Collection-->
+<!--                    <div class="ms-auto badge-pill badge bg-secondary" th:text="${session.unreadNoticeCount}"></div>-->
+<!--                </a></li>-->
+<!--            <li class="border-bottom mb-0">-->
+<!--                <a class="nav-link-style d-flex align-items-center p-3"-->
+<!--                   th:href="@{/frontend/click/memberClickLike}"><i class="bi bi-search-heart me-2"></i>ColumnArticle ClickLike-->
+<!--                    <div class="ms-auto badge-pill badge bg-secondary" th:text="${session.unreadNoticeCount}"></div>-->
+<!--                </a></li>-->
+<!--            <li class="border-bottom mb-0">-->
+<!--                <a class="nav-link-style d-flex align-items-center active p-3"-->
+<!--                   th:href="@{/frontend/notice/memberNoticeData}"><i class="bi bi-bell me-2"></i>Notices</a>-->
+<!--                <div class="ms-auto badge-pill badge bg-secondary">0</div>-->
+<!--            </li>-->
         </ul>
         <div class="bg-gray-200 p-3 border-bottom">
             <h6 class="m-0">Account settings</h6>
@@ -73,13 +103,9 @@
                     class="nav-link-style d-flex align-items-center p-3"
                     th:href="@{/frontend/member/newMemberAddress}"><i class="bi bi-map-fill me-2"></i>Addresses</a>
             </li>
-            <li class="border-bottom mb-0">
-                <a class="nav-link-style d-flex align-items-center active p-3"
-                    th:href="@{/frontend/notice/memberNoticeData}"><i class="bi bi-bell me-2"></i>Notices</a>
-            </li>
             <li class="border-bottom mb-0"><a
                     class="nav-link-style d-flex align-items-center p-3"
-                    href="account-payment.html"><i
+                    th:href="@{/frontend/member/newMemberCreditCard}"><i
                     class="bi bi-credit-card me-2"></i>Payment</a></li>
             <li class="border-bottom mb-0"><a
                     class="nav-link-style d-flex align-items-center p-3" th:href="@{/frontend/member/logoutMember}"><i

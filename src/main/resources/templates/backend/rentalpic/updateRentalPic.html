@@ -42,40 +42,43 @@
                         <ul>
                             <form id="form" method="post" th:action="@{updateRentalPic}" th:object="${rentalPic}" enctype="multipart/form-data">
                                 <li>
-                                    租借品照片編號:
-                                    <input value="0" type="text" name="rentalPicNo" th:field="*{rentalPicNo}" style="border:0px ; font-weight: bold;" readonly /><br/>
+                                    <label>租借品照片編號:</label>
+                                    <input value="0" type="text" id="rentalPicNo" name="rentalPicNo" th:field="*{rentalPicNo}" style="border:0px ; font-weight: bold;" readonly /><br/>
                                 </li><br>
                                 <li>
-                                    選擇租借品編號:
-                                    <select name="rentalNo" id="rentalNo" th:field="*{rental.rentalNo}"> <!--th:field，表單元素&數據綁定-->
+                                    <label>選擇租借品編號:</label>
+                                    <select name="rentalNo" id="rentalNo" th:field="*{rental.rentalNo}">
                                         <option value="1" selected>請選擇</option>
-                                        <option th:each="rentalPic : ${rentalPicListData}" th:value="${rentalPic.rental.rentalNo}" th:text="${rentalPic.rental.rentalNo}" />
+                                        <option th:each="rentalPic : ${rentalPicListData}" th:value="${rentalPic.rental.rentalNo}"
+                                                th:text="${rentalPic.rental.rentalNo} + '-[' + ${rentalPic.rental.rentalName} + ']'" />
                                     </select>
-                                    <span class="error" th:if="${#fields.hasErrors('rental.rentalNo')}" th:errors="*{rental.rentalNo}" id="rental.rentalNo.errors"></span>
+                                    <span class="error" th:if="${#fields.hasErrors('rental.rentalNo')}" th:errors="*{rental.rentalNo}"
+                                          id="rental.rentalNo.errors"></span>
                                 </li><br>
                                 <li>
-                                    上傳租借品照片:
-                                    <input value="2" type="file" name="rentalFile" th:field="*{rentalFile}" onclick="previewImage()" multiple="multiple" />
+                                    <label>上傳租借品照片:</label>
+                                    <input value="2" type="file" id="rentalFile" name="rentalFile" th:field="*{rentalFile}"
+                                           onclick="previewImage()" multiple="multiple" />
                                     <div id="blob_holder"><img th:src="@{/backend/rentalpic/DBGifReader} + '?rentalPicNo=' + ${rentalPic.rentalPicNo}" width="100px"></div>
                                 </li>
                                 <input type="submit" id="updateBtn" value="送出">
                                 <input type="hidden" name="rentalPicNo" th:value="${rentalPic.rentalPicNo}">
                                 <input type="hidden" name="rentalNo" th:value="${rentalPic.rental.rentalNo}">
                             </form>
-                        </ul>
                     </div>
                 </div>
-                <!-- /.container-fluid -->
             </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer th:replace="backend/component/bottom :: bottom"></footer>
-            <!-- End of Footer -->
+            <!-- /.container-fluid -->
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="backend/component/bottom :: bottom"></footer>
+        <!-- End of Footer -->
     </div>
-    <!-- End of Page Wrapper -->
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
 </div>
 <!-- Scroll to Top Button-->
 <a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
@@ -83,8 +86,8 @@
 <div th:replace="backend/component/logout :: logout"></div>
 
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
-<script th:src="@{/static/jquery/jquery-3.7.1.min.js}"></script>
-<script type="text/javascript">
+<script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
+<script>
     //清除提示信息
     function hideContent(d) {
         document.getElementById(d).style.display = "none";

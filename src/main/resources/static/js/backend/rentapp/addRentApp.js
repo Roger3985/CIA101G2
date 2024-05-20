@@ -176,7 +176,6 @@ function previewfile(file) {
             let image = new Image();
             image.src = event.target.result;
             image.width = 200;
-
             image.border = 2;
             if (blob_holder.hasChildNodes()) {
                 blob_holder.removeChild(blob_holder.childNodes[0]);

@@ -12,12 +12,12 @@ public class ChatMessage {
     private String message;
     private long timestamp;
 
-    public ChatMessage(String type, String sender, String receiver, String message, long timestamp) {
+    public ChatMessage(String type, String sender, String receiver, String message) {
         this.type = type;
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
-        this.timestamp = timestamp;
+//        this.timestamp = timestamp;
     }
 
     public ChatMessage() {

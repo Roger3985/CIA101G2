@@ -67,7 +67,19 @@
                             <div class="card mb-5">
                                 <div class="card-header py-3">
                                     <div>
-                                        <h5 class="m-0" style="display: inline;">Profile Update (想單獨修改可以點擊表格中的資料)</h5>
+                                        <h5 class="m-0" style="display: flex; align-items: center; position: relative;">
+                                            Profile Update (想單獨修改可以點擊表格中的資料)
+                                            <a class="nav-link-style d-flex align-items-center p-3"
+                                               th:href="@{/frontend/click/memberClickLike}"
+                                               style="display: inline-block; transform: scale(0.8); position: absolute; right: 0;">
+                                                <i class="bi bi-search-heart"></i>
+                                            </a>
+                                            <a class="nav-link-style d-flex align-items-center p-3"
+                                               th:href="@{/frontend/notice/memberNoticeData}"
+                                               style="display: inline-block; transform: scale(0.8); position: absolute; right: 14px;">
+                                                <i class="bi bi-clipboard2-heart me-2"></i>
+                                            </a>
+                                        </h5>
                                         <div th:if="${param.updatesuccess != null}" style="text-align: center; margin-top: 10px; color: green; display: inline;">
                                             <span th:text="${param.updatesuccess}" style="font-weight: bold;"></span>
                                         </div>
@@ -78,16 +90,16 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <form method="post" th:action="@{/frontend/member/newPicture}" enctype="multipart/form-data" onsubmit="return handleAvatarUpload(event)" class="row g-3 align-items-center">
-<!--                                        <label for="avatarInput" class="col-auto col-form-label" style="display: none">Change Profile Photo</label>-->
-                                        <label for="avatarInput" class="col-auto col-form-label" style="display: none"></label>
-                                        <div class="col-auto" style="display: none">
-                                            <input type="file" name="chaPic" class="form-control" id="avatarInput" accept="image/*">
-                                        </div>
-                                        <div class="col-auto">
-                                            <input type="submit" value="上傳新圖片" class="form-control btn btn-primary">
-                                        </div>
-                                    </form>
+<!--                                    <form method="post" th:action="@{/frontend/member/newPicture}" enctype="multipart/form-data" onsubmit="return handleAvatarUpload(event)" class="row g-3 align-items-center">-->
+<!--&lt;!&ndash;                                        <label for="avatarInput" class="col-auto col-form-label" style="display: none">Change Profile Photo</label>&ndash;&gt;-->
+<!--                                        <label for="avatarInput" class="col-auto col-form-label" style="display: none"></label>-->
+<!--                                        <div class="col-auto" style="display: none">-->
+<!--                                            <input type="file" name="chaPic" class="form-control" id="avatarInput" accept="image/*">-->
+<!--                                        </div>-->
+<!--                                        <div class="col-auto">-->
+<!--                                            <input type="submit" value="上傳新圖片" class="form-control btn btn-primary" style="font-size: 0.8em; padding: 5px 10px;">-->
+<!--                                        </div>-->
+<!--                                    </form>-->
 
                                     <!-- 第二個表單，用於預覽和手動提交 -->
 <!--                                    <form id="previewForm" class="row g-3 align-items-center">-->
@@ -112,7 +124,6 @@
 <!--                                        </div>-->
 <!--                                    </form>-->
                                     <div id="preview"></div>
-                                    <br>
                                     <div class="row">
                                         <div class="col-sm-6 mb-3"><label class="form-label">
                                             Name

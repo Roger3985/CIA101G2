@@ -970,6 +970,23 @@ public class MemberControllerFrontEnd {
         Member newData = memberService.register(member);
         session.setAttribute("loginsuccess", newData);
 
+        // 設置加入成功的消息
+        Notice newNotice = new Notice();
+        newNotice.setMember(newData);
+        newNotice.setNotContent("您的會員註冊已成功，歡迎加入我們fallElove的大家庭");
+        newNotice.setNotTime(new Timestamp(System.currentTimeMillis()));
+        newNotice.setNotStat((byte) 0);
+
+        noticeService.addNotice(newNotice);
+
+        // 獲取未讀取通知的數量
+        int unreadNoticeCount = noticeService.getUnreadNoticeCount(newData);
+        // 獲取會員的通知
+        List<Notice> noticeList = noticeService.findNoticesByMemberMemNo(newData.getMemNo());
+
+        session.setAttribute("noticeList", noticeList);
+        session.setAttribute("unreadNoticeCount", unreadNoticeCount);
+
         // 發送驗證郵件
         memberService.verifyMail(member.getMemMail(), "Fall衣Love感謝你的註冊!", "驗證碼為:", null);
 

@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 
 
 @Repository
@@ -25,17 +26,13 @@ public interface RentalPicRepository extends JpaRepository<RentalPic, Long> {
     @Transactional
     @Query("UPDATE RentalPic SET rentalFile = :rentalFile WHERE rentalPicNo = :rentalPicNo")
     public void updateRentalFileById(@Param("rentalPicNo") Integer rentalPicNo, @Param("rentalFile") byte[] rentalFile);
-//
-//    int add(RentalPic RentalPic);  //若是使用Boolean，即可判斷是否有新增成功
-//
-//    int update(RentalPic RentalPic); //修改
-//
-//    int delete(Integer rPicNo); //刪除
-//
-//
-//
-//    List<RentalPic> getAll(); //萬用複合查詢
-//
-//    List<RentalPic> getByCompositeQuery(Map<String, String> map); //複合查詢
 
+    @Transactional
+    @Query("SELECT p FROM RentalPic p WHERE " +
+            "(:rentalPicNo IS NULL OR p.rentalPicNo = :rentalPicNo) AND " +
+            "(:rentalNo IS NULL OR p.rental.rentalNo = :rentalNo) AND " +
+            "(:rentalFile IS NULL OR p.rentalFile = :rentalFile)")
+    List<RentalPic> searchRentalPics(@Param("rentalPicNo") Integer rentalPicNo,
+                                     @Param("rentalNo") Integer rentalNo,
+                                     @Param("rentalFile") byte[] rentalFile);
 }

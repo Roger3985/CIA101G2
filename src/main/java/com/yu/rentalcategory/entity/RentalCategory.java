@@ -41,14 +41,14 @@ public class RentalCategory implements java.io.Serializable {
     @Min(value = 0, message = "*不能小於{value}", groups = {RentalCategory.AddRentalCatGroup.class, RentalCategory.UpdateRentalCatGroup.class})
     private Integer rentalRentedQty;
 
-    
+
     @Column(name="rentaldesprice",columnDefinition="BigDecimal")
     @NotNull(message="*押金: 請勿空白", groups = {RentalCategory.AddRentalCatGroup.class, RentalCategory.UpdateRentalCatGroup.class})
     @DecimalMin(value = "00000", message = "*押金: 不能小於0",
             groups = {RentalCategory.AddRentalCatGroup.class, RentalCategory.UpdateRentalCatGroup.class})
     private BigDecimal rentalDesPrice;
-    
-    
+
+
     @JsonBackReference
     @OneToMany(mappedBy = "rentalCategory", cascade = CascadeType.ALL) //CascadeType.ALL把對應到的相關資料刪除
     private Set<Rental> rentals;

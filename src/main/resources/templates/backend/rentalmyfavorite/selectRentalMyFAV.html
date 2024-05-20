@@ -68,12 +68,12 @@
                                     選擇租借品編號:
                                     <select name="rentalNo">
                                         <option value="1">請選擇</option>
-                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalNo}" th:text="${rental.rentalNo}" />
+                                        <option th:each="rental : ${rentalNoData}" th:value="${rental.rentalNo}" th:text="${rental.rentalNo} + '-[' + ${rental.rentalName} + ']'" />
                                     </select><br>
                                     選擇會員編號:
                                     <select name="memNo">
                                         <option>請選擇</option>
-                                        <option th:each="member : ${memberListData}" th:value="${rentalMyFavorite.member.memNo}" th:text="${rentalMyFavorite.member.memNo}"></option>
+                                        <option th:each="member : ${memNoData}" th:value="${member.memNo}" th:text="${member.memNo}"></option>
                                     </select><br>
                                     選擇加入我的最愛時間:
                                     <input name="rentalFavTime" type="date"><br>

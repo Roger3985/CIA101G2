@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Monitor {
+public @interface Employee {
+    String title() default "";
     String message() default "";
 }

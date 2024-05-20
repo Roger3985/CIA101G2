@@ -3,7 +3,7 @@
 //import com.aop.annotation.Boss;
 //import com.aop.annotation.FullTime;
 //import com.aop.annotation.Manager;
-//import com.aop.annotation.Monitor;
+//import com.aop.annotation.Employee;
 //import org.aspectj.lang.JoinPoint;
 //import org.aspectj.lang.annotation.AfterReturning;
 //import org.aspectj.lang.annotation.Aspect;
@@ -42,15 +42,16 @@
 ////        rabbitTemplate.convertAndSend("adminExchange", routingKey, message);
 ////    }
 //
-//    @AfterReturning(value = "@annotation(monitor)")
-//    public void monitor(JoinPoint joinPoint, Monitor monitor) {
+//    @AfterReturning(value = "@annotation(employee)")
+//    public void employee(JoinPoint joinPoint, Employee employee) {
+//        System.out.println("AOP啟動");
 //        // 生成要發送的消息
-//        String monitorMsg = monitor.message();
+//        String employeeMsg = employee.message();
 //        // 將消息發送到 RabbitMQ
-//        rabbitTemplate.convertAndSend("adminExchange", TITLE_EMPLOYEE, monitorMsg);
-//        rabbitTemplate.convertAndSend("adminExchange", TITLE_FULLTIME, monitorMsg);
-//        rabbitTemplate.convertAndSend("adminExchange", TITLE_MANAGER, monitorMsg);
-//        rabbitTemplate.convertAndSend("adminExchange", TITLE_BOSS, monitorMsg);
+//        rabbitTemplate.convertAndSend("adminHeadersExchange", "", employeeMsg, message -> {
+//            message.getMessageProperties().setHeader("title", employee.title());
+//            return message;
+//        });
 //    }
 //
 //    @AfterReturning(value = "@annotation(fullTime)")
@@ -58,9 +59,7 @@
 //        // 生成要發送的消息
 //        String fullTimeMsg = fullTime.message();
 //        // 將消息發送到 RabbitMQ
-//        rabbitTemplate.convertAndSend("adminExchange", TITLE_FULLTIME, fullTimeMsg);
-//        rabbitTemplate.convertAndSend("adminExchange", TITLE_MANAGER, fullTimeMsg);
-//        rabbitTemplate.convertAndSend("adminExchange", TITLE_BOSS, fullTimeMsg);
+//        rabbitTemplate.convertAndSend("adminHeadersExchange", fullTime.title(), fullTimeMsg);
 //    }
 //
 //    @AfterReturning(value = "@annotation(manager)")
@@ -68,8 +67,7 @@
 //        // 生成要發送的消息
 //        String managerMsg = manager.message();
 //        // 將消息發送到 RabbitMQ
-//        rabbitTemplate.convertAndSend("adminExchange", TITLE_MANAGER, managerMsg);
-//        rabbitTemplate.convertAndSend("adminExchange", TITLE_BOSS, managerMsg);
+//        rabbitTemplate.convertAndSend("adminHeadersExchange", manager.title(), managerMsg);
 //    }
 //
 //    @AfterReturning(value = "@annotation(boss)")
@@ -77,7 +75,7 @@
 //        // 生成要發送的消息
 //        String bossMsg = boss.message();
 //        // 將消息發送到 RabbitMQ
-//        rabbitTemplate.convertAndSend("adminExchange", TITLE_BOSS, bossMsg);
+//        rabbitTemplate.convertAndSend("adminHeadersExchange", boss.title(), bossMsg);
 //    }
 //
 //

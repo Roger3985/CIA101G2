@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>查詢租借品類別資料</title>
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <!-- Custom styles for this page -->
     <style>
@@ -40,22 +40,23 @@
                     <div class="a">
                         <ul>
                             <font color=blue>單一查詢:</font><br>
-                            <li>
-                                <form method="post" th:action="@{getOneDisplay}">
-                                    選擇租借品編號:
-                                    <select name="rentalNo">
-                                        <option>請選擇</option>
-                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalNo}" th:text="${rental.rentalNo}" />
-                                    </select>
-                                    <input type="submit" value="送出">
-                                </form><br>
-                            </li>
+                            <!--                            <li>-->
+                            <!--                                <form method="post" th:action="@{getOneDisplay}">-->
+                            <!--                                    選擇租借品編號:-->
+                            <!--                                    <select id="rentalNo" name="rentalNo">-->
+                            <!--                                        <option>請選擇</option>-->
+                            <!--                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalNo}" th:text="${rental.rentalNo} + '-[' + ${rental.rentalName} + ']'" />-->
+                            <!--                                    </select>-->
+                            <!--                                    <input type="submit" value="送出">-->
+                            <!--                                </form><br>-->
+                            <!--                            </li>-->
                             <li>
                                 <form method="post" th:action="@{getOneDisplay}">
                                     選擇租借品照片編號:
-                                    <select name="rentalPicNo">
+                                    <select id="rentalPicNo" name="rentalPicNo">
                                         <option>請選擇</option>
-                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalPicNo}" th:text="${rental.rentalPicNo}" />
+                                        <option th:each="rentalPic : ${rentalPicListData}" th:value="${rentalPic.rentalPicNo}"
+                                                th:text="${rentalPic.rentalPicNo} + '-[' + ${rentalPic.rental.rentalName} + ']'" />
                                     </select>
                                     <input type="submit" value="送出">
                                 </form><br>
@@ -64,21 +65,21 @@
                             <!--  萬用複合查詢(開始)  -->
                             <font color=blue>萬用複合查詢:</font><br>
                             <li>
-                                <form method="post" th:action="@{search}" th:object="${rental}">
+                                <form method="post" th:action="@{search}" th:object="${rentalPic}">
                                     選擇租借品編號:
-                                    <select name="rentalNo" th:field="*{rentalNo}">
-                                        <option value="1">請選擇</option>
-                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalNo}" th:text="${rental.rentalNo}" />
-                                    </select><br>
+                                    <select name="rentalNo">
+                                        <option>請選擇</option>
+                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalNo}" th:text="${rental.rentalNo} + '-[' + ${rental.rentalName} + ']'" />
+                                    </select><br><br>
                                     選擇租借品照片編號:
                                     <select name="rentalPicNo">
                                         <option>請選擇</option>
-                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalPicNo}" th:text="${rental.rentalPicNo}" />
-                                    </select>
+                                        <option th:each="rentalPic : ${rentalPicListData}" th:value="${rentalPic.rentalPicNo}" th:text="${rentalPic.rentalPicNo}" />
+                                    </select><br>
+                                    <input type="submit" value="送出"/>
                                 </form>
                             </li>
                         </ul>
-                        <li><a th:href="@{/listAllRentalPic}">查詢所有照片清單</a><br><br></li>
                     </div>
                 </div>
                 <!-- /.container-fluid -->

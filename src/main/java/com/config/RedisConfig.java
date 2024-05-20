@@ -238,6 +238,30 @@ public class RedisConfig {
         return redisTemplate;
     }
 
+    @Bean("rentalWish")
+    public RedisTemplate<String, Map<String, String>> rentalWishRedisTemplate(
+            @Qualifier("rentalDataBase") RedisConnectionFactory connectionFactory) {
+        RedisTemplate<String, Map<String, String>> redisTemplate = new RedisTemplate<>();
+        // 設置連線
+        redisTemplate.setConnectionFactory(connectionFactory);
+        // 設置Serializer
+        redisTemplate.setKeySerializer(new GenericToStringSerializer<>(Integer.class));
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        return redisTemplate;
+    }
+
+    @Bean("rentalPic")
+    public RedisTemplate<String, String> rentalPicRedisTemplate(
+            @Qualifier("rentalDataBase") RedisConnectionFactory connectionFactory) {
+        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+        // 設置連線
+        redisTemplate.setConnectionFactory(connectionFactory);
+        // 設置Serializer
+        redisTemplate.setKeySerializer(new GenericToStringSerializer<>(Integer.class));
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        return redisTemplate;
+    }
+
 //    @Bean("loginState")
 //    public JedisConnectionFactory jedisConnectionFactory() {
 //        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
@@ -341,6 +365,16 @@ public class RedisConfig {
         config.setHostName("localhost");
         config.setPort(6379);
         config.setDatabase(15);  // 設定使用的 Redis database 索引
+        return new LettuceConnectionFactory(config);
+    }
+
+    //用於存放租借品相關資料
+    @Bean("rentalDataBase")
+    public LettuceConnectionFactory rentalRedisConnectionFactory() {
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
+        config.setHostName("localhost");
+        config.setPort(6379);
+        config.setDatabase(3);  // 設定使用的 Redis database 索引
         return new LettuceConnectionFactory(config);
     }
 

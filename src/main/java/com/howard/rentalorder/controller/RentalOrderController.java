@@ -77,6 +77,13 @@ public class RentalOrderController {
 
     /*--------------------------處理跳轉頁面請求的方法-------------------------------*/
 
+    // 去 感謝付款 頁面
+    @GetMapping("/thankForBuying")
+    public String thankForBuying(@RequestParam(required = false) Integer rentalOrdNo, ModelMap model) {
+        model.addAttribute("rentalOrdNo", rentalOrdNo);
+        return "/frontend/rental/thankForBuying";
+    }
+
     // 去 會員租借訂單 頁面
     @GetMapping("/toMemberRentalOrders")
     public String toMemberRentalOrders() {
@@ -204,10 +211,6 @@ public class RentalOrderController {
     public ResponseEntity<?> createOrder(@RequestBody @Valid RentalOrderRequest order) {
         /*-------------------------創建訂單時，設定初始參數-------------------------*/
 
-
-        System.out.println("該不會是這裡超出了吧" + order.getrentalAllDepPrice());
-
-
         // 下單時間 = 現在
         order.setrentalOrdTime(new Timestamp(System.currentTimeMillis()));
         // 預計租借日期 = 現在 (此為初步實作，之後由到貨狀態決定)
@@ -224,7 +227,7 @@ public class RentalOrderController {
         }
         // 實際歸還日期(因為資料庫設定NotNull，所以先設定為現在)
         order.setrentalRealBackDate(new Timestamp(System.currentTimeMillis()));
-        // 付款狀態 = 0(未付款)(此為初步實作，之後由創建訂單時付款與否決定狀態)
+        // 付款狀態先設定 = 0(未付款)
         order.setrentalPayStat((byte) 0);
         // 訂單狀態 = 10(撿貨中)
         order.setrentalOrdStat((byte) 10);
@@ -233,7 +236,10 @@ public class RentalOrderController {
         // 歸還註記(因為資料庫設定NotNull，所以先設定為"尚未歸還")
         order.setRtnRemark("尚未歸還");
         /*-------------------------執行創建訂單流程-------------------------*/
-        // 創建訂單
+        /**
+         * 創建訂單
+         * @return 若有線上付款，回傳包含請求綠界付款畫面之字串，否則回傳感謝購買頁面路徑
+         */
         String form = service.createOrder(order);
         // 先把字串陣列轉成整數陣列(因為service層方法需要List<Integer>)
         List<Integer> rentalNoList = order.getBuyItems().stream()
@@ -380,7 +386,7 @@ public class RentalOrderController {
 
     }
 
-    // 給訂單頁面用的 getOnAny
+    // 給 會員所有訂單頁面 用的 getOnAny
     @GetMapping("/getOnAnyForOrdersPage")
     public String getOnAnyForOrdersPage(@RequestParam(required = false) Byte rentalOrdStat, ModelMap model) {
 
@@ -404,9 +410,33 @@ public class RentalOrderController {
     public ResponseEntity<?> setToCart(@RequestBody SetToCart setToCart) {
 
         Rental rental = rentalRepository.findByRentalNo(setToCart.getRentalNo());
+        assembleAndSet(setToCart, rental);
+        return ResponseEntity.status(HttpStatus.CREATED).body(rental.getRentalName());
+
+    }
+
+    // 再買一次
+    @PostMapping("/buyAgain")
+    public ResponseEntity<?> buyAgain(@RequestBody SetToCart setToCart) {
+
+        for (Integer rentalNo : setToCart.getRentalNos()) {
+            Rental rental = rentalRepository.findByRentalNo(rentalNo);
+            assembleAndSet(setToCart, rental);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("rentalCart");
+
+    }
+
+    /**
+     * 組裝購物車資料參數然後把租借品資訊存入購物車
+     * @param setToCart : 含有成員變數 rentalNo、memNo、List<Integer> rentalNos 的 dto
+     * @param rental : 用 rentalNo 找出的租借品
+     */
+    public void assembleAndSet(SetToCart setToCart, Rental rental) {
 
         Map<String, String> map = new HashMap<>();
-        map.put("rentalNo", String.valueOf(setToCart.getRentalNo()));
+        map.put("rentalNo", String.valueOf(rental.getRentalNo()));
+//        System.out.println("有進來這方法喔，取到的rentalNo = " + rental.getRentalNo());
         map.put("rentalCatNo", String.valueOf(rental.getRentalCategory().getRentalCatNo()));
         map.put("rentalName", rental.getRentalName());
         map.put("rentalPrice", String.valueOf(rental.getRentalPrice()));
@@ -415,8 +445,8 @@ public class RentalOrderController {
         map.put("rentalColor", rental.getRentalColor());
         map.put("rentalInfo", rental.getRentalInfo());
         map.put("rentalStat", String.valueOf(rental.getRentalStat()));
+
         cartService.setToCart(setToCart.getMemNo(), map);
-        return ResponseEntity.status(HttpStatus.CREATED).body(rental.getRentalName());
 
     }
 
@@ -461,6 +491,16 @@ public class RentalOrderController {
 
     }
 
+    // 查詢物流最新進度
+    @GetMapping("/queryNewStat")
+    public ResponseEntity<?> queryNewStat(@RequestParam Integer memNo,
+                                          @RequestParam Integer rentalOrdNo) {
+        // 目前只有回傳物流狀態碼，其他資訊都沒取出來
+        String logisticsStatus = logisticsStateService.postQueryLogisticsTradeInfo(memNo, rentalOrdNo);
+        return ResponseEntity.status(HttpStatus.OK).body(logisticsStatus);
+
+    }
+
     @PostMapping("/testToRentalCart")
     public String rentalCart() {
         return "/frontend/rental/rentalCart";
@@ -473,6 +513,8 @@ public class RentalOrderController {
         return "/backend/rentalorder/shipping";
 
     }
+
+
 
 
 }

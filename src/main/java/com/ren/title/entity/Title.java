@@ -3,6 +3,7 @@ package com.ren.title.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ren.admauthority.entity.AdmAuthority;
 import com.ren.administrator.entity.Administrator;
+//import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;

@@ -56,25 +56,48 @@ function connect() {
         console.log("我在connect: endPointURL=" + endPointURL);
         console.log("frontend connect Suceess!");
         connection = true;
+        // 請求在線會員
         let jsonobj = {
             type: "stateA", sender: `${userName}`, receiver: "host",
         }
         webSocket.send(JSON.stringify(jsonobj));
+        setTimeout(3000);
+        //  請求history
+        let jsonobj_history = {
+            type: "history", sender: `${userName}`, receiver: "host"
+        }
+        webSocket.send(JSON.stringify(jsonobj_history));
     }
 
     webSocket.onmessage = function (event) {
         console.log("我收到後端的資料了" + event);
         console.log(event);
         var jsonObj = JSON.parse(event.data);
+        console.log(jsonObj);
+        var pkType = jsonObj.type;
+        console.log(pkType);
         var message = jsonObj.message;
-        if (message !== undefined) {
+        console.log(message);
+        if (pkType == "history") {
+            var historyMsgs = JSON.parse(message);
+            for (let i = 0; i < historyMsgs.length; i++) {
+                var historyData = JSON.parse(historyMsgs[i]);
+                var showMsg = historyData.message;
+                const messageContainer = document.createElement('div');
+                historyData.sender === userName ? messageContainer.classList.add("sender") : messageContainer.classList.add("receiver");
+                messageContainer.innerHTML = showMsg;
+                chatArea.appendChild(messageContainer);
+            }
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+        if (pkType == "chatMsgB") {
             console.log("我收到後端的資料了" + message);
             const messageContainer = document.createElement('div');
+            message.sender === userName ? messageContainer.classList.add("sender") : messageContainer.classList.add("receiver");
             messageContainer.innerHTML = message;
             chatArea.appendChild(messageContainer);
             // chatArea.value = chatArea.value + message;
         }
-
     }
 }
 
@@ -93,6 +116,7 @@ el_msg_btn.addEventListener("click", function () {
         alert("請輸入訊息");
     } else {
         const messageContainer = document.createElement('div');
+        messageContainer.classList.add("sender")
         messageContainer.innerHTML = messageContent;
         chatArea.appendChild(messageContainer);
         messageInput.value = '';
@@ -102,7 +126,8 @@ el_msg_btn.addEventListener("click", function () {
         }
         webSocket.send(JSON.stringify(jsonobj));
     }
-})
+    chatArea.scrollTop = chatArea.scrollHeight;
+});
 
 
 
