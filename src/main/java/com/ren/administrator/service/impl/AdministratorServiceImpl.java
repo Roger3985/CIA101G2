@@ -1,6 +1,6 @@
 package com.ren.administrator.service.impl;
 
-import com.aop.annotation.Monitor;
+import com.aop.annotation.Employee;
 import com.ren.administrator.entity.Administrator;
 import com.ren.administrator.service.AdministratorService_interface;
 import com.ren.administrator.dao.AdministratorRepository;
@@ -171,7 +171,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
      * @param sessionID 用於獲取SessionID，之後拿來核對會話身分
      * @return 返回登入狀態DTO
      */
-    @Monitor(message = "登入")
+    @Employee(title = "employee", message = "登入")
     @Override
     public LoginState login(Administrator administrator, String sessionID) {
         // Login 1:登入 0:登出 , Logout 1:登出 0:登入
@@ -195,7 +195,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
      *
      * @param loginState 傳入登入狀態，執行登出
      */
-    @Monitor(message = "登出")
+    @Employee(title = "employee", message = "登出")
     @Override
     public void logout(LoginState loginState) {
         Administrator administrator = getOneAdministrator(loginState.getAdmNo());

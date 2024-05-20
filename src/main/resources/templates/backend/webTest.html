@@ -28,11 +28,11 @@
         // 確保只訂閱一次
         if (!stompClient.subscribed) {
             stompClient.subscribed = true;
-            stompClient.subscribe('/topic/parttime', function (message) {
+            stompClient.subscribe('/topic/employee', function (message) {
                 console.log("1");
                 showMessage(message.body);
             });
-            stompClient.subscribe('/topic/fulltime', function (message) {
+            stompClient.subscribe('/topic/fullTime', function (message) {
                 console.log("2");
                 showMessage(message.body);
             });

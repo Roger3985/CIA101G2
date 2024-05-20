@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Search</title>
+</head>
+<body>
+<h1>Search</h1>
+<form th:action="@{/backend/search}" method="get">
+    <input type="text" name="query" placeholder="Enter search term..." required>
+    <button type="submit">Search</button>
+</form>
+
+<div>
+    <p>第 <span th:text="${currentPage}">1</span> 頁，共 <span th:text="${totalPages}">1</span> 頁</p>
+    <ul>
+        <li th:each="product : ${products}">
+            <span th:text="${product.productNo}">產品編號</span>
+            <span th:text="${product.productCategory.productCatNo}">產品編號</span>
+            <span th:text="${product.productName}">產品名稱</span>
+        </li>
+    </ul>
+
+    <div>
+        <a th:if="${currentPage > 1}" th:href="@{/backend/search(query=${keyword}, page=${currentPage - 1}, size=${size})}">上一頁</a>
+        <a th:if="${currentPage < totalPages}" th:href="@{/backend/search(query=${keyword}, page=${currentPage + 1}, size=${size})}">下一頁</a>
+    </div>
+</div>
+</body>
+</html>
