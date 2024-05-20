@@ -21,6 +21,7 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.random.RandomGenerator;
 
 @Component
 @ServerEndpoint("/chat/{userName}")
@@ -66,20 +67,23 @@ public class ServiceController {
                 session.getAsyncRemote().sendText(stateMessageJson);
             }
         }
-
     }
 
 
     @OnMessage
     public void onMessage(Session userSession, String message) {
-
+        System.out.println("我在onMessage message: " + message);
         ChatMessage chatMessage = gson.fromJson(message, ChatMessage.class);
         String type = chatMessage.getType();
         String sender = chatMessage.getSender();
         String receiver = chatMessage.getReceiver();
         String msg = chatMessage.getMessage();
+        String deliverTime = chatMessage.getTimestamp();
         System.out.println("我在onMessage sender: " + sender);
         System.out.println("我在onMessage receiver: " + receiver);
+        System.out.println("我在onMessage message: " + msg);
+        System.out.println("我在onMessage message: " + deliverTime);
+
         String senderkey = new StringBuilder(sender).append(":").append(receiver).toString();
         String receiverkey = new StringBuilder(receiver).append(":").append(sender).toString();
         Session receiverSession = sessionsMap.get(receiver);
@@ -88,7 +92,7 @@ public class ServiceController {
             List<String> historyData = getHistoryMsg(sender, receiver);
             String historyMsg = gson.toJson(historyData);
             System.out.println(historyMsg);
-            ChatMessage cmHistory = new ChatMessage("history", sender, receiver, historyMsg);
+            ChatMessage cmHistory = new ChatMessage("history", sender, receiver, historyMsg, deliverTime);
             System.out.println(cmHistory);
             if (userSession != null && userSession.isOpen()) {
                 System.out.println("我準備要送資料囉");
@@ -96,19 +100,18 @@ public class ServiceController {
                 System.out.println("歷史資料送給前端囉");
             }
         } else if (type.equals("chatMsgB")) {
+            if (!sender.isEmpty() && !msg.isEmpty()) {
+                saveMessage(senderkey, message);
+                saveMessage(receiverkey, message);
+                staticChatMessageRedisTemplate.opsForList().rightPush(senderkey, chatMessage);
+                staticChatMessageRedisTemplate.opsForList().rightPush(receiverkey, chatMessage);
+                System.out.println("我有存哦");
 
-            if (receiverSession != null && receiverSession.isOpen()) {
-
-                // 向目標用戶發送消息
-                receiverSession.getAsyncRemote().sendText(message);
-
-
-                if (!sender.isEmpty() && !msg.isEmpty()) {
-                    saveMessage(senderkey, message);
-                    saveMessage(receiverkey, message);
-                    staticChatMessageRedisTemplate.opsForList().rightPush(senderkey, chatMessage);
-                    staticChatMessageRedisTemplate.opsForList().rightPush(receiverkey, chatMessage);
-                    System.out.println("我有存哦");
+                if (receiverSession != null && receiverSession.isOpen()) {
+                    System.out.println("我在onMessage receiverSession: " + receiverSession);
+                    // 向目標用戶發送消息
+                    receiverSession.getAsyncRemote().sendText(message);
+                    System.out.println("送完訊息給前端了");
                 }
             }
         }
