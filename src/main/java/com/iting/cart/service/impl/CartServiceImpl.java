@@ -102,6 +102,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public void addCart(CartRedis cart) {
         try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(6);
             String cartKey = "cart:" + cart.getMemNo();
             String productKey = cart.generateId(cart.getProductNo(), cart.getMemNo());
             Product product = productService.getOneProduct(cart.getProductNo());
@@ -121,7 +122,9 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void addCart(List<CartRedis> cartList) {
+
         try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(6);
             for (CartRedis cart : cartList) {
                 String productKey = "cart:" + cart.getMemNo() + ":" + cart.getProductNo();
                 jedis.hset(productKey, "memNo", String.valueOf(cart.getMemNo()));
@@ -145,6 +148,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public void updateCart(CartRedis cartRedis) {
         try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(6);
             String productKey = cartRedis.generateId(cartRedis.getProductNo(), cartRedis.getMemNo());
 
             if (!jedis.exists(productKey)) {
@@ -167,6 +171,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public void updateCart(Integer productNo, Integer memNo, Integer productBuyQty) {
         try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(6);
             CartRedis cartRedis = new CartRedis();
             String productKey = cartRedis.generateId(productNo, memNo);
             jedis.hset(productKey, "productBuyQty", String.valueOf(productBuyQty));
@@ -193,6 +198,7 @@ public class CartServiceImpl implements CartService {
     public void deleteBymemNoAndProductNo(Integer memNo, Integer productNo) {
 
         try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(6);
             // 生成 memNo 和 productNo 鍵
             String productKey = "cart:" + memNo + ":" + productNo;
             // 從購物車中刪除商品資訊
@@ -208,6 +214,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public void deleteBymemNo(Integer memNo) {
         try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(6);
             String cartKey = "cart:" + memNo; // 使用传入的会员编号构建购物车键
 
             Set<String> productKeys = jedis.smembers(cartKey);
@@ -223,9 +230,11 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public List<CartRedis> findByCompositeKey(Integer memNo) {
+
         List<CartRedis> cartItems = new ArrayList<>();
 
         try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(6);
             String cartKey = "cart:" + memNo; // 使用传入的会员编号构建购物车键
 
             Set<String> productKeys = jedis.smembers(cartKey);
