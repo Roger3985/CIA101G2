@@ -77,8 +77,7 @@ function connect() {
                     userReplying_el.innerHTML = memName;
                     chatArea.innerHTML = '';
                     // // 清除未讀訊息的數量
-                    // unreadMessage[memName] = 0;
-                    // updateUnreadMessagesDisplay(memListContainer, memName);
+                    unreadMessage[memName] = 0;
                     // 如果點到的會員有歷史訊息，則在這邊顯示
                     requestHisoryMsg(memName);
                 });
@@ -115,34 +114,29 @@ function connect() {
                 messageTime.innerHTML = msgTime;
                 chatArea.appendChild(messageContainer);
                 chatArea.appendChild(messageTime);
-            // } else {
-                // if (!unreadMessage[jsonObj.sender]) {
-                //     unreadMessage[jsonObj.sender] = 0;
-                // } else {
-                    // let unreadMsgCount = unreadMessage[jsonObj.sender]++;
-                    // const userItem = Array.from(document.querySelectorAll('#connectedUsers li')).find(li => li.innerHTML === jsonObj.receiver);
-                    // if (userItem) {
-                    //     updateUnreadMessagesDisplay(userItem, jsonObj.sender);
-                    // }
-                    // const showUnreadMsgCount = document.createElement('span');
-                    // showUnreadMsgCount.innerHTML = unreadMsgCount;
-                    // memListContainer.appendChild(showUnreadMsgCount);
-                // }
+            } else {
+                // 如果不是當前聊天的會員，傳送訊息過來，則在該會員旁邊顯示未讀訊息
+
+                let unreadMsgCount = unreadMessage[jsonObj.sender]++;
+                const showUnreadMsgCount = document.createElement('span');
+                showUnreadMsgCount.innerHTML = unreadMsgCount;
+                memListContainer.appendChild(showUnreadMsgCount);
             }
+
         }
     }
 }
 
-// function updateUnreadMessagesDisplay(element, memName) {
-//     if (unreadMessages[memName] > 0) {
-//         // element.innerHTML = `${username} (${unreadMessages[username]})`;
-//         const showUnreadMsgCount = document.createElement('span');
-//         showUnreadMsgCount.innerHTML = unreadMsgCount;
-//         memListContainer.appendChild(showUnreadMsgCount);
-//     } else {
-//         element.innerHTML = memName;
-//     }
-// }
+function updateUnreadMessagesDisplay(element, memName) {
+    if (unreadMessages[memName] > 0) {
+        element.innerHTML = `${memName} (${unreadMessages[memName]})`;
+        // const showUnreadMsgCount = document.createElement('span');
+        // showUnreadMsgCount.innerHTML = unreadMsgCount;
+        // memListContainer.appendChild(showUnreadMsgCount);
+    } else {
+        element.innerHTML = memName;
+    }
+}
 
 
 messageInput.addEventListener("keyup", function (e) {

@@ -13,4 +13,14 @@ public class ServiceFrontendController {
         return "frontend/service/frontendServiceChat";
     }
 
+    @GetMapping("/policy")
+    public String policy(){
+        return "/frontend/service/policy";
+    }
+
+    @GetMapping("/contactus")
+    public String contactus(){
+        return "/frontend/service/contactus";
+    }
+
 }
