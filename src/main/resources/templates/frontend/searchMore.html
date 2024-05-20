@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Search Results</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>搜尋結果</h2>
+
+    <div class="row">
+        <!-- 商品區域 -->
+        <div class="col-md-6">
+            <h3>商品</h3>
+            <div th:if="${productResults.size() > 0}">
+                <div th:each="product : ${productResults}">
+                    <a th:href="@{/frontend/product/Product(productNo=${product.productNo})}" class="d-block mb-2">
+                        <h4 th:text="${product.productName}">Product Name</h4>
+                        <p th:text="${product.productInfo}">Product Info</p>
+                    </a>
+                </div>
+            </div>
+            <div th:if="${productResults.size() == 0}">
+                <p>沒有找到商品</p>
+            </div>
+
+            <!-- 商品分頁 -->
+            <nav th:if="${productPage.totalPages > 1}">
+                <ul class="pagination">
+                    <li th:classappend="${productPage.hasPrevious()} ? '' : 'disabled'" class="page-item">
+                        <a th:href="@{'/searchMore?searchQuery=' + ${searchQuery} + '&page=' + ${productPage.number - 1} + '&size=' + ${productPage.size}}" class="page-link">Previous</a>
+                    </li>
+                    <li th:each="pageNum : ${#numbers.sequence(0, productPage.totalPages - 1)}" th:classappend="${pageNum == productPage.number} ? 'active' : ''" class="page-item">
+                        <a th:href="@{'/searchMore?searchQuery=' + ${searchQuery} + '&page=' + ${pageNum} + '&size=' + ${productPage.size}}" class="page-link" th:text="${pageNum + 1}">1</a>
+                    </li>
+                    <li th:classappend="${productPage.hasNext()} ? '' : 'disabled'" class="page-item">
+                        <a th:href="@{'/searchMore?searchQuery=' + ${searchQuery} + '&page=' + ${productPage.number + 1} + '&size=' + ${productPage.size}}" class="page-link">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- 租借品區域 -->
+        <div class="col-md-6">
+            <h3>租借品</h3>
+            <div th:if="${rentalResults.size() > 0}">
+                <div th:each="rental : ${rentalResults}">
+                    <a th:href="@{/frontend/rental/Rental(rentalNo=${rental.rentalNo})}" class="d-block mb-2">
+                        <h4 th:text="${rental.rentalName}">Rental Name</h4>
+                        <p th:text="${rental.rentalInfo}">Rental Info</p>
+                    </a>
+                </div>
+            </div>
+            <div th:if="${rentalResults.size() == 0}">
+                <p>沒有找到租借品</p>
+            </div>
+
+            <!-- 租借品分頁 -->
+            <nav th:if="${rentalPage.totalPages > 1}">
+                <ul class="pagination">
+                    <li th:classappend="${rentalPage.hasPrevious()} ? '' : 'disabled'" class="page-item">
+                        <a th:href="@{'/searchMore?searchQuery=' + ${searchQuery} + '&page=' + ${rentalPage.number - 1} + '&size=' + ${rentalPage.size}}" class="page-link">Previous</a>
+                    </li>
+                    <li th:each="pageNum : ${#numbers.sequence(0, rentalPage.totalPages - 1)}" th:classappend="${pageNum == rentalPage.number} ? 'active' : ''" class="page-item">
+                        <a th:href="@{'/searchMore?searchQuery=' + ${searchQuery} + '&page=' + ${pageNum} + '&size=' + ${rentalPage.size}}" class="page-link" th:text="${pageNum + 1}">1</a>
+                    </li>
+                    <li th:classappend="${rentalPage.hasNext()} ? '' : 'disabled'" class="page-item">
+                        <a th:href="@{'/searchMore?searchQuery=' + ${searchQuery} + '&page=' + ${rentalPage.number + 1} + '&size=' + ${rentalPage.size}}" class="page-link">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+</body>
+</html>

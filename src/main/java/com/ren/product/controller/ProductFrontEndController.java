@@ -12,10 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -46,8 +43,18 @@ public class ProductFrontEndController {
         return "frontend/product/visitProduct";
     }
 
-    @GetMapping("oneProduct")
+    @GetMapping("/oneProduct")
     public String toOneProduct() {
+        return "frontend/product/oneProduct";
+    }
+
+    @GetMapping("/Product")
+    public String search(@RequestParam("productNo") Integer productNo,
+                         ModelMap model) {
+//        Page<Product> products = productSvc.searchProducts(keyword, page, size);
+//        model.addAttribute("products", products.getContent());
+//        model.addAttribute("currentPage", page);
+//        model.addAttribute("totalPages", products.getTotalPages());
         return "frontend/product/oneProduct";
     }
 
@@ -68,6 +75,8 @@ public class ProductFrontEndController {
         model.addAttribute("totalPages", products.getTotalPages());
         return "backend/searchTest";
     }
+
+
 
 
 

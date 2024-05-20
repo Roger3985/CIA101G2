@@ -59,19 +59,16 @@ import java.util.Optional;
  * 可根據上述詞綴組合自定義方法查找指定資料
  */
 @Repository
-@Primary
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     /**
      * 全文搜索
      *
      * @param keyword 關鍵字
-     * @param pageable 將搜尋結果以分頁呈現
+     * @param pageable 設定搜尋結果為第幾分頁、有幾筆資料，將搜尋結果以分頁呈現
      * @return 返回分頁搜尋結果
      */
-    @Query("SELECT p FROM Product p WHERE " +
-            "CONCAT(CAST(p.productNo AS string), ' ', CAST(p.productCategory.productCatNo AS string), ' ', p.productCategory.productCatName, ' ', p.productName, ' ', p.productInfo, ' ', p.productColor) " +
-            "LIKE %?1%")
+    @Query("SELECT p FROM Product p WHERE CONCAT(p.productNo, ' ', p.productCategory.productCatNo, ' ', p.productCategory.productCatName, ' ', p.productName, ' ', p.productInfo, ' ', p.productColor) LIKE %?1%")
     Page<Product> findAll(String keyword, Pageable pageable);
 
 //    @Query(value = "SELECT * FROM product WHERE MATCH(productNo, productName, productInfo) " + "AGAINST (?1)", nativeQuery = true)
@@ -146,6 +143,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
      *
      * @return 返回前10名的清單
      */
+    @Transactional
     List<Product> findTop10ByOrderByProductSalQtyDesc();
 
     /**

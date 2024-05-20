@@ -1,7 +1,9 @@
 package com.yu.rental.service;
 
 import com.yu.rental.entity.Rental;
+import org.springframework.data.domain.Page;
 
+import javax.persistence.Entity;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +41,16 @@ public interface RentalService {
     public Rental updateRental(Rental rental); //修改
 
     public List<Rental> searchRentals(Map<String, String[]> paramsMap); //複合查詢
+
+    /**
+     * 全文搜索
+     *
+     * @param keyword 關鍵字
+     * @param page 指定搜尋結果為第幾頁
+     * @param size 指定一頁要有多少筆資料
+     * @return 返回分頁搜尋結果
+     */
+    Page<Rental> searchRentals(String keyword, Integer page, Integer size);
 
 
 }

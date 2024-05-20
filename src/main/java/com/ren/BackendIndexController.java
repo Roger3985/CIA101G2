@@ -338,10 +338,30 @@ public class BackendIndexController {
         return loginState.getTitleNo().toString();
     }
 
-    // 站內搜尋
-    @GetMapping
-    public String search() {
-        return "";
+    @GetMapping("/searchTest")
+    public String toSearch() {
+
+        return "backend/searchTest";
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam("query") String keyword,
+                         @RequestParam(value = "page", defaultValue = "0") Integer page,
+                         @RequestParam(value = "size", defaultValue = "10") Integer size,
+                         ModelMap model) {
+        Page<Product> products = productSvc.searchProducts(keyword, page, size);
+
+        System.out.println("getTotalPages()" + products.getTotalPages());
+        System.out.println("getTotalElements()" + products.getTotalElements());
+
+        System.out.println(keyword);
+        System.out.println("當前page" + page + "當前size" + size);
+        model.addAttribute("products", products.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", products.getTotalPages());
+        model.addAttribute("keyword", keyword); // 添加關鍵字到模型中以便在分頁導航中使用
+        model.addAttribute("size", size); // 添加每頁大小到模型中以便在分頁導航中使用
+        return "backend/searchTest";
     }
 
     /**
@@ -447,32 +467,6 @@ public class BackendIndexController {
      */
     private boolean check(Cookie cookie) {
         return "autoLogin".equals(cookie.getName());
-    }
-
-    @GetMapping("/webTest")
-    public String toWebTest() {
-        return "backend/webTest";
-    }
-
-
-    @GetMapping("/searchTest")
-    public String toSearch() {
-
-        return "backend/searchTest";
-    }
-
-    @GetMapping("/search")
-    public String search(@RequestParam("query") String keyword,
-                         @RequestParam(value = "page", defaultValue = "1") Integer page,
-                         @RequestParam(value = "size", defaultValue = "10") Integer size,
-                         ModelMap model) {
-        Page<Product> products = productSvc.searchProducts(keyword, page, size);
-        model.addAttribute("products", products.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", products.getTotalPages());
-        model.addAttribute("keyword", keyword); // 添加關鍵字到模型中以便在分頁導航中使用
-        model.addAttribute("size", size); // 添加每頁大小到模型中以便在分頁導航中使用
-        return "backend/searchTest";
     }
 
 }

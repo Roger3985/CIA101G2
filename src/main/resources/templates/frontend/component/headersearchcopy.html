@@ -1,19 +1,23 @@
-<!-- 頁首搜索 -->
+<!-- Header Search -->
 <div th:fragment="headersearch" class="px-search-full collapse bg-body p-3 position-fixed w-100 top-0" id="search-open">
-    <div class="container位置-relative">
+    <div class="container position-relative">
         <div class="row vh-100 justify-content-center">
             <div class="col-lg-8 pt-12">
                 <h2 class="h1 mb-4">
                     <span class="d-block">Search</span>
                 </h2>
-                <form method="get" th:action="@{/frontend/searchMore}" class="position-relative w-100" id="searchForm">
+                <form class="position-relative w-100" id="searchForm">
                     <div class="mb-3 input-group">
-                        <!-- 搜索輸入框 -->
-                        <input id="searchInput" class="form-control shadow-none" type="text" name="searchQuery" placeholder="你想尋找什麼？">
+                        <!-- Search input -->
+                        <input id="searchInput" class="form-control shadow-none" type="text" name="search" placeholder="你想尋找什麼？">
                         <!-- 搜索結果將在這裡動態顯示 -->
                         <div id="searchResults" class="search-results"></div>
-                        <!-- 搜索按鈕 -->
-                        <button type="submit" class="btn btn-primary shadow-none">
+                        <!-- 更多搜尋結果 -->
+                        <div id="moreResults" class="text-center mt-3" style="display: none;">
+                            <button type="button" class="btn btn-outline-primary" id="moreResultsButton">更多搜尋結果</button>
+                        </div>
+                        <!-- Search button -->
+                        <button type="button" class="btn btn-primary shadow-none" onclick="performSearch()">
                             <i class="fi-search"></i>
                         </button>
                     </div>
@@ -21,43 +25,43 @@
                 <div class="row pt-3">
                     <div class="col-6 col-lg-4">
                         <a class="nav-link px-0 py-1" href="#">
-                            <i class="bi-chevron-right me-1"></i> 搜索結果列表
+                            <i class="bi-chevron-right me-1"></i> Search Results List
                         </a>
                         <a class="nav-link px-0 py-1" href="#">
-                            <i class="bi-chevron-right me-1"></i> 搜索結果網格
+                            <i class="bi-chevron-right me-1"></i> Search Results Grid
                         </a>
                         <a class="nav-link px-0 py-1" href="#">
-                            <i class="bi-chevron-right me-1"></i> 關於我們
+                            <i class="bi-chevron-right me-1"></i>About
                         </a>
                         <a class="nav-link px-0 py-1" href="#">
-                            <i class="bi-chevron-right me-1"></i> 服務
+                            <i class="bi-chevron-right me-1"></i>Services
                         </a>
                         <a class="nav-link px-0 py-1" href="#">
-                            <i class="bi-chevron-right me-1"></i> 發票
+                            <i class="bi-chevron-right me-1"></i> Invoice
                         </a>
                     </div>
                     <div class="col-6 col-lg-4">
                         <a class="nav-link px-0 py-1" href="#">
-                            <i class="bi-chevron-right me-1"></i> 個人檔案
+                            <i class="bi-chevron-right me-1"></i> Profile
                         </a>
                         <a class="nav-link px-0 py-1" href="#">
-                            <i class="bi-chevron-right me-1"></i> 用戶聯繫人
+                            <i class="bi-chevron-right me-1"></i> User Contacts
                         </a>
                         <a class="nav-link px-0 py-1" href="#">
-                            <i class="bi-chevron-right me-1"></i> 評論
+                            <i class="bi-chevron-right me-1"></i> Reviews
                         </a>
                         <a class="nav-link px-0 py-1" href="#">
-                            <i class="bi-chevron-right me-1"></i> 設置
+                            <i class="bi-chevron-right me-1"></i> Settings
                         </a>
                     </div>
                 </div>
             </div>
-            <!-- 搜索按鈕關閉開始 -->
+            <!-- Search button close START -->
             <a class="search-close" data-bs-toggle="collapse" href="javascript:void(0)" data-bs-target="#search-open" aria-expanded="true">
                 <i class="bi bi-x p-0 lh-1"></i>
             </a>
-            <!-- 搜索按鈕關閉結束 -->
+            <!-- Search button close END -->
         </div>
     </div>
 </div>
-<!-- 頁首搜索結束 -->
+<!-- End Header Search -->

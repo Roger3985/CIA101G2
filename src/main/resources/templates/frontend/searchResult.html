@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>搜索結果</title>
+</head>
+<body>
+<h1>搜索結果: <span th:text="${searchQuery}"></span></h1>
+
+<h2>產品搜索結果</h2>
+<div th:each="product : ${productSearch}">
+    <h4 th:text="${product.productName}"></h4>
+    <p th:text="${product.productInfo}"></p>
+</div>
+
+<h2>租賃搜索結果</h2>
+<div th:each="rental : ${rentalSearch}">
+    <h4 th:text="${rental.rentalName}"></h4>
+    <p th:text="${rental.rentalInfo}"></p>
+</div>
+</body>
+</html>
