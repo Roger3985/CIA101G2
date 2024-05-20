@@ -214,7 +214,7 @@
                                     <div class="col-sm-6">
                                         <span class="small letter-spacing-2">付款方式</span>
                                         <select class="form-control" name="rentalPayMethod">
-                                            <option name="1" value="1">信用卡</option>
+                                            <option name="1" value="1">線上付款(信用卡)</option>
                                             <option name="2" value="2">現場付款</option>
                                         </select>
                                         <!--                                        <input class="form-control" type="text" id="cc-number"-->
@@ -459,7 +459,7 @@
         // console.log("再次確認 : " + $("span.rentalAllDepPrice").text());
         // 結帳 242
         $(document).on("click", "button.createOrder", function () {
-            console.log("按下送出訂單時 : " + $("span.rentalAllDepPrice").text());
+
             if (items.length === 0) {
                 alert("好像沒有商品可以結帳喔!再去逛逛吧!");
                 return;
@@ -469,13 +469,10 @@
                 alert("請輸入日期!");
                 return;
             }
-            // console.log("第二道檢查完時 : " + rentalAllDepPrice);
-
-            // let rentalAllDepPriceValue = $("span.rentalAllDepPrice").text();
-
-            // console.log(items.length);
-            // console.log("按下送出訂單時 : " + parseFloat(rentalAllDepPrice) );
-            // console.log("計算得出的總押金 : " + parseFloat(rentalAllDepPriceValue) );
+            if ($("select[name='rentalTakeMethod']").val() === "2" && $("select[name='rentalPayMethod']").val() === "2") {
+                alert("溫馨提醒 : 宅配方式只接受線上付款喔");
+                return;
+            }
 
             // 創建訂單所需資料
             let formData = {
@@ -504,6 +501,9 @@
             }).then(function (response) {
                 return response.text();
             }).then(function (checkoutUrl) {
+                if (checkoutUrl === "thankForBuying") {
+                    window.location.href = baseUrl + apiPath + checkoutUrl;
+                }
                 let formContainer = document.getElementById("ecpayFormContainer");
                 formContainer.innerHTML = checkoutUrl;
                 formContainer.querySelector('form').submit();
