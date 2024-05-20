@@ -42,7 +42,7 @@ public class LogisticsStateService {
      * @return : Map<物流狀態名, 物流狀態值>
      */
     public Map<String, String> parseLogisticsInfo(String infoString) {
-
+        System.out.println("有進來組合參數方法喔");
         Map<String, String> statInfos = new HashMap<>();
         // 把 formHTML 裡的各個 key-value 以 & 為分水嶺切割開來，放進字串陣列
         String[] infoPairs = infoString.split("&");
@@ -75,6 +75,10 @@ public class LogisticsStateService {
             String itemKey = "logisticsStat : member : " + memNo + " : rentalOrdNo : " + rentalOrdNo;
             Map<String, String> statInfos = jedis.hgetAll(itemKey);
             String allPayLogisticsID = statInfos.get("AllPayLogisticsID");
+            System.out.println("用內網查到了，這筆的AllPayLogisticsID = " + allPayLogisticsID);
+            if (allPayLogisticsID == null) {
+                return "noData";
+            }
             // 用那筆 AllPayLogisticsID 去查詢物流狀態
             AllInOne all = new AllInOne();
             QueryLogisticsTradeInfoObj obj = new QueryLogisticsTradeInfoObj();

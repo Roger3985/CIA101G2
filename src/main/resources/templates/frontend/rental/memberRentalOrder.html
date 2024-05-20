@@ -265,7 +265,7 @@
                                     <p>等待取貨中<br><small></small></p>
                                 </div>
 
-                                <div class="timeline-step" th:if="${rentalOrder.getrentalTakeMethod() == 2}">
+                                <div class="timeline-step express" th:if="${rentalOrder.getrentalTakeMethod() == 2}">
                                     <div class="outer-circle c2">
                                         <div class="inner-circle">
                                             <i class="bi bi-truck"></i>
@@ -545,33 +545,39 @@
     $(function () {
 
         let rentalOrdNo = $("h4.rentalOrdNoForUpdate").attr("id");
-        fetch(baseUrl + apiPath + "queryNewStat?memNo=" + memNo + "&rentalOrdNo=" + rentalOrdNo)
-            .then(response => response.text())
-            .then(logisticsStatus => {
+        // console.log($("div.express"));
+        // if ( $("div.express") ) {
 
-                switch (logisticsStatus) {
+            fetch(baseUrl + apiPath + "queryNewStat?memNo=" + memNo + "&rentalOrdNo=" + rentalOrdNo)
+                .then(response => response.text())
+                .then(logisticsStatus => {
 
-                    case "300" :
-                        $("div.process").addClass("active");
-                        break;
+                    switch (logisticsStatus) {
 
-                    case "310" :
-                        $("div.uploading").addClass("active");
-                        break;
+                        case "300" :
+                            $("div.process").addClass("active");
+                            break;
 
-                    case "3001" :
-                        $("div.transport").addClass("active");
-                        break;
+                        case "310" :
+                            $("div.uploading").addClass("active");
+                            break;
 
-                    case "3003" :
-                        $("div.finish").addClass("active");
-                        break;
+                        case "3001" :
+                            $("div.transport").addClass("active");
+                            break;
 
-                }
+                        case "3003" :
+                            $("div.finish").addClass("active");
+                            break;
 
-            });
+                    }
 
-    });
+                });
+
+        // } // if ( $("div.express") ) 結束
+
+
+    }); // DOMContentLoaded 結束
 
 
 </script>
