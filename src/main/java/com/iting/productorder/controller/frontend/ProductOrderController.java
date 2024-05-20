@@ -62,26 +62,27 @@ public class ProductOrderController {
     @Autowired
     ProductPictureServiceImpl productPictureService;
 
+
     @PostMapping("/submitOrder")
     @ResponseBody
-    public String submitOrder(@RequestParam("productByrName") String productByrName,
-                              @RequestParam("productByrPhone") String productByrPhone,
-                              @RequestParam("productByrEmail") String productByrEmail,
-                              @RequestParam("productRcvName") String productRcvName,
-                              @RequestParam("productRcvPhone") String productRcvPhone,
-                              @RequestParam("productTakeMethod") Byte productTakeMethod,
-                              @RequestParam("productAddr") String productAddr,
-                              @RequestParam("productPayMethod") Byte productPayMethod,
-                              @RequestParam("productAllPrice") BigDecimal productAllPrice,
-                              @RequestParam(value = "coupNo", required = false) Integer coupNo,
-                              HttpSession session) {
+    public ResponseEntity<String> submitOrder(@RequestParam("productByrName") String productByrName,
+                                              @RequestParam("productByrPhone") String productByrPhone,
+                                              @RequestParam("productByrEmail") String productByrEmail,
+                                              @RequestParam("productRcvName") String productRcvName,
+                                              @RequestParam("productRcvPhone") String productRcvPhone,
+                                              @RequestParam("productTakeMethod") Byte productTakeMethod,
+                                              @RequestParam("productAddr") String productAddr,
+                                              @RequestParam("productPayMethod") Byte productPayMethod,
+                                              @RequestParam("productAllPrice") BigDecimal productAllPrice,
+                                              @RequestParam(value = "coupNo", required = false) Integer coupNo,
+                                              HttpSession session) {
         // 获取 session 中的 member 对象
         Member member = (Member) session.getAttribute("member"); // 强制转换为 Member 类型
 
         // 未登录
         if (member == null) {
             session.setAttribute("location", "/frontend/productorder/submitOrder");
-            return "frontend/member/loginMember";
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("frontend/member/loginMember");
         }
 
         // 创建并设置 ProductOrder 对象
@@ -96,25 +97,31 @@ public class ProductOrderController {
         productOrder.setProductAddr(productAddr);
         productOrder.setProductTakeMethod(productTakeMethod);
         productOrder.setProductPayMethod(productPayMethod);
-productOrder.setProductAllPrice(productAllPrice);
-        // 实例化优惠券对象
-        Coupon coupon = new Coupon();
+        productOrder.setProductAllPrice(productAllPrice);
 
-        if (coupNo == null) {
-            coupon.setCoupNo(1); // 设置默认优惠券编号
+// 声明 coupon 变量并初始化为 null
+        final Coupon coupon;
+
+// 检查是否存在优惠券
+        Optional<MyCoupon> myCouponOptional = myCouponService.getOneMyCoupon(coupNo, member.getMemNo());
+
+// 如果存在优惠券，设置优惠券的使用状态并获取对应的 Coupon 对象
+        if (myCouponOptional.isPresent()) {
+            MyCoupon myCoupon = myCouponOptional.get();
+            myCoupon.setCoupUsedStat((byte) 1);
+            coupon = myCoupon.getCoupon();
         } else {
-            myCouponService.getOneMyCoupon(coupNo, member.getMemNo())
-                    .ifPresent(myCoupon -> myCoupon.setCoupUsedStat((byte) 1));
+            coupon = null; // 如果不存在优惠券，则将 coupon 设置为 null
         }
 
-        // 设置订单对象的优惠券信息
+// 设置订单对象的优惠券信息
         productOrder.setCoupon(coupon);
 
         // 设置订单对象的优惠券信息
         String result = productOrderSvc.addOneProductOrderSuccess(productOrder);
-        cartSvc.deleteBymemNo( member.getMemNo());
-        // return "/front-end/Dessert/OrderSuccessful";
-        return result;
+        cartSvc.deleteBymemNo(member.getMemNo());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
 
@@ -122,40 +129,40 @@ productOrder.setProductAllPrice(productAllPrice);
 //        /return "redirect:" + result;
 
 
-//    @PostMapping("insertProductOrderSuccess")
-//    public String insertProductOrderSuccess(@Validated(Create.class) ProductOrder productOrder,
-//                                            BindingResult result,
-//                                            ModelMap model,
-//                                            @RequestParam(value = "coupNo", required = false) Integer coupNo,
-//                                            HttpSession session) {
-//        Member member;
-//        Object memNo = 0; // 声明并初始化memNo为Object类型
-//
-//        if (session.getAttribute("member") == null) {
-//            memNo = session.getAttribute("memNo"); // 将memNo设为session中的memNo值
-//        } else {
-//            member = (Member) session.getAttribute("member"); // 强制转换为Member类型
-//            memNo = member.getMemNo();
-//        }
-//
-//        if (coupNo == null) {
-//            coupNo = 1;
-//
-//        } else {
-//            myCouponService.getOneMyCoupon(coupNo, (Integer) memNo)
-//                    .ifPresent(myCoupon -> myCoupon.setCoupUsedStat((byte) 1));
-//        }
-//
-//
-//        /*************************** 1.接收请求参数 - 输入格式的错误处理 ************************/
-//        productOrder.setCoupon(couponService.getOneCoupon(coupNo));
-//        productOrderSvc.addOneProductOrderSuccess(productOrder);
-//
-//        cartSvc.deleteBymemNo((Integer) memNo);
-//
-//
-//        return "frontend/cart/ProductOrderSuccess";
-//    }
+    @PostMapping("insertProductOrderSuccess")
+    public String insertProductOrderSuccess(@Validated(Create.class) ProductOrder productOrder,
+                                            BindingResult result,
+                                            ModelMap model,
+                                            @RequestParam(value = "coupNo", required = false) Integer coupNo,
+                                            HttpSession session) {
+        Member member;
+        Object memNo = 0; // 声明并初始化memNo为Object类型
+
+        if (session.getAttribute("member") == null) {
+            memNo = session.getAttribute("memNo"); // 将memNo设为session中的memNo值
+        } else {
+            member = (Member) session.getAttribute("member"); // 强制转换为Member类型
+            memNo = member.getMemNo();
+        }
+
+        if (coupNo == null) {
+            coupNo = 1;
+
+        } else {
+            myCouponService.getOneMyCoupon(coupNo, (Integer) memNo)
+                    .ifPresent(myCoupon -> myCoupon.setCoupUsedStat((byte) 1));
+        }
+
+
+        /*************************** 1.接收请求参数 - 输入格式的错误处理 ************************/
+        productOrder.setCoupon(couponService.getOneCoupon(coupNo));
+        productOrderSvc.addOneProductOrderSuccess(productOrder);
+
+        cartSvc.deleteBymemNo((Integer) memNo);
+
+
+        return "frontend/cart/ProductOrderSuccess";
+    }
 
 //    @ResponseBody
 //    @PostMapping("/ecpay")
@@ -237,7 +244,10 @@ productOrder.setProductAllPrice(productAllPrice);
 
     @GetMapping("CartEnd")
     public String CartEnd(ModelMap model, HttpSession session) {
-        Member member = (Member) session.getAttribute("loginsuccess"); // 强制转换为Member类型
+        Member member=new Member();
+        member.setMemNo(3);
+        session.setAttribute("member",member);
+         member = (Member) session.getAttribute("member"); // 强制转换为Member类型
         Integer memNo = member.getMemNo();
         // 使用memNo执行您的逻辑
         List<ProductOrder> list = productOrderSvc.findByMember(memNo);

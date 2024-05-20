@@ -14,6 +14,11 @@
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
     <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+    <style>
+        .completed-order {
+            background-color: lightgray;
+           }
+    </style>
 </head>
 
 <body>
@@ -69,17 +74,17 @@
                             <ul class="list-unstyled mb-0 theme-link">
                                 <li class="border-bottom mb-0"><a
                                         class="nav-link-style d-flex align-items-center active p-3"
-                                        href="account-order.html"><i class="bi bi-bag me-2"></i> Order
+                                        href="account-order.html"><i class="bi bi-bag me-2"></i> 訂單
                                     <div class="ms-auto badge-pill badge bg-secondary">5</div>
                                 </a></li>
                                 <li class="border-bottom mb-0"><a
                                         class="nav-link-style d-flex align-items-center p-3"
-                                        href="account-wishlist.html"><i class="fi-heart me-2"></i>Wishlist
+                                        href="account-wishlist.html"><i class="fi-heart me-2"></i>我的最愛
                                     <div class="ms-auto badge-pill badge bg-secondary">5</div>
                                 </a></li>
                                 <li class="border-bottom mb-0"><a
                                         class="nav-link-style d-flex align-items-center p-3"
-                                        href="account-tickets.html"><i class="bi bi-bookmark me-2"></i>Support
+                                        href="account-tickets.html"><i class="bi bi-bookmark me-2"></i>我的優惠券
                                     Tickets
                                     <div class="ms-auto badge-pill badge bg-secondary">0</div>
                                 </a></li>
@@ -94,7 +99,7 @@
                                 </li>
                                 <li class="border-bottom mb-0"><a
                                         class="nav-link-style d-flex align-items-center p-3"
-                                        href="account-address.html"><i class="bi bi-map-fill me-2"></i>Addresses</a>
+                                        href="account-address.html"><i class="bi bi-map-fill me-2"></i>地址</a>
                                 </li>
                                 <li class="border-bottom mb-0"><a
                                         class="nav-link-style d-flex align-items-center p-3"
@@ -122,13 +127,13 @@
                                     <th class="fw-600 text-end">下單時間</th>
                                     <th class="fw-600">訂單狀態</th>
                                     <th class="fw-600">付款狀態</th>
-                                    <th class="fw-600">付款</th>
                                     <th class="fw-600">詳情</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <th:block th:each="productOrder : ${productorderListData}">
-                                    <tr>
+
+                                    <tr th:class="${productOrder.productOrdStat == 50} ? 'completed-order' : ''">
                                         <td class="p-3" th:text="${productOrder.productOrdNo}"></td>
                                         <td class="p-3" th:text="${productOrder.productByrName}"></td>
                                         <td class="p-3">
@@ -139,10 +144,7 @@
 
                                         <td class="p-3" >
                                             <span th:if="${productOrder.productPayMethod == 1}">線上刷卡</span>
-                                            <span th:if="${productOrder.productPayMethod == 2}">超商繳款</span>
-                                            <span th:if="${productOrder.productPayMethod == 3}">ATM付款</span>
-                                            <span th:if="${productOrder.productPayMethod == 4}">匯款</span>
-                                            <span th:if="${productOrder.productPayMethod == 5}">現場付款</span>
+                                            <span th:if="${productOrder.productPayMethod == 2}">現場付款</span>
                                         </td>
                                         <td class="p-3" th:text="${productOrder.productAllPrice}"></td>
                                         <td class="p-3">
@@ -171,15 +173,10 @@
                                             <span th:if="${productOrder.productStat == 0}">未付款</span>
                                             <span th:if="${productOrder.productStat == 1}">已付款</span>
                                         </td>
+
                                         <td>
                                             <form method="post" th:action="@{/frontend/productorderdetail/productorderdetail}" style="margin-bottom: 0px;">
-                                                <input type="submit" value="付款">
-                                                <input type="hidden" name="productOrdNo" th:value="${productOrder.productOrdNo}">
-                                            </form>
-                                        </td>
-                                        <td>
-                                            <form method="post" th:action="@{/frontend/productorderdetail/productorderdetail}" style="margin-bottom: 0px;">
-                                                <input type="submit" value="詳情">
+                                                <input type="submit" value="訂單明細">
                                                 <input type="hidden" name="productOrdNo" th:value="${productOrder.productOrdNo}">
                                             </form>
                                         </td>
@@ -212,7 +209,8 @@
                 </div>
             </div>
         </div>
-    </main>
+
+</main>
     <!-- End Main -->
     <!-- Footer -->
     <footer th:replace="frontend/component/footer :: footer"></footer>

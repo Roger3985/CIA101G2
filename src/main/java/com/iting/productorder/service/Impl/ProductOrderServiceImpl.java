@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -50,6 +51,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     CouponService couponService;
     @Autowired
     ProductServiceImpl productService;
+
 
     @Override
     public List<ProductOrder> findByMember(Integer memNo) {
@@ -129,7 +131,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         productOrder.setProductAddr(productOrder.getProductAddr());
 
         // 设置订单状态，这里的值可能需要根据实际情况调整
-        productOrder.setProductStat((byte) 0);
+        productOrder.setProductStat((byte) 1);
         productOrder.setProductOrdStat((byte) 40);
 
         // 处理优惠券信息
@@ -187,12 +189,14 @@ public class ProductOrderServiceImpl implements ProductOrderService {
             AllInOne all = new AllInOne("");
             AioCheckOutALL obj = new AioCheckOutALL();
             BigDecimal AllPrice = productOrder.getProductRealPrice();
-
-            obj.setMerchantTradeNo("MKeQ"  + productOrder.getProductOrdNo());//訂單編號
-            // 交易時間(先把毫秒部分切掉)
+// 将 BigDecimal 类型的金额转换为整数，这里采用向下取整的方式
+            String totalAmount = AllPrice.setScale(0, RoundingMode.DOWN).toString();
+            obj.setMerchantTradeNo("MKeQ"  + productOrder.getProductOrdNo());//订单编号
+// 交易时间(先把毫秒部分切掉)
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-            obj.setMerchantTradeDate( sdf.format(productOrder.getProductOrdTime()) );  //訂單日期
-            obj.setTotalAmount(String.valueOf(AllPrice));   //訂單全部總金額
+            obj.setMerchantTradeDate(sdf.format(productOrder.getProductOrdTime()));  //订单日期
+            obj.setTotalAmount(totalAmount);  // 将 BigDecimal 转换为字符串并设置给 TotalAmount
+            //訂單全部總金額
             obj.setTradeDesc("test Description");
             obj.setItemName(itemNames);
             obj.setReturnURL("http://211.23.128.214:5000");
@@ -200,7 +204,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
             //		obj.setOrderResultURL("https://www.google.com.tw/");
             obj.setOrderResultURL("http://localhost:8080/frontend/cart/ProductOrderSuccess");  //付款完跳轉的頁面
             obj.setNeedExtraPaidInfo("N");
-            productOrder.setProductStat((byte)1);
             String form = all.aioCheckOut(obj, null);
 
             return form;

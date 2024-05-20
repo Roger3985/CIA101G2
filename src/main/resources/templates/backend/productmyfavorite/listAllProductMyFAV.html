@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+    <!-- Custom styles for this page -->
+    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
+    <style>
+        * {
+            font-size: 12px; /* 調整字體大小 */
+        }
+    </style>
+</head>
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+
+                <div class="container-fluid">
+                    <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">查詢商品 - 我的最愛</h6>
+                        </div>
+                        <div class="a">
+                            <ul>
+                                <font color=blue>單一查詢:</font><br>
+                                <li>
+                                    <form method="post" th:action="@{/backend/productmyfavorite/getOneDisplay}">
+                                        選擇商品編號:
+                                        <select name="productNo">
+                                            <option>請選擇</option>
+                                            <option th:each="product : ${productListData}"
+                                                    th:value="${product.productNo}"
+                                                    th:text="${product.productNo} + '-[' + ${product.productName} + ']'"/>
+                                        </select><br>
+                                        <input type="submit" value="送出">
+                                    </form>
+                                    <br>
+                                </li>
+                                <li>
+                                    <form method="post" th:action="@{/backend/productmyfavorite/getOne}">
+                                        選擇會員編號:
+                                        <select name="memNo">
+                                            <option>請選擇</option>
+                                            <option th:each="member : ${memberListData}" th:value="${member.memNo}"
+                                                    th:text="${member.memNo} + '-[' + ${member.memName} + ']'"/>
+                                        </select><br>
+                                        <input type="submit" value="送出">
+                                    </form>
+                                    <br>
+                                </li>
+                                <hr width="90%" size="7">
+                                <!--  萬用複合查詢(開始)  -->
+                                <!--          <font color=blue>萬用複合查詢:</font><br>-->
+                                <!--          <li>-->
+                                <!--            <form method="get" th:action="@{search}">-->
+                                <!--              選擇商品編號:-->
+                                <!--              <select name="productNo">-->
+                                <!--                <option value="1">請選擇</option>-->
+                                <!--                <option th:each="product : ${productNoData}" th:value="${product.productNo}" th:text="${product.productNo} + '-[' + ${product.productName} + ']'" />-->
+                                <!--              </select><br>-->
+                                <!--              選擇會員編號:-->
+                                <!--              <select name="memNo">-->
+                                <!--                <option>請選擇</option>-->
+                                <!--                <option th:each="member : ${memNoData}" th:value="${member.memNo}" th:text="${member.memNo}"></option>-->
+                                <!--              </select><br>-->
+                                <!--              選擇加入我的最愛時間:-->
+                                <!--              <input name="productFavTime" type="date"><br>-->
+                                <!--              <input type="submit" value="送出"/>-->
+                                <!--            </form>-->
+                                <!--            <div class="table-responsive">-->
+                                <!--              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">-->
+                                <!--                <div th:if="${search}">-->
+                                <!--                  <div th:insert="~{/backend/productmyfavorite/listOneProductMyFAV :: listOneProductMyFAV}"></div>-->
+                                <!--                </div>-->
+                                <!--              </table>-->
+                                <!--            </div>-->
+                                <!--          </li>-->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Footer -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">商品 - 我的最愛清單</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>商品編號</th>
+                                    <th>會員編號</th>
+                                    <!--                  <th>加入我的最愛時間</th>-->
+                                    <th>修改</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <th:block th:each="productMyFavorite : ${productMyFAVList}">
+                                    <tr>
+                                        <td th:text="${productMyFavorite.product.productNo} + '-[' + ${productMyFavorite.product.productName} + ']'"></td>
+                                        <td th:text="${productMyFavorite.member.memNo} + '-[' + ${productMyFavorite.member.memName} + ']'"></td>
+                                        <!--                    <td th:text="${productMyFavorite.productFavTime}"></td>-->
+                                        <td>
+                                            <form method="post"
+                                                  th:action="@{/backend/productmyfavorite/updateProductMyFAV}">
+                                                <button th:onclick="'updateProductMyFAV(' + ${productMyFavorite.product.productNo} + ')' "
+                                                        name="productNo"
+                                                        th:value="${productMyFavorite.product.productNo}">
+                                                    <i class="far fa-edit"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <!-- /.container-fluid -->
+
+            <footer th:replace="backend/component/bottom :: bottom"></footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+    <!-- Logout Modal-->
+    <div th:replace="backend/component/logout :: logout"></div>
+
+    <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+    <!-- Page level plugins -->
+    <script th:src="@{/backend/vendor/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+    <!-- Page level custom scripts -->
+    <script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
+
+</body>
+</html>

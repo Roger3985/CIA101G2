@@ -10,6 +10,10 @@ import java.util.List;
 
 @Repository
 public interface ProductOrderRepository extends JpaRepository<ProductOrder, Integer> {
-    @Query(value = "SELECT * FROM productorder WHERE memno = ?1", nativeQuery = true)
-    List<ProductOrder> findByMember(Integer memNo);
+
+        @Query(value = "SELECT * FROM productorder WHERE memno = ?1 ORDER BY CASE WHEN productOrdStat = 50 THEN 1 ELSE 0 END, productordtime DESC", nativeQuery = true)
+        List<ProductOrder> findByMember(Integer memNo);
+
+
+
 }

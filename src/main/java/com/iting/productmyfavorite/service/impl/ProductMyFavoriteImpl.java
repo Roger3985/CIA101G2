@@ -1,59 +1,57 @@
-//package com.iting.productmyfavorite.service.impl;
-//
-//import com.iting.productorderdetail.dao.ProductOrderDetailRepository;
-//import com.iting.productorderdetail.entity.ProductOrderDetail;
-//import com.iting.productorderdetail.service.ProductOrderDetailService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.List;
-//
-//@Service("productOrderDetailService")
-//public class ProductMyFavoriteImpl implements ProductOrderDetailService {
-//    @Autowired
-//    ProductOrderDetailRepository repository;
-//
-//    @Override
-//    public void addProductOrderDetail(ProductOrderDetail productOrderDetail) {
-//        repository.save(productOrderDetail);
-//    }
-//    @Override
-//    public void updateProductOrderDetail(ProductOrderDetail productOrderDetail) {
-//        // 查询数据库中的订单详情对象
-//        ProductOrderDetail existingOrderDetail = repository.findByproductOrdNoAndproductNo(
-//                productOrderDetail.getCompositeKey().getProductOrdNo(),
-//                productOrderDetail.getCompositeKey().getProductNo()
-//        );
-//
-//        // 更新订单详情对象的属性
-//        existingOrderDetail.setProductPrice(productOrderDetail.getProductPrice());
-//        existingOrderDetail.setProductOrdQty(productOrderDetail.getProductOrdQty());
-//        existingOrderDetail.setProductRealPrice(productOrderDetail.getProductRealPrice());
-//        existingOrderDetail.setProductComContent(productOrderDetail.getProductComContent());
-//        existingOrderDetail.setProductScore(productOrderDetail.getProductScore());
-//
-//        // 保存更新后的订单详情对象到数据库
-//        repository.save(existingOrderDetail);
-//    }
-//
-//
-//@Override
-//public ProductOrderDetail findByproductOrdNoAndproductNo(Integer productOrdNo,Integer productNo){
-//    return repository.findByproductOrdNoAndproductNo(productOrdNo,productNo);
-//}
-//
-//
-//    @Override
-//    public List<ProductOrderDetail> getAll() {
-//        return repository.findAll();
-//    }
-//
-//    @Override
-//    public List<ProductOrderDetail> findByCompositeKey(Integer productNo) {
-//        return repository.findByCompositeKey(productNo);
-//    }
-//
-//
-//
-//
-//}
+package com.iting.productmyfavorite.service.impl;
+
+import com.iting.productmyfavorite.dao.ProductMyFavoriteRepository;
+import com.iting.productmyfavorite.entity.ProductMyFavorite;
+import com.iting.productmyfavorite.service.ProductMyFavoriteService;
+import com.ren.product.dao.ProductRepository;
+import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service("productMyFavoriteService")
+public class ProductMyFavoriteImpl implements ProductMyFavoriteService {
+    //單筆查詢(rentalNo)
+    @Autowired //自動裝配
+    private ProductMyFavoriteRepository repository;
+    @Autowired
+    private ProductRepository productRepository;
+    @Override
+    public ProductMyFavorite findByProductNo(Integer  productNo) {
+        return repository.findByProduct_ProductNo( productNo);
+    }
+
+    //單筆查詢
+    @Override
+    public List<ProductMyFavorite> findByMemNo(Integer memNo) {
+        return repository.findByMember_MemNo(memNo);
+    }
+
+    //複合主鍵查詢
+    @Override
+    public ProductMyFavorite findByProductNoAndMemNo(Integer productNo, Integer memNo) {
+        return repository.findByProduct_ProductNoAndMember_MemNo(productNo, memNo);
+    }
+
+    //複合主鍵查詢
+    @Override
+    public List<ProductMyFavorite> findByProductProductNoAndMemberMemNo(Integer productNo, Integer memNo) {
+        return repository.findByProductProductNoAndMemberMemNo(productNo, memNo);
+    }
+
+    @Override
+    public List<ProductMyFavorite> findByCompositeKey(Integer productNo) {
+        return repository.findByCompositeKey(productNo);
+    }
+
+    //全部查詢
+    @Override
+    public List<ProductMyFavorite> findAll() {
+        return repository.findAll();
+    }
+
+
+
+
+}

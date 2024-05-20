@@ -139,6 +139,7 @@ import com.chihyun.coupon.model.CouponService;
 import com.iting.cart.entity.CartRedis;
 import com.iting.cart.service.CartService;
 
+import com.iting.productorder.service.ProductOrderService;
 import com.ren.product.service.impl.ProductServiceImpl;
 import com.ren.productpicture.entity.ProductPicture;
 import com.ren.productpicture.service.impl.ProductPictureServiceImpl;
@@ -178,6 +179,8 @@ public class CartController {
     CouponService couponService;
     @Autowired
     ProductPictureServiceImpl productPictureService;
+    @Autowired
+    ProductOrderService productOrderService;
 
 
     @GetMapping("/cart/addcart")
@@ -188,11 +191,14 @@ public class CartController {
         return "frontend/cart/addCart";
     }
 
-//    @GetMapping("/cart/productOrderSuccess")
-//    public String productOrderSuccess(ModelMap model) {
-//        return "frontend/cart/ProductOrderSuccess";
-//    }
 
+    @PostMapping("/cart/ProductOrderSuccess")
+    public String ProductOrderSuccess(HttpSession session) {
+
+
+        return "frontend/cart/ProductOrderPaySuccess";
+
+    }
 
 
     //
