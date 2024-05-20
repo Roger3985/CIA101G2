@@ -1,6 +1,7 @@
 package com.ren.product.service;
 
 import com.ren.product.entity.Product;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Map;
@@ -111,6 +112,16 @@ public interface ProductService_interface {
 	 * @return 返回全部商品資料
 	 */
 	List<Product> getAll();
+
+	/**
+	 * 全文搜索
+	 *
+	 * @param keyword 關鍵字
+	 * @param page 將搜尋結果以分頁呈現
+	 * @param size 指定分頁要呈現多少筆資料
+	 * @return 返回分頁搜尋結果
+	 */
+	public Page<Product> searchProducts(String keyword, Integer page, Integer size);
 
 	/**
 	 * 更新單筆商品資料

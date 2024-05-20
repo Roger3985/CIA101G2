@@ -3,8 +3,11 @@ package com.ren;
 import com.ren.administrator.entity.Administrator;
 import com.ren.administrator.dto.LoginState;
 import com.ren.administrator.service.impl.AdministratorServiceImpl;
+import com.ren.product.entity.Product;
+import com.ren.product.service.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -52,6 +55,9 @@ public class BackendIndexController {
 
     @Autowired
     private AdministratorServiceImpl administratorSvc;
+
+    @Autowired
+    private ProductServiceImpl productSvc;
 
     /**
      * 前往首頁
@@ -446,6 +452,27 @@ public class BackendIndexController {
     @GetMapping("/webTest")
     public String toWebTest() {
         return "backend/webTest";
+    }
+
+
+    @GetMapping("/searchTest")
+    public String toSearch() {
+
+        return "backend/searchTest";
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam("query") String keyword,
+                         @RequestParam(value = "page", defaultValue = "1") Integer page,
+                         @RequestParam(value = "size", defaultValue = "10") Integer size,
+                         ModelMap model) {
+        Page<Product> products = productSvc.searchProducts(keyword, page, size);
+        model.addAttribute("products", products.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", products.getTotalPages());
+        model.addAttribute("keyword", keyword); // 添加關鍵字到模型中以便在分頁導航中使用
+        model.addAttribute("size", size); // 添加每頁大小到模型中以便在分頁導航中使用
+        return "backend/searchTest";
     }
 
 }

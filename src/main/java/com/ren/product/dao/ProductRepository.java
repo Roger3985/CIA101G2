@@ -2,6 +2,8 @@ package com.ren.product.dao;
 
 import com.ren.product.entity.Product;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -59,6 +61,21 @@ import java.util.Optional;
 @Repository
 @Primary
 public interface ProductRepository extends JpaRepository<Product, Integer> {
+
+    /**
+     * 全文搜索
+     *
+     * @param keyword 關鍵字
+     * @param pageable 將搜尋結果以分頁呈現
+     * @return 返回分頁搜尋結果
+     */
+    @Query("SELECT p FROM Product p WHERE " +
+            "CONCAT(CAST(p.productNo AS string), ' ', CAST(p.productCategory.productCatNo AS string), ' ', p.productCategory.productCatName, ' ', p.productName, ' ', p.productInfo, ' ', p.productColor) " +
+            "LIKE %?1%")
+    Page<Product> findAll(String keyword, Pageable pageable);
+
+//    @Query(value = "SELECT * FROM product WHERE MATCH(productNo, productName, productInfo) " + "AGAINST (?1)", nativeQuery = true)
+//    public Page<Product> search(String keyword, Pageable pageable);
 
     // 根據關鍵字搜尋產品
     @Transactional

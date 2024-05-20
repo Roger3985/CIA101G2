@@ -4,6 +4,9 @@ import com.ren.product.entity.Product;
 import com.ren.product.dao.ProductRepository;
 import com.ren.product.service.ProductService_interface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -170,6 +173,20 @@ public class ProductServiceImpl implements ProductService_interface {
     @Override
     public List<Product> getComposite(Product product) {
         return productRepository.findByAttributes(product.getProductNo(), product.getProductCategory().getProductCatNo(), product.getProductName(), product.getProductInfo(), product.getProductSize(), product.getProductColor(), product.getProductPrice(), product.getProductStat(), product.getProductSalQty(), product.getProductComPeople(), product.getProductComScore(), product.getProductOnShelf(), product.getProductOffShelf());
+    }
+
+    /**
+     * 全文搜索
+     *
+     * @param keyword 關鍵字
+     * @param page 將搜尋結果以分頁呈現
+     * @param size 指定分頁要呈現多少筆資料
+     * @return 返回分頁搜尋結果
+     */
+    @Override
+    public Page<Product> searchProducts(String keyword, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findAll(keyword, pageable);
     }
 
     /**
