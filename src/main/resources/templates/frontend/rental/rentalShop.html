@@ -290,53 +290,54 @@
                             </div>
                         </div>
                         <!-- 商品 -->
-                        <div class="row g-0 mb-4 rental" th:each="rental : ${rentalListData}">
-                            <div class="col-sm-4 position-relative">
-                                <div class="badge-ribbon position-absolute top-0 mt-3">
-                                    <span class="badge bg-danger">Sale</span>
-                                </div>
+                        <th:block th:each="rental : ${rentalListData}">
+                            <div class="row g-0 mb-4 rental">
+                                <div class="col-sm-4 position-relative">
+                                    <div class="badge-ribbon position-absolute top-0 mt-3">
+                                        <span class="badge bg-danger">Sale</span>
+                                    </div>
                                 <a th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}"><!-- 對應品項查詢 -->
-                                    <img class="border img-fluid w-100" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '.jpg'}"
-                                         th:attr="width=276, height=307" title="" alt="">
+                                    <img class="border img-fluid w-100" th:src="@{'/icons/frontend/rental/rentalshop/' + ${rental.rentalNo} + '.jpg'}"
+                                         th:width="276" th:height="310" title="" alt="">
                                 </a>
+                                </div>
+                                <div class="col-sm-8 ps-sm-4 pt-3 pt-sm-0">
+                                    <div class="rating-star text mb-2 small"><!-- 評價 -->
+                                        <i class="bi bi-star-fill active"></i>
+                                        <i class="bi bi-star-fill active"></i>
+                                        <i class="bi bi-star-fill active"></i>
+                                        <i class="bi bi-star-fill active"></i>
+                                        <i class="bi bi-star"></i>
+                                    </div>
+                                    <h5 class="product-title">
+                                        <a class="text-reset" th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
+                                            <span th:text="${rental.rentalName}"></span></a><!-- 租借品名稱 -->
+                                    </h5>
+                                    <div class="m-0">
+                                        <p class="small mb-2"><span>編號：</span><span class="rentalNo" th:text="${rental.rentalNo}"></span></p><!-- 租借品編號 -->
+                                        <p class="small mb-2"><span th:text="${rental.rentalInfo}"></span></p><!-- 租借品介紹 -->
+                                    </div>
+                                    <div class="product-price pb-3">
+                                        <span class="text-primary fs-4" th:text="'$' + ${rental.rentalCategory.rentalDesPrice}"></span><!-- 押金 -->
+                                        <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del><!-- 定價 -->
+                                    </div>
+                                    <div>
+                                        <a href="" class="btn btn-mode btn_addToCart"><!--  加入購物車(457)  -->
+                                            <i class="fi-shopping-cart"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-primary"><!--  加入我的最愛  -->
+                                            <i class="fi-heart"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-primary">追蹤</a><!--  加入追蹤的圖示 <i class="fi-repeat"></i>  -->
+                                        <a data-bs-toggle="modal" data-bs-target="#px-quick-view" th:href="@{/frontend/rental/rentalQuickview}"
+                                           href="javascript:void(0)" class="btn btn-primary">
+                                            <i class="fi-eye"></i><!--  跳窗顯示該商品畫面 (rentalQuickview.html) -->
+                                        </a>
+                                        <span class="successMsg" style="color: lightgreen"></span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-sm-8 ps-sm-4 pt-3 pt-sm-0">
-                                <div class="rating-star text mb-2 small"><!-- 評價 -->
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star-fill active"></i>
-                                    <i class="bi bi-star"></i>
-                                </div>
-                                <h5 class="product-title">
-                                    <a class="text-reset" th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
-                                        <span th:text="${rental.rentalName}"></span></a><!-- 租借品名稱 -->
-                                </h5>
-                                <div class="m-0">
-                                    <p class="small mb-2"><span>編號：</span><span class="rentalNo" th:text="${rental.rentalNo}"></span></p><!-- 租借品編號 -->
-                                    <p class="small mb-2"><span th:text="${rental.rentalInfo}"></span></p><!-- 租借品介紹 -->
-                                </div>
-                                <div class="product-price pb-3">
-                                    <span class="text-primary fs-4" th:text="'$' + ${rental.rentalCategory.rentalDesPrice}"></span><!-- 押金 -->
-                                    <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del><!-- 定價 -->
-                                </div>
-                                <div>
-                                    <a href="" class="btn btn-mode btn_addToCart"><!--  加入購物車(457)  -->
-                                        <i class="fi-shopping-cart"></i>
-                                    </a>
-                                    <a href="" class="btn btn-primary add-to-wish-list" th:attr="data-rentalno=${rental.rentalNo}">
-                                        <i class="fi-heart"></i><!--  加入我的最愛  -->
-                                    </a>
-                                    <a href="#" class="btn btn-primary">追蹤</a><!--  加入追蹤的圖示 <i class="fi-repeat"></i>  -->
-                                    <a data-bs-toggle="modal" data-bs-target="#px-quick-view" th:href="@{/frontend/rental/rentalQuickview}"
-                                       href="javascript:void(0)" class="btn btn-primary">
-                                        <i class="fi-eye"></i><!--  跳窗顯示該商品畫面 (rentalQuickview.html) -->
-                                    </a>
-                                    <span class="successMsg" style="color: lightgreen"></span>
-                                    <span class="alreadyAddWish" style="color: lightgreen"></span>
-                                </div>
-                            </div>
-                        </div>
+                        </th:block>
                         <!-- 商品  結束 -->
                         <!-- 分頁區  -->
                         <div class="shop-bottom-bar d-flex align-items-center mt-3">
@@ -448,6 +449,32 @@
             }).catch(function(error) {
                 console.error("Error:", error);
                 alert("新增失敗");
+            });
+        });
+    });
+
+    /*
+     * 功能：顏色篩選及時更新
+     *
+     *
+    */
+    $(document).ready(function() {
+        $('input[type="checkbox"]').change(function() {
+            var selectedColors = [];
+            $('input[type="checkbox"]:checked').each(function() {
+                selectedColors.push($(this).val());
+            });
+            $.ajax({
+                type: 'POST',
+                url: '/selectColors',
+                contentType: 'application/json',
+                data: JSON.stringify({ selectedColors: selectedColors }),
+                success: function(data) {
+                    $('#results').empty();
+                    data.forEach(function(item) {
+                        $('#results').append('<li>' + item + '</li>');
+                    });
+                }
             });
         });
     });
