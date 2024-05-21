@@ -693,7 +693,58 @@
 -->
 <!-- script start -->
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
-<!-- End script start -->
+<!-- End script start --><script>
+    function testAddToCart(event) {
+        var button = event.target;
+        var row = button.closest('.productitm');
+        var productNo = row.querySelector('input[name="productNo"]').value;
+        var productBuyQty = row.querySelector('input[name="productBuyQty"]').value;
+
+        var data = {
+            productNo: productNo,
+            productBuyQty: productBuyQty
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "/frontend/cart/addproducttocart",
+            data: data,
+            success: function(data) {
+                console.log("更新成功");
+            }
+        });
+    }
+
+    var addToCartButtons = document.querySelectorAll(".addToCartBtn");
+    addToCartButtons.forEach(function(button) {
+        button.addEventListener("click", testAddToCart);
+    });
+
+    function testAddToFAV(event) {
+        var button = event.target;
+        var row = button.closest('.productitm');
+        var productNo = row.querySelector('input[name="productNo"]').value;
+
+        var data = {
+            productNo: productNo,
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "/frontend/productmyfavorite/addProductTomyFAV",
+            data: data,
+            success: function(data) {
+                console.log("加入成功");
+            }
+        });
+    }
+
+    var addToFAVBtns = document.querySelectorAll(".addToFAVBtn"); // 更正為".addToFAVBtn"
+    addToFAVBtns.forEach(function(button) {
+        button.addEventListener("click", testAddToFAV);
+    });
+
+</script>
 </body>
 
 </html>

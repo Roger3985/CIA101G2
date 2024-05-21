@@ -1,7 +1,12 @@
 package com.iting.productorder.service.Impl;
-
+import ecpay.logistics.integration.exception.EcpayException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.chihyun.coupon.entity.Coupon;
 import com.chihyun.coupon.model.CouponService;
+import com.howard.rentalorder.dto.RentalOrderRequest;
+import com.howard.rentalorder.entity.RentalOrder;
+import com.howard.rentalorderdetails.entity.RentalOrderDetails;
 import com.iting.cart.entity.CartRedis;
 import com.iting.cart.service.CartService;
 import com.iting.productorder.dao.ProductOrderRepository;
@@ -14,13 +19,20 @@ import com.ren.product.entity.Product;
 import com.ren.product.service.impl.ProductServiceImpl;
 import com.roger.member.entity.Member;
 import com.roger.member.service.MemberService;
+import com.yu.rental.entity.Rental;
+import ecpay.payment.integration.AllInOne;
+import ecpay.payment.integration.domain.AioCheckOutALL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service("productOrderService")
 public class ProductOrderServiceImpl implements ProductOrderService {
@@ -39,6 +51,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     CouponService couponService;
     @Autowired
     ProductServiceImpl productService;
+
 
     @Override
     public List<ProductOrder> findByMember(Integer memNo) {
@@ -93,37 +106,55 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 
 
     @Override
-    public void addOneProductOrderSuccess(ProductOrder productOrder) {
+    @Transactional
+    public String addOneProductOrderSuccess(ProductOrder productOrder) {
+        // 生成订单号
         int orderNoHash = Math.abs(UUID.randomUUID().hashCode());
         productOrder.setProductOrdNo(orderNoHash);
-        productOrder.setMemNo(productOrder.getMember().getMemNo());
-        productOrder.setProductOrdTime(Timestamp.valueOf(LocalDateTime.now()));
-        productOrder.setProductByrEmail(productOrder.getMember().getMemMail());
-        productOrder.setProductByrName(productOrder.getMember().getMemName());
-        productOrder.setProductByrPhone(productOrder.getMember().getMemMob());
-        productOrder.setProductAddr(productOrder.getMember().getMemAdd());
 
-        Coupon coupon;
-        if (productOrder.getCoupon() != null) {
-            coupon = couponService.getOneCoupon(productOrder.getCoupon().getCoupNo());
-        } else {
-            // 如果 coupon 或 coupNo 为空，则设置 coupon 为 id 为 1 的默认优惠券
-            coupon = couponService.getOneCoupon(1);
+        // 获取订单中的会员信息
+        Member member = productOrder.getMember();
+        if (member == null) {
+            throw new IllegalArgumentException("Member cannot be null");
         }
 
-        BigDecimal discount = coupon.getCoupDisc();
-        productOrder.setProductDisc(discount);
-        BigDecimal totalPrice = productOrder.getProductAllPrice();
-        productOrder.setProductRealPrice(discount.multiply(totalPrice));
-        Set<ProductOrderDetail> orderDetails = new HashSet<>();
-        productOrder.setProductOrderDetails(orderDetails);
-        List<CartRedis> cartItems = cartService.findByCompositeKey(productOrder.getMemNo());
-        BigDecimal productAllPrice = BigDecimal.ZERO; // Initialize productAllPrice
+        // 设置订单基本信息
+        productOrder.setMemNo(member.getMemNo());
+        productOrder.setProductOrdTime(Timestamp.valueOf(LocalDateTime.now()));
 
-        // 将购物车商品转换为订单明细
+        // 设置买家的邮箱、姓名和电话
+        productOrder.setProductByrEmail(productOrder.getProductByrEmail());
+        productOrder.setProductByrName(productOrder.getProductByrName());
+        productOrder.setProductByrPhone(productOrder.getProductByrPhone());
+
+        // 设置订单地址
+        productOrder.setProductAddr(productOrder.getProductAddr());
+
+        // 设置订单状态，这里的值可能需要根据实际情况调整
+        productOrder.setProductStat((byte) 1);
+        productOrder.setProductOrdStat((byte) 40);
+
+        // 处理优惠券信息
+        Coupon coupon = productOrder.getCoupon();
+        if (coupon == null || coupon.getCoupNo() == null) {
+            // 设置默认的优惠券编号
+            coupon = couponService.getOneCoupon(1);
+        } else {
+            coupon = couponService.getOneCoupon(coupon.getCoupNo());
+        }
+        productOrder.setCoupon(coupon);
+
+        // 计算订单折扣和实际支付价格
+        BigDecimal discount = coupon.getCoupDisc();
+        BigDecimal totalPrice = productOrder.getProductAllPrice();
+        productOrder.setProductDisc(discount);
+        productOrder.setProductRealPrice(discount.multiply(totalPrice));
+
+        // 构建订单明细
+        Set<ProductOrderDetail> orderDetails = new HashSet<>();
+        List<CartRedis> cartItems = cartService.findByCompositeKey(member.getMemNo());
         for (CartRedis cartItem : cartItems) {
             ProductOrderDetail orderDetail = new ProductOrderDetail();
-            // 设置订单明细相关属性
             ProductOrderDetail.CompositeDetail compositeKey = new ProductOrderDetail.CompositeDetail();
             compositeKey.setProductNo(cartItem.getProductNo());
             orderDetail.setCompositeKey(compositeKey);
@@ -132,17 +163,56 @@ public class ProductOrderServiceImpl implements ProductOrderService {
             BigDecimal realPrice = BigDecimal.valueOf(cartItem.getProductBuyQty())
                     .multiply(cartItem.getProductPrice());
             orderDetail.setProductRealPrice(realPrice);
-            // Increment productAllPrice by the real price of current order detail
-            productAllPrice = productAllPrice.add(realPrice);
-            // 设置订单编号
-            orderDetail.getCompositeKey().setProductOrdNo(orderNoHash);
-            // 加入订单明细 Set
+            compositeKey.setProductOrdNo(orderNoHash);
             orderDetails.add(orderDetail);
         }
-        // 保存订单
+        productOrder.setProductOrderDetails(orderDetails);
+
+        // 保存订单信息到数据库中
         repository.save(productOrder);
+
+        // 调用支付接口
+        String itemNames = cartItems.stream().map(CartRedis::getProductName).collect(Collectors.joining("#"));
+        return ecpay(productOrder, itemNames);
     }
 
+
+
+    private static final Logger logger = LoggerFactory.getLogger(ProductOrderServiceImpl.class);
+
+    @Override
+    public String ecpay(ProductOrder productOrder, String itemNames)
+    {
+
+        try {
+            // 调用ECPay支付接口的代码
+            AllInOne all = new AllInOne("");
+            AioCheckOutALL obj = new AioCheckOutALL();
+            BigDecimal AllPrice = productOrder.getProductRealPrice();
+// 将 BigDecimal 类型的金额转换为整数，这里采用向下取整的方式
+            String totalAmount = AllPrice.setScale(0, RoundingMode.DOWN).toString();
+            obj.setMerchantTradeNo("MKeQ"  + productOrder.getProductOrdNo());//订单编号
+// 交易时间(先把毫秒部分切掉)
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            obj.setMerchantTradeDate(sdf.format(productOrder.getProductOrdTime()));  //订单日期
+            obj.setTotalAmount(totalAmount);  // 将 BigDecimal 转换为字符串并设置给 TotalAmount
+            //訂單全部總金額
+            obj.setTradeDesc("test Description");
+            obj.setItemName(itemNames);
+            obj.setReturnURL("http://211.23.128.214:5000");
+            //		obj.setOrderResultURL("http://127.0.0.1:5502");
+            //		obj.setOrderResultURL("https://www.google.com.tw/");
+            obj.setOrderResultURL("http://localhost:8080/frontend/cart/ProductOrderSuccess");  //付款完跳轉的頁面
+            obj.setNeedExtraPaidInfo("N");
+            String form = all.aioCheckOut(obj, null);
+
+            return form;
+
+        } catch (EcpayException e) {
+            // 返回空表单或者其他处理
+            return null;
+        }
+    }
 
     @Override
     public void updateProductOrder(ProductOrder productOrder) {
@@ -190,6 +260,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 
         return productOrder;
     }
+
 
 
 }
