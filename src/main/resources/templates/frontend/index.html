@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="zxx" data-bs-theme="light">
+<html xmlns:th="http://www.thymeleaf.org">
 
-<head><!-- metas -->
+<head>
+    <!-- metas -->
     <meta charset="utf-8">
     <meta name="author" content="pxdraft">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,7 +14,7 @@
     <!-- Favicon -->
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
-    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+    <th:block th:include="~{frontend/component/plugin/frontendplugin.html :: css}"></th:block>
 </head>
 
 <body>

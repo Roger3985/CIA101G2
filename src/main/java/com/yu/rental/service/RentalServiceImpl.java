@@ -3,9 +3,13 @@ package com.yu.rental.service;
 import com.yu.rental.dao.RentalRepository;
 import com.yu.rental.entity.Rental;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -185,7 +189,17 @@ public class RentalServiceImpl implements RentalService {
 		return query.getResultList();
 	}
 
-
-
-
+	/**
+	 * 全文搜索
+	 *
+	 * @param keyword 關鍵字
+	 * @param page 指定搜尋結果為第幾頁
+	 * @param size 指定一頁要有多少筆資料
+	 * @return 返回分頁搜尋結果
+	 */
+	@Override
+	public Page<Rental> searchRentals(String keyword, Integer page, Integer size) {
+		Pageable pageable = PageRequest.of(page, size);
+		return repository.findAll(keyword, pageable);
+	}
 }

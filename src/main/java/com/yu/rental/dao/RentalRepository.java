@@ -1,6 +1,9 @@
 package com.yu.rental.dao;
 
+import com.ren.product.entity.Product;
 import com.yu.rental.entity.Rental;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -42,6 +45,16 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
 
     @Query("SELECT re FROM Rental re WHERE re.rentalStat = :rentalStat") //以rentalStat 查詢
     List<Rental> findQueryByRentalStat(@Param("rentalStat") Byte rentalStat);
+
+    /**
+     * 全文搜索
+     *
+     * @param keyword 關鍵字
+     * @param pageable 設定搜尋結果為第幾分頁、有幾筆資料，將搜尋結果以分頁呈現
+     * @return 返回分頁搜尋結果
+     */
+    @Query("SELECT re FROM Rental re WHERE CONCAT(re.rentalNo, ' ', re.rentalCategory.rentalCatNo, ' ', re.rentalCategory.rentalCatName, ' ', re.rentalName, ' ', re.rentalInfo, ' ', re.rentalColor) LIKE %?1%")
+    Page<Rental> findAll(String keyword, Pageable pageable);
 
 
 }
