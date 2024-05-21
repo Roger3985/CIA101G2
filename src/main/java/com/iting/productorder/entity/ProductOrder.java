@@ -9,52 +9,52 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
 @Table(name = "productorder")
-public class ProductOrder {
+public class ProductOrder  implements Serializable {
     @Id
     @Column(name = "productordno", updatable = false)
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer productOrdNo;
     @ManyToOne
-    @JsonManagedReference
     @JoinColumn(name = "memno", referencedColumnName = "memno",insertable = false, updatable = false)
     private Member member;
 
     @Column(name = "productbyrname")
-    @NotBlank(message = "訂購人姓名: 請勿空白")
-    @Pattern(regexp = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_\\s)]{4,40}$", message = "姓名: 只能是中、英文字母、數字、_ 和空格")
+//    @NotBlank(message = "訂購人姓名: 請勿空白")
+//    @Pattern(regexp = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_\\s)]{4,40}$", message = "姓名: 只能是中、英文字母、數字、_ 和空格")
     private String productByrName;
 
 
     @Column(name = "productbyrphone")
-    @NotBlank(message = "訂購人手機: 請勿空白")
-    @Pattern(regexp = "^[0-9]{4,20}$", message = "只能是數字")
+//    @NotBlank(message = "訂購人手機: 請勿空白")
+//    @Pattern(regexp = "^[0-9]{4,20}$", message = "只能是數字")
     private String productByrPhone;
 
 
     @Column(name = "productbyremail")
-    @Email(message="請填入正確信箱格式")
-    @NotBlank(message="訂購人信箱: 請勿空白")
+//    @Email(message="請填入正確信箱格式")
+//    @NotBlank(message="訂購人信箱: 請勿空白")
     private String productByrEmail;
 
     @Column(name = "productrcvname")
-    @Pattern(regexp = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_\\s)]{4,40}$", message = "姓名: 只能是中、英文字母、數字、_ 和空格")
+//    @Pattern(regexp = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_\\s)]{4,40}$", message = "姓名: 只能是中、英文字母、數字、_ 和空格")
     private String productRcvName;
 
     @Column(name = "productrcvphone")
-    @Pattern(regexp = "^(|\\d{4,20})$", message = "只能是數字")
+//    @Pattern(regexp = "^(|\\d{4,20})$", message = "只能是數字")
     private String productRcvPhone;
 
     @Column(name = "producttakemethod")
     private Byte productTakeMethod;
 
     @Column(name = "productaddr")
-    @Pattern(regexp = "^(|[(|\\u4e00-\\u9fa5)(a-zA-Z0-9_\\s)]{4,40})$", message = "地址: 只能是中、英文字母、數字、_ 和空格")
+//    @Pattern(regexp = "^(|[(|\\u4e00-\\u9fa5)(a-zA-Z0-9_\\s)]{4,40})$", message = "地址: 只能是中、英文字母、數字、_ 和空格")
     private String productAddr;
 
     @Column(name = "productpaymethod")
@@ -76,7 +76,7 @@ public class ProductOrder {
     private BigDecimal productRealPrice;
 
     @Column(name = "productordtime")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp productOrdTime;
 
 
@@ -288,5 +288,29 @@ public class ProductOrder {
 
     public void setProductOrderDetails(Set<ProductOrderDetail> productOrderDetails) {
         this.productOrderDetails = productOrderDetails;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductOrder{" +
+                "productOrdNo=" + productOrdNo +
+                ", member=" + member +
+                ", productByrName='" + productByrName + '\'' +
+                ", productByrPhone='" + productByrPhone + '\'' +
+                ", productByrEmail='" + productByrEmail + '\'' +
+                ", productRcvName='" + productRcvName + '\'' +
+                ", productRcvPhone='" + productRcvPhone + '\'' +
+                ", productTakeMethod=" + productTakeMethod +
+                ", productAddr='" + productAddr + '\'' +
+                ", productPayMethod=" + productPayMethod +
+                ", productAllPrice=" + productAllPrice +
+                ", coupon=" + coupon +
+                ", productDisc=" + productDisc +
+                ", productRealPrice=" + productRealPrice +
+                ", productOrdTime=" + productOrdTime +
+                ", productOrdStat=" + productOrdStat +
+                ", productStat=" + productStat +
+                ", productOrderDetails=" + productOrderDetails +
+                '}';
     }
 }

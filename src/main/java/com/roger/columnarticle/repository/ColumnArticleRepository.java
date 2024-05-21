@@ -6,6 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+/**
+ * 用於訪問專欄文章及其相關回應的 Repository 介面。
+ */
 @Repository
 public interface ColumnArticleRepository extends JpaRepository<ColumnArticle, Integer> {
 
@@ -26,4 +29,15 @@ public interface ColumnArticleRepository extends JpaRepository<ColumnArticle, In
      * @return 如果存在與指定專欄文章編號相關聯的點讚記錄，則返回 true；否則返回 false。
      */
     public boolean existsByArtNo(Integer artNo);
+
+    /**
+     * 計算與特定專欄文章相關聯的回應數量。
+     *
+     * @param artNo 欲檢索回應數量的專欄文章ID
+     * @return 與指定專欄文章相關聯的回應數量
+     */
+    @Query("SELECT COUNT(cr) FROM ColumnReply cr WHERE cr.columnArticle.artNo = :artNo")
+    int countColumnArticleByArtNo(@Param("artNo") Integer artNo);
+
+
 }

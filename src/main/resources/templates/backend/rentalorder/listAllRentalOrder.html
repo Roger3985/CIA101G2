@@ -8,57 +8,6 @@
     <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
 
-<!--    <style>-->
-<!--        /* 按鈕樣式 */-->
-<!--        .shipping {-->
-<!--            padding: 10px 20px;-->
-<!--            background-color: #4CAF50;-->
-<!--            color: white;-->
-<!--            border: none;-->
-<!--            cursor: pointer;-->
-<!--            font-size: 16px;-->
-<!--        }-->
-<!--        /* 燈箱樣式 */-->
-<!--        .modal {-->
-<!--            display: none; /* 默認隱藏 */-->
-<!--            position: fixed; /* 固定位置 */-->
-<!--            z-index: 1; /* 顯示在最上層 */-->
-<!--            left: 0;-->
-<!--            top: 0;-->
-<!--            width: 100%; /* 滿屏 */-->
-<!--            height: 100%; /* 滿屏 */-->
-<!--            overflow: hidden; /* 禁用滾動 */-->
-<!--            background-color: rgba(0,0,0,0.4); /* 透明黑色背景 */-->
-<!--            display: flex; /* 使用Flexbox */-->
-<!--            align-items: center; /* 垂直居中 */-->
-<!--            justify-content: center; /* 水平居中 */-->
-<!--        }-->
-<!--        /* 燈箱內容樣式 */-->
-<!--        .modal-content {-->
-<!--            background-color: #fefefe;-->
-<!--            padding: 20px;-->
-<!--            border: 1px solid #888;-->
-<!--            width: 50%; /* 寬度 */-->
-<!--            height: 50%; /* 高度 */-->
-<!--            box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* 添加陰影效果 */-->
-<!--            position: relative; /* 相對定位 */-->
-<!--        }-->
-<!--        /* 關閉按鈕樣式 */-->
-<!--        .close {-->
-<!--            color: #aaa;-->
-<!--            position: absolute;-->
-<!--            top: 10px;-->
-<!--            right: 10px;-->
-<!--            font-size: 28px;-->
-<!--            font-weight: bold;-->
-<!--        }-->
-<!--        .close:hover,-->
-<!--        .close:focus {-->
-<!--            color: black;-->
-<!--            text-decoration: none;-->
-<!--            cursor: pointer;-->
-<!--        }-->
-<!--    </style>-->
 
 
 </head>
@@ -90,21 +39,9 @@
                                 <thead>
                                 <tr>
                                     <th>訂單編號</th>
-<!--                                    <th>會員編號</th>-->
-<!--                                    <th>訂購人姓名</th>-->
-<!--                                    <th>訂購人手機號碼</th>-->
-<!--                                    <th>訂購人Email</th>-->
-<!--                                    <th>收件人姓名</th>-->
-<!--                                    <th>收件人手機號碼</th>-->
                                     <th>取貨方式</th>
-<!--                                    <th>宅配住址</th>-->
                                     <th>付款方式</th>
                                     <th>訂單<div></div>總金額</th>
-<!--                                    <th>押金<div></div>總金額</th>-->
-<!--                                    <th>下單時間</th>-->
-<!--                                    <th>預計租借日期</th>-->
-<!--                                    <th>預計歸還日期</th>-->
-<!--                                    <th>實際歸還日期</th>-->
                                     <th>付款狀態</th>
                                     <th>訂單狀態</th>
                                     <th>歸還狀態</th>
@@ -120,21 +57,9 @@
                                     <tr>
 
                                         <td th:text="${order.getrentalOrdNo()}"></td>
-<!--                                        <td th:text="${order.getMember().getMemNo()}"></td>-->
-<!--                                        <td th:text="${order.getrentalByrName()}"></td>-->
-<!--                                        <td th:text="${order.getrentalByrPhone()}"></td>-->
-<!--                                        <td th:text="${order.getrentalByrEmail()}"></td>-->
-<!--                                        <td th:text="${order.getrentalRcvName()}"></td>-->
-<!--                                        <td th:text="${order.getrentalRcvPhone()}"></td>-->
                                         <td th:text="${order.getrentalTakeMethod() == 1 ? '店取' : '宅配'}"></td>
-<!--                                        <td th:text="${order.getrentalAddr()}"></td>-->
                                         <td th:text="${order.getrentalPayMethod() == 1 ? '綠界' : '現場付款'}"></td>
                                         <td th:text="${order.getrentalAllPrice() + order.getrentalAllDepPrice()}"></td>
-<!--                                        <td th:text="${}"></td>-->
-<!--                                        <td th:text="${order.getrentalOrdTime()}"></td>-->
-<!--                                        <td th:text="${order.getrentalDate()}"></td>-->
-<!--                                        <td th:text="${order.getrentalBackDate()}"></td>-->
-<!--                                        <td th:text="${order.getrentalRealBackDate()}"></td>-->
                                         <td th:text="${order.getrentalPayStat() == 1 ? '已付款' : '未付款'}"></td>
                                         <td th:switch="${order.getrentalOrdStat()}">
                                             <span th:case="'0'" style="color: red">取消</span>
@@ -161,15 +86,17 @@
                                         </td>
                                         <td>
                                             <form>
-                                                <input type="hidden" id="rentalOrdNo" th:value="${order.getrentalOrdNo()}">
+                                                <input type="hidden" class="memNo" th:value="${order.getMember().getMemNo()}">
+                                                <input type="hidden" class="rentalOrdNo" th:value="${order.getrentalOrdNo()}">
                                                 <button class="shipping" type="button" th:if="${order.getrentalOrdStat() != 20}" th:disabled="${ (order.getrentalOrdStat() != 10 and order.getrentalOrdStat() != 40) || order.getrentalTakeMethod() == 1}">出貨</button>
-                                                <button th:if="${order.getrentalOrdStat() == 20}">追蹤</button>
+                                                <button class="updateBtn" th:if="${order.getrentalOrdStat() == 20}" >追蹤</button>
                                             </form>
                                         </td>
                                         <td>
                                             <form>
-                                                <input type="hidden" th:value="${order.getrentalOrdNo()}">
-                                                <button type="button" th:disabled="${order.getrentalOrdStat() != 50}">退押金</button>
+                                                <input type="hidden" th:value="${order.getMember().getMemNo()}">
+                                                <input type="hidden" class="rentalOrdNo" th:value="${order.getrentalOrdNo()}">
+                                                <button class="depRefund" type="button" th:disabled="${order.getrentalOrdStat() != 50}">退押金</button>
                                             </form>
                                         </td>
 
@@ -179,16 +106,49 @@
                             </table>
                         </div>
                     </div>
-                    <div id="logisticsFormContainer" ></div> <!-- 放物流的 -->
                     <!-- 以下燈箱 -->
-<!--                    <div id="myModal" class="modal">-->
-<!--                        <div class="modal-content">-->
-<!--                            <span class="close" onclick="closeModal()">&times;</span>-->
-<!--                            <h2>輸入手機號碼</h2>-->
-<!--                            <input type="text" id="phoneNumber" placeholder="請輸入手機號碼" style="width: 100%; padding: 10px; margin-top: 10px;">-->
-<!--                            <button type="button" onclick="submitPhoneNumber()" style="margin-top: 10px; padding: 10px 20px;">提交</button>-->
-<!--                        </div>-->
-<!--                    </div>-->
+
+                    <!-- 追蹤物流的燈箱 -->
+                    <div class="modal fade" id="logisticsModal" tabindex="-1" role="dialog" aria-labelledby="logisticsModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="logisticsModalLabel">物流資訊</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- 在這裡填充物流資訊 -->
+                                    <p id="logisticsInfo"></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 刷退資訊的燈箱 -->
+                    <div class="modal fade" id="refundModal" tabindex="-1" role="dialog" aria-labelledby="refundModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="refundModalLabel">退押金資訊</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p id="refundInfo"></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- 以上燈箱 -->
                 </div>
             </div>
@@ -225,6 +185,7 @@
 
         let logisticsFormContainer = $("#logisticsFormContainer");
 
+        // 出貨
         $("button.shipping").on("click", function (e) {
             // console.log(e.target);
             let rentalOrdNo = $(e.target).closest("form").find("input#rentalOrdNo").val();
@@ -270,43 +231,60 @@
         }); // 送出物流訂單請求結束
 
 
+
+
+        /*-------------------- 燈箱 --------------------*/
+        // 追蹤物流
+        $(document).on("click", "button.updateBtn", function (e) {
+            e.preventDefault();
+            let target = $(e.target);
+            let memNo = target.closest("form").find("input.memNo").val();
+            let rentalOrdNo = target.closest("form").find("input.rentalOrdNo").val();
+
+            fetch(baseUrl + apiPath + "queryNewStat?memNo=" + memNo + "&rentalOrdNo=" + rentalOrdNo, {
+                method: "GET"
+            }).then(response => response.text())
+                .then(logisticsStatus => {
+                    let logisticsInfo = $("#logisticsInfo");
+                    logisticsInfo.html(`
+                          <p>物流狀態碼 : ${logisticsStatus}</p>
+                      `);
+                    $('#logisticsModal').modal('show'); // 修正這一行來顯示模態框
+                });
+        });
+
+        // 刷退
+        $(document).on("click", "button.depRefund", function (e) {
+            let refundBtn = $(e.target);
+            let rentalOrdNo = refundBtn.closest("form").find("input.rentalOrdNo").val();
+            console.log(rentalOrdNo);
+
+            fetch(baseUrl + apiPath + "depRefund", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(rentalOrdNo)
+            }).then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    let refundInfo = `
+                        <p>商店編號(MerchantID) : ${data.MerchantID}</p>
+                        <p>金流交易編號(MerchantTradeNo) : ${data.MerchantTradeNo}</p>
+                        <p>交易狀態(RtnCode)(1為成功) : ${data.RtnCode}</p>
+                        <p>交易訊息(RtnMsg) : ${data.RtnMsg}</p>
+                        <p>綠界交易編號(TradeNo) : ${data.TradeNo}</p>
+                        <p>刷退押金比例 : ${data.refundPercent} %</p>
+                    `;
+                    $("#refundInfo").html(refundInfo);
+                    $('#refundModal').modal('show');
+                }).catch(error => console.error('Error:', error));
+        });
+
+
     }); // DOMContentLoaded 結束
 
-
-
-
-
-
-    /*-------------------- 燈箱 --------------------*/
-    // // 開啟燈箱
-    // function openModal() {
-    //     document.getElementById('myModal').style.display = 'block';
-    // }
-    //
-    // // 關閉燈箱
-    // function closeModal() {
-    //     document.getElementById('myModal').style.display = 'none';
-    // }
-    //
-    // // 提交手機號碼
-    // function submitPhoneNumber() {
-    //     var phoneNumber = document.getElementById('phoneNumber').value;
-    //     alert('手機號碼已提交: ' + phoneNumber);
-    //     closeModal();
-    // }
-    //
-    // // 點擊燈箱外部區域關閉燈箱
-    // window.onclick = function(event) {
-    //     var modal = document.getElementById('myModal');
-    //     if (event.target === modal) {
-    //         closeModal();
-    //     }
-    // }
-
-
-
 </script>
-
 
 </body>
 </html>

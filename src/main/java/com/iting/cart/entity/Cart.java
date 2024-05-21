@@ -12,10 +12,20 @@ import java.util.List;
 
 @Entity
 @Table(name = "cart")
-public class Cart {
+public class Cart  implements Serializable{
 
     @EmbeddedId
     private CompositeDetail compositeKey;
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "compositeKey=" + compositeKey +
+                ", productBuyQty=" + productBuyQty +
+                ", member=" + member +
+                ", product=" + product +
+                '}';
+    }
 
     @Column(name = "productbuyqty")
     @NotNull(message="請勿空白")

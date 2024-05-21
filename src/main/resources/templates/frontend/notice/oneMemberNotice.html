@@ -1,164 +1,169 @@
-<!DOCTYPE html>
-<html lang="en" data-bs-theme="light" xmlns:th="http://www.thymeleaf.org">
+    <!DOCTYPE html>
+    <html lang="en" data-bs-theme="light" xmlns:th="http://www.thymeleaf.org">
 
-<head><!-- metas -->
-    <meta charset="utf-8">
-    <meta name="author" content="pxdraft">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
-    <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
-    <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template">
-    <!-- title -->
-    <title>ShopApp - eCommerce Bootstrap 5 Template</title>
-    <!-- Favicon -->
-    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
-    <!-- CSS Template -->
-    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
-    <style>
-        #preview {
-            max-width: 100px;
-            max-height: 100px;
-            margin-top: 10px;
-            /*border: 1px solid #ccc;*/
-            /*padding: 5px;*/
-        }
-    </style>
-</head>
+    <head><!-- metas -->
+        <meta charset="utf-8">
+        <meta name="author" content="pxdraft">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+        <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
+        <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template">
+        <!-- title -->
+        <title>ShopApp - eCommerce Bootstrap 5 Template</title>
+        <!-- Favicon -->
+        <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+        <!-- CSS Template -->
+        <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+        <style>
+            #preview {
+                max-width: 100px;
+                max-height: 100px;
+                margin-top: 10px;
+                /*border: 1px solid #ccc;*/
+                /*padding: 5px;*/
+            }
+        </style>
+    </head>
 
-<body>
-<!-- 通用插件 -->
-<th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block>
-<!-- 通用插件 -->
-    <!--
-    ========================
-        Wrapper
-    ========================
-    -->
-    <div class="wrapper">
-        <!-- header height -->
-        <div class="header-height-bar" style="min-height: 104.865px;"></div>
-        <!-- Header -->
-        <header th:replace="frontend/component/header :: header"></header>
-        <!-- End Header -->
-        <!-- Main -->
-        <main>
-            <!-- Breadcrumb -->
-            <div class="py-3 bg-gray-100">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-lg-6 my-2">
-                            <h1 class="m-0 h4 text-center text-lg-start">Profile</h1>
-                        </div>
-                        <div class="col-lg-6 my-2">
-                            <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
-                                <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/}"><i
-                                            class="bi bi-home"></i>Home</a></li>
-                                <li class="breadcrumb-item text-nowrap active" aria-current="page">Profile</li>
-                            </ol>
+    <body>
+    <!-- 通用插件 -->
+    <th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block>
+    <!-- 通用插件 -->
+        <!--
+        ========================
+            Wrapper
+        ========================
+        -->
+        <div class="wrapper">
+            <!-- header height -->
+            <div class="header-height-bar" style="min-height: 104.865px;"></div>
+            <!-- Header -->
+            <header th:replace="frontend/component/header :: header"></header>
+            <!-- End Header -->
+            <!-- Main -->
+            <main>
+                <!-- Breadcrumb -->
+                <div class="py-3 bg-gray-100">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 my-2">
+                                <h1 class="m-0 h4 text-center text-lg-start">Profile</h1>
+                            </div>
+                            <div class="col-lg-6 my-2">
+                                <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
+                                    <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/}"><i
+                                                class="bi bi-home"></i>Home</a></li>
+                                    <li class="breadcrumb-item text-nowrap active" aria-current="page">Profile</li>
+                                </ol>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div><!-- End Breadcrumb --><!-- Table -->
-            <div class="py-6">
-                <div class="container">
-                    <div class="row">
-                        <th:block th:insert="~{frontend/member/component/profile-menu.html}"></th:block><!-- Profile Menu -->
-                        <div class="col-lg-8 col-xxl-9">
-                            <div class="card mb-5">
-                                <div class="card-header py-3">
-                                    <div>
-                                        <h5 class="m-0" style="display: inline;">Notices</h5>
+                </div><!-- End Breadcrumb --><!-- Table -->
+                <div class="py-6">
+                    <div class="container">
+                        <div class="row">
+                            <th:block th:insert="~{frontend/member/component/profile-menu.html}"></th:block><!-- Profile Menu -->
+                            <div class="col-lg-8 col-xxl-9">
+                                <div class="card mb-5">
+                                    <div class="card-header py-3">
+                                        <div>
+                                            <h5 class="m-0" style="display: inline;">Notices</h5>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-sm-6 mb-3">
-                                            <label class="form-label">
-                                                Old Notices (已讀訊息)
-                                                <span class="text-danger">*</span>
-                                            </label>
-<!--                                            <div th:if="${session.notice != null && session.notice.getNotStat() == 1}">-->
-<!--                                                <input type="button" class="form-control" th:value="${session.notice.getNotContent()}" readonly style="text-align: left; color: black;">-->
-<!--                                            </div>-->
-<!--                                            <p th:if="${session.notice == null || session.notice.getNotStat() != 1}" class="form-control" style="text-align: left; color: black;">-->
-<!--                                                你沒有已讀消息-->
-<!--                                            </p>-->
-                                            <div th:each="notice : ${noticeList}" th:if="${notice.notStat == 1}">
-                                                <a href="#" class="notice-link1">
-                                                    <input type="button" class="form-control" th:value="${notice.notContent}" readonly style="text-align: left; color: black;" th:classappend="${notice.notStat == 0} ? ' unread' : ''" onmouseover="this.style.color='red';" onmouseout="this.style.color='black';">
-                                                    <input type="hidden" class="form-control" th:value="${notice.notTime}" style="display: none">
-                                                </a>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-6 mb-3">
+                                                <label class="form-label">
+                                                    Old Notices (已讀訊息)
+                                                    <span class="text-danger">*</span>
+                                                </label>
+    <!--                                            <div th:if="${session.notice != null && session.notice.getNotStat() == 1}">-->
+    <!--                                                <input type="button" class="form-control" th:value="${session.notice.getNotContent()}" readonly style="text-align: left; color: black;">-->
+    <!--                                            </div>-->
+    <!--                                            <p th:if="${session.notice == null || session.notice.getNotStat() != 1}" class="form-control" style="text-align: left; color: black;">-->
+    <!--                                                你沒有已讀消息-->
+    <!--                                            </p>-->
+                                                <div th:each="notice : ${noticeList}" th:if="${notice.notStat == 1}">
+                                                    <a href="#" class="notice-link1" th:data-notice-id="${notice.motNo}">
+                                                        <input type="button" class="form-control" th:value="${notice.notContent}" readonly style="text-align: left; color: black;" th:classappend="${notice.notStat == 0} ? ' unread' : ''" onmouseover="this.style.color='red';" onmouseout="this.style.color='black';">
+                                                        <input type="hidden" class="form-control" th:value="${notice.notTime}" style="display: none">
+                                                    </a>
+                                                </div>
+                                                <p th:if="${#lists.isEmpty(noticeList) or #lists.isEmpty(noticeList.?[notStat == 1])}" class="form-control" style="text-align: left; color: black;">
+                                                    你沒有已讀消息
+                                                </p>
                                             </div>
-                                            <p th:if="${#lists.isEmpty(noticeList) or #lists.isEmpty(noticeList.?[notStat == 1])}" class="form-control" style="text-align: left; color: black;">
-                                                你沒有已讀消息
-                                            </p>
-                                        </div>
-                                        <div class="col-sm-6 mb-3">
-                                            <label class="form-label">
-                                                New Notices (未讀訊息) 點擊查看消息
-                                                <span class="text-danger">*</span>
-                                            </label>
-<!--                                             如果有未讀訊息 -->
-<!--                                            <a href="#" id="showMessage" th:if="${session.notice != null && session.notice.getNotStat() == 0}">-->
-<!--                                                <input type="button" class="form-control" th:value="${session.notice.getNotContent()}" readonly style="text-align: left; color: black;" onmouseover="this.style.color='red';" onmouseout="this.style.color='black';">-->
-<!--                                                <input type="hidden" class="form-control" th:value="${session.notice.getMotNo()}" style="display: none">-->
-<!--                                            </a>-->
-<!--                                             如果沒有未讀訊息 -->
-<!--                                            <p th:if="${session.notice == null || session.notice.getNotStat() == 1}" class="form-control" style="text-align: left; color: black;">-->
-<!--                                                你沒有最新消息-->
-<!--                                            </p>-->
-                                            <!-- 如果有未讀訊息 -->
-                                            <div th:each="notice : ${noticeList}" th:if="${notice.notStat == 0}">
-                                                <a href="#" class="notice-link" th:data-notice-id="${notice.motNo}" th:data-notice-time="${notice.notTime}" th:data-notice-content="${notice.notContent}">
-                                                    <input type="button" class="form-control" th:value="${notice.notContent}" readonly style="text-align: left; color: black;" th:classappend="${notice.notStat == 0} ? ' unread' : ''" onmouseover="this.style.color='red';" onmouseout="this.style.color='black';">
-                                                    <input type="hidden" class="form-control" th:value="${notice.notTime}" style="display: none">
-                                                </a>
+                                            <div class="col-sm-6 mb-3">
+                                                <label class="form-label">
+                                                    New Notices (未讀訊息) 點擊查看消息
+                                                    <span class="text-danger">*</span>
+                                                    <p id="viewAllNoticesText" style="cursor: pointer; color: blue; text-decoration: underline; display: inline; font-size: 12px" onmouseover="this.style.color='red'" onmouseout="this.style.color='blue'">查看所有未讀訊息</p>
+                                                </label>
+                                                <!--                                             如果有未讀訊息 -->
+    <!--                                            <a href="#" id="showMessage" th:if="${session.notice != null && session.notice.getNotStat() == 0}">-->
+    <!--                                                <input type="button" class="form-control" th:value="${session.notice.getNotContent()}" readonly style="text-align: left; color: black;" onmouseover="this.style.color='red';" onmouseout="this.style.color='black';">-->
+    <!--                                                <input type="hidden" class="form-control" th:value="${session.notice.getMotNo()}" style="display: none">-->
+    <!--                                            </a>-->
+    <!--                                             如果沒有未讀訊息 -->
+    <!--                                            <p th:if="${session.notice == null || session.notice.getNotStat() == 1}" class="form-control" style="text-align: left; color: black;">-->
+    <!--                                                你沒有最新消息-->
+    <!--                                            </p>-->
+                                                <!-- 如果有未讀訊息 -->
+                                                <div th:each="notice : ${noticeList}" th:if="${notice.notStat == 0}">
+                                                    <a href="#" class="notice-link" th:data-notice-id="${notice.motNo}" th:data-notice-time="${notice.notTime}" th:data-notice-content="${notice.notContent}">
+                                                        <input type="button" class="form-control" th:value="${notice.notContent}" readonly style="text-align: left; color: black;" th:classappend="${notice.notStat == 0} ? ' unread' : ''" onmouseover="this.style.color='red';" onmouseout="this.style.color='black';">
+                                                        <input type="hidden" class="form-control" th:value="${notice.notTime}" style="display: none">
+                                                    </a>
+                                                </div>
+                                                <!-- 如果沒有未讀訊息 -->
+                                                <p th:if="${#lists.isEmpty(noticeList) or #lists.isEmpty(noticeList.?[notStat == 0])}" class="form-control" style="text-align: left; color: black;">
+                                                    你沒有未讀消息
+                                                </p>
                                             </div>
-                                            <!-- 如果沒有未讀訊息 -->
-                                            <p th:if="${#lists.isEmpty(noticeList) or #lists.isEmpty(noticeList.?[notStat == 0])}" class="form-control" style="text-align: left; color: black;">
-                                                你沒有未讀消息
-                                            </p>
-                                        </div>
-                                        <div class="modal fade" id="messageModal2" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="messageModalLabel2">已讀訊息</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body" id="messageBody2">
-                                                        <!-- 這裡會動態填充消息 -->
-                                                    </div>
-                                                    <div class="model-body" id="messageTime2" style="text-align: right; color: grey; font-size: 0.8em;">
-
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-primary" id="confirmButton2">關閉</button>
+                                            <!-- 已讀訊息的彈出對話框 -->
+                                            <div class="modal fade" id="messageModal2" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="messageModalLabel2">已讀訊息</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body" id="messageBody2">
+                                                            <!-- 這裡會動態填充消息 -->
+                                                        </div>
+                                                        <div class="model-body" id="messageTime2" style="text-align: right; color: grey; font-size: 0.8em;">
+                                                            <!-- 消息的時間 -->
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-primary" id="confirmButton2">關閉</button>
+                                                            <!-- 刪除按鈕 -->
+                                                            <button type="button" class="btn btn-danger" id="deleteButton2">刪除</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <!-- 未讀訊息的彈出對話框 -->
-                                        <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="messageModalLabel">未讀訊息</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body" id="messageBody">
-                                                        <!-- 這裡會動態填充消息 -->
-                                                    </div>
-                                                    <div class="model-body" id="messageTime" style="text-align: right; color: grey; font-size: 0.8em;">
+                                            <!-- 未讀訊息的彈出對話框 -->
+                                            <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="messageModalLabel">未讀訊息</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body" id="messageBody">
+                                                            <!-- 這裡會動態填充消息 -->
+                                                        </div>
+                                                        <div class="model-body" id="messageTime" style="text-align: right; color: grey; font-size: 0.8em;">
 
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-primary" id="confirmButton">確認</button>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-primary" id="confirmButton">確認</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -166,100 +171,145 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- End Content -->
                         </div>
-                        <!-- End Content -->
                     </div>
                 </div>
-            </div>
-        </main>
-        <!-- End Main -->
-        <!-- Footer -->
-        <footer th:replace="frontend/component/footer :: footer"></footer>
-        <!-- End Footer -->
-    </div>
-    <!--
-    ========================
-       End Wrapper
-    ========================
-    -->
-    <!-- script start -->
-    <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
-    <!-- End script start -->
-</body>
-<script>
-    $(document).ready(function(){
-        // 將點擊事件綁定到具有類 .notice-link1 的元素
-        $(".notice-link1").click(function(){
-            event.preventDefault();
-            var message = $(this).find("input[type=button]").val(); // 獲取消息內容
-            var message2 = $(this).find("input[type=hidden]").val() // 獲取通知的時間
-            $("#messageBody2").text(message); // 在模態框中顯示消息
-            $("#messageTime2").text(message2); // 在模組態框中顯示通知發布的時間
+            </main>
+            <!-- End Main -->
+            <!-- Footer -->
+            <footer th:replace="frontend/component/footer :: footer"></footer>
+            <!-- End Footer -->
+        </div>
+        <!--
+        ========================
+           End Wrapper
+        ========================
+        -->
+        <!-- script start -->
+        <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
+        <!-- End script start -->
+    </body>
+    <script>
+        $(document).ready(function(){
+            // 將點擊事件綁定到具有類 .notice-link1 的元素
+            $(document).on("click", ".notice-link1", function(event){
+                event.preventDefault();
+                var message = $(this).find("input[type=button]").val(); // 獲取消息內容
+                var message2 = $(this).find("input[type=hidden]").val() // 獲取通知的時間
+                $("#messageBody2").text(message); // 在模態框中顯示消息
+                $("#messageTime2").text(message2); // 在模組態框中顯示通知發布的時間
 
-            $("#messageModal2").modal("show"); // 顯示模態框
-        });
+                // 將 motNo 保存到變數中
+                var motNo = $(this).data('notice-id');
+                console.log("motNo:", motNo)
+                // 將 motNo 顯示在模態框中
+                $("#messageModal2").data('notice-id', motNo); // 修改此處以保存 motNo
 
-        $(document).ready(function (){
-            // 將點擊事件綁定到關閉按鈕
-            $("#confirmButton2").click(function (){
-                $("#messageModal2").modal("hide"); //隱藏模態框
-            })
-        });
+                $("#messageModal2").modal("show"); // 顯示模態框
+            });
 
-        // 點選關閉按鈕時關閉模態框
-        $(".close").click(function(){
-            $("#messageModal2").modal("hide");
-        });
-    })
-</script>
-<script>
-    $(document).ready(function(){
-        // 將點擊事件綁定到具有類 .notice-link 的元素
-        $(".notice-link").click(function(){
-            var message = $(this).find("input[type=button]").val(); // 獲取消息內容
-            var message2 = $(this).find("input[type=hidden]").val() // 獲取通知的時間
-            $("#messageBody").text(message); // 在模態框中顯示消息
-            $("#messageTime").text(message2); // 在模組態框中顯示通知發布的時間
+            // 刪除按鈕點擊事件
+            $("#deleteButton2").click(function(){
+                // 獲取消息的ID或其他必要的信息
+                var motNo = $("#messageModal2").data('notice-id');
+                console.log(motNo);
 
-            // 將 motNo 保存到變數中
-            var motNo = $(this).data('notice-id');
-            console.log("motNo:", motNo)
-            // 將 motNo 顯示在模態框中
-            $("#messageModal").find(".modal-footer").data('motNo', motNo);
+                // 發送 Ajax 請求刪除消息
+                $.ajax({
+                    url: '/frontend/notice/deleteNotice/' + motNo, // 注意這裡將 motNo 作為路徑變量傳遞
+                    method: 'POST',
+                    contentType: 'application/json',
+                    success: function(response){
+                        // 刪除成功後的操作
+                        console.log("刪除成功");
+                        $("#messageModal2").modal("hide"); // 隱藏彈出對話框
+                        location.reload(); // 重新刷新頁面
+                        // 可以添加其他更新用戶界面的操作
+                    },
+                    error: function(xhr, status, error){
+                        // 處理刪除失敗的情況
+                        console.error("刪除失敗:", error);
+                    }
+                });
+            });
 
-            $("#messageModal").modal("show"); // 顯示模態框
-        });
+            // 點選關閉按鈕時關閉模態框
+            $(".close").click(function(){
+                $("#messageModal2").modal("hide");
+            });
 
-        // 點選關閉按鈕時關閉模態框
-        $(".close").click(function(){
-            $("#messageModal").modal("hide");
-        });
-
-        $("#confirmButton").click(function(){
-            // 從保存的data屬性中獲取motNo值
-            var motNo = $("#messageModal").find(".modal-footer").data('motNo');
-            console.log("motNo:", motNo); // 確認motNo值是否正確
-            var data = { "motNo": motNo };
-
-            $.ajax({
-                url: '/frontend/notice/newMemberNotice',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(data),
-                success: function(response){
-                    // 在此處執行成功後的操作
-                    console.log("Response:", response);
-                    $("#messageModal").modal("hide"); // 成功後關閉模態框
-                    location.reload(); // 重新刷新頁面
-                },
-                error: function(xhr, status, error){
-                    // 在此處處理錯誤
-                    console.error("Error:", error);
-                }
+            // 點擊確認按鈕時關閉模態框
+            $("#confirmButton2").click(function(){
+                $("#messageModal2").modal("hide");
             });
         });
-    });
-</script>
+    </script>
+    <script>
+        $(document).ready(function(){
+            // 將點擊事件綁定到具有類 .notice-link 的元素
+            $(".notice-link").click(function(){
+                var message = $(this).find("input[type=button]").val(); // 獲取消息內容
+                var message2 = $(this).find("input[type=hidden]").val() // 獲取通知的時間
+                $("#messageBody").text(message); // 在模態框中顯示消息
+                $("#messageTime").text(message2); // 在模組態框中顯示通知發布的時間
+
+                // 將 motNo 保存到變數中
+                var motNo = $(this).data('notice-id');
+                console.log("motNo:", motNo)
+                // 將 motNo 顯示在模態框中
+                $("#messageModal").find(".modal-footer").data('motNo', motNo);
+
+                $("#messageModal").modal("show"); // 顯示模態框
+            });
+
+            // 點選關閉按鈕時關閉模態框
+            $(".close").click(function(){
+                $("#messageModal").modal("hide");
+            });
+
+            $("#confirmButton").click(function(){
+                // 從保存的data屬性中獲取motNo值
+                var motNo = $("#messageModal").find(".modal-footer").data('motNo');
+                console.log("motNo:", motNo); // 確認motNo值是否正確
+                var data = { "motNo": motNo };
+
+                $.ajax({
+                    url: '/frontend/notice/newMemberNotice',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function(response){
+                        // 在此處執行成功後的操作
+                        console.log("Response:", response);
+                        $("#messageModal").modal("hide"); // 成功後關閉模態框
+                        location.reload(); // 重新刷新頁面
+                    },
+                    error: function(xhr, status, error){
+                        // 在此處處理錯誤
+                        console.error("Error:", error);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#viewAllNoticesText').on('click', function () {
+                $.ajax({
+                    url: '/frontend/notice/markAllAsRead',
+                    type: 'POST',
+                    success: function (response) {
+                        alert('所有未讀訊息已標記為已讀!');
+                        window.location.reload();
+                    },
+                    error: function (error) {
+                        alert('查看訊息失敗，請稍後再試。');
+                    }
+                })
+            })
+        })
+    </script>
 
 
-</html>
+    </html>

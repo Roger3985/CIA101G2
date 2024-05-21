@@ -46,20 +46,20 @@
                             0 0 10px rgba(128, 128, 128, 0.5),   /* 中等灰色，半透明 */
                             0 0 20px rgba(128, 128, 128, 0.3),   /* 淡灰色，更透明 */
                             0 0 30px rgba(128, 128, 128, 0.1);">
-                    <p style="margin: 5px">物流編號 : <span th:text="${AllPayLogisticsID}"></span></p>
-                    <p style="margin: 5px">託運單號 : <span th:text="${BookingNote}"></span></p>
-                    <p style="margin: 5px">目前物流狀態 : <span th:text="${RtnCode}"></span></p>
-                    <p  style="margin: 5px">訂單處理狀態 : <span th:text="${RtnMsg}" style="color: red"></span></p>
-                    <p style="margin: 5px">交易金額 : <span th:text="${GoodsAmount}"></span></p>
-                    <p style="margin: 5px">物流類型 : <span th:text="${LogisticsType}"></span></p>
-                    <p style="margin: 5px">物流子類型 : <span th:text="${LogisticsSubType}"></span></p>
-                    <p style="margin: 5px">(測試用)廠商編號 : <span th:text="${MerchantID}"></span></p>
-                    <p style="margin: 5px">廠商交易編號 : <span th:text="${MerchantTradeNo}"></span></p>
-                    <p style="margin: 5px">收件人地址 : <span th:text="${ReceiverAddress}"></span></p>
-                    <p style="margin: 5px">收件人手機號碼 : <span th:text="${ReceiverCellPhone}"></span></p>
-                    <p style="margin: 5px">收件人姓名 : <span th:text="${ReceiverName}"></span></p>
+                    <p style="margin: 5px">物流編號 : <span id="AllPayLogisticsID" th:text="${AllPayLogisticsID}"></span></p>
+                    <p style="margin: 5px">託運單號 : <span id="BookingNote" th:text="${BookingNote}"></span></p>
+                    <p style="margin: 5px">目前物流狀態 : <span id="RtnCode" th:text="${RtnCode}"></span></p>
+                    <p  style="margin: 5px">訂單處理狀態 : <span id="RtnMsg" th:text="${RtnMsg}" style="color: red"></span></p>
+                    <p style="margin: 5px">交易金額 : <span id="GoodsAmount" th:text="${GoodsAmount}"></span></p>
+                    <p style="margin: 5px">物流類型 : <span id="LogisticsType" th:text="${LogisticsType}"></span></p>
+                    <p style="margin: 5px">物流子類型 : <span id="LogisticsSubType" th:text="${LogisticsSubType}"></span></p>
+                    <p style="margin: 5px">(測試用)廠商編號 : <span id="MerchantID" th:text="${MerchantID}"></span></p>
+                    <p style="margin: 5px">廠商交易編號 : <span id="MerchantTradeNo" th:text="${MerchantTradeNo}"></span></p>
+                    <p style="margin: 5px">收件人地址 : <span id="ReceiverAddress" th:text="${ReceiverAddress}"></span></p>
+                    <p style="margin: 5px">收件人手機號碼 : <span id="ReceiverCellPhone" th:text="${ReceiverCellPhone}"></span></p>
+                    <p style="margin: 5px">收件人姓名 : <span id="ReceiverName" th:text="${ReceiverName}"></span></p>
 
-                    <p style="margin: 5px">檢查碼 : <span th:text="${CheckMacValue}"></span></p>
+                    <p style="margin: 5px">檢查碼 : <span id="CheckMacValue" th:text="${CheckMacValue}"></span></p>
 
                 </div>
                 <!--

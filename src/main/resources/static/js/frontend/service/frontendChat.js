@@ -56,7 +56,7 @@ function connect() {
         console.log("我在connect: endPointURL=" + endPointURL);
         console.log("frontend connect Suceess!");
         connection = true;
-        // 請求在線會員
+        // 請求在線會員清單
         let jsonobj = {
             type: "stateA", sender: `${userName}`, receiver: "host",
         }
@@ -78,25 +78,44 @@ function connect() {
         console.log(pkType);
         var message = jsonObj.message;
         console.log(message);
+        var msgTime = jsonObj.timestamp;
         if (pkType == "history") {
             var historyMsgs = JSON.parse(message);
             for (let i = 0; i < historyMsgs.length; i++) {
                 var historyData = JSON.parse(historyMsgs[i]);
                 var showMsg = historyData.message;
+                var showMsgTime = historyData.timestamp;
                 const messageContainer = document.createElement('div');
-                historyData.sender === userName ? messageContainer.classList.add("sender") : messageContainer.classList.add("receiver");
+                const messageTime = document.createElement('div');
+                if (historyData.sender === userName) {
+                    messageContainer.classList.add("sender");
+                    messageTime.classList.add("senderTime");
+                } else {
+                    messageContainer.classList.add("receiver");
+                    messageTime.classList.add("receiverTime");
+                }
                 messageContainer.innerHTML = showMsg;
+                messageTime.innerHTML = showMsgTime;
                 chatArea.appendChild(messageContainer);
+                chatArea.appendChild(messageTime);
             }
             chatArea.scrollTop = chatArea.scrollHeight;
         }
         if (pkType == "chatMsgB") {
             console.log("我收到後端的資料了" + message);
             const messageContainer = document.createElement('div');
-            message.sender === userName ? messageContainer.classList.add("sender") : messageContainer.classList.add("receiver");
+            const messageTime = document.createElement('div');
+            if (message.sender === userName) {
+                messageContainer.classList.add("sender")
+                messageTime.classList.add("senderTime");
+            } else {
+                messageContainer.classList.add("receiver");
+                messageTime.classList.add("receiverTime");
+            }
             messageContainer.innerHTML = message;
+            messageTime.innerHTML = msgTime;
             chatArea.appendChild(messageContainer);
-            // chatArea.value = chatArea.value + message;
+            chatArea.appendChild(messageTime);
         }
     }
 }
@@ -111,18 +130,33 @@ messageInput.addEventListener("keyup", function (e) {
 var el_msg_btn = document.getElementById("msg_btn");
 el_msg_btn.addEventListener("click", function () {
     const messageContent = messageInput.value.trim();
+    let now = new Date();
+    let nowMin = now.getMinutes()
+    let nowMinStr;
+    if (nowMin <= "9") {
+        nowMinStr = "0" + nowMin;
+    } else {
+        nowMinStr = nowMin;
+    }
+    let nowStr = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate() + " " + now.getHours() + ":" + nowMinStr;
     console.log(messageContent);
+    console.log(nowStr);
     if (messageContent == "") {
         alert("請輸入訊息");
     } else {
         const messageContainer = document.createElement('div');
         messageContainer.classList.add("sender")
         messageContainer.innerHTML = messageContent;
-        chatArea.appendChild(messageContainer);
+        const messageTime = document.createElement('div');
+        messageTime.classList.add("senderTime");
+        messageTime.innerHTML = nowStr;
+        // messageContainer.appendChild(messageTime);
+        chatArea.appendChild(messageContainer)
+        chatArea.appendChild(messageTime);
         messageInput.value = '';
         var jsonobj = {
             type: "chatMsgB", sender: `${userName}`, receiver: "host", message: messageContent,
-            // timestamp: Date()
+            timestamp: nowStr
         }
         webSocket.send(JSON.stringify(jsonobj));
     }

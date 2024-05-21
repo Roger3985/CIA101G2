@@ -5,7 +5,6 @@ import com.roger.clicklike.repository.ClickLikeRepository;
 import com.roger.clicklike.service.ClickLikeService;
 import com.roger.columnarticle.entity.ColumnArticle;
 import com.roger.columnarticle.repository.ColumnArticleRepository;
-import com.roger.columnreply.repository.ColumnReplyRepository;
 import com.roger.member.entity.Member;
 import com.roger.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +47,65 @@ public class ClickLikeServiceImpl implements ClickLikeService {
         return clickLikeRepository.findAll();
     }
 
+    @Override
+    public boolean isArticleLikedByMember(int memNo, int artNo) {
+        return clickLikeRepository.existsByCompositeClickLike(memNo, artNo);
+    }
+
+    @Override
+    @Transactional
+    public boolean likeColumnArticle(Integer memNo, Integer artNo) {
+        if (!memberRepository.existsByMemNo(memNo) || !columnArticleRepository.existsByArtNo(artNo)) {
+            return false;
+        }
+
+        // 創建複合主鍵
+        ClickLike.CompositeClickLike compositeClickLike = new ClickLike.CompositeClickLike(memNo, artNo);
+
+        // 檢查是否已經點讚
+        if (clickLikeRepository.existsByCompositeClickLike(compositeClickLike)) {
+            return false; // 已經點讚過
+        }
+
+        // 創建點讚紀錄
+        ClickLike clickLike = new ClickLike();
+        clickLike.setCompositeClickLike(compositeClickLike);
+
+        // 獲得用戶和專欄文章實體
+        Member member = memberRepository.findMemberByMemNo(memNo).orElse(null);
+        ColumnArticle columnArticle = columnArticleRepository.findColumnArticleByArtNo(artNo);
+
+        if (member != null && columnArticle != null) {
+            clickLike.setMember(member);
+            clickLike.setColumnArticle(columnArticle);
+
+            // 保存點讚紀錄
+            clickLikeRepository.save(clickLike);
+
+            // 更新文章的點讚數
+            Set<ClickLike> clickLikes = columnArticle.getClickLikes();
+            int clickCount = clickLikes.size();
+            clickCount++; // 增加點讚數
+            // 更新文章的 clickLikes 屬性
+            columnArticle.setClickLikes(clickLikes);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean unlikeArticle(int memNo, int artNo) {
+        if (isArticleLikedByMember(memNo, artNo)) {
+            clickLikeRepository.deleteByCompositeClickLike_MemNoAndCompositeClickLike_ArtNo(memNo, artNo);
+        }
+        return false;
+    }
+
+    @Override
+    public List<ClickLike> findByMemberMemNo(Integer memNo) {
+        return clickLikeRepository.findByCompositeClickLike_MemNo(memNo);
+    }
 
 }

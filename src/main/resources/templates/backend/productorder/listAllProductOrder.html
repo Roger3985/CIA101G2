@@ -82,10 +82,7 @@
                                         <td th:text="${productorder.productAddr}"></td>
                                         <td>
                                             <span th:if="${productorder.productPayMethod == 1}">線上刷卡</span>
-                                            <span th:if="${productorder.productPayMethod == 2}">超商繳款</span>
-                                            <span th:if="${productorder.productPayMethod == 3}">ATM付款</span>
-                                            <span th:if="${productorder.productPayMethod == 4}">匯款</span>
-                                            <span th:if="${productorder.productPayMethod == 5}">現場付款</span>
+                                            <span th:if="${productorder.productPayMethod == 2}">現場付款</span>
                                         </td>
                                         <td th:text="${productorder.productAllPrice}"></td>
                                         <td th:if="${productorder.coupon != null}">

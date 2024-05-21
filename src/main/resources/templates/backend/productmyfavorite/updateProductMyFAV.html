@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>修改租借品 - 我的最愛</title>
+    <title>修改商品 - 我的最愛</title>
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <style>
         *{
@@ -36,28 +36,28 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">修改租借品 - 我的最愛</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">修改商品 - 我的最愛</h6>
                     </div>
                     <div class="a">
                         <ul>
-                            <form id="form" method="post" th:action="@{/backend/rentalmyfavorite/addRentalMyFAV}" th:object="${rentalMyFavorite}">
+                            <form id="form" method="post" th:action="@{/backend/productmyfavorite/addProductMyFAV}" th:object="${productMyFavorite}">
                                 <li>
-                                    租借品編號:
-                                    <input value="0" type="text" name="rentalNo" th:field="*{rental.rentalNo}" style="border:0px ; font-weight: bold;" readonly /><br/>
+                                    商品編號:
+                                    <input value="0" type="text" name="productNo" th:field="*{product.productNo}" style="border:0px ; font-weight: bold;" readonly /><br/>
                                 </li><br>
                                 <li>
                                     選擇會員編號:
                                     <select name="memNo">
                                         <option>請選擇</option>
-                                        <option th:each="member : ${memberListData}" th:value="${rentalMyFavorite.member.memNo}" th:text="${rentalMyFavorite.member.memNo}" />
+                                        <option th:each="member : ${memberListData}" th:value="${productMyFavorite.member.memNo}" th:text="${productMyFavorite.member.memNo}" />
                                     </select><br>
                                     <span class="error" th:if="${#fields.hasErrors('member.memNo')}" th:errors="*{member.memNo}" id="member.memNo.errors">會員編號錯誤</span>
                                 </li>
-                                <li>
-                                    選擇加入我的最愛時間:
-                                    <input type="datetime-local" name="rentalFavTime" th:field="*{rentalFavTime}" onclick="hideContent('rentalFavTime.errors');" id="rentalFavTime_el"/><br/>
-                                    <span class="error" th:if="${#fields.hasErrors('rentalFavTime')}" th:errors="*{rentalFavTime}" id="rentalFavTime.errors">時間錯誤</span>
-                                </li><br>
+<!--                                <li>-->
+<!--                                    選擇加入我的最愛時間:-->
+<!--                                    <input type="datetime-local" name="productFavTime" th:field="*{productFavTime}" onclick="hideContent('productFavTime.errors');" id="productFavTime_el"/><br/>-->
+<!--                                    <span class="error" th:if="${#fields.hasErrors('productFavTime')}" th:errors="*{productFavTime}" id="productFavTime.errors">時間錯誤</span>-->
+<!--                                </li><br>-->
                                 <input type="submit" id="updateBtn" value="送出">
                             </form>
                         </ul>
@@ -97,25 +97,25 @@
 
 <!--            //資料打包-->
 <!--            var updateData = {-->
-<!--                rentalNo: parseInt($('#rentalNo').val()),-->
-<!--                rentalName: $('#rentalName').val(),-->
-<!--                rentalPrice: parseFloat($('#rentalPrice').val()),-->
-<!--                rentalSize: parseInt($('#rentalSize').val()),-->
-<!--                rentalColor: $('#rentalColor').val(),-->
-<!--                rentalInfo: $('#rentalInfo').val(),-->
-<!--                rentalStat: parseFloat($('#rentalStat').val()),-->
-<!--                rentalCatNo: parseInt($('#rentalCatNo').val()),-->
-<!--                action: "updateRental"-->
+<!--                productNo: parseInt($('#productNo').val()),-->
+<!--                productName: $('#productName').val(),-->
+<!--                productPrice: parseFloat($('#productPrice').val()),-->
+<!--                productSize: parseInt($('#productSize').val()),-->
+<!--                productColor: $('#productColor').val(),-->
+<!--                productInfo: $('#productInfo').val(),-->
+<!--                productStat: parseFloat($('#productStat').val()),-->
+<!--                productCatNo: parseInt($('#productCatNo').val()),-->
+<!--                action: "updateProduct"-->
 <!--            };-->
 
-<!--            fetch("/backend/rental/updateRental", {-->
+<!--            fetch("/backend/product/updateProduct", {-->
 <!--                method: "POST",-->
 <!--                headers: {"Content-Type": "application/json"},-->
 <!--                body: JSON.stringify(updateData)-->
 <!--            }).then(function (response){-->
 <!--                return response.text();-->
-<!--            }).then(function (rentalNo){-->
-<!--                alert(rentalNo + "新增成功");-->
+<!--            }).then(function (productNo){-->
+<!--                alert(productNo + "新增成功");-->
 <!--            })-->
 <!--        });-->
 <!--    });-->
@@ -124,7 +124,7 @@
 </html>
 <!--$.ajax({-->
 <!--type: "POST",-->
-<!--url: "/backend/rental/addRental", //請求的URL-->
+<!--url: "/backend/product/addProduct", //請求的URL-->
 <!--headers: {-->
 <!--"Content-Type": "application/json"-->
 <!--},-->
@@ -137,6 +137,6 @@
 <!--error:function(xhr, status, error){-->
 <!--alert("請求失敗")-->
 <!--console.error(xhr.responseText);-->
-<!--$('#responseMessage').html("Error occurred while adding rental.");-->
+<!--$('#responseMessage').html("Error occurred while adding product.");-->
 <!--}-->
 <!--});-->

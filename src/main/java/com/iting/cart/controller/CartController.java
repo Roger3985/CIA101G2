@@ -139,6 +139,7 @@ import com.chihyun.coupon.model.CouponService;
 import com.iting.cart.entity.CartRedis;
 import com.iting.cart.service.CartService;
 
+import com.iting.productorder.service.ProductOrderService;
 import com.ren.product.service.impl.ProductServiceImpl;
 import com.ren.productpicture.entity.ProductPicture;
 import com.ren.productpicture.service.impl.ProductPictureServiceImpl;
@@ -178,6 +179,8 @@ public class CartController {
     CouponService couponService;
     @Autowired
     ProductPictureServiceImpl productPictureService;
+    @Autowired
+    ProductOrderService productOrderService;
 
 
     @GetMapping("/cart/addcart")
@@ -188,11 +191,14 @@ public class CartController {
         return "frontend/cart/addCart";
     }
 
-//    @GetMapping("/cart/productOrderSuccess")
-//    public String productOrderSuccess(ModelMap model) {
-//        return "frontend/cart/ProductOrderSuccess";
-//    }
 
+    @PostMapping("/cart/ProductOrderSuccess")
+    public String ProductOrderSuccess(HttpSession session) {
+
+
+        return "frontend/cart/ProductOrderPaySuccess";
+
+    }
 
 
     //
@@ -235,10 +241,10 @@ public class CartController {
         @GetMapping("/cart/addcartsuccess")
         public String insert(@Validated(Create.class) CartRedis cartRedis, BindingResult result, ModelMap model, HttpSession session) {
             Member member=new Member();
-            member.setMemNo(2);
-            session.setAttribute("member",member);
-            Object memNo = 0; // 声明并初始化memNo为Object类型
 
+            Object memNo = 0; // 声明并初始化memNo为Object类型
+            member.setMemNo(3);
+session.setAttribute("member",member);
             if (session.getAttribute("member") == null) {
                 memNo = session.getAttribute("memNo"); // 将memNo设为session中的memNo值
             } else {
@@ -259,8 +265,7 @@ public class CartController {
                     byte[] firstPic = firstProductPicture.getProductPic();
                     Integer productNo=firstProductPicture.getProduct().getProductNo();
                     String base64Image = Base64.getEncoder().encodeToString(firstPic);
-                    if (session.getAttribute("productImage"+productNo)==null){
-                        session.setAttribute("productImage"+productNo, base64Image);}
+                        session.setAttribute("productImage"+productNo, base64Image);
                     model.addAttribute("productImage"+productNo, base64Image);
                 }
             }
@@ -383,12 +388,15 @@ public class CartController {
                                                 Model model) {
         Map<String, String> response = new HashMap<>();
         Integer memNo;
+        Member member=new Member();
+        member.setMemNo(3);
+        session.setAttribute("member",member);
         if (session.getAttribute("member") == null) {
             String sessionId = session.getId();
             memNo = Math.abs(sessionId.hashCode());
             session.setAttribute("memNo", memNo);
         } else {
-            Member member = (Member) session.getAttribute("member");
+            member = (Member) session.getAttribute("member");
             memNo = member.getMemNo();
         }
         try {
