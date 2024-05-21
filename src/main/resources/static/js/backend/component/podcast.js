@@ -66,7 +66,6 @@ function showMessage(message) {
     alertsDiv.insertBefore(alertItem, alertsDiv.firstChild);
     // Update alert counter
     var count = parseInt(alertCounter.textContent);
-    alertCounter.textContent = count + 1;
 }
 
 connect();

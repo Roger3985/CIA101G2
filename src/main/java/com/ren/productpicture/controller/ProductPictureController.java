@@ -112,6 +112,36 @@ public class ProductPictureController {
                 .body("檔案上傳成功");
     }
 
+    @PostMapping("/uploads")
+    public ResponseEntity<String> uploadFiles(@Valid ProductPicture productPicture, BindingResult result, ModelMap model,
+                                             @RequestParam("productPic") MultipartFile[] files) throws IOException {
+
+        if (files[0].isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("沒有上傳檔案");
+        }
+
+        byte[] uploadFile = null;
+        for (MultipartFile file : files) {
+            uploadFile = file.getBytes();
+            String fileType = file.getContentType();
+            productPicture.setMimeType(fileType);
+            // 檢查檔案類別，如果是jpeg or png等已壓縮檔案，直接上傳，如果不是，執行壓縮
+            if (validateFileType(fileType)) {
+                System.out.println("不需要壓縮!");
+                productPicture.setProductPic(uploadFile);
+                productPictureSvc.addProductPicture(productPicture);
+            } else {
+                System.out.println("看來需要壓縮哦!");
+                productPictureSvc.storeFile(uploadFile, productPicture);
+            }
+        }
+
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("檔案上傳成功");
+    }
+
     @GetMapping("/download/{productPicNo}")
     public ResponseEntity<byte[]> downloadFile(@PathVariable Integer productPicNo) {
         byte[] fileData = productPictureSvc.retrieveFile(productPicNo);
