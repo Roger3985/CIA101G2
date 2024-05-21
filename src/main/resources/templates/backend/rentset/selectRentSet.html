@@ -13,6 +13,14 @@
         .error {
             font-size: 12px; /* 調整字體大小 */
         }
+        .bordered-div {
+            border: 1px solid black; /* 你可以根據需要調整邊框的樣式 */
+            padding: 10px;          /* 內邊距 */
+            margin: 10px 0;         /* 上下外邊距 */
+            width: 50%;             /* 設置寬度為 80% */
+            max-width: 500px;       /* 最大寬度 */
+            box-sizing: border-box; /* 包含內邊距和邊框在寬度內 */
+        }
     </style>
 </head>
 
@@ -38,61 +46,35 @@
                         <h6 class="m-0 font-weight-bold text-primary">查詢租借方案</h6>
                     </div>
                     <div class="a">
-                        <div>
-                            <font color=blue>單一查詢:</font><br>
-                            <div>
-                                <form method="post" th:action="@{getOneDisplay}">
-                                    <label>選擇租借品訂單編號:</label>
-                                    <select name="rentalOrdNo" th:field="*{rentSet.rentalOrdNo}"> <!--th:field，表單元素&數據綁定-->
-                                        <option value="0">請選擇</option>
-                                        <option th:each="rentSet : ${rentSetListData}" th:value="${rentSet.rentalOrdNo}"
-                                                th:text="${rentSet.rentalOrdNo} + '-[' + ${rentSet.rentalOrder.rentalByrName} + ']'" />
-                                    </select>
-                                    <input type="submit" value="送出">
-                                </form><br>
+                        <ul>
+                            <form method="get" th:action="@{search}">
+                                <label>選擇租借品訂單編號 :</label>
+                                <select name="rentalOrdNo">
+                                    <option>請選擇</option>
+                                    <option th:each="rentSet : ${rentSetListData}" th:value="${rentSet.compositeDetail.getRentalOrdNo()}" th:text="${rentSet.compositeDetail.getRentalOrdNo()}"></option>
+                                </select>
+                                <input type="submit" value="送出">
+                            </form><br>
+                            <form method="get" th:action="@{search}">
+                                <label>選擇方案名稱 :</label>
+                                <select name="rentalSetName">
+                                    <option>請選擇</option>
+                                    <option th:each="rentSet : ${rentSetListData}" th:value="${rentSet.getRentalSetName()}" th:text="${rentSet.getRentalSetName()}"></option>
+                                </select>
+                                <input type="submit" value="送出">
+                            </form><br>
+                            <form method="get" th:action="@{search}">
+                                <label>選擇租借天數 :</label>
+                                <select name="rentalSetDays">
+                                    <option>請選擇</option>
+                                    <option th:each="rentSet : ${rentSetListData}" th:value="${rentSet.getRentalSetDays()}" th:text="${rentSet.getRentalSetDays()}"></option>
+                                </select>
+                                <input type="submit" value="送出">
+                            </form><br><br>
+                            <div th:if="${search}" class="bordered-div">
+                                <div th:insert="~{/backend/rentset/listOneRentSet :: listOneRentSet}"></div>
                             </div>
-                            <div>
-                                <form method="post" th:action="@{getOneDisplay}">
-                                    <label>選擇方案名稱:</label>
-                                    <select name="rentalSetName">
-                                        <option value="1">請選擇</option>
-                                        <option th:each="rentSet : ${rentSetListData}" th:value="${rentSet.rentalSetName}" th:text="${rentSet.rentalSetName}"/>
-                                    </select>
-                                    <input type="submit" value="送出">
-                                </form><br>
-                            </div>
-                            <hr width="90%" size="7">
-                            <!--  萬用複合查詢(開始)  -->
-                            <font color=blue>萬用複合查詢:</font><br>
-                            <div>
-                                <form id="form" method="post" th:action="@{search}" th:object="${rentSet}">
-                                    <div>
-                                        <label>選擇租借品訂單編號:</label>
-                                        <select name="rentalOrdNo" id="rentalOrdNo" th:field="*{rentalOrdNo}"> <!--th:field，表單元素&數據綁定-->
-                                            <option value="0">請選擇</option>
-                                            <option th:each="rentSet : ${rentSetListData}" th:value="${rentSet.rentalOrdNo}"
-                                                    th:text="${rentSet.rentalOrdNo} + '-[' + ${rentalOrder.rentalByrName} + ']'" />
-                                        </select><br>
-                                    </div>
-                                    <div>
-                                        <label>選擇方案名稱:</label>
-                                        <select id="rentalSetName" name="rentalSetName" th:field="*{rentalSetName}"> <!--th:field，表單元素&數據綁定-->
-                                            <option value="1">請選擇</option>
-                                            <option th:each="rentSet : ${rentSetListData}" th:value="${rentSet.rentalSetName}" th:text="${rentSet.rentalSetName}"/>
-                                        </select><br>
-                                    </div>
-                                    <div>
-                                        <label>選擇租借天數:</label>
-                                        <select name="rentalSetDays" id="rentalSetDays">
-                                            <option value="2" selected>請選擇</option>
-                                            <option value="0" th:selected="${rentSet.rentalSetDays == 0}">7天</option>
-                                            <option value="1" th:selected="${rentSet.rentalSetDays == 1}">14天</option>
-                                        </select><br>
-                                    </div><br>
-                                    <input type="submit" value="送出"/>
-                                </form>
-                            </div>
-                        </div>
+                        </ul>
                     </div>
                 </div>
                 <!-- /.container-fluid -->

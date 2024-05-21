@@ -38,7 +38,7 @@ public interface RentalService {
 
     public Rental updateRental(Rental rental); //修改
 
-    public List<Rental> searchRentals(Map<String, String[]> paramsMap); //複合查詢
+    public List<Rental> searchRentals(Map<String, Object> map); //複合查詢
 
 
 }

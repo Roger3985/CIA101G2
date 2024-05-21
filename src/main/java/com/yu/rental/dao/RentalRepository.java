@@ -1,6 +1,7 @@
 package com.yu.rental.dao;
 
 import com.yu.rental.entity.Rental;
+import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -25,6 +27,29 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
 
     @Transactional
     public Rental findByRentalName(String rentalName); //單筆查詢(String rentalName)
+
+    @Transactional
+    @Query("SELECT re FROM Rental re WHERE " +
+            "(:rentalNo IS NULL OR re.rentalNo = :rentalNo) AND " +
+            "(:rentalCatNo IS NULL OR re.rentalCategory.rentalCatNo = :rentalCatNo) AND " +
+            "(:rentalName IS NULL OR re.rentalName = :rentalName) AND " +
+            "(:rentalPrice IS NULL OR re.rentalPrice = :rentalPrice) AND " +
+            "(:rentalSize IS NULL OR re.rentalSize = :rentalSize) AND " +
+            "(:rentalColor IS NULL OR re.rentalColor = :rentalColor) AND " +
+            "(:rentalInfo IS NULL OR re.rentalInfo = :rentalInfo) AND " +
+            "(:rentalStat IS NULL OR re.rentalStat = :rentalStat)")
+    List<Rental> searchRentals(@Param("rentalNo") Integer rentalNo,
+                               @Param("rentalCatNo") Integer rentalCatNo,
+                               @Param("rentalName") String rentalName,
+                               @Param("rentalPrice") BigDecimal rentalPrice,
+                               @Param("rentalSize") Integer rentalSize,
+                               @Param("rentalColor") String rentalColor,
+                               @Param("rentalInfo") String rentalInfo,
+                               @Param("rentalStat") Byte rentalStat);
+
+
+
+
 
 
     //自定義查詢(for萬用，使用JPQL語法)

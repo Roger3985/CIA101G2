@@ -6,11 +6,14 @@ import com.yu.rentalcategory.entity.RentalCategory;
 import com.yu.rentalcategory.service.RentalCategoryServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,32 +36,12 @@ public class RentalControllerFrontEnd {
     @Autowired
     private RentalCategoryServiceImpl rentalCategoryService;
 
-////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     // 測試區 //
-
-    //排序方法：價格低~高、價格高~低
-    @GetMapping("/rental/sortAllPrice/{sortType}")
-    public String sortAllPrice(@PathVariable("sortType") String sortType, Model model) {
-
-        //判斷選擇哪種方式
-        if("low_to_high".equals(sortType)){
-            List<Rental> sortList = rentalService.findAllSort();
-            for (Rental rental : sortList) {
-                 System.out.println(rental.getRentalName() +":"+rental.getRentalPrice());
-            }
-
-            model.addAttribute("rentalListData", sortList); // 顯示價格由小到大
-        } else if("high_to_low".equals(sortType)){
-            List<Rental> sortDESCList = rentalService.findAllSortDESC();
-            model.addAttribute("rentalListData", sortDESCList); // 顯示價格由大到小
-        } else {
-            List<Rental> defaultSortList = rentalService.findAllSort();
-            model.addAttribute("rentalListData", defaultSortList); // 預設價格由小到大
-        }
-
-        return "/frontend/rental/sortAllPrice"; // 查詢完成後轉交
-    }
- //---------------------------------------------------------------------------------------------------------
     //關鍵字查詢
 
 
@@ -74,6 +57,18 @@ public class RentalControllerFrontEnd {
     @GetMapping("/rental/rentalShop")
     public String rentalShop() {
         return "/frontend/rental/rentalShop";
+    }
+
+    //瀏覽租借須知頁面 (前台)
+    @GetMapping("/rental/rentalInstructions")
+    public String rentalInstructions() {
+        return "/frontend/rental/rentalInstructions";
+    }
+
+    //瀏覽單一品項內的租借須知 (前台)
+    @GetMapping("/rental/skipInstructions")
+    public String skipInstructions() {
+        return "/frontend/rental/skipInstructions";
     }
 
     //顯示單筆租借品 (快速查看)
@@ -108,6 +103,31 @@ public class RentalControllerFrontEnd {
         model.addAttribute("rental", rental);
         return "/frontend/rental/showOneRental";
     }
+
+
+    //排序方法：價格低~高、價格高~低
+    @GetMapping("/rental/sortAllPrice/{sortType}")
+    public String sortAllPrice(@PathVariable("sortType") String sortType, Model model) {
+
+        //判斷選擇哪種方式
+        if("low_to_high".equals(sortType)){
+            List<Rental> sortList = rentalService.findAllSort();
+            for (Rental rental : sortList) {
+                System.out.println(rental.getRentalName() +":"+rental.getRentalPrice());
+            }
+
+            model.addAttribute("rentalListData", sortList); // 顯示價格由小到大
+        } else if("high_to_low".equals(sortType)){
+            List<Rental> sortDESCList = rentalService.findAllSortDESC();
+            model.addAttribute("rentalListData", sortDESCList); // 顯示價格由大到小
+        } else {
+            List<Rental> defaultSortList = rentalService.findAllSort();
+            model.addAttribute("rentalListData", defaultSortList); // 預設價格由小到大
+        }
+
+        return "/frontend/rental/sortAllPrice"; // 查詢完成後轉交
+    }
+
 
 
     //處理查詢(依租借品的顏色)
@@ -164,13 +184,48 @@ public class RentalControllerFrontEnd {
 //    }
 
     //處理複合查詢
-    @PostMapping("search")
-    public String search(HttpServletRequest req, Model model) {
-        Map<String, String[]> map = req.getParameterMap();
+    @PostMapping("/search")
+    public String search(@RequestParam(required = false) Integer rentalNo,
+                         @RequestParam(required = false) Integer rentalCatNo,
+                         @RequestParam(required = false) String rentalName,
+                         @RequestParam(required = false) BigDecimal rentalPrice,
+                         @RequestParam(required = false) Integer rentalSize,
+                         @RequestParam(required = false) String rentalColor,
+                         @RequestParam(required = false) String rentalInfo,
+                         @RequestParam(required = false) Byte rentalStat, ModelMap model) {
+
+
+        Map<String, Object> map = new HashMap<>();
+
+        if (rentalNo != null) {
+            map.put("rentalNo", rentalNo);
+        }
+        if (rentalCatNo != null) {
+            map.put("rentalCatNo", rentalCatNo);
+        }
+        if (rentalName != null) {
+            map.put("rentalName", rentalName);
+        }
+        if (rentalPrice != null) {
+            map.put("rentalPrice", rentalPrice);
+        }
+        if (rentalSize != null) {
+            map.put("rentalSize", rentalSize);
+        }
+        if (rentalColor != null) {
+            map.put("rentalColor", rentalColor);
+        }
+        if (rentalInfo != null) {
+            map.put("rentalInfo", rentalInfo);
+        }
+        if (rentalStat != null) {
+            map.put("rentalStat", rentalStat);
+        }
+
         //建立返回數據的對象
         List<Rental> queryList = rentalService.searchRentals(map);
         model.addAttribute("queryList", queryList);
-        return "frontend/rental/listAllRental"; //結果傳至listAllRental
+        return "frontend/rental/select_page"; //結果傳至listAllRental
     }
 
 
