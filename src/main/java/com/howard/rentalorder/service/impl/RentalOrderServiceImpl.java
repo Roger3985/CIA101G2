@@ -1,25 +1,33 @@
 package com.howard.rentalorder.service.impl;
 
-import com.roger.member.repository.MemberRepository;
 import com.howard.rentalorder.dao.RentalOrderRepository;
-import com.yu.rental.dao.RentalRepository;
 import com.howard.rentalorder.dto.RentalOrderRequest;
+import com.howard.rentalorder.entity.RentalOrder;
 import com.howard.rentalorder.service.RentalOrderService;
 import com.howard.rentalorderdetails.dao.RentalOrderDetailsRepository;
-import com.howard.rentalorder.entity.RentalOrder;
 import com.howard.rentalorderdetails.entity.RentalOrderDetails;
+import com.howard.util.JedisUtil;
 import com.roger.member.entity.Member;
+import com.roger.member.repository.MemberRepository;
+import com.yu.rental.dao.RentalRepository;
 import com.yu.rental.entity.Rental;
-import ecpay.logistics.integration.domain.CreateCVSObj;
 import ecpay.payment.integration.AllInOne;
 import ecpay.payment.integration.domain.AioCheckOutALL;
+import ecpay.payment.integration.domain.DoActionObj;
+import ecpay.payment.integration.domain.QueryTradeInfoObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.params.ScanParams;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Component
@@ -37,6 +45,15 @@ public class RentalOrderServiceImpl implements RentalOrderService {
     @Autowired
     RentalRepository rentalRepository;
 
+    @Autowired
+    LogisticsStateService logisticsStateService;
+
+    JedisPool jedisPool = null;
+
+    public RentalOrderServiceImpl() {
+        jedisPool = JedisUtil.getJedisPool();
+    }
+
     @Transactional
     public void update(Map<String, Object> map) {
 
@@ -48,9 +65,12 @@ public class RentalOrderServiceImpl implements RentalOrderService {
             rentalOrder.setrentalPayStat((Byte) map.get("rentalPayStat"));
         }
         if (map.containsKey("rentalOrdStat")) {
-
+            // 若訂單狀態 = 50(訂單完成)，則改變歸還狀態為 1(已歸還)、改變明細中所有商品狀態為 0(上架)
             if ((byte)map.get("rentalOrdStat") == (byte) 50) {
                 rentalOrder.setRtnStat((byte) 1);
+                for (RentalOrderDetails detail : details) {
+                    detail.getRental().setRentalStat((byte) 0);
+                }
             }
 
             rentalOrder.setrentalOrdStat((Byte) map.get("rentalOrdStat"));
@@ -58,11 +78,12 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         if (map.containsKey("rtnStat")) {
 
             Byte rtnStat = (Byte) map.get("rtnStat");
-
+            // 如果歸還狀態 = 1(已歸還)
             if (rtnStat == 1) {
 
                 for (RentalOrderDetails detail : details) {
                     detail.getRental().setRentalStat((byte) 3);
+
                 }
                 rentalOrder.setRentalOrderDetailses(details);
 
@@ -254,8 +275,9 @@ public class RentalOrderServiceImpl implements RentalOrderService {
 
     } // createOrder 方法結束
 
-    /*----------------------------練習串接綠界api的方法----------------------------------*/
+    /*----------------------------串接綠界金流 api 的方法----------------------------------*/
 
+    // 結帳產生金流訂單
     public String ecpayCheckout(RentalOrder order, String itemNames) {
 
         if (order.getrentalTakeMethod() == (byte) 1) {
@@ -265,7 +287,8 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         AllInOne all = new AllInOne("");
         AioCheckOutALL obj = new AioCheckOutALL();
         // 訂單號碼(規定大小寫英文+數字)
-        obj.setMerchantTradeNo( "Member" + order.getMember().getMemName() + order.getrentalOrdNo() + "TTT" );
+        String merchantTradeNo = "Member" + order.getMember().getMemName() + order.getrentalOrdNo() + "TTT";
+        obj.setMerchantTradeNo( merchantTradeNo );
         // 交易時間(先把毫秒部分切掉)
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         obj.setMerchantTradeDate( sdf.format(order.getrentalOrdTime()) );
@@ -276,7 +299,7 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         // 交易商品明細
         obj.setItemName(itemNames);
         // 交易結果回傳網址，只接受 https 開頭的網站，可以使用 ngrok
-        obj.setReturnURL("<http://211.23.128.214:5000>");
+        obj.setReturnURL("https://adf4-2001-b400-e389-697b-a1af-a7e7-7925-d3ce.ngrok-free.app/backend/rentalorder/receiveTradeInfos");
         obj.setNeedExtraPaidInfo("N");
         // 商店轉跳網址 (Optional)
         obj.setClientBackURL("http://localhost:8080/backend/rentalorder/thankForBuying?rentalOrdNo=" + order.getrentalOrdNo()); // 問小吳上雲怕爆開(路徑問題)
@@ -284,11 +307,129 @@ public class RentalOrderServiceImpl implements RentalOrderService {
 
         // 付款完後把付款狀態改為 1 (已付款)
         order.setrentalPayStat((byte) 1);
-
+        // 把 綠界訂單號 跟 自家訂單號 存進 redis，因為命名不同，刷退時要參考
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(10);
+            String orderMappingKey = "rentalOrdNo : " + order.getrentalOrdNo();
+            jedis.set(orderMappingKey, merchantTradeNo);
+        }
         return form;
+
+    } // 結帳產生金流訂單 結束
+
+    // 存入綠界回傳的交易成功資訊
+    public void setTradeSuccessInfos(Map<String, String> infosMap) {
+        System.out.println("有進來service方法喔喔喔喔喔");
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(10);
+            String cursor = "0";
+            String rentalOrdNo = "";
+            // 從 redis 找出該筆訂單的 merchantTradeNo
+            ScanParams scanParams = new ScanParams().match("rentalOrdNo : *").count(100);
+            // 取得所有符合的 key
+            List<String> keys = jedis.scan(cursor, scanParams).getResult();
+            // 所有 key 去跑迴圈，試圖找到該筆訂單的 rentalOrdNo
+            for (String key : keys) {
+                // 如果 key 值跟綠界回傳的 merchantTradeNo 一樣，就找到所要的訂單號碼了
+                if ( jedis.get(key).matches(infosMap.get("MerchantTradeNo")) ) {
+                    // 把找到的 key 值(ex: "rentalOrdNo : 15")以 ": " 為分水嶺切成兩辦，然後取後半段，得到該訂單的 rentalOrdNo
+                    rentalOrdNo = key.split(": ", 2)[1];
+                }
+            }
+            String key = "tradeSuccessInfos for rentalOrdNo : " + rentalOrdNo;
+            jedis.hmset(key, infosMap);
+        }
+
+    } // 存入綠界回傳的交易成功資訊 結束
+
+    //
+
+    /**
+     * 查詢綠界金流訂單的 tradeNo(目前只從 map 取出 tradeNo，未來可擴充去取其他所需參數)
+     * @param rentalOrdNo 租借訂單編號
+     * @return 綠界對該筆金流訂單的授權碼(tradeNo)
+     */
+    public String postQueryTradeInfo(Integer rentalOrdNo) {
+
+        try (Jedis jedis = jedisPool.getResource()) {
+
+            jedis.select(10);
+            // 找出該訂單的 merchantTradeNo
+            String merchantTradeNo = jedis.get("rentalOrdNo : " + rentalOrdNo);
+            // 查詢
+            AllInOne all = new AllInOne("");
+            QueryTradeInfoObj obj = new QueryTradeInfoObj();
+            obj.setMerchantTradeNo(merchantTradeNo);
+            // 把從綠界回傳的 訂單資訊字串 重構成 map，然後回傳從 map 找到的該訂單的 TradeNo
+            return logisticsStateService.parseLogisticsInfo(all.queryTradeInfo(obj)).get("TradeNo");
+
+        }
 
     }
 
+    // 產生刷退押金訂單
+    public Map<String, String> refund(RentalOrder order) {
+
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(10);
+            // 實例化 刷退 所需物件
+            AllInOne all = new AllInOne("");
+            DoActionObj obj = new DoActionObj();
+            String refundPercent = null;
+
+            // 從 redis 取出對應的 綠界訂單號(因為綠界對訂單號有自己的規定，所以跟資料庫訂單號不同命名)
+            String orderMappingKey = "rentalOrdNo : " + order.getrentalOrdNo();
+            String merchantTradeNo = jedis.get(orderMappingKey);
+            // 設定在綠界，該筆訂單之訂單編號
+            obj.setMerchantTradeNo(merchantTradeNo);
+
+            // 判斷此筆訂單有無超時，並依照結果設定可刷退多少押金
+            LocalDateTime backTime = order.getrentalBackDate().toLocalDateTime();
+            LocalDateTime realBackTime = order.getrentalRealBackDate().toLocalDateTime();
+            int daysLate = (int) Duration.between(backTime, realBackTime).toDays();
+            switch (daysLate) {
+
+                case 0 : // 晚一天以內，退 100%
+                    obj.setTotalAmount( String.valueOf(order.getrentalAllDepPrice()) );
+                    refundPercent = "100";
+                    break;
+                case 1 : // 晚一天到兩天，退 50%
+                    obj.setTotalAmount( String.valueOf( order.getrentalAllDepPrice()
+                                                             .multiply(new BigDecimal("0.5"))
+                                                             .setScale(0, RoundingMode.HALF_UP) ) );
+                    refundPercent = "50";
+                    break;
+                case 2 : // 晚兩天，退 0%
+                    obj.setTotalAmount( String.valueOf(order.getrentalAllDepPrice()
+                                                            .divide(order.getrentalAllDepPrice(), 0, RoundingMode.HALF_UP) ) );
+//
+                    refundPercent = "0";
+                    break;
+                default :
+                    if (daysLate > 2) {
+                        obj.setTotalAmount( String.valueOf(order.getrentalAllDepPrice()
+                                                                .divide(order.getrentalAllDepPrice(), 0, RoundingMode.HALF_UP) ) );
+
+                        refundPercent = "0";
+                    }
+                    break;
+
+            }
+            // 找出 tradeNo
+            String tradeNo = postQueryTradeInfo(order.getrentalOrdNo());
+            // 設定綠界的交易編號(tradeNo)
+            obj.setTradeNo(tradeNo);
+            // 設定欲執行動作為 刷退
+            obj.setAction("R");
+            // 把回傳的 刷退 資訊重構成好用格式
+            Map<String, String> refundInfos = logisticsStateService.parseLogisticsInfo( all.doAction(obj) );
+            // 刷退幾 %
+            refundInfos.put("refundPercent", refundPercent);
+            return refundInfos;
+
+        }
+
+    } // 產生刷退押金訂單 結束
 
 
 
