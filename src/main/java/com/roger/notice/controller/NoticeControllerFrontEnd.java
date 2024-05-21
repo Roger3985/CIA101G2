@@ -1,5 +1,7 @@
 package com.roger.notice.controller;
 
+import com.chihyun.mycoupon.entity.MyCoupon;
+import com.chihyun.mycoupon.model.MyCouponService;
 import com.roger.member.entity.Member;
 import com.roger.notice.entity.Notice;
 import com.roger.notice.service.impl.NoticeServiceImpl;
@@ -12,6 +14,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +25,8 @@ public class NoticeControllerFrontEnd {
     @Autowired
     private NoticeServiceImpl noticeService;
 
+    @Autowired
+    private MyCouponService myCouponSvc;
 
     /**
      * 前往查看未讀訊息
@@ -110,9 +115,20 @@ public class NoticeControllerFrontEnd {
             modelMap.addAttribute("noticeList", noticeList);
         }
 
+        List<MyCoupon> list = myCouponSvc.getAllMyCouponMem(myData.getMemNo());
+        System.out.println(list);
+        List<MyCoupon> showMyCoupon = new ArrayList<>();
+        for (MyCoupon mycoupons : list) {
+            if (mycoupons.getCoupUsedStat() == 0) {
+                showMyCoupon.add(mycoupons);
+            }
+        }
+        int myCouponQTY = showMyCoupon.size();
+
         // 將會員資料添加到模型中
         modelMap.addAttribute("myData", myData);
         modelMap.addAttribute("notice", notice);
+        modelMap.addAttribute("myCouponQTY", myCouponQTY);
 
 
         return "/frontend/notice/oneMemberNotice";
