@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zxx" data-bs-theme="light" xmlns:th="http://www.thymeleaf.org">
+<html lang="zxx" data-bs-theme="light">
 
 <head><!-- metas -->
     <meta charset="utf-8">
@@ -26,14 +26,13 @@
     ========================
     -->
     <div class="wrapper">
-        <!-- header height -->
+        <!-- heder height -->
         <div class="header-height-bar" style="min-height: 104.865px;"></div>
         <!-- Header -->
         <header th:replace="frontend/component/header :: header"></header>
         <!-- End Header -->
         <!-- Main -->
-        <main>
-            <!-- Breadcrumb -->
+        <main><!-- Breadcrumb -->
             <div class="py-3 bg-gray-100">
                 <div class="container">
                     <div class="row align-items-center">
@@ -42,54 +41,183 @@
                         </div>
                         <div class="col-lg-6 my-2">
                             <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
-                                <li class="breadcrumb-item">
-                                    <a class="text-nowrap" th:href="@{/}">
-                                        <i class="bi bi-home"></i>Home</a></li>
+                                <li class="breadcrumb-item"><a class="text-nowrap" href="#"><i
+                                            class="bi bi-home"></i>Home</a></li>
                                 <li class="breadcrumb-item text-nowrap active" aria-current="page">Blog</li>
                             </ol>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- End Breadcrumb -->
-            <!-- blog -->
-            <div class="py-6">
+            </div><!-- End Breadcrumb --><!-- blog -->
+            <div class="py-4 py-lg-6">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-8">
-                            <div class="row" th:unless="${session.loginsuccess}">
-                                <div class="col-lg-6 my-3" th:each="columnarticle : ${columnArticleListData}" th:if="${columnarticle.artStat == 0}">
-                                    <a th:href="@{/frontend/columnarticle/oneColumnArticle(artNo=${columnarticle.artNo})}">
-                                        <h2 th:text="${columnarticle.artTitle}"></h2>
-                                    </a>
-                                    <p th:text="${columnarticle.artContent}"></p>
-                                    <i class="bi bi-heart likeButton me-2" style="cursor: pointer;"></i>
-                                    <i class="bi bi-chat-dots columnreplyButton me-2" style="cursor: pointer;"></i>
-                                    <i class="bi bi-clipboard2-heart articlecollectionButton" style="cursor: pointer;"></i>
-                                    <!-- 其他文章相關數據渲染 -->
+                        <div class="col-lg-8 my-3">
+                            <article>
+                                <div class="mb-5">
+                                <h1 th:text="${columnArtice.artTitle}"></h1>
+                                <div class="row" th:unless="${session.loginsuccess}">
+                                    <div class="col-lg-6 my-3">
+                                        <i class="bi bi-heart likeButton me-2" style="cursor: pointer;"></i>
+                                        <i class="bi bi-chat-dots columnreplyButton me-2" style="cursor: pointer;"></i>
+                                        <i class="bi bi-clipboard2-heart articlecollectionButton" style="cursor: pointer;"></i>
+                                    </div>
+                                </div>
+                                <div class="row" th:if="${session.loginsuccess}">
+                                    <div class="col-lg-6 my-3">
+                                        <i class="bi bi-heart me-2" th:onclick="'likeArticle(' + ${session.loginsuccess.memNo} + ', ' + ${columnArtice.artNo} + ')'" style="cursor: pointer;"></i>
+                                        <i class="bi bi-chat-dots me-2"   th:onclick="'showCommentInputModal(' + ${session.loginsuccess.memNo} + ', ' + ${columnArtice.artNo} + ')'" style="cursor: pointer;"></i>
+                                        <i class="bi bi-clipboard2-heart" th:onclick="'columnArticleCollection(' + ${session.loginsuccess.memNo} + ', ' + ${columnArtice.artNo} + ')'" style="cursor: pointer;"></i>
+                                    </div>
+                                </div>
+                                <p th:text="${columnArtice.artContent}" style="font-size: 20px"></p>
+                                <p>
+                                    In love's gentle embrace, we find our way,
+                                    Through vows of forever, on this joyous day.
+                                    With hearts entwined, a promise we make,
+                                    A journey together, for love's sweet sake.
+
+                                    The future before us, bright and clear,
+                                    Hand in hand, we'll conquer every fear.
+                                    With rings exchanged, our bond is sealed,
+                                    In each other's love, we are healed.
+
+                                    A bouquet of dreams, held close to heart,
+                                    In this dance of life, we'll never part.
+                                    With laughter and tears, joy and strife,
+                                    We step into the promise of a shared life.
+
+                                    In the warmth of your smile, my forever resides,
+                                    In the depth of your eyes, endless love abides.
+                                    As we say "I do," beneath the sky so blue,
+                                    I promise my heart, my all, to you.
+                                </p>
+                                <div class="row g-2 lightbox-gallery pb-4 pt-3">
+                                    <div class="col-4 my-2"><a class="gallery-link"
+                                            href="../../assets/img/pages/about-1.jpg"><img class="img-fluid"
+                                                src="../../assets/img/pages/about-1.jpg" title="" alt=""></a>
+                                    </div>
+                                </div>
+                                <p>
+                                    In love's gentle embrace, we find our way,
+                                    Through vows of forever, on this joyous day.
+                                    With hearts entwined, a promise we make,
+                                    A journey together, for love's sweet sake.
+
+                                    The future before us, bright and clear,
+                                    Hand in hand, we'll conquer every fear.
+                                    With rings exchanged, our bond is sealed,
+                                    In each other's love, we are healed.
+
+                                    A bouquet of dreams, held close to heart,
+                                    In this dance of life, we'll never part.
+                                    With laughter and tears, joy and strife,
+                                    We step into the promise of a shared life.
+
+                                    In the warmth of your smile, my forever resides,
+                                    In the depth of your eyes, endless love abides.
+                                    As we say "I do," beneath the sky so blue,
+                                    I promise my heart, my all, to you.
+                                </p>
+                                <ol class="list-type-01 list-unstyled pt-2 mb-4">
+                                    <li>Elegance and charm in every detail, creating timeless memories.</li>
+                                    <li>Celebrate love with breathtaking decor and flawless execution.</li>
+                                    <li>Crafting unforgettable moments with personalized touches.</li>
+                                    <li>Romantic ambiance and exquisite design for your special day.</li>
+                                    <li>Transforming dreams into reality with seamless coordination and passion.</li>
+                                </ol>
+                                </div>
+                            </article>
+                            <div class="row separated mt-8 g-0">
+                                <div class="col-6 py-3 pe-3"><label class="w-100 mb-1 small">PREVIOUS POST</label> <a
+                                        class="h5" href="#">Turning your emergency donation into instant aid</a></div>
+                                <div class="col-6 text-end ps-3 py-3"><label class="w-100 mb-1 small">NEXT POST</label>
+                                    <a class="h5" href="#">Turning your emergency donation into instant aid</a></div>
+                            </div>
+                            <div class="py-4 my-5 border-top border-bottom">
+                                <div class="row align-items-center">
+                                    <div class="col-8">
+                                        <div class="media d-flex align-items-center">
+                                            <div class="avatar rounded-circle"><img class="img-fluid"
+                                                    src="../../assets/img/pages/team-1.jpg" title="" alt=""></div>
+                                            <div class="col ps-3">作者
+                                                <h6 class="mb-1" th:text="${columnArtice.administrator.admName}"></h6>
+                                                <span th:text="${columnArtice.artTime}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="nav justify-content-end align-items-center"><a
+                                                class="icon icon-sm rounded-circle icon-primary ms-2" href="#"><i
+                                                    class="bi bi-facebook"></i> </a><a
+                                                class="icon icon-sm rounded-circle icon-primary ms-2" href="#"><i
+                                                    class="bi bi-twitter"></i> </a><a
+                                                class="icon icon-sm rounded-circle icon-primary ms-2" href="#"><i
+                                                    class="bi bi-instagram"></i> </a><a
+                                                class="icon icon-sm rounded-circle icon-primary ms-2" href="#"><i
+                                                    class="bi bi-linkedin"></i></a></div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row" th:if="${session.loginsuccess}">
-                                <div class="col-lg-6 my-3" th:each="columnarticle : ${columnArticleListData}" th:if="${columnarticle.artStat == 0}">
-                                    <a th:href="@{/frontend/columnarticle/oneColumnArticle(artNo=${columnarticle.artNo})}">
-                                        <h2 th:text="${columnarticle.artTitle}"></h2>
-                                    </a>
-                                    <p th:text="${columnarticle.artContent}"></p>
-                                    <i class="bi bi-heart me-2" th:onclick="'likeArticle(' + ${session.loginsuccess.memNo} + ', ' + ${columnarticle.artNo} + ')'" style="cursor: pointer;"></i>
-                                    <i class="bi bi-chat-dots me-2"   th:onclick="'showCommentInputModal(' + ${session.loginsuccess.memNo} + ', ' + ${columnarticle.artNo} + ')'" style="cursor: pointer;"></i>
-                                    <i class="bi bi-clipboard2-heart" th:onclick="'columnArticleCollection(' + ${session.loginsuccess.memNo} + ', ' + ${columnarticle.artNo} + ')'" style="cursor: pointer;"></i>
-                                    <!-- 其他文章相關數據渲染 -->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h4 th:text="${responseCount}" class="me-3"></h4>
                                 </div>
+                                <button id="toggleRepliesBtn" class="btn btn-primary mb-3" style="background-color: #f44336; border: 1px solid #d32f2f; color: white; font-weight: bold; transition: background-color 0.3s, border-color 0.3s, color 0.3s; padding: 5px 10px;">
+                                    <i class="bi bi-eye-slash" style="font-size: smaller;"></i> 影藏留言
+                                </button>
                             </div>
-                            <ul class="pagination justify-content-center mt-6">
-                                <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span
-                                            aria-hidden="true">«</span></a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span
-                                            aria-hidden="true">»</span></a></li>
+                            <ul class="list-unstyled pt-4" id="repliesSection">
+                                <li th:each="columnreply : ${columnReplies}" class="media d-flex align-items-start mb-2"> <!-- 加入 mb-2 減少間距 -->
+                                    <div class="media-body col ps-3 d-flex">
+                                        <div class="me-3">
+                                            <img th:src="@{/frontend/member/picture(memno=${columnreply.member.memNo})}"
+                                                 style="width: 80px; height: 80px; border: 1px solid #ccc;" alt="會員大頭貼">
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 th:text="${columnreply.member.memName}"></h6>
+                                            <label th:text="${columnreply.comTime}" class="mb-2 small"></label>
+                                            <p th:text="${columnreply.comContent}"></p>
+                                        </div>
+                                        <div class="nav text-mode small ms-auto align-self-end">
+                                            <a href="#" class="text-reset me-3">
+                                                <i class="fi-heart"></i> Likes
+                                            </a>
+                                            <a class="text-mode" href="#">
+                                                <i class="bi bi-reply"></i> Replay
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
                             </ul>
+                            <div class="mt-8 border p-4">
+                                <h4 class="mb-4">Leave a Reply</h4>
+                                <form method="post">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group mb-3">
+                                                <label class="form-label rd-input-label" for="contact-name">Name</label>
+                                                <input id="contact-name" type="text" name="name" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group mb-3">
+                                                <label class="form-label rd-input-label" for="contact-phone">Your Email</label>
+                                                <input id="contact-phone" type="email" name="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group mb-3">
+                                                <label class="form-label rd-input-label" for="contact-message">Your Comment</label>
+                                                <textarea class="form-control" id="contact-message" name="message" rows="6"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <button class="btn btn-primary" type="submit" name="send">Send Message</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                         <div class="col-lg-4 my-3 ps-xl-9">
                             <div class="card">
@@ -97,10 +225,11 @@
                                         class="h5 m-0">Search</span>
                                 </div>
                                 <div class="card-body p-3">
-                                    <form class="d-flex input-group"><input type="email" class="form-control"
-                                            placeholder="Search">
-                                        <button class="btn btn-primary flex-shrink-0" type="submit"><i
-                                                class="fi-search"></i></button>
+                                    <form class="d-flex input-group">
+                                        <input type="email" class="form-control" placeholder="Search">
+                                        <button class="btn btn-primary flex-shrink-0" type="submit">
+                                            <i class="fi-search"></i>
+                                        </button>
                                     </form>
                                 </div>
                             </div>
@@ -297,7 +426,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-<!--                    <p>已點讚過，請勿重複點讚。</p>-->
+                    <!--                    <p>已點讚過，請勿重複點讚。</p>-->
                     <p>已再次收到你的點讚，感謝支持。</p>
                 </div>
                 <div class="modal-footer">
@@ -363,14 +492,7 @@
             </div>
         </div>
     </div>
-
-
-
-
-
 </body>
-<!-- script start -->
-
 <script>
     // 定義點讚的函數，接收文章编號作為參數
     function likeArticle(memNo, artNo) {
@@ -642,6 +764,20 @@
 <input type="hidden" id="memNo" />
 <input type="hidden" id="artNo" />
 
-<!-- End script start -->
+<script>
+    const toggleRepliesBtn = document.getElementById('toggleRepliesBtn');
+    const repliesSection = document.getElementById('repliesSection');
+
+    toggleRepliesBtn.addEventListener('click', function() {
+        if (repliesSection.style.display === 'none') {
+            repliesSection.style.display = 'block';
+            toggleRepliesBtn.innerHTML = '<i class="bi bi-eye"></i> 影藏留言';
+        } else {
+            repliesSection.style.display = 'none';
+            toggleRepliesBtn.innerHTML = '<i class="bi bi-eye-slash"></i> 顯示留言';
+        }
+    });
+</script>
+
 
 </html>

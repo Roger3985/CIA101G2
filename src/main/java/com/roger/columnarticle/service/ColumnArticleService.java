@@ -51,6 +51,28 @@ public interface ColumnArticleService {
      */
     public ColumnArticle findColumnArticleByArtNo(Integer artNo);
 
-    public boolean likeColumnArticle(Integer memNo, Integer artNo);
+
+    /**
+     * 將文章添加到會員的收藏中。
+     *
+     * 此方法允許會員收藏特定文章。如果會員已經收藏過該文章，
+     * 根據實現細節，此方法將處理該情況（例如，忽略，拋出異常等）。
+     *
+     * @param memNo 要收藏文章的會員編號（ID）
+     * @param artNo 會員要收藏的文章編號（ID）
+     * @return 如果文章成功添加到會員的收藏中則返回 true，
+     *         否則返回 false（例如，如果該文章已經被收藏過）
+     */
+    public boolean columnArticleCollection(Integer memNo, Integer artNo);
+
+    /**
+     * 獲取指定文章的回應數量。
+     *
+     * @param artNo 專欄文章的ID
+     * @return 回應數量
+     */
+    public int getResponseCount(Integer artNo);
+
+
 
 }
