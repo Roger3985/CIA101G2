@@ -52,7 +52,8 @@
         <div class="py-6">
             <div class="container">
                 <div class="row"><!-- Profile Menu -->
-                    <div th:replace="frontend/member/component/profile-sideMenu :: profile-sideMenu"></div>
+                    <th:block th:insert="~{frontend/member/component/profile-menu.html}"></th:block>
+<!--                    <div th:replace="frontend/member/component/profile-sideMenu :: profile-sideMenu"></div>-->
                     <!-- Content -->
                     <div class="col-lg-8 col-xxl-9">
                         <div class="table-responsive fs-md mb-4">
@@ -61,6 +62,7 @@
                                 <tr>
                                     <th class="fw-600">優惠券</th>
                                     <th class="fw-600">資訊</th>
+                                    <th class="fw-600">折扣</th>
                                     <th class="fw-600">有效期限</th>
                                     <th class="fw-600 text-end">使用</th>
                                 </tr>
@@ -71,6 +73,7 @@
                                         <td class="p-3" th:text="${mycoupon.coupon.coupName}"><span
                                                 class="fw-500"></span></td>
                                         <td class="p-3" th:text="${mycoupon.coupInfo}"></td>
+                                        <td class="p-3" th:text="${mycoupon.coupon.coupDisc}"></td>
                                         <td class="p-3" th:text="${mycoupon.coupExpDate}">Delivered</td>
 <!--                                        <form method="post" th:action="@{}">-->
                                             <td class="p-3 text-end"><span class="badge bg-success m-0">使用</span></td>
