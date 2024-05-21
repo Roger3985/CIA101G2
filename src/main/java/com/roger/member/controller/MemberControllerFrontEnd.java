@@ -1,5 +1,7 @@
 package com.roger.member.controller;
 
+import com.chihyun.mycoupon.entity.MyCoupon;
+import com.chihyun.mycoupon.model.MyCouponService;
 import com.roger.clicklike.entity.ClickLike;
 import com.roger.clicklike.service.ClickLikeService;
 import com.roger.columnarticle.service.ColumnArticleService;
@@ -63,6 +65,9 @@ public class MemberControllerFrontEnd {
     @Autowired
     private ColumnArticleService columnArticleService;
 
+    @Autowired
+    private MyCouponService myCouponSvc;
+
     /**
      * StringRedisTemplate 的自動裝配成員變數，用於處理 Redis 字符串操作。
      */
@@ -119,8 +124,19 @@ public class MemberControllerFrontEnd {
             return "redirect:/frontend/member/loginMember";
         }
 
+        List<MyCoupon> list = myCouponSvc.getAllMyCouponMem(myData.getMemNo());
+        System.out.println(list);
+        List<MyCoupon> showMyCoupon = new ArrayList<>();
+        for (MyCoupon mycoupons : list) {
+            if (mycoupons.getCoupUsedStat() == 0) {
+                showMyCoupon.add(mycoupons);
+            }
+        }
+        int myCouponQTY = showMyCoupon.size();
+
         // 將會員資料添加到模型中
         modelMap.addAttribute("myData", myData);
+        modelMap.addAttribute("myCouponQTY", myCouponQTY);
 
         // 返回要呈現的視圖名稱
         return "frontend/member/oneMember";
