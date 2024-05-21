@@ -41,6 +41,7 @@ public class MyCouponFrontendController {
             int myCouponQTY = showMyCoupon.size();
             model.addAttribute("myCouponList", showMyCoupon);
             model.addAttribute("myCouponQTY", myCouponQTY);
+            model.addAttribute("myData", myData);
             return "/frontend/mycoupon/myCoupon";
         }
     }
