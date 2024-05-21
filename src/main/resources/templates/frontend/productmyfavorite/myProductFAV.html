@@ -79,7 +79,7 @@
                                 </a></li>
                                 <li class="border-bottom mb-0"><a
                                         class="nav-link-style d-flex align-items-center p-3"
-                                        href="account-wishlist.html"><i class="fi-heart me-2"></i>我的最愛
+                                        th:href="@{/frontend/productmyfavorite/myProductFAV}"><i class="fi-heart me-2"></i>我的最愛
                                     <div class="ms-auto badge-pill badge bg-secondary">5</div>
                                 </a></li>
                                 <li class="border-bottom mb-0"><a
@@ -180,11 +180,9 @@
 <script>
     function deleteProduct(button) {
         var row = button.parentNode.parentNode; // 获取要删除的行元素
-
         var productNo = row.querySelector('input[name="productNo"]').value;
         var memNo = row.querySelector('input[name="memNo"]').value;
 
-        // 发送 AJAX 请求删除商品
         $.ajax({
             type: 'POST',
             url: '/frontend/productmyfavorite/deleteInstantly',
@@ -193,7 +191,7 @@
                 memNo: memNo
             },
             success: function (data) {
-                row.remove(); // 删除整行
+                row.remove();
                 console.log("删除成功");
             },
             error: function () {
@@ -201,28 +199,17 @@
             }
         });
     }
-
+//時間排序
     document.addEventListener("DOMContentLoaded", function() {
-        // 获取表格
         var table = document.getElementById('dataTable');
-        // 获取表格行（不包括表头）
         var rows = table.querySelectorAll('tbody tr');
-        // 将 NodeList 转换为数组
         var rowsArray = Array.from(rows);
-
-        // 根据加入时间排序（时间晚的排在前面）
         rowsArray.sort(function(rowA, rowB) {
-            // 获取加入时间的值并转换为时间对象进行比较
             var timeA = new Date(rowA.querySelector('#favTime').innerText);
             var timeB = new Date(rowB.querySelector('#favTime').innerText);
-            // 返回比较结果的反转
-            return timeB - timeA;
         });
 
-        // 清空表格
         table.querySelector('tbody').innerHTML = '';
-
-        // 将排序后的行重新插入表格
         rowsArray.forEach(function(row) {
             table.querySelector('tbody').appendChild(row);
         });
