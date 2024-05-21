@@ -77,7 +77,7 @@ CREATE TABLE Member
 );
 
 INSERT INTO Member(memName, memAcc, memPwd, memMob, memGender, memMail, memAdd, memBd, memCard, provider, clientID, displayName, accessToken, refreshToken, tknExpireTime, creationTime, memberJoinTime, memStat, memSalt, memPic, memLogin, memLogout, memActiveTime) VALUES
-('John', 'John123', '123456', '0912345678', 1, 'John123@gmail.com','台北市大安區忠孝東路四段100號', '1990-01-15', '411235678901234', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 0, '1', null, 1, 0, '2024-05-05 18:00:00'),
+('John', 'John123', '1a0b06e97a625dfdeec2856a3fada14e', '0912345678', 1, 'John123@gmail.com','台北市大安區忠孝東路四段100號', '1990-01-15', '411235678901234', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 0, '1', null, 1, 0, '2024-05-05 18:00:00'),
 ('Emma', 'Emma456', 'abcdef', '0987654321', 2, 'Emma456@gmail.com','新北市板橋區文化路二段50巷20號', '1985-03-28', '510510510510510', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 0,'2', null, 1, 0, '2024-05-05 18:00:00'),
 ('Michael', 'Michael789', 'qwerty', '0965412378', 1, 'Michael789@gmail.com','台中市西屯區市政北二路100號', '1998-07-10', '378282246310005', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 2, '3', null, 1, 0, '2024-05-05 18:00:00'),
 ('Emily', 'Emily987', '987654', '0945678912', 2, 'Emily987@gmail.com','台南市中西區民族路三段30號', '1982-09-05', '371449635398431', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, 0, '4', null, 1, 0, '2024-05-05 18:00:00'),
@@ -382,7 +382,7 @@ INSERT INTO ArticleCollection(memNo, artNo) VALUES (10, 10);
 -- 創建專欄文章回覆表格
 CREATE TABLE ColumnReply
 (
-    columnReplyNo INT           NOT NULL PRIMARY KEY,
+    columnReplyNo INT           NOT NULL PRIMARY KEY AUTO_INCREMENT,
     artNo         INT           NOT NULL,
     memNo         INT           NOT NULL,
     comContent    VARCHAR(255)  NOT NULL,
@@ -390,7 +390,7 @@ CREATE TABLE ColumnReply
     comStat       TINYINT       NOT NULL,
     FOREIGN KEY (artNo) REFERENCES ColumnArticle(artNo) ,
     FOREIGN KEY (memNo) REFERENCES Member(memNo)
-);
+) AUTO_INCREMENT=1001;
 INSERT INTO ColumnReply(columnReplyNo, artNo, memNo, comContent, comTime, comStat) VALUES (1001, 1, 1, '感謝分享！這些建議對我們即將籌備婚禮的夫妻非常有幫助。我們將會仔細考慮每一步，確保婚禮順利舉辦。', '2024-04-02 10:30:00', 1);
 INSERT INTO ColumnReply(columnReplyNo, artNo, memNo, comContent, comTime, comStat) VALUES (1002, 1, 2, '太棒了！籌備婚禮確實需要一個良好的計劃和準備。我們正在著手籌備，您提供的建議會讓我們更有信心地迎接這個特別的日子。謝謝！', '2024-04-02 11:30:00', 1);
 INSERT INTO ColumnReply(columnReplyNo, artNo, memNo, comContent, comTime, comStat) VALUES (1003, 1, 3, '非常感謝您的建議！我們剛剛開始籌備婚禮，這些提示讓我們感到更有把握。我們期待著能夠與供應商合作，並把我們的夢想婚禮變成現實。祝您有一個美好的婚禮！', '2024-04-02 12:30:00', 1);

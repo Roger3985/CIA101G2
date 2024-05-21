@@ -43,28 +43,20 @@
                                     <th>租借品訂單編號</th>
                                     <th>方案名稱</th>
                                     <th>租借天數</th>
-                                    <th>修改</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <th:block th:each="rentSet : ${rentSetListData}" > <!--th:block 用來包裝使用-->
-                                    <tr>
-                                        <td th:text="${rentSet.rentalOrdNo}"></td>
-                                        <td th:text="${rentSet.rentalSetName}"></td>
-                                        <td>
-                                            <span th:if="${rentSet.rentalSetDays == 0}" th:text="7天"></span>
-                                            <span th:if="${rentSet.rentalSetDays == 1}" th:text="14天"></span>
-                                        </td>
-                                        <td>
-                                            <form method="post" th:action="@{getOneUpdate}">
-                                                <button type="submit" value="修改">
-                                                    <i class="far fa-edit"></i>
-                                                    <input type="hidden" name="rentalOrdNo" th:value="${rentSet.rentalOrdNo}">
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                </th:block>
+                                <div th:fragment="listOneRentSet">
+                                    <th:block th:each="rentSet : ${rentSetListData}">
+                                        <tr>
+                                            <td th:text="${rentSet.compositeDetail.getRentalOrdNo()}"></td>
+                                            <br>
+                                            <td th:text="${rentSet.getRentalSetName()}"></td>
+                                            <br>
+                                            <td th:text="${rentSet.getRentalSetDays()}"></td>
+                                        </tr>
+                                    </th:block>
+                                </div>
                                 </tbody>
                             </table>
                         </div>

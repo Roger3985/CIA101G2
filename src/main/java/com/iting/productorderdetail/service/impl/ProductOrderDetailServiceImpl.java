@@ -61,6 +61,7 @@ public ProductOrderDetail findByproductOrdNoAndproductNo(Integer productOrdNo,In
     }
     @Override
     public List<ProductOrderDetail> findByProductNo(Integer ProductNo) {
+
         return repository.findByProductNo(ProductNo);
     }
 

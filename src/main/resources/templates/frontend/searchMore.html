@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Search Results</title>
+    <th:block th:include="~{frontend/component/plugin/frontendplugin.html :: css}"></th:block>
+    <style>
+        .search-results {
+            display: flex;
+            justify-content: space-between;
+        }
+        .search-results div {
+            width: 48%;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<!-- 通用插件 -->
+<th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block>
+<!-- 通用插件 -->
+<!--
+========================
+    Wrapper
+========================
+-->
+<div class="wrapper">
+    <!-- header height -->
+    <div class="header-height-bar" style="min-height: 144.865px;"></div>
+    <!-- Header -->
+    <header th:replace="frontend/component/header :: header"></header>
+    <!-- End Header -->
+    <!-- Main -->
+    <main>
+        <div class="container mt-5">
+            <h2>搜尋結果</h2>
+            <!-- Tabs -->
+            <div th:if="${productResults.size() > 0 || rentalResults.size() > 0}" class="tabs-container">
+                <ul class="nav nav-tabs" id="resultTabs" role="tablist">
+                    <li th:if="${productResults.size() > 0}" class="nav-item">
+                        <a class="nav-link active" id="products-tab" data-toggle="tab" href="#products" role="tab" aria-controls="products" aria-selected="true">商品</a>
+                    </li>
+                    <li th:if="${rentalResults.size() > 0}" class="nav-item">
+                        <a class="nav-link" id="rentals-tab" data-toggle="tab" href="#rentals" role="tab" aria-controls="rentals" aria-selected="false">租借品</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="resultTabContent">
+                    <div th:if="${productResults.size() > 0}" class="tab-pane fade active show" id="products" role="tabpanel" aria-labelledby="products-tab">
+                        <!-- 商品區域 -->
+                        <div th:if="${productResults.size() > 0}">
+                            <h3>商品</h3>
+                            <div th:each="product : ${productResults}">
+                                <a th:href="@{/frontend/product/Product(productNo=${product.productNo})}" class="d-block mb-2">
+                                    <h4 th:text="${product.productName}">Product Name</h4>
+                                    <p th:text="${product.productInfo}">Product Info</p>
+                                </a>
+                            </div>
+                            <nav th:if="${productPage.totalPages > 1}">
+                                <ul class="pagination">
+                                    <li th:classappend="${productPage.hasPrevious()} ? '' : 'disabled'" class="page-item">
+                                        <a th:href="@{'/frontend/searchMore?searchQuery=' + ${searchQuery} + '&page=' + ${productPage.number - 1} + '&size=' + ${productPage.size}}" class="page-link">Previous</a>
+                                    </li>
+                                    <li th:each="pageNum : ${#numbers.sequence(0, productPage.totalPages - 1)}" th:classappend="${pageNum == productPage.number} ? 'active' : ''" class="page-item">
+                                        <a th:href="@{'/frontend/searchMore?searchQuery=' + ${searchQuery} + '&page=' + ${pageNum} + '&size=' + ${productPage.size}}" class="page-link" th:text="${pageNum + 1}">1</a>
+                                    </li>
+                                    <li th:classappend="${productPage.hasNext()} ? '' : 'disabled'" class="page-item">
+                                        <a th:href="@{'/frontend/searchMore?searchQuery=' + ${searchQuery} + '&page=' + ${productPage.number + 1} + '&size=' + ${productPage.size}}" class="page-link">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div th:if="${productResults.size() == 0}">
+                            <p>沒有找到商品</p>
+                        </div>
+                    </div>
+                    <div th:if="${rentalResults.size() > 0}" class="tab-pane fade" id="rentals" role="tabpanel" aria-labelledby="rentals-tab">
+                        <!-- 租借品區域 -->
+                        <div th:if="${rentalResults.size() > 0}">
+                            <h3>租借品</h3>
+                            <div th:each="rental : ${rentalResults}">
+                                <a th:href="@{/frontend/rental/Rental(rentalNo=${rental.rentalNo})}" class="d-block mb-2">
+                                    <h4 th:text="${rental.rentalName}">Rental Name</h4>
+                                    <p th:text="${rental.rentalInfo}">Rental Info</p>
+                                </a>
+                            </div>
+                            <nav th:if="${rentalPage.totalPages > 1}">
+                                <ul class="pagination">
+                                    <li th:classappend="${rentalPage.hasPrevious()} ? '' : 'disabled'" class="page-item">
+                                        <a th:href="@{'/frontend/searchMore?searchQuery=' + ${searchQuery} + '&page=' + ${rentalPage.number - 1} + '&size=' + ${rentalPage.size}}" class="page-link">Previous</a>
+                                    </li>
+                                    <li th:each="pageNum : ${#numbers.sequence(0, rentalPage.totalPages - 1)}" th:classappend="${pageNum == rentalPage.number} ? 'active' : ''" class="page-item">
+                                        <a th:href="@{'/frontend/searchMore?searchQuery=' + ${searchQuery} + '&page=' + ${pageNum} + '&size=' + ${rentalPage.size}}" class="page-link" th:text="${pageNum + 1}">1</a>
+                                    </li>
+                                    <li th:classappend="${rentalPage.hasNext()} ? '' : 'disabled'" class="page-item">
+                                        <a th:href="@{'/frontend/searchMore?searchQuery=' + ${searchQuery} + '&page=' + ${rentalPage.number + 1} + '&size=' + ${rentalPage.size}}" class="page-link">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div th:if="${rentalResults.size() == 0}">
+                            <p>沒有找到租借品</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 無搜尋結果 -->
+            <div th:if="${productResults.size() == 0 && rentalResults.size() == 0}" class="row">
+                <div class="col-12">
+                    <p>無搜尋結果</p>
+                </div>
+            </div>
+        </div>
+        <!-- End blog -->
+        <!-- Privacy Policy -->
+        <section th:replace="frontend/component/privacypolicy :: privacypolicy"></section>
+        <!-- End Privacy Policy -->
+    </main>
+    <!-- End Main -->
+
+    <!-- Footer -->
+    <footer th:replace="frontend/component/footer :: footer"></footer>
+    <!-- End Footer -->
+
+</div>
+<!--
+========================
+   End Wrapper
+========================
+-->
+<!-- script start -->
+<th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
+<!-- End script start -->
+<script>
+    $(document).ready(function(){
+        $('#resultTabs a').on('click', function (e) {
+            e.preventDefault();
+
+            // Remove 'active' and 'show' classes from all tab panes within the tab-content
+            $('#resultTabContent .tab-pane').removeClass('active show');
+
+            // Add 'active' and 'show' classes to the clicked tab pane
+            var target = $(this).attr('href');
+            $(target).addClass('active show');
+
+            // Remove 'active' class and 'aria-selected=true' from all tab links
+            $('#resultTabs a').removeClass('active').attr('aria-selected', 'false');
+
+            // Add 'active' class and 'aria-selected=true' to the clicked tab link
+            $(this).addClass('active').attr('aria-selected', 'true');
+        });
+    });
+
+
+</script>
+</body>
+</html>

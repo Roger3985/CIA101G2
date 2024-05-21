@@ -1,21 +1,20 @@
 package com.yu.rentSet.entity;
 
 import com.howard.rentalorder.entity.RentalOrder;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.io.Serializable;
+import java.util.Objects;
 
 @Entity  //標示類別為"永續類別"
 @Table(name = "rentset")  //此"永續類別"對應到的表格
 public class RentSet implements java.io.Serializable {
 
-    @Id //標示為PK
-    @Column(name = "rentalordno")
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //有設立AUTO_INCREMENT
-    private Integer rentalOrdNo;
+    @EmbeddedId   //加上@EmbeddedId 標註，必須override此類別的hashcode()、equals()
+    private CompositeDetail compositeDetail;
 
     @OneToOne
-    @MapsId
+    @MapsId("rentalOrdNo")
     @JoinColumn(name = "rentalordno", referencedColumnName = "rentalordno")
     private RentalOrder rentalOrder;
 
@@ -30,27 +29,99 @@ public class RentSet implements java.io.Serializable {
     @Max(value = 1, message = "*租借天數: 不能小於{value}")
     private Byte rentalSetDays;
 
-    public RentSet(){}
 
-    public RentSet(Integer rentalOrdNo, String rentalSetName, Byte rentalSetDays) {
-        this.rentalOrdNo = rentalOrdNo;
-        this.rentalSetName = rentalSetName;
-        this.rentalSetDays = rentalSetDays;
+    @Embeddable
+    public static class CompositeDetail implements java.io.Serializable {
+
+        @Column(name = "rentalordno")
+        private Integer rentalOrdNo;
+
+        public CompositeDetail() {
+        }
+
+        public CompositeDetail(Integer rentalOrdNo) {
+            this.rentalOrdNo = rentalOrdNo;
+        }
+
+        public Integer getRentalOrdNo() {
+            return rentalOrdNo;
+        }
+
+        public void setRentalOrdNo(Integer rentalOrdNo) {
+            this.rentalOrdNo = rentalOrdNo;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof CompositeDetail)) return false;
+            CompositeDetail that = (CompositeDetail) o;
+            return Objects.equals(getRentalOrdNo(), that.getRentalOrdNo());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(getRentalOrdNo());
+        }
+
     }
 
-    public RentSet(Integer rentalOrdNo, RentalOrder rentalOrder, String rentalSetName, Byte rentalSetDays) {
-        this.rentalOrdNo = rentalOrdNo;
+    public RentSet(){}
+
+    public RentSet(CompositeDetail compositeDetail, RentalOrder rentalOrder, String rentalSetName, Byte rentalSetDays) {
+        this.compositeDetail = compositeDetail;
         this.rentalOrder = rentalOrder;
         this.rentalSetName = rentalSetName;
         this.rentalSetDays = rentalSetDays;
     }
 
-    public Integer getRentalOrdNo() {
-        return rentalOrdNo;
+    public RentSet(CompositeDetail compositeDetail, RentalOrder rentalOrder, String rentalSetName) {
+        this.compositeDetail = compositeDetail;
+        this.rentalOrder = rentalOrder;
+        this.rentalSetName = rentalSetName;
     }
 
-    public void setRentalOrdNo(Integer rentalOrdNo) {
-        this.rentalOrdNo = rentalOrdNo;
+    public RentSet(CompositeDetail compositeDetail, String rentalSetName, Byte rentalSetDays) {
+        this.compositeDetail = compositeDetail;
+        this.rentalSetName = rentalSetName;
+        this.rentalSetDays = rentalSetDays;
+    }
+
+    public RentSet(CompositeDetail compositeDetail, RentalOrder rentalOrder, Byte rentalSetDays) {
+        this.compositeDetail = compositeDetail;
+        this.rentalOrder = rentalOrder;
+        this.rentalSetDays = rentalSetDays;
+    }
+
+    public RentSet(CompositeDetail compositeDetail, String rentalSetName) {
+        this.compositeDetail = compositeDetail;
+        this.rentalSetName = rentalSetName;
+    }
+
+    public RentSet(CompositeDetail compositeDetail, RentalOrder rentalOrder) {
+        this.compositeDetail = compositeDetail;
+        this.rentalOrder = rentalOrder;
+    }
+
+    public RentSet(CompositeDetail compositeDetail, Byte rentalSetDays) {
+        this.compositeDetail = compositeDetail;
+        this.rentalSetDays = rentalSetDays;
+    }
+
+    public CompositeDetail getCompositeDetail() {
+        return compositeDetail;
+    }
+
+    public void setCompositeDetail(CompositeDetail compositeDetail) {
+        this.compositeDetail = compositeDetail;
+    }
+
+    public RentalOrder getRentalOrder() {
+        return rentalOrder;
+    }
+
+    public void setRentalOrder(RentalOrder rentalOrder) {
+        this.rentalOrder = rentalOrder;
     }
 
     public String getRentalSetName() {
@@ -69,12 +140,5 @@ public class RentSet implements java.io.Serializable {
         this.rentalSetDays = rentalSetDays;
     }
 
-    public RentalOrder getRentalOrder() {
-        return rentalOrder;
-    }
-
-    public void setRentalOrder(RentalOrder rentalOrder) {
-        this.rentalOrder = rentalOrder;
-    }
 
 }

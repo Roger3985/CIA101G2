@@ -1,5 +1,6 @@
 package com.roger.columnarticle.service.impl;
 
+import com.roger.articlecollection.entity.ArticleCollection;
 import com.roger.articlecollection.repository.ArticleCollectionRepository;
 import com.roger.clicklike.entity.ClickLike;
 import com.roger.clicklike.repository.ClickLikeRepository;
@@ -99,47 +100,44 @@ public class ColumnArticleServiceImpl implements ColumnArticleService {
         return columnArticleRepository.findColumnArticleByArtNo(artNo);
     }
 
+
+    /**
+     * 將文章添加到會員的收藏中。
+     *
+     * @param memNo 會員編號
+     * @param artNo 文章編號
+     * @return 如果成功添加到收藏中則返回 true，否則返回 false
+     */
     @Override
-    @Transactional
-    public boolean likeColumnArticle(Integer memNo, Integer artNo) {
+    public boolean columnArticleCollection(Integer memNo, Integer artNo) {
+
+        // 檢查會員和文章是否存在
         if (!memberRepository.existsByMemNo(memNo) || !columnArticleRepository.existsByArtNo(artNo)) {
             return false;
         }
 
         // 創建複合主鍵
-        ClickLike.CompositeClickLike compositeClickLike = new ClickLike.CompositeClickLike(memNo, artNo);
+        ArticleCollection.CompositeArticleCollection compositeArticleCollection = new ArticleCollection.CompositeArticleCollection(memNo, artNo);
 
-        // 檢查是否已經點讚
-        if (clickLikeRepository.existsByCompositeClickLike(compositeClickLike)) {
-            return false; // 已經點讚過
+        // 檢查是否已經收藏過
+        if (articleCollectionRepository.existsByCompositeArticleCollection(compositeArticleCollection)) {
+            return false; // 已經收藏過
         }
 
-        // 創建點讚紀錄
-        ClickLike clickLike = new ClickLike();
-        clickLike.setCompositeClickLike(compositeClickLike);
+        // 創建新的收藏記錄
+        ArticleCollection newCollection = new ArticleCollection();
+        newCollection.setCompositeArticleCollection(compositeArticleCollection);
+        articleCollectionRepository.save(newCollection);
 
-        // 獲得用戶和專欄文章實體
-        Member member = memberRepository.findMemberByMemNo(memNo).orElse(null);
-        ColumnArticle columnArticle = columnArticleRepository.findColumnArticleByArtNo(artNo);
+        return true; // 成功收藏
+    }
 
-        if (member != null && columnArticle != null) {
-            clickLike.setMember(member);
-            clickLike.setColumnArticle(columnArticle);
-
-            // 保存點讚紀錄
-            clickLikeRepository.save(clickLike);
-
-            // 更新文章的點讚數
-            Set<ClickLike> clickLikes = columnArticle.getClickLikes();
-            int clickCount = clickLikes.size();
-            clickCount++; // 增加點讚數
-            // 更新文章的 clickLikes 屬性
-            columnArticle.setClickLikes(clickLikes);
-
-            return true;
-        }
-
-        return false;
+    /**
+     * 獲取指定文章的回應數量。
+     */
+    @Override
+    public int getResponseCount(Integer artNo) {
+        return columnArticleRepository.countColumnArticleByArtNo(artNo);
     }
 
 }

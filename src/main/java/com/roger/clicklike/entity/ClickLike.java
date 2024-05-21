@@ -29,6 +29,12 @@ public class ClickLike implements Serializable {
 
     // private Integer artNo;
 
+    public boolean isLikedByUser(Integer memNo, Integer artNo) {
+        return compositeClickLike != null &&
+                compositeClickLike.getMemNo().equals(memNo) &&
+                compositeClickLike.getArtNo().equals(artNo);
+    }
+
 
     public CompositeClickLike getCompositeClickLike() {
         return compositeClickLike;
@@ -100,6 +106,7 @@ public class ClickLike implements Serializable {
         public int hashCode() {
             return Objects.hash(getMemNo(), getArtNo());
         }
+
     }
 
 }

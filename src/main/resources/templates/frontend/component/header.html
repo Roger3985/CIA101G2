@@ -98,15 +98,14 @@
                             class="px-dropdown-toggle mob-menu"></label>
                         <ul class="dropdown-menu left shadow-lg">
                             <li><a class="dropdown-item" th:href="@{/frontend/rental/rentalShop}">瀏覽租借品</a></li>
-                            <li><a class="dropdown-item" th:href="@{/frontend/rental/rentalShop}">租借守則</a></li>
-                            <li><a class="dropdown-item" th:href="@{/frontend/rental/rentalShop}">歸還毀損賠償</a></li>
+                            <li><a class="dropdown-item" th:href="@{/frontend/rental/rentalInstructions}">租借須知</a></li>
                         </ul>
                     </li>
                     <li class="dropdown nav-item"><a href="#" class="nav-link">專欄文章</a> <label
                             class="px-dropdown-toggle mob-menu"></label>
                         <ul class="dropdown-menu left shadow-lg">
                             <li><a class="dropdown-item" th:href="@{/frontend/columnarticle/listAllColumnArticle}">Blog</a></li>
-                            <li><a class="dropdown-item" href="../blog/blog-single.html">Blog Single</a></li>
+                            <li><a class="dropdown-item" th:href="@{/frontend/columnarticle/oneColumnArticle}">Blog Single</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -169,7 +168,9 @@
                 </div>
             </div>
             <!-- Wishlist -->
-            <div class="nav-item d-none d-xl-block"><a class="nav-link" href="#"><i class="fi-heart"></i></a></div>
+            <div class="nav-item d-none d-xl-block">
+                <a class="nav-link" th:href="@{/frontend/rental/rentalFAVList}"><i class="fi-heart"></i></a>
+            </div>
             <!-- Cart -->
             <div class="nav-item"><a class="nav-link" data-bs-toggle="offcanvas" href="#modalMiniCart" role="button"
                                      aria-controls="modalMiniCart"><span class="" data-cart-items="8"><i

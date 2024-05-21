@@ -1,5 +1,8 @@
 package com.roger.member.controller;
 
+import com.roger.clicklike.entity.ClickLike;
+import com.roger.clicklike.service.ClickLikeService;
+import com.roger.columnarticle.service.ColumnArticleService;
 import com.roger.member.entity.Member;
 import com.roger.member.entity.uniqueAnnotation.Create;
 import com.roger.member.entity.uniqueAnnotation.CreateWithout;
@@ -53,6 +56,12 @@ public class MemberControllerFrontEnd {
      */
     @Autowired
     private NoticeService noticeService;
+
+    @Autowired
+    private ClickLikeService clickLikeService;
+
+    @Autowired
+    private ColumnArticleService columnArticleService;
 
     /**
      * StringRedisTemplate 的自動裝配成員變數，用於處理 Redis 字符串操作。
@@ -392,6 +401,7 @@ public class MemberControllerFrontEnd {
         // 獲取會員的通知
         List<Notice> noticeList = noticeService.findNoticesByMemberMemNo(existingMember.getMemNo());
 
+
         // 獲取未讀取通知的數量
         int unreadNoticeCount = noticeService.getUnreadNoticeCount(existingMember);
 
@@ -404,6 +414,7 @@ public class MemberControllerFrontEnd {
         session.setAttribute("loginsuccess", loginData);
         session.setAttribute("noticeList", noticeList);
         session.setAttribute("unreadNoticeCount", unreadNoticeCount);
+
 
         System.out.println(unreadNoticeCount);
 

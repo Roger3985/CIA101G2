@@ -54,35 +54,35 @@
                             </li>
                             <hr width="90%" size="7">
                             <!--  萬用複合查詢(開始)  -->
-                            <font color=blue>萬用複合查詢:</font><br>
-                            <li>
-                                <form method="post" th:action="@{search}" th:object="${rentalCategory}">
-                                    選擇租借品類別編號:
-                                    <select name="rentalCatNo" th:field="*{rentalCatNo}">
-                                        <option value="1">請選擇</option>
-                                        <option th:each="rentalCategory : ${rentalCatListData}" th:value="${rentalCategory.rentalCatNo}" th:text="${rentalCategory.rentalCatNo} + '-[' + ${rentalCategory.rentalCatName} + ']'" />
-                                    </select><br>
-                                    選擇類別名稱:
-                                    <select name="rentalCatName" th:field="*{rentalCatName}">
-                                        <option value="2">請選擇</option>
-                                        <option value="0" th:selected="${rentalCategory.rentalCatName}">西裝</option>
-                                        <option value="1" th:selected="${rentalCategory.rentalCatName}">婚紗</option>
-                                        <option value="2" th:selected="${rentalCategory.rentalCatName}">禮服</option>
-                                        <option value="3" th:selected="${rentalCategory.rentalCatName}">飾品</option>
-                                        <!--                                        <option th:each="rentalCategory : ${rentalCatListData}" th:value="${rentalCategory.rentalCatNo}" th:text="${rentalCategory.rentalCatName}" />-->
-                                    </select><br>
-                                    輸入租借品庫存數量:
-                                    <input type="text" name="rentalStockQty" th:field="*{rentalStockQty}" onclick="hideContent('rentalStockQty.errors');" /><br/>
-                                    <span  th:if="${#fields.hasErrors('rentalStockQty')}" th:errors="*{rentalStockQty}" class="error" id="rentalStockQty.errors"></span>
-                                    輸入租借品已租借數量:
-                                    <input type="text" name="rentalRentedQty" th:field="*{rentalRentedQty}" onclick="hideContent('rentalRentedQty.errors');" /><br/>
-                                    <span  th:if="${#fields.hasErrors('rentalRentedQty')}" th:errors="*{rentalRentedQty}" class="error" id="rentalRentedQty.errors"></span>
-                                    輸入押金:
-                                    <input type="text" name="rentalDesPrice" th:field="*{rentalDesPrice}" onclick="hideContent('rentalDesPrice.errors');" /><br/>
-                                    <span  th:if="${#fields.hasErrors('rentalDesPrice')}" th:errors="*{rentalDesPrice}" class="error" id="rentalDesPrice.errors"></span>
-                                    <input type="submit" value="送出"/>
-                                </form>
-                            </li>
+<!--                            <font color=blue>萬用複合查詢:</font><br>-->
+<!--                            <li>-->
+<!--                                <form method="post" th:action="@{search}" th:object="${rentalCategory}">-->
+<!--                                    選擇租借品類別編號:-->
+<!--                                    <select name="rentalCatNo" th:field="*{rentalCatNo}">-->
+<!--                                        <option value="1">請選擇</option>-->
+<!--                                        <option th:each="rentalCategory : ${rentalCatListData}" th:value="${rentalCategory.rentalCatNo}" th:text="${rentalCategory.rentalCatNo} + '-[' + ${rentalCategory.rentalCatName} + ']'" />-->
+<!--                                    </select><br>-->
+<!--                                    選擇類別名稱:-->
+<!--                                    <select name="rentalCatName" th:field="*{rentalCatName}">-->
+<!--                                        <option value="2">請選擇</option>-->
+<!--                                        <option value="0" th:selected="${rentalCategory.rentalCatName}">西裝</option>-->
+<!--                                        <option value="1" th:selected="${rentalCategory.rentalCatName}">婚紗</option>-->
+<!--                                        <option value="2" th:selected="${rentalCategory.rentalCatName}">禮服</option>-->
+<!--                                        <option value="3" th:selected="${rentalCategory.rentalCatName}">飾品</option>-->
+<!--                                        &lt;!&ndash;                                        <option th:each="rentalCategory : ${rentalCatListData}" th:value="${rentalCategory.rentalCatNo}" th:text="${rentalCategory.rentalCatName}" />&ndash;&gt;-->
+<!--                                    </select><br>-->
+<!--                                    輸入租借品庫存數量:-->
+<!--                                    <input type="text" name="rentalStockQty" th:field="*{rentalStockQty}" onclick="hideContent('rentalStockQty.errors');" /><br/>-->
+<!--                                    <span  th:if="${#fields.hasErrors('rentalStockQty')}" th:errors="*{rentalStockQty}" class="error" id="rentalStockQty.errors"></span>-->
+<!--                                    輸入租借品已租借數量:-->
+<!--                                    <input type="text" name="rentalRentedQty" th:field="*{rentalRentedQty}" onclick="hideContent('rentalRentedQty.errors');" /><br/>-->
+<!--                                    <span  th:if="${#fields.hasErrors('rentalRentedQty')}" th:errors="*{rentalRentedQty}" class="error" id="rentalRentedQty.errors"></span>-->
+<!--                                    輸入押金:-->
+<!--                                    <input type="text" name="rentalDesPrice" th:field="*{rentalDesPrice}" onclick="hideContent('rentalDesPrice.errors');" /><br/>-->
+<!--                                    <span  th:if="${#fields.hasErrors('rentalDesPrice')}" th:errors="*{rentalDesPrice}" class="error" id="rentalDesPrice.errors"></span>-->
+<!--                                    <input type="submit" value="送出"/>-->
+<!--                                </form>-->
+<!--                            </li>-->
                         </ul>
                     </div>
                 </div>

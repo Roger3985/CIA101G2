@@ -63,51 +63,71 @@ public class ProductOrderController {
     ProductPictureServiceImpl productPictureService;
 
 
-    @PostMapping("insertOrder")
-    public String insertOrder(@Validated(Create.class) CartRedis cartRedis, BindingResult result, ModelMap model, HttpSession session) {
-//        Member member= new Member();
-//        member.setMemNo(1);
-        Object memNo = 0; // 声明并初始化memNo为Object类型
-//
-//       session.setAttribute("member",member);
-        Member member = (Member) session.getAttribute("member"); // 强制转换为Member类型
-        memNo = member.getMemNo();
+    @PostMapping("/submitOrder")
+    @ResponseBody
+    public ResponseEntity<String> submitOrder(@RequestParam("productByrName") String productByrName,
+                                              @RequestParam("productByrPhone") String productByrPhone,
+                                              @RequestParam("productByrEmail") String productByrEmail,
+                                              @RequestParam("productRcvName") String productRcvName,
+                                              @RequestParam("productRcvPhone") String productRcvPhone,
+                                              @RequestParam("productTakeMethod") Byte productTakeMethod,
+                                              @RequestParam("productAddr") String productAddr,
+                                              @RequestParam("productPayMethod") Byte productPayMethod,
+                                              @RequestParam("productAllPrice") BigDecimal productAllPrice,
+                                              @RequestParam(value = "coupNo", required = false) Integer coupNo,
+                                              HttpSession session) {
+        // 获取 session 中的 member 对象
+        Member member = (Member) session.getAttribute("member"); // 强制转换为 Member 类型
 
-//未登入
-        if (session.getAttribute("member") == null) {
-            return "/backend/login";
-        } else {
-            ProductOrder productOrder = productOrderSvc.addOneProductOrder(cartRedis);
-            member = memberService.findByNo((Integer) memNo);
-            productOrder.setMember(member);
-            productOrder.setProductOrdStat(Byte.valueOf((byte) 40));
-            productOrder.setProductStat(Byte.valueOf((byte) 0));
-// 获取所有优惠券
-            List<MyCoupon> myCoupons = myCouponService.getAllMyCouponMem((Integer) memNo);
-// 过滤出 CoupUsedStat 不等于 1 的优惠券
-            List<MyCoupon> filteredCoupons = myCoupons.stream()
-                    .filter(coupon -> coupon.getCoupUsedStat() != 1)
-                    .collect(Collectors.toList());
-            List<CartRedis> cartListData = cartSvc.findByCompositeKey((Integer) memNo); // 将memNo强制转换为Integer类型
-            for (CartRedis cartItem : cartListData) {
-                Integer cartProductNo = cartItem.getProductNo();
-                List<ProductPicture> productPictures = productPictureService.getByProductNo(cartProductNo);
-                if (productPictures != null && !productPictures.isEmpty()) {
-                    ProductPicture firstProductPicture = productPictures.get(0);
-                    byte[] firstPic = firstProductPicture.getProductPic();
-                    Integer productNo=firstProductPicture.getProduct().getProductNo();
-                    String base64Image = Base64.getEncoder().encodeToString(firstPic);
-                    if (session.getAttribute("productImage"+productNo)==null){
-                        session.setAttribute("productImage"+productNo, base64Image);}
-                    model.addAttribute("productImage"+productNo, base64Image);
-                }
-            }
-            model.addAttribute("coupons", filteredCoupons);
-            model.addAttribute("productOrder", productOrder);
-            session.setAttribute("productOrder", productOrder); // 將訂單存儲在會話中
-            return "frontend/cart/CartToProductOrderDetail";
+        // 未登录
+        if (member == null) {
+            session.setAttribute("location", "/frontend/productorder/submitOrder");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("frontend/member/loginMember");
         }
+
+        // 创建并设置 ProductOrder 对象
+        ProductOrder productOrder = new ProductOrder();
+        productOrder.setMember(member); // 设置 Member 对象
+        productOrder.setMemNo(member.getMemNo());
+        productOrder.setProductByrName(productByrName);
+        productOrder.setProductByrPhone(productByrPhone);
+        productOrder.setProductByrEmail(productByrEmail);
+        productOrder.setProductRcvName(productRcvName);
+        productOrder.setProductRcvPhone(productRcvPhone);
+        productOrder.setProductAddr(productAddr);
+        productOrder.setProductTakeMethod(productTakeMethod);
+        productOrder.setProductPayMethod(productPayMethod);
+        productOrder.setProductAllPrice(productAllPrice);
+
+// 声明 coupon 变量并初始化为 null
+        final Coupon coupon;
+
+// 检查是否存在优惠券
+        Optional<MyCoupon> myCouponOptional = myCouponService.getOneMyCoupon(coupNo, member.getMemNo());
+
+// 如果存在优惠券，设置优惠券的使用状态并获取对应的 Coupon 对象
+        if (myCouponOptional.isPresent()) {
+            MyCoupon myCoupon = myCouponOptional.get();
+            myCoupon.setCoupUsedStat((byte) 1);
+            coupon = myCoupon.getCoupon();
+        } else {
+            coupon = null; // 如果不存在优惠券，则将 coupon 设置为 null
+        }
+
+// 设置订单对象的优惠券信息
+        productOrder.setCoupon(coupon);
+
+        // 设置订单对象的优惠券信息
+        String result = productOrderSvc.addOneProductOrderSuccess(productOrder);
+        cartSvc.deleteBymemNo(member.getMemNo());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
+
+
+
+//        /return "redirect:" + result;
+
 
     @PostMapping("insertProductOrderSuccess")
     public String insertProductOrderSuccess(@Validated(Create.class) ProductOrder productOrder,
@@ -144,6 +164,73 @@ public class ProductOrderController {
         return "frontend/cart/ProductOrderSuccess";
     }
 
+//    @ResponseBody
+//    @PostMapping("/ecpay")
+//    public String ecpay(@RequestParam Integer productOrderNo) {
+//
+//        String result = productOrderSvc.();
+//        return result;
+////        /return "redirect:" + result;
+//
+//    }
+
+    @PostMapping("insertOrder")
+    public String insertOrder(@Validated(Create.class) CartRedis cartRedis, BindingResult result, ModelMap model, HttpSession session) {
+        // 获取 session 中的 member 对象
+        Member member=new Member();
+        member.setMemNo(3);
+        session.setAttribute("loginsuccess",member);
+         member = (Member) session.getAttribute("loginsuccess"); // 强制转换为 Member 类型
+
+        // 未登录
+        if (member == null) {
+            return "frontend/member/loginMember";
+        }
+
+        // 获取 memNo
+        Integer memNo = member.getMemNo();
+
+        // 创建产品订单
+        ProductOrder productOrder = productOrderSvc.addOneProductOrder(cartRedis);
+        member = memberService.findByNo(memNo);
+        productOrder.setMember(member);
+        productOrder.setProductOrdStat((byte) 40);
+        productOrder.setProductStat((byte) 0);
+
+        // 获取所有优惠券
+        List<MyCoupon> myCoupons = myCouponService.getAllMyCouponMem(memNo);
+        // 过滤出 CoupUsedStat 不等于 1 的优惠券
+        List<MyCoupon> filteredCoupons = myCoupons.stream()
+                .filter(coupon -> coupon.getCoupUsedStat() != 1)
+                .collect(Collectors.toList());
+        // 获取购物车数据
+        List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNo);
+        for (CartRedis cartItem : cartListData) {
+            Integer cartProductNo = cartItem.getProductNo();
+            List<ProductPicture> productPictures = productPictureService.getByProductNo(cartProductNo);
+            if (productPictures != null && !productPictures.isEmpty()) {
+                ProductPicture firstProductPicture = productPictures.get(0);
+                byte[] firstPic = firstProductPicture.getProductPic();
+                Integer productNo = firstProductPicture.getProduct().getProductNo();
+                String base64Image = Base64.getEncoder().encodeToString(firstPic);
+                if (session.getAttribute("productImage" + productNo) == null) {
+                    session.setAttribute("productImage" + productNo, base64Image);
+                }
+                model.addAttribute("productImage" + productNo, base64Image);
+            }
+        }
+
+        // 添加模型属性
+        model.addAttribute("coupons", filteredCoupons);
+        model.addAttribute("productOrder", productOrder);
+        session.setAttribute("productOrder", productOrder); // 将订单存储在会话中
+
+        return "frontend/cart/CartToProductOrderDetail";
+    }
+
+
+
+
     public BindingResult removeFieldError(ProductOrder productOrder, BindingResult result, String removedFieldName) {
         List<FieldError> errorsListToKeep = result.getFieldErrors().stream()
                 .filter(fieldError -> !fieldError.getField().equals(removedFieldName))
@@ -157,7 +244,10 @@ public class ProductOrderController {
 
     @GetMapping("CartEnd")
     public String CartEnd(ModelMap model, HttpSession session) {
-        Member member = (Member) session.getAttribute("member"); // 强制转换为Member类型
+        Member member=new Member();
+        member.setMemNo(3);
+        session.setAttribute("member",member);
+         member = (Member) session.getAttribute("member"); // 强制转换为Member类型
         Integer memNo = member.getMemNo();
         // 使用memNo执行您的逻辑
         List<ProductOrder> list = productOrderSvc.findByMember(memNo);

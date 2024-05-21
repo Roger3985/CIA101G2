@@ -278,13 +278,16 @@
                                     <button class="btn btn-outline-mode">追蹤</button><!--  加入我的追蹤：圖示 <i class="fi-repeat"></i>-->
                                 </div>
                             </div>
-                            <div class="product-info-buttons nav pt-4"><a href="#" class="me-3"
-                                                                          data-bs-toggle="modal" data-bs-target="#px_size_chart_modal"><i
-                                    class="bi bi-scissors"></i>尺寸表</a> <a href="#" class=""
-                                                                             data-bs-toggle="modal" data-bs-target="#px_shipping_modal"><i
-                                    class="bi bi-truck me-2"></i>租借須知</a> <a href="#" class="ms-auto"
-                                                                                 data-bs-toggle="modal" data-bs-target="#px_ask_modal"><i
-                                    class="bi bi-envelope ms-auto"></i>我有疑問</a></div> <!--  可轉交客服網頁  -->
+                            <div class="product-info-buttons nav pt-4">
+                                <a href="#" class="me-3" data-bs-toggle="modal" data-bs-target="#px_size_chart_modal">
+                                    <i class="bi bi-scissors"></i>尺寸表</a>
+
+                                <a th:href="@{/frontend/rental/skipInstructions}" class="" data-bs-toggle="modal"
+                                   data-bs-target="#px_shipping_modal"><i class="bi bi-truck me-2"></i>租借須知</a>
+
+                                <a href="#" class="ms-auto" data-bs-toggle="modal" data-bs-target="#px_ask_modal">
+                                    <i class="bi bi-envelope ms-auto"></i>我有疑問</a></div> <!--  可轉交客服網頁  -->
+
                             <div class="pt-3 border-top mt-3 small">
                                 <p class="theme-link mb-2"><label class="m-0 text-mode">關鍵字:</label> <a
                                         th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=1'}">西裝</a>,

@@ -49,17 +49,18 @@
                                 <tbody>
                                 <th:block th:each="rentSet : ${rentSetListData}" > <!--th:block 用來包裝使用-->
                                     <tr>
-                                        <td th:text="${rentSet.rentalOrdNo}"></td>
-                                        <td th:text="${rentSet.rentalSetName}"></td>
-                                        <td>
-                                            <span th:if="${rentSet.rentalSetDays == 0}" th:text="7天"></span>
-                                            <span th:if="${rentSet.rentalSetDays == 1}" th:text="14天"></span>
+                                        <td th:text="${rentSet.compositeDetail.getRentalOrdNo()}"></td>
+                                        <td th:text="${rentSet.getRentalSetName()}"></td>
+                                        <td th:switch="${rentSet.getRentalSetDays()}">
+                                            <span th:case="'0'">7天</span>
+                                            <span th:case="'1'">14天</span>
+<!--                                            <span th:if="${rentSet.rentalSetDays == 1}" th:text="14天"></span>-->
                                         </td>
                                         <td>
                                             <form method="post" th:action="@{getOneUpdate}">
                                                 <button type="submit" value="修改">
                                                     <i class="far fa-edit"></i>
-                                                    <input type="hidden" name="rentalOrdNo" th:value="${rentSet.rentalOrdNo}">
+                                                    <input type="hidden" name="rentalOrdNo" th:value="${rentSet.compositeDetail.getRentalOrdNo()}">
                                                 </button>
                                             </form>
                                         </td>

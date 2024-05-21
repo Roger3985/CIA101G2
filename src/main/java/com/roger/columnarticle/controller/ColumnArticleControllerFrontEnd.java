@@ -1,7 +1,11 @@
 package com.roger.columnarticle.controller;
 
+import com.roger.clicklike.entity.ClickLike;
+import com.roger.clicklike.service.ClickLikeService;
 import com.roger.columnarticle.entity.ColumnArticle;
 import com.roger.columnarticle.service.ColumnArticleService;
+import com.roger.columnreply.entity.ColumnReply;
+import com.roger.columnreply.service.ColumnReplyService;
 import com.roger.member.entity.Member;
 import com.roger.member.service.MemberService;
 import com.roger.notice.entity.Notice;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -32,12 +37,63 @@ public class ColumnArticleControllerFrontEnd {
     @Autowired
     private NoticeService noticeService;
 
+    @Autowired
+    private ClickLikeService clickLikeService;
+
+    @Autowired
+    private ColumnReplyService columnReplyService;
+
     /**
      * 前往專欄文章的網頁
      */
     @GetMapping("/listAllColumnArticle")
     public String listAllColumnArticle(Model model) {
         return "frontend/columnarticle/listAllColumnArticle";
+    }
+
+    /**
+     * 處理顯示單個專欄文章的 GET 請求。
+     *
+     * 此方法根據提供的文章編號（artNo）檢索特定的專欄文章。
+     * 同時，它還獲取該文章的回應數量，並將文章和回應數量
+     * 添加到 ModelMap 中，以便在視圖中使用。
+     *
+     * @param artNo    專欄文章的文章編號。
+     * @param modelMap 用於添加視圖所需屬性的 ModelMap 物件。
+     * @return         顯示單個專欄文章的視圖名稱。
+     */
+    @GetMapping("/oneColumnArticle")
+    public String oneColumnArticle(@RequestParam("artNo") Integer artNo,
+                                   ModelMap modelMap,
+                                   HttpSession session) {
+
+        System.out.println(artNo);
+
+        // 從 columnArticleService 中獲取單個專欄文章
+        ColumnArticle columnArticle = columnArticleService.getOneColumnArticle(artNo);
+
+        // 從 columnReplyService 中獲取單個文章中的所有的文章回復
+        List<ColumnReply> columnReplies = columnReplyService.getRepliesByArticleId(artNo);
+
+
+        // 獲取文章的回應數量
+        int responseCount = columnArticleService.getResponseCount(artNo);
+
+        // 將專欄文章放入模型中，以便在視圖中使用
+        modelMap.addAttribute("columnArtice", columnArticle);
+        modelMap.addAttribute("responseCount", responseCount + " Responses"); // 單篇文章的留言數量
+        modelMap.addAttribute("columnReplies", columnReplies); // 單篇文章的所有文章回覆
+
+        session.setAttribute("columnReplies", columnReplies);
+
+        // 返回單個專欄文章的頁面
+        return "/frontend/columnarticle/singleColumnArticle";
+    }
+
+    @GetMapping("/{artNo}/responseCount")
+    public ResponseEntity<Integer> getResponseCount(@PathVariable Integer artNo) {
+        int responseCount = columnArticleService.getResponseCount(artNo);
+        return new ResponseEntity<>(responseCount, HttpStatus.OK);
     }
 
     /**
@@ -58,26 +114,26 @@ public class ColumnArticleControllerFrontEnd {
      *
      * @param memNo   會員編號。
      * @param artNo   專欄文章編號。
-     * @param request HttpServletRequest 實例，用於檢查用戶登入狀態。
      * @return ResponseEntity<String>，如果操作成功則返回200 OK，並返回成功消息；如果用戶尚未登入則返回401 Unauthorized錯誤；如果操作失敗則返回500 Internal Server Error錯誤。
      */
     @PostMapping("/like/{memNo}/{artNo}")
     @ResponseBody
     public ResponseEntity<String> likeColumnArticle(@PathVariable Integer memNo,
                                                     @PathVariable Integer artNo,
-                                                    HttpServletRequest request,
                                                     HttpSession session) {
         // 檢查用戶是否已經登入
-        if (request.getRequestURI() == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("尚未登入，請登入後即可點讚文章");
+        if (session.getAttribute("loginsuccess") == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("尚未登入，請登入後即可收藏文章");
         }
 
         // 登入成功後進行點讚的邏輯處理
-        boolean success = columnArticleService.likeColumnArticle(memNo, artNo);
+        boolean success = clickLikeService.likeColumnArticle(memNo, artNo);
+
 
         if (success) {
             // 將會員資料存入會話
             session.setAttribute("loginsuccess", memberService.findByNo(memNo));
+
 
             // 新增點讚的通知消息
             Notice newNotice = new Notice();
@@ -101,10 +157,134 @@ public class ColumnArticleControllerFrontEnd {
         }
     }
 
-//    @GetMapping("/memberClickLikeData")
-//    public String memberClickLikeData(ModelMap modelMap, HttpSession session) {
-//
-//        Member member = (Member) session.getAttribute("loginsuccess");
-//
-//    }
+    /**
+     * POST 請求端點，用於取消對專欄文章的點讚。
+     *
+     * @param memNo   會員編號。
+     * @param artNo   專欄文章編號。
+     * @param request HttpServletRequest 對象，用於獲取 HTTP 請求相關信息。
+     * @return ResponseEntity<String>，如果操作成功則返回 200 OK，並返回成功消息；如果用戶尚未登入則返回 401 Unauthorized 錯誤；
+     * 如果操作失敗則返回 500 Internal Server Error 錯誤。
+     */
+    @PostMapping("/unlike/{memNo}/{artNo}")
+    @ResponseBody
+    public ResponseEntity<String> unlikeColumnArticle(@PathVariable Integer memNo,
+                                                      @PathVariable Integer artNo,
+                                                      HttpServletRequest request,
+                                                      HttpSession session) {
+        // 檢查用戶是否已經登入
+        if (session.getAttribute("loginsuccess") == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("尚未登入，請登入後再試");
+        }
+
+        // 登入成功後進行取消點讚的邏輯處理
+        boolean success = clickLikeService.unlikeArticle(memNo, artNo);
+
+        if (success) {
+            // 將會員資料存入會話
+            session.setAttribute("loginsuccess", memberService.findByNo(memNo));
+
+            // 新增點讚的通知消息
+            Notice newNotice = new Notice();
+            newNotice.setMember(memberService.findByNo(memNo));
+            newNotice.setNotContent("你取消了專欄文章的第"+ String.valueOf(artNo) + "篇:" + columnArticleService.getOneColumnArticle(artNo).getArtTitle() + " 的點讚。");
+            newNotice.setNotTime(new Timestamp(System.currentTimeMillis()));
+            newNotice.setNotStat((byte) 0);
+            noticeService.addNotice(newNotice);
+
+            // 獲取未讀取通知的數量
+            int unreadNoticeCount = noticeService.getUnreadNoticeCount(memberService.findByNo(memNo));
+            // 獲取會員的通知
+            List<Notice> noticeList = noticeService.findNoticesByMemberMemNo(memberService.findByNo(memNo).getMemNo());
+
+            session.setAttribute("noticeList", noticeList);
+            session.setAttribute("unreadNoticeCount", unreadNoticeCount);
+
+            return ResponseEntity.ok("已取消點讚");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("取消點讚失敗");
+        }
+    }
+
+
+    /**
+     * POST請求端點，用於對專欄文章進行點讚。
+     *
+     * @param memNo   會員編號。
+     * @param artNo   專欄文章編號。
+     * @return ResponseEntity<String>，如果操作成功則返回 200 OK，並返回成功消息；如果會員尚未登入則返回 401 Unauthorized錯誤；如果操作失敗則返回 500 Internal Server Error錯誤。
+     */
+    @PostMapping("/columnArticleCollection/{memNo}/{artNo}")
+    @ResponseBody
+    public ResponseEntity<String> columnArticleCollection(@PathVariable Integer memNo,
+                                                          @PathVariable Integer artNo,
+                                                          HttpSession session) {
+
+        // 檢查用戶是否已經登入
+        if (session.getAttribute("loginsuccess") == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("尚未登入，請登入後即可收藏文章");
+        }
+
+        // 登入成功後進行點讚的邏輯處理
+        boolean success = columnArticleService.columnArticleCollection(memNo, artNo);
+
+        if (success) {
+            // 將會員資料存入會話
+            session.setAttribute("loginsuccess", memberService.findByNo(memNo));
+
+            // 新增點讚的通知消息
+            Notice newNotice = new Notice();
+            newNotice.setMember(memberService.findByNo(memNo));
+            newNotice.setNotContent("你成功收藏專欄文章的第" + artNo + "篇:" + columnArticleService.getOneColumnArticle(artNo).getArtTitle() + " 收藏 ，感謝妳的支持。");
+            newNotice.setNotTime(new Timestamp(System.currentTimeMillis()));
+            newNotice.setNotStat((byte) 0);
+            noticeService.addNotice(newNotice);
+
+            // 獲取未讀取通知的數量
+            int unreadNoticeCount = noticeService.getUnreadNoticeCount(memberService.findByNo(memNo));
+            // 獲取會員的通知
+            List<Notice> noticeList = noticeService.findNoticesByMemberMemNo(memNo);
+
+            session.setAttribute("noticeList", noticeList);
+            session.setAttribute("unreadNoticeCount", unreadNoticeCount);
+
+            return ResponseEntity.ok("收藏成功");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("收藏失敗");
+        }
+    }
+
+    @PostMapping("/submitCommit")
+    @ResponseBody
+    public ResponseEntity<String> submitCommit(@RequestParam("memNo") Integer memNo,
+                                               @RequestParam("artNo") Integer artNo,
+                                               @RequestParam("comContent") String comContent,
+                                               HttpSession session) {
+        try {
+            // 將會員資料存入會話
+            session.setAttribute("loginsuccess", memberService.findByNo(memNo));
+
+            // 新增留言的通知消息
+            Notice newNotice = new Notice();
+            newNotice.setMember(memberService.findByNo(memNo));
+            newNotice.setNotContent("你成功留言了專欄文章的第" + artNo + "篇：" + columnArticleService.getOneColumnArticle(artNo).getArtTitle() + "，感謝你的支持，你的留言為:" + comContent);
+            newNotice.setNotTime(new Timestamp(System.currentTimeMillis()));
+            newNotice.setNotStat((byte) 0);
+            noticeService.addNotice(newNotice);
+
+            // 獲取未讀取通知的數量
+            int unreadNoticeCount = noticeService.getUnreadNoticeCount(memberService.findByNo(memNo));
+            // 獲取會員的通知
+            List<Notice> noticeList = noticeService.findNoticesByMemberMemNo(memNo);
+
+            // 將通知消息列表和未讀通知數量存入會話
+            session.setAttribute("noticeList", noticeList);
+            session.setAttribute("unreadNoticeCount", unreadNoticeCount);
+
+            columnReplyService.submitComment(memNo, artNo, comContent);
+            return ResponseEntity.ok("留言提交成功");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("留言提交失敗");
+        }
+    }
 }

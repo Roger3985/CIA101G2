@@ -14,6 +14,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -181,7 +182,7 @@ public class RentalControllerBackEnd {
     //處理複合查詢
     @PostMapping("search")
     public String search(HttpServletRequest req, Model model) {
-        Map<String, String[]> map = req.getParameterMap();
+        Map<String, Object> map = new HashMap<>();
         //建立返回數據的對象
         List<Rental> queryList = rentalService.searchRentals(map);
         model.addAttribute("queryList", queryList);

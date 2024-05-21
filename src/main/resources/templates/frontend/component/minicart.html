@@ -1,0 +1,107 @@
+<!-- Mini Cart -->
+<div th:fragment="minichart" class="offcanvas offcanvas-end" tabindex="-1" id="modalMiniCart" aria-labelledby="modalMiniCartLabel">
+    <div class="offcanvas-header border-bottom">
+        <h6 class="offcanvas-title" id="modalMiniCartLabel">購物車商品(可結帳)</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <!-- Tabs Navigation -->
+        <ul class="nav nav-tabs" id="miniCartTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button" role="tab" aria-controls="products" aria-selected="true">一般商品</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="rental-tab" data-bs-toggle="tab" data-bs-target="#rental" type="button" role="tab" aria-controls="rental" aria-selected="false">租借商品</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="miniCartTabContent">
+            <!-- 一般商品 -->
+            <div class="tab-pane fade show active" id="products" role="tabpanel" aria-labelledby="products-tab">
+                <ul class="list-unstyled m-0 p-0">
+                    <!-- 購物車物件 1 -->
+                    <li class="py-2">
+                        <div class="row align-items-center">
+                            <div class="col-4">
+                                <!-- Image -->
+                                <a href="#"><img class="img-fluid border" th:src="@{/frontend/img/fashion/product-x-1.jpg}" alt="..."></a>
+                            </div>
+                            <div class="col-8">
+                                <!-- Title -->
+                                <p class="mb-2">
+                                    <a class="text-mode fw-500" href="#">品名</a>
+                                    <span class="m-0 text-muted w-100 d-block">$40.00</span>
+                                </p>
+                                <!-- Footer -->
+                                <div class="d-flex align-items-center">
+                                    <!-- Select -->
+                                    <select class="form-select form-select-sm w-auto">
+                                        <option value="1">1</option>
+                                        <option value="1">2</option>
+                                        <option value="1">3</option>
+                                    </select>
+                                    <!-- Remove -->
+                                    <a class="small text-mode ms-auto" href="#!">
+                                        <i class="bi bi-x"></i> Remove
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- 這裡可以放更多購物車物件 -->
+                </ul>
+            </div>
+            <!-- 租借商品 -->
+            <div class="tab-pane fade" id="rental" role="tabpanel" aria-labelledby="rental-tab" th:each="rental : ${rentalListData}">
+                <ul class="list-unstyled m-0 p-0">
+                    <!-- 購物車物件 1 -->
+                    <li class="py-2">
+                        <div class="row align-items-center">
+                            <div class="col-4">
+                                <!-- Image -->
+                                <a th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
+                                    <img class="img-fluid border" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '.jpg'}" alt="...">
+                                </a>
+                            </div>
+                            <div class="col-8">
+                                <!-- Title -->
+                                <p class="mb-2">
+                                    <a class="text-mode fw-500" th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
+                                        <span th:text="${rental.rentalName}"></span>
+                                    </a>
+                                    <span class="m-0 text-muted w-100 d-block">這裡是價格</span>
+                                </p>
+                                <!-- Footer -->
+                                <div class="d-flex align-items-center">
+                                    <!-- Remove -->
+                                    <a class="small text-mode ms-auto" href="#!">
+                                        <i class="bi bi-x"></i> Remove
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- 這裡可以放更多購物車物件 -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="offcanvas-footer border-top p-3">
+        <div class="row g-0 py-2">
+            <div class="col-8"><span class="text-mode">總租金</span></div>
+            <div class="col-4 text-end"><span class="ml-auto rentalAllPriceForMiniCart"></span></div>
+        </div>
+        <div class="row g-0 py-2">
+            <div class="col-8"><span class="text-mode">總押金</span></div>
+            <div class="col-4 text-end"><span class="ml-auto rentalAllDepPriceForMiniCart"></span></div>
+        </div>
+        <div class="row g-0 pt-2 mt-2 border-top fw-bold text-mode">
+            <div class="col-8"><span class="text-mode">合計</span></div>
+            <div class="col-4 text-end"><span class="ml-auto totalPrice"></span></div>
+        </div>
+        <div class="pt-4">
+            <a class="btn btn-block btn-mode w-100 mb-3" href="/frontend/cart/addcartsuccess">查看商品購物車</a>
+            <a class="btn btn-block btn-outline-mode w-100" th:href="@{/backend/rentalorder/rentalCart}">查看購物車</a>
+        </div>
+    </div>
+</div>
+<!-- End Mini Cart -->
