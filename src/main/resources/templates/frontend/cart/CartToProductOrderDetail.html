@@ -42,39 +42,6 @@
             color: #333;
         }
 
-        /* Custom styles for the coupon */
-        .left, .right {
-            background-color: #f69314;
-            color: #fff;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: inline-block;
-            transform: rotate(-90deg);
-        }
-
-        .right {
-            transform: rotate(90deg);
-        }
-
-        .center {
-            background-color: #fff;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: inline-block;
-            margin: 0 10px;
-        }
-
-        /* Input style */
-        input[type=text] {
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-            margin-top: 20px;
-            width: 300px;
-        }
 
         input[type=submit] {
             padding: 10px 20px;
@@ -107,8 +74,8 @@
     <!-- Main -->
     <main>
         <!-- Page Title -->
-        <div class="bg-no-repeat bg-cover bg-right-center position-relative"
-             style="background-image: url(../../assets/img/fashion2/home-banner-3.jpg);">
+        <div class="bg-no-repeat bg-cover bg-right-center position-relative">
+
             <div class="position-absolute top-0 end-0 start-0 bottom-0 opacity-3 bg-dark"></div>
             <!-- Header Height Bar -->
             <div class="header-height-bar border-bottom opacity-3" style="min-height: 104.865px;"></div>
@@ -131,8 +98,7 @@
             <div class="container">
                 <div class="row align-items-start">
                     <div class="col-md-7"><!-- Form -->
-                        <form th:action="@{/frontend/productorder/insertProductOrderSuccess}" method="post"
-                              onsubmit="return dosubmit();">
+                        <form id="submitOrderForm"  th:action="@{/frontend/productorder/insertProductOrderSuccess}" method="post">
                             <h6 class="mb-4 h3">寄送資訊</h6>
                             <tbody>
 
@@ -140,24 +106,22 @@
                             <div>
                                 <label>訂購人姓名: <span class="required">*</span>
                                 </label>
-                                <input class="form-control" type="text" th:name="productByrName" th:id="productByrName"
-                                       th:field="*{productOrder.member.memName}">
+                                <input class="form-control" type="text" name="productByrName" id="productByrName"
+                                       th:value="${productOrder.member.memName}">
                                 <span id="productByrName-error" class="error-message"></span>
                             </div>
                             <div>
                                 <label>訂購人手機號碼:<span class="required">*</span>
                                 </label>
-                                <input class="form-control" type="text" th:name="productByrPhone"
-                                       th:id="productByrPhone"
-                                       th:field="*{productOrder.member.memMob}">
+                                <input class="form-control" type="text" name="productByrPhone"
+                                       id="productByrPhone"
+                                       th:value="${productOrder.member.memMob}">
                                 <span id="productByrPhone-error" class="error-message"></span>
                             </div>
                             <div>
-                                <label>訂購人Email:<span class="required">*</span>
-                                </label>
-                                <input class="form-control" type="email" th:name="productByrEmail"
-                                       th:id="productByrEmail"
-                                       placeholder="請輸入電子信箱" th:field="*{productOrder.member.memMail}">
+                                <label>訂購人Email:<span class="required">*</span></label>
+                                <input class="form-control" type="email" name="productByrEmail" id="productByrEmail"
+                                       placeholder="請輸入電子信箱" th:value="${productOrder.member.memMail}">
                                 <span id="productByrEmail-error" class="error-message"></span>
                             </div>
                             <div>
@@ -181,37 +145,38 @@
                                 </div>
 
                                 <label>取貨方式:</label>
-                                <select class="form-control" th:field="*{productOrder.productTakeMethod}">
+                                <select class="form-control" th:id="productTakeMethod" th:field="*{productOrder.productTakeMethod}"
+                                        th:name="productTakeMethod">
+                                    <option value="">請選擇</option>
                                     <option th:value="1" th:text="店取"/>
                                     <option th:value="2" th:text="宅配"/>
                                     <option th:value="3" th:text="超商取貨"/>
                                 </select><br/>
                             </div>
-
                             <div class="col-md-12">
                                 <div class="checkout-form-list">
-                                    <label>宅配住址: <span class="unrequired"></span></label>
-                                    <input id="productAddr" placeholder="請輸入地址" type="text"
-                                           name="productAddr" th:field="*{productOrder.member.memAdd}">
+                                    <label for="productAddr">宅配住址: <span class="unrequired"></span></label>
+                                    <input id="productAddr" class="form-control" placeholder="請輸入地址" type="text"
+                                           th:name="productAddr" th:field="*{productOrder.member.memAdd}">
                                     <span id="productAddr-error" class="error-message"></span>
                                 </div>
                             </div>
+
                             <div class="col-md-12">
-                            <div class="checkout-form-list">
-                                <label>付款方式:</label>
-                                <select class="form-control" th:field="*{productOrder.productPayMethod}">
-                                    <option th:value="1" th:text="線上刷卡"/>
-                                    <option th:value="2" th:text="超商繳款"/>
-                                    <option th:value="3" th:text="ATM付款"/>
-                                    <option th:value="4" th:text="匯款"/>
-                                    <option th:value="5" th:text="現場付款"/>
-                                </select><br/>
+                                <div class="checkout-form-list">
+                                    <label>付款方式:</label>
+                                    <select class="form-control" th:id="productPayMethod" th:field="*{productOrder.productPayMethod}" th:name="productPayMethod">
+                                        <option value="">請選擇</option>
+                                        <option th:value="1" th:text="線上刷卡"/>
+                                        <option th:value="2" th:text="現場付款"/>
+                                    </select>
+                                    <br/>
+                                </div>
                             </div>
-                            </div>
-
-                            </tbody>
 
 
+                        </form>
+                        </tbody>
                     </div>
 
                     <div class="col-md-5 col-lg-4 offset-lg-1 " style="top: 114.094px;">
@@ -249,8 +214,8 @@
                                 </div>
                             </li>
                         </ul>
-                        <div class="col-sm-3 form-control"><label class="mb-4 h3" for="coupNo">請輸入優惠券編號</label>
-                            <select class="form-control" size="1" name="coupNo" id="coupNo"
+                        <div class="col-sm-3 form-control"><label for="coupNo">請輸入優惠券編號</label>
+                            <select class="form-control" size="1" th:name="coupNo" id="coupNo"
                                     onchange="updatePriceInstantly()">
                                 <option value="1">請選擇</option>
                                 <!-- 使用 Thymeleaf 循环来动态生成选项 -->
@@ -265,33 +230,33 @@
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item d-flex bg-transparent px-0 py-3">
                                         <span>總價：</span>
-                                        <span class="ms-auto" id="productAllPrice"
+                                        <span class="ms-auto" id="productAllPrice" th:name="productAllPrice"
                                               th:text="${productOrder.productAllPrice}"
                                               th:value="${productOrder.productAllPrice}"></span>
                                     </li>
                                     <li class="list-group-item d-flex bg-transparent px-0 py-3">
                                         <span>折價：</span>
-                                        <span class="ms-auto" id="productDisc"
+                                        <span class="ms-auto" id="productDisc" th:name="productDisc"
                                               th:text="${productOrder.productDisc}"
                                               th:value="${productOrder.productDisc}"></span>
                                     </li>
                                     <li class="list-group-item d-flex bg-transparent px-0 py-3 fs-lg fw-600">
                                         <span>實際金額：</span>
-                                        <span class="ms-auto" id="productRealPrice"
+                                        <span class="ms-auto" id="productRealPrice" th:name="productRealPrice"
                                               th:text="${productOrder.productRealPrice}"
                                               th:value="${productOrder.productRealPrice}"></span>
                                     </li>
                                 </ul>
                             </div>
 
-                            </br>
-
-                            <div class="pt-4">
-                                <button type="submit" class="btn btn-primary w-100">確定購買</button>
-                                <input type="hidden" name="memNo" th:value="${productOrder.member.memNo}"/>
+                            <div class="order-button-payment mt-3">
+                                <input value="提交訂單" type="button" id="submitOrderBtn" onclick="SubmitToPay(this)" class="btn btn-primary btn-block w-100">
                             </div>
                         </div>
 
+
+                    </div>
+                        <div id="ecpayFormContainer"></div>
                     </div>
 
 
@@ -299,6 +264,9 @@
                 </div>
             </div>
 </div>
+
+<div id="loading" style="display: none;">提交中...</div>
+
 </section>
 <!-- End Section -->
 </main>
@@ -317,29 +285,10 @@
 <!-- script start -->
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
 <!-- End script start -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script th:inline="javascript">
     // 获取选择框元素
-    var selectElement = document.querySelector('select[name="productOrder.productTakeMethod"]');
 
-    // 添加事件监听器
-    selectElement.addEventListener('change', function () {
-        // 获取选择的值
-        var selectedValue = parseInt(selectElement.value);
-
-        // 获取地址输入框元素
-        var addressInput = document.getElementById("productAddr");
-        var addressError = document.getElementById("productAddr-error");
-
-        // 如果选择的是宅配方式（值为2），则将地址字段设为必填项
-        if (selectedValue === 2) {
-            addressInput.required = true;
-            addressError.textContent = "";
-        } else {
-            addressInput.required = false;
-            addressInput.value = ""; // 清空地址输入框的值
-            addressError.textContent = "";
-        }
-    });
 
 
     function updatePriceInstantly() {
@@ -386,6 +335,129 @@
         }
     }
 
+    // 提取表单验证逻辑为单独的函数
+    function validateForm() {
+        var productByrName = document.getElementById('productByrName').value;
+        var productByrPhone = document.getElementById('productByrPhone').value;
+        var productByrEmail = document.getElementById('productByrEmail').value;
+        var productTakeMethod = document.getElementById('productTakeMethod').value;
+        var productPayMethod = document.getElementById('productPayMethod').value;
+        var productAddr = document.getElementById('productAddr').value; // 获取地址输入框的值
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // 檢查電子郵件地址的正則表達式
+
+        // 檢查訂購人姓名是否為非空
+        if (productByrName.trim() === '') {
+            alert('訂購人姓名不能為空');
+            return false;
+        }
+        if (productTakeMethod.trim() === '') {
+            alert('請選擇運送方式');
+            return false;
+        }
+        if (productPayMethod.trim() === '') {
+            alert('請選擇付款方式');
+            return false;
+        }
+
+
+        // 檢查手機號碼是否為非空且僅包含數字
+        if (productByrPhone.trim() === '' || !/^\d+$/.test(productByrPhone)) {
+            alert('訂購人手機號碼不正確');
+            return false;
+        }
+
+        // 檢查電子郵件地址是否為非空且符合格式
+        if (productByrEmail.trim() === '' || !emailRegex.test(productByrEmail)) {
+            alert('訂購人Email不正確');
+            return false;
+        }
+
+
+        if (productTakeMethod === '2' && productAddr.trim() === '') {
+            alert('宅配住址不能為空');
+            return false;
+        }
+
+        // 如果通過了上述檢查，返回 true，允許提交表單
+        return true;
+    }
+
+
+    // 提交订单函数
+    function SubmitToPay(input) {
+        // 先进行表单验证
+        if (!validateForm()) {
+            return; // 如果验证不通过，直接返回
+        }
+
+        var productByrName = document.querySelector('#productByrName').value;
+        var productByrPhone = document.querySelector('#productByrPhone').value;
+        var productByrEmail = document.querySelector('#productByrEmail').value;
+        var productRcvPhone = document.querySelector('#productRcvPhone').value;
+        var productRcvName = document.querySelector('#productRcvName').value;
+        var productTakeMethod = document.querySelector('select[name="productTakeMethod"]').value;
+        var productAddr = document.querySelector('#productAddr').value;
+        var productPayMethod = document.querySelector('select[name="productPayMethod"]').value;
+        var coupNo = document.querySelector('select[name="coupNo"]').value;
+        var productAllPrice = document.getElementById('productAllPrice').innerText;
+
+        if (productPayMethod === '2') { // 如果付款方式為"現場付款"
+            // 將表單的 action 設置為 "/frontend/productorder/insertProductOrderSuccess"
+            document.getElementById("submitOrderForm").action = '/frontend/productorder/insertProductOrderSuccess';
+            // 直接提交訂單表單
+            document.getElementById("submitOrderForm").submit();
+            return;
+        }
+
+        // 使用 AJAX 提交订单
+        $.ajax({
+            type: 'POST',
+            url: '/frontend/productorder/submitOrder',
+            data: {
+                productByrName: productByrName,
+                productByrPhone: productByrPhone,
+                productByrEmail: productByrEmail,
+                productRcvName: productRcvName,
+                productRcvPhone: productRcvPhone,
+                productTakeMethod: productTakeMethod,
+                productAddr: productAddr,
+                productPayMethod: productPayMethod,
+                coupNo: coupNo,
+                productAllPrice: productAllPrice
+            },
+            success: function (result) {
+                // 在这里，result应该是服务器返回的支付链接
+                let formContainer = document.getElementById("ecpayFormContainer");
+                // 设置表单的HTML内容为支付链接
+                formContainer.innerHTML = result;
+                // 提交表单
+                formContainer.querySelector('form').submit();
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
+
+
+    function checkInputs() {
+        let isValid = true;
+        let requiredFields = [
+            '#productByrName',
+            '#productByrPhone',
+            '#productByrEmail'
+        ];
+        requiredFields.forEach(function (field) {
+            if ($(field).val() === '') {
+                $(field).next('.error-message').text('此字段為必填');
+                isValid = false;
+            } else {
+                $(field).next('.error-message').text('');
+            }
+        });
+        return isValid;
+    }
 
 </script>
 </body>

@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Entity;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -179,7 +180,7 @@ public class ProductServiceImpl implements ProductService_interface {
      * 全文搜索
      *
      * @param keyword 關鍵字
-     * @param page 將搜尋結果以分頁呈現
+     * @param page 指定為第幾頁
      * @param size 指定分頁要呈現多少筆資料
      * @return 返回分頁搜尋結果
      */

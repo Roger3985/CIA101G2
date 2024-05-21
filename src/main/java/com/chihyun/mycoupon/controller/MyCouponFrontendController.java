@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,19 +23,37 @@ public class MyCouponFrontendController {
     @Autowired
     MyCouponService myCouponSvc;
 
-
-//    會員中心-我的優惠券清單
+    //    會員中心-我的優惠券清單
     @GetMapping("/mycouponlist")
-    public String showList(Model model, HttpSession session){
+    public String showList(Model model, HttpSession session) {
         Member myData = (Member) session.getAttribute("loginsuccess");
-        if(myData == null){
+        if (myData == null) {
             return "redirect:/frontend/member/loginMember";
-        }else {
+        } else {
             List<MyCoupon> list = myCouponSvc.getAllMyCouponMem(myData.getMemNo());
-            model.addAttribute("myCouponList", list);
-            return "/frontend/mycoupon/listAllMyCoupon";
+            System.out.println(list);
+            List<MyCoupon> showMyCoupon = new ArrayList<>();
+            for (MyCoupon mycoupons : list) {
+                if (mycoupons.getCoupUsedStat() == 0) {
+                    showMyCoupon.add(mycoupons);
+                }
+            }
+            int myCouponQTY = showMyCoupon.size();
+            model.addAttribute("myCouponList", showMyCoupon);
+            model.addAttribute("myCouponQTY", myCouponQTY);
+            model.addAttribute("myData", myData);
+            return "/frontend/mycoupon/myCoupon";
         }
     }
+
+//    @PostMapping("/useMyCoupon")
+//    public String userMycoupon(){
+//        if(){
+//
+//        }else {
+//
+//        }
+//    }
 
     //    未登入session測試用
 //    @GetMapping("/selectTest")
@@ -51,11 +70,22 @@ public class MyCouponFrontendController {
 //    }
 
     //    購物車結帳按鈕-改變會員優惠券使用狀態
-//    @PostMapping("/updateMyCoupon")
-//    public void alterUsedStatus(MyCoupon myCoupon, @RequestParam Integer coupNo, HttpSession session) {
-//        Member myData = (Member) session.getAttribute("loginsuccess");
-//        myCouponSvc.updateMyCoupon(myCoupon);
-//    }
+    @PostMapping("/updateMyCoupon")
+    public void alterUsedStatus(MyCoupon myCoupon, @RequestParam String coupNo, @RequestParam String memNo, HttpSession session) {
+        Member myData = (Member) session.getAttribute("loginsuccess");
+        MyCoupon.CompositeCouponMember compositeKey = new MyCoupon.CompositeCouponMember();
+        compositeKey.setCoupNo(Integer.valueOf(coupNo));
+        compositeKey.setMemNo(Integer.valueOf(memNo));
+        myCoupon.setCompositeCouponMember(compositeKey);
+        Optional<MyCoupon> optional = myCouponSvc.getOneMyCoupon(Integer.valueOf(coupNo), Integer.valueOf(memNo));
+        if (optional.isPresent()) {
+            myCoupon.setCoupon(optional.get().getCoupon());
+            myCoupon.setCoupUsedStat(Byte.valueOf("1"));
+            myCoupon.setCoupInfo(optional.get().getCoupInfo());
+            myCoupon.setCoupExpDate(myCoupon.getCoupon().getCoupExpDate());
+            myCouponSvc.updateMyCoupon(myCoupon);
+        }
+    }
 
 //    @PostMapping("/updateMyCoupon")
 //    public String alterUsedStatus(MyCoupon myCoupon, @RequestParam String coupNo, @RequestParam String memNo, Model model) {

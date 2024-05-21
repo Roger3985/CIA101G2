@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zxx" data-bs-theme="light">
+
+<head><!-- metas -->
+    <meta charset="utf-8">
+    <meta name="author" content="pxdraft">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template"
+    <!-- title -->
+    <title>ShopApp - eCommerce Bootstrap 5 Template</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <!-- CSS Template -->
+    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+</head>
+
+<body>
+<!-- 通用插件 -->
+<th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block>
+<!-- 通用插件 -->
+    <!--
+    ========================
+        Wrapper
+    ========================
+    -->
+    <div class="wrapper">
+        <!-- header height -->
+        <div class="header-height-bar" style="min-height: 104.865px;"></div>
+        <!-- Header -->
+        <header th:replace="frontend/component/header :: header"></header>
+        <!-- End Header -->
+        <!-- Main -->
+        <main>
+            <!-- Breadcrumb -->
+            <div class="py-3 bg-gray-100">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 my-2">
+                            <h1 class="m-0 h4 text-center text-lg-start">Contact Us</h1>
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <ol class="breadcrumb m-0 small justify-content-center justify-content-lg-end">
+                                <li class="breadcrumb-item"><a class="text-nowrap text-reset" th:href="@{/frontend/index}"><i
+                                            class="bi bi-home"></i>Home</a></li>
+                                <li class="breadcrumb-item text-nowrap active" aria-current="page">Contact Us</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End Breadcrumb --><!-- Contact us -->
+            <section class="section">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 my-3 pe-lg-8">
+                            <h3 class="mb-2 h2">Get in Touch</h3>
+                            <p class="fw-400">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                            </p>
+                            <form class="row g-3 pt-3">
+                                <div class="col-md-6"><input type="text" class="form-control" id="type"
+                                        placeholder="Name*">
+                                </div>
+                                <div class="col-md-6"><input type="email" class="form-control" id="inputEmail4"
+                                        placeholder="Email*"></div>
+                                <div class="col-12"><input type="text" class="form-control" id="inputAddress"
+                                        placeholder="Subject*"></div>
+                                <div class="col-12"><textarea class="form-control" placeholder="Leave a comment here"
+                                        id="floatingTextarea2" rows="4"></textarea></div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Send</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-6 my-3">
+                            <div class="ratio ratio-16x9">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3617.2490359444173!2d121.22244777461775!3d24.95764034136345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x346823ea50c732a5%3A0x1b5e6ee66e9fec49!2z57ev6IKyVGliYU1l6ZmE6Kit5Lit5aOi6IG36KiT5Lit5b-D!5e0!3m2!1szh-TW!2stw!4v1716223305651!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="bg-gray-100 section">
+                <div class="container">
+                    <div class="row g-4">
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <div class="text-primary display-5 mb-3"><i class="bi bi-telephone"></i></div>
+                                    <div class="">
+                                        <p class="mb-0">+886 34251108</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <div class="text-primary display-5 mb-3"><i class="bi bi-printer"></i></div>
+                                    <div class="">
+                                        <p class="mb-0">+886 227120589</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <div class="text-primary display-5 mb-3"><i class="bi bi-globe"></i></div>
+                                    <div class="">
+                                        <p class="mb-0"><a class="text-reset" href="#">fallyilove@gmail.com</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <div class="text-primary display-5 mb-3"><i class="bi bi-geo-alt-fill"></i></div>
+                                    <div class="">
+                                        <p class="mb-0">320桃園市中壢區復興路46號9樓</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Contact end -->
+        </main>
+        <!-- End Main -->
+        <!-- Footer -->
+        <footer th:replace="frontend/component/footer :: footer"></footer>
+        <!-- End Footer -->
+    </div>
+    <!--
+    ========================
+       End Wrapper
+    ========================
+    -->
+    <!-- script start -->
+    <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
+    <!-- End script start -->
+</body>
+
+</html>

@@ -45,7 +45,7 @@
                 <div class="col-lg-6 my-2">
                     <ol
                             class="breadcrumb breadcrumb-light m-0 small justify-content-center justify-content-lg-end">
-                        <li class="breadcrumb-item"><a class="text-nowrap" href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/frontend/product/visitProduct}">Home</a></li>
                         <li class="breadcrumb-item text-nowrap active" aria-current="page">Your cart</li>
                     </ol>
                 </div>
@@ -57,7 +57,7 @@
 <!-- Section -->
 <!--    <p style="display: none" th:text="${memNo}" id="memNo"></p>-->
 <form th:action="@{/frontend/productorder/insertOrder}" method="post" th:object="${cartListData}"
-      onsubmit="return validateForm()">>
+      onsubmit="return validateForm()">
     <table class="table">
         <thead>
         <tr>

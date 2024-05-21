@@ -17,7 +17,7 @@ public void addProductOrder(ProductOrder productOrder);
     public ProductOrder getProductOrderByCoupon(Integer coupNo,Integer productOrdNo);
 
 //////////////////////////////////////////////////////////////////////////////////
-
+public String ecpay(ProductOrder productOrder, String Names);
     public ProductOrder addOneProductOrder(CartRedis cartRedis);
-    public void addOneProductOrderSuccess(ProductOrder productOrder);
+    public String addOneProductOrderSuccess(ProductOrder productOrder);
 }

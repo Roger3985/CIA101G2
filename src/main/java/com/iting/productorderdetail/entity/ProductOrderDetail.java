@@ -11,13 +11,28 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "productorderdetail")
-public class ProductOrderDetail {
+public class ProductOrderDetail  implements Serializable{
     @EmbeddedId
     private CompositeDetail compositeKey;
     @Column(name = "productprice")
     private BigDecimal productPrice;
     @Column(name = "productordqty")
     private Integer productOrdQty;
+
+    @Override
+    public String toString() {
+        return "ProductOrderDetail{" +
+                "compositeKey=" + compositeKey +
+                ", productPrice=" + productPrice +
+                ", productOrdQty=" + productOrdQty +
+                ", productRealPrice=" + productRealPrice +
+                ", productComContent='" + productComContent + '\'' +
+                ", productScore=" + productScore +
+                ", product=" + product +
+                ", productOrder=" + productOrder +
+                '}';
+    }
+
     @Column(name = "productrealprice")
     private BigDecimal productRealPrice;
     @Column(name = "productcomcontent")

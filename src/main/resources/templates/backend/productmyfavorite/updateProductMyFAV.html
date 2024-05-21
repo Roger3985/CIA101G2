@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修改商品 - 我的最愛</title>
+    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+    <style>
+        *{
+            font-size: 12px; /* 調整字體大小 */
+        }
+        *.error {
+            font-size: 12px; /* 調整字體大小 */
+            color:red;
+        }
+    </style>
+    <!-- Custom styles for this page -->
+</head>
+
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">修改商品 - 我的最愛</h6>
+                    </div>
+                    <div class="a">
+                        <ul>
+                            <form id="form" method="post" th:action="@{/backend/productmyfavorite/addProductMyFAV}" th:object="${productMyFavorite}">
+                                <li>
+                                    商品編號:
+                                    <input value="0" type="text" name="productNo" th:field="*{product.productNo}" style="border:0px ; font-weight: bold;" readonly /><br/>
+                                </li><br>
+                                <li>
+                                    選擇會員編號:
+                                    <select name="memNo">
+                                        <option>請選擇</option>
+                                        <option th:each="member : ${memberListData}" th:value="${productMyFavorite.member.memNo}" th:text="${productMyFavorite.member.memNo}" />
+                                    </select><br>
+                                    <span class="error" th:if="${#fields.hasErrors('member.memNo')}" th:errors="*{member.memNo}" id="member.memNo.errors">會員編號錯誤</span>
+                                </li>
+<!--                                <li>-->
+<!--                                    選擇加入我的最愛時間:-->
+<!--                                    <input type="datetime-local" name="productFavTime" th:field="*{productFavTime}" onclick="hideContent('productFavTime.errors');" id="productFavTime_el"/><br/>-->
+<!--                                    <span class="error" th:if="${#fields.hasErrors('productFavTime')}" th:errors="*{productFavTime}" id="productFavTime.errors">時間錯誤</span>-->
+<!--                                </li><br>-->
+                                <input type="submit" id="updateBtn" value="送出">
+                            </form>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer th:replace="backend/component/bottom :: bottom"></footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+</div>
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
+
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+<script th:src="@{/static/jquery/jquery-3.7.1.min.js}"></script><script>
+    let now = new Date();
+    let dateTime = now.toLocaleString();
+    document.getElementById("datetime").innerHTML = dateTime;
+</script>
+
+<!--<script>-->
+<!--    // 若要做到不點選按鈕即時更新，可以使用WebSocket的方式-->
+<!--    $(document).ready(function (){-->
+
+<!--        // 觸發submit事件，取得選擇的內容，轉為json格式-->
+<!--        $("#updateBtn").on("submit",function(e){-->
+<!--            e.preventDefault(); //阻止提交表單-->
+
+<!--            //資料打包-->
+<!--            var updateData = {-->
+<!--                productNo: parseInt($('#productNo').val()),-->
+<!--                productName: $('#productName').val(),-->
+<!--                productPrice: parseFloat($('#productPrice').val()),-->
+<!--                productSize: parseInt($('#productSize').val()),-->
+<!--                productColor: $('#productColor').val(),-->
+<!--                productInfo: $('#productInfo').val(),-->
+<!--                productStat: parseFloat($('#productStat').val()),-->
+<!--                productCatNo: parseInt($('#productCatNo').val()),-->
+<!--                action: "updateProduct"-->
+<!--            };-->
+
+<!--            fetch("/backend/product/updateProduct", {-->
+<!--                method: "POST",-->
+<!--                headers: {"Content-Type": "application/json"},-->
+<!--                body: JSON.stringify(updateData)-->
+<!--            }).then(function (response){-->
+<!--                return response.text();-->
+<!--            }).then(function (productNo){-->
+<!--                alert(productNo + "新增成功");-->
+<!--            })-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+</body>
+</html>
+<!--$.ajax({-->
+<!--type: "POST",-->
+<!--url: "/backend/product/addProduct", //請求的URL-->
+<!--headers: {-->
+<!--"Content-Type": "application/json"-->
+<!--},-->
+<!--data: JSON.stringify(addData),-->
+<!--success: function (response) {-->
+<!--alert("請求成功")-->
+<!--// response.json();-->
+<!--response.text();-->
+<!--},-->
+<!--error:function(xhr, status, error){-->
+<!--alert("請求失敗")-->
+<!--console.error(xhr.responseText);-->
+<!--$('#responseMessage').html("Error occurred while adding product.");-->
+<!--}-->
+<!--});-->

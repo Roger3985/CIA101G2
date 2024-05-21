@@ -95,4 +95,11 @@ public interface NoticeService {
      * @return 未讀通知列表。
      */
     public List<Notice> getUnreadNotices();
+
+    /**
+     * 根據 motNo 刪除通知。
+     *
+     * @param motNo 要刪除的通知的 motNo
+     */
+    public void deleteNoticeByMotNo(int motNo);
 }

@@ -62,4 +62,11 @@ public interface NoticeRepository extends JpaRepository<Notice, Integer> {
      */
     Notice getNoticeByMember_MemNo(Integer memNo);
 
+    /**
+     * 根據 motNo 刪除通知。
+     *
+     * @param motNo 要刪除的通知的 motNo
+     */
+    public void deleteByMotNo(int motNo);
+
 }

@@ -58,22 +58,26 @@
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="row" th:unless="${session.loginsuccess}">
-                                <div class="col-lg-6 my-3" th:each="columnarticle : ${columnArticleListData}">
-                                    <a><h2 th:text="${columnarticle.artTitle}"></h2></a>
+                                <div class="col-lg-6 my-3" th:each="columnarticle : ${columnArticleListData}" th:if="${columnarticle.artStat == 0}">
+                                    <a th:href="@{/frontend/columnarticle/oneColumnArticle(artNo=${columnarticle.artNo})}">
+                                        <h2 th:text="${columnarticle.artTitle}"></h2>
+                                    </a>
                                     <p th:text="${columnarticle.artContent}"></p>
-                                    <i class="bi bi-heart likeButton me-2"></i>
-                                    <i class="bi bi-chat-dots columnreplyButton me-2"></i>
-                                    <i class="bi bi-clipboard2-heart articlecollectionButton"></i>
+                                    <i class="bi bi-heart likeButton me-2" style="cursor: pointer;"></i>
+                                    <i class="bi bi-chat-dots columnreplyButton me-2" style="cursor: pointer;"></i>
+                                    <i class="bi bi-clipboard2-heart articlecollectionButton" style="cursor: pointer;"></i>
                                     <!-- 其他文章相關數據渲染 -->
                                 </div>
                             </div>
                             <div class="row" th:if="${session.loginsuccess}">
-                                <div class="col-lg-6 my-3" th:each="columnarticle : ${columnArticleListData}">
-                                    <a><h2 th:text="${columnarticle.artTitle}"></h2></a>
+                                <div class="col-lg-6 my-3" th:each="columnarticle : ${columnArticleListData}" th:if="${columnarticle.artStat == 0}">
+                                    <a th:href="@{/frontend/columnarticle/oneColumnArticle(artNo=${columnarticle.artNo})}">
+                                        <h2 th:text="${columnarticle.artTitle}"></h2>
+                                    </a>
                                     <p th:text="${columnarticle.artContent}"></p>
-                                    <i class="bi bi-heart me-2" th:onclick="'likeArticle(' + ${session.loginsuccess.memNo} + ', ' + ${columnarticle.artNo} + ')'"></i>
-                                    <i class="bi bi-chat-dots me-2"></i>
-                                    <i class="bi bi-clipboard2-heart"></i>
+                                    <i class="bi bi-heart me-2" th:onclick="'likeArticle(' + ${session.loginsuccess.memNo} + ', ' + ${columnarticle.artNo} + ')'" style="cursor: pointer;"></i>
+                                    <i class="bi bi-chat-dots me-2"   th:onclick="'showCommentInputModal(' + ${session.loginsuccess.memNo} + ', ' + ${columnarticle.artNo} + ')'" style="cursor: pointer;"></i>
+                                    <i class="bi bi-clipboard2-heart" th:onclick="'columnArticleCollection(' + ${session.loginsuccess.memNo} + ', ' + ${columnarticle.artNo} + ')'" style="cursor: pointer;"></i>
                                     <!-- 其他文章相關數據渲染 -->
                                 </div>
                             </div>
@@ -287,13 +291,14 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">點讚失敗</h5>
+                    <h5 class="modal-title">重複點讚</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>已點讚過，請勿重複點讚。</p>
+<!--                    <p>已點讚過，請勿重複點讚。</p>-->
+                    <p>已再次收到你的點讚，感謝支持。</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
@@ -301,13 +306,73 @@
             </div>
         </div>
     </div>
+    <div class="modal" id="columnArticleCollectionModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">收藏成功</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>您已成功收藏該文章。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 重複點讚導致點讚失敗提示模態框結構 -->
+    <div class="modal" id="columnArticleCollectionErrorModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">收藏失敗</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>已收藏過，請勿重複收藏，請到收藏區，取消收藏。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 留言輸入模態框 -->
+    <div class="modal fade" id="commentInputModal" tabindex="-1" role="dialog" aria-labelledby="commentInputModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="commentInputModalLabel">留言</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <textarea id="commentInput" class="form-control" placeholder="請輸入留言內容" rows="4"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" id="submitComment" class="btn btn-primary">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 
 
 </body>
 <!-- script start -->
 
 <script>
-    // 定義點讚的函數，接收文章编号作為參數
+    // 定義點讚的函數，接收文章编號作為參數
     function likeArticle(memNo, artNo) {
 
         // 如果用戶已登入
@@ -324,6 +389,13 @@
                 if (response.ok) {
                     // 成功處理後的操作，例如更新界面顯示
                     $('#likeModal').modal('show'); // 顯示模態框
+
+                    // 監聽模態框關閉事件
+                    $('#likeModal').on('hidden.bs.modal', function () {
+                        // 模態框關閉後重新加載頁面
+                        location.reload();
+                    });
+
                     // 綁定右上角叉叉按鈕的點擊事件
                     $('.close').click(function() {
                         // 關閉所屬的模態框
@@ -339,6 +411,70 @@
                 } else {
                     // 錯誤處理，顯示點讚失敗的模態框
                     $('#errorModal').modal('show');
+                    // 綁定右上角叉叉按鈕的點擊事件
+                    $('.close').click(function() {
+                        // 關閉所屬的模態框
+                        $(this).closest('.modal').modal('hide');
+                    });
+                    // 綁定關閉按鈕的點擊事件
+                    $('.modal-footer .btn-secondary').click(function() {
+                        // 關閉所屬的模態框
+                        $(this).closest('.modal').modal('hide');
+                    });
+                    // 請求失敗，處理錯誤響應
+                    return response.text(); // 返回失敗消息
+                }
+            })
+            .then(data => {
+                // 成功處理後的操作，例如更新界面顯示
+                console.log(data); // 打印成功消息
+            })
+            .catch(error => {
+                // 錯誤處理，例如顯示錯誤信息給用戶
+                console.error(error.message); // 打印錯誤消息
+            });
+    }
+</script>
+<script>
+    //定義收藏的函數，接收文章編號作為參數
+    function columnArticleCollection(memNo, artNo) {
+
+        // 如果用戶已登入
+        // 發送 POST 請求，將文章編號作為 URL 的一部分
+        fetch(`/frontend/columnarticle/columnArticleCollection/${memNo}/${artNo}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            // 如果需要帶上身份驗證信息，可以在這裡設置
+            credentials: 'include'
+        })
+            .then(response => {
+                if (response.ok) {
+                    // 成功處理後的操作，例如更新界面顯示
+                    $('#columnArticleCollectionModal').modal('show'); // 顯示模態框
+
+                    // 監聽模態框關閉事件
+                    $('#columnArticleCollectionModal').on('hidden.bs.modal', function () {
+                        // 模態框關閉後重新加載頁面
+                        location.reload();
+                    });
+
+                    // 綁定右上角叉叉按鈕的點擊事件
+                    $('.close').click(function() {
+                        // 關閉所屬的模態框
+                        $(this).closest('.modal').modal('hide');
+                    });
+                    // 綁定關閉按鈕的點擊事件
+                    $('.modal-footer .btn-secondary').click(function() {
+                        // 關閉所屬的模態框
+                        $(this).closest('.modal').modal('hide');
+                    });
+                    // 請求成功，處理成功響應
+                    return response.text(); // 返回成功消息
+                } else {
+                    // 錯誤處理，顯示點讚失敗的模態框
+                    $('#columnArticleCollectionErrorModal').modal('show');
                     // 綁定右上角叉叉按鈕的點擊事件
                     $('.close').click(function() {
                         // 關閉所屬的模態框
@@ -408,8 +544,103 @@
         });
     });
 </script>
+<script>
+    function openModal() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "block";
+    }
 
+    function closeModal() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+    }
 
+    function sendMessage() {
+        var messageInput = document.getElementById("messageInput");
+        var message = messageInput.value;
+        // 在這裡執行發送消息的操作，可以是 Ajax 請求等
+        console.log("發送的消息：", message);
+        // 清空輸入框並隱藏模態
+        messageInput.value = "";
+        closeModal();
+    }
+
+    // 當用戶點擊模態之外的區域，關閉模態
+    window.onclick = function(event) {
+        var modal = document.getElementById("myModal");
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+<script>
+    // 顯示模態框的函數
+    function showCommentInputModal(memNo, artNo) {
+        $('#commentInputModal').modal('show');
+        // 將memNo和artNo設置為隱藏的input元素的值
+        document.getElementById('memNo').value = memNo;
+        document.getElementById('artNo').value = artNo;
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // 當用戶點擊提交按鈕時處理留言提交邏輯
+        document.getElementById('submitComment').addEventListener('click', () => {
+            const memNo = document.getElementById('memNo').value;
+            const artNo = document.getElementById('artNo').value;
+            const commentText = document.getElementById('commentInput').value;
+            if (commentText.trim() === "") {
+                alert("請填寫留言內容！");
+            } else {
+                // 發送留言到伺服器端
+                console.log("提交留言:", memNo, artNo, commentText);
+                // 隱藏模態框
+                $('#commentInputModal').modal('hide');
+            }
+        });
+
+        // 確保取消按鈕和關閉按鈕都能夠正確關閉模態框
+        document.querySelectorAll('[data-dismiss="modal"]').forEach((element) => {
+            element.addEventListener('click', () => {
+                $('#commentInputModal').modal('hide');
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $('#submitComment').click(function () {
+            var memNo = $('#memNo').val();
+            var artNo = $('#artNo').val();
+            var commentText = $('#commentInput').val();
+
+            //發送 HTTP POST 請求
+            $.ajax({
+                type: 'POST',
+                url: '/frontend/columnarticle/submitCommit',
+                data: {
+                    memNo: memNo,
+                    artNo: artNo,
+                    comContent: commentText
+                },
+
+                success: function (response) {
+                    // 留言提交成功，更新會員介面或顯示提示消息
+                    alert(response);
+                    window.location.reload();
+                },
+
+                error: function (xhr, status, error) {
+                    // 留言提交失敗，處理錯誤情況
+                    console.error(xhr.responseText);
+                    alert("留言提交失敗");
+                }
+            })
+        })
+    })
+</script>
+
+<!-- 隱藏的input元素來存儲memNo和artNo -->
+<input type="hidden" id="memNo" />
+<input type="hidden" id="artNo" />
 
 <!-- End script start -->
 

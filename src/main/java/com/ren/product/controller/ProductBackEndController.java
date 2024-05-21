@@ -193,9 +193,12 @@ public class ProductBackEndController {
         return ResponseEntity.ok().body(product);
     }
 
-    @GetMapping("listTop10Products")
+    @GetMapping("/listTop10Products")
     public String top10Products(Model model) {
         List<Product> list = productSvc.getTopPopular();
+        for(Product product : list) {
+            System.out.println(product.getProductNo());
+        }
         model.addAttribute("productList", list);
 
         return "backend/product/listTop10Products";
