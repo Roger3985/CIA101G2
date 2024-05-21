@@ -15,6 +15,8 @@ public interface RentalMyFavoriteService {
 
     RentalMyFavorite findByMemNo(Integer memNo); //單筆查詢(memNo)
 
+    List<RentalMyFavorite> getFAVByMemNo(Integer memNo); //查詢加入最愛的會員
+
     List<RentalMyFavorite> findByRentalFavTime(Timestamp rentalFavTime); //單筆查詢(rentalFavTime)
 
     RentalMyFavorite findByIdRentalNoAndIdMemNo(Integer rentalNo, Integer memNo);  //複合主鍵查詢

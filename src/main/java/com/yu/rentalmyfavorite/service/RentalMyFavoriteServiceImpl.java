@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.howard.util.JedisUtil;
+import com.roger.member.entity.Member;
+import com.roger.member.repository.MemberRepository;
 import com.yu.rental.dao.RentalRepository;
+import com.yu.rental.entity.Rental;
 import com.yu.rentalmyfavorite.dao.RentalMyFavoriteRepository;
 
 import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
@@ -26,6 +29,8 @@ public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
     private RentalMyFavoriteRepository repository;
     @Autowired
     private RentalRepository rentalRepository;
+    @Autowired
+    private MemberRepository memRepository;
     @Autowired
     @Qualifier("rentalWish")
     private RedisTemplate<String, Map<String, String>> rentalWishRedisTemplate;
@@ -50,6 +55,12 @@ public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
     @Override
     public RentalMyFavorite findByMemNo(Integer memNo) {
         return repository.findByMember_MemNo(memNo);
+    }
+
+    //查詢加入最愛的會員
+    @Override
+    public List<RentalMyFavorite> getFAVByMemNo(Integer memNo){
+        return repository.getFAVByMemNo(memNo);
     }
 
     //複合主鍵查詢
@@ -79,13 +90,21 @@ public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
 //----------------------------------------------------------------------------------------------------------------------
 //主要為後端使用：增查改
 
-    //新增 (PK為null，save方法插入數據)
+    //新增 (若點擊加入最愛，匯入至清單內顯示)
 //    @Override
-//    public RentalMyFavorite addRentalFav(RentalMyFavorite rentalMyFavorite) {
+//    public Integer addRentalFav(Integer rentalNo, Integer memeNo) {
+//
+//        //取得商品資訊(找出對應的rentalNo)
+//        //取得點擊的會員編號
+//        //前端抓取即時時間
+//
+//        RentalMyFavorite rentalMyFavorite = repository.();
 //        Timestamp time = rentalMyFavorite.getRentalFavTime();
 //        rentalMyFavorite.setRentalFavTime(Timestamp.valueOf(String.valueOf(time)));
-//        return repository.save(rentalMyFavorite);
+//        return ;
 //    }
+
+    //新增 (PK為null，save方法插入數據)
     @Override
     public RentalMyFavorite addRentalFav(RentalMyFavorite rentalMyFavorite) {
         return repository.save(rentalMyFavorite);

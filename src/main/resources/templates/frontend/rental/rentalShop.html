@@ -417,17 +417,17 @@
             // const baseUrl -> 將window.location.protocol和window.location.host，用 "//" 連接，取得當前頁面的URL
             const baseUrl = window.location.protocol + "//" + window.location.host;
             const rentalNo = $(this).data("rentalno");
-            // const memNo = $(this).data("memNo");
+            const memNo = $(this).data("memNo");
             const rentalFavTime = new Date().toISOString(); //取得當前時間(ISO 8601型態 ，只能在後端轉型)
             console.log("抓取編號:" +rentalNo);
-            // console.log("抓取會員編號:" +memNo);
+            console.log("抓取會員編號:" +memNo);
             console.log("抓取當前時間:" +rentalFavTime);
             alert("已點選");
 
             //打包數據
             const wishData = {
                 rentalNo: parseInt(rentalNo),
-                // memNo: parseInt(memNo),
+                memNo: parseInt(memNo),
                 rentalFavTime: rentalFavTime
             };
             fetch(baseUrl + "/frontend/rental/rentalShop", {

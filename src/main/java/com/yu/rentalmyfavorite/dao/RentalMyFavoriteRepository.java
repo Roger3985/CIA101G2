@@ -36,6 +36,11 @@ public interface RentalMyFavoriteRepository extends JpaRepository<RentalMyFavori
     @Query(value = "SELECT * FROM RentalMyFavorite WHERE rentalNo = ?1", nativeQuery = true)
     List<RentalMyFavorite> findByCompositeKey(Integer rentalNo);
 
+    //取得會員編號
+    @Transactional
+    @Query("SELECT FAV FROM RentalMyFavorite FAV WHERE FAV.member.memNo = ?1")
+    List<RentalMyFavorite> getFAVByMemNo(Integer memNo);
+
     @Transactional
     @Query("SELECT FAV FROM RentalMyFavorite FAV WHERE " +
             "(:rentalNo IS NULL OR FAV.rental.rentalNo = :rentalNo) AND " +
