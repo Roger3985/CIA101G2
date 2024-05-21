@@ -6,6 +6,7 @@ import com.roger.notice.entity.Notice;
 import com.roger.notice.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -104,6 +105,15 @@ public class NoticeServiceImpl implements NoticeService {
     public List<Notice> getUnreadNotices() {
         byte unreadStat = 0; // 0 表示為未讀狀態
         return noticeRepository.findNoticesByNotStat(unreadStat);
+    }
+
+    /**
+     * 根據 motNo 刪除通知。
+     */
+    @Transactional
+    @Override
+    public void deleteNoticeByMotNo(int motNo) {
+        noticeRepository.deleteByMotNo(motNo);
     }
 
     /**

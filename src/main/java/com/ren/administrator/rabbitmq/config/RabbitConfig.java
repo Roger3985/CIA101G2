@@ -9,8 +9,6 @@
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
 //
-//import static com.ren.util.Constants.*;
-//
 //@Configuration
 //public class RabbitConfig {
 //

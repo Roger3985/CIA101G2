@@ -132,4 +132,13 @@ public class RentalMyFavorite implements java.io.Serializable {
     public void setMember(Member member) {
         this.member = member;
     }
+
+    @Override
+    public String toString() {
+        return "RentalMyFavorite{" +
+                "rentalNo=" + compositeKey.getRentalNo() +
+                "memNo=" + compositeKey.getMemNo() +
+                ", rentalFavTime=" + rentalFavTime +
+                '}' + "\n";
+    }
 }

@@ -127,13 +127,7 @@ public class CouponController {
      */
     @PostMapping("/updateCoupon")
     public String getOne_For_Update(@RequestParam("coupNo") Integer coupNo, ModelMap model) {
-        /*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ************************/
-
-        /*************************** 2.開始查詢資料 *****************************************/
-        //  CouponService couponSvc = new  CouponService();
         Coupon coupon = couponSvc.getOneCoupon(coupNo);
-
-        /*************************** 3.查詢完成,準備轉交(Send the Success view) **************/
         model.addAttribute("coupon", coupon);
         return "backend/coupon/updateCoupon"; // 查詢完成後轉交updateCoupon.html
     }

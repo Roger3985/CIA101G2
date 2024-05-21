@@ -134,6 +134,18 @@ body {
     align-self: flex-start;
 }
 
+.senderTime{
+    /*list-style: none;*/
+    color: gray;
+    align-self: flex-end;
+}
+
+.receiverTime{
+    /*list-style: none;*/
+    color: gray;
+    align-self: flex-start;
+}
+
 .message-input {
     margin-top: auto;
     display: flex;

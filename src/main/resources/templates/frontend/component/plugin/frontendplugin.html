@@ -9,8 +9,15 @@
     <script th:src="@{/frontend/assets/js/custom.js}"></script>
     <script th:src="@{/frontend/assets/js/theme.js}"></script>
     <script th:src="@{/frontend/assets/js/color-modes.js}"></script>
+    <script th:src="@{/js/axios/axios.js}"></script>
     <!-- 以下可自定義js -->
+    <!-- 搜尋用js -->
+    <script th:src="@{/js/frontend/component/search.js}"></script>
 
+</th:block>
+<th:block th:fragment="css">
+    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet"/>
+    <link th:href="@{/css/frontend/component/search.css}" rel="stylesheet"/>
 </th:block>
 <th:block th:fragment="components">
     <!-- Skippy & Prload -->

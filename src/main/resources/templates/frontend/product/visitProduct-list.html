@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zxx">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <!-- metas -->
@@ -14,7 +14,7 @@
     <!-- Favicon -->
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
-    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+    <th:block th:include="~{frontend/component/plugin/frontendplugin.html :: css}"></th:block>
 </head>
 
 <body>
@@ -34,19 +34,19 @@
     <!-- End Header -->
     <!-- Main -->
     <main>
-        <!-- 租借品專區 -->
+        <!-- Breadcrumb -->
         <div class="py-3 bg-gray-100">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6 my-2">
-                        <h1 class="m-0 h4 text-center text-lg-start">租借品專區</h1>
+                        <h1 class="m-0 h4 text-center text-lg-start">Shop</h1>
                     </div>
                     <div class="col-lg-6 my-2">
                         <ol class="breadcrumb m-0 small justify-content-center justify-content-lg-end">
                             <li class="breadcrumb-item">
-                                <a class="text-nowrap text-reset" th:href="@{index}">Home</a>
+                                <a class="text-nowrap text-reset" href="#">Home</a>
                             </li>
-                            <li class="breadcrumb-item text-nowrap active" aria-current="page">租借品</li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page">Product</li>
                         </ol>
                     </div>
                 </div>
@@ -71,54 +71,102 @@
                                 <div class="shop-sidebar-title">
                                     <a class="h5" data-bs-toggle="collapse" href="#shop_categories" role="button"
                                        aria-expanded="true" aria-controls="shop_categories">
-                                        租借品類別 <i class="bi bi-chevron-up"></i>
+                                        Categories <i class="bi bi-chevron-up"></i>
                                     </a>
                                 </div>
                                 <div class="shop-category-list collapse show" id="shop_categories">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link active">所有租借品</a>
+                                            <a href="#" class="nav-link active">All Products</a>
                                         </li>
-
                                         <li class="nav-item">
                                             <a href="#" class="nav-link">
-                                                男士 <span>(25)</span>
+                                                Men <span>(25)</span>
                                             </a>
                                             <a data-bs-toggle="collapse" href="#shop_cat_1" role="button"
                                                aria-expanded="false" aria-controls="shop_cat_1" class="s-icon"></a>
                                             <div class="collapse" id="shop_cat_1">
                                                 <ul class="nav nav-pills flex-column nav-hierarchy">
                                                     <li class="nav-item">
-                                                        <a th:href="@{listAllRental}" class="nav-link">成套西裝</a>
+                                                        <a href="#" class="nav-link">Topwear</a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a th:href="@{listAllRental}" class="nav-link">西裝外套</a>
+                                                        <a href="#" class="nav-link">Bottomwear</a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a th:href="@{listAllRental}" class="nav-link">西裝褲</a>
+                                                        <a href="#" class="nav-link">Footwear</a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a th:href="@{listAllRental}" class="nav-link">飾品</a>
+                                                        <a href="#" class="nav-link">Sports &amp;Active Wear</a>
                                                     </li>
                                                 </ul>
                                             </div>
                                         </li>
                                         <li class="nav-item">
                                             <a href="#" class="nav-link">
-                                                女士 <span>(40)</span>
+                                                Women <span>(40)</span>
                                             </a>
                                             <a data-bs-toggle="collapse" href="#shop_cat_2" role="button"
                                                aria-expanded="false" aria-controls="shop_cat_2" class="s-icon"></a>
                                             <div class="collapse" id="shop_cat_2">
                                                 <ul class="nav nav-pills flex-column nav-hierarchy">
                                                     <li class="nav-item">
-                                                        <a th:href="@{listAllRental}" class="nav-link">婚紗</a>
+                                                        <a href="#" class="nav-link">Indian &amp;Fusion Wear</a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a th:href="@{listAllRental}" class="nav-link">禮服</a>
+                                                        <a href="#" class="nav-link">Western Wear</a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a th:href="@{listAllRental}" class="nav-link">飾品</a>
+                                                        <a href="#" class="nav-link">Footwear</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="#" class="nav-link">Beauty &amp;Personal Care</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                Kids <span>(35)</span>
+                                            </a>
+                                            <a data-bs-toggle="collapse" href="#shop_cat_3" role="button"
+                                               aria-expanded="false" aria-controls="shop_cat_3" class="s-icon"></a>
+                                            <div class="collapse" id="shop_cat_3">
+                                                <ul class="nav nav-pills flex-column nav-hierarchy">
+                                                    <li class="nav-item">
+                                                        <a href="#" class="nav-link">Boys Clothing</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="#" class="nav-link">Girls Clothing</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="#" class="nav-link">Boys Footwear</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="#" class="nav-link">Girls Footwear</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                Home &amp;Living <span>(80)</span>
+                                            </a>
+                                            <a data-bs-toggle="collapse" href="#shop_cat_4" role="button"
+                                               aria-expanded="false" aria-controls="shop_cat_4" class="s-icon"></a>
+                                            <div class="collapse" id="shop_cat_4">
+                                                <ul class="nav nav-pills flex-column nav-hierarchy">
+                                                    <li class="nav-item">
+                                                        <a href="#" class="nav-link">Bed Linen &amp;Furnishing</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="#" class="nav-link">Bath</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="#" class="nav-link">Home Decor</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="#" class="nav-link">Kitchen &amp;Table</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -127,7 +175,7 @@
                                 </div>
                             </div>
                             <!-- End Categories -->
-                            <!-- 性別 -->
+                            <!-- gender -->
                             <div class="shop-sidebar-block">
                                 <div class="shop-sidebar-title">
                                     <a class="h5" data-bs-toggle="collapse" href="#shop_Gender" role="button"
@@ -140,18 +188,28 @@
                                         <li class="custom-radio">
                                             <input class="custom-control-input" id="gen1" type="radio" name="Gender"
                                                    checked="checked">
-                                            <label class="custom-control-label" for="gen1">男士</label>
+                                            <label class="custom-control-label" for="gen1">Men</label>
                                         </li>
                                         <li class="custom-radio">
                                             <input class="custom-control-input" id="gen2" type="radio"
                                                    name="Gender">
-                                            <label class="custom-control-label" for="gen2">女士</label>
+                                            <label class="custom-control-label" for="gen2">Women</label>
+                                        </li>
+                                        <li class="custom-radio">
+                                            <input class="custom-control-input" id="gen3" type="radio"
+                                                   name="Gender">
+                                            <label class="custom-control-label" for="gen3">Boys</label>
+                                        </li>
+                                        <li class="custom-radio">
+                                            <input class="custom-control-input" id="gen4" type="radio"
+                                                   name="Gender">
+                                            <label class="custom-control-label" for="gen4">Girls</label>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                             <!-- End Gender -->
-                            <!-- 顏色 -->
+                            <!-- Color -->
                             <div class="shop-sidebar-block">
                                 <div class="shop-sidebar-title">
                                     <a class="h5" data-bs-toggle="collapse" href="#shop_Color" role="button"
@@ -190,77 +248,90 @@
                                                 <span class="text-body">Red</span>
                                             </label>
                                         </li>
+                                        <li class="custom-checkbox checkbox-color">
+                                            <input class="custom-control-input" id="colorsidebar5" type="checkbox"
+                                                   disabled="">
+                                            <label class="custom-control-label" style="color: #17a2b8;"
+                                                   for="colorsidebar5">
+                                                <span class="text-body">Cyan</span>
+                                            </label>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
                             <!-- End Color -->
-                            <!-- 大小size -->
+                            <!-- Brands -->
                             <div class="shop-sidebar-block">
                                 <div class="shop-sidebar-title">
                                     <a class="h5" data-bs-toggle="collapse" href="#shop_brand" role="button"
                                        aria-expanded="true" aria-controls="shop_brand">
-                                        Size <i class="bi bi-chevron-up"></i>
+                                        Brands <i class="bi bi-chevron-up"></i>
                                     </a>
                                 </div>
                                 <div class="shop-sidebar-list collapse show" id="shop_brand">
                                     <ul>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input" id="brand1" type="checkbox">
-                                            <label class="custom-control-label" for="brand1">XS</label>
+                                            <label class="custom-control-label" for="brand1">Adidas</label>
                                         </li>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input" id="brand2" type="checkbox">
-                                            <label class="custom-control-label" for="brand2">S</label>
+                                            <label class="custom-control-label" for="brand2">Levis</label>
                                         </li>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input" id="brand3" type="checkbox">
-                                            <label class="custom-control-label" for="brand3">M</label>
+                                            <label class="custom-control-label" for="brand3">Puma</label>
                                         </li>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input" id="brand4" type="checkbox"
                                                    disabled="">
-                                            <label class="custom-control-label" for="brand4">L</label>
+                                            <label class="custom-control-label" for="brand4">Roadster</label>
                                         </li>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input" id="brand5" type="checkbox">
-                                            <label class="custom-control-label" for="brand5">XL</label>
-                                        </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="brand6" type="checkbox">
-                                            <label class="custom-control-label" for="brand6">2L</label>
+                                            <label class="custom-control-label" for="brand5">Converse</label>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                             <!-- End Brands -->
-                            <!-- 租借金額 -->
+                            <!-- Brands -->
                             <div class="shop-sidebar-block">
                                 <div class="shop-sidebar-title">
                                     <a class="h5" data-bs-toggle="collapse" href="#shop_price" role="button"
                                        aria-expanded="true" aria-controls="shop_price">
-                                        租借金額 <i class="bi bi-chevron-up"></i>
+                                        Price <i class="bi bi-chevron-up"></i>
                                     </a>
                                 </div>
                                 <div class="shop-sidebar-list collapse show" id="shop_price">
                                     <ul>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input" id="price1" type="checkbox">
-                                            <label class="custom-control-label" for="price1">$2000</label>
+                                            <label class="custom-control-label" for="price1">$10.00 - $49.00</label>
                                         </li>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input" id="price2" type="checkbox">
-                                            <label class="custom-control-label" for="price2">$4000</label>
+                                            <label class="custom-control-label" for="price2">$50.00 - $99.00</label>
+                                        </li>
+                                        <li class="custom-checkbox">
+                                            <input class="custom-control-input" id="price3" type="checkbox">
+                                            <label class="custom-control-label" for="price3">$100.00 -
+                                                $199.00</label>
+                                        </li>
+                                        <li class="custom-checkbox">
+                                            <input class="custom-control-input" id="price4" type="checkbox">
+                                            <label class="custom-control-label" for="price4">$200.00 and Up</label>
                                         </li>
                                     </ul>
                                     <div class="d-flex align-items-center pt-3">
                                         <!-- Input -->
                                         <input type="number" class="form-control form-control-sm"
-                                               placeholder="$0" min="10">
+                                               placeholder="$10.00" min="10">
                                         <!-- Divider -->
                                         <div class="text-gray-350 mx-2">‒</div>
                                         <!-- Input -->
                                         <input type="number" class="form-control form-control-sm"
-                                               placeholder="$4000" max="350">
+                                               placeholder="$350.00" max="350">
                                     </div>
                                 </div>
                             </div>
@@ -278,7 +349,7 @@
                                     <i class="fs-4 lh-1 bi bi-justify-left"></i>
                                 </button>
                                 <!-- End Mobile Toggle -->
-                                <a class="btn btn-white btn-sm" th:href="@{rentalShop}">
+                                <a class="btn btn-white btn-sm" th:href="@{/frontend/product/visitProduct}">
                                     <i class="bi bi-grid"></i>
                                 </a>
                                 <a class="btn btn-white btn-sm active" href="#">
@@ -289,20 +360,32 @@
                                 <div class="dropdown">
                                     <a class="btn btn-none btn-sm border dropdown-toggle text-mode" href="#"
                                        role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
-                                       aria-expanded="false">排序方式</a>
+                                       aria-expanded="false">Short by</a>
                                     <ul class="dropdown-menu dropdown-menu-end shadow"
                                         aria-labelledby="dropdownMenuLink">
                                         <li>
-                                            <a class="dropdown-item" href="#">最新</a>
+                                            <a class="dropdown-item" href="#">Featured</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="#">最熱門</a>
+                                            <a class="dropdown-item" href="#">Best selling</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="#">價格由低到高</a>
+                                            <a class="dropdown-item" href="#">Alphabetically, A-Z</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="#">價格由高到低</a>
+                                            <a class="dropdown-item" href="#">Alphabetically, Z-A</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">Price, low to high</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">Price, high to low</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">Date, old to new</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">Date, new to old</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -349,6 +432,9 @@
                                     </a>
                                     <a href="#" class="btn btn-primary">
                                         <i class="fi-heart"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-primary">
+                                        <i class="fi-repeat"></i>
                                     </a>
                                     <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
                                        href="javascript:void(0)" class="btn btn-primary">
@@ -400,6 +486,9 @@
                                     <a href="#" class="btn btn-primary">
                                         <i class="fi-heart"></i>
                                     </a>
+                                    <a href="#" class="btn btn-primary">
+                                        <i class="fi-repeat"></i>
+                                    </a>
                                     <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
                                        href="javascript:void(0)" class="btn btn-primary">
                                         <i class="fi-eye"></i>
@@ -450,7 +539,9 @@
                                     <a href="#" class="btn btn-primary">
                                         <i class="fi-heart"></i>
                                     </a>
-
+                                    <a href="#" class="btn btn-primary">
+                                        <i class="fi-repeat"></i>
+                                    </a>
                                     <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
                                        href="javascript:void(0)" class="btn btn-primary">
                                         <i class="fi-eye"></i>
@@ -501,7 +592,9 @@
                                     <a href="#" class="btn btn-primary">
                                         <i class="fi-heart"></i>
                                     </a>
-
+                                    <a href="#" class="btn btn-primary">
+                                        <i class="fi-repeat"></i>
+                                    </a>
                                     <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
                                        href="javascript:void(0)" class="btn btn-primary">
                                         <i class="fi-eye"></i>
@@ -552,7 +645,9 @@
                                     <a href="#" class="btn btn-primary">
                                         <i class="fi-heart"></i>
                                     </a>
-
+                                    <a href="#" class="btn btn-primary">
+                                        <i class="fi-repeat"></i>
+                                    </a>
                                     <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
                                        href="javascript:void(0)" class="btn btn-primary">
                                         <i class="fi-eye"></i>
@@ -603,13 +698,30 @@
                                     <a href="#" class="btn btn-primary">
                                         <i class="fi-heart"></i>
                                     </a>
-
+                                    <a href="#" class="btn btn-primary">
+                                        <i class="fi-repeat"></i>
+                                    </a>
                                     <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
                                        href="javascript:void(0)" class="btn btn-primary">
                                         <i class="fi-eye"></i>
                                     </a>
                                 </div>
                             </div>
+                        </div>
+                        <div class="productitm">
+                            <input type="hidden" name="productNo" value="1"> <!-- 產品編號 -->
+                            <input type="number" class="productBuyQty" value="1"> <!-- 購買數量 -->
+                            <button class="addToCartBtn" type="submit">
+                                添加到購物車
+                            </button>
+                        </div>
+
+                        <div class="productitm">
+                            <input type="hidden" name="productNo" value="7"> <!-- 產品編號 -->
+                            <input type="number" class="productBuyQty" value="7"> <!-- 購買數量 -->
+                            <button class="addToCartBtn" type="submit">
+                                添加到購物車
+                            </button>
                         </div>
                         <!-- End Product Box -->
                         <div class="shop-bottom-bar d-flex align-items-center mt-3">
@@ -658,6 +770,33 @@
 <!-- script start -->
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
 <!-- End script start -->
+<script>
+    function testAddToCart(event) {
+        var button = event.target;
+        var row = button.closest('.productitm');
+        var productNo = row.querySelector('input[name="productNo"]').value;
+        var productBuyQty = row.querySelector('.productBuyQty').value;
+
+
+        var data = {
+            productNo: productNo,
+            productBuyQty: productBuyQty
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "/frontend/cart/addproducttocart",
+            data: data,
+            success: function(data) {
+                console.log("更新成功");
+            }
+        });
+    }
+    var addToCartButtons = document.querySelectorAll(".addToCartBtn");
+    addToCartButtons.forEach(function(button) {
+        button.addEventListener("click", testAddToCart);
+    });
+</script>
 </body>
 
 </html>

@@ -14,6 +14,7 @@ import com.yu.rental.dao.RentalRepository;
 import com.yu.rental.entity.Rental;
 import ecpay.logistics.integration.AllInOne;
 import ecpay.logistics.integration.domain.QueryLogisticsTradeInfoObj;
+import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -254,6 +255,17 @@ public class RentalOrderController {
 
     }
 
+    // 接收綠界金流交易回傳參數
+    @PostMapping("/receiveTradeInfos")
+    public ResponseEntity<?> receiveTradeInfos(@RequestBody String infos) {
+
+        Map<String, String> infosMap = logisticsStateService.parseLogisticsInfo(infos);
+        System.out.println("接收到交易成功訊息了喔喔喔喔喔 ===" + infosMap.get("MerchantTradeNo"));
+        service.setTradeSuccessInfos(infosMap);
+        return ResponseEntity.status(HttpStatus.OK).body("1|OK");
+
+    }
+
     @PostMapping("/update")
     public String updateOrder(@RequestParam Integer rentalOrdNo,
                               @RequestParam(required = false) Byte rentalPayStat,
@@ -272,6 +284,9 @@ public class RentalOrderController {
         }
         if (rentalOrdStat != null) {
             map.put("rentalOrdStat", rentalOrdStat);
+            if (rentalOrdStat == (byte) 50) {
+
+            }
         }
         if (rtnStat != null) {
             map.put("rtnStat", rtnStat);
@@ -514,7 +529,18 @@ public class RentalOrderController {
 
     }
 
+    /*----------------------------有關刷退押金的方法----------------------------------*/
 
+    // 刷退
+    @PostMapping("/depRefund")
+    public ResponseEntity<?> depRefund(@RequestBody Integer rentalOrdNo) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("rentalOrdNo", rentalOrdNo);
+        Map<String, String> refundInfos = service.refund(service.getByAttributes(map).get(0));
+        return ResponseEntity.status(HttpStatus.OK).body(refundInfos);
+
+    }
 
 
 }

@@ -93,47 +93,47 @@
                             <!--                                    </li><br>-->
                             <hr width="90%" size="7">
                             <!--  萬用複合查詢(開始)  -->
-                            <font color=blue>萬用複合查詢:</font><br>
-                            <div>
-                                <form method="post" th:action="@{search}" th:object="${rental}">
-                                    選擇租借品編號:
-                                    <select name="rentalNo" th:field="*{rentalNo}">
-                                        <option value="1">請選擇</option>
-                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalNo}" th:text="${rental.rentalNo}" />
-                                    </select><br>
-                                    選擇租借品名稱:
-                                    <select name="rentalName" th:field="*{rentalName}">
-                                        <option value="">請選擇</option>
-                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalNo}" th:text="${rental.rentalName}" />
-                                    </select><br>
-                                    選擇租借品尺寸:
-                                    <select name="rentalSize" th:field="*{rentalSize}">
-                                        <option value="3">請選擇</option>
-                                        <option value="0">XS</option>
-                                        <option value="1">S</option>
-                                        <option value="2">M</option>
-                                        <option value="3">L</option>
-                                        <option value="4">XL</option>
-                                        <option value="5">2L</option>
-                                    </select><br>
-                                    選擇租借品顏色:
-                                    <select name="rentalColor" th:field="*{rentalColor}">
-                                        <option value="">請選擇</option>
-                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalNo}" th:text="${rental.rentalColor}" />
-                                    </select><br>
-                                    選擇租借品狀態:
-                                    <select name="rentalStat" th:field="*{rentalStat}">
-                                        <option value="5">請選擇</option>
-                                        <option value="0">上架</option>
-                                        <option value="1">已預約</option>
-                                        <option value="2">已租借</option>
-                                        <option value="3">已歸還</option>
-                                        <option value="4">清潔整理中</option>
-                                        <option value="5">下架</option>
-                                    </select><br>
-                                    <input type="submit" value="送出"/>
-                                </form>
-                            </div>
+<!--                            <font color=blue>萬用複合查詢:</font><br>-->
+<!--                            <div>-->
+<!--                                <form method="post" th:action="@{search}" th:object="${rental}">-->
+<!--                                    選擇租借品編號:-->
+<!--                                    <select name="rentalNo" th:field="*{rentalNo}">-->
+<!--                                        <option value="1">請選擇</option>-->
+<!--                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalNo}" th:text="${rental.rentalNo}" />-->
+<!--                                    </select><br>-->
+<!--                                    選擇租借品名稱:-->
+<!--                                    <select name="rentalName" th:field="*{rentalName}">-->
+<!--                                        <option value="">請選擇</option>-->
+<!--                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalNo}" th:text="${rental.rentalName}" />-->
+<!--                                    </select><br>-->
+<!--                                    選擇租借品尺寸:-->
+<!--                                    <select name="rentalSize" th:field="*{rentalSize}">-->
+<!--                                        <option value="3">請選擇</option>-->
+<!--                                        <option value="0">XS</option>-->
+<!--                                        <option value="1">S</option>-->
+<!--                                        <option value="2">M</option>-->
+<!--                                        <option value="3">L</option>-->
+<!--                                        <option value="4">XL</option>-->
+<!--                                        <option value="5">2L</option>-->
+<!--                                    </select><br>-->
+<!--                                    選擇租借品顏色:-->
+<!--                                    <select name="rentalColor" th:field="*{rentalColor}">-->
+<!--                                        <option value="">請選擇</option>-->
+<!--                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalNo}" th:text="${rental.rentalColor}" />-->
+<!--                                    </select><br>-->
+<!--                                    選擇租借品狀態:-->
+<!--                                    <select name="rentalStat" th:field="*{rentalStat}">-->
+<!--                                        <option value="5">請選擇</option>-->
+<!--                                        <option value="0">上架</option>-->
+<!--                                        <option value="1">已預約</option>-->
+<!--                                        <option value="2">已租借</option>-->
+<!--                                        <option value="3">已歸還</option>-->
+<!--                                        <option value="4">清潔整理中</option>-->
+<!--                                        <option value="5">下架</option>-->
+<!--                                    </select><br>-->
+<!--                                    <input type="submit" value="送出"/>-->
+<!--                                </form>-->
+<!--                            </div>-->
                         </div>
                     </div>
                 </div>
