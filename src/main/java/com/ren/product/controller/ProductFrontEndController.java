@@ -5,24 +5,15 @@ import com.ren.product.service.impl.ProductServiceImpl;
 import com.ren.productpicture.service.impl.ProductPictureServiceImpl;
 import com.ren.productreview.service.impl.ProductReviewServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.ren.util.Constants.YES;
 
 @Controller
 @RequestMapping("/frontend/product")
@@ -38,6 +29,11 @@ public class ProductFrontEndController {
     private ProductReviewServiceImpl productReviewSvc;
 
     // 前往商品瀏覽頁面
+    @GetMapping("/visitProduct-list")
+    public String toVisitProductList() {
+        return "frontend/product/visitProduct-list";
+    }
+
     @GetMapping("/visitProduct")
     public String toVisitProduct() {
         return "frontend/product/visitProduct";
@@ -63,21 +59,6 @@ public class ProductFrontEndController {
 
         return "";
     }
-
-    @GetMapping("/search")
-    public String search(@RequestParam("keyword") String keyword,
-                         @RequestParam("page") Integer page,
-                         @RequestParam("size") Integer size,
-                         ModelMap model) {
-        Page<Product> products = productSvc.searchProducts(keyword, page, size);
-        model.addAttribute("products", products.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", products.getTotalPages());
-        return "backend/searchTest";
-    }
-
-
-
 
 
     // 加入購物車
