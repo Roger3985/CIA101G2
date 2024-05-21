@@ -1,4 +1,4 @@
-package com.chihyun.coupon.model;
+package com.chihyun.mycoupon.entity;
 
 import com.chihyun.coupon.entity.Coupon;
 import org.hibernate.Session;
@@ -10,45 +10,37 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class CompositeQuery_Coupon {
+public class CompositeQuery_MyCoupon {
 
-    public static Predicate get_aPredicate_For_AnyDB(CriteriaBuilder builder, Root<Coupon> root, String columnName, String value) {
+    public static Predicate get_aPredicate_For_AnyDB(CriteriaBuilder builder, Root<MyCoupon> root, String columnName, String value) {
 
         Predicate predicate = null;
 
-        if ("coupNo".equals(columnName) || "memNo".equals(columnName) || "coupUsedStat".equals(columnName)) {
+        if ("coupNo".equals(columnName) || "coupRelStat".equals(columnName)) {
             predicate = builder.equal(root.get(columnName), Integer.valueOf(value));
-        } else if("coupRelStat".equals(columnName)){
-            predicate = builder.equal(root.get(columnName), Byte.valueOf(value));
-        } if ("coupName".equals(columnName) || "coupCond".equals(columnName)) {
+        } else if ("coupName".equals(columnName)) {
             predicate = builder.like(root.get(columnName), "%" + value + "%");
         } else if ("coupDisc".equals(columnName)) {
             predicate = builder.equal(root.get(columnName), new BigDecimal(value));
-        } else if ("coupAddDateStart".equals(columnName) || "coupAddDateEnd".equals(columnName) ||
-                "coupExpDateStart".equals(columnName) || "coupExpDateEnd".equals(columnName) ||
-                "coupRelDateStart".equals(columnName) || "coupRelDateEnd".equals(columnName)) {
-
-
-
+        } else if ("coupExpDate".equals(columnName)) {
             predicate = builder.equal(root.get(columnName), java.sql.Date.valueOf(value));
         }
         return predicate;
     }
 
-    public static List<Coupon> getAllC(Map<String, String[]> map, Session session) {
+    public static List<MyCoupon> getAllC(Map<String, String[]> map, Session session) {
         Transaction tx = session.beginTransaction();
-        List<Coupon> list = null;
+        List<MyCoupon> list = null;
         try {
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Coupon> criteriaQuery = builder.createQuery(Coupon.class);
-            Root<Coupon> root = criteriaQuery.from(Coupon.class);
+            CriteriaQuery<MyCoupon> criteriaQuery = builder.createQuery(MyCoupon.class);
+            Root<MyCoupon> root = criteriaQuery.from(MyCoupon.class);
             List<Predicate> predicateList = new ArrayList<Predicate>();
 
             Set<String> keys = map.keySet();
@@ -58,7 +50,7 @@ public class CompositeQuery_Coupon {
                 if (value != null && value.trim().length() != 0 && !"action".equals(key)) {
                     count++;
                     predicateList.add(get_aPredicate_For_AnyDB(builder, root, key, value.trim()));
-                    System.out.println("Coupon有送出複合查詢的資料欄位數:" + count);
+                    System.out.println("MyCoupon有送出複合查詢的資料欄位數:" + count);
                     System.out.println(value);
                 }
             }
@@ -77,5 +69,4 @@ public class CompositeQuery_Coupon {
         }
         return list;
     }
-
 }

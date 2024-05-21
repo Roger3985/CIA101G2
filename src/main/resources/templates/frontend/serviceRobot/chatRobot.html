@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/frontend/service/frontendChat.css}">
+    <title>客服機器人</title>
+
+</head>
+
+<body>
+<h2>前台客服機器人</h2>
+
+<div class="chat-container" id="chat-page">
+
+    <div class="chat-area">
+        <div class="chat-area" id="chat-messages"></div>
+
+        <form id="messageForm" name="messageForm">
+            <div class="message-input">
+                <input autocomplete="off" type="text" id="message" placeholder="Type your message...">
+                <button type="button" id="msg_btn" onclick="sendMessge()">Send</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    var chatArea = document.querySelector("#chat-messages");
+
+    async function sendMessage() {
+
+        var content = document.getElementById("message").value.trim();
+        content.value = '';
+
+        const messageContainer = document.createElement('div');
+        messageContainer.classList.add('message');
+        messageContainer.classList.add('sender');
+        const message = document.createElement('p');
+        message.textContent = content;
+        messageContainer.appendChild(message);
+        chatArea.appendChild(messageContainer);
+
+
+        try {
+            const response = await fetch("/robotReply", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringtify({message: content})
+            });
+
+            if (!response.ok) {
+                throw new Error('Http error! status: ${response.status}');
+            }
+            const data = await response.JSON();
+            const messageContainer = document.createElement('div');
+            messageContainer.classList.add('message');
+            messageContainer.classList.add('sender');
+            const botMsg = document.createElement('p');
+            messageContainer.appendChild(botMsg);
+            chatArea.appendChild(messageContainer);
+
+        } catch (error) {
+            console.error('Error:', error);
+            const errorMessage = document.createElement('div');
+            errorMessage.textContent = 'An error occurred. Please try again.';
+            document.getElementById('messages').appendChild(errorMessage);
+        }
+
+    }
+
+
+</script>
+</body>
+</html>
