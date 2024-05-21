@@ -158,6 +158,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.Id;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
@@ -240,20 +241,16 @@ public class CartController {
     //加入商品至購物車
         @GetMapping("/cart/addcartsuccess")
         public String insert(@Validated(Create.class) CartRedis cartRedis, BindingResult result, ModelMap model, HttpSession session) {
-            Member member=new Member();
+            Integer memNo=0;
+            if (session.getAttribute("loginsuccess") == null) {
 
-            Object memNo = 0; // 声明并初始化memNo为Object类型
-            member.setMemNo(3);
-session.setAttribute("member",member);
-            if (session.getAttribute("member") == null) {
-                memNo = session.getAttribute("memNo"); // 将memNo设为session中的memNo值
             } else {
-                member = (Member) session.getAttribute("member"); // 强制转换为Member类型
-                memNo = member.getMemNo();
+               Member member = (Member) session.getAttribute("loginsuccess"); // 强制转换为Member类型
+              memNo = member.getMemNo();
             }
 
             // 将memNo设置在cartRedis中
-            cartRedis.setMemNo((Integer) memNo); // 将memNo强制转换为Integer类型
+            cartRedis.setMemNo(memNo); // 将memNo强制转换为Integer类型
             List<CartRedis> cartListData = cartSvc.findByCompositeKey((Integer) memNo); // 将memNo强制转换为Integer类型
 
 
@@ -389,14 +386,13 @@ session.setAttribute("member",member);
         Map<String, String> response = new HashMap<>();
         Integer memNo;
         Member member=new Member();
-        member.setMemNo(3);
         session.setAttribute("member",member);
-        if (session.getAttribute("member") == null) {
+        if (session.getAttribute("loginsuccess") == null) {
             String sessionId = session.getId();
             memNo = Math.abs(sessionId.hashCode());
             session.setAttribute("memNo", memNo);
         } else {
-            member = (Member) session.getAttribute("member");
+            member = (Member) session.getAttribute("loginsuccess");
             memNo = member.getMemNo();
         }
         try {

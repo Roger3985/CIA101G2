@@ -77,18 +77,18 @@ public class ProductOrderController {
                                               @RequestParam(value = "coupNo", required = false) Integer coupNo,
                                               HttpSession session) {
         // 获取 session 中的 member 对象
-        Member member = (Member) session.getAttribute("member"); // 强制转换为 Member 类型
+        Member myData = (Member) session.getAttribute("loginsuccess"); // 强制转换为 Member 类型
 
         // 未登录
-        if (member == null) {
+        if (myData == null) {
             session.setAttribute("location", "/frontend/productorder/submitOrder");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("frontend/member/loginMember");
         }
 
         // 创建并设置 ProductOrder 对象
         ProductOrder productOrder = new ProductOrder();
-        productOrder.setMember(member); // 设置 Member 对象
-        productOrder.setMemNo(member.getMemNo());
+        productOrder.setMember(myData); // 设置 Member 对象
+        productOrder.setMemNo(myData.getMemNo());
         productOrder.setProductByrName(productByrName);
         productOrder.setProductByrPhone(productByrPhone);
         productOrder.setProductByrEmail(productByrEmail);
@@ -103,7 +103,7 @@ public class ProductOrderController {
         final Coupon coupon;
 
 // 检查是否存在优惠券
-        Optional<MyCoupon> myCouponOptional = myCouponService.getOneMyCoupon(coupNo, member.getMemNo());
+        Optional<MyCoupon> myCouponOptional = myCouponService.getOneMyCoupon(coupNo, myData.getMemNo());
 
 // 如果存在优惠券，设置优惠券的使用状态并获取对应的 Coupon 对象
         if (myCouponOptional.isPresent()) {
@@ -119,7 +119,7 @@ public class ProductOrderController {
 
         // 设置订单对象的优惠券信息
         String result = productOrderSvc.addOneProductOrderSuccess(productOrder);
-        cartSvc.deleteBymemNo(member.getMemNo());
+        cartSvc.deleteBymemNo(myData.getMemNo());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
@@ -135,14 +135,14 @@ public class ProductOrderController {
                                             ModelMap model,
                                             @RequestParam(value = "coupNo", required = false) Integer coupNo,
                                             HttpSession session) {
-        Member member;
+        Member myData;
         Object memNo = 0; // 声明并初始化memNo为Object类型
 
-        if (session.getAttribute("member") == null) {
-            memNo = session.getAttribute("memNo"); // 将memNo设为session中的memNo值
+        if (session.getAttribute("loginsuccess") == null) {
+
         } else {
-            member = (Member) session.getAttribute("member"); // 强制转换为Member类型
-            memNo = member.getMemNo();
+            myData = (Member) session.getAttribute("loginsuccess"); // 强制转换为Member类型
+            memNo = myData.getMemNo();
         }
 
         if (coupNo == null) {
@@ -177,23 +177,20 @@ public class ProductOrderController {
     @PostMapping("insertOrder")
     public String insertOrder(@Validated(Create.class) CartRedis cartRedis, BindingResult result, ModelMap model, HttpSession session) {
         // 获取 session 中的 member 对象
-        Member member=new Member();
-        member.setMemNo(3);
-        session.setAttribute("loginsuccess",member);
-         member = (Member) session.getAttribute("loginsuccess"); // 强制转换为 Member 类型
+        Member myData;
+        myData = (Member) session.getAttribute("loginsuccess"); // 强制转换为 Member 类型
 
         // 未登录
-        if (member == null) {
-            return "frontend/member/loginMember";
+        if (myData == null) {
+            return "redirect:frontend/member/loginMember";
         }
 
         // 获取 memNo
-        Integer memNo = member.getMemNo();
+        Integer memNo = myData.getMemNo();
 
         // 创建产品订单
         ProductOrder productOrder = productOrderSvc.addOneProductOrder(cartRedis);
-        member = memberService.findByNo(memNo);
-        productOrder.setMember(member);
+      productOrder.setMember(memberService.findByNo(memNo));
         productOrder.setProductOrdStat((byte) 40);
         productOrder.setProductStat((byte) 0);
 
@@ -244,11 +241,9 @@ public class ProductOrderController {
 
     @GetMapping("CartEnd")
     public String CartEnd(ModelMap model, HttpSession session) {
-        Member member=new Member();
-        member.setMemNo(3);
-        session.setAttribute("member",member);
-         member = (Member) session.getAttribute("member"); // 强制转换为Member类型
-        Integer memNo = member.getMemNo();
+        Member myData;
+        myData = (Member) session.getAttribute("loginsuccess");
+        Integer memNo = myData.getMemNo();
         // 使用memNo执行您的逻辑
         List<ProductOrder> list = productOrderSvc.findByMember(memNo);
         model.addAttribute("productorderListData", list);
