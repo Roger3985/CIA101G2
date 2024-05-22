@@ -5,10 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import com.howard.util.JedisUtil;
+import com.roger.member.entity.Member;
+import com.roger.member.repository.MemberRepository;
 import com.yu.rental.dao.RentalRepository;
+import com.yu.rental.entity.Rental;
 import com.yu.rentalmyfavorite.dao.RentalMyFavoriteRepository;
 
 import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -19,7 +24,10 @@ import redis.clients.jedis.JedisPool;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+
 @Service
+@Getter
+@Setter
 public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
 
     @Autowired //自動裝配
@@ -27,14 +35,14 @@ public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
     @Autowired
     private RentalRepository rentalRepository;
     @Autowired
-    @Qualifier("rentalWish")
-    private RedisTemplate<String, Map<String, String>> rentalWishRedisTemplate;
+    private MemberRepository memRepository;
 
     //redis使用
-    JedisPool jedisPool = null;
-    public RentalMyFavoriteServiceImpl() {
-        jedisPool = JedisUtil.getJedisPool();
-    }
+    @Autowired
+    @Qualifier("rentalWish")
+    private RedisTemplate<Integer, Map<String, String>> rentalWishRedisTemplate;
+
+
 
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -50,6 +58,12 @@ public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
     @Override
     public RentalMyFavorite findByMemNo(Integer memNo) {
         return repository.findByMember_MemNo(memNo);
+    }
+
+    //查詢加入最愛的會員
+    @Override
+    public List<RentalMyFavorite> getFAVByMemNo(Integer memNo){
+        return repository.getFAVByMemNo(memNo);
     }
 
     //複合主鍵查詢
@@ -79,13 +93,21 @@ public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
 //----------------------------------------------------------------------------------------------------------------------
 //主要為後端使用：增查改
 
-    //新增 (PK為null，save方法插入數據)
+    //新增 (若點擊加入最愛，匯入至清單內顯示)
 //    @Override
-//    public RentalMyFavorite addRentalFav(RentalMyFavorite rentalMyFavorite) {
+//    public Integer addRentalFav(Integer rentalNo, Integer memeNo) {
+//
+//        //取得商品資訊(找出對應的rentalNo)
+//        //取得點擊的會員編號
+//        //前端抓取即時時間
+//
+//        RentalMyFavorite rentalMyFavorite = repository.();
 //        Timestamp time = rentalMyFavorite.getRentalFavTime();
 //        rentalMyFavorite.setRentalFavTime(Timestamp.valueOf(String.valueOf(time)));
-//        return repository.save(rentalMyFavorite);
+//        return ;
 //    }
+
+    //新增 (PK為null，save方法插入數據)
     @Override
     public RentalMyFavorite addRentalFav(RentalMyFavorite rentalMyFavorite) {
         return repository.save(rentalMyFavorite);
@@ -127,45 +149,28 @@ public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
 
 
     ///////////////////////////////////////////////////////////////////////
-    //加入最愛清單 (redis儲存)
-    public void addToWishList(Integer memNo, Map<String, String> map) {
-
-        try (Jedis jedis = jedisPool.getResource()) {
-
-            jedis.select(2); //選擇儲存的redis DB位置
-            String itemKey = "member : " + memNo + " : wishList : " + map.get("rentalNo");
-            jedis.hmset(itemKey, map);
-
-            // 測試 redis 同步更新
-//            Map<String, String> map1 = new HashMap<>();
-//            map1.put("rentalNo", String.valueOf(5001));
-//            map1.put("rentalCatNo", String.valueOf(1));
-//            map1.put("rentalName", "格紋成套西裝");
-//            map1.put("rentalPrice", String.valueOf(15500));
-//            map1.put("rentalDesPrice", String.valueOf(4000));
-//            map1.put("rentalSize", String.valueOf(2));
-//            map1.put("rentalColor", "黑色");
-//            map1.put("rentalInfo", "款式：劍領 單排釦。適用場合：婚攝 婚宴 宴客 求婚");
-//            map1.put("rentalStat", String.valueOf(0));
-//            jedis.hmset("member : 2 : cartItem : 5001", map1);
-//
-//            Map<String, String> map2 = new HashMap<>();
-//            map2.put("rentalNo", String.valueOf(5011));
-//            map2.put("rentalCatNo", String.valueOf(1));
-//            map2.put("rentalName", "雙排扣格紋成套西裝");
-//            map2.put("rentalPrice", String.valueOf(12500));
-//            map2.put("rentalDesPrice", String.valueOf(4000));
-//            map2.put("rentalSize", String.valueOf(3));
-//            map2.put("rentalColor", "深卡其色");
-//            map2.put("rentalInfo", "款式：標準領 單排釦 雙扣。適用場合：婚攝 婚宴 求婚 日常");
-//            map2.put("rentalStat", String.valueOf(0));
-//            jedis.hmset("member : 2 : cartItem : 5011", map2);
-
-
-        }
-
+    //加入最愛清單 (redis儲存 "內部由json格式傳遞")
+    public void addToWishList(Integer memNo, Map<String, String> rentalDetails) {
+        rentalWishRedisTemplate.opsForHash().put(memNo, rentalDetails.get("rentalNo"), rentalDetails);
     }
 
+
+    //取出最愛清單 (redis取出物件，"取出為json格式，須轉型態")
+    public Map<Object, Object> getWishList(Integer memNo) {
+        return rentalWishRedisTemplate.opsForHash().entries(memNo);
+    }
+
+    public Map<Object, RentalMyFavorite> findRedisByMemNo(Integer memNo) {
+        // 从数据库获取最爱清单的逻辑...
+        return null;
+    }
+
+
+
+
+
 }
+
+
 
 

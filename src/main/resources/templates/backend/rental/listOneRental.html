@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>查詢租借品資料 (單筆)</title>
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
     <style>
         *{
-            font-size: 12px; /* 調整字體大小 */
-        }
-        .error {
             font-size: 12px; /* 調整字體大小 */
         }
     </style>
@@ -36,7 +33,7 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">單筆查詢</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">查詢租借品資料 (單筆)</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">

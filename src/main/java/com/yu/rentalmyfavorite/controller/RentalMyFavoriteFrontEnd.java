@@ -1,38 +1,28 @@
 package com.yu.rentalmyfavorite.controller;
 
-import com.howard.rentalorder.dto.SetToCart;
 import com.roger.member.entity.Member;
 import com.roger.member.repository.MemberRepository;
 import com.roger.member.service.impl.MemberServiceImpl;
 import com.yu.rental.dao.RentalRepository;
 import com.yu.rental.entity.Rental;
 import com.yu.rental.service.RentalServiceImpl;
-import com.yu.rentalmyfavorite.dto.addToWishList;
 import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
 import com.yu.rentalmyfavorite.service.RentalMyFavoriteServiceImpl;
-import com.yu.rentalpic.entity.RentalPic;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.io.IOException;
+import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/frontEnd") //對應資料夾路徑
+@RequestMapping("/frontEnd/rentalmyfavorite") //對應資料夾路徑
 public class RentalMyFavoriteFrontEnd {
 
 
@@ -43,59 +33,78 @@ public class RentalMyFavoriteFrontEnd {
     @Autowired
     private MemberServiceImpl memberService;
 
-    @Autowired
-    private RentalRepository rentalRepository;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
 
     //瀏覽全部最愛清單頁面 (前台)
-    @GetMapping("/rental/rentalFAVList")
+    @GetMapping("/rentalFAVList")
     public String rentalFAVList() {
-        return "/frontend/rental/rentalFAVList";
+        return "/frontend/rentalmyfavorite/rentalFAVList";
     }
 
 
-//    處理新增最愛清單 (舊版)
-//    @PostMapping("/addToWishList")
-//    public String addToWishList(@RequestBody RentalMyFavorite rentalMyFavorite) {
-//        // 將前端傳入的日期 原 ISO 8601型態 轉為 Timestamp型態
-//        rentalMyFavorite.setRentalFavTime(Timestamp.from(Instant.parse(rentalMyFavorite.getRentalFavTime().toString())));
-//
-//        // 新增至資料庫
-//        rentalMyFAVService.addRentalFav(rentalMyFavorite);
-//        return "success";
-//    }
+    //瀏覽全部最愛清單頁面 (前台)  -->最新
+    @GetMapping("/myRentalFAV")
+    public String myRentalFAV() {
+        return "/frontend/rentalmyfavorite/myRentalFAV";
+    }
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * 前往查看最愛清單的頁面。 (須加入會員)
+     * 此方法處理 HTTP GET 請求到 '/frontend/member/memberData' URL 路徑，
+     * 從會話中獲取當前已登入的會員資料並將其添加到 'ModelMap' 中。
+     *
+     * @param model 包含模型屬性的 'ModelMap'。
+     * @param session session HTTP 會話物件，用來儲存和訪問當前已經登入的會員。
+     * @return 要呈現的視圖名稱 "oneMember.html"。
+     */
+    @PostMapping("/myRentalFAV/{memNo}")
+    public String showMemFAVList(@PathVariable(value = "memNo") Integer memNo,
+                                 HttpSession session, ModelMap model){
+
+        // 從 HTTP 會話中獲取當前已登入的會員資料
+        Member myData = (Member) session.getAttribute("loginsuccess");
+
+        // 如果會員未登錄，重定向到登錄頁面
+        if (myData == null) {
+            return "redirect:/frontend/member/loginMember";
+        } else {
+            // 從 Redis 取得最愛清單
+            Map<Object, Object> memFAVList = rentalMyFAVService.getWishList(memNo);
+            System.out.println("抓取:"+ memFAVList);
+            model.addAttribute("memFAVList", memFAVList);  //此處須顯示已篩選的該會員清單
+        }
+
+        model.addAttribute("myData", myData);// 將會員資料放入model
+
+        return "/frontend/rentalmyfavorite/rentalFAVList"; //轉交給List畫面做顯示
+    }
 
 
+    //    處理新增最愛清單
+    @PostMapping("addToWishList")
+    public ResponseEntity<?> addToWishList(@RequestBody RentalMyFavorite rentalMyFavorite) {
 
-    //    處理新增最愛清單 (新新新新新新 版 )
-//    @PostMapping("/addToWishList")
-//    public ResponseEntity<?> addToWishList(@RequestBody AddToWishList addToWishList) {
-//
-//        // 將前端傳入的日期 原 ISO 8601型態 轉為 Timestamp型態
-//        Timestamp rentalFavTime = Timestamp.from(Instant.parse(addToWishList.getRentalFavTime()));
-//        addToWishList.setRentalFavTime(rentalFavTime.toString());
-//
-//        Rental rental =  rentalRepository.findByRentalNo(addToWishList.getRentalNo());
-//
-//        Map<String, String> map = new HashMap<>();
-//        map.put("rentalNo", String.valueOf(addToWishList.getRentalNo()));
-//        map.put("rentalCatNo", String.valueOf(rental.getRentalCategory().getRentalCatNo()));
-//        map.put("rentalName", rental.getRentalName());
-//        map.put("rentalPrice", String.valueOf(rental.getRentalPrice()));
-//        map.put("rentalDesPrice", String.valueOf(rental.getRentalCategory().getRentalDesPrice()));
-//        map.put("rentalSize", String.valueOf(rental.getRentalSize()));
-//        map.put("rentalColor", rental.getRentalColor());
-//        map.put("rentalInfo", rental.getRentalInfo());
-//        map.put("rentalStat", String.valueOf(rental.getRentalStat()));
-//        rentalMyFAVService.addToWishList(addToWishList.getMemNo(), map);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(rental.getRentalName());
-//    }
-    
-    
+        try {
+            // 將前端傳入的日期 原 ISO 8601型態 轉為 Timestamp型態
+            Timestamp rentalFavTime = Timestamp.from(Instant.parse(rentalMyFavorite.getRentalFavTime().toString()));
+            rentalMyFavorite.setRentalFavTime(rentalFavTime);
 
+            // 新增品項至資料庫，資料會於
+            rentalMyFAVService.addRentalFav(rentalMyFavorite);
+
+            //品項加入redis中
+//            rentalMyFAVService.addToWishList(rentalMyFavorite.getMemNo(), Map.of(
+//                    "rentalNo", rentalMyFavorite.getRentalNo().toString(),
+//                    "itemName", rentalMyFavorite.getItemName(),
+//                    "rentalFavTime", rentalMyFavorite.getRentalFavTime().toString()
+//            ));
+            return ResponseEntity.status(HttpStatus.CREATED).body("已加入願望清單!");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("加入失敗!");
+        }
+    }
 
 
     //處理單筆修改(依rentalNo)
@@ -107,40 +116,27 @@ public class RentalMyFavoriteFrontEnd {
 //        return "/frontEnd/rentalmyfavorite/updateRentalMyFAV";
 //    }
 
-//
-//
-//    // 處理修改資料
+    // 處理修改資料
 //    @PostMapping("updateRentalMyFAV")
-//    public String updateRentalMyFAV(@Valid RentalMyFavorite rentalMyFavorite,
+//    public String updateRentalMyFAV(RentalMyFavorite rentalMyFavorite,
 //                                    @RequestParam("rentalNo") String rentalNo,
-//                                    @RequestParam("memNo") String memNo, BindingResult result, ModelMap model) {
+//                                    @RequestParam("memNo") String memNo, ModelMap model) {
 //
-//        //如果沒有在最愛清單內，返回原Update頁面
-//        if (rentalMyFAVService.findByIdRentalNoAndIdMemNo(Integer.valueOf(rentalNo),Integer.valueOf(memNo)) == null) {
-//            return "/frontEnd/rentalmyfavorite/updateRentalMyFAV";
-//        }
+//        //如果在清單內，可做修改
+//        if (rentalMyFAVService.findByIdRentalNoAndIdMemNo(Integer.valueOf(rentalNo),Integer.valueOf(memNo)) != null) {
 //
-//        //驗證方式： 若屬性存在一個以上的驗證註解，為避免在驗證皆未通過。 搭配迴圈輸出完整的錯誤訊息
-//        if (result.hasErrors()) {
-//            List<FieldError> fieldErrors = result.getFieldErrors();
-//            for (int i = 0, len = fieldErrors.size(); i < len; i++) {
-//                FieldError field = fieldErrors.get(i); //依索引值放入個別錯誤
-//                model.addAttribute(i + "-" + field.getField(), field.getDefaultMessage()); //出錯的名稱&訊息放入。
-//                model.addAttribute("rentalMyFavorite", rentalMyFavorite);
-//            }
-//            return "/frontEnd/rentalmyfavorite/updateRentalMyFAV";
+//            //匯入修改資料
+//            rentalMyFAVService.updateRentalFav(rentalMyFavorite);
+//            //
+//            List<RentalMyFavorite> rentalMyFavorite = rentalMyFAVService.findByRentalRentalNoAndMemberMemNo(Integer.valueOf(rentalNo),Integer.valueOf(memNo));
+//            model.addAttribute("rentalMyFavorite", rentalMyFavorite);
+//            return "/frontEnd/rentalmyfavorite/listOneRentalMyFAV";
 //        }
-//        // 將資料添加到 ModelMap 中
-//        rentalMyFAVService.updateRentalFav(rentalMyFavorite);
-////        List<RentalMyFavorite> rentalMyFavorite = rentalMyFAVService.findByRentalRentalNoAndMemberMemNo(Integer.valueOf(rentalNo),Integer.valueOf(memNo));
-//        model.addAttribute("rentalMyFavorite", rentalMyFavorite);
-//        return "/frontEnd/rentalmyfavorite/listOneRentalMyFAV";
+//        return "/frontEnd/rentalmyfavorite/updateRentalMyFAV";
 //    }
-//
-//
-//
-//
-//
+
+
+
     /**
      * 因 @ModelAttribute寫在方法上，故將此類別中的@GetMapping Method先加入model.addAttribute("...List",...Service.getAll());
      * referenceListData()：回傳一個包含參考資料的列表或映射，透過View渲染到使用者介面上。

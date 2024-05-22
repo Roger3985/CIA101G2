@@ -41,11 +41,11 @@ public class RentalMyFavoriteBackEnd {
     ///////////////////////////////////    ///////////////////////////////////    ///////////////////////////////////
     //測試區 (之後要用到前台使用)
 
-    //瀏覽全部租借品頁面 (前台)
-    @GetMapping("/rentalFAVList")
-    public String rentalFAVList() {
-        return "/backend/rentalmyfavorite/rentalFAVList";
-    }
+//    //瀏覽全部租借品頁面 (前台)
+//    @GetMapping("/rentalFAVList")
+//    public String rentalFAVList() {
+//        return "/backend/rentalmyfavorite/rentalFAVList";
+//    }
     ///////////////////////////////////    ///////////////////////////////////    ///////////////////////////////////
 
 

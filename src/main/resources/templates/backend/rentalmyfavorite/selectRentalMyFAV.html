@@ -48,7 +48,7 @@
                     <div class="a">
                         <div>
                             <form method="get" th:action="@{search}">
-                                <label>選擇會員編號 :</label>
+                                <label>&nbsp;&nbsp;&nbsp;&nbsp;選擇會員編號 :</label>
                                 <select name="memNo">
                                     <option>請選擇</option>
                                     <option th:each="rentalMyFavorite : ${rentalMyFAVList}"  th:value="${rentalMyFavorite.compositeKey.getMemNo()}" th:text="${rentalMyFavorite.compositeKey.getMemNo()}"></option>
@@ -56,7 +56,7 @@
                                 <input type="submit" value="送出">
                             </form><br>
                             <form method="get" th:action="@{search}">
-                                <label>選擇租借品編號 :</label>
+                                <label>&nbsp;&nbsp;&nbsp;&nbsp;選擇租借品編號 :</label>
                                 <select name="rentalNo">
                                     <option>請選擇</option>
                                     <option th:each="rentalMyFavorite : ${rentalMyFAVList}" th:value="${rentalMyFavorite.compositeKey.getRentalNo()}" th:text="${rentalMyFavorite.compositeKey.getRentalNo()}"></option>

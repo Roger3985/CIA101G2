@@ -1,6 +1,7 @@
 package com.yu.rentalmyfavorite.service;
 
 import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
@@ -14,6 +15,8 @@ public interface RentalMyFavoriteService {
     RentalMyFavorite findByRentalNo(Integer rentalNo); //單筆查詢(rentalNo)
 
     RentalMyFavorite findByMemNo(Integer memNo); //單筆查詢(memNo)
+
+    List<RentalMyFavorite> getFAVByMemNo(Integer memNo); //查詢加入最愛的會員
 
     List<RentalMyFavorite> findByRentalFavTime(Timestamp rentalFavTime); //單筆查詢(rentalFavTime)
 
@@ -31,9 +34,5 @@ public interface RentalMyFavoriteService {
     List<RentalMyFavorite> findByCompositeKey(Integer rentalNo);
 
     List<RentalMyFavorite> searchRentalMyFAVs(Map<String, Object> map); //複合查詢
-
-    public void addToWishList(Integer memNo, Map<String, String> map);
-
-
 
 }
