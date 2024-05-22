@@ -109,7 +109,7 @@ public class ProductOrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-
+@ResponseBody
     @PostMapping("insertProductOrderSuccess")
     public String insertProductOrderSuccess(@Validated(Create.class) ProductOrder productOrder,
                                             BindingResult result,
