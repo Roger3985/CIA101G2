@@ -27,30 +27,19 @@
 
 <script>
     var messageForm_el = document.getElementById("messageForm");
-    messageForm_el.addEventListener("submit", function (e){
+    messageForm_el.addEventListener("submit", function (e) {
         e.preventDefault();
     });
     var chatArea = document.querySelector("#chat-messages");
     var messageInput_el = document.getElementById("message");
 
-    messageInput_el.addEventListener("keyup", function (e){
-        console.log(e.which);
-        if(e.which == 13){
-            msg_btn_el.click();
-        }
-    });
-
-
-    // async function sendMessage() {
-
-    var msg_btn_el = document.getElementById("msg_btn");
-    msg_btn_el.addEventListener("click", function (){
-        // alert("aaaa");
+    async function sendMessage() {
 
         var content = document.getElementById("message").value.trim();
-        if(content === ''){
+        if (content === '') {
             alert("請輸入訊息");
-        }else{
+            return;
+        } else {
             const messageContainer = document.createElement('div');
             const message = document.createElement('p');
             message.innerHTML = content;
@@ -60,44 +49,64 @@
             chatArea.appendChild(messageContainer);
 
             messageInput_el.value = '';
-
         }
+        try {
+            const response = await fetch(`/robot/reply?keywordName=${content}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'text/plain'
+                },
+            });
+            if (!response.ok) {
+                throw new Error('Http error! status: ${response.status}');
+            }
+            const data = await response.text();
+            const bosMsgObj = JSON.parse(data);
+            console.log(bosMsgObj);
+            console.log(bosMsgObj.length)
+            if (bosMsgObj.length > 0) {
+                for (let i = 0; i < bosMsgObj.length; i++) {
+                    const botMsgContent = bosMsgObj[i].responseContent;
+                    const messageContainer = document.createElement('div');
+                    const botMsg = document.createElement('p');
+                    botMsg.innerHTML = botMsgContent;
+                    messageContainer.classList.add('message');
+                    messageContainer.classList.add('receiver');
+                    messageContainer.appendChild(botMsg);
+                    chatArea.appendChild(messageContainer);
+                }
+            }else{
+                const messageContainer = document.createElement('div');
+                const botMsg = document.createElement('p');
+                
+                botMsg.innerHTML = "請聯繫客服人員即時為您處理";
+                messageContainer.classList.add('message');
+                messageContainer.classList.add('receiver');
+                messageContainer.appendChild(botMsg);
+                chatArea.appendChild(messageContainer);
+            }
 
 
+        } catch (error) {
+            console.error('Error:', error);
+            // const errorMessage = document.createElement('div');
+            // errorMessage.textContent = 'An error occurred. Please try again.';
+            // document.getElementById('messages').appendChild(errorMessage);
+        }
+    }
 
-    })
+    messageInput_el.addEventListener("keyup", function (e) {
+        // console.log(e.which);
+        if (e.which == 13) {
+            msg_btn_el.click();
+        }
+    });
 
-
-
-        // try {
-        //     const response = await fetch("/robotReply", {
-        //         method: 'GET',
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         },
-        //         body: JSON.stringify({message: content})
-        //     });
-        //
-        //     if (!response.ok) {
-        //         throw new Error('Http error! status: ${response.status}');
-        //     }
-        //     const data = await response.JSON();
-        //     const messageContainer = document.createElement('div');
-        //     messageContainer.classList.add('message');
-        //     messageContainer.classList.add('sender');
-        //     const botMsg = document.createElement('p');
-        //     messageContainer.appendChild(botMsg);
-        //     chatArea.appendChild(messageContainer);
-        //
-        // } catch (error) {
-        //     console.error('Error:', error);
-        //     const errorMessage = document.createElement('div');
-        //     errorMessage.textContent = 'An error occurred. Please try again.';
-        //     document.getElementById('messages').appendChild(errorMessage);
-        // }
-
-    // }
-
+    var msg_btn_el = document.getElementById("msg_btn");
+    msg_btn_el.addEventListener("click", function () {
+        // alert("aaaa");
+        sendMessage();
+    });
 
 </script>
 </body>
