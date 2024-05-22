@@ -278,7 +278,7 @@ INSERT INTO ServicePicture(servicePicNo,recordNo) VALUES
 
 -- 創建客服機器人表格
 CREATE TABLE ServiceRobot(
-	keywordNo	INT	NOT NUll PRIMARY KEY,
+	keywordNo	INT	NOT NUll PRIMARY KEY AUTO_INCREMENT,
 	keywordName	VARCHAR(500) NOT NUll,
 	responseContent	VARCHAR(500) NOT NUll
 );
