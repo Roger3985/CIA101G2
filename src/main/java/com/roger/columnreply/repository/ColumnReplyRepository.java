@@ -19,4 +19,21 @@ public interface ColumnReplyRepository extends JpaRepository<ColumnReply, Intege
      */
     @Query("SELECT cr FROM ColumnReply cr WHERE cr.columnArticle.artNo = :artNo")
     List<ColumnReply> findColumnRepliesByArtNo(@Param("artNo") Integer artNo);
+
+    /**
+     * 根據會員編號（memNo）查詢該會員提交的所有文章回覆。
+     *
+     * @param memNo 要查詢的會員編號。
+     * @return 包含指定會員提交的所有文章回覆的列表。
+     */
+    List<ColumnReply> findByMemberMemNo(Integer memNo);
+
+    /**
+     * 根據列回覆編號查詢列回覆。
+     *
+     * @param columnReplyNo 列回覆編號
+     * @return 對應於給定編號的列回覆對象，如果未找到則返回 null
+     */
+    ColumnReply findByColumnReplyNo(Integer columnReplyNo);
+
 }

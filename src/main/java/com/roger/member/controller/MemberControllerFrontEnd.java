@@ -4,6 +4,7 @@ import com.chihyun.mycoupon.entity.MyCoupon;
 import com.chihyun.mycoupon.model.MyCouponService;
 import com.roger.clicklike.entity.ClickLike;
 import com.roger.clicklike.service.ClickLikeService;
+import com.roger.columnarticle.entity.ColumnArticle;
 import com.roger.columnarticle.service.ColumnArticleService;
 import com.roger.member.entity.Member;
 import com.roger.member.entity.uniqueAnnotation.Create;
@@ -417,6 +418,9 @@ public class MemberControllerFrontEnd {
         // 獲取會員的通知
         List<Notice> noticeList = noticeService.findNoticesByMemberMemNo(existingMember.getMemNo());
 
+
+        List<ColumnArticle> columnArticles = columnArticleService.findAll();
+        modelMap.addAttribute("columnArticles", columnArticles);
 
         // 獲取未讀取通知的數量
         int unreadNoticeCount = noticeService.getUnreadNoticeCount(existingMember);

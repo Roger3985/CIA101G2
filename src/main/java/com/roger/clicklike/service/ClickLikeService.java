@@ -1,7 +1,9 @@
 package com.roger.clicklike.service;
 
 import com.roger.clicklike.entity.ClickLike;
+import com.roger.columnarticle.entity.ColumnArticle;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public interface ClickLikeService {
@@ -20,4 +22,7 @@ public interface ClickLikeService {
     public boolean unlikeArticle(int memNo, int artNo);
 
     public List<ClickLike> findByMemberMemNo(Integer memNo);
+
+    public List<ClickLike> getLikedArticlesByMember(Integer memNo);
+
 }

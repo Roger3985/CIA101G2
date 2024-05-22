@@ -1,21 +1,28 @@
 package com.roger.report.controller;
 
+import com.ren.administrator.service.impl.AdministratorServiceImpl;
+import com.roger.columnarticle.entity.ColumnArticle;
+import com.roger.columnarticle.service.ColumnArticleService;
+import com.roger.columnreply.service.ColumnReplyService;
 import com.roger.member.entity.Member;
+import com.roger.member.service.MemberService;
+import com.roger.notice.entity.Notice;
+import com.roger.notice.service.NoticeService;
 import com.roger.report.entity.Report;
 import com.roger.report.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Controller
@@ -24,6 +31,21 @@ public class ReportControllerFrontEnd {
 
     @Autowired
     ReportService reportService;
+
+    @Autowired
+    MemberService memberService;
+
+    @Autowired
+    ColumnArticleService columnArticleService;
+
+    @Autowired
+    ColumnReplyService columnReplyService;
+
+    @Autowired
+    AdministratorServiceImpl administratorService;
+
+    @Autowired
+    NoticeService noticeService;
 
     /**
      * 前往新增回覆檢舉頁面。
@@ -119,6 +141,65 @@ public class ReportControllerFrontEnd {
         List<Report> list = reportService.getAll();
         return list;
     }
+
+    /**
+     * 提交新的檢舉。
+     *
+     * @param artReplyNo    文章回覆編號
+     * @param admNo         管理員編號
+     * @param reportReason  檢舉原因
+     * @param session       HTTP 會話
+     * @return ResponseEntity 包含檢舉結果的 HTTP 響應實體
+     */
+    @PostMapping("/submitReport")
+    @ResponseBody
+    public ResponseEntity<String> submitReport(@RequestBody Integer memNo,
+                                               @RequestBody Integer artReplyNo,
+                                               @RequestBody Integer admNo,
+                                               @RequestBody String reportReason,
+                                               HttpSession session) {
+
+        // 從會話中取出會員資料
+        Member member = (Member) session.getAttribute("loginsuccess");
+
+        try {
+            Report report = new Report();
+            report.setColumnReply(columnReplyService.getColumnReplyByColumnReplyNo(artReplyNo));
+            report.setMember(member);
+            report.setAdministrator(administratorService.getOneAdministrator(admNo));
+            report.setReportTime(new Timestamp(System.currentTimeMillis()));
+            report.setReportReason(reportReason);
+            report.setReportType((byte) 0);
+
+            // 將會員資料存入會話
+            session.setAttribute("loginsuccess", member);
+
+            // 新增點讚的通知消息
+            Notice newNotice = new Notice();
+            newNotice.setMember(member);
+            newNotice.setNotContent("你對" + columnReplyService.getColumnReplyByColumnReplyNo(artReplyNo) + "檢舉成功，檢舉內容為: " + reportReason + "我們會盡快處理，感謝妳提供的意見");
+            newNotice.setNotTime(new Timestamp(System.currentTimeMillis()));
+            newNotice.setNotStat((byte) 0);
+            noticeService.addNotice(newNotice);
+
+            // 獲取未讀取通知的數量
+            int unreadNoticeCount = noticeService.getUnreadNoticeCount(member);
+            // 獲取會員的通知
+            List<Notice> noticeList = noticeService.findNoticesByMemberMemNo(member.getMemNo());
+
+            session.setAttribute("noticeList", noticeList);
+            session.setAttribute("unreadNoticeCount", unreadNoticeCount);
+
+            return ResponseEntity.ok("已成功檢舉");
+
+        } catch (Exception e) {
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("檢舉失敗");
+
+        }
+    }
+
+
 
 
 }
