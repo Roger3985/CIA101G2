@@ -265,6 +265,7 @@
                 </div>
 
                 <input type="hidden" id="hiddenCoupNo" name="coupNo" value="">
+
                 </form>
             </div>
         </section>
@@ -293,12 +294,13 @@
     // 获取选择框元素
 
 
-
     function updatePriceInstantly() {
-        var coupNo = document.getElementById('coupNo').value; // 获取优惠券编号的值
-        var productDisc = document.getElementById('productDisc').innerText; // 获取产品折扣的值
-        var productRealPrice = document.getElementById('productRealPrice').innerText; // 获取产品实际价格的值
-        var productAllPrice = document.getElementById('productAllPrice').innerText; // 获取产品总价格的值
+        var coupNo = document.getElementById('coupNo').value;
+        document.getElementById('hiddenCoupNo').value = coupNo;
+
+        var productDisc = document.getElementById('productDisc').innerText;
+        var productRealPrice = document.getElementById('productRealPrice').innerText;
+        var productAllPrice = document.getElementById('productAllPrice').innerText;
 
         // 发送 AJAX 请求更新数量到后端
         $.ajax({
@@ -312,8 +314,6 @@
             },
             success: function (data) {
                 console.log("更新優惠券總價成功");
-
-                // 在这里，你可以根据后端返回的数据更新前端页面上对应的元素，例如更新实际价格和折扣价格的显示
                 document.getElementById('productRealPrice').innerText = data.productRealPrice;
                 document.getElementById('productDisc').innerText = data.productDisc;
             },
@@ -322,6 +322,7 @@
             }
         });
     }
+
 
     function copyBuyerInfo(checkbox) {
         var byrName = document.getElementById("productByrName").value;
@@ -403,8 +404,11 @@
         var productPayMethod = document.querySelector('select[name="productPayMethod"]').value;
         var coupNo = document.querySelector('select[name="coupNo"]').value;
         var productAllPrice = document.getElementById('productAllPrice').innerText;
-
+        localStorage.setItem('coupNo', coupNo);
         if (productPayMethod === '2') { // 如果付款方式為"現場付款"
+            // 將表單的 action 設置為 "/frontend/productorder/insertProductOrderSuccess"
+            document.getElementById("submitOrderForm").action = '/frontend/productorder/insertProductOrderSuccess';
+            // 直接提交訂單表單
             document.getElementById("submitOrderForm").submit();
             return;
         }
@@ -423,8 +427,7 @@
                 productAddr: productAddr,
                 productPayMethod: productPayMethod,
                 coupNo: coupNo,
-                productAllPrice: productAllPrice,
-                memNo: '<%= session.getAttribute("loginsuccess").getMemNo() %>'
+                productAllPrice: productAllPrice
             },
             success: function (result) {
                 // 在这里，result应该是服务器返回的支付链接

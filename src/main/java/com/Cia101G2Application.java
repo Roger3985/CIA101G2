@@ -29,9 +29,9 @@ public class Cia101G2Application {
 
 		// 測試查詢物流動態
 
-		AllInOne all = new AllInOne();
-		String statUpdated = postQueryLogisticsTradeInfo(all);
-		System.out.println(statUpdated);
+//		AllInOne all = new AllInOne();
+//		String statUpdated = postQueryLogisticsTradeInfo(all);
+//		System.out.println(statUpdated);
 
 	}
 

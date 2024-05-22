@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface ProductOrderService {
 //後端
+public void addOneOrderSuccess(ProductOrder productOrder);
+    public void updateProductOrder(ProductOrder productOrder);
 public void addProductOrder(ProductOrder productOrder);
-    public void addOneOrderSuccess(ProductOrder productOrder);
-    public void updateProductOrder(ProductOrder productOrder) ;
     public ProductOrder getOneProductOrder(Integer productOrdNo);
     public List<ProductOrder> getAll();
     public List<ProductOrder> findByMember(Integer memNo);
