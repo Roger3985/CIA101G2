@@ -274,16 +274,16 @@
                                     <ul class="dropdown-menu dropdown-menu-end shadow"
                                         aria-labelledby="dropdownMenuLink">
                                         <li>
-                                            <a class="dropdown-item" href="#">最新</a>
+                                            <a class="sort-item" href="#">最新</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="#">最熱門</a>
+                                            <a class="sort-item" href="#">最熱門</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" id="low_to_high" th:href="@{/frontend/rental/sortAllPrice/{sortType}}">價格由低到高</a>
+                                            <a class="sort-item" id="low_to_high" th:href="@{/frontend/rental/sortAllPrice/{sortType}}">價格由低到高</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" id="high_to_low"  th:href="@{/frontend/rental/sortAllPrice/{sortType}}">價格由高到低</a>
+                                            <a class="sort-item" id="high_to_low"  th:href="@{/frontend/rental/sortAllPrice/{sortType}}">價格由高到低</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -394,7 +394,7 @@
      * 最後依後台判斷選擇方式並回傳對應的資料。
     */
     $(document).ready(function() {
-        $('.dropdown-item').click(function(event) {
+        $('.sort-item').click(function(event) {
             event.preventDefault(); // 阻止表單默認提交行為
             let id = $(this).attr('id');
             let sortType = id === "low_to_high" ? "low_to_high" : "high_to_low";

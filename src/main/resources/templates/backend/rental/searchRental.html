@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>查詢租借品資料</title>
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
@@ -36,7 +36,7 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">查詢租借品 (單筆)</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">查詢租借品資料</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -54,7 +54,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <div th:fragment="listOne">
+                                <div th:fragment="search">
                                     <th:block th:each="rental : ${rentalListData}"> <!--th:block 用來包裝使用-->
                                         <tr>
                                             <td th:text="${rental.getRentalNo()}"></td>

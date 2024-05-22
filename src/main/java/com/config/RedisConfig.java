@@ -239,9 +239,9 @@ public class RedisConfig {
     }
 
     @Bean("rentalWish")
-    public RedisTemplate<String, Map<String, String>> rentalWishRedisTemplate(
+    public RedisTemplate<Integer, Map<String, String>> rentalWishRedisTemplate(
             @Qualifier("rentalDataBase") RedisConnectionFactory connectionFactory) {
-        RedisTemplate<String, Map<String, String>> redisTemplate = new RedisTemplate<>();
+        RedisTemplate<Integer, Map<String, String>> redisTemplate = new RedisTemplate<>();
         // 設置連線
         redisTemplate.setConnectionFactory(connectionFactory);
         // 設置Serializer
@@ -250,17 +250,6 @@ public class RedisConfig {
         return redisTemplate;
     }
 
-    @Bean("rentalPic")
-    public RedisTemplate<String, String> rentalPicRedisTemplate(
-            @Qualifier("rentalDataBase") RedisConnectionFactory connectionFactory) {
-        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
-        // 設置連線
-        redisTemplate.setConnectionFactory(connectionFactory);
-        // 設置Serializer
-        redisTemplate.setKeySerializer(new GenericToStringSerializer<>(Integer.class));
-        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-        return redisTemplate;
-    }
 
 //    @Bean("loginState")
 //    public JedisConnectionFactory jedisConnectionFactory() {

@@ -26,7 +26,7 @@ public interface RentalService {
 
     public List<Rental> getRentalSize(Integer rentalSize); //以rentalSize查詢
 
-    public Rental getRentalColor(String rentalColor); //以rentalColor查詢
+    public List<Rental> getRentalColor(String rentalColor); //以rentalColor查詢
 
     public List<Rental> findByStat(Byte rentalStat);//單筆查詢(rentalStat) //以rentalStat查詢租借品狀態
 

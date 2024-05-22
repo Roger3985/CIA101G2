@@ -97,7 +97,7 @@
                                         <option value="0" selected>請選擇</option>
                                         <option value="1" th:each="rentalCategory : ${rentalCatListData}" th:value="${rental.rentalCategory.rentalCatNo}" th:text="${rental.rentalCategory.rentalCatNo}" />
                                     </select>
-                                    <span class="error" th:if="${#fields.hasErrors('rentalCategory.rentalCatNo')}" th:errors="*{rentalCategory.rentalCatNo}" id="rentalCategory.rentalCatNo.errors"></span>
+                                    <span class="error" th:if="${#fields.hasErrors('rentalCategory.rentalCatNo')}" th:errors="*{rentalCategory.rentalCatNo}" id="rentalCategory.rentalCatNo.errors">租借品類別錯誤</span>
                                 </div>
                                 <input type="submit" id="updateBtn" value="送出">
                                 <input type="hidden" name="rentalNo" th:value="${rental.rentalNo}">
