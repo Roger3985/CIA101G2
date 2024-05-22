@@ -34,4 +34,5 @@ public class Validator {
     public static boolean validateURL(String url) {
         return resourcesRegex.matcher(url).find();
     }
+
 }

@@ -35,5 +35,7 @@ public interface Regex {
      */
     Pattern compressFileRegex = Pattern.compile("^(image/jpeg|image/png|image/gif|application/zip|application/x-rar-compressed|application/gzip|application/x-bzip2|application/x-xz|application/x-tar|application/x-7z-compressed|audio/mpeg|video/mp4|video/x-matroska|video/quicktime|video/mpeg|video/x-flv|audio/ogg|video/webm|application/pdf|application/msword|application/vnd.openxmlformats-officedocument.wordprocessingml.document|application/vnd.ms-excel|application/vnd.openxmlformats-officedocument.spreadsheetml.sheet|application/vnd.ms-powerpoint|application/vnd.openxmlformats-officedocument.presentationml.presentation|image/vnd.adobe.photoshop|application/x-iso9660-image|application/x-apple-diskimage)$");
 
+    Pattern integerRegex = Pattern.compile("^-?\\d{2,12}$");
+
 
 }

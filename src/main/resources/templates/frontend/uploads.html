@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Toggle</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container text-center mt-5">
+    <div class="d-flex justify-content-center align-items-center">
+        <i class="bi bi-suit-heart heart-icon" id="heart-icon" style="font-size: 50px; cursor: pointer;"></i>
+    </div>
+    <div class="progress mt-3" style="height: 30px;">
+        <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script>
+    var stompClient = null;
+    var sessionId = Math.random().toString(36).substr(2, 9); // 模擬生成 sessionId
+
+    function connect() {
+        var socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/user/' + sessionId + '/topic/progress', function (message) {
+                var progress = JSON.parse(message.body);
+                var progressBar = document.getElementById('progress-bar');
+                progressBar.style.width = progress + '%';
+                progressBar.textContent = progress + '%';
+            });
+        });
+    }
+
+    connect();
+
+    document.getElementById('heart-icon').addEventListener('click', function() {
+        // 模擬上傳操作
+        console.log('開始上傳文件');
+        var heartIcon = this;
+        heartIcon.classList.toggle('bi-suit-heart');
+        heartIcon.classList.toggle('bi-suit-heart-fill');
+        // 發送上傳請求（這裡需要實現上傳邏輯，傳遞 sessionId）
+        uploadFile(sessionId);
+    });
+
+    function uploadFile(sessionId) {
+        var formData = new FormData();
+        formData.append('sessionId', sessionId);
+        formData.append('productPic', new File([""], "filename.jpg")); // 模擬文件上傳
+
+        fetch('/uploads', {
+            method: 'POST',
+            body: formData
+        }).then(response => response.text())
+            .then(data => console.log(data));
+    }
+</script>
+
+</body>
+</html>

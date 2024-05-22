@@ -35,7 +35,7 @@ import java.util.stream.Stream;
 
 import static com.ren.util.Constants.*;
 import static com.ren.util.RandomStringGenerator.generateRandomString;
-import static com.ren.util.Validator.validateEmail;
+import static com.ren.util.Validator.*;
 
 @Controller
 @RequestMapping("/backend")
@@ -175,7 +175,7 @@ public class BackendIndexController {
                 // 獲得管理員編號，之後存入Redis資料庫使用
                 admNo = administrator.getAdmNo();
             }
-        } else {
+        } else if (validateInteger(userId)){
             // 將管理員編號轉成 Integer，供Service方法使用
             admNo = Integer.valueOf(userId);
             administrator = administratorSvc.getOneAdministrator(admNo);
@@ -217,8 +217,7 @@ public class BackendIndexController {
 
         // 使用Service的登入方法，更改administrator的登入狀態，並傳回登入狀態DTO，
         // 於後續存入Session做權限、登入狀態驗證
-        LoginState loginState = administratorSvc.login(administrator, session.getId());
-        session.setAttribute("loginState", loginState);
+        administratorSvc.login(administrator, session);
 
         // 確認密碼正確後，回傳登入成功訊息，並將administrator存入session
         model.addAttribute("message", "登入成功!");

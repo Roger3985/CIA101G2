@@ -1,4 +1,4 @@
-package com.ren.administrator.websocket.config;
+package com.ren.monitor.websocket.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
