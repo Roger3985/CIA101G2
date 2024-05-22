@@ -128,7 +128,7 @@
                              style="width: 80px; height: 80px; border: 1px solid #ccc;"
                              alt="會員大頭貼"
                              th:if="${session.loginsuccess}">
-                        <a class="dropdown-item" href="#" th:if="${session.loginsuccess}">Wishlist</a>
+                        <a class="dropdown-item" th:href="@{frontend/rentalmytrack/toRentalMyTrack}" th:if="${session.loginsuccess}">追蹤清單</a>
                         <a class="dropdown-item" th:href="@{/frontend/member/memberData}" th:if="${session.loginsuccess}">My account</a>
                         <a class="dropdown-item" th:href="@{/frontend/member/logoutMember}" th:if="${session.loginsuccess}">Logout</a>
                     </div>

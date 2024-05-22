@@ -328,7 +328,9 @@
                                         <a href="#" class="btn btn-primary"><!--  加入我的最愛  -->
                                             <i class="fi-heart"></i>
                                         </a>
-                                        <a href="#" class="btn btn-primary">追蹤</a><!--  加入追蹤的圖示 <i class="fi-repeat"></i>  -->
+                                        <a href="#" class="btn btn-primary btn_addTrack">
+                                            <i class="bi bi-bookmark"></i>
+                                        </a><!--  加入追蹤的圖示 <i class="fi-repeat"></i>  -->
                                         <a data-bs-toggle="modal" data-bs-target="#px-quick-view" th:href="@{/frontend/rental/rentalQuickview}"
                                            href="javascript:void(0)" class="btn btn-primary">
                                             <i class="fi-eye"></i><!--  跳窗顯示該商品畫面 (rentalQuickview.html) -->
@@ -486,6 +488,7 @@
         let baseUrl = window.location.protocol + "//" + window.location.host;
         let rentalAllPrice = 0;
         let rentalAllDepPrice = 0;
+        let memNo = 1;
 
         function getAll() {
 
@@ -493,7 +496,6 @@
             rentalAllPrice = 0;
             rentalAllDepPrice = 0;
             let apiPath = "/backend/rentalorder/";
-            let memNo = 1;
 
             fetch(baseUrl + apiPath + "getFromCart?memNo=" + memNo)
                 .then(function (response) {
@@ -603,7 +605,6 @@
             let $this = $(this);
             // span.rentalNo
             let rentalNo = $this.closest("div.rental").find("span.rentalNo").text().trim();
-            let memNo = 1;
 
             let data = {
                 "rentalNo" : rentalNo,
@@ -626,6 +627,34 @@
             })
 
         }); // 加入購物車方法結束
+
+        // 加入追蹤
+        $(document).on("click", "a.btn_addTrack", function (e) {
+
+            e.preventDefault();
+            let $this = $(this);
+            let apiPath = "/frontend/rentalmytrack/addTrack";
+            let rentalNo = $this.closest("div.rental").find("span.rentalNo").text().trim();
+            let data = {
+                memNo : memNo,
+                rentalNo : rentalNo
+            };
+
+            fetch(baseUrl + apiPath, {
+                method : "POST",
+                headers : {
+                    "Content-Type" : "application/json"
+                },
+                body : JSON.stringify(data)
+            }).then(response => response.text())
+                .then(rentalName => {
+                    $this.closest("div.rental").find("span.successMsg").text("已加入追蹤!").fadeIn(0).delay(500).fadeOut(500);
+                });
+
+
+
+        })
+
 
     }); // DOMContentLoaded 結束
 

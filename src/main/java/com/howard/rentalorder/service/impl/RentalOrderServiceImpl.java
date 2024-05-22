@@ -277,7 +277,12 @@ public class RentalOrderServiceImpl implements RentalOrderService {
 
     /*----------------------------串接綠界金流 api 的方法----------------------------------*/
 
-    // 結帳產生金流訂單
+    /**
+     * 結帳產生金流訂單
+     * @param order 要結帳的訂單
+     * @param itemNames 該筆 訂單明細 中串接起來的品名(ex:"衣服#褲子#鞋子...")
+     * @return 帶有可送出付款請求的 formHTML
+     */
     public String ecpayCheckout(RentalOrder order, String itemNames) {
 
         if (order.getrentalTakeMethod() == (byte) 1) {
@@ -317,12 +322,16 @@ public class RentalOrderServiceImpl implements RentalOrderService {
 
     } // 結帳產生金流訂單 結束
 
-    // 存入綠界回傳的交易成功資訊
+    /**
+     * 存入綠界回傳的交易成功資訊
+     * @param infosMap 裝有綠界回傳 交易成功 資訊的 map
+     */
     public void setTradeSuccessInfos(Map<String, String> infosMap) {
-        System.out.println("有進來service方法喔喔喔喔喔");
+//        System.out.println("有進來service方法喔喔喔喔喔");
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.select(10);
             String cursor = "0";
+            // 拿來拼接 redis 裡 key 值的字串
             String rentalOrdNo = "";
             // 從 redis 找出該筆訂單的 merchantTradeNo
             ScanParams scanParams = new ScanParams().match("rentalOrdNo : *").count(100);
@@ -341,8 +350,6 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         }
 
     } // 存入綠界回傳的交易成功資訊 結束
-
-    //
 
     /**
      * 查詢綠界金流訂單的 tradeNo(目前只從 map 取出 tradeNo，未來可擴充去取其他所需參數)
@@ -367,7 +374,11 @@ public class RentalOrderServiceImpl implements RentalOrderService {
 
     }
 
-    // 產生刷退押金訂單
+    /**
+     * 產生刷退押金訂單
+     * @param order 要刷退的那筆訂單
+     * @return 裝有 綠界對於刷退的回應資訊的 map
+     */
     public Map<String, String> refund(RentalOrder order) {
 
         try (Jedis jedis = jedisPool.getResource()) {
@@ -402,10 +413,10 @@ public class RentalOrderServiceImpl implements RentalOrderService {
                 case 2 : // 晚兩天，退 0%
                     obj.setTotalAmount( String.valueOf(order.getrentalAllDepPrice()
                                                             .divide(order.getrentalAllDepPrice(), 0, RoundingMode.HALF_UP) ) );
-//
+
                     refundPercent = "0";
                     break;
-                default :
+                default : // 晚兩天以上，退 0%
                     if (daysLate > 2) {
                         obj.setTotalAmount( String.valueOf(order.getrentalAllDepPrice()
                                                                 .divide(order.getrentalAllDepPrice(), 0, RoundingMode.HALF_UP) ) );
@@ -430,7 +441,5 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         }
 
     } // 產生刷退押金訂單 結束
-
-
 
 }

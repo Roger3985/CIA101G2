@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zxx" data-bs-theme="light">
+
+<head><!-- metas -->
+    <meta charset="utf-8">
+    <meta name="author" content="pxdraft">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <!-- title -->
+    <title>租借品追蹤</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <!-- CSS Template -->
+    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+
+</head>
+
+<body>
+<!-- 通用插件 -->
+<th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block>
+<!-- 通用插件 -->
+<!--
+========================
+    Wrapper
+========================
+-->
+<div class="wrapper">
+    <!-- Header -->
+    <header th:replace="frontend/component/header :: header"></header>
+    <!-- End Header -->
+    <!-- Main -->
+    <main>
+        <!-- Page Title -->
+        <div class="bg-no-repeat bg-cover bg-right-center position-relative"
+             style="background-image: url(../../assets/img/fashion2/home-banner-3.jpg);">
+            <div class="position-absolute top-0 end-0 start-0 bottom-0 opacity-3 bg-dark"></div>
+            <!-- Header Height Bar -->
+            <div class="header-height-bar border-bottom opacity-3" style="min-height: 104.865px;"></div>
+            <div class="container py-6 position-relative">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 my-2">
+                        <h1 class="m-0 h4 text-center text-lg-start text-white">追蹤清單</h1>
+                    </div>
+                    <div class="col-lg-6 my-2">
+                        <ol
+                                class="breadcrumb breadcrumb-light m-0 small justify-content-center justify-content-lg-end">
+                            <li class="breadcrumb-item"><a class="text-nowrap" href="#">首頁</a></li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page">追蹤清單</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Page Title -->
+        <!-- Section -->
+        <section class="section">
+            <div class="container">
+                <div class="row gy-4">
+                    <!-- Cart Items -->
+                    <div class="col-lg-8">
+                        <div class="d-flex justify-content-between align-items-center pb-4 border-bottom mb-4">
+                            <h2 class="h5 mb-0">所有追蹤</h2>
+                            <a class="btn btn-outline-primary btn-sm ps-2" th:href="@{/frontend/rental/rentalShop}">
+                                <i class="ci-arrow-left me-2"></i>繼續購物
+                            </a>
+                        </div>
+
+                        <!-- 以下追蹤品 -->
+                        <th:block th:each="track : ${frontendTrackList}">
+                            <div class="d-flex align-items-center flex-row w-100 pb-3 mb-3 border-bottom">
+                                <a class="d-inline-block flex-shrink-0 me-3" href="#">
+                                    <img src="../../assets/img/fashion2/product-1.jpg" width="120" alt="Product">
+                                </a>
+                                <div class="d-flex flex-column flex-sm-row col">
+
+                                    <div class="pe-sm-2">
+                                        <h3 class="product-title fs-5 mb-1">
+                                            <a class="text-reset" href="#" th:text="${track.getRental().getRentalName()}"></a>
+                                        </h3>
+                                        <div class="small">
+                                            <span>尺寸 : </span>
+                                            <span class="text-muted me-2" th:switch="${track.getRental().getRentalSize()}">
+                                                <span th:case="0">XS</span>
+                                                <span th:case="1">S</span>
+                                                <span th:case="2">M</span>
+                                                <span th:case="3">L</span>
+                                                <span th:case="4">XL</span>
+                                                <span th:case="5">2L</span>
+                                                <span th:case="*">未知</span>
+                                            </span>
+                                        </div>
+                                        <div class="small">
+                                            <span class="text-muted me-2" th:text=" '顏色 : ' + ${track.getRental().getRentalColor()} "></span>
+                                        </div>
+                                        <div style="color: lightgreen" class="small" th:if="${track.getRental().getRentalStat() == 0}" th:text="已上架"></div>
+                                        <div style="color: red" class="small" th:if="${track.getRental().getRentalStat() != 0}" th:text="被租用"></div>
+                                        <div class="lead pt-1" th:text=" '$' + ${track.getRental().getRentalPrice()} "></div>
+                                    </div>
+                                    <div class="pt-2 pt-sm-0 d-flex d-sm-block ms-sm-auto">
+                                        <input class="rentalNo" type="hidden" th:value="${track.getRental().getRentalNo()}"></input>
+                                        <span class="successMsg" style="color: lightgreen"></span>
+                                        <a href="" class="btn btn-mode btn_addToCart" style="margin-top: 30px">
+                                            <i class="fi-shopping-cart"></i>
+                                        </a>
+                                        <a href="" class="btn btn-mode btn_addToCart" style="margin-top: 30px">
+                                            <i class="bi-trash3 me-2"></i>
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </th:block>
+                        <!-- 以上追蹤品 -->
+
+                        <button class="btn btn-primary d-block w-100 mt-4" type="button"><i
+                                class="bi-arrow-repeat fs-base me-2"></i>重整
+                        </button>
+                    </div>
+                    <!-- Cart Sidebar -->
+                    <div class="col-lg-4 ps-xl-7">
+                        <!-- Shipping estimates -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-transparent py-3">
+                                <h6 class="m-0 h5">Shipping estimates</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3"><select class="form-select" required="">
+                                    <option value="">Choose your country</option>
+                                    <option value="Australia">Australia</option>
+                                    <option value="Belgium">Belgium</option>
+                                    <option value="Canada">Canada</option>
+                                    <option value="Finland">Finland</option>
+                                    <option value="Mexico">Mexico</option>
+                                    <option value="New Zealand">New Zealand</option>
+                                    <option value="Switzerland">Switzerland</option>
+                                    <option value="United States">United States</option>
+                                </select>
+                                    <div class="invalid-feedback">Please choose your country!</div>
+                                </div>
+                                <div class="mb-3"><select class="form-select" required="">
+                                    <option value="">Choose your city</option>
+                                    <option value="Bern">Bern</option>
+                                    <option value="Brussels">Brussels</option>
+                                    <option value="Canberra">Canberra</option>
+                                    <option value="Helsinki">Helsinki</option>
+                                    <option value="Mexico City">Mexico City</option>
+                                    <option value="Ottawa">Ottawa</option>
+                                    <option value="Washington D.C.">Washington D.C.</option>
+                                    <option value="Wellington">Wellington</option>
+                                </select>
+                                    <div class="invalid-feedback">Please choose your city!</div>
+                                </div>
+                                <div class="mb-3"><input class="form-control" type="text"
+                                                         placeholder="ZIP / Postal code" required="">
+                                    <div class="invalid-feedback">Please provide a valid zip!</div>
+                                </div>
+                                <button class="btn btn-outline-primary d-block w-100" type="submit">Calculate
+                                    shipping
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Order Total -->
+<!--                        <div class="card">-->
+<!--                            <div class="card-header bg-transparent py-3">-->
+<!--                                <h6 class="m-0 h5">Order Total</h6>-->
+<!--                            </div>-->
+<!--                            <div class="card-body">-->
+<!--                                <ul class="list-unstyled">-->
+<!--                                    <li class="d-flex justify-content-between align-items-center mb-2">-->
+<!--                                        <h6 class="me-2 text-body">Subtotal</h6><span-->
+<!--                                            class="text-end">$265.00</span>-->
+<!--                                    </li>-->
+<!--                                    <li class="d-flex justify-content-between align-items-center mb-2">-->
+<!--                                        <h6 class="me-2 text-body">Taxes</h6><span class="text-end">$265.00</span>-->
+<!--                                    </li>-->
+<!--                                    <li-->
+<!--                                            class="d-flex justify-content-between align-items-center border-top pt-3 mt-3">-->
+<!--                                        <h6 class="me-2">Grand Total</h6><span-->
+<!--                                            class="text-end text-mode">$265.00</span>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+<!--                                <div class="pt-2 pb-4">-->
+<!--                                    <div class="d-flex"><input type="text" name="promo"-->
+<!--                                                               placeholder="Apply promo code" class="form-control form-control-sm">-->
+<!--                                        <button class="btn btn-dark btn-sm ms-2">Apply</button>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="d-grid gap-2 mx-auto"><a class="btn btn-primary"-->
+<!--                                                                     href="checkout-shipping.html"><i class="bi-credit-card-2-back me-2"></i>-->
+<!--                                    Proceed to Checkout</a></div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Section -->
+    </main>
+    <!-- End Main -->
+    <!-- Footer -->
+    <footer th:replace="frontend/component/footer :: footer"></footer>
+    <!-- End Footer -->
+</div>
+<!--
+========================
+   End Wrapper
+========================
+-->
+<!-- script start -->
+<th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
+<!-- End script start -->
+
+
+    <script>
+
+        $(function () {
+
+            let baseUrl = window.location.protocol + "//" + window.location.host;
+
+            // 加入購物車 339
+            $(document).on("click", "a.btn_addToCart", function (e) {
+
+                e.preventDefault();
+                /*
+                 * 拼接動態前置路徑 (為適應上雲時路徑變化)
+                 * window.location.protocol = 當前頁面所使用之通訊協定 (ex : http: 、 https:)
+                 * window.location.host = 當前頁面主機名和連接阜號 (ex : localhost:8080)
+                */
+                let apiPath = "/backend/rentalorder/setToCart";
+                let $this = $(this);
+                // span.rentalNo
+                let rentalNo = $this.closest("div").find("input.rentalNo").val();
+                let memNo = 1;
+
+                let data = {
+                    "rentalNo" : rentalNo,
+                    "memNo" : memNo
+                };
+
+                fetch(baseUrl + apiPath, {
+                    method : "POST",
+                    headers : {
+                        "Content-Type" : "application/json"
+                    },
+                    body : JSON.stringify(data)
+                }).then(function (response) {
+                    // console.log(response)
+                    return response.text();
+                }).then(function (rentalName) {
+                    // console.log(rentalName);
+                    // console.log(this);
+                    $this.closest("div").find("span.successMsg").text("加入成功!").fadeIn(0).delay(500).fadeOut(500);
+                })
+
+            }); // 加入購物車方法結束
+
+        });
+
+    </script>
+
+</body>
+
+</html>

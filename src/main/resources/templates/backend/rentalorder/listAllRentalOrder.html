@@ -1,15 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">
 <head th:insert="~{backend/component/plugin/backendplugin.html :: css}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>租借品訂單清單</title>
     <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
-
-
-
 </head>
 <body id="page-top">
 <!-- Page Wrapper -->
@@ -96,7 +92,7 @@
                                             <form>
                                                 <input type="hidden" th:value="${order.getMember().getMemNo()}">
                                                 <input type="hidden" class="rentalOrdNo" th:value="${order.getrentalOrdNo()}">
-                                                <button class="depRefund" type="button" th:disabled="${order.getrentalOrdStat() != 50}">退押金</button>
+                                                <button class="depRefund" type="button" th:disabled="${order.getrentalOrdStat() != 50 || order.getrentalPayMethod() == 2}">退押金</button>
                                             </form>
                                         </td>
 
