@@ -31,4 +31,7 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
      */
     @Transactional
     List<Administrator> findAllByAdmLoginAndAdmLogout(Byte loginState, Byte logoutState);
+
+    @Transactional
+    Optional<Administrator> getAdministratorByAdmName(String admName);
 }

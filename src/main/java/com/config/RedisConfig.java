@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.iting.cart.entity.CartRedis;
 import com.ren.administrator.dto.LoginState;
+import com.ren.monitor.dto.Monitor;
 import com.roger.member.dto.LoginStateMember;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -47,6 +48,34 @@ public class RedisConfig {
         // 設置Serializer
         redisTemplate.setKeySerializer(new GenericToStringSerializer<>(Integer.class));
         redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        return redisTemplate;
+    }
+
+    /**
+     * 用來存放後台管理員監控消息，透過管理員編號獲取他的消息列表
+     * 資料結構: 每個管理員一個Map，用來存放監控消息
+     * Integer admNo(假設為1號管理員): {hashKey(假設為10分鐘前 + message), message},
+     *                              {hashKey(假設為3分鐘前 + message), message},
+     *                              {hashKey(假設為目前時間 + 當前訊息), message},
+     *
+     * @param connectionFactory 配置Redis連線
+     * @return 返回泛型為<Integer, Monitor>的RedisTemplate，方便後續操作不用轉型
+     */
+    @Bean("monitorIntMon")
+    public RedisTemplate<Integer, Monitor> monitorRedisTemplate(
+            @Qualifier("monitorDataBase") RedisConnectionFactory connectionFactory) {
+        RedisTemplate<Integer, Monitor> redisTemplate = new RedisTemplate<>();
+        // 設置連線
+        redisTemplate.setConnectionFactory(connectionFactory);
+        // 設置Serializer
+        redisTemplate.setKeySerializer(new GenericToStringSerializer<>(Integer.class));
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        // HashKey設計為 當前時間 + 對話內容，使用上只有要get全部消息，用來當前端換頁時可以從資料庫提取更新
+        // 因此用作區別內容(只要HashKey不重複就好)
+        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        // 預計存入Monitor DTO
+        redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
 
         return redisTemplate;
     }
@@ -375,6 +404,16 @@ public class RedisConfig {
         config.setHostName("localhost");
         config.setPort(6379);
         config.setDatabase(3);  // 設定使用的 Redis database 索引
+        return new LettuceConnectionFactory(config);
+    }
+
+    //用於存放後台推播消息
+    @Bean("monitorDataBase")
+    public LettuceConnectionFactory monitorConnectionFactory() {
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
+        config.setHostName("localhost");
+        config.setPort(6379);
+        config.setDatabase(2);  // 設定使用的 Redis database 索引
         return new LettuceConnectionFactory(config);
     }
 

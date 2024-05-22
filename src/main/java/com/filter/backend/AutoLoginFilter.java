@@ -80,9 +80,7 @@ public class AutoLoginFilter extends HttpFilter {
                 // 透過使用者編號找到管理員
                 Administrator administrator = administratorSvc.getOneAdministrator(admNo);
                 // 使用Service的登入方法，獲得登入狀態DTO
-                loginState = administratorSvc.login(administrator, session.getId());
-                // 將登入狀態存入Session
-                session.setAttribute("loginState", loginState);
+                administratorSvc.login(administrator, session);
             }
         }
         chain.doFilter(req, res);
