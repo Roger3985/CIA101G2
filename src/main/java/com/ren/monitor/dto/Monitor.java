@@ -1,50 +1,52 @@
 package com.ren.monitor.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Monitor {
+    private String messageId;
     private Integer admNo;
     private String admName;
     private Integer titleNo;
     private String message;
     private String messageTime;
-    private Boolean isRead;
+    private Boolean readStat;
 
     public Monitor() {
+    }
+
+    public Monitor(String messageId) {
+        this.messageId = messageId;
     }
 
     public Monitor(Integer admNo) {
         this.admNo = admNo;
     }
 
-    public Monitor(String admName, Integer titleNo, String message, String messageTime) {
+    public Monitor(String admName, Integer titleNo, String message, String messageTime, Boolean readStat) {
         this.admName = admName;
         this.titleNo = titleNo;
         this.message = message;
         this.messageTime = messageTime;
+        this.readStat = readStat;
     }
 
-    public Monitor(Integer admNo, String admName, Integer titleNo, String message, String messageTime) {
+    public Monitor(Integer admNo, String admName, Integer titleNo, String message, String messageTime, Boolean readStat) {
         this.admNo = admNo;
         this.admName = admName;
         this.titleNo = titleNo;
         this.message = message;
         this.messageTime = messageTime;
+        this.readStat = readStat;
     }
 
-    public Monitor(String admName, Integer titleNo, String message, String messageTime, Boolean isRead) {
-        this.admName = admName;
-        this.titleNo = titleNo;
-        this.message = message;
-        this.messageTime = messageTime;
-        this.isRead = isRead;
-    }
-
-    public Monitor(Integer admNo, String admName, Integer titleNo, String message, String messageTime, Boolean isRead) {
+    public Monitor(String messageId, Integer admNo, String admName, Integer titleNo, String message, String messageTime, Boolean readStat) {
+        this.messageId = messageId;
         this.admNo = admNo;
         this.admName = admName;
         this.titleNo = titleNo;
         this.message = message;
         this.messageTime = messageTime;
-        this.isRead = isRead;
+        this.readStat = readStat;
     }
 
     public Integer getAdmNo() {
@@ -87,11 +89,19 @@ public class Monitor {
         this.messageTime = messageTime;
     }
 
-    public Boolean getRead() {
-        return isRead;
+    public Boolean getReadStat() {
+        return readStat;
     }
 
-    public void setRead(Boolean read) {
-        isRead = read;
+    public void setReadStat(Boolean readStat) {
+        this.readStat = readStat;
+    }
+
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
     }
 }
