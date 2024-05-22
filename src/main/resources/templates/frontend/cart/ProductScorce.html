@@ -38,11 +38,11 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6 my-2">
-                        <h1 class="m-0 h4 text-center text-lg-start">Your Order</h1>
+                        <h1 class="m-0 h4 text-center text-lg-start">你的訂單</h1>
                     </div>
                     <div class="col-lg-6 my-2">
                         <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
-                            <li class="breadcrumb-item"><a class="text-nowrap" href="#"><i
+                            <li class="breadcrumb-item"><a class="text-nowrap"  th:href="@{/frontend/product/visitProduct}"><i
                                     class="bi bi-home"></i>Home</a></li>
                             <li class="breadcrumb-item text-nowrap active" aria-current="page">My Account</li>
                         </ol>
@@ -69,18 +69,17 @@
                             <ul class="list-unstyled mb-0 theme-link">
                                 <li class="border-bottom mb-0"><a
                                         class="nav-link-style d-flex align-items-center active p-3"
-                                        href="account-order.html"><i class="bi bi-bag me-2"></i> Order
+                                        th:href="@{/frontend/cart/ProductScorce}"><i class="bi bi-bag me-2"></i>訂單
                                     <div class="ms-auto badge-pill badge bg-secondary">5</div>
                                 </a></li>
                                 <li class="border-bottom mb-0"><a
                                         class="nav-link-style d-flex align-items-center p-3"
-                                        href="account-wishlist.html"><i class="fi-heart me-2"></i>Wishlist
+                                        th:href="@{/frontend/productmyfavorite/myProductFAV}"><i class="fi-heart me-2"></i>我的最愛(商品)
                                     <div class="ms-auto badge-pill badge bg-secondary">5</div>
                                 </a></li>
                                 <li class="border-bottom mb-0"><a
                                         class="nav-link-style d-flex align-items-center p-3"
-                                        href="account-tickets.html"><i class="bi bi-bookmark me-2"></i>Support
-                                    Tickets
+                                        href="account-tickets.html"><i class="bi bi-bookmark me-2"></i>我的優惠券
                                     <div class="ms-auto badge-pill badge bg-secondary">0</div>
                                 </a></li>
                             </ul>
@@ -154,7 +153,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <button type="submit" class="submit-btn" id="submitBtn">確認</button>
+                                            <button type="submit" class="submit-btn" id="submitBtn"  >確認</button>
                                             <input type="hidden" name="productOrdNo" th:value="${productOrderDetail.compositeKey.productOrdNo}">
                                             <input type="hidden" name="productNo" th:value="${productOrderDetail.product.productNo}">
                                         </td>

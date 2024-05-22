@@ -708,21 +708,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="productitm">
-                            <input type="hidden" name="productNo" value="1"> <!-- 產品編號 -->
-                            <input type="number" class="productBuyQty" value="1"> <!-- 購買數量 -->
-                            <button class="addToCartBtn" type="submit">
-                                添加到購物車
-                            </button>
-                        </div>
 
-                        <div class="productitm">
-                            <input type="hidden" name="productNo" value="7"> <!-- 產品編號 -->
-                            <input type="number" class="productBuyQty" value="7"> <!-- 購買數量 -->
-                            <button class="addToCartBtn" type="submit">
-                                添加到購物車
-                            </button>
-                        </div>
                         <!-- End Product Box -->
                         <div class="shop-bottom-bar d-flex align-items-center mt-3">
                             <div>Showing: 1 - 12 of 17</div>
@@ -751,6 +737,26 @@
                             </div>
                         </div>
                     </div>
+                    <div class="productitm">
+                        <input type="hidden" name="productNo" value="1"> <!-- 產品編號 -->
+                        <input type="number" name="productBuyQty" value="1"> <!-- 購買數量 -->
+                        <button class="addToCartBtn" type="button"> <!-- 更改類型為button -->
+                            添加到購物車
+                        </button>
+                        <button class="addToFAVBtn" type="button"> <!-- 更改類型為button -->
+                            添加到最愛
+                        </button>
+                    </div>
+                    <div class="productitm">
+                        <input type="hidden" name="productNo" value="7"> <!-- 產品編號 -->
+                        <input type="number" name="productBuyQty" value="3"> <!-- 購買數量 -->
+                        <button class="addToCartBtn" type="button"> <!-- 更改類型為button -->
+                            添加到購物車
+                        </button>
+                        <button class="addToFAVBtn" type="button"> <!-- 更改類型為button -->
+                            添加到最愛
+                        </button>
+                    </div>
                     <!-- End Product Box -->
                 </div>
             </div>
@@ -775,8 +781,7 @@
         var button = event.target;
         var row = button.closest('.productitm');
         var productNo = row.querySelector('input[name="productNo"]').value;
-        var productBuyQty = row.querySelector('.productBuyQty').value;
-
+        var productBuyQty = row.querySelector('input[name="productBuyQty"]').value;
 
         var data = {
             productNo: productNo,
@@ -792,10 +797,36 @@
             }
         });
     }
+
     var addToCartButtons = document.querySelectorAll(".addToCartBtn");
     addToCartButtons.forEach(function(button) {
         button.addEventListener("click", testAddToCart);
     });
+
+    function testAddToFAV(event) {
+        var button = event.target;
+        var row = button.closest('.productitm');
+        var productNo = row.querySelector('input[name="productNo"]').value;
+
+        var data = {
+            productNo: productNo,
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "/frontend/productmyfavorite/addProductTomyFAV",
+            data: data,
+            success: function(data) {
+                console.log("加入成功");
+            }
+        });
+    }
+
+    var addToFAVBtns = document.querySelectorAll(".addToFAVBtn"); // 更正為".addToFAVBtn"
+    addToFAVBtns.forEach(function(button) {
+        button.addEventListener("click", testAddToFAV);
+    });
+
 </script>
 </body>
 

@@ -131,19 +131,19 @@
                             <div>
                                 <label>收件人姓名: <span class="unrequired"></span>
                                 </label>
-                                <input class="form-control" type="text" th:name="productRcvName" th:id="productRcvName"
-                                       th:field="*{productOrder.productRcvName}">
+                                <input class="form-control" type="text" name="productRcvName" id="productRcvName"
+                                       th:value="${productOrder.productRcvName}">
                                 <span id="productRcvName-error" class="error-message"></span>
-
+                            </div>
                                 <div>
                                     <label>收件人手機號碼:<span class="unrequired"></span>
                                     </label>
-                                    <input class="form-control" type="text" th:name="productByrPhone"
-                                           th:id="productRcvPhone"
-                                           th:field="*{productOrder.productRcvPhone}">
+                                    <input class="form-control" type="text" name="productRcvPhone"
+                                           id="productRcvPhone"
+                                           th:value="${productOrder.productRcvPhone}">
                                     <span id="productRcvPhone-error" class="error-message"></span>
                                 </div>
-
+<div>
                                 <label>取貨方式:</label>
                                 <select class="form-control" th:id="productTakeMethod" th:field="*{productOrder.productTakeMethod}"
                                         th:name="productTakeMethod">
@@ -157,7 +157,7 @@
                                 <div class="checkout-form-list">
                                     <label for="productAddr">宅配住址: <span class="unrequired"></span></label>
                                     <input id="productAddr" class="form-control" placeholder="請輸入地址" type="text"
-                                           th:name="productAddr" th:field="*{productOrder.member.memAdd}">
+                                           th:name="productAddr" th:value="${productOrder.member.memAdd}">
                                     <span id="productAddr-error" class="error-message"></span>
                                 </div>
                             </div>
@@ -193,8 +193,8 @@
                                               style="font-size: larger;"></span>
                                     </div>
                                     <div>
-                                        &nbsp;&nbsp;&nbsp;規格:<span
-                                            th:text="${productOrderDetail.product.productColor}"></span>
+                                        &nbsp;&nbsp;&nbsp;規格:
+                                        <span th:text="${productOrderDetail.product.productColor}"></span>
                                         <span th:if="${productOrderDetail.product.productSize == 0}">XS</span>
                                         <span th:if="${productOrderDetail.product.productSize == 1}">S</span>
                                         <span th:if="${productOrderDetail.product.productSize == 2}">M</span>
@@ -205,25 +205,26 @@
                                     <!-- Footer -->
                                     <div class="d-flex align-items-center">
                                         <span>價錢:</span>&nbsp;&nbsp;&nbsp;
-                                        <span th:text="'$ ' + ${productOrderDetail.productPrice}"></span>
+                                        <span th:text="'$ ' + ${productOrderDetail.productPrice}" th:field="*{productOrderDetail.productPrice}"></span>
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <span>數量:</span>&nbsp;&nbsp;&nbsp;
-                                        <span th:text="${productOrderDetail.productOrdQty} + ' 個'"></span>
+                                        <span th:text="${productOrderDetail.productOrdQty} + ' 個'"th:field="*{productOrderDetail.productOrdQty}"></span>
                                     </div>
                                 </div>
                             </li>
                         </ul>
-                        <div class="col-sm-3 form-control"><label for="coupNo">請輸入優惠券編號</label>
-                            <select class="form-control" size="1" th:name="coupNo" id="coupNo"
+                        <div class="col-sm-3 form-control">
+                            <div class="checkout-form-list">
+                            <label for="coupNo">請輸入優惠券編號</label>
+                            <select class="form-control" size="1" name="coupNo" id="coupNo"
                                     onchange="updatePriceInstantly()">
                                 <option value="1">請選擇</option>
-                                <!-- 使用 Thymeleaf 循环来动态生成选项 -->
                                 <option th:each="mycoupon : ${coupons}" th:value="${mycoupon.coupon.coupNo}"
-                                        th:text="${mycoupon.coupon.coupNo + ' 號優惠券折數: ' + mycoupon.coupon.coupDisc}">
+                                        th:text="${mycoupon.coupon.coupName+'優惠券折數: ' + mycoupon.coupon.coupDisc}">
                                 </option>
                             </select>
-
+                            </div>
                         </div>
                         <div class="card bg-gray-100">
                             <div class="card-body py-0 px-4">
@@ -242,7 +243,7 @@
                                     </li>
                                     <li class="list-group-item d-flex bg-transparent px-0 py-3 fs-lg fw-600">
                                         <span>實際金額：</span>
-                                        <span class="ms-auto" id="productRealPrice" th:name="productRealPrice"
+                                        <span class="ms-auto" id="productRealPrice" name="productRealPrice"
                                               th:text="${productOrder.productRealPrice}"
                                               th:value="${productOrder.productRealPrice}"></span>
                                     </li>
@@ -259,7 +260,7 @@
                         <div id="ecpayFormContainer"></div>
                     </div>
 
-
+                <input type="hidden" id="hiddenCoupNo" name="coupNo" value="">
                     </form>
                 </div>
             </div>

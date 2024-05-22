@@ -161,10 +161,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.persistence.Id;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Valid;
-import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -191,6 +187,8 @@ public class CartController {
         model.addAttribute("cartRedis", cartRedis);
         return "frontend/cart/addCart";
     }
+
+
 
 
     @PostMapping("/cart/ProductOrderSuccess")
@@ -231,7 +229,7 @@ public class CartController {
 //        }
 //        int shippingCost = total > 500 ? 0 : 100;
 
-        // Add total to the model
+    // Add total to the model
 //        model.addAttribute("total", total);
 //        model.addAttribute("shippingCost", shippingCost);
 //        model.addAttribute("cartListData", cartListData);
@@ -239,40 +237,45 @@ public class CartController {
 //        return viewName;
 //    }
     //加入商品至購物車
-        @GetMapping("/cart/addcartsuccess")
-        public String insert(@Validated(Create.class) CartRedis cartRedis, BindingResult result, ModelMap model, HttpSession session) {
-            Integer memNo=0;
-            if (session.getAttribute("loginsuccess") == null) {
+    @GetMapping("/cart/addcartsuccess")
+    public String insert(@Validated(Create.class) CartRedis cartRedis, BindingResult result, ModelMap model, HttpSession session) {
 
-            } else {
-               Member member = (Member) session.getAttribute("loginsuccess"); // 强制转换为Member类型
-              memNo = member.getMemNo();
-            }
+        Integer memNo;
+        Member member = new Member();
+        session.setAttribute("member", member);
+        if (session.getAttribute("loginsuccess") == null) {
+            String sessionId = session.getId();
+            memNo = Math.abs(sessionId.hashCode());
+            session.setAttribute("memNo", memNo);
 
-            // 将memNo设置在cartRedis中
-            cartRedis.setMemNo(memNo); // 将memNo强制转换为Integer类型
-            List<CartRedis> cartListData = cartSvc.findByCompositeKey((Integer) memNo); // 将memNo强制转换为Integer类型
-
-
-            for (CartRedis cartItem : cartListData) {
-                Integer cartProductNo = cartItem.getProductNo();
-                List<ProductPicture> productPictures = productPictureService.getByProductNo(cartProductNo);
-                if (productPictures != null && !productPictures.isEmpty()) {
-                    ProductPicture firstProductPicture = productPictures.get(0);
-                    byte[] firstPic = firstProductPicture.getProductPic();
-                    Integer productNo=firstProductPicture.getProduct().getProductNo();
-                    String base64Image = Base64.getEncoder().encodeToString(firstPic);
-                        session.setAttribute("productImage"+productNo, base64Image);
-                    model.addAttribute("productImage"+productNo, base64Image);
-                }
-            }
-
-
-            model.addAttribute("cartListData", cartListData);
-
-            return "frontend/cart/Cart";
+        } else {
+            member = (Member) session.getAttribute("loginsuccess"); // 强制转换为Member类型
+            memNo = member.getMemNo();
         }
 
+        // 将memNo设置在cartRedis中
+        cartRedis.setMemNo(memNo); // 将memNo强制转换为Integer类型
+        List<CartRedis> cartListData = cartSvc.findByCompositeKey((Integer) memNo); // 将memNo强制转换为Integer类型
+
+
+        for (CartRedis cartItem : cartListData) {
+            Integer cartProductNo = cartItem.getProductNo();
+            List<ProductPicture> productPictures = productPictureService.getByProductNo(cartProductNo);
+            if (productPictures != null && !productPictures.isEmpty()) {
+                ProductPicture firstProductPicture = productPictures.get(0);
+                byte[] firstPic = firstProductPicture.getProductPic();
+                Integer productNo = firstProductPicture.getProduct().getProductNo();
+                String base64Image = Base64.getEncoder().encodeToString(firstPic);
+                session.setAttribute("productImage" + productNo, base64Image);
+                model.addAttribute("productImage" + productNo, base64Image);
+            }
+        }
+
+
+        model.addAttribute("cartListData", cartListData);
+
+        return "frontend/cart/Cart";
+    }
 
 
 //    public BindingResult removeFieldError(CartRedis cart, BindingResult result, String removedFieldname) {
@@ -327,12 +330,11 @@ public class CartController {
 //
 
 
-
     @PostMapping("/cart/coupNoInstantly")
     @ResponseBody
     public Map<String, String> coupNoInstantly(@RequestParam("coupNo") String coupNo,
                                                @RequestParam("productAllPrice") String productAllPrice
-                                               ) {
+    ) {
         Map<String, String> response = new HashMap<>();
 
         Coupon coupon = couponService.getOneCoupon(Integer.valueOf(coupNo));
@@ -351,7 +353,6 @@ public class CartController {
     }
 
 
-
     @PostMapping("/cart/deleteInstantly")
     @ResponseBody
     public List<CartRedis> deleteInstantly(@RequestParam("productNo") Integer productNo,
@@ -363,13 +364,14 @@ public class CartController {
         System.out.println("即时更新成功");
         return cartRedisList;
     }
+
     @PostMapping("/cart/updateBackendQuantity")
     @ResponseBody
     public List<CartRedis> updateBackendQuantity(@RequestParam("productNo") Integer productNo,
                                                  @RequestParam("memNo") Integer memNo,
-                                                 @RequestParam("productBuyQty")Integer productBuyQty,
+                                                 @RequestParam("productBuyQty") Integer productBuyQty,
                                                  HttpSession session) {
-        cartSvc.updateCart(productNo,memNo,productBuyQty);
+        cartSvc.updateCart(productNo, memNo, productBuyQty);
         session.setAttribute("memNo", memNo);
         List<CartRedis> cartRedisList = cartSvc.findByCompositeKey(memNo);
         System.out.println("即时更新成功");
@@ -385,8 +387,8 @@ public class CartController {
                                                 Model model) {
         Map<String, String> response = new HashMap<>();
         Integer memNo;
-        Member member=new Member();
-        session.setAttribute("member",member);
+        Member member = new Member();
+        session.setAttribute("member", member);
         if (session.getAttribute("loginsuccess") == null) {
             String sessionId = session.getId();
             memNo = Math.abs(sessionId.hashCode());
@@ -410,8 +412,9 @@ public class CartController {
                 ProductPicture firstProductPicture = productPictures.get(0);
                 byte[] firstPic = firstProductPicture.getProductPic();
                 String base64Image = Base64.getEncoder().encodeToString(firstPic);
-                if (session.getAttribute("productImage"+productNo)==null){
-                    session.setAttribute("productImage"+productNo, base64Image);}
+                if (session.getAttribute("productImage" + productNo) == null) {
+                    session.setAttribute("productImage" + productNo, base64Image);
+                }
             }
 
             List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNo);
@@ -425,4 +428,39 @@ public class CartController {
         return response;
     }
 
+    @GetMapping("/cart/minicart")
+    @ResponseBody
+    public Map<String, Object> minicart(HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+        Member member = (Member) session.getAttribute("loginsuccess");
+        if (member == null) {
+            // 如果用户未登录，则返回错误信息或者空购物车信息
+            response.put("error", "用户未登录");
+            return response;
+        }
+
+        Integer memNo = member.getMemNo();
+        List<CartRedis> cartRedisList = cartSvc.findByCompositeKey(memNo);
+
+        List<Map<String, Object>> cartItems = new ArrayList<>();
+        for (CartRedis cart : cartRedisList) {
+            Map<String, Object> cartItem = new HashMap<>();
+            cartItem.put("productName", cart.getProductName());
+            cartItem.put("productPrice", cart.getProductPrice());
+            cartItem.put("productBuyQty", cart.getProductBuyQty());
+
+            List<ProductPicture> productPictures = productPictureService.getByProductNo(Integer.valueOf(cart.getProductNo()));
+            if (!productPictures.isEmpty()) {
+                ProductPicture firstProductPicture = productPictures.get(0);
+                byte[] firstPic = firstProductPicture.getProductPic();
+                String base64Image = Base64.getEncoder().encodeToString(firstPic);
+                cartItem.put("firstPic", base64Image);
+            }
+
+            cartItems.add(cartItem);
+        }
+
+        response.put("cartItems", cartItems);
+        return response;
+    }
 }
