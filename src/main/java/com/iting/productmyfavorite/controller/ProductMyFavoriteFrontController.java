@@ -36,17 +36,11 @@ public class ProductMyFavoriteFrontController {
     @GetMapping("/myProductFAV")
     public String myProductFAV(ProductMyFavoriteRedis productMyFavoriteRedis,ModelMap model, HttpSession session) {
 
-        Member member=new Member();
+        Member myData;
+        myData = (Member) session.getAttribute("loginsuccess");
 
-        member.setMemNo(3);
-        session.setAttribute("member",member);
-        member = (Member) session.getAttribute("member"); // 强制转换为Member类型
-
-
-
-
-        productMyFavoriteRedis.setMemNo(member.getMemNo()); // 将memNo强制转换为Integer类型
-        List<ProductMyFavoriteRedis> productMyFavoriteRedisList = productMyFavoriteService.findByKey(member.getMemNo());// 将memNo强制转换为Integer类型
+        productMyFavoriteRedis.setMemNo(myData.getMemNo()); // 将memNo强制转换为Integer类型
+        List<ProductMyFavoriteRedis> productMyFavoriteRedisList = productMyFavoriteService.findByKey(myData.getMemNo());// 将memNo强制转换为Integer类型
         for (ProductMyFavoriteRedis oneproductMyFavorite : productMyFavoriteRedisList) {
             Integer myProductNo = oneproductMyFavorite.getProductNo();
             Product product=productServiceImpl.getOneProduct(myProductNo);
@@ -63,7 +57,7 @@ public class ProductMyFavoriteFrontController {
             }
         }
 
-
+        model.addAttribute("myData",myData);
         model.addAttribute("productMyFavoriteRedisList", productMyFavoriteRedisList);
 
         return "/frontend/productmyfavorite/myProductFAV";
@@ -75,15 +69,12 @@ public class ProductMyFavoriteFrontController {
                                                 HttpSession session,
                                                 Model model) {
         Map<String, String> response = new HashMap<>();
-        Integer memNo;
-        Member member = new Member();
-        member.setMemNo(3);
-        session.setAttribute("member", member);
+
 
         try {
-            member = (Member) session.getAttribute("member");
-            memNo = member.getMemNo();
-
+            Member myData;
+            myData = (Member) session.getAttribute("loginsuccess");
+            Integer memNo = myData.getMemNo();
             ProductMyFavoriteRedis productMyFavoriteRedis = new ProductMyFavoriteRedis();
             productMyFavoriteRedis.setMemNo(memNo);
             productMyFavoriteRedis.setProductNo(Integer.valueOf(productNo));

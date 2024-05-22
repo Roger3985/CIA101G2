@@ -1,3 +1,4 @@
+
 package com.iting.productorder.service.Impl;
 import ecpay.logistics.integration.exception.EcpayException;
 import org.slf4j.Logger;
@@ -114,24 +115,10 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 
         // 获取订单中的会员信息
         Member member = productOrder.getMember();
-        if (member == null) {
-            throw new IllegalArgumentException("Member cannot be null");
-        }
 
-        // 设置订单基本信息
-        productOrder.setMemNo(member.getMemNo());
         productOrder.setProductOrdTime(Timestamp.valueOf(LocalDateTime.now()));
 
-        // 设置买家的邮箱、姓名和电话
-        productOrder.setProductByrEmail(productOrder.getProductByrEmail());
-        productOrder.setProductByrName(productOrder.getProductByrName());
-        productOrder.setProductByrPhone(productOrder.getProductByrPhone());
-
-        // 设置订单地址
-        productOrder.setProductAddr(productOrder.getProductAddr());
-
-        // 设置订单状态，这里的值可能需要根据实际情况调整
-        productOrder.setProductStat((byte) 1);
+        productOrder.setProductStat((byte) 0);
         productOrder.setProductOrdStat((byte) 40);
 
         // 处理优惠券信息
@@ -142,9 +129,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         } else {
             coupon = couponService.getOneCoupon(coupon.getCoupNo());
         }
-        productOrder.setCoupon(coupon);
-
-        // 计算订单折扣和实际支付价格
         BigDecimal discount = coupon.getCoupDisc();
         BigDecimal totalPrice = productOrder.getProductAllPrice();
         productOrder.setProductDisc(discount);
@@ -168,7 +152,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         }
         productOrder.setProductOrderDetails(orderDetails);
 
-        // 保存订单信息到数据库中
+        productOrder.setProductStat((byte) 1);
         repository.save(productOrder);
 
         // 调用支付接口
@@ -262,5 +246,54 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     }
 
 
+    @Override
+    @Transactional
+    public void addOneOrderSuccess(ProductOrder productOrder) {
+        // 生成订单号
+        int orderNoHash = Math.abs(UUID.randomUUID().hashCode());
+        productOrder.setProductOrdNo(orderNoHash);
 
+        // 获取订单中的会员信息
+        Member member = productOrder.getMember();
+
+        productOrder.setProductOrdTime(Timestamp.valueOf(LocalDateTime.now()));
+
+        productOrder.setProductStat((byte) 0);
+        productOrder.setProductOrdStat((byte) 40);
+
+        // 处理优惠券信息
+        Coupon coupon = productOrder.getCoupon();
+        if (coupon == null || coupon.getCoupNo() == null) {
+            // 设置默认的优惠券编号
+            coupon = couponService.getOneCoupon(1);
+        } else {
+            coupon = couponService.getOneCoupon(coupon.getCoupNo());
+        }
+        BigDecimal discount = coupon.getCoupDisc();
+        BigDecimal totalPrice = productOrder.getProductAllPrice();
+        productOrder.setProductDisc(discount);
+        productOrder.setProductRealPrice(discount.multiply(totalPrice));
+
+        // 构建订单明细
+        Set<ProductOrderDetail> orderDetails = new HashSet<>();
+        List<CartRedis> cartItems = cartService.findByCompositeKey(member.getMemNo());
+        for (CartRedis cartItem : cartItems) {
+            ProductOrderDetail orderDetail = new ProductOrderDetail();
+            ProductOrderDetail.CompositeDetail compositeKey = new ProductOrderDetail.CompositeDetail();
+            compositeKey.setProductNo(cartItem.getProductNo());
+            orderDetail.setCompositeKey(compositeKey);
+            orderDetail.setProductPrice(cartItem.getProductPrice());
+            orderDetail.setProductOrdQty(cartItem.getProductBuyQty());
+            BigDecimal realPrice = BigDecimal.valueOf(cartItem.getProductBuyQty())
+                    .multiply(cartItem.getProductPrice());
+            orderDetail.setProductRealPrice(realPrice);
+            compositeKey.setProductOrdNo(orderNoHash);
+            orderDetails.add(orderDetail);
+        }
+        productOrder.setProductOrderDetails(orderDetails);
+
+        productOrder.setProductStat((byte) 0);
+        repository.save(productOrder);
+
+    }
 }
