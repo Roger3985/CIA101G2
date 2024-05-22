@@ -26,10 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/backend/rentalorder")
@@ -61,7 +58,9 @@ public class RentalOrderController {
 
     @ModelAttribute("orderList")
     protected List<RentalOrder> getAllData() {
-        return service.getAll();
+        List<RentalOrder> list = service.getAll();
+        list.sort(Comparator.comparing(RentalOrder::getrentalOrdNo).reversed());
+        return list;
     }
 
     @ModelAttribute("rentalList")
@@ -77,6 +76,12 @@ public class RentalOrderController {
     /*--------------------------所有方法共用-------------------------------*/
 
     /*--------------------------處理跳轉頁面請求的方法-------------------------------*/
+
+    // 去 前台 租借品追蹤 頁面
+    @GetMapping("/toRentalMyTrack")
+    public String toRentalMyTrack() {
+        return "/frontend/rental/rentalMyTrack";
+    }
 
     // 去 感謝付款 頁面
     @GetMapping("/thankForBuying")
