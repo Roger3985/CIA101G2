@@ -69,9 +69,9 @@
 
                         <!-- 以下追蹤品 -->
                         <th:block th:each="track : ${frontendTrackList}">
-                            <div class="d-flex align-items-center flex-row w-100 pb-3 mb-3 border-bottom">
+                            <div class="d-flex align-items-center flex-row w-100 pb-3 mb-3 border-bottom rentalmytrack" th:data-memNo="${track.getMember().getMemNo()}">
                                 <a class="d-inline-block flex-shrink-0 me-3" href="#">
-                                    <img src="../../assets/img/fashion2/product-1.jpg" width="120" alt="Product">
+                                    <img th:src="@{'/icons/frontend/rental/rentalshop/' + ${track.getRental().getRentalNo()} + '.jpg'}" width="120" alt="Product">
                                 </a>
                                 <div class="d-flex flex-column flex-sm-row col">
 
@@ -218,7 +218,13 @@
 
         $(function () {
 
+            let memNo = 1;
             let baseUrl = window.location.protocol + "//" + window.location.host;
+
+            // 去除重複
+            let tracks = $("div.rentalmytrack");
+            // console.log(tracks);
+
 
             // 加入購物車 339
             $(document).on("click", "a.btn_addToCart", function (e) {
@@ -233,7 +239,7 @@
                 let $this = $(this);
                 // span.rentalNo
                 let rentalNo = $this.closest("div").find("input.rentalNo").val();
-                let memNo = 1;
+
 
                 let data = {
                     "rentalNo" : rentalNo,
