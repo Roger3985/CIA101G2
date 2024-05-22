@@ -426,7 +426,8 @@
                 productAddr: productAddr,
                 productPayMethod: productPayMethod,
                 coupNo: coupNo,
-                productAllPrice: productAllPrice
+                productAllPrice: productAllPrice,
+                memNo: '<%= session.getAttribute("loginsuccess").getMemNo() %>'
             },
             success: function (result) {
                 // 在这里，result应该是服务器返回的支付链接

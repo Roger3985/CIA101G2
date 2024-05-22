@@ -137,7 +137,7 @@ public class ProductOrderController {
         productOrderSvc.addOneOrderSuccess(productOrder);
 
         cartSvc.deleteBymemNo((Integer) memNo);
-
+        model.addAttribute("loginsuccess",myData);
 
         return "frontend/cart/ProductOrderSuccess";
     }
