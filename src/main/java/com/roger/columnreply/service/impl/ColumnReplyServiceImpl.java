@@ -73,4 +73,17 @@ public class ColumnReplyServiceImpl implements ColumnReplyService {
         return columnReplyRepository.findColumnRepliesByArtNo(artNo);
     }
 
+    @Override
+    public List<ColumnReply> getColumnReplyByMemNo(Integer memNo) {
+        return columnReplyRepository.findByMemberMemNo(memNo);
+    }
+
+    /**
+     * 根據列回覆編號獲取列回覆。
+     */
+    @Override
+    public ColumnReply getColumnReplyByColumnReplyNo(Integer columnReplyNo) {
+        return columnReplyRepository.findByColumnReplyNo(columnReplyNo);
+    }
+
 }

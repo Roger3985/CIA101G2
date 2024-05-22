@@ -406,7 +406,7 @@ INSERT INTO ColumnReply(columnReplyNo, artNo, memNo, comContent, comTime, comSta
 -- 創建回覆檢舉表格
 CREATE TABLE Report
 (
-    reportNo        INT          NOT NULL PRIMARY KEY,
+    reportNo        INT          NOT NULL PRIMARY KEY AUTO_INCREMENT,
     artReplyNo      INT          NOT NULL,
     memNo           INT          NOT NULL,
     admNo           INT          NULL,
@@ -416,7 +416,7 @@ CREATE TABLE Report
     FOREIGN KEY (artReplyNo) REFERENCES ColumnReply(columnReplyNo) ,
     FOREIGN KEY (memNo)      REFERENCES Member(memNo) ,
     FOREIGN KEY (admNo)      REFERENCES Administrator(admNo)
-);
+)AUTO_INCREMENT=1001;
 
 INSERT INTO Report(reportNo, artReplyNo, memNo, admNo, reportTime,reportReason, reportType) VALUES (1001, 1001, 1, 1, '2024-04-02 12:30:00','不當言論或語言', 1);
 INSERT INTO Report(reportNo, artReplyNo, memNo, admNo, reportTime,reportReason, reportType) VALUES (1002, 1002, 2, 1, '2024-04-03 12:30:00','不當言論或語言', 1);

@@ -59,4 +59,7 @@ public interface ClickLikeRepository extends JpaRepository<ClickLike, Integer> {
      * @return 包含該會員所有點讚紀錄的列表
      */
     List<ClickLike> findByCompositeClickLike_MemNo(Integer memNo);
+
+    List<ClickLike> findByCompositeClickLike_MemNoAndCompositeClickLike_ArtNo(Integer memNo, Integer artNo);
+
 }

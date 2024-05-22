@@ -164,7 +164,7 @@
                                     <h4 th:text="${responseCount}" class="me-3"></h4>
                                 </div>
                                 <button id="toggleRepliesBtn" class="btn btn-primary mb-3" style="background-color: #f44336; border: 1px solid #d32f2f; color: white; font-weight: bold; transition: background-color 0.3s, border-color 0.3s, color 0.3s; padding: 5px 10px;">
-                                    <i class="bi bi-eye-slash" style="font-size: smaller;"></i> 影藏留言
+                                    <i class="bi bi-eye-slash" style="font-size: smaller;"></i> 隱藏留言
                                 </button>
                             </div>
                             <ul class="list-unstyled pt-4" id="repliesSection">
@@ -179,11 +179,19 @@
                                             <label th:text="${columnreply.comTime}" class="mb-2 small"></label>
                                             <p th:text="${columnreply.comContent}"></p>
                                         </div>
-                                        <div class="nav text-mode small ms-auto align-self-end">
-                                            <a href="#" class="text-reset me-3">
+                                        <div class="nav text-mode small ms-auto align-self-end" th:unless="${session.loginsuccess}">
+                                            <span class="text-reset me-3" data-action="like" style="cursor: pointer;">
                                                 <i class="fi-heart"></i> Likes
-                                            </a>
-                                            <a class="text-mode" href="#">
+                                            </span>
+                                            <span class="text-reset me-3" data-action="replay"  style="cursor: pointer;">
+                                                <i class="bi bi-reply"></i> Replay
+                                            </span>
+                                        </div>
+                                        <div class="nav text-mode small ms-auto align-self-end" th:if="${session.loginsuccess}">
+                                            <span class="text-reset me-3" data-action="likeIsLogin" style="cursor: pointer;">
+                                                <i class="fi-heart"></i> Likes
+                                            </span>
+                                            <a class="text-mode" th:onclick="'showCommentReplyModal(' + ${session.loginsuccess.memNo} + ', ' + ${columnreply.getColumnReplyNo()} + ', ' + ${columnArtice.administrator.admNo} + ')'" style="cursor: pointer;">
                                                 <i class="bi bi-reply"></i> Replay
                                             </a>
                                         </div>
@@ -492,7 +500,92 @@
             </div>
         </div>
     </div>
-</body>
+    <!-- 以下為留言回覆的 -->
+    <!-- 登入提醒模態窗口 - 點讚 -->
+    <div class="modal fade" id="loginReminderModalLikes" tabindex="-1" aria-labelledby="loginReminderModalLabelLikes" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginReminderModalLabelLikes">未登入提醒</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>您尚未登入，無法點讚。請先登入您的帳戶。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                    <a href="/frontend/member/loginMember" class="btn btn-primary">立即登入</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 登入提醒模態窗口 - 回覆 -->
+    <div class="modal fade" id="loginReminderModalReplay" tabindex="-1" aria-labelledby="loginReminderModalLabelReplay" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginReminderModalLabelReplay">未登入提醒</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>您尚未登入，無法回覆。請先登入您的帳戶。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                    <a href="/frontend/member/loginMember" class="btn btn-primary">立即登入</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 登入提醒模態窗口 - 點讚 -->
+    <div class="modal fade" id="isLoginReminderModalLikes" tabindex="-1" aria-labelledby="isLoginReminderModalLabelLikes" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="isLoginReminderModalLabelLikes">未登入提醒</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>您尚未登入，無法點讚。請先登入您的帳戶。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                    <a href="/frontend/member/loginMember" class="btn btn-primary">立即登入</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="commentReplyModal" class="modal" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.4);">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="animation: fadeIn 0.5s;">
+            <div class="modal-content" style="position: relative; background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; animation: slideIn 0.5s;">
+                <span class="close" onclick="closeModal()" style="position: absolute; right: 10px; top: 5px; color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer;">&times;</span>
+                <h2>評論回覆</h2>
+                <!-- 評論回覆表單 -->
+                <form id="commentReplyForm">
+                    <div class="form-group">
+                        <label for="replyContent">回覆內容:</label>
+                        <input type="hidden" id="memNoInput">
+                        <input type="hidden" id="artReplyNoInput">
+                        <input type="hidden" id="admNoInput">
+                        <textarea class="form-control" id="replyContent" rows="3"></textarea>
+                    </div>
+                </form>
+                <div class="modal-footer" style="position: relative;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="submitReply()">提交回覆</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 <script>
     // 定義點讚的函數，接收文章编號作為參數
     function likeArticle(memNo, artNo) {
@@ -771,13 +864,115 @@
     toggleRepliesBtn.addEventListener('click', function() {
         if (repliesSection.style.display === 'none') {
             repliesSection.style.display = 'block';
-            toggleRepliesBtn.innerHTML = '<i class="bi bi-eye"></i> 影藏留言';
+            toggleRepliesBtn.innerHTML = '<i class="bi bi-eye"></i> 隱藏留言';
         } else {
             repliesSection.style.display = 'none';
             toggleRepliesBtn.innerHTML = '<i class="bi bi-eye-slash"></i> 顯示留言';
         }
     });
 </script>
+<script>
+    $(document).ready(function() {
+        // 將點擊事件綁定到具有 data-action 屬性的元素（喜歡按鈕和回覆按鈕）
+        $('[data-action]').click(function() {
+            // 獲取被點擊元素的 data-action 屬性值
+            var action = $(this).data('action');
+            // 根據 data-action 值判斷要彈出的模態框
+            if (action === 'like') {
+                $('#loginReminderModalLikes').modal('show');
+            } else if (action === 'replay') {
+                $('#loginReminderModalReplay').modal('show');
+            }
+        });
+
+        // 將點擊事件綁定到關閉按鈕
+        $(".modal .close, .modal .modal-footer .btn-secondary").click(function () {
+            $(this).closest(".modal").modal("hide");
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        // 監聽按鈕點擊事件
+        $('[data-action="likeIsLogin"]').click(function() {
+            var icon = $(this).find('i'); // 獲取圖標樣式元素
+            // 登錄成功後執行點擊後的動畫效果
+            icon.animate({ fontSize: '1.5em' }, 200, function() {
+                // 動畫完成後恢復原來的字體大小
+                icon.animate({ fontSize: '1em' }, 200);
+            });
+
+            // 添加樣式變化
+            icon.css('color', 'red');
+        });
+    });
+</script>
+<script>
+    // 顯示模態對話框
+    function showCommentReplyModal(memNo, columnReplyNo, admNo) {
+        // 將會員編號、文章回覆編號和管理員編號填入表單中的隱藏輸入欄位
+        document.getElementById('memNoInput').value = memNo;
+        document.getElementById('artReplyNoInput').value = columnReplyNo;
+        document.getElementById('admNoInput').value = admNo;
+
+        // 顯示模態對話框
+        document.getElementById('commentReplyModal').style.display = 'block';
+    }
+
+    // 關閉模態對話框
+    function closeModal() {
+        // 隱藏模態對話框
+        document.getElementById('commentReplyModal').style.display = 'none';
+    }
+
+    // 提交回覆
+    function submitReply() {
+        // 獲取表單中的回覆內容
+        var replyContent = document.getElementById('replyContent').value;
+        // 獲取會員編號、文章回覆編號和管理員編號
+        var memNo = document.getElementById('memNoInput').value;
+        var artReplyNo = document.getElementById('artReplyNoInput').value;
+        var admNo = document.getElementById('admNoInput').value;
+
+        console.log(memNo);
+        console.log(artReplyNo);
+        console.log(admNo);
+
+        // 使用fetch API向後端發送POST請求
+        fetch('/frontend/report/submitReport', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                memNo: memNo,
+                artReplyNo: artReplyNo,
+                admNo: admNo,
+                reportReason: replyContent
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    // 如果回應狀態碼為200，檢舉成功，關閉模態對話框
+                    closeModal();
+                    // 返回檢舉成功訊息
+                    return response.text();
+                } else {
+                    // 如果回應狀態碼不是200，檢舉失敗，拋出一個錯誤
+                    throw new Error('檢舉失敗');
+                }
+            })
+            .then(data => {
+                // 在此處理檢舉成功後的操作，例如顯示成功訊息給用戶
+                console.log(data);
+            })
+            .catch(error => {
+                // 在此處理檢舉失敗後的操作，例如顯示錯誤訊息給用戶
+                console.error('Error:', error);
+            });
+    }
+</script>
+
 
 
 </html>

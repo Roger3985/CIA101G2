@@ -13,8 +13,11 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ClickLikeServiceImpl implements ClickLikeService {
@@ -105,6 +108,17 @@ public class ClickLikeServiceImpl implements ClickLikeService {
 
     @Override
     public List<ClickLike> findByMemberMemNo(Integer memNo) {
+        return clickLikeRepository.findByCompositeClickLike_MemNo(memNo);
+    }
+
+    /**
+     * 根據會員編號獲取該會員已經點讚的文章列表。
+     *
+     * @param memNo 會員編號
+     * @return 包含該會員已點讚的文章列表的集合
+     */
+    @Override
+    public List<ClickLike> getLikedArticlesByMember(Integer memNo) {
         return clickLikeRepository.findByCompositeClickLike_MemNo(memNo);
     }
 
