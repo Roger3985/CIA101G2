@@ -10,10 +10,6 @@
         *{
             font-size: 12px; /* 調整字體大小 */
         }
-        .error {
-            font-size: 12px; /* 調整字體大小 */
-            color:red;
-        }
     </style>
 </head>
 
@@ -40,10 +36,10 @@
                     </div>
                     <div class="a">
                         <div>
-                            <font color=blue>單一查詢:</font><br>
+                            <br><font color=blue>&nbsp;&nbsp;&nbsp;&nbsp;單一查詢:</font><br>
                             <div>
                                 <form method="post" th:action="@{getOneDisplay}">
-                                    選擇租借品編號:
+                                    &nbsp;&nbsp;&nbsp;&nbsp;選擇租借品編號:
                                     <select id="rentalNo" name="rentalNo">
                                         <option>請選擇</option>
                                         <option th:each="rental : ${rentalListData}" th:value="${rental.rentalNo}" th:text="${rental.rentalNo} + '-[' + ${rental.rentalName} + ']'" />
@@ -51,48 +47,80 @@
                                     <input type="submit" value="送出">
                                 </form><br>
                             </div>
-                            <!--                                    <li>-->
-                            <!--                                        <form method="post" th:action="@{getDisplaySize}">-->
-                            <!--                                            選擇尺寸:-->
-                            <!--                                            <select name="rentalSize" id="rentalSize">-->
-                            <!--                                                <option value="1" selected>請選擇</option>-->
-                            <!--                                                <option value="0" th:selected="${rental.rentalSize == 0}">XS</option>-->
-                            <!--                                                <option value="1" th:selected="${rental.rentalSize == 1}">S</option>-->
-                            <!--                                                <option value="2" th:selected="${rental.rentalSize == 2}">M</option>-->
-                            <!--                                                <option value="3" th:selected="${rental.rentalSize == 3}">L</option>-->
-                            <!--                                                <option value="4" th:selected="${rental.rentalSize == 4}">XL</option>-->
-                            <!--                                                <option value="5" th:selected="${rental.rentalSize == 5}">2L</option>-->
-                            <!--                                            </select>-->
-                            <!--                                            <input type="submit" value="送出">-->
-                            <!--                                        </form><br>-->
-                            <!--                                    </li>-->
-                            <!--                                    <li>-->
-                            <!--                                        <form method="post" th:action="@{/getDisplayColor/{rentalColor}}">-->
-                            <!--                                            選擇租借品顏色:-->
-                            <!--                                            <select name="rentalColor" id="rentalColor">-->
-                            <!--                                                <option>請選擇</option>-->
-                            <!--                                                <option th:each="rental : ${rentalListData}" th:value="${rental.rentalNo}" th:text="${rental.rentalColor}" />-->
-                            <!--                                            </select>-->
-                            <!--                                            <input type="submit" value="送出">-->
-                            <!--                                        </form><br>-->
-                            <!--                                    </li>-->
-                            <!--                                    <li>-->
-                            <!--                                        <form method="post" th:action="@{getDisplayRentalStat}">-->
-                            <!--                                            選擇租借品狀態:-->
-                            <!--                                            <select name="rentalStat" id="rentalStat">-->
-                            <!--                                                <option value="2" selected>請選擇</option>-->
-                            <!--                                                <option value="0" th:selected="${rental.rentalStat == 0}">上架</option>-->
-                            <!--                                                <option value="1" th:selected="${rental.rentalStat == 1}">已預約</option>-->
-                            <!--                                                <option value="2" th:selected="${rental.rentalStat == 2}">已租借</option>-->
-                            <!--                                                <option value="3" th:selected="${rental.rentalStat == 3}">已歸還</option>-->
-                            <!--                                                <option value="4" th:selected="${rental.rentalStat == 4}">清潔整理中</option>-->
-                            <!--                                                <option value="5" th:selected="${rental.rentalStat == 5}">下架</option>-->
-                            <!--                                            </select>-->
-                            <!--                                            <input type="submit" value="送出">-->
-                            <!--                                        </form><br>-->
-                            <!--                                    </li><br>-->
                             <hr width="90%" size="7">
                             <!--  萬用複合查詢(開始)  -->
+<!--                            <div>-->
+<!--                                <form method="get" th:action="@{search}" th:object="${rental}">-->
+<!--                                    選擇租借品編號:-->
+<!--                                    <select th:field="*{rentalNo}">-->
+<!--                                        <option value="" selected>請選擇</option>-->
+<!--                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalNo}" th:text="${rental.rentalNo}" />-->
+<!--                                    </select><br>-->
+
+<!--                                    選擇租借品名稱:-->
+<!--                                    <select th:field="*{rentalName}">-->
+<!--                                        <option value="" selected>請選擇</option>-->
+<!--                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalName}" th:text="${rental.rentalName}" />-->
+<!--                                    </select><br>-->
+
+<!--                                    選擇租借品尺寸:-->
+<!--                                    <select th:field="*{rentalSize}">-->
+<!--                                        <option value="" selected>請選擇</option>-->
+<!--                                        <option value="0">XS</option>-->
+<!--                                        <option value="1">S</option>-->
+<!--                                        <option value="2">M</option>-->
+<!--                                        <option value="3">L</option>-->
+<!--                                        <option value="4">XL</option>-->
+<!--                                        <option value="5">2L</option>-->
+<!--                                    </select><br>-->
+
+<!--                                    選擇租借品顏色:-->
+<!--                                    <select th:field="*{rentalColor}">-->
+<!--                                        <option value="" selected>請選擇</option>-->
+<!--                                        <option th:each="rental : ${rentalListData}" th:value="${rental.rentalColor}" th:text="${rental.rentalColor}" />-->
+<!--                                    </select><br>-->
+
+<!--                                    選擇租借品狀態:-->
+<!--                                    <select th:field="*{rentalStat}">-->
+<!--                                        <option value="" selected>請選擇</option>-->
+<!--                                        <option value="0">上架</option>-->
+<!--                                        <option value="1">已預約</option>-->
+<!--                                        <option value="2">已租借</option>-->
+<!--                                        <option value="3">已歸還</option>-->
+<!--                                        <option value="4">清潔整理中</option>-->
+<!--                                        <option value="5">下架</option>-->
+<!--                                    </select><br>-->
+
+<!--                                    <input type="submit" value="送出"/>-->
+<!--                                </form>-->
+<!--                            </div>-->
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer th:replace="backend/component/bottom :: bottom"></footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+</div>
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+</body>
+</html>
+
+
+
+
 <!--                            <font color=blue>萬用複合查詢:</font><br>-->
 <!--                            <div>-->
 <!--                                <form method="post" th:action="@{search}" th:object="${rental}">-->
@@ -134,25 +162,25 @@
 <!--                                    <input type="submit" value="送出"/>-->
 <!--                                </form>-->
 <!--                            </div>-->
-                        </div>
-                    </div>
-                </div>
-                <!-- /.container-fluid -->
-            </div>
-            <!-- End of Main Content -->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash; /.container-fluid &ndash;&gt;-->
+<!--            </div>-->
+<!--            &lt;!&ndash; End of Main Content &ndash;&gt;-->
 
-            <!-- Footer -->
-            <footer th:replace="backend/component/bottom :: bottom"></footer>
-            <!-- End of Footer -->
-        </div>
-        <!-- End of Content Wrapper -->
-    </div>
-    <!-- End of Page Wrapper -->
-</div>
-<!-- Scroll to Top Button-->
-<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
-<!-- Logout Modal-->
-<div th:replace="backend/component/logout :: logout"></div>
-<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
-</body>
-</html>
+<!--            &lt;!&ndash; Footer &ndash;&gt;-->
+<!--            <footer th:replace="backend/component/bottom :: bottom"></footer>-->
+<!--            &lt;!&ndash; End of Footer &ndash;&gt;-->
+<!--        </div>-->
+<!--        &lt;!&ndash; End of Content Wrapper &ndash;&gt;-->
+<!--    </div>-->
+<!--    &lt;!&ndash; End of Page Wrapper &ndash;&gt;-->
+<!--</div>-->
+<!--&lt;!&ndash; Scroll to Top Button&ndash;&gt;-->
+<!--<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>-->
+<!--&lt;!&ndash; Logout Modal&ndash;&gt;-->
+<!--<div th:replace="backend/component/logout :: logout"></div>-->
+<!--<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>-->
+<!--</body>-->
+<!--</html>-->

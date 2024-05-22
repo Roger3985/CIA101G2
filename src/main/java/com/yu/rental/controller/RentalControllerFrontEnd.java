@@ -65,6 +65,18 @@ public class RentalControllerFrontEnd {
         return "/frontend/rental/rentalInstructions";
     }
 
+    //瀏覽租借須知頁面 (前台)
+    @GetMapping("/rental/rentalInstructionsSend")
+    public String rentalInstructionsSend() {
+        return "/frontend/rental/rentalInstructionsSend";
+    }
+
+    //瀏覽租借須知頁面 (前台)
+    @GetMapping("/rental/rentalInstructionsSize")
+    public String rentalInstructionsSize() {
+        return "/frontend/rental/rentalInstructionsSize";
+    }
+
     //瀏覽單一品項內的租借須知 (前台)
     @GetMapping("/rental/skipInstructions")
     public String skipInstructions() {
@@ -183,50 +195,50 @@ public class RentalControllerFrontEnd {
 //        return "/frontend/rental/listOneRental"; // 查詢完成後轉交listOneRental.html
 //    }
 
-    //處理複合查詢
-    @PostMapping("/search")
-    public String search(@RequestParam(required = false) Integer rentalNo,
-                         @RequestParam(required = false) Integer rentalCatNo,
-                         @RequestParam(required = false) String rentalName,
-                         @RequestParam(required = false) BigDecimal rentalPrice,
-                         @RequestParam(required = false) Integer rentalSize,
-                         @RequestParam(required = false) String rentalColor,
-                         @RequestParam(required = false) String rentalInfo,
-                         @RequestParam(required = false) Byte rentalStat, ModelMap model) {
-
-
-        Map<String, Object> map = new HashMap<>();
-
-        if (rentalNo != null) {
-            map.put("rentalNo", rentalNo);
-        }
-        if (rentalCatNo != null) {
-            map.put("rentalCatNo", rentalCatNo);
-        }
-        if (rentalName != null) {
-            map.put("rentalName", rentalName);
-        }
-        if (rentalPrice != null) {
-            map.put("rentalPrice", rentalPrice);
-        }
-        if (rentalSize != null) {
-            map.put("rentalSize", rentalSize);
-        }
-        if (rentalColor != null) {
-            map.put("rentalColor", rentalColor);
-        }
-        if (rentalInfo != null) {
-            map.put("rentalInfo", rentalInfo);
-        }
-        if (rentalStat != null) {
-            map.put("rentalStat", rentalStat);
-        }
-
-        //建立返回數據的對象
-        List<Rental> queryList = rentalService.searchRentals(map);
-        model.addAttribute("queryList", queryList);
-        return "frontend/rental/select_page"; //結果傳至listAllRental
-    }
+//    //處理複合查詢
+//    @PostMapping("/search")
+//    public String search(@RequestParam(required = false) Integer rentalNo,
+//                         @RequestParam(required = false) Integer rentalCatNo,
+//                         @RequestParam(required = false) String rentalName,
+//                         @RequestParam(required = false) BigDecimal rentalPrice,
+//                         @RequestParam(required = false) Integer rentalSize,
+//                         @RequestParam(required = false) String rentalColor,
+//                         @RequestParam(required = false) String rentalInfo,
+//                         @RequestParam(required = false) Byte rentalStat, ModelMap model) {
+//
+//
+//        Map<String, Object> map = new HashMap<>();
+//
+//        if (rentalNo != null) {
+//            map.put("rentalNo", rentalNo);
+//        }
+//        if (rentalCatNo != null) {
+//            map.put("rentalCatNo", rentalCatNo);
+//        }
+//        if (rentalName != null) {
+//            map.put("rentalName", rentalName);
+//        }
+//        if (rentalPrice != null) {
+//            map.put("rentalPrice", rentalPrice);
+//        }
+//        if (rentalSize != null) {
+//            map.put("rentalSize", rentalSize);
+//        }
+//        if (rentalColor != null) {
+//            map.put("rentalColor", rentalColor);
+//        }
+//        if (rentalInfo != null) {
+//            map.put("rentalInfo", rentalInfo);
+//        }
+//        if (rentalStat != null) {
+//            map.put("rentalStat", rentalStat);
+//        }
+//
+//        //建立返回數據的對象
+//        List<Rental> queryList = rentalService.searchRentals(map);
+//        model.addAttribute("queryList", queryList);
+//        return "frontend/rental/select_page"; //結果傳至listAllRental
+//    }
 
 
 

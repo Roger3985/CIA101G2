@@ -4,12 +4,8 @@ import com.roger.member.entity.Member;
 import com.yu.rentalpic.dao.RentalPicRepository;
 import com.yu.rentalpic.entity.RentalPic;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.sql.Timestamp;
 import java.util.Base64;
 import java.util.HashMap;
@@ -21,9 +17,6 @@ public class RentalPicServiceImpl implements RentalPicService {
 
     @Autowired //自動裝配
     private RentalPicRepository repository;
-    @Autowired
-    @Qualifier("rentalPic")
-    private RedisTemplate<String, String> rentalPicRedisTemplate;
 
 
     //全部查詢(RentalPic)
@@ -88,30 +81,5 @@ public class RentalPicServiceImpl implements RentalPicService {
     }
 
 
-//----------------------------------------------------------------------------------------------------------------------
-//主要為Redis使用
 
-    //新增、修改資料
-    public void saveRentalPicToRedis(String rentalNo, String rentalPicNo, byte[] rentalFile) {
-        String base64EncodedImage = Base64.getEncoder().encodeToString(rentalFile);
-        rentalPicRedisTemplate.opsForValue().set("rentalPic:" + rentalNo + ":" + rentalPicNo, base64EncodedImage);
-    }
-
-    //取得資料
-    public String getRentalPicFromRedis(String rentalNo, String rentalPicNo) {
-        return rentalPicRedisTemplate.opsForValue().get("rentalPic:" + rentalNo + ":" + rentalPicNo);
-    }
-
-    //取得所有資料
-    public Map<String, String> getAllRentalPicsFromRedis(String rentalNo, List<String> rentalPicNos) {
-        Map<String, String> rentalPics = new HashMap<>();
-        for (String rentalPicNo : rentalPicNos) {
-            String key = "rentalPic:" + rentalNo + ":" + rentalPicNo;
-            String base64EncodedImage = rentalPicRedisTemplate.opsForValue().get(key);
-            if (base64EncodedImage != null) {
-                rentalPics.put(rentalPicNo, base64EncodedImage);
-            }
-        }
-        return rentalPics;
-    }
 }

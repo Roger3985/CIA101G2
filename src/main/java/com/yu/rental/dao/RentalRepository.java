@@ -50,10 +50,6 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
                                @Param("rentalStat") Byte rentalStat);
 
 
-
-
-
-
     //自定義查詢(for萬用，使用JPQL語法)
     @Query("SELECT re FROM Rental re WHERE re.rentalName LIKE %:rentalName%") //以rentalName 做模糊查詢
     List<Rental> findQueryByRentalName(@Param("rentalName") String rentalName);
@@ -62,7 +58,7 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     List<Rental> findQueryByRentalSize(@Param("rentalSize") Integer rentalSize);
 
     @Query("SELECT re FROM Rental re WHERE re.rentalColor LIKE %:rentalColor%") //以rentalColor 做模糊查詢
-    Rental findQueryByRentalColor(@Param("rentalColor") String rentalColor);
+    List<Rental> findQueryByRentalColor(@Param("rentalColor") String rentalColor);
 
     @Query("SELECT re FROM Rental re WHERE re.rentalInfo LIKE %:rentalInfo%") //以rentalInfo 做模糊查詢
     List<Rental> findQueryByRentalInfo(@Param("rentalInfo") String rentalInfo);

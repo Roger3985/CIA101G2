@@ -42,30 +42,27 @@
                         <div>
                             <form id="form" method="post" th:action="@{addRentSet}" th:object="${rentSet}">
                                 <div>
-                                    <label>選擇租借品訂單編號:</label>
-                                    <select name="rentalOrdNo" id="rentalOrdNo" th:field="*{rentalOrdNo}"> <!--th:field，表單元素&數據綁定-->
+                                    <label>&nbsp;&nbsp;&nbsp;&nbsp;選擇租借品訂單編號:</label>
+                                    <select name="rentalOrdNo" id="rentalOrdNo">
                                         <option value="0">請選擇</option>
-                                        <option th:each="rentalOrder : ${rentalOrderListData}" th:value="${rentSet.rentalOrder.rentalOrdNo}"
-                                                th:text="${rentSet.rentalOrder.rentalOrdNo}" />
+                                        <option th:each="rentSet : ${rentSetListData}" th:value="${rentSet.rentalOrdNo}"
+                                                th:text="${rentSet.rentalOrdNo}"></option>
                                     </select>
                                     <span class="error" th:if="${#fields.hasErrors('rentalOrdNo')}" th:errors="*{rentalOrdNo}" id="rentalOrdNo.errors">租借品訂單編號錯誤</span>
                                 </div><br>
                                 <div>
-                                    <label>選擇方案名稱:</label>
-                                    <select id="rentalSetName" name="rentalSetName" th:field="*{rentalSetName}"> <!--th:field，表單元素&數據綁定-->
+                                    <label>選擇租借天數:</label>
+                                    <select name="rentalSetDays" id="rentalSetDays" th:field="*{rentalSetDays}" onchange="syncSelectsReverse()">
                                         <option value="1">請選擇</option>
-                                        <option th:each="rentSet : ${rentSetListData}" th:value="${rentSet.rentalSetName}" th:text="${rentSet.rentalSetName}"/>
+                                        <option value="7天" th:selected="${rentSet.rentalSetDays == 0}">7天</option>
+                                        <option value="14天" th:selected="${rentSet.rentalSetDays == 1}">14天</option>
                                     </select>
-                                    <span class="error" th:if="${#fields.hasErrors('rentalSetName')}" th:errors="*{rentalSetName}" id="rentalSetName.errors">方案名稱錯誤</span>
+                                    <span class="error" th:if="${#fields.hasErrors('rentalSetDays')}" th:errors="*{rentalSetDays}" id="rentalSetDays.errors">租借天數錯誤</span>
                                 </div><br>
                                 <div>
-                                    <label>選擇租借天數:</label>
-                                    <select name="rentalSetDays" id="rentalSetDays">
-                                        <option value="2" selected>請選擇</option>
-                                        <option value="0" th:selected="${rentSet.rentalSetDays == 0}">7天</option>
-                                        <option value="1" th:selected="${rentSet.rentalSetDays == 1}">14天</option>
-                                    </select><br>
-                                    <span class="error" th:if="${#fields.hasErrors('rentalSetDays')}" th:errors="*{rentalSetDays}" id="rentalSetDays.errors">租借天數錯誤</span>
+                                    <label>選擇方案名稱:</label>
+                                    <input type="text" id="rentalSetName" name="rentalSetName" th:field="*{rentalSetName}" onclick="hideContent('rentalSetName.errors');" disabled/><br/>
+                                    <span class="error" th:if="${#fields.hasErrors('rentalSetName')}" th:errors="*{rentalSetName}" id="rentalSetName.errors">方案名稱錯誤</span>
                                 </div><br>
                                 <input type="submit" id="addBtn" value="送出">
                             </form>
@@ -94,10 +91,39 @@
 
 
 <script>
+    //rentalSetName 改變時，syncSelects 函數會被調用來同步 rentalSetDays 的值
+    function syncSelects() {
+        const rentalSetName = document.getElementById("rentalSetName");
+        const rentalSetDays = document.getElementById("rentalSetDays");
+
+        if (rentalSetName.value === "租借7日") {
+            rentalSetDays.value = "7天";
+        } else if (rentalSetName.value === "租借14日") {
+            rentalSetDays.value = "14天";
+        } else {
+            rentalSetDays.value = "";
+        }
+    }
+
+    // rentalSetDays 改變時，syncSelectsReverse 函數會被調用來同步 rentalSetName 的值
+    function syncSelectsReverse() {
+        const rentalSetName = document.getElementById("rentalSetName");
+        const rentalSetDays = document.getElementById("rentalSetDays");
+
+        if (rentalSetDays.value === "7天") {
+            rentalSetName.value = "租借7日";
+        } else if (rentalSetDays.value === "14天") {
+            rentalSetName.value = "租借14日";
+        } else {
+            rentalSetName.value = "";
+        }
+    }
+
 
     $(document).ready(function (){
         // 觸發submit事件，取得選擇的內容，轉為json格式
         $("#addBtn").on("submit",function(e){
+            console.log("你點擊了");
             e.preventDefault(); //阻止提交表單
 
             //資料打包
@@ -107,14 +133,16 @@
                 rentalSetDays: parseFloat($('#rentalSetDays').val()),
                 action: "addRentSet"
             };
-
+            console.log("我有拿到打包資料11111");
             fetch("/backend/rentset/addRentSet", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(addData)
+                body: JSON.stringify(addData),
             }).then(function (response){
+                console.log("我有拿到打包資料22222");
                 return response.text();
             }).then(function (rentalOrdNo){
+                console.log("我有拿到打包資料33333");
                 alert(rentalOrdNo + "新增成功");
             })
         });

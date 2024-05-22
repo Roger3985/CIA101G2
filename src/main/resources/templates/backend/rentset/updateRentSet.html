@@ -43,12 +43,12 @@
                             <form id="form" method="post" th:action="@{updateRentSet}">
                                 <div>
                                     <label>選擇租借品訂單編號:</label>
-                                    <select name="rentalOrdNo" id="rentalOrdNo" th:field="*{rentSet.compositeDetail.getRentalOrdNo()}"> <!--th:field，表單元素&數據綁定-->
+                                    <select name="rentalOrdNo" id="rentalOrdNo" th:field="*{rentSet.getRentalOrdNo()}"> <!--th:field，表單元素&數據綁定-->
                                         <option value="0">請選擇</option>
-                                        <option th:each="rentSet : ${rentSetListData}" th:value="${rentSet.compositeDetail.getRentalOrdNo()}"
-                                                th:text="${rentSet.compositeDetail.getRentalOrdNo()}" />
+                                        <option th:each="rentSet : ${rentSetListData}" th:value="${rentSet.getRentalOrdNo()}"
+                                                th:text="${rentSet.getRentalOrdNo()}" />
                                     </select>
-                                    <span class="error" th:if="${#fields.hasErrors('rentSet.compositeDetail.getRentalOrdNo()')}" th:errors="*{rentSet.compositeDetail.getRentalOrdNo()}" id="rentSet.compositeDetail.getRentalOrdNo().errors">租借品訂單編號錯誤</span>
+                                    <span class="error" th:if="${#fields.hasErrors('rentSet.getRentalOrdNo()')}" th:errors="*{rentSet.getRentalOrdNo()}" id="rentalOrdNo.errors">租借品訂單編號錯誤</span>
                                 </div><br>
                                 <div>
                                     <label>選擇方案名稱:</label>
@@ -56,7 +56,7 @@
                                         <option value="1">請選擇</option>
                                         <option th:each="rentSet : ${rentSetListData}" th:value="${rentSet.getRentalSetName()}" th:text="${rentSet.getRentalSetName()}"/>
                                     </select>
-                                    <span class="error" th:if="${#fields.hasErrors('rentSet.getRentalSetName()')}" th:errors="*{rentSet.getRentalSetName()}" id="rentSet.getRentalSetName().errors">方案名稱錯誤</span>
+                                    <span class="error" th:if="${#fields.hasErrors('rentSet.getRentalSetName()')}" th:errors="*{rentSet.getRentalSetName()}" id="rentalSetName.errors">方案名稱錯誤</span>
                                 </div><br>
                                 <div>
                                     <label>選擇租借天數:</label>
@@ -65,10 +65,10 @@
                                         <option value="0">7天</option>
                                         <option value="1">14天</option>
                                     </select><br>
-                                    <span class="error" th:if="${#fields.hasErrors('rentSet.getRentalSetDays()')}" th:errors="*{rentSet.getRentalSetDays()}" id="rentSet.getRentalSetDays().errors">租借天數錯誤</span>
+                                    <span class="error" th:if="${#fields.hasErrors('rentSet.getRentalSetDays()')}" th:errors="*{rentSet.getRentalSetDays()}" id="rentalSetDays.errors">租借天數錯誤</span>
                                 </div><br>
                                 <input type="submit" id="updateBtn" value="送出">
-                                <input type="hidden" name="rentalOrdNo" th:value="${rentSet.compositeDetail.getRentalOrdNo()}">
+                                <input type="hidden" name="rentalOrdNo" th:value="${rentSet.getRentalOrdNo()}">
                             </form>
                         </div>
                     </div>
@@ -92,31 +92,31 @@
 
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
 <script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
-<!--<script>-->
-<!--    $(document).ready(function (){-->
-<!--        // 觸發submit事件，取得選擇的內容，轉為json格式-->
-<!--        $("#updateBtn").on("submit",function(e){-->
-<!--            e.preventDefault(); //阻止提交表單-->
+<script>
+    $(document).ready(function (){
+        // 觸發submit事件，取得選擇的內容，轉為json格式
+        $("#updateBtn").on("submit",function(e){
+            e.preventDefault(); //阻止提交表單
 
-<!--            //資料打包-->
-<!--            const updateData = {-->
-<!--                rentalOrdNo: parseInt($('#rentalOrdNo').val()),-->
-<!--                rentalSetName: $('#rentalSetName').val(),-->
-<!--                rentalSetDays: parseFloat($('#rentalSetDays').val()),-->
-<!--                action: "addRentSet"-->
-<!--            };-->
+            //資料打包
+            const updateData = {
+                rentalOrdNo: parseInt($('#rentalOrdNo').val()),
+                rentalSetName: $('#rentalSetName').val(),
+                rentalSetDays: parseFloat($('#rentalSetDays').val()),
+                action: "addRentSet"
+            };
 
-<!--            fetch("/backend/rentset/updateRentSet", {-->
-<!--                method: "POST",-->
-<!--                headers: {"Content-Type": "application/json"},-->
-<!--                body: JSON.stringify(updateData)-->
-<!--            }).then(function (response){-->
-<!--                return response.text();-->
-<!--            }).then(function (rentalOrdNo){-->
-<!--                alert(rentalOrdNo + "修改成功");-->
-<!--            })-->
-<!--        });-->
-<!--    });-->
-<!--</script>-->
+            fetch("/backend/rentset/updateRentSet", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(updateData)
+            }).then(function (response){
+                return response.text();
+            }).then(function (rentalOrdNo){
+                alert(rentalOrdNo + "修改成功");
+            })
+        });
+    });
+</script>
 </body>
 </html>

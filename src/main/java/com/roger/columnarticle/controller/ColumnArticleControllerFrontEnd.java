@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/frontend/columnarticle")
@@ -47,9 +48,18 @@ public class ColumnArticleControllerFrontEnd {
      * 前往專欄文章的網頁
      */
     @GetMapping("/listAllColumnArticle")
-    public String listAllColumnArticle(Model model) {
-        return "frontend/columnarticle/listAllColumnArticle";
+    public String listAllColumnArticle(HttpSession session) {
+
+        if (session.getAttribute("loginsuccess") != null) {
+            Member member = (Member) session.getAttribute("loginsuccess");
+            List<ClickLike> clickLikeList = clickLikeService.getLikedArticlesByMember(member.getMemNo());
+            session.setAttribute("clickLikeList", clickLikeList);
+            return "frontend/columnarticle/listAllColumnArticle";
+        } else {
+            return "frontend/columnarticle/listAllColumnArticle";
+        }
     }
+
 
     /**
      * 處理顯示單個專欄文章的 GET 請求。
@@ -133,7 +143,6 @@ public class ColumnArticleControllerFrontEnd {
         if (success) {
             // 將會員資料存入會話
             session.setAttribute("loginsuccess", memberService.findByNo(memNo));
-
 
             // 新增點讚的通知消息
             Notice newNotice = new Notice();

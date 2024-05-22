@@ -14337,6 +14337,8 @@ fieldset:disabled .btn {
     --bs-dropdown-link-disabled-color: #b4bbc3;
     --bs-dropdown-item-padding-x: 1.25rem;
     --bs-dropdown-item-padding-y: 0.5rem;
+    --bs-sort-item-padding-x: 1.25rem;
+    --bs-sort-item-padding-y: 0.5rem;
     --bs-dropdown-header-color: #858c97;
     --bs-dropdown-header-padding-x: 1.25rem;
     --bs-dropdown-header-padding-y: 0.7rem;
@@ -14586,8 +14588,27 @@ fieldset:disabled .btn {
     border: 0
 }
 
+.sort-item {
+    display: block;
+    width: 100%;
+    padding: var(--bs-sort-item-padding-y) var(--bs-sort-item-padding-x);
+    clear: both;
+    font-weight: 400;
+    color: var(--bs-dropdown-link-color);
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0
+}
+
 .dropdown-item:focus,
 .dropdown-item:hover {
+    color: var(--bs-dropdown-link-hover-color);
+    background-color: var(--bs-dropdown-link-hover-bg)
+}
+
+.sort-item:focus,
+.sort-item:hover {
     color: var(--bs-dropdown-link-hover-color);
     background-color: var(--bs-dropdown-link-hover-bg)
 }
@@ -14599,8 +14620,22 @@ fieldset:disabled .btn {
     background-color: var(--bs-dropdown-link-active-bg)
 }
 
+.sort-item.active,
+.sort-item:active {
+    color: var(--bs-dropdown-link-active-color);
+    text-decoration: none;
+    background-color: var(--bs-dropdown-link-active-bg)
+}
+
 .dropdown-item.disabled,
 .dropdown-item:disabled {
+    color: var(--bs-dropdown-link-disabled-color);
+    pointer-events: none;
+    background-color: transparent
+}
+
+.sort-item.disabled,
+.sort-item:disabled {
     color: var(--bs-dropdown-link-disabled-color);
     pointer-events: none;
     background-color: transparent
@@ -14622,6 +14657,12 @@ fieldset:disabled .btn {
 .dropdown-item-text {
     display: block;
     padding: var(--bs-dropdown-item-padding-y) var(--bs-dropdown-item-padding-x);
+    color: var(--bs-dropdown-link-color)
+}
+
+.sort-item-text {
+    display: block;
+    padding: var(--bs-sort-item-padding-y) var(--bs-sort-item-padding-x);
     color: var(--bs-dropdown-link-color)
 }
 
@@ -30250,8 +30291,25 @@ header [data-cart-items]:before {
     .navbar-expand-sm .navbar-nav>.nav-item .dropdown-menu>.dropdown>.dropdown-item {
         position: relative
     }
+    .navbar-expand-sm .navbar-nav>.nav-item .dropdown-menu>.dropdown>.sort-item {
+        position: relative
+    }
 
     .navbar-expand-sm .navbar-nav>.nav-item .dropdown-menu>.dropdown>.dropdown-item:after {
+        content: "\f285";
+        font-family: bootstrap-icons;
+        color: currentColor;
+        margin-left: 8px;
+        display: inline-block;
+        font-size: .85rem;
+        border: none;
+        position: absolute;
+        top: 9px;
+        right: 7px;
+        font-weight: 600
+    }
+
+    .navbar-expand-sm .navbar-nav>.nav-item .dropdown-menu>.dropdown>.sort-item:after {
         content: "\f285";
         font-family: bootstrap-icons;
         color: currentColor;
@@ -30278,6 +30336,10 @@ header [data-cart-items]:before {
     }
 
     .navbar-expand-sm .navbar-nav>.nav-item .dropdown-item {
+        font-size: .9rem
+    }
+
+    .navbar-expand-sm .navbar-nav>.nav-item .sort-item {
         font-size: .9rem
     }
 
@@ -30414,6 +30476,10 @@ header [data-cart-items]:before {
         padding: .6rem 1rem
     }
 
+    .navbar-expand-sm .vertical-dropdown-menu>li .sort-item {
+        padding: .6rem 1rem
+    }
+
     .navbar-expand-sm .vertical-dropdown-menu>li .mob-menu {
         line-height: 45px !important;
         height: 45px !important
@@ -30506,6 +30572,9 @@ header [data-cart-items]:before {
     .navbar-expand-md .navbar-nav>.nav-item .dropdown-menu>.dropdown>.dropdown-item {
         position: relative
     }
+    .navbar-expand-md .navbar-nav>.nav-item .dropdown-menu>.dropdown>.sort-item {
+        position: relative
+    }
 
     .navbar-expand-md .navbar-nav>.nav-item .dropdown-menu>.dropdown>.dropdown-item:after {
         content: "\f285";
@@ -30521,6 +30590,19 @@ header [data-cart-items]:before {
         font-weight: 600
     }
 
+    .navbar-expand-md .navbar-nav>.nav-item .dropdown-menu>.dropdown>.sort-item:after {
+        content: "\f285";
+        font-family: bootstrap-icons;
+        color: currentColor;
+        margin-left: 8px;
+        display: inline-block;
+        font-size: .85rem;
+        border: none;
+        position: absolute;
+        top: 9px;
+        right: 7px;
+        font-weight: 600
+    }
     .navbar-expand-md .navbar-nav>.nav-item .dropdown-menu>.dropdown:hover .dropdown-menu-sub {
         display: block
     }
@@ -30534,6 +30616,10 @@ header [data-cart-items]:before {
     }
 
     .navbar-expand-md .navbar-nav>.nav-item .dropdown-item {
+        font-size: .9rem
+    }
+
+    .navbar-expand-md .navbar-nav>.nav-item .sort-item {
         font-size: .9rem
     }
 
@@ -30670,6 +30756,10 @@ header [data-cart-items]:before {
         padding: .6rem 1rem
     }
 
+    .navbar-expand-md .vertical-dropdown-menu>li .sort-item {
+        padding: .6rem 1rem
+    }
+
     .navbar-expand-md .vertical-dropdown-menu>li .mob-menu {
         line-height: 45px !important;
         height: 45px !important
@@ -30762,8 +30852,24 @@ header [data-cart-items]:before {
     .navbar-expand-lg .navbar-nav>.nav-item .dropdown-menu>.dropdown>.dropdown-item {
         position: relative
     }
+    .navbar-expand-lg .navbar-nav>.nav-item .dropdown-menu>.dropdown>.sort-item {
+        position: relative
+    }
 
     .navbar-expand-lg .navbar-nav>.nav-item .dropdown-menu>.dropdown>.dropdown-item:after {
+        content: "\f285";
+        font-family: bootstrap-icons;
+        color: currentColor;
+        margin-left: 8px;
+        display: inline-block;
+        font-size: .85rem;
+        border: none;
+        position: absolute;
+        top: 9px;
+        right: 7px;
+        font-weight: 600
+    }
+    .navbar-expand-lg .navbar-nav>.nav-item .dropdown-menu>.dropdown>.sort-item:after {
         content: "\f285";
         font-family: bootstrap-icons;
         color: currentColor;
@@ -30790,6 +30896,10 @@ header [data-cart-items]:before {
     }
 
     .navbar-expand-lg .navbar-nav>.nav-item .dropdown-item {
+        font-size: .9rem
+    }
+
+    .navbar-expand-lg .navbar-nav>.nav-item .sort-item {
         font-size: .9rem
     }
 
@@ -30925,6 +31035,9 @@ header [data-cart-items]:before {
     .navbar-expand-lg .vertical-dropdown-menu>li .dropdown-item {
         padding: .6rem 1rem
     }
+    .navbar-expand-lg .vertical-dropdown-menu>li .sort-item {
+        padding: .6rem 1rem
+    }
 
     .navbar-expand-lg .vertical-dropdown-menu>li .mob-menu {
         line-height: 45px !important;
@@ -31018,8 +31131,24 @@ header [data-cart-items]:before {
     .navbar-expand-xl .navbar-nav>.nav-item .dropdown-menu>.dropdown>.dropdown-item {
         position: relative
     }
+    .navbar-expand-xl .navbar-nav>.nav-item .dropdown-menu>.dropdown>.sort-item {
+        position: relative
+    }
 
     .navbar-expand-xl .navbar-nav>.nav-item .dropdown-menu>.dropdown>.dropdown-item:after {
+        content: "\f285";
+        font-family: bootstrap-icons;
+        color: currentColor;
+        margin-left: 8px;
+        display: inline-block;
+        font-size: .85rem;
+        border: none;
+        position: absolute;
+        top: 9px;
+        right: 7px;
+        font-weight: 600
+    }
+    .navbar-expand-xl .navbar-nav>.nav-item .dropdown-menu>.dropdown>.sort-item:after {
         content: "\f285";
         font-family: bootstrap-icons;
         color: currentColor;
@@ -31046,6 +31175,9 @@ header [data-cart-items]:before {
     }
 
     .navbar-expand-xl .navbar-nav>.nav-item .dropdown-item {
+        font-size: .9rem
+    }
+    .navbar-expand-xl .navbar-nav>.nav-item .sort-item {
         font-size: .9rem
     }
 
@@ -31181,6 +31313,9 @@ header [data-cart-items]:before {
     .navbar-expand-xl .vertical-dropdown-menu>li .dropdown-item {
         padding: .6rem 1rem
     }
+    .navbar-expand-xl .vertical-dropdown-menu>li .sort-item {
+        padding: .6rem 1rem
+    }
 
     .navbar-expand-xl .vertical-dropdown-menu>li .mob-menu {
         line-height: 45px !important;
@@ -31274,8 +31409,24 @@ header [data-cart-items]:before {
     .navbar-expand-xxl .navbar-nav>.nav-item .dropdown-menu>.dropdown>.dropdown-item {
         position: relative
     }
+    .navbar-expand-xxl .navbar-nav>.nav-item .dropdown-menu>.dropdown>.sort-item {
+        position: relative
+    }
 
     .navbar-expand-xxl .navbar-nav>.nav-item .dropdown-menu>.dropdown>.dropdown-item:after {
+        content: "\f285";
+        font-family: bootstrap-icons;
+        color: currentColor;
+        margin-left: 8px;
+        display: inline-block;
+        font-size: .85rem;
+        border: none;
+        position: absolute;
+        top: 9px;
+        right: 7px;
+        font-weight: 600
+    }
+    .navbar-expand-xxl .navbar-nav>.nav-item .dropdown-menu>.dropdown>.sort-item:after {
         content: "\f285";
         font-family: bootstrap-icons;
         color: currentColor;
@@ -31302,6 +31453,9 @@ header [data-cart-items]:before {
     }
 
     .navbar-expand-xxl .navbar-nav>.nav-item .dropdown-item {
+        font-size: .9rem
+    }
+    .navbar-expand-xxl .navbar-nav>.nav-item .sort-item {
         font-size: .9rem
     }
 
@@ -31437,6 +31591,9 @@ header [data-cart-items]:before {
     .navbar-expand-xxl .vertical-dropdown-menu>li .dropdown-item {
         padding: .6rem 1rem
     }
+    .navbar-expand-xxl .vertical-dropdown-menu>li .sort-item {
+        padding: .6rem 1rem
+    }
 
     .navbar-expand-xxl .vertical-dropdown-menu>li .mob-menu {
         line-height: 45px !important;
@@ -31529,8 +31686,24 @@ header [data-cart-items]:before {
 .navbar-expand .navbar-nav>.nav-item .dropdown-menu>.dropdown>.dropdown-item {
     position: relative
 }
+.navbar-expand .navbar-nav>.nav-item .dropdown-menu>.dropdown>.sort-item {
+    position: relative
+}
 
 .navbar-expand .navbar-nav>.nav-item .dropdown-menu>.dropdown>.dropdown-item:after {
+    content: "\f285";
+    font-family: bootstrap-icons;
+    color: currentColor;
+    margin-left: 8px;
+    display: inline-block;
+    font-size: .85rem;
+    border: none;
+    position: absolute;
+    top: 9px;
+    right: 7px;
+    font-weight: 600
+}
+.navbar-expand .navbar-nav>.nav-item .dropdown-menu>.dropdown>.sort-item:after {
     content: "\f285";
     font-family: bootstrap-icons;
     color: currentColor;
@@ -31557,6 +31730,10 @@ header [data-cart-items]:before {
 }
 
 .navbar-expand .navbar-nav>.nav-item .dropdown-item {
+    font-size: .9rem
+}
+
+.navbar-expand .navbar-nav>.nav-item .sort-item {
     font-size: .9rem
 }
 
@@ -31688,6 +31865,9 @@ header [data-cart-items]:before {
 }
 
 .navbar-expand .vertical-dropdown-menu>li .dropdown-item {
+    padding: .6rem 1rem
+}
+.navbar-expand .vertical-dropdown-menu>li .sort-item {
     padding: .6rem 1rem
 }
 

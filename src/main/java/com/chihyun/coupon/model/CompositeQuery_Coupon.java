@@ -10,6 +10,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,13 +22,20 @@ public class CompositeQuery_Coupon {
 
         Predicate predicate = null;
 
-        if ("coupNo".equals(columnName) || "coupRelStat".equals(columnName)) {
+        if ("coupNo".equals(columnName) || "memNo".equals(columnName) || "coupUsedStat".equals(columnName)) {
             predicate = builder.equal(root.get(columnName), Integer.valueOf(value));
-        } else if ("coupName".equals(columnName) || "coupCond".equals(columnName)) {
+        } else if("coupRelStat".equals(columnName)){
+            predicate = builder.equal(root.get(columnName), Byte.valueOf(value));
+        } if ("coupName".equals(columnName) || "coupCond".equals(columnName)) {
             predicate = builder.like(root.get(columnName), "%" + value + "%");
         } else if ("coupDisc".equals(columnName)) {
             predicate = builder.equal(root.get(columnName), new BigDecimal(value));
-        } else if ("coupAddDate".equals(columnName) || "coupExpDate".equals(columnName) || "coupRelDate".equals(columnName)) {
+        } else if ("coupAddDateStart".equals(columnName) || "coupAddDateEnd".equals(columnName) ||
+                "coupExpDateStart".equals(columnName) || "coupExpDateEnd".equals(columnName) ||
+                "coupRelDateStart".equals(columnName) || "coupRelDateEnd".equals(columnName)) {
+
+
+
             predicate = builder.equal(root.get(columnName), java.sql.Date.valueOf(value));
         }
         return predicate;
