@@ -46,17 +46,17 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <div th:fragment="listOneRentSet">
-                                    <th:block th:each="rentSet : ${rentSetListData}">
-                                        <tr>
-                                            <td th:text="${rentSet.compositeDetail.getRentalOrdNo()}"></td>
-                                            <br>
-                                            <td th:text="${rentSet.getRentalSetName()}"></td>
-                                            <br>
-                                            <td th:text="${rentSet.getRentalSetDays()}"></td>
-                                        </tr>
-                                    </th:block>
-                                </div>
+                                    <div th:fragment="OneRentSet">
+                                        <th:block th:each="rentSet : ${rentSetListData}">
+                                            <tr>
+                                                <td th:text="${rentSet.getRentalOrdNo()}"></td>
+                                                <br>
+                                                <td th:text="${rentSet.getRentalSetName()}"></td>
+                                                <br>
+                                                <td th:text="${rentSet.getRentalSetDays()}"></td>
+                                            </tr>
+                                        </th:block>
+                                    </div>
                                 </tbody>
                             </table>
                         </div>

@@ -75,6 +75,9 @@
                                         <h2 th:text="${columnarticle.artTitle}"></h2>
                                     </a>
                                     <p th:text="${columnarticle.artContent}"></p>
+<!--                                    <th:block th:each="clicklike: ${session.clickLikeList}">-->
+<!--                                        <i class="bi bi-heart-fill me-2" th:if="${clicklike.columnArticle.artNo != columnarticle.artNo}" th:onclick="'likeArticle(' + ${session.loginsuccess.memNo} + ', ' + ${columnarticle.artNo} + ')'" style="cursor: pointer;"></i>-->
+<!--                                    </th:block>-->
                                     <i class="bi bi-heart me-2" th:onclick="'likeArticle(' + ${session.loginsuccess.memNo} + ', ' + ${columnarticle.artNo} + ')'" style="cursor: pointer;"></i>
                                     <i class="bi bi-chat-dots me-2"   th:onclick="'showCommentInputModal(' + ${session.loginsuccess.memNo} + ', ' + ${columnarticle.artNo} + ')'" style="cursor: pointer;"></i>
                                     <i class="bi bi-clipboard2-heart" th:onclick="'columnArticleCollection(' + ${session.loginsuccess.memNo} + ', ' + ${columnarticle.artNo} + ')'" style="cursor: pointer;"></i>
@@ -641,6 +644,25 @@
 <!-- 隱藏的input元素來存儲memNo和artNo -->
 <input type="hidden" id="memNo" />
 <input type="hidden" id="artNo" />
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const autoLoginCheckbox = document.getElementById("customCheck");
+
+        // 恢復 checkbox 狀態
+        autoLoginCheckbox.checked = localStorage.getItem("like") === "true";
+
+        // 監聽 checkbox 的變化並保存狀態
+        autoLoginCheckbox.addEventListener("change", function() {
+            localStorage.setItem("like", this.checked);
+            if (this.checked) {
+                this.value = "1";
+            } else {
+                this.value = "0";
+            }
+        });
+    });
+</script>
 
 <!-- End script start -->
 

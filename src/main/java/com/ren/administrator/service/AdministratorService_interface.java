@@ -107,10 +107,9 @@ public interface AdministratorService_interface {
      * 登入成功，修改管理員登入狀態，在Redis資料庫中增加登入狀態緩存
      *
      * @param administrator 使用查詢方法取得Entity，身分核對後將Entity傳入方法內修改登入狀態
-     * @param sessionID 傳入SessionID，於後續存入LoginState
-     * @return 返回帳號登入狀態DTO
+     * @param session 傳入Session，用於獲取sessionID與後續存入登入狀態
      */
-    LoginState login(Administrator administrator, String sessionID);
+    void login(Administrator administrator, HttpSession session);
 
     /**
      * 登出成功，修改管理員登入狀態，並關閉Session，移除Redis資料庫中的登入狀態緩存

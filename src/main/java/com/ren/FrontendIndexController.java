@@ -79,12 +79,13 @@ public class FrontendIndexController {
 
     @GetMapping("/searchMore")
     public String searchMore(@RequestParam("searchQuery") String keyword,
-                             @RequestParam(value = "page", defaultValue = "0") Integer page,
+                             @RequestParam(value = "productPage", defaultValue = "0") Integer productPage,
+                             @RequestParam(value = "rentalPage", defaultValue = "0") Integer rentalPage,
                              @RequestParam(value = "size", defaultValue = "5") Integer size,
                              Model model) {
         // 根據關鍵字做全文搜尋
-        Page<Product> productSearch = productSvc.searchProducts(keyword, page, size);
-        Page<Rental> rentalSearch = rentalSvc.searchRentals(keyword, page, size);
+        Page<Product> productSearch = productSvc.searchProducts(keyword, productPage, size);
+        Page<Rental> rentalSearch = rentalSvc.searchRentals(keyword, rentalPage, size);
 
         // 將搜尋結果加入model
         model.addAttribute("productResults", productSearch.getContent());
@@ -95,25 +96,6 @@ public class FrontendIndexController {
 
         return "frontend/searchMore";
     }
-
-//    @GetMapping("/searchResult")
-//    public String searchResult(@RequestParam("searchQuery") String keyword,
-//                             @RequestParam(value = "page", defaultValue = "0") Integer page,
-//                             @RequestParam(value = "size", defaultValue = "5") Integer size,
-//                             Model model) {
-//        // 根據關鍵字做全文搜尋
-//        Page<Product> productSearch = productSvc.searchProducts(keyword, page, size);
-//        Page<Rental> rentalSearch = rentalSvc.searchRentals(keyword, page, size);
-//
-//        // 將搜尋結果加入model
-//        model.addAttribute("productResults", productSearch.getContent());
-//        model.addAttribute("rentalResults", rentalSearch.getContent());
-//        model.addAttribute("productPage", productSearch);
-//        model.addAttribute("rentalPage", rentalSearch);
-//        model.addAttribute("searchQuery", keyword);
-//
-//        return "frontend/searchMore";
-//    }
 
 
 }

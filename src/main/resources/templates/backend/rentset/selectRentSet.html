@@ -10,9 +10,6 @@
         *{
             font-size: 12px; /* 調整字體大小 */
         }
-        .error {
-            font-size: 12px; /* 調整字體大小 */
-        }
         .bordered-div {
             border: 1px solid black; /* 你可以根據需要調整邊框的樣式 */
             padding: 10px;          /* 內邊距 */
@@ -51,7 +48,7 @@
                                 <label>選擇租借品訂單編號 :</label>
                                 <select name="rentalOrdNo">
                                     <option>請選擇</option>
-                                    <option th:each="rentSet : ${rentSetListData}" th:value="${rentSet.compositeDetail.getRentalOrdNo()}" th:text="${rentSet.compositeDetail.getRentalOrdNo()}"></option>
+                                    <option th:each="rentSet : ${rentSetListData}" th:value="${rentSet.getRentalOrdNo()}" th:text="${rentSet.getRentalOrdNo()}"></option>
                                 </select>
                                 <input type="submit" value="送出">
                             </form><br>
@@ -63,16 +60,8 @@
                                 </select>
                                 <input type="submit" value="送出">
                             </form><br>
-                            <form method="get" th:action="@{search}">
-                                <label>選擇租借天數 :</label>
-                                <select name="rentalSetDays">
-                                    <option>請選擇</option>
-                                    <option th:each="rentSet : ${rentSetListData}" th:value="${rentSet.getRentalSetDays()}" th:text="${rentSet.getRentalSetDays()}"></option>
-                                </select>
-                                <input type="submit" value="送出">
-                            </form><br><br>
                             <div th:if="${search}" class="bordered-div">
-                                <div th:insert="~{/backend/rentset/listOneRentSet :: listOneRentSet}"></div>
+                                <div th:insert="~{/backend/rentset/listOneRentSet :: OneRentSet}"></div>
                             </div>
                         </ul>
                     </div>

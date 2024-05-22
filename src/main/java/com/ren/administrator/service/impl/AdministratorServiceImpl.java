@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpSession;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
@@ -173,7 +174,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
      */
     @Employee(title = "employee", message = "登入")
     @Override
-    public LoginState login(Administrator administrator, String sessionID) {
+    public void login(Administrator administrator, HttpSession session) {
         // Login 1:登入 0:登出 , Logout 1:登出 0:登入
         // 四種情況 1.已登入未登出(帳號使用中) 2.已登入已登出(異常) 3.未登入已登出(帳號未登入) 4.未登入未登出(異常)
         if (administrator.getAdmLogin() == 0 || administrator.getAdmLogout() == 1) {
@@ -183,11 +184,11 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
             administrator = updateAdministrator(administrator);
         }
         Integer admNo = administrator.getAdmNo();
-        LoginState loginState = new LoginState(admNo, administrator.getAdmName(), administrator.getAdmEmail(), sessionID, administrator.getAdmLogin(), administrator.getAdmLogout(), administrator.getAdmActiveTime(), administrator.getTitle().getTitleNo());
+        LoginState loginState = new LoginState(admNo, administrator.getAdmName(), administrator.getAdmEmail(), session.getId(), administrator.getAdmLogin(), administrator.getAdmLogout(), administrator.getAdmActiveTime(), administrator.getTitle().getTitleNo());
         // 將登入狀態放入Redis資料庫，供LoginStateFilter於每次發出請求時做登入狀態驗證
         storeLoginstateInRedis(admNo, loginState);
+        session.setAttribute("loginState", loginState);
 
-        return loginState;
     }
 
     /**

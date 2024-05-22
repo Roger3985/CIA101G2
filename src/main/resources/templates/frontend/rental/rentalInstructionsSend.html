@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="zxx">
+
+<head>
+    <!-- metas -->
+    <meta charset="utf-8">
+    <meta name="author" content="pxdraft">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <!-- title -->
+    <title>租借品專區 - 租借須知</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <!-- CSS Template -->
+    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+
+
+    <style>
+
+        span.successMsg {
+            /* 確保初始狀態為隱藏，以便fadeIn能正常工作 */
+            display: none;
+        }
+
+    </style>
+
+
+</head>
+
+<body>
+<!-- 通用插件 -->
+<th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block>
+<!-- 通用插件 -->
+<!--
+========================
+    Wrapper
+========================
+-->
+<div class="wrapper">
+    <!-- header height -->
+    <div class="header-height-bar" style="min-height: 144.865px;"></div>
+    <!-- Header -->
+    <header th:replace="frontend/component/header :: header"></header>
+    <!-- End Header -->
+    <!-- Main -->
+    <main>
+        <!-- 租借品專區 - 租借須知 -->
+        <div class="py-3 bg-gray-100">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 my-2">
+                        <h1 class="m-0 h4 text-center text-lg-start">租借須知</h1>
+                    </div>
+                    <div class="col-lg-6 my-2">
+                        <ol class="breadcrumb m-0 small justify-content-center justify-content-lg-end">
+                            <li class="breadcrumb-item">
+                                <a class="text-nowrap text-reset" th:href="@{/frontend/index}">Home</a>
+                            </li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page">租借須知</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Breadcrumb -->
+        <!-- Shop -->
+        <section class="py-6">
+            <div class="container">
+                <div class="row">
+                    <!-- 側邊攔 -->
+                    <div class="col-lg-4 col-xl-3 pe-xl-5 offcanvas-lg offcanvas-start px-0 px-lg-3" tabindex="-1"
+                         id="shop_filter" aria-labelledby="shop_filterLabel">
+                        <div class="offcanvas-header border-bottom">
+                            <h5 class="offcanvas-title" id="shop_filterLabel">Shop Filter</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                                    data-bs-target="#shop_filter" aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="offcanvas-body flex-column">
+                            <!-- Categories -->
+                            <div class="shop-sidebar-block">
+                                <div class="shop-sidebar-title">
+                                    <a class="h5" data-bs-toggle="collapse" href="#shop_categories" role="button"
+                                       aria-expanded="true" aria-controls="shop_categories">
+                                        租借須知 <i class="bi bi-chevron-up"></i>
+                                    </a>
+                                </div>
+                                <div class="shop-category-list collapse show" id="shop_categories">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a th:href="@{/frontend/rental/rentalInstructions}" class="nav-link active">租借詳情</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a th:href="@{/frontend/rental/rentalInstructionsSend}" class="nav-link active">運送方式</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a th:href="@{/frontend/rental/rentalInstructionsSize}" class="nav-link active">尺寸表</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End Sidebar -->
+                    <!-- 商品列表 -->
+                    <div class="col-lg-8 col-xl-9">
+                        <div class="shop-top-bar d-flex pb-3">
+                            <!-- 文章列表 -->
+                            <section class="col-sm-12 col-md-9">
+                                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <img class="border img-fluid w-100" th:src="@{'/icons/frontend/shopping.png'}"
+                                         th:width="276" th:height="310" title="" alt="">
+                                </div><br>
+                                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <img class="border img-fluid w-100" th:src="@{'/icons/frontend/sendOrder.png'}"
+                                         th:width="276" th:height="310" title="" alt="">
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Shop -->
+    </main>
+    <!-- End Main -->
+    <!-- Footer -->
+    <footer th:replace="frontend/component/footer :: footer"></footer>
+    <!-- End Footer -->
+</div>
+<!--
+========================
+   End Wrapper
+========================
+-->
+<!-- script start -->
+<th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
+<!-- End script start -->
+
+<script>
+
+    /*----------------------------右翰寫的方法----------------------------------*/
+
+    $(function () {
+
+        let baseUrl = window.location.protocol + "//" + window.location.host;
+        let rentalAllPrice = 0;
+        let rentalAllDepPrice = 0;
+
+        function getAll() {
+
+            // items.length = 0;
+            rentalAllPrice = 0;
+            rentalAllDepPrice = 0;
+            let apiPath = "/backend/rentalorder/";
+            let memNo = 1;
+
+            fetch(baseUrl + apiPath + "getFromCart?memNo=" + memNo)
+                .then(function (response) {
+                    return response.json();
+                }).then(function (data) {
+
+                let itemContainer = $("ul.list-unstyled");
+                // console.log(itemContainer);
+                // 每次更新前清空，放購物車資訊的 ul
+                itemContainer.empty();
+
+                let totalItems = Object.keys(data).length; // 計算購物車商品數量
+                $("span[data-cart-items]").attr("data-cart-items", totalItems); // 更新購物車商品數量圖示
+
+                /*
+                 * 遍歷陣列裡每個元素，每個元素都是一對 key, item，以下舉例 :
+                 * [陣列1, 陣列2]
+                 * 陣列1 => ["member : 1 : cartItem : 5011", {rentalCatNo : "5", rentalColor : "深卡其色"...}]
+                */
+                Object.entries(data).forEach(([key, item]) => {
+
+                    // if (item.rentalStat === "0") {
+                    //     items.push(item.rentalNo);
+                    // }
+
+                    // 拼接首頁購物車區塊小明細
+                    if (item.rentalStat === "0") {
+
+                        let cartItem = $("<li>", {
+                            "class" : "py-2"
+                        }).appendTo(itemContainer);
+                        let firstDiv = $("<div>", {
+                            "class" : "row align-items-center"
+                        }).appendTo(cartItem);
+                        let aDiv = $("<div>", {
+                            "class" : "col-4"
+                        }).appendTo(firstDiv);
+                        let aForItemImage = $("<a>", {
+                            "href" : "#"
+                        }).appendTo(aDiv);
+                        let itemImage = $("<img>", {
+                            "class" : "img-fluid border",
+                            "th:src" : "@{/frontend/assets/img/fashion/product-x-1.jpg}",
+                            "alt" : "..."
+                        }).appendTo(aForItemImage);
+                        let divForInfo = $("<div>", {
+                            "class" : "col-8"
+                        }).appendTo(firstDiv);
+
+
+                        /*
+                         <ul class="list-unstyled m-0 p-0">
+                            <li class="py-2">
+                                <div class="row align-items-center">
+                                    <div class="col-4"> adiv
+                                        <!-- Image -->
+                                        <a href="#"> aForItemImage
+                                            <img class="img-fluid border" th:src="@{/frontend/assets/img/fashion/product-x-1.jpg}" alt="...">
+                                        </a>
+                                    </div>
+                                    <div class="col-8"> divForInfo
+                                        <!-- Title -->
+                                        <p class="mb-2">
+                                            <a class="text-mode fw-500" href="#">這裡是品名</a>
+                                            <span class="m-0 text-muted w-100 d-block">這裡是價格</span>
+                                        </p>
+                                        <!--Footer -->
+                                        <div class="d-flex align-items-center">
+                                            <!-- Remove -->
+                                            <a class="small text-mode ms-auto" href="#!">
+                                                <i class="bi bi-x"></i> Remove
+                                            </a>
+                                        </div>
+                                    </div> // div col-8 結束
+                                </div>
+                            </li>
+                         */
+
+                        rentalAllPrice += parseFloat(item.rentalPrice);
+                        rentalAllDepPrice += parseFloat(item.rentalDesPrice);
+
+                    }
+
+                });
+
+                // console.log(items);
+                $("span.rentalAllPrice").text(rentalAllPrice);
+                $("span.rentalAllDepPrice").text(rentalAllDepPrice);
+                $("span.totalPrice").text( (rentalAllPrice + rentalAllDepPrice) );
+
+            });
+
+        } // getAll()結束
+        // 進來頁面就先取一次
+        getAll();
+
+        // 加入購物車 339
+        $(document).on("click", "a.btn_addToCart", function (e) {
+
+            e.preventDefault();
+            /*
+             * 拼接動態前置路徑 (為適應上雲時路徑變化)
+             * window.location.protocol = 當前頁面所使用之通訊協定 (ex : http: 、 https:)
+             * window.location.host = 當前頁面主機名和連接阜號 (ex : localhost:8080)
+            */
+            let apiPath = "/backend/rentalorder/setToCart";
+            let $this = $(this);
+            // span.rentalNo
+            let rentalNo = $this.closest("div.rental").find("span.rentalNo").text().trim();
+            let memNo = 1;
+
+            let data = {
+                "rentalNo" : rentalNo,
+                "memNo" : memNo
+            };
+
+            fetch(baseUrl + apiPath, {
+                method : "POST",
+                headers : {
+                    "Content-Type" : "application/json"
+                },
+                body : JSON.stringify(data)
+            }).then(function (response) {
+                // console.log(response)
+                return response.text();
+            }).then(function (rentalName) {
+                // console.log(rentalName);
+                // console.log(this);
+                $this.closest("div.rental").find("span.successMsg").text("已將" + rentalName + "加入購物車!").fadeIn(0).delay(500).fadeOut(500);
+            })
+
+        }); // 加入購物車方法結束
+
+    }); // DOMContentLoaded 結束
+
+    /*----------------------------右翰寫的方法----------------------------------*/
+
+</script>
+<script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
+</body>
+</html>

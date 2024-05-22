@@ -35,4 +35,8 @@ public class Validator {
         return compressFileRegex.matcher(contentType).find();
     }
 
+    public static boolean validateInteger(String userId) {
+        return integerRegex.matcher(userId).find();
+    }
+
 }

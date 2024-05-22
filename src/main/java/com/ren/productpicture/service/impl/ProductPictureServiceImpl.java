@@ -6,6 +6,7 @@ import com.ren.product.dao.ProductRepository;
 import com.ren.productpicture.dao.ProductPictureRepository;
 import com.ren.productpicture.service.ProductPictureService_interface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
@@ -20,6 +21,13 @@ public class ProductPictureServiceImpl implements ProductPictureService_interfac
 
 	@Autowired
 	private ProductPictureRepository productPictureRepository;
+
+	@Autowired
+	private SimpMessagingTemplate messagingTemplate;
+
+	public void sendProgress(String sessionId, int progress) {
+		messagingTemplate.convertAndSendToUser(sessionId, "/topic/progress", progress);
+	}
 
 	/**
 	 * 新增商品照片

@@ -29,4 +29,14 @@ public interface ColumnReplyService {
      * @return 關聯到指定文章編號的 {@link ColumnReply} 實體列表。
      */
     public List<ColumnReply> getRepliesByArticleId(Integer artNo);
+
+    public List<ColumnReply> getColumnReplyByMemNo(Integer memNo);
+
+    /**
+     * 根據列回覆編號獲取列回覆。
+     *
+     * @param columnReplyNo 列回覆編號
+     * @return 對應於給定編號的列回覆對象，如果未找到則返回 null
+     */
+    public ColumnReply getColumnReplyByColumnReplyNo(Integer columnReplyNo);
 }

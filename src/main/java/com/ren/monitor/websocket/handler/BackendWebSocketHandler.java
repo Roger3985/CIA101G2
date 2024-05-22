@@ -1,4 +1,4 @@
-package com.ren.administrator.websocket.handler;
+package com.ren.monitor.websocket.handler;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;

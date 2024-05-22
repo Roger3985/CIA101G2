@@ -79,13 +79,13 @@
                             class="px-dropdown-toggle mob-menu"></label>
                         <ul class="dropdown-menu left shadow-lg">
                                 <li><a class="dropdown-item" th:href="@{/frontend/news/selectNews}">最新消息</a></li>
-                            <li><a class="dropdown-item" th:href="@{/frontend/service/policy}">隱私政策</a></li>
+                            <li><a class="dropdown-item" th:href="@{/frontend/serviceRobot/chatRobot}">隱私政策</a></li>
                             <li><a class="dropdown-item" th:href="@{/frontend/service/frontendServiceChat}">聯繫客服</a>
                             </li>
                             <li><a class="dropdown-item" th:href="@{/frontend/service/contactus}">聯繫我們</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown nav-item"><a href="#" class="nav-link">一般商品</a> <label
+                    <li class="dropdown nav-item"><a href="#" class="nav-link">商品專區</a> <label
                             class="px-dropdown-toggle mob-menu"></label>
                         <ul class="dropdown-menu left shadow-lg">
                             <li><a class="dropdown-item" th:href="@{/frontend/product/visitProduct}">最新上市</a></li>
@@ -117,7 +117,7 @@
             </div>
             <!-- Acount -->
             <div class="nav-item dropdown"><a class="nav-link" href="#" role="button" id="dropdown_myaccount"
-                                              data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                   data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
                     class="fi-user"></i></a>
                 <div class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="dropdown_myaccount">
                     <div class="d-flex flex-column align-items-center">
@@ -128,7 +128,7 @@
                              style="width: 80px; height: 80px; border: 1px solid #ccc;"
                              alt="會員大頭貼"
                              th:if="${session.loginsuccess}">
-                        <a class="dropdown-item" href="#" th:if="${session.loginsuccess}">Wishlist</a>
+                        <a class="dropdown-item" th:href="@{frontend/rentalmytrack/toRentalMyTrack}" th:if="${session.loginsuccess}">追蹤清單</a>
                         <a class="dropdown-item" th:href="@{/frontend/member/memberData}" th:if="${session.loginsuccess}">My account</a>
                         <a class="dropdown-item" th:href="@{/frontend/member/logoutMember}" th:if="${session.loginsuccess}">Logout</a>
                     </div>
@@ -144,7 +144,6 @@
                             th:if="${session.unreadNoticeCount > 0}">
                     </span>
                 </a>
-
                 <div class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="dropdown_mynotice">
                     <div class="d-flex flex-column align-items-center">
                         <!-- Show login prompt if not logged in -->
@@ -168,8 +167,19 @@
                 </div>
             </div>
             <!-- Wishlist -->
-            <div class="nav-item d-none d-xl-block">
-                <a class="nav-link" th:href="@{/frontend/rental/rentalFAVList}"><i class="fi-heart"></i></a>
+            <div class="nav-item dropdown">
+                <a class="nav-link" href="#" role="button" id="dropdown_wish" data-bs-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false"><i class="fi-heart"></i></a>
+                <div class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="dropdown_wish">
+                    <div class="d-flex flex-column align-items-center">
+                        <!--  若未登入   -->
+                        <a class="dropdown-item" th:href="@{/frontend/member/loginMember}" th:unless="${session.loginsuccess}">我的最愛清單 (商品)</a>
+                        <a class="dropdown-item" th:href="@{/frontend/member/loginMember}" th:unless="${session.loginsuccess}">我的最愛清單 (租借品)</a>
+                        <!--  若已登入   -->
+                        <a class="dropdown-item" th:href="@{/frontend/productmyfavorite/myProductFAV}" th:if="${session.loginsuccess}">我的最愛清單 (商品)</a>
+                        <a class="dropdown-item" th:href="@{/frontend/rentalmyfavorite/myRentalFAV}" th:if="${session.loginsuccess}">我的最愛清單 (租借品)</a>
+                    </div>
+                </div>
             </div>
             <!-- Cart -->
             <div class="nav-item"><a class="nav-link" data-bs-toggle="offcanvas" href="#modalMiniCart" role="button"

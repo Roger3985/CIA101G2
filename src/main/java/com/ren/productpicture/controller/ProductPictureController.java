@@ -4,6 +4,9 @@ import com.ren.administrator.entity.Administrator;
 import com.ren.product.service.impl.ProductServiceImpl;
 import com.ren.productpicture.entity.ProductPicture;
 import com.ren.productpicture.service.impl.ProductPictureServiceImpl;
+import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +40,13 @@ public class ProductPictureController {
 
     @Autowired
     private ProductServiceImpl productSvc;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    private AmqpAdmin amqpAdmin;
+
 
     @GetMapping("/selectProductPicture")
     public String toProductPicture() {
@@ -111,6 +122,80 @@ public class ProductPictureController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body("檔案上傳成功");
     }
+
+//    @PostMapping("/uploads")
+//    public ResponseEntity<String> uploadFiles(@Valid ProductPicture productPicture, BindingResult result, ModelMap model,
+//                                             @RequestParam("productPic") MultipartFile[] files) throws IOException {
+//
+//        if (files[0].isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                    .body("沒有上傳檔案");
+//        }
+//
+//        byte[] uploadFile = null;
+//        for (MultipartFile file : files) {
+//            uploadFile = file.getBytes();
+//            String fileType = file.getContentType();
+//            productPicture.setMimeType(fileType);
+//            // 檢查檔案類別，如果是jpeg or png等已壓縮檔案，直接上傳，如果不是，執行壓縮
+//            if (validateFileType(fileType)) {
+//                System.out.println("不需要壓縮!");
+//                productPicture.setProductPic(uploadFile);
+//                productPictureSvc.addProductPicture(productPicture);
+//            } else {
+//                System.out.println("看來需要壓縮哦!");
+//                productPictureSvc.storeFile(uploadFile, productPicture);
+//            }
+//        }
+//
+//
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .body("檔案上傳成功");
+//    }
+
+//    @ResponseBody
+//    @PostMapping("/uploads")
+//    public ResponseEntity<String> uploadFiles(@RequestParam("sessionId") String sessionId,
+//                                              @RequestParam("productPic") MultipartFile[] files) throws IOException {
+//
+//        if (files[0].isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                    .body("沒有上傳檔案");
+//        }
+//
+//        String queueName = "fileUploadQueue-" + sessionId;
+//        Queue queue = new Queue(queueName, false);
+//        amqpAdmin.declareQueue(queue);
+//
+//        for (MultipartFile file : files) {
+//            byte[] uploadFile = file.getBytes();
+//            String fileType = file.getContentType();
+//            ProductPicture productPicture = new ProductPicture();
+//            productPicture.setMimeType(fileType);
+//            productPicture.setProductPic(uploadFile);
+//            productPicture.setSessionId(sessionId);
+//
+//            int chunkSize = 1024 * 64; // 64KB per chunk
+//            int totalChunks = (int) Math.ceil((double) uploadFile.length / chunkSize);
+//
+//            for (int i = 0; i < totalChunks; i++) {
+//                int progress = (i + 1) * 100 / totalChunks;
+//                webSocketService.sendProgress(sessionId, progress);
+//
+//                int start = i * chunkSize;
+//                int end = Math.min(start + chunkSize, uploadFile.length);
+//                byte[] chunk = Arrays.copyOfRange(uploadFile, start, end);
+//
+//                productPicture.setProductPic(chunk);
+//
+//                // 發送消息到動態創建的佇列
+//                rabbitTemplate.convertAndSend(queueName, productPicture);
+//            }
+//        }
+//
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .body("檔案上傳成功，正在處理");
+//    }
 
     @GetMapping("/download/{productPicNo}")
     public ResponseEntity<byte[]> downloadFile(@PathVariable Integer productPicNo) {

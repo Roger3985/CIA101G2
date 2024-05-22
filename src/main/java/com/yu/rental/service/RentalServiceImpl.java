@@ -56,7 +56,7 @@ public class RentalServiceImpl implements RentalService {
 
 	//處理查詢(依租借品的顏色)
 	@Override
-	public Rental getRentalColor(String rentalColor) {
+	public List<Rental> getRentalColor(String rentalColor) {
 		return repository.findQueryByRentalColor(rentalColor);
 	}
 
