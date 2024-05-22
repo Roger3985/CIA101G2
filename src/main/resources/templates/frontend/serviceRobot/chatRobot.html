@@ -19,16 +19,53 @@
         <form id="messageForm" name="messageForm">
             <div class="message-input">
                 <input autocomplete="off" type="text" id="message" placeholder="Type your message...">
-                <button type="button" id="msg_btn" onclick="sendMessge()">Send</button>
+                <button type="button" id="msg_btn">Send</button>
             </div>
         </form>
     </div>
 </div>
 
 <script>
+    var messageForm_el = document.getElementById("messageForm");
+    messageForm_el.addEventListener("submit", function (e){
+        e.preventDefault();
+    });
     var chatArea = document.querySelector("#chat-messages");
+    var messageInput_el = document.getElementById("message");
 
-    async function sendMessage() {
+    messageInput_el.addEventListener("keyup", function (e){
+        console.log(e.which);
+        if(e.which == 13){
+            msg_btn_el.click();
+        }
+    });
+
+
+    // async function sendMessage() {
+
+    var msg_btn_el = document.getElementById("msg_btn");
+    msg_btn_el.addEventListener("click", function (){
+        // alert("aaaa");
+
+        var content = document.getElementById("message").value.trim();
+        if(content === ''){
+            alert("請輸入訊息");
+        }else{
+            const messageContainer = document.createElement('div');
+            // const message = document.createElement('p');
+            message.innerHTML = content;
+            messageContainer.classList.add('message');
+            messageContainer.classList.add('sender');
+            messageContainer.appendChild(message);
+            chatArea.appendChild(messageContainer);
+
+            content.value = '';
+
+        }
+
+
+
+    })
 
         var content = document.getElementById("message").value.trim();
         content.value = '';
@@ -42,34 +79,34 @@
         chatArea.appendChild(messageContainer);
 
 
-        try {
-            const response = await fetch("/robotReply", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringtify({message: content})
-            });
+        // try {
+        //     const response = await fetch("/robotReply", {
+        //         method: 'GET',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify({message: content})
+        //     });
+        //
+        //     if (!response.ok) {
+        //         throw new Error('Http error! status: ${response.status}');
+        //     }
+        //     const data = await response.JSON();
+        //     const messageContainer = document.createElement('div');
+        //     messageContainer.classList.add('message');
+        //     messageContainer.classList.add('sender');
+        //     const botMsg = document.createElement('p');
+        //     messageContainer.appendChild(botMsg);
+        //     chatArea.appendChild(messageContainer);
+        //
+        // } catch (error) {
+        //     console.error('Error:', error);
+        //     const errorMessage = document.createElement('div');
+        //     errorMessage.textContent = 'An error occurred. Please try again.';
+        //     document.getElementById('messages').appendChild(errorMessage);
+        // }
 
-            if (!response.ok) {
-                throw new Error('Http error! status: ${response.status}');
-            }
-            const data = await response.JSON();
-            const messageContainer = document.createElement('div');
-            messageContainer.classList.add('message');
-            messageContainer.classList.add('sender');
-            const botMsg = document.createElement('p');
-            messageContainer.appendChild(botMsg);
-            chatArea.appendChild(messageContainer);
-
-        } catch (error) {
-            console.error('Error:', error);
-            const errorMessage = document.createElement('div');
-            errorMessage.textContent = 'An error occurred. Please try again.';
-            document.getElementById('messages').appendChild(errorMessage);
-        }
-
-    }
+    // }
 
 
 </script>
