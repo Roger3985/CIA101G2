@@ -15,6 +15,14 @@
     <!-- CSS Template -->
     <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
 
+    <style>
+
+        .nonono {
+            display: none !important;
+        }
+
+    </style>
+
 </head>
 
 <body>
@@ -69,7 +77,8 @@
 
                         <!-- 以下追蹤品 -->
                         <th:block th:each="track : ${frontendTrackList}">
-                            <div class="d-flex align-items-center flex-row w-100 pb-3 mb-3 border-bottom rentalmytrack" th:data-memNo="${track.getMember().getMemNo()}">
+                            <div class="d-flex align-items-center flex-row w-100 pb-3 mb-3 border-bottom rentalmytrack">
+                                <input class="memNo" type="hidden" th:value="${track.getMember().getMemNo()}">
                                 <a class="d-inline-block flex-shrink-0 me-3" href="#">
                                     <img th:src="@{'/icons/frontend/rental/rentalshop/' + ${track.getRental().getRentalNo()} + '.jpg'}" width="120" alt="Product">
                                 </a>
@@ -104,7 +113,7 @@
                                         <a href="" class="btn btn-mode btn_addToCart" style="margin-top: 30px">
                                             <i class="fi-shopping-cart"></i>
                                         </a>
-                                        <a href="" class="btn btn-mode btn_addToCart" style="margin-top: 30px">
+                                        <a href="" class="btn btn-mode btn_delTrack" style="margin-top: 30px">
                                             <i class="bi-trash3 me-2"></i>
                                         </a>
                                     </div>
@@ -114,8 +123,8 @@
                         </th:block>
                         <!-- 以上追蹤品 -->
 
-                        <button class="btn btn-primary d-block w-100 mt-4" type="button"><i
-                                class="bi-arrow-repeat fs-base me-2"></i>重整
+                        <button class="btn btn-primary d-block w-100 mt-4" type="button">
+                            <i class="bi-arrow-repeat fs-base me-2"></i>重整
                         </button>
                     </div>
                     <!-- Cart Sidebar -->
@@ -224,7 +233,17 @@
             // 去除重複
             let tracks = $("div.rentalmytrack");
             // console.log(tracks);
+            $.each(tracks, function (index, track) {
 
+                // console.log($(track).find("input.memNo").val());
+                // console.log($(track).find("input.memNo").val() !== memNo.toString());
+                if ($(track).find("input.memNo").val() !== memNo.toString()) {
+                    // console.log("濾掉1個");
+                    // $(track).hide();
+                    $(track).addClass("nonono");
+                }
+
+            });
 
             // 加入購物車 339
             $(document).on("click", "a.btn_addToCart", function (e) {
@@ -262,6 +281,34 @@
                 })
 
             }); // 加入購物車方法結束
+
+            // 刪除追蹤
+            $(document).on("click", "a.btn_delTrack", function (e) {
+
+                e.preventDefault();
+                let $this = $(this);
+                let apiPath = "/frontend/rentalmytrack";
+                // span.rentalNo
+                let rentalNo = $this.closest("div").find("input.rentalNo").val();
+
+                if (confirm("確定刪除追蹤?")) {
+
+                    fetch(baseUrl + apiPath + "/deleteTrack?memNo=" + memNo + "&rentalNo=" + rentalNo, {
+                        method : "DELETE"
+                    }).then(function (response) {
+                        return response.text();
+                    }).then(function (data) {
+                        if (data === "ok") {
+                            alert("刪除成功");
+                            // 在這刪除該筆追蹤
+                            $this.closest("div.rentalmytrack").remove();
+                        }
+                    });
+
+                }
+
+            }); // 刪除追蹤 結束
+
 
         });
 
