@@ -139,6 +139,7 @@ import com.chihyun.coupon.model.CouponService;
 import com.iting.cart.entity.CartRedis;
 import com.iting.cart.service.CartService;
 
+import com.iting.productorder.entity.ProductOrder;
 import com.iting.productorder.service.ProductOrderService;
 import com.ren.product.service.impl.ProductServiceImpl;
 import com.ren.productpicture.entity.ProductPicture;
@@ -192,9 +193,11 @@ public class CartController {
 
 
     @PostMapping("/cart/ProductOrderSuccess")
-    public String ProductOrderSuccess(HttpSession session) {
-
-
+    public String ProductOrderSuccess(HttpSession session,Model model) {
+        Member myData = (Member) session.getAttribute("loginsuccess");
+        Integer memNo = myData.getMemNo();
+        List<ProductOrder> list = productOrderService.findByMember(memNo);
+        model.addAttribute("productorderListData", list);
         return "frontend/cart/ProductOrderPaySuccess";
 
     }

@@ -169,7 +169,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     {
 
         try {
-            // 调用ECPay支付接口的代码
+
             AllInOne all = new AllInOne("");
             AioCheckOutALL obj = new AioCheckOutALL();
             BigDecimal AllPrice = productOrder.getProductRealPrice();

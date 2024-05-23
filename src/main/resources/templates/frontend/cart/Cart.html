@@ -58,6 +58,9 @@
 <!--    <p style="display: none" th:text="${memNo}" id="memNo"></p>-->
 <form th:action="@{/frontend/productorder/insertOrder}" method="post" th:object="${cartListData}"
       onsubmit="return validateForm()">
+
+
+
     <table class="table">
         <thead>
         <tr>
@@ -134,8 +137,10 @@
                 </li>
             </ul>
             <div class="pt-2 pb-4">
-                <div class="d-flex">
-
+                <div class="d-flex justify-content-between align-items-center pb-4 border-bottom mb-4">
+                    <a class="btn btn-outline-primary btn-sm ps-2" th:href="@{/frontend/product/visitProduct}">
+                        <i class="ci-arrow-left me-2"></i>繼續購物
+                    </a>
                     <button class="btn btn-dark btn-sm ms-2">結帳</button>
                 </div>
             </div>
