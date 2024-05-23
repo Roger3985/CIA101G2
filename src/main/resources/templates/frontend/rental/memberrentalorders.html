@@ -15,6 +15,14 @@
     <!-- CSS Template -->
     <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
 
+    <style>
+
+        .nonono {
+            display: none !important;
+        }
+
+    </style>
+
 </head>
 
 <body>
@@ -70,42 +78,42 @@
                             <ul class="list-unstyled mb-0 theme-link">
 
                                 <li class="border-bottom mb-0">
-                                    <a class="nav-link-style d-flex align-items-center active p-3" th:href="@{/backend/rentalorder/getOnAnyForOrdersPage}">
+                                    <a class="nav-link-style d-flex align-items-center active p-3" th:href="@{/frontend/rentalorder/getOnAnyForOrdersPage}">
                                         <i class="bi bi-bag me-2"></i> 全部
                                         <div class="ms-auto badge-pill badge bg-secondary"><!--這裡放右邊的方塊--></div>
                                     </a>
                                 </li>
 
                                 <li class="border-bottom mb-0">
-                                    <a class="nav-link-style d-flex align-items-center active p-3" th:href="@{/backend/rentalorder/getOnAnyForOrdersPage(rentalOrdStat=10)}">
+                                    <a class="nav-link-style d-flex align-items-center active p-3" th:href="@{/frontend/rentalorder/getOnAnyForOrdersPage(rentalOrdStat=10)}">
                                         <i class="bi bi-bag me-2"></i> 揀貨中
                                         <div class="ms-auto badge-pill badge bg-secondary"><!--這裡放右邊的方塊--></div>
                                     </a>
                                 </li>
 
                                 <li class="border-bottom mb-0">
-                                    <a class="nav-link-style d-flex align-items-center p-3" th:href="@{/backend/rentalorder/getOnAnyForOrdersPage(rentalOrdStat=20)}">
+                                    <a class="nav-link-style d-flex align-items-center p-3" th:href="@{/frontend/rentalorder/getOnAnyForOrdersPage(rentalOrdStat=20)}">
                                         <i class="fi-heart me-2"></i> 配送中
                                         <div class="ms-auto badge-pill badge bg-secondary"></div>
                                     </a>
                                 </li>
 
                                 <li class="border-bottom mb-0">
-                                    <a class="nav-link-style d-flex align-items-center p-3" th:href="@{/backend/rentalorder/getOnAnyForOrdersPage(rentalOrdStat=30)}">
+                                    <a class="nav-link-style d-flex align-items-center p-3" th:href="@{/frontend/rentalorder/getOnAnyForOrdersPage(rentalOrdStat=30)}">
                                         <i class="bi bi-bookmark me-2"></i> 等待取貨
                                         <div class="ms-auto badge-pill badge bg-secondary"></div>
                                     </a>
                                 </li>
 
                                 <li class="border-bottom mb-0">
-                                    <a class="nav-link-style d-flex align-items-center p-3" th:href="@{/backend/rentalorder/getOnAnyForOrdersPage(rentalOrdStat=35)}">
+                                    <a class="nav-link-style d-flex align-items-center p-3" th:href="@{/frontend/rentalorder/getOnAnyForOrdersPage(rentalOrdStat=35)}">
                                         <i class="fi-heart me-2"></i> 租用中
                                         <div class="ms-auto badge-pill badge bg-secondary"></div>
                                     </a>
                                 </li>
 
                                 <li class="border-bottom mb-0">
-                                    <a class="nav-link-style d-flex align-items-center active p-3" th:href="@{/backend/rentalorder/getOnAnyForOrdersPage(rentalOrdStat=50)}">
+                                    <a class="nav-link-style d-flex align-items-center active p-3" th:href="@{/frontend/rentalorder/getOnAnyForOrdersPage(rentalOrdStat=50)}">
                                         <i class="bi bi-bag me-2"></i> 已完成
                                         <div class="ms-auto badge-pill badge bg-secondary"></div>
                                     </a>
@@ -137,6 +145,7 @@
 
                         </div>
                     </div><!-- End Profile Menu --><!-- Content -->
+                    <input id="memNoForFil" type="hidden" th:value="${member.getMemNo()}">
                     <div class="col-lg-8 col-xxl-9">
                         <div class="table-responsive fs-md mb-4">
                             <table class="table table-bordered table-hover mb-0">
@@ -152,6 +161,7 @@
                                     <th:block th:each="order : ${orderList}">
                                         <tr th:id="${order.getrentalOrdNo()}" class="eachOrder">
                                             <td class="p-3">
+                                                <input class="allMemNoForFil" type="hidden" th:value="${order.getMember().getMemNo()}">
                                                 <a class="text-mode" href="#order-details" data-bs-toggle="modal" th:text="${order.getrentalOrdNo()}"></a>
                                             </td>
                                             <td class="p-3" th:text="${#dates.format(order.getrentalBackDate(), 'yyyy 年 M 月 d 日 HH 時 m 分')}"></td>
@@ -200,15 +210,26 @@
 
     $(function () {
 
+        let userMemNo = $("input#memNoForFil").val();
+        // let allMemNos = [];
+        let allMemNo = $("input.allMemNoForFil");
+        $.each(allMemNo, function (index, eachMemNo) {
 
-        // let theme = localStorage.getItem("theme");
-        // if (theme) {
-        //     document.documentElement.setAttribute("data-bs-theme", theme);
-        // }
+            if ($(eachMemNo).val() !== userMemNo.toString()) {
+                // console.log("成功過濾");
+                $(eachMemNo).closest("tr.eachOrder").addClass("nonono");
+            }
+
+        });
+        // allMemNo.each(function () {
+        //     allMemNos.push($(this).val());
+        // });
+        // console.log(allMemNos);
+
 
         // 送出到單筆訂單的 get 請求的 func
         function toMemberRentalOrder(rentalOrdNo) {
-            let url = "/backend/rentalorder/toMemberRentalOrder?rentalOrdNo=" + rentalOrdNo;
+            let url = "/frontend/rentalorder/toMemberRentalOrder?rentalOrdNo=" + rentalOrdNo;
             window.location.href = url;
         }
         // 按任一訂單的任意元素觸發

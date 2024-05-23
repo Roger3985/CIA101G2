@@ -168,7 +168,7 @@
                                         </li>
                                     </ul>
                                     <div class="d-grid gap-2 mx-auto">
-                                        <a class="btn btn-primary" href="/backend/rentalorder/toRentalPayment">
+                                        <a class="btn btn-primary" th:href="@{/frontend/rentalorder/toRentalPayment}">
                                             <i class="bi-credit-card-2-back me-2"></i>準備結帳
                                         </a>
                                     </div>
@@ -201,7 +201,7 @@
     $(function () {
 
         let baseUrl = window.location.protocol + "//" + window.location.host;
-        let apiPath = "/backend/rentalorder";
+        let apiPath = "/frontend/rentalorder";
         let memNo = 1;
         let rentalAllPrice = 0;
         let rentalAllDepPrice = 0;
@@ -393,8 +393,7 @@
             let rentalNo = $(this).closest("div.cartItem").attr("data-rentalNo");
             rentalNos.push(rentalNo);
             let data = {
-                "rentalNos" : rentalNos,
-                "memNo" : memNo
+                "rentalNos" : rentalNos
             };
 
             if (confirm("確定從購物車刪除?")) {
