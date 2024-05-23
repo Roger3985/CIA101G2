@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat UI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e6ecf0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .chat-container {
+            width: 360px;
+            background-color: #f5f8fa;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .message:last-child {
+            margin-bottom: 0;
+        }
+
+        .avatar {
+            margin-right: 10px;
+        }
+
+        .avatar img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .bubble {
+            background-color: #ffffff;
+            padding: 10px 15px;
+            border-radius: 15px;
+            position: relative;
+            max-width: 260px;
+        }
+
+        .bubble::after {
+            content: "";
+            position: absolute;
+            top: 10px;
+            left: -8px;
+            width: 0;
+            height: 0;
+            border: 8px solid transparent;
+            border-right-color: #ffffff;
+        }
+
+        .text {
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .time {
+            font-size: 12px;
+            color: #999999;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="chat-container">
+    <div class="message">
+        <div class="avatar">
+            <img src="avatar-david.png" alt="David">
+        </div>
+        <div class="bubble">
+            <div class="text">下週要不要去戶外走走？好需透透氣</div>
+            <div class="time">8:23 PM</div>
+        </div>
+    </div>
+    <div class="message">
+        <div class="avatar">
+            <img src="avatar-emily.png" alt="Emily">
+        </div>
+        <div class="bubble">
+            <div class="text">聽起來不錯喔!</div>
+            <div class="time">8:23 PM</div>
+        </div>
+    </div>
+    <div class="message">
+        <div class="avatar">
+            <img src="avatar-naomi.png" alt="Naomi">
+        </div>
+        <div class="bubble">
+            <div class="text">我也有興趣! 希望近郊就好，不用帶太多東西。</div>
+            <div class="time">8:23 PM</div>
+        </div>
+    </div>
+    <div class="message">
+        <div class="avatar">
+            <img src="avatar-scott.png" alt="Scott">
+        </div>
+        <div class="bubble">
+            <div class="text">公司的健行步道就很不錯呀~</div>
+            <div class="time">8:24 PM</div>
+        </div>
+    </div>
+    <div class="message">
+        <div class="avatar">
+            <img src="avatar-naomi.png" alt="Naomi">
+        </div>
+        <div class="bubble">
+            <div class="text">下週六去如何?</div>
+            <div class="time">8:24 PM</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

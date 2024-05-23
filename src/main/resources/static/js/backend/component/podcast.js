@@ -1,5 +1,6 @@
 var stompClient = null;
 var alerts = []; // 初始化alerts陣列
+var currentUserAdmNo = null; // 保存當前用戶的admNo
 
 // 使用WebSocket連接後端伺服器
 function connect() {
@@ -9,6 +10,16 @@ function connect() {
         console.log('已連接: ' + frame);
         subscribeToTopic();
     });
+}
+
+// 獲取當前用戶的識別標識
+function fetchCurrentUser() {
+    return fetch('/backend/getCurrentUser')
+        .then(response => response.json())
+        .then(data => {
+            currentUserAdmNo = data;
+            console.log('當前用戶 admNo: ' + currentUserAdmNo);
+        });
 }
 
 // 根據用戶職位訂閱相關佇列
@@ -35,42 +46,73 @@ function subscribeToTopic() {
                     return;
             }
             stompClient.subscribe(topic, function (message) {
-                console.log('收到消息: ' + message.body);
-                // 從WebSocket接收的消息是JavaScript對象
-                showMessage(JSON.parse(message.body), true); // 新消息，newMessage 設置為 true
+                var messageObject = JSON.parse(message.body);
+                if (messageObject.admNo !== currentUserAdmNo) {
+                    console.log('收到消息: ' + message.body);
+                    showMessage(messageObject, true); // 新消息，newMessage 設置為 true
+                } else {
+                    console.log('過濾掉自己的消息');
+                }
             });
         });
 }
 
-// 頁面加載時獲取歷史消息並顯示
+// 頁面加載時獲取當前用戶和歷史消息並顯示
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('/backend/getMessages')
-        .then(response => response.json())
-        .then(messages => {
-            let unreadCount = 0;
-            messages.forEach(msg => {
-                if (!msg.readStat) {
-                    unreadCount++;
-                }
-                showMessage(msg, !msg.readStat, msg.messageId);
+    fetchCurrentUser().then(() => {
+        fetch('/backend/getMessages')
+            .then(response => response.json())
+            .then(messages => {
+                let unreadCount = 0;
+                messages.forEach(msg => {
+                    if (!msg.readStat) {
+                        unreadCount++;
+                    }
+                    showMessage(msg, !msg.readStat, msg.messageId);
+                });
+                document.getElementById('alert-counter').textContent = unreadCount;
             });
-            document.getElementById('alert-counter').textContent = unreadCount;
-        });
+    });
 });
 
-// 使用 blur 事件來檢測通知中心的關閉
-document.getElementById('alertsDropdown').addEventListener('blur', function () {
-    markAllAsRead();
-    fetch('/backend/markAllAsRead', { method: 'POST' })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === "success") {
-                console.log('所有消息已標記為已讀');
-            } else {
-                console.error('標記消息為已讀失敗');
-            }
-        });
-}, true); // 使用 true 表示在捕獲階段觸發事件
+// 監聽小鈴鐺圖示的點擊事件
+document.getElementById('alertsDropdown').addEventListener('click', function (event) {
+    event.stopPropagation();
+    var dropdownMenu = document.querySelector('.dropdown-list');
+    if (dropdownMenu.classList.contains('show')) {
+        dropdownMenu.classList.remove('show');
+        markAllAsRead();
+        fetch('/backend/markAllAsRead', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    console.log('所有消息已標記為已讀');
+                } else {
+                    console.error('標記消息為已讀失敗');
+                }
+            });
+    } else {
+        dropdownMenu.classList.add('show');
+    }
+});
+
+document.addEventListener('click', function (event) {
+    var isClickInside = document.getElementById('alertsDropdown').contains(event.target);
+    var dropdownMenu = document.querySelector('.dropdown-list');
+    if (!isClickInside && dropdownMenu.classList.contains('show')) {
+        dropdownMenu.classList.remove('show');
+        markAllAsRead();
+        fetch('/backend/markAllAsRead', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    console.log('所有消息已標記為已讀');
+                } else {
+                    console.error('標記消息為已讀失敗');
+                }
+            });
+    }
+});
 
 window.addEventListener('beforeunload', function () {
     console.log("方法執行");
@@ -143,11 +185,11 @@ function showMessage(message, newMessage, messageId) {
         alertItem.innerHTML = `
             <div class="mr-3">
                 <div class="icon-circle bg-primary">
-                    <img class="img-profile" src="/backend/administrator/DBGifReader?admNo=${alert.admNo}" alt="Profile Picture">
+                    <img class="img-profile rounded-circle" src="/backend/administrator/DBGifReader?admNo=${alert.admNo}" alt="Profile Picture">
                 </div>
             </div>
             <div>
-                <div class="small text-gray-500">${alert.messageTime}</div>
+                <div class="small ${alert.readStat ? 'text-gray-500' : 'font-weight-bold'}">${alert.messageTime}</div>
                 <span class="${alert.readStat ? 'text-gray-500' : 'font-weight-bold'}">${alert.admName} : ${alert.message}</span>
             </div>
         `;

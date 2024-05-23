@@ -59,6 +59,12 @@ public class BackendIndexController {
     @Autowired
     private ProductServiceImpl productSvc;
 
+    @ModelAttribute
+    public void productList(ModelMap model) {
+        List<Product> list = productSvc.getAll();
+        model.addAttribute("productList", list);
+    }
+
     /**
      * 前往首頁
      * 登入後跳轉、在登入狀態時點選側邊欄的 icon 與 Home 後可回到首頁
@@ -329,12 +335,34 @@ public class BackendIndexController {
     }
 
 
-    // 最新消息推播
+    /**
+     * 在最新消息推播中在前端發出異步請求來獲得使用者職位，用來覺得要訂閱哪一個頻道
+     *
+     * @param session 傳入Session，用於取得loginState裡的職位身分
+     * @return 返回職位
+     */
     @GetMapping("/getUserTitle")
     @ResponseBody
     public String getUserTitle(HttpSession session) {
         LoginState loginState = (LoginState) session.getAttribute("loginState");
         return loginState.getTitleNo().toString();
+    }
+
+    /**
+     * 於推播時判斷是不是自己發出的訊息，用來過濾
+     *
+     * @param session 傳入Session，用於取得loginState裡的管理員編號
+     * @return 返回管理員編號，於前端比對傳入消息是不是自己的
+     */
+    @GetMapping("/getCurrentUser")
+    @ResponseBody
+    public Integer getCurrentUser(HttpSession session) {
+        // 獲取當前用戶的身份驗證信息
+        LoginState loginState = (LoginState) session.getAttribute("loginState");
+        Integer admNo = loginState.getAdmNo();
+
+        // 返回當前用戶的識別標識
+        return admNo;
     }
 
     @GetMapping("/searchTest")
@@ -362,6 +390,42 @@ public class BackendIndexController {
         model.addAttribute("size", size); // 添加每頁大小到模型中以便在分頁導航中使用
         return "backend/searchTest";
     }
+
+    @GetMapping("/administrator")
+    public String toBackendAdministrator() {
+        return "backend/administrator";
+    }
+
+    @GetMapping("/member")
+    public String toBackendMember() {
+        return "backend/member";
+    }
+
+    @GetMapping("/service")
+    public String toBackendService() {
+        return "backend/service";
+    }
+
+    @GetMapping("/column")
+    public String toBackendColumn() {
+        return "backend/column";
+    }
+
+    @GetMapping("/product")
+    public String toBackendProduct() {
+        return "backend/product";
+    }
+
+    @GetMapping("/rental")
+    public String toBackendRental() {
+        return "backend/rental";
+    }
+
+    @GetMapping("/alerts")
+    public String toBackendAlerts() {
+        return "backend/alerts";
+    }
+
 
     /**
      * 記錄密碼輸入錯誤的次數，
