@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Fall衣Love後台首頁</title>
     <!-- Favicon -->
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <style>
-        /* CSS */
+        /* 方形區塊的CSS */
         .section {
             margin: 20px;
             padding: 20px;
@@ -26,7 +26,8 @@
 
         .card-set {
             display: flex;
-            gap: 20px;
+            gap: 8px;
+            padding: 5px;
         }
 
         .card {
@@ -68,6 +69,47 @@
             color: #666;
         }
 
+        /* 圖表的CSS */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sort-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .sort-options .btn {
+            padding: 5px 10px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 40vh;
+            width: 80vw;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .nav-tabs a {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background: #f4f4f4;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .nav-tabs a.active {
+            background: #007bff;
+            color: #fff;
+        }
     </style>
 </head>
 <body id="page-top">
@@ -89,29 +131,68 @@
                 <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
                 <div class="section">
                     <div class="section-header">
-                        <h2>News & launches</h2>
+                        <h2>服務相關</h2>
                         <div class="section-header-description"></div>
                     </div>
                     <div class="card-set">
-                        <a class="card" href="https://material.io/blog/google-io-2024" target="_blank">
-                            <div class="thumb-container" style="background-image: url('https://lh3.googleusercontent.com/CZUV5ERpGmSi37S437q9yGrBDpTrCTaA_BFBe1AoFuaYuYCGGRw_Qvv4j1q3lcw7YeSJYTXoUi5UhYNA_J9XFioJb2F1wOhNTfIufwLd2SNuMxHRzPI=w960');"></div>
+                        <!-- 折線圖顯示的位置 -->
+                        <canvas id="p-SalQty"></canvas>
+                        <!-- 折線圖顯示的位置 -->
+                        <canvas id="p-Test"></canvas>
+                    </div>
+                    <div class="section-header">
+                        <h2>服務相關</h2>
+                        <div class="section-header-description"></div>
+                    </div>
+                    <div class="card-set">
+                        <a class="card" th:href="@{/backend/administrator}" target="_blank">
+                            <div class="thumb-container" th:style="|background-image: url('https://lh3.googleusercontent.com/CZUV5ERpGmSi37S437q9yGrBDpTrCTaA_BFBe1AoFuaYuYCGGRw_Qvv4j1q3lcw7YeSJYTXoUi5UhYNA_J9XFioJb2F1wOhNTfIufwLd2SNuMxHRzPI=w960');|"></div>
                             <div class="content-container">
-                                <span class="title">Material Design at Google I/O</span>
-                                <span class="description">See the full list of Material talks and tutorials launching at I/O 2024</span>
+                                <span class="title">管理員專區</span>
+                                <span class="description">前往管理員頁面</span>
                             </div>
                         </a>
-                        <a class="card" href="https://material.io/blog/get-google-fonts-update" target="_blank">
+                        <a class="card" th:href="@{/backend/member}" target="_blank">
                             <div class="thumb-container" style="background-image: url('https://lh3.googleusercontent.com/fnAWs0CZd5Ux984uoPYWo2zKxzkSq4DgaqRfOyEMLDY2E4dJ0LtxJpuAo_vACJS9FImkgokKKGDHZ5VSMSRWUacm9Up56bolNoMPcSK-LfB2-OTunQ=w960');"></div>
                             <div class="content-container">
-                                <span class="title">How to get Google Fonts</span>
-                                <span class="description">New API updates and website upgrades make font integration easier than ever</span>
+                                <span class="title">會員專區</span>
+                                <span class="description">前往會員管理頁面</span>
                             </div>
                         </a>
-                        <a class="card" href="https://www.figma.com/community/file/1035203688168086460" target="_blank">
+                    </div>
+                    <div class="card-set">
+                        <a class="card" th:href="@{/backend/service}" target="_blank">
                             <div class="thumb-container" style="background-image: url('https://lh3.googleusercontent.com/cOI8fyZSqiEzQzBOzSqDjePihKw8h7OPzGn_SkeOubAUXIBFzsyP0-h1rQ7WcjeZneeOTjpUpKAv3f8xkiBkR-VXQEm-oDn7vkVsKh7vlA2myxY5CR8=w960');"></div>
                             <div class="content-container">
-                                <span class="title">Figma design kit</span>
-                                <span class="description">Start designing and prototyping with the complete M3 library of ready-made components</span>
+                                <span class="title">客服專區</span>
+                                <span class="description">前往客服管理頁面</span>
+                            </div>
+                        </a>
+                        <a class="card" th:href="@{/backend/column}" target="_blank">
+                            <div class="thumb-container" style="background-image: url('https://lh3.googleusercontent.com/CZUV5ERpGmSi37S437q9yGrBDpTrCTaA_BFBe1AoFuaYuYCGGRw_Qvv4j1q3lcw7YeSJYTXoUi5UhYNA_J9XFioJb2F1wOhNTfIufwLd2SNuMxHRzPI=w960');"></div>
+                            <div class="content-container">
+                                <span class="title">專欄專區</span>
+                                <span class="description">前往專欄管理頁面</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="section-header">
+                        <h2>銷售相關</h2>
+                        <div class="section-header-description"></div>
+                    </div>
+                    <div class="card-set">
+                        <a class="card" th:href="@{/backend/product}" target="_blank">
+                            <div class="thumb-container" style="background-image: url('https://lh3.googleusercontent.com/fnAWs0CZd5Ux984uoPYWo2zKxzkSq4DgaqRfOyEMLDY2E4dJ0LtxJpuAo_vACJS9FImkgokKKGDHZ5VSMSRWUacm9Up56bolNoMPcSK-LfB2-OTunQ=w960');"></div>
+                            <div class="content-container">
+                                <span class="title">商品專區</span>
+                                <span class="description">前往商品管理頁面</span>
+                            </div>
+                        </a>
+                        <a class="card" th:href="@{/backend/rental}" target="_blank">
+                            <div class="thumb-container" style="background-image: url('https://lh3.googleusercontent.com/cOI8fyZSqiEzQzBOzSqDjePihKw8h7OPzGn_SkeOubAUXIBFzsyP0-h1rQ7WcjeZneeOTjpUpKAv3f8xkiBkR-VXQEm-oDn7vkVsKh7vlA2myxY5CR8=w960');"></div>
+                            <div class="content-container">
+                                <span class="title">租借品專區</span>
+                                <span class="description">前往租借品管理頁面</span>
                             </div>
                         </a>
                     </div>
@@ -130,7 +211,6 @@
     <!-- End of Content Wrapper -->
 </div>
 <!-- End of Page Wrapper -->
-123123
 
 <!-- Scroll to Top Button-->
 <a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
@@ -139,7 +219,8 @@
 
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
 
-<script>
+<script th:inline="javascript">
+    // 方塊特效
     document.querySelectorAll('.card').forEach(card => {
         card.addEventListener('click', function (e) {
             const ripple = document.createElement('span');
@@ -153,6 +234,164 @@
             setTimeout(() => ripple.remove(), 600);
         });
     });
+
+    // // 在這裡解析Thymeleaf傳遞的資料
+    // var productTop10SalQty = /*[[${productTop10SalQty}]]*/ [];
+    //
+    // // 處理productList資料，假設每個product包含 productNo 和 productSalQty 屬性
+    // var labels = productTop10SalQty.map(product => product.productNo);
+    // var data = productTop10SalQty.map(product => product.productSalQty);
+    //
+    // // 銷售數量前10 折線圖
+    // const salQtyElement = document.getElementById('p-SalQty');
+    // const salQtyConfig = {
+    //     type: 'line',
+    //     data: {
+    //         labels: labels,
+    //         datasets: [{
+    //             label: '銷售數量',
+    //             data: data,
+    //             backgroundColor: 'rgba(75, 192, 192, 0.2)',
+    //             borderColor: 'rgba(75, 192, 192, 1)',
+    //             borderWidth: 2,
+    //             pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+    //             pointBorderColor: '#fff',
+    //             pointBorderWidth: 2,
+    //             pointRadius: 5,
+    //             pointHoverRadius: 7,
+    //             lineTension: 0.4
+    //         }]
+    //     },
+    //     options: {
+    //         responsive: true,
+    //         maintainAspectRatio: false,
+    //         plugins: {
+    //             legend: {
+    //                 display: true,
+    //                 labels: {
+    //                     color: '#333',
+    //                     font: {
+    //                         size: 14,
+    //                         weight: 'bold'
+    //                     }
+    //                 }
+    //             }
+    //         },
+    //         scales: {
+    //             x: {
+    //                 grid: {
+    //                     display: false
+    //                 },
+    //                 ticks: {
+    //                     color: '#333',
+    //                     font: {
+    //                         size: 12
+    //                     }
+    //                 }
+    //             },
+    //             y: {
+    //                 grid: {
+    //                     color: 'rgba(200, 200, 200, 0.2)',
+    //                     borderDash: [5, 5]
+    //                 },
+    //                 ticks: {
+    //                     color: '#333',
+    //                     font: {
+    //                         size: 12
+    //                     },
+    //                     beginAtZero: true
+    //                 }
+    //             }
+    //         }
+    //     }
+    // };
+    //
+    // new Chart(salQtyElement, salQtyConfig);
+
+    // 在這裡解析Thymeleaf傳遞的資料
+    var productTop10SalQty = /*[[${productTop10SalQty}]]*/ [];
+
+    // 處理productList資料，假設每個product包含 productNo 和 productSalQty 屬性
+    var labels = productTop10SalQty.map(product => product.productNo);
+    var data = productTop10SalQty.map(product => product.productSalQty);
+
+    // 混合圖表
+    const salQtyElement = document.getElementById('p-SalQty');
+    const salQtyConfig = {
+        type: 'bar', // 設置主圖表類型為 bar
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    type: 'line', // 子圖表類型設置為 line
+                    label: '銷售數量 (折線圖)',
+                    data: data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    lineTension: 0.4
+                },
+                {
+                    type: 'bar', // 子圖表類型設置為 bar
+                    label: '銷售數量 (長方圖)',
+                    data: data,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        color: '#333',
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        color: '#333',
+                        font: {
+                            size: 12
+                        }
+                    }
+                },
+                y: {
+                    grid: {
+                        color: 'rgba(200, 200, 200, 0.2)',
+                        borderDash: [5, 5]
+                    },
+                    ticks: {
+                        color: '#333',
+                        font: {
+                            size: 12
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        }
+    };
+
+    new Chart(salQtyElement, salQtyConfig);
+
 
 </script>
 

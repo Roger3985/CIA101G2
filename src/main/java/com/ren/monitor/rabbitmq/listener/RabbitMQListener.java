@@ -27,7 +27,6 @@ public class RabbitMQListener {
      */
     @RabbitListener(queues = "queue_Employee")
     public void listenEmployee(String message) {
-        System.out.println("員工被放進去囉");
         messagingTemplate.convertAndSend("/topic/employee", message);
     }
 
@@ -38,7 +37,6 @@ public class RabbitMQListener {
      */
     @RabbitListener(queues = "queue_FullTime")
     public void listenFullTime(String message) {
-        System.out.println("全職被放進去囉");
         messagingTemplate.convertAndSend("/topic/fullTime", message);
     }
 
@@ -49,7 +47,6 @@ public class RabbitMQListener {
      */
     @RabbitListener(queues = "queue_Manager")
     public void listenManager(String message) {
-        System.out.println("經理被放進去囉");
         messagingTemplate.convertAndSend("/topic/manager", message);
     }
 
@@ -60,7 +57,6 @@ public class RabbitMQListener {
      */
     @RabbitListener(queues = "queue_Boss")
     public void listenBoss(String message) {
-        System.out.println("老闆被放進去囉");
         messagingTemplate.convertAndSend("/topic/boss", message);
     }
 }
