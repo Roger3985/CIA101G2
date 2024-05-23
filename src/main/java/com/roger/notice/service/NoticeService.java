@@ -102,4 +102,14 @@ public interface NoticeService {
      * @param motNo 要刪除的通知的 motNo
      */
     public void deleteNoticeByMotNo(int motNo);
+
+    /**
+     * 根據會員編號和讀取狀態查找通知列表。
+     *
+     * @param memNo 會員編號。
+     * @param notStat 通知的讀取狀態 (例如 1 表示已讀)。
+     * @return 包含指定會員編號和讀取狀態的通知列表。
+     */
+    List<Notice> findNoticesByMemberMemNoAndNotStat(Integer memNo, byte notStat);
 }
+

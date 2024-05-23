@@ -189,7 +189,41 @@ public class NoticeControllerFrontEnd {
         return new ResponseEntity<>("所有未讀訊息已標記為已讀", HttpStatus.OK);
     }
 
+    /**
+     * 控制器方法，用於刪除登錄會員的所有已讀通知。
+     *
+     * @param session 包含已登錄會員的HTTP會話。
+     * @return ResponseEntity，帶有描述操作狀態的消息。
+     */
+    @PostMapping("/deleteAllNotices")
+    @ResponseBody
+    public ResponseEntity<String> deleteAllNotices(HttpSession session) {
+        // 從HTTP會話中獲取已登錄的會員
+        Member member = (Member) session.getAttribute("loginsuccess");
 
+        // 檢查會員是否已登錄
+        if (member == null) {
+            return new ResponseEntity<>("未登錄", HttpStatus.UNAUTHORIZED);
+        }
 
+        // 獲取該會員的所有已讀通知
+        List<Notice> unReadNoticeList = noticeService.findNoticesByMemberMemNoAndNotStat(member.getMemNo(), (byte) 1);
+
+        // 檢查是否有任何通知
+        if (unReadNoticeList.isEmpty()) {
+            return new ResponseEntity<>("無已讀通知消息", HttpStatus.NOT_FOUND);
+        }
+
+        // 刪除所有通知
+        for (Notice notice : unReadNoticeList) {
+            noticeService.deleteNoticeByMotNo(notice.getMotNo()); // 假設 noticeService.deleteNotice() 通過ID刪除通知
+        }
+
+//        // 更新會話中的未讀通知計數
+//        session.setAttribute("unreadNoticeCount", 0);
+
+        // 返回成功的響應
+        return new ResponseEntity<>("所有通知消息已刪除", HttpStatus.OK);
+    }
 
 }

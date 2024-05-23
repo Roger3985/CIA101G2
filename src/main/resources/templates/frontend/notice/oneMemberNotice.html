@@ -74,8 +74,11 @@
                                         <div class="row">
                                             <div class="col-sm-6 mb-3">
                                                 <label class="form-label">
-                                                    Old Notices (已讀訊息)
-                                                    <span class="text-danger">*</span>
+                                                    <label class="form-label">
+                                                        Old Notices (已讀訊息)
+                                                        <span class="text-danger">*</span>
+                                                        <p id="deleteAllNoticesText" style="cursor: pointer; color: blue; text-decoration: underline; display: inline; font-size: 12px" onmouseover="this.style.color='red'" onmouseout="this.style.color='blue'">刪除所有已讀訊息</p>
+                                                    </label>
                                                 </label>
     <!--                                            <div th:if="${session.notice != null && session.notice.getNotStat() == 1}">-->
     <!--                                                <input type="button" class="form-control" th:value="${session.notice.getNotContent()}" readonly style="text-align: left; color: black;">-->
@@ -163,6 +166,25 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-primary" id="confirmButton">確認</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="confirmDeleteModalLabel">確認刪除</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>您確定要刪除所有已讀訊息嗎？刪除後將無法恢復。</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                                            <button type="button" class="btn btn-danger" id="confirmDeleteButton">確定</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -310,6 +332,41 @@
             })
         })
     </script>
+    <script>
+        $(document).ready(function () {
+            $('#deleteAllNoticesText').on('click', function () {
+                // 打開 Bootstrap Modal
+                $('#confirmDeleteModal').modal('show');
+            });
+
+            // 當用戶點擊確認刪除按鈕時
+            $('#confirmDeleteButton').on('click', function () {
+                // 發送 AJAX 請求刪除所有已讀訊息
+                $.ajax({
+                    url: '/frontend/notice/deleteAllNotices',
+                    type: 'POST',
+                    success: function (response) {
+                        alert('所有已讀訊息皆已經刪除!');
+                        window.location.reload();
+                    },
+                    error: function (error) {
+                        alert('所有已讀訊息皆已經刪除!');
+                    }
+                });
+
+                // 關閉 Bootstrap Modal
+                $('#confirmDeleteModal').modal('hide');
+            });
+
+            // 當用戶點擊模態框中的叉叉或者關閉按鈕時，關閉模態框
+            $('#confirmDeleteModal .close').on('click', function () {
+                $('#confirmDeleteModal').modal('hide');
+            });
+            $('#confirmDeleteModal .btn-secondary').on('click', function () {
+                $('#confirmDeleteModal').modal('hide');
+            });
+        });
+    </script>
 
 
-    </html>
+</html>
