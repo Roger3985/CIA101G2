@@ -78,10 +78,11 @@
             }else{
                 const messageContainer = document.createElement('div');
                 const botMsg = document.createElement('p');
-                
-                botMsg.innerHTML = "請聯繫客服人員即時為您處理";
+                const chaturl = document.createElement('a th:href="@{/frontend/service/frontendServiceChat}"');
+                chaturl.innerHTML = "請聯繫客服人員即時為您處理";
                 messageContainer.classList.add('message');
                 messageContainer.classList.add('receiver');
+                botMsg.appendChild(chaturl);
                 messageContainer.appendChild(botMsg);
                 chatArea.appendChild(messageContainer);
             }

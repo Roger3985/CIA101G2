@@ -16,10 +16,8 @@ public class RobotController {
     @Autowired
     RobotService robotService;
 
-
-
     @GetMapping("/reply")
-    public Set<ServiceRobot> getRobotReply(String keywordName){
+    public Set<ServiceRobot> getRobotReply(String keywordName) {
         return robotService.getResponse(keywordName);
     }
 
