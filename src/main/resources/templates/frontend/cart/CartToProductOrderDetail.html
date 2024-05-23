@@ -264,7 +264,6 @@
                     <div id="ecpayFormContainer"></div>
                 </div>
 
-                <input type="hidden" id="hiddenCoupNo" name="coupNo" value="">
 
                 </form>
             </div>
@@ -294,13 +293,12 @@
     // 获取选择框元素
 
 
-    function updatePriceInstantly() {
-        var coupNo = document.getElementById('coupNo').value;
-        document.getElementById('hiddenCoupNo').value = coupNo;
 
-        var productDisc = document.getElementById('productDisc').innerText;
-        var productRealPrice = document.getElementById('productRealPrice').innerText;
-        var productAllPrice = document.getElementById('productAllPrice').innerText;
+    function updatePriceInstantly() {
+        var coupNo = document.getElementById('coupNo').value; // 获取优惠券编号的值
+        var productDisc = document.getElementById('productDisc').innerText; // 获取产品折扣的值
+        var productRealPrice = document.getElementById('productRealPrice').innerText; // 获取产品实际价格的值
+        var productAllPrice = document.getElementById('productAllPrice').innerText; // 获取产品总价格的值
 
         // 发送 AJAX 请求更新数量到后端
         $.ajax({
@@ -314,6 +312,8 @@
             },
             success: function (data) {
                 console.log("更新優惠券總價成功");
+
+                // 在这里，你可以根据后端返回的数据更新前端页面上对应的元素，例如更新实际价格和折扣价格的显示
                 document.getElementById('productRealPrice').innerText = data.productRealPrice;
                 document.getElementById('productDisc').innerText = data.productDisc;
             },
@@ -322,7 +322,6 @@
             }
         });
     }
-
 
     function copyBuyerInfo(checkbox) {
         var byrName = document.getElementById("productByrName").value;
@@ -387,11 +386,11 @@
     }
 
 
-    // 提交订单函数
+
     function SubmitToPay(input) {
-        // 先进行表单验证
+        // 先進行表單驗證
         if (!validateForm()) {
-            return; // 如果验证不通过，直接返回
+            return; // 如果驗證不通過，直接返回
         }
 
         var productByrName = document.querySelector('#productByrName').value;
@@ -404,43 +403,63 @@
         var productPayMethod = document.querySelector('select[name="productPayMethod"]').value;
         var coupNo = document.querySelector('select[name="coupNo"]').value;
         var productAllPrice = document.getElementById('productAllPrice').innerText;
-        localStorage.setItem('coupNo', coupNo);
-        if (productPayMethod === '2') { // 如果付款方式為"現場付款"
-            // 將表單的 action 設置為 "/frontend/productorder/insertProductOrderSuccess"
-            document.getElementById("submitOrderForm").action = '/frontend/productorder/insertProductOrderSuccess';
-            // 直接提交訂單表單
-            document.getElementById("submitOrderForm").submit();
-            return;
-        }
 
-        // 使用 AJAX 提交订单
-        $.ajax({
-            type: 'POST',
-            url: '/frontend/productorder/submitOrder',
-            data: {
-                productByrName: productByrName,
-                productByrPhone: productByrPhone,
-                productByrEmail: productByrEmail,
-                productRcvName: productRcvName,
-                productRcvPhone: productRcvPhone,
-                productTakeMethod: productTakeMethod,
-                productAddr: productAddr,
-                productPayMethod: productPayMethod,
-                coupNo: coupNo,
-                productAllPrice: productAllPrice
-            },
-            success: function (result) {
-                // 在这里，result应该是服务器返回的支付链接
-                let formContainer = document.getElementById("ecpayFormContainer");
-                // 设置表单的HTML内容为支付链接
-                formContainer.innerHTML = result;
-                // 提交表单
-                formContainer.querySelector('form').submit();
-            },
-            error: function (xhr, status, error) {
-                console.error(xhr.responseText);
-            }
-        });
+        if (productPayMethod === '2') { // 如果付款方式為"現場付款"
+            // 使用 AJAX 提交訂單
+            $.ajax({
+                type: 'POST',
+                url: '/frontend/productorder/insertProductOrderSuccess',
+                data: {
+                    productByrName: productByrName,
+                    productByrPhone: productByrPhone,
+                    productByrEmail: productByrEmail,
+                    productRcvName: productRcvName,
+                    productRcvPhone: productRcvPhone,
+                    productTakeMethod: productTakeMethod,
+                    productAddr: productAddr,
+                    productPayMethod: productPayMethod,
+                    coupNo: coupNo,
+                    productAllPrice: productAllPrice,
+                },
+                success: function (result) {
+                    // 在這裡，result應該是伺服器返回的訂單號或其他信息
+                    // 跳轉到訂單成功頁面
+                    window.location.href = '/frontend/cart/ProductOrderSuccessful';
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        } else {
+            // 使用 AJAX 提交訂單
+            $.ajax({
+                type: 'POST',
+                url: '/frontend/productorder/submitOrder',
+                data: {
+                    productByrName: productByrName,
+                    productByrPhone: productByrPhone,
+                    productByrEmail: productByrEmail,
+                    productRcvName: productRcvName,
+                    productRcvPhone: productRcvPhone,
+                    productTakeMethod: productTakeMethod,
+                    productAddr: productAddr,
+                    productPayMethod: productPayMethod,
+                    coupNo: coupNo,
+                    productAllPrice: productAllPrice,
+                },
+                success: function (result) {
+                    // 在這裡，result應該是伺服器返回的支付鏈接
+                    let formContainer = document.getElementById("ecpayFormContainer");
+                    // 設置表單的HTML內容為支付鏈接
+                    formContainer.innerHTML = result;
+                    // 提交表單
+                    formContainer.querySelector('form').submit();
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
     }
 
 

@@ -120,48 +120,33 @@ public class ProductOrderController {
         return productOrder;
     }
     @PostMapping("insertProductOrderSuccess")
-    public String insertProductOrderSuccess(@Validated(Create.class) ProductOrder productOrder,
-                                            @RequestParam(required = false) String coupNo,
-                                            BindingResult result,
-                                            ModelMap model,
-                                            HttpSession session,
-                                            HttpServletRequest request) {
-        // 从请求中获取参数值
-        String coupNoFromRequest = request.getParameter("coupNo");
-        System.out.println("coupNo from request: " + coupNoFromRequest);
-        if (session.getAttribute("loginsuccess") == null && session.getAttribute("member") == null) {
-            return "redirect:/frontend/member/loginMember";
-        }
-
-        // 获取会员信息
+    public ResponseEntity<String> insertProductOrderSuccess(@RequestParam("productByrName") java.lang.String productByrName,
+                                             @RequestParam("productByrPhone") java.lang.String productByrPhone,
+                                             @RequestParam("productByrEmail") java.lang.String productByrEmail,
+                                             @RequestParam("productRcvName") java.lang.String productRcvName,
+                                             @RequestParam("productRcvPhone") java.lang.String productRcvPhone,
+                                             @RequestParam("productTakeMethod") Byte productTakeMethod,
+                                             @RequestParam("productAddr") java.lang.String productAddr,
+                                             @RequestParam("productPayMethod") Byte productPayMethod,
+                                             @RequestParam("productAllPrice") BigDecimal productAllPrice,
+                                             @RequestParam(value = "coupNo", required = false) Integer coupNo,
+                                             HttpSession session) {
         Member myData = (Member) session.getAttribute("loginsuccess");
+        session.setAttribute("loginsuccess",myData);
         if (myData == null) {
-            return "redirect:/frontend/member/loginMember";
+            session.setAttribute("location", "/frontend/productorder/submitOrder");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("frontend/member/loginMember");
         }
 
-        Integer memNo = myData.getMemNo();
+        ProductOrder productOrder = createProductOrder(productByrName, productByrPhone, productByrEmail,
+                productRcvName, productRcvPhone, productAddr,
+                productTakeMethod, productPayMethod, productAllPrice,
+                coupNo, myData);
 
-        // 如果从请求参数中获取到了 coupNo，则使用该值，否则设置默认值为 "1"
-        if (coupNo == null || coupNo.isEmpty()) {
-            coupNo = "1";
-        } else {
-            // 如果选取了优惠券，则将其状态设置为已使用
-            myCouponService.getOneMyCoupon(Integer.valueOf(coupNo), memNo)
-                    .ifPresent(myCoupon -> myCoupon.setCoupUsedStat((byte) 1));
-            // 存储选取的优惠券编号到会话中
-            session.setAttribute("selectedCoupon", coupNo);
-        }
-
-        productOrder.setProductStat((byte) 0);
-        // 获取优惠券信息并设置到订单中
-        productOrder.setCoupon(couponService.getOneCoupon(Integer.valueOf(coupNo)));
         productOrderSvc.addOneOrderSuccess(productOrder);
-        // 删除购物车中的商品
-        cartSvc.deleteBymemNo(memNo);
+        cartSvc.deleteBymemNo(myData.getMemNo());
 
-        return "frontend/cart/ProductOrderSuccess";
-    }
-
+        return new ResponseEntity<>("Order placed successfully", HttpStatus.OK);}
 
 
     @PostMapping("insertOrder")
@@ -173,6 +158,7 @@ public class ProductOrderController {
 
         Integer memNo = myData.getMemNo();
         ProductOrder productOrder = createProductOrderFromCart(cartRedis, memNo);
+        session.setAttribute("coupons", getValidCoupons(memNo));
         model.addAttribute("coupons", getValidCoupons(memNo));
         model.addAttribute("productOrder", productOrder);
         session.setAttribute("productOrder", productOrder);

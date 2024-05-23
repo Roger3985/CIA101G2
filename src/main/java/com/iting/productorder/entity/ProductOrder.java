@@ -63,7 +63,7 @@ public class ProductOrder  implements Serializable {
     @Column(name = "productallprice")
     private BigDecimal productAllPrice;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JsonManagedReference
     @JoinColumn(name = "coupno", referencedColumnName = "coupno")
     private Coupon coupon;

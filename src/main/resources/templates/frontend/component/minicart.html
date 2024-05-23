@@ -1,5 +1,6 @@
 <!-- Mini Cart -->
-<div th:fragment="minichart" class="offcanvas offcanvas-end" tabindex="-1" id="modalMiniCart" aria-labelledby="modalMiniCartLabel">
+<div th:fragment="minichart" class="offcanvas offcanvas-end" tabindex="-1" id="modalMiniCart"
+     aria-labelledby="modalMiniCartLabel">
     <div class="offcanvas-header border-bottom">
         <h6 class="offcanvas-title" id="modalMiniCartLabel">購物車商品(可結帳)</h6>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -8,10 +9,14 @@
         <!-- Tabs Navigation -->
         <ul class="nav nav-tabs" id="miniCartTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button" role="tab" aria-controls="products" aria-selected="true">一般商品</button>
+                <button class="nav-link active" id="products-tab" data-bs-toggle="tab" data-bs-target="#products"
+                        type="button" role="tab" aria-controls="products" aria-selected="true">一般商品
+                </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="rental-tab" data-bs-toggle="tab" data-bs-target="#rental" type="button" role="tab" aria-controls="rental" aria-selected="false">租借商品</button>
+                <button class="nav-link" id="rental-tab" data-bs-toggle="tab" data-bs-target="#rental" type="button"
+                        role="tab" aria-controls="rental" aria-selected="false">租借商品
+                </button>
             </li>
         </ul>
         <div class="tab-content" id="miniCartTabContent">
@@ -24,8 +29,9 @@
                             ddddddddddddddd
                             <div class="col-4">
                                 <!-- Image -->
-                                <a href="#"><img class="img-fluid border" th:src="@{/frontend/img/fashion/product-x-1.jpg}" alt="..."></a>
-                            ddddddddddddd
+                                <a href="#"><img class="img-fluid border"
+                                                 th:src="@{/frontend/img/fashion/product-x-1.jpg}" alt="..."></a>
+                                ddddddddddddd
                             </div>
                             <div class="col-8">
                                 <!-- Title -->
@@ -54,7 +60,8 @@
                 </ul>
             </div>
             <!-- 租借商品 -->
-            <div class="tab-pane fade" id="rental" role="tabpanel" aria-labelledby="rental-tab" th:each="rental : ${rentalListData}">
+            <div class="tab-pane fade" id="rental" role="tabpanel" aria-labelledby="rental-tab"
+                 th:each="rental : ${rentalListData}">
                 <ul class="list-unstyled m-0 p-0">
                     <!-- 購物車物件 1 -->
                     <li class="py-2">
@@ -62,13 +69,15 @@
                             <div class="col-4">
                                 <!-- Image -->
                                 <a th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
-                                    <img class="img-fluid border" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '.jpg'}" alt="...">
+                                    <img class="img-fluid border"
+                                         th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '.jpg'}" alt="...">
                                 </a>
                             </div>
                             <div class="col-8">
                                 <!-- Title -->
                                 <p class="mb-2">
-                                    <a class="text-mode fw-500" th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
+                                    <a class="text-mode fw-500"
+                                       th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
                                         <span th:text="${rental.rentalName}"></span>
                                     </a>
                                     <span class="m-0 text-muted w-100 d-block">這裡是價格</span>
@@ -107,5 +116,87 @@
         </div>
     </div>
 </div>
+<script>
 
-<!-- End Mini Cart -->
+
+    <!-- End Mini Cart -->
+    function updateMiniCart(data) {
+// 获取miniCartTabContent元素
+        var miniCartTabContent = document.getElementById('miniCartTabContent');
+
+// 清空miniCartTabContent内容
+        miniCartTabContent.innerHTML = '';
+
+// 生成新的HTML内容
+        data.forEach(function (cart) {
+            var newItem = document.createElement('div');
+            newItem.classList.add('tab-pane', 'fade', 'show', 'active');
+            newItem.innerHTML = `
+ <table class="table">
+        <thead>
+        <tr>
+            <!--                <th>會員編號</th>-->
+            <th>商品圖片</th>
+            <th>商品</th>
+            <th>顏色</th>
+            <th>大小</th>
+            <th>單價</th>
+            <th>數量</th>
+            <th>總計</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+
+        <tbody class="align-middle" id="CartData">
+        <th:block th:each="cart : ${cartListData}">
+            <tr class="productitm">
+                <td>
+                    <img th:src="'data:image/png;base64,' + ${session['productImage' + cart.productNo]}"
+                         alt="Product Picture" style="width: auto; height: 80px;"/>
+                </td>
+                <td class="align-middle" th:id="productName" th:text="${cart.productName}"></td>
+                <td class="align-middle" th:id="productColor" th:text="${cart.productColor}"></td>
+                <td id="productSize">
+                    <span th:if="${cart.productSize == 0}">XS</span>
+                    <span th:if="${cart.productSize == 1}">S</span>
+                    <span th:if="${cart.productSize == 2}">M</span>
+                    <span th:if="${cart.productSize == 3}">L</span>
+                    <span th:if="${cart.productSize == 4}">XL</span>
+                    <span th:if="${cart.productSize == 5}">2L</span>
+                </td>
+                <td class="price" th:id="productPrice" name="productPrice" th:text="${cart.productPrice}"></td>
+                <td class="align-middle">
+                    <div class="cart-qty-01">
+                        <button type="button" class="inc qty-btn" onclick="updateQuantity(this, -1)">
+                            <i class="bi bi-caret-down-fill"></i>
+                        </button>
+                        <input class="cart-qty-input form-control" type="text" name="productBuyQty"
+                               th:value="${cart.productBuyQty}" onchange="updateBackendQuantity(this)">
+
+                        <button type="button" class="dec qty-btn" onclick="updateQuantity(this, 1)">
+                            <i class="bi bi-caret-up-fill"></i>
+                        </button>
+                    </div>
+                </td>
+                <td class="align-middle " th:id="productAllPrice" name="productAllPrice"
+                    th:text="'$' + ${cart.productBuyQty * cart.productPrice}" th:onchange="updatePrice()"></td>
+                <td class="align-middle">
+
+                    <input type="hidden" name="productNo" th:value="${cart.productNo}"/>
+                    <input type="hidden" name="memNo" th:value="${cart.memNo}"/>
+                    <button class="btn btn-link px-0 text-danger btn btn-sm btn-primary btn-remove"
+                            type="button" onclick="deleteProduct(this)">
+                        <i class="bi-trash3 me-2"></i>
+                        <span class="">Remove</span>
+                    </button>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+
+    </table>
+`;
+            miniCartTabContent.appendChild(newItem);
+        });
+    }
+</script>

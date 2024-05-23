@@ -201,6 +201,15 @@ public class CartController {
         return "frontend/cart/ProductOrderPaySuccess";
 
     }
+    @GetMapping("/cart/ProductOrderSuccessful")
+    public String ProductOrderSuccessful(HttpSession session,Model model) {
+        Member myData = (Member) session.getAttribute("loginsuccess");
+        Integer memNo = myData.getMemNo();
+        List<ProductOrder> list = productOrderService.findByMember(memNo);
+        model.addAttribute("productorderListData", list);
+        return "frontend/cart/ProductOrderSuccess";
+
+    }
 
 
     //
