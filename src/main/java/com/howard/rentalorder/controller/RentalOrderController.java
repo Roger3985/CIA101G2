@@ -1,5 +1,6 @@
 package com.howard.rentalorder.controller;
 
+import com.howard.rentalorder.dto.DeleteCantRent;
 import com.howard.rentalorder.dto.RentalOrderRequest;
 import com.howard.rentalorder.dto.SetToCart;
 import com.howard.rentalorder.entity.RentalOrder;
@@ -8,13 +9,18 @@ import com.howard.rentalorder.service.impl.RentalCartServiceImpl;
 import com.howard.rentalorder.service.impl.RentalOrderServiceImpl;
 import com.howard.rentalorder.service.impl.RentalOrderShippingService;
 import com.howard.rentalorderdetails.service.impl.RentalOrderDetailsServiceImpl;
+import com.howard.util.HmacSignature;
 import com.roger.member.entity.Member;
 import com.roger.member.repository.MemberRepository;
 import com.yu.rental.dao.RentalRepository;
 import com.yu.rental.entity.Rental;
-import ecpay.logistics.integration.AllInOne;
-import ecpay.logistics.integration.domain.QueryLogisticsTradeInfoObj;
-import oracle.jdbc.proxy.annotation.Post;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +30,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.*;
+
+import static com.howard.util.HmacSignature.generateSignature;
 
 @Controller
 @RequestMapping("/backend/rentalorder")
@@ -34,6 +44,8 @@ import java.util.*;
 public class RentalOrderController {
 
     /*--------------------------所有方法共用-------------------------------*/
+
+
 
     @Autowired
     private LogisticsStateService logisticsStateService;
@@ -416,6 +428,7 @@ public class RentalOrderController {
             map.put("rentalOrdStat", rentalOrdStat);
         }
         List<RentalOrder> orderList = service.getByAttributes(map);
+        orderList.sort(Comparator.comparing(RentalOrder::getrentalOrdNo).reversed());
         model.addAttribute("orderList", orderList);
         return "frontend/rental/memberrentalorders";
 
@@ -480,13 +493,10 @@ public class RentalOrderController {
     }
 
     // 從購物車刪除商品
-    @DeleteMapping("/deleteFromCart")
-    public ResponseEntity<?> deleteFromCart(@RequestParam Integer memNo,
-                                            @RequestParam Integer rentalNo) {
+    @PostMapping("/deleteFromCart")
+    public ResponseEntity<?> deleteFromCart(@RequestBody DeleteCantRent deleteCantRent) {
 
-        List<Integer> rentalNos = new ArrayList<>();
-        rentalNos.add(rentalNo);
-        cartService.deleteFromCart(memNo, rentalNos);
+        cartService.deleteFromCart(deleteCantRent.getMemNo(), deleteCantRent.getRentalNos());
         return ResponseEntity.status(HttpStatus.OK).body("ok");
 
     }
@@ -546,6 +556,71 @@ public class RentalOrderController {
         return ResponseEntity.status(HttpStatus.OK).body(refundInfos);
 
     }
+
+    /*----------------------------line pay----------------------------------*/
+
+    private static final String CHANNEL_ID = "2005342190";
+    private static final String CHANNEL_SECRET = "44c865afc4d0e1d4575ea90a87616108";
+    private static final String REQUEST_URL = "https://sandbox-api-pay.line.me/v3/payments/request";
+
+    @PostMapping("/testLinePay")
+    public void testLinePay() {
+
+        String orderId = "11111";
+        int amount = 100; // 支付金額
+        String currency = "TWD";
+        String productName = "好看衣服";
+        String confirmUrl = "http://localhost:8080/backend/rentalorder/thankForBuying";
+        String cancelUrl = "http://localhost:8080/backend/rentalorder/rentalCart";
+
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("amount", amount);
+        requestBody.put("currency", currency);
+        requestBody.put("orderId", orderId);
+        requestBody.put("packages", new JSONObject().put("id", "package_id").put("amount", amount).put("name", productName));
+        requestBody.put("redirectUrls", new JSONObject().put("confirmUrl", confirmUrl).put("cancelUrl", cancelUrl));
+
+        String nonce = UUID.randomUUID().toString();
+        String data = CHANNEL_SECRET + REQUEST_URL + requestBody.toString() + nonce;
+        String signature = null;
+        try {
+            signature = generateSignature(CHANNEL_SECRET, data);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            signature = generateSignature(CHANNEL_SECRET, data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        HttpPost post = new HttpPost(REQUEST_URL);
+        post.setHeader("Content-Type", "application/json");
+        post.setHeader("X-LINE-ChannelId", CHANNEL_ID);
+        post.setHeader("X-LINE-Authorization-Nonce", nonce);
+        post.setHeader("X-LINE-Authorization", signature);
+
+        try {
+            post.setEntity(new StringEntity(requestBody.toString()));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+             CloseableHttpResponse response = httpClient.execute(post)) {
+
+            String responseString = EntityUtils.toString(response.getEntity());
+            System.out.println("Response: " + responseString);
+
+            JSONObject responseJson = new JSONObject(responseString);
+            // 處理 responseJson 以取得交易ID等信息
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+
+    }
+
+    /*----------------------------line pay----------------------------------*/
 
 
 }

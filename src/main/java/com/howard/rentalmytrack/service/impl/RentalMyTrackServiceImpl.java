@@ -24,6 +24,11 @@ public class RentalMyTrackServiceImpl implements RentalMyTrackService {
     public void insert(RentalMyTrack rentalMyTrack) {
         rentalMyTrackRepository.save(rentalMyTrack);
     }
+
+    public void delete(RentalMyTrack rentalMyTrack) {
+        rentalMyTrackRepository.delete(rentalMyTrack);
+    }
+
     @Transactional
     @Override
     public void update(RentalMyTrack rmt) {
