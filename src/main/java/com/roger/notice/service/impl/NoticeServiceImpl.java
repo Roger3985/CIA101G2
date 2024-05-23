@@ -117,6 +117,14 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     /**
+     * 根據會員編號和讀取狀態查找通知列表。
+     */
+    @Override
+    public List<Notice> findNoticesByMemberMemNoAndNotStat(Integer memNo, byte notStat) {
+        return noticeRepository.findNoticesByMemberMemNoAndNotStat(memNo, notStat);
+    }
+
+    /**
      * @param member 傳入的 Member 物件，用於查找相關的 Notice。
      */
     @Override

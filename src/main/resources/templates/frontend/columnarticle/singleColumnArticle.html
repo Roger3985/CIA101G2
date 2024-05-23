@@ -65,9 +65,11 @@
                                 </div>
                                 <div class="row" th:if="${session.loginsuccess}">
                                     <div class="col-lg-6 my-3">
-                                        <i class="bi bi-heart me-2" th:onclick="'likeArticle(' + ${session.loginsuccess.memNo} + ', ' + ${columnArtice.artNo} + ')'" style="cursor: pointer;"></i>
+                                        <i class="bi bi-heart me-2" th:unless="${session.likedArtNoList.contains(columnArtice.artNo)}" th:onclick="'likeArticle(' + ${session.loginsuccess.memNo} + ', ' + ${columnArtice.artNo} + ')'" style="cursor: pointer;"></i>
+                                        <i class="bi bi-heart-fill me-2" id="unLikeIcon" th:if="${session.likedArtNoList.contains(columnArtice.artNo)}" th:onclick="'unLikeArticle(' + ${session.loginsuccess.memNo} + ', ' + ${columnArtice.artNo} + ')'" style="cursor: pointer;"></i>
                                         <i class="bi bi-chat-dots me-2"   th:onclick="'showCommentInputModal(' + ${session.loginsuccess.memNo} + ', ' + ${columnArtice.artNo} + ')'" style="cursor: pointer;"></i>
-                                        <i class="bi bi-clipboard2-heart" th:onclick="'columnArticleCollection(' + ${session.loginsuccess.memNo} + ', ' + ${columnArtice.artNo} + ')'" style="cursor: pointer;"></i>
+                                        <i class="bi bi-clipboard2-heart me-2" th:unless="${session.articleCollections.contains(columnArtice.artNo)}" th:onclick="'columnArticleCollection(' + ${session.loginsuccess.memNo} + ', ' + ${columnArtice.artNo} + ')'" style="cursor: pointer;"></i>
+                                        <i class="bi bi-clipboard-heart-fill" th:if="${session.articleCollections.contains(columnArtice.artNo)}" th:onclick="'unColumnArticleCollection(' + ${session.loginsuccess.memNo} + ', ' + ${columnArtice.artNo} + ')'" style="cursor: pointer;"></i>
                                     </div>
                                 </div>
                                 <p th:text="${columnArtice.artContent}" style="font-size: 20px"></p>
@@ -128,18 +130,26 @@
                                 </ol>
                                 </div>
                             </article>
-                            <div class="row separated mt-8 g-0">
-                                <div class="col-6 py-3 pe-3"><label class="w-100 mb-1 small">PREVIOUS POST</label> <a
-                                        class="h5" href="#">Turning your emergency donation into instant aid</a></div>
-                                <div class="col-6 text-end ps-3 py-3"><label class="w-100 mb-1 small">NEXT POST</label>
-                                    <a class="h5" href="#">Turning your emergency donation into instant aid</a></div>
+                            <div class="row separated mt-8 g-0" th:if="${previousArticle  != null || nextArticle != null}">
+                                <div class="col-6 py-3 pe-3">
+                                    <label class="w-100 mb-1 small">PREVIOUS POST</label>
+                                    <a class="h5" th:if="${previousArticle != null}" th:href="@{/frontend/columnarticle/oneColumnArticle(artNo=${previousArticle.artNo})}" th:text="${previousArticle.artTitle}"></a>
+                                    <a class="h5" th:if="${previousArticle == null}" href="#">沒有上一篇了</a>
+                                </div>
+                                <div class="col-6 text-end ps-3 py-3">
+                                    <label class="w-100 mb-1 small">NEXT POST</label>
+                                    <a class="h5" th:if="${nextArticle != null}" th:href="@{/frontend/columnarticle/oneColumnArticle(artNo=${nextArticle.artNo})}" th:text="${nextArticle.artTitle}"></a>
+                                    <a class="h5" th:if="${nextArticle == null}" href="#">沒有下一篇了</a>
+                                </div>
                             </div>
                             <div class="py-4 my-5 border-top border-bottom">
                                 <div class="row align-items-center">
                                     <div class="col-8">
                                         <div class="media d-flex align-items-center">
-                                            <div class="avatar rounded-circle"><img class="img-fluid"
-                                                    src="../../assets/img/pages/team-1.jpg" title="" alt=""></div>
+<!--                                            <div class="me-3">-->
+<!--                                                <img th:src="@{/backend/administrator/DBGifReader(admno=${columnArtice.administrator.admNo})}"-->
+<!--                                                     style="width: 80px; height: 80px; border: 1px solid #ccc;" alt="Profile Picture">-->
+<!--                                            </div>-->
                                             <div class="col ps-3">作者
                                                 <h6 class="mb-1" th:text="${columnArtice.administrator.admName}"></h6>
                                                 <span th:text="${columnArtice.artTime}"></span>
@@ -198,30 +208,20 @@
                                     </div>
                                 </li>
                             </ul>
-                            <div class="mt-8 border p-4">
+                            <div class="mt-8 border p-4" th:if="${session.loginsuccess}">
                                 <h4 class="mb-4">Leave a Reply</h4>
-                                <form method="post">
+                                <form id="replyForm">
                                     <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="form-group mb-3">
-                                                <label class="form-label rd-input-label" for="contact-name">Name</label>
-                                                <input id="contact-name" type="text" name="name" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group mb-3">
-                                                <label class="form-label rd-input-label" for="contact-phone">Your Email</label>
-                                                <input id="contact-phone" type="email" name="text" class="form-control">
-                                            </div>
-                                        </div>
                                         <div class="col-12">
                                             <div class="form-group mb-3">
                                                 <label class="form-label rd-input-label" for="contact-message">Your Comment</label>
-                                                <textarea class="form-control" id="contact-message" name="message" rows="6"></textarea>
+                                                <textarea class="form-control" id="contact-message" name="comContent" rows="6"></textarea>
+                                                <input type="hidden" name="memNo" th:value="${session.loginsuccess.memNo}">
+                                                <input type="hidden" name="artNo" th:value="${columnArtice.artNo}">
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <button class="btn btn-primary" type="submit" name="send">Send Message</button>
+                                            <button class="btn btn-primary" type="button" id="submitBtn">Send Message</button>
                                         </div>
                                     </div>
                                 </form>
@@ -443,6 +443,45 @@
             </div>
         </div>
     </div>
+    <!-- 取消點讚模態框結構 -->
+    <div class="modal" id="unLikeModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">取消點讚</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>您已取消點讚。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 點讚失敗模態框結構 -->
+    <div class="modal" id="unErrorModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">點讚失敗</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>點讚操作失敗，請重試。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal" id="columnArticleCollectionModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -461,7 +500,7 @@
             </div>
         </div>
     </div>
-    <!-- 重複點讚導致點讚失敗提示模態框結構 -->
+    <!-- 重複收藏導致收藏失敗提示模態框結構 -->
     <div class="modal" id="columnArticleCollectionErrorModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -480,6 +519,45 @@
             </div>
         </div>
     </div>
+    <!-- 取消收藏模態框結構 -->
+    <div class="modal" id="unColumnArticleCollectionModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">取消收藏</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>您已取消收藏。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 取消收藏失敗模態框結構 -->
+    <div class="modal" id="unColumnArticleCollectionErrorModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">取消收藏失敗</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>取消收藏操作失敗，請重試。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 留言輸入模態框 -->
     <div class="modal fade" id="commentInputModal" tabindex="-1" role="dialog" aria-labelledby="commentInputModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -562,15 +640,15 @@
             </div>
         </div>
     </div>
-    <div id="commentReplyModal" class="modal" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.4);">
-        <div class="modal-dialog modal-dialog-centered" role="document" style="animation: fadeIn 0.5s;">
-            <div class="modal-content" style="position: relative; background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; animation: slideIn 0.5s;">
+    <div id="commentReplyModal" class="modal" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.4); animation: fadeInBg 0.5s;">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="animation: slideIn 0.5s;">
+            <div class="modal-content" style="position: relative; background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; animation: fadeInContent 0.5s;">
                 <span class="close" onclick="closeModal()" style="position: absolute; right: 10px; top: 5px; color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer;">&times;</span>
-                <h2>評論回覆</h2>
+                <h2>留言檢舉</h2>
                 <!-- 評論回覆表單 -->
                 <form id="commentReplyForm">
                     <div class="form-group">
-                        <label for="replyContent">回覆內容:</label>
+                        <label for="replyContent">檢舉內容:</label>
                         <input type="hidden" id="memNoInput">
                         <input type="hidden" id="artReplyNoInput">
                         <input type="hidden" id="admNoInput">
@@ -578,11 +656,37 @@
                     </div>
                 </form>
                 <div class="modal-footer" style="position: relative;">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()">取消</button>
-                    <button type="button" class="btn btn-primary" onclick="submitReply()">提交回覆</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()" style="padding: 10px 20px; font-size: 16px; border: none; cursor: pointer; transition: background-color 0.3s, transform 0.3s; background-color: #6c757d; color: white;">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="submitReply()" style="padding: 10px 20px; font-size: 16px; border: none; cursor: pointer; transition: background-color 0.3s, transform 0.3s; background-color: #007bff; color: white;">提交回覆</button>
                 </div>
             </div>
         </div>
+        <style>
+            @keyframes fadeInBg {
+                from { background-color: rgba(0, 0, 0, 0); }
+                to { background-color: rgba(0, 0, 0, 0.4); }
+            }
+
+            @keyframes slideIn {
+                from { transform: translateY(-50%); }
+                to { transform: translateY(0); }
+            }
+
+            @keyframes fadeInContent {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+
+            .btn-secondary:hover {
+                background-color: #5a6268;
+                transform: scale(1.05);
+            }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                transform: scale(1.05);
+            }
+        </style>
     </div>
 
 
@@ -651,6 +755,73 @@
     }
 </script>
 <script>
+    // 定義取消點讚的函數，接收會員編號和文章編號作為參數
+    function unLikeArticle(memNo, artNo) {
+        const unLikeIcon = document.getElementById("unLikeIcon");
+
+        // 發送POST請求，將會員編號和文章編號作為URL的一部分
+        fetch(`/frontend/columnarticle/unlike/${memNo}/${artNo}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            // 如果需要帶上身份驗證信息，可以在這裡設置
+            credentials: 'include'
+        })
+            .then(response => {
+                if (response.ok) {
+                    // 成功處理後的操作，例如更新界面顯示
+                    $('#unLikeModal').modal('show'); // 顯示模態框
+
+                    // 監聽模態框關閉事件
+                    $('#unLikeModal').on('hidden.bs.modal', function () {
+                        // 模態框關閉後重新加載頁面
+                        location.reload();
+                        // 部分刷新頁面，僅刷新愛心圖標
+                        // unLikeIcon.classList.remove('bi-heart-fill');
+                        // unLikeIcon.classList.add('bi-heart');
+                    });
+
+                    // 綁定右上角叉叉按鈕的點擊事件
+                    $('.close').click(function() {
+                        // 關閉所屬的模態框
+                        $(this).closest('.modal').modal('hide');
+                    });
+                    // 綁定關閉按鈕的點擊事件
+                    $('.modal-footer .btn-secondary').click(function() {
+                        // 關閉所屬的模態框
+                        $(this).closest('.modal').modal('hide');
+                    });
+                    // 請求成功，處理成功響應
+                    return response.text(); // 返回成功消息
+                } else {
+                    // 錯誤處理，顯示點讚失敗的模態框
+                    $('#unErrorModal').modal('show');
+                    // 綁定右上角叉叉按鈕的點擊事件
+                    $('.close').click(function() {
+                        // 關閉所屬的模態框
+                        $(this).closest('.modal').modal('hide');
+                    });
+                    // 綁定關閉按鈕的點擊事件
+                    $('.modal-footer .btn-secondary').click(function() {
+                        // 關閉所屬的模態框
+                        $(this).closest('.modal').modal('hide');
+                    });
+                    // 請求失敗，處理錯誤響應
+                    return response.text(); // 返回失敗消息
+                }
+            })
+            .then(data => {
+                // 成功處理後的操作，例如更新界面顯示
+                console.log(data); // 打印成功消息
+            })
+            .catch(error => {
+                // 錯誤處理，例如顯示錯誤信息給用戶
+                console.error(error.message); // 打印錯誤消息
+            });
+    }
+</script>
+<script>
     //定義收藏的函數，接收文章編號作為參數
     function columnArticleCollection(memNo, artNo) {
 
@@ -690,6 +861,73 @@
                 } else {
                     // 錯誤處理，顯示點讚失敗的模態框
                     $('#columnArticleCollectionErrorModal').modal('show');
+                    // 綁定右上角叉叉按鈕的點擊事件
+                    $('.close').click(function() {
+                        // 關閉所屬的模態框
+                        $(this).closest('.modal').modal('hide');
+                    });
+                    // 綁定關閉按鈕的點擊事件
+                    $('.modal-footer .btn-secondary').click(function() {
+                        // 關閉所屬的模態框
+                        $(this).closest('.modal').modal('hide');
+                    });
+                    // 請求失敗，處理錯誤響應
+                    return response.text(); // 返回失敗消息
+                }
+            })
+            .then(data => {
+                // 成功處理後的操作，例如更新界面顯示
+                console.log(data); // 打印成功消息
+            })
+            .catch(error => {
+                // 錯誤處理，例如顯示錯誤信息給用戶
+                console.error(error.message); // 打印錯誤消息
+            });
+    }
+</script>
+<script>
+    // 定義取消收藏的函數，接收會員編號和文章編號作為參數
+    function unColumnArticleCollection(memNo, artNo) {
+        const unCollection = document.getElementById("unArticeCollection");
+
+        // 發送POST請求，將會員編號和文章編號作為URL的一部分
+        fetch(`/frontend/columnarticle/unColumnArticleCollection/${memNo}/${artNo}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            // 如果需要帶上身份驗證信息，可以在這裡設置
+            credentials: 'include'
+        })
+            .then(response => {
+                if (response.ok) {
+                    // 成功處理後的操作，例如更新界面顯示
+                    $('#unColumnArticleCollectionModal').modal('show'); // 顯示模態框
+
+                    // 監聽模態框關閉事件
+                    $('#unColumnArticleCollectionModal').on('hidden.bs.modal', function () {
+                        // 模態框關閉後重新加載頁面
+                        location.reload();
+                        // 部分刷新頁面，僅刷新愛心圖標
+                        // unCollection.classList.remove('bi bi-clipboard2-heart-fill');
+                        // unCollection.classList.add('bi bi-clipboard2-heart');
+                    });
+
+                    // 綁定右上角叉叉按鈕的點擊事件
+                    $('.close').click(function() {
+                        // 關閉所屬的模態框
+                        $(this).closest('.modal').modal('hide');
+                    });
+                    // 綁定關閉按鈕的點擊事件
+                    $('.modal-footer .btn-secondary').click(function() {
+                        // 關閉所屬的模態框
+                        $(this).closest('.modal').modal('hide');
+                    });
+                    // 請求成功，處理成功響應
+                    return response.text(); // 返回成功消息
+                } else {
+                    // 錯誤處理，顯示點讚失敗的模態框
+                    $('#unColumnArticleCollectionErrorModal').modal('show');
                     // 綁定右上角叉叉按鈕的點擊事件
                     $('.close').click(function() {
                         // 關閉所屬的模態框
@@ -937,42 +1175,73 @@
         console.log(memNo);
         console.log(artReplyNo);
         console.log(admNo);
+        console.log(replyContent);
 
-        // 使用fetch API向後端發送POST請求
-        fetch('/frontend/report/submitReport', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                memNo: memNo,
-                artReplyNo: artReplyNo,
-                admNo: admNo,
-                reportReason: replyContent
-            })
-        })
-            .then(response => {
-                if (response.ok) {
-                    // 如果回應狀態碼為200，檢舉成功，關閉模態對話框
-                    closeModal();
-                    // 返回檢舉成功訊息
-                    return response.text();
-                } else {
-                    // 如果回應狀態碼不是200，檢舉失敗，拋出一個錯誤
-                    throw new Error('檢舉失敗');
+        if (replyContent === "") {
+            alert("檢舉內容不能為空");
+        } else {
+            // 使用 AJAX 向後端發送 POST 請求
+            $.ajax({
+                url: '/frontend/report/submitReport',
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded', // 指定表單提交
+                data: {
+                    memNo: memNo,
+                    artReplyNo: artReplyNo,
+                    admNo: admNo,
+                    reportReason: replyContent
+                },
+                success: function(data) {
+                    // 如果回應成功，處理檢舉成功後的操作
+                    console.log(data); // 可以是回應訊息或其他資訊
+                    alert(data); // 關閉模態對話框
+                    // 在此處理檢舉成功後的操作，例如顯示成功訊息給用戶
+                    window.location.reload();
+                },
+                error: function(xhr, status, error) {
+                    // 如果發生錯誤，處理檢舉失敗後的操作
+                    console.error('Error:', error);
+                    // 在此處理檢舉失敗後的操作，例如顯示錯誤訊息給用戶
                 }
-            })
-            .then(data => {
-                // 在此處理檢舉成功後的操作，例如顯示成功訊息給用戶
-                console.log(data);
-            })
-            .catch(error => {
-                // 在此處理檢舉失敗後的操作，例如顯示錯誤訊息給用戶
-                console.error('Error:', error);
             });
+        }
     }
 </script>
+<script>
+    $(document).ready(function() {
+        $("#submitBtn").click(function() {
+            // 獲取留言內容
+            var messageContent = $("#contact-message").val().trim();
 
+            // 檢查內容是否為空
+            if (messageContent === "") {
+                alert("請輸入留言內容");
+                return; // 終止函數執行
+            }
 
+            // 如果內容不為空，則繼續處理提交
+            var formData = new FormData(document.getElementById('replyForm'));
+
+            $.ajax({
+                url: "/frontend/columnarticle/submitCommit",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    alert(data); // 在這裡可以處理後端回傳的訊息
+                    // 成功後禁用提交按鈕
+                    // $("#submitBtn").prop("disabled", true);
+                    window.location.reload();
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    console.error("Error:", errorThrown);
+                    // 在這裡處理錯誤，例如顯示錯誤訊息給用戶
+                    alert("An error occurred while processing your request. Please try again later.");
+                }
+            });
+        });
+    });
+</script>
 
 </html>

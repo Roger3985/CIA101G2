@@ -78,9 +78,11 @@
 <!--                                    <th:block th:each="clicklike: ${session.clickLikeList}">-->
 <!--                                        <i class="bi bi-heart-fill me-2" th:if="${clicklike.columnArticle.artNo != columnarticle.artNo}" th:onclick="'likeArticle(' + ${session.loginsuccess.memNo} + ', ' + ${columnarticle.artNo} + ')'" style="cursor: pointer;"></i>-->
 <!--                                    </th:block>-->
-                                    <i class="bi bi-heart me-2" th:onclick="'likeArticle(' + ${session.loginsuccess.memNo} + ', ' + ${columnarticle.artNo} + ')'" style="cursor: pointer;"></i>
-                                    <i class="bi bi-chat-dots me-2"   th:onclick="'showCommentInputModal(' + ${session.loginsuccess.memNo} + ', ' + ${columnarticle.artNo} + ')'" style="cursor: pointer;"></i>
-                                    <i class="bi bi-clipboard2-heart" th:onclick="'columnArticleCollection(' + ${session.loginsuccess.memNo} + ', ' + ${columnarticle.artNo} + ')'" style="cursor: pointer;"></i>
+                                    <i class="bi bi-heart me-2" th:unless="${session.likedArtNoList.contains(columnarticle.artNo)}" th:onclick="'likeArticle(' + ${session.loginsuccess.memNo} + ', ' + ${columnarticle.artNo} + ')'" style="cursor: pointer;"></i>
+                                    <i class="bi bi-heart-fill me-2" id="unLikeIcon" th:if="${session.likedArtNoList.contains(columnarticle.artNo)}" th:onclick="'unLikeArticle(' + ${session.loginsuccess.memNo} + ', ' + ${columnarticle.artNo} + ')'" style="cursor: pointer;"></i>
+                                    <i class="bi bi-chat-dots me-2" th:onclick="'showCommentInputModal(' + ${session.loginsuccess.memNo} + ', ' + ${columnarticle.artNo} + ')'" style="cursor: pointer;"></i>
+                                    <i class="bi bi-clipboard2-heart me-2" th:unless="${session.articleCollections.contains(columnarticle.artNo)}" th:onclick="'columnArticleCollection(' + ${session.loginsuccess.memNo} + ', ' + ${columnarticle.artNo} + ')'" style="cursor: pointer;"></i>
+                                    <i class="bi bi-clipboard-heart-fill" th:if="${session.articleCollections.contains(columnarticle.artNo)}" th:onclick="'unColumnArticleCollection(' + ${session.loginsuccess.memNo} + ', ' + ${columnarticle.artNo} + ')'" style="cursor: pointer;"></i>
                                     <!-- 其他文章相關數據渲染 -->
                                 </div>
                             </div>
@@ -300,7 +302,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-<!--                    <p>已點讚過，請勿重複點讚。</p>-->
+                    <!--                    <p>已點讚過，請勿重複點讚。</p>-->
                     <p>已再次收到你的點讚，感謝支持。</p>
                 </div>
                 <div class="modal-footer">
@@ -309,6 +311,45 @@
             </div>
         </div>
     </div>
+    <!-- 取消點讚模態框結構 -->
+    <div class="modal" id="unLikeModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">取消點讚</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>您已取消點讚。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 取消點讚失敗模態框結構 -->
+    <div class="modal" id="unErrorModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">取消點讚失敗</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>取消點讚操作失敗，請重試。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal" id="columnArticleCollectionModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -327,7 +368,7 @@
             </div>
         </div>
     </div>
-    <!-- 重複點讚導致點讚失敗提示模態框結構 -->
+    <!-- 重複收藏導致收藏失敗提示模態框結構 -->
     <div class="modal" id="columnArticleCollectionErrorModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -346,6 +387,45 @@
             </div>
         </div>
     </div>
+    <!-- 取消收藏模態框結構 -->
+    <div class="modal" id="unColumnArticleCollectionModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">取消收藏</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>您已取消收藏。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 取消收藏失敗模態框結構 -->
+    <div class="modal" id="unColumnArticleCollectionErrorModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">取消收藏失敗</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>取消收藏操作失敗，請重試。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 留言輸入模態框 -->
     <div class="modal fade" id="commentInputModal" tabindex="-1" role="dialog" aria-labelledby="commentInputModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -439,6 +519,73 @@
     }
 </script>
 <script>
+    // 定義取消點讚的函數，接收會員編號和文章編號作為參數
+    function unLikeArticle(memNo, artNo) {
+        const unLikeIcon = document.getElementById("unLikeIcon");
+
+        // 發送POST請求，將會員編號和文章編號作為URL的一部分
+        fetch(`/frontend/columnarticle/unlike/${memNo}/${artNo}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            // 如果需要帶上身份驗證信息，可以在這裡設置
+            credentials: 'include'
+        })
+            .then(response => {
+                if (response.ok) {
+                    // 成功處理後的操作，例如更新界面顯示
+                    $('#unLikeModal').modal('show'); // 顯示模態框
+
+                    // 監聽模態框關閉事件
+                    $('#unLikeModal').on('hidden.bs.modal', function () {
+                        // 模態框關閉後重新加載頁面
+                        location.reload();
+                        // 部分刷新頁面，僅刷新愛心圖標
+                        // unLikeIcon.classList.remove('bi-heart-fill');
+                        // unLikeIcon.classList.add('bi-heart');
+                    });
+
+                    // 綁定右上角叉叉按鈕的點擊事件
+                    $('.close').click(function() {
+                        // 關閉所屬的模態框
+                        $(this).closest('.modal').modal('hide');
+                    });
+                    // 綁定關閉按鈕的點擊事件
+                    $('.modal-footer .btn-secondary').click(function() {
+                        // 關閉所屬的模態框
+                        $(this).closest('.modal').modal('hide');
+                    });
+                    // 請求成功，處理成功響應
+                    return response.text(); // 返回成功消息
+                } else {
+                    // 錯誤處理，顯示點讚失敗的模態框
+                    $('#unErrorModal').modal('show');
+                    // 綁定右上角叉叉按鈕的點擊事件
+                    $('.close').click(function() {
+                        // 關閉所屬的模態框
+                        $(this).closest('.modal').modal('hide');
+                    });
+                    // 綁定關閉按鈕的點擊事件
+                    $('.modal-footer .btn-secondary').click(function() {
+                        // 關閉所屬的模態框
+                        $(this).closest('.modal').modal('hide');
+                    });
+                    // 請求失敗，處理錯誤響應
+                    return response.text(); // 返回失敗消息
+                }
+            })
+            .then(data => {
+                // 成功處理後的操作，例如更新界面顯示
+                console.log(data); // 打印成功消息
+            })
+            .catch(error => {
+                // 錯誤處理，例如顯示錯誤信息給用戶
+                console.error(error.message); // 打印錯誤消息
+            });
+    }
+</script>
+<script>
     //定義收藏的函數，接收文章編號作為參數
     function columnArticleCollection(memNo, artNo) {
 
@@ -478,6 +625,73 @@
                 } else {
                     // 錯誤處理，顯示點讚失敗的模態框
                     $('#columnArticleCollectionErrorModal').modal('show');
+                    // 綁定右上角叉叉按鈕的點擊事件
+                    $('.close').click(function() {
+                        // 關閉所屬的模態框
+                        $(this).closest('.modal').modal('hide');
+                    });
+                    // 綁定關閉按鈕的點擊事件
+                    $('.modal-footer .btn-secondary').click(function() {
+                        // 關閉所屬的模態框
+                        $(this).closest('.modal').modal('hide');
+                    });
+                    // 請求失敗，處理錯誤響應
+                    return response.text(); // 返回失敗消息
+                }
+            })
+            .then(data => {
+                // 成功處理後的操作，例如更新界面顯示
+                console.log(data); // 打印成功消息
+            })
+            .catch(error => {
+                // 錯誤處理，例如顯示錯誤信息給用戶
+                console.error(error.message); // 打印錯誤消息
+            });
+    }
+</script>
+<script>
+    // 定義取消收藏的函數，接收會員編號和文章編號作為參數
+    function unColumnArticleCollection(memNo, artNo) {
+        const unCollection = document.getElementById("unArticeCollection");
+
+        // 發送POST請求，將會員編號和文章編號作為URL的一部分
+        fetch(`/frontend/columnarticle/unColumnArticleCollection/${memNo}/${artNo}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            // 如果需要帶上身份驗證信息，可以在這裡設置
+            credentials: 'include'
+        })
+            .then(response => {
+                if (response.ok) {
+                    // 成功處理後的操作，例如更新界面顯示
+                    $('#unColumnArticleCollectionModal').modal('show'); // 顯示模態框
+
+                    // 監聽模態框關閉事件
+                    $('#unColumnArticleCollectionModal').on('hidden.bs.modal', function () {
+                        // 模態框關閉後重新加載頁面
+                        location.reload();
+                        // 部分刷新頁面，僅刷新愛心圖標
+                        // unCollection.classList.remove('bi bi-clipboard2-heart-fill');
+                        // unCollection.classList.add('bi bi-clipboard2-heart');
+                    });
+
+                    // 綁定右上角叉叉按鈕的點擊事件
+                    $('.close').click(function() {
+                        // 關閉所屬的模態框
+                        $(this).closest('.modal').modal('hide');
+                    });
+                    // 綁定關閉按鈕的點擊事件
+                    $('.modal-footer .btn-secondary').click(function() {
+                        // 關閉所屬的模態框
+                        $(this).closest('.modal').modal('hide');
+                    });
+                    // 請求成功，處理成功響應
+                    return response.text(); // 返回成功消息
+                } else {
+                    // 錯誤處理，顯示點讚失敗的模態框
+                    $('#unColumnArticleCollectionErrorModal').modal('show');
                     // 綁定右上角叉叉按鈕的點擊事件
                     $('.close').click(function() {
                         // 關閉所屬的模態框

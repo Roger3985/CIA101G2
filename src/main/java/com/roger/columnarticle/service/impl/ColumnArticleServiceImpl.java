@@ -140,4 +140,34 @@ public class ColumnArticleServiceImpl implements ColumnArticleService {
         return columnArticleRepository.countColumnArticleByArtNo(artNo);
     }
 
+    /**
+     * 獲取目前上架中的文章列表。
+     */
+    public List<ColumnArticle> getPublishedArticles() {
+        // 調用自訂方法以獲取上架中的文章
+        return columnArticleRepository.findByArtStat((byte) 0);
+    }
+
+    @Override
+    public boolean isColumnArticleCollectionByMember(Integer memNo, Integer artNo) {
+        return articleCollectionRepository.existsByCompositeArticleCollection(memNo, artNo);
+    }
+
+    /**
+     * 移除會員的專欄文章收藏。
+     */
+    @Override
+    @Transactional
+    public boolean unColumnArticleCollection(Integer memNo, Integer artNo) {
+        if (memNo == null || artNo == null) {
+            throw new IllegalArgumentException("會員編號和文章編號不能為 null");
+        }
+
+        if (isColumnArticleCollectionByMember(memNo, artNo)) {
+            columnArticleRepository.deleteByMemNoAndArtNo(memNo, artNo);
+            return true;
+        }
+        return false;
+    }
+
 }

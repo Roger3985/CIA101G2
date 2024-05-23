@@ -142,6 +142,7 @@ public class ReportControllerFrontEnd {
         return list;
     }
 
+
     /**
      * 提交新的檢舉。
      *
@@ -152,11 +153,10 @@ public class ReportControllerFrontEnd {
      * @return ResponseEntity 包含檢舉結果的 HTTP 響應實體
      */
     @PostMapping("/submitReport")
-    @ResponseBody
-    public ResponseEntity<String> submitReport(@RequestBody Integer memNo,
-                                               @RequestBody Integer artReplyNo,
-                                               @RequestBody Integer admNo,
-                                               @RequestBody String reportReason,
+    public ResponseEntity<String> submitReport(@RequestParam("memNo") Integer memNo,
+                                               @RequestParam("artReplyNo") Integer artReplyNo,
+                                               @RequestParam("admNo") Integer admNo,
+                                               @RequestParam("reportReason") String reportReason,
                                                HttpSession session) {
 
         // 從會話中取出會員資料
@@ -170,6 +170,8 @@ public class ReportControllerFrontEnd {
             report.setReportTime(new Timestamp(System.currentTimeMillis()));
             report.setReportReason(reportReason);
             report.setReportType((byte) 0);
+            // 新增檢舉到資料庫
+            reportService.addReport(report);
 
             // 將會員資料存入會話
             session.setAttribute("loginsuccess", member);
@@ -177,7 +179,7 @@ public class ReportControllerFrontEnd {
             // 新增點讚的通知消息
             Notice newNotice = new Notice();
             newNotice.setMember(member);
-            newNotice.setNotContent("你對" + columnReplyService.getColumnReplyByColumnReplyNo(artReplyNo) + "檢舉成功，檢舉內容為: " + reportReason + "我們會盡快處理，感謝妳提供的意見");
+            newNotice.setNotContent("你對留言:" + columnReplyService.getColumnReplyByColumnReplyNo(artReplyNo).getComContent() + "檢舉成功，檢舉內容為: " + reportReason + "我們會盡快處理，感謝妳提供的意見");
             newNotice.setNotTime(new Timestamp(System.currentTimeMillis()));
             newNotice.setNotStat((byte) 0);
             noticeService.addNotice(newNotice);

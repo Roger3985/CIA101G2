@@ -73,6 +73,33 @@ public interface ColumnArticleService {
      */
     public int getResponseCount(Integer artNo);
 
+    /**
+     * 獲取目前上架中的文章列表。
+     *
+     * @return 目前上架中的文章列表。
+     */
+    public List<ColumnArticle> getPublishedArticles();
+
+    /**
+     * 移除會員的專欄文章收藏。
+     *
+     * @param memNo 會員編號，不可為 null
+     * @param artNo 文章編號，不可為 null
+     * @return 如果移除成功，返回 true；否則，返回 false。
+     * @throws IllegalArgumentException 如果會員編號或文章編號為 null
+     */
+    public boolean unColumnArticleCollection(Integer memNo, Integer artNo);
+
+
+    /**
+     * 檢查會員是否收藏了指定的專欄文章。
+     *
+     * @param memNo 會員編號
+     * @param artNo 專欄文章編號
+     * @return 如果會員收藏了指定的專欄文章，則返回 true；否則返回 false。
+     * @throws IllegalArgumentException 如果會員編號或專欄文章編號為負值
+     */
+    public boolean isColumnArticleCollectionByMember(Integer memNo, Integer artNo);
 
 
 }

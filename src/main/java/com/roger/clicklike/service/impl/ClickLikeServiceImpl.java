@@ -99,9 +99,11 @@ public class ClickLikeServiceImpl implements ClickLikeService {
     }
 
     @Override
+    @Transactional
     public boolean unlikeArticle(int memNo, int artNo) {
         if (isArticleLikedByMember(memNo, artNo)) {
             clickLikeRepository.deleteByCompositeClickLike_MemNoAndCompositeClickLike_ArtNo(memNo, artNo);
+            return true;
         }
         return false;
     }
