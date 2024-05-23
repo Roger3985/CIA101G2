@@ -13,9 +13,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
@@ -118,6 +116,27 @@ public class ServiceController {
 
     }
 
+    @OnError
+    public void onError(Session userSession, Throwable e){
+        System.out.println("WebSocket Error: " + e.toString());
+    }
+
+//    @OnClose
+//    public void onClose(Session usersession, CloseReason reason){
+//        String userNameClose = null;
+//        Set<String> userNames =sessionsMap.keySet();
+//        for(String userName : userNames){
+//            if(sessionsMap.get(userName).equals(usersession)){
+//                userNameClose = userName;
+//                sessionsMap.remove(userName);
+//                break;
+//            }
+//        }
+//
+//        if(userNameClose != null){
+//            State stateMessage = new State("close", userNameClose, userNames);
+//        }
+//    }
 
     private void saveMessage(String key, String message) {
         staticChatRedisTemplate.opsForList().rightPush(key, message);

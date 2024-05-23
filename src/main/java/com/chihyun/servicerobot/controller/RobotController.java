@@ -10,16 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Set;
 
 @RestController
-
+@RequestMapping("/robot")
 public class RobotController {
 
     @Autowired
     RobotService robotService;
 
-
-
-    @GetMapping("/robotReply")
-    public Set<ServiceRobot> getRobotReply(String keywordName){
+    @GetMapping("/reply")
+    public Set<ServiceRobot> getRobotReply(String keywordName) {
         return robotService.getResponse(keywordName);
     }
 
