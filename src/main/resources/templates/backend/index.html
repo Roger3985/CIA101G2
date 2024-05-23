@@ -8,7 +8,7 @@
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <style>
-        /* CSS */
+        /* 方形區塊的CSS */
         .section {
             margin: 20px;
             padding: 20px;
@@ -69,6 +69,47 @@
             color: #666;
         }
 
+        /* 圖表的CSS */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sort-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .sort-options .btn {
+            padding: 5px 10px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 40vh;
+            width: 80vw;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .nav-tabs a {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background: #f4f4f4;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .nav-tabs a.active {
+            background: #007bff;
+            color: #fff;
+        }
     </style>
 </head>
 <body id="page-top">
@@ -94,10 +135,10 @@
                         <div class="section-header-description"></div>
                     </div>
                     <div class="card-set">
-                        <!-- 長條圖顯示的位置 -->
-                        <canvas id="p-Selling"></canvas>
-                        <!-- 長條圖顯示的位置 -->
+                        <!-- 折線圖顯示的位置 -->
                         <canvas id="p-SalQty"></canvas>
+                        <!-- 折線圖顯示的位置 -->
+                        <canvas id="p-Test"></canvas>
                     </div>
                     <div class="section-header">
                         <h2>服務相關</h2>
@@ -194,37 +235,163 @@
         });
     });
 
-    var productList = /*[[${productList}]] */ [];
-    // 折線圖
-    const sellingElement = document.getElementById('p-Selling');
-    const selling = {
-        labels: [
-            '星期一', '星期二', '星期三', '星期四', '星期五' ,'星期六' ,'星期日',
-        ],
-        datasets: [{
-            label: '參加人數',
-            data: [160, 130, 140, 160, 170, 200, 180],
-        }]
-    };
-    new Chart(sellingElement, {
-        type: 'line',
-        data: data,
-    });
+    // // 在這裡解析Thymeleaf傳遞的資料
+    // var productTop10SalQty = /*[[${productTop10SalQty}]]*/ [];
+    //
+    // // 處理productList資料，假設每個product包含 productNo 和 productSalQty 屬性
+    // var labels = productTop10SalQty.map(product => product.productNo);
+    // var data = productTop10SalQty.map(product => product.productSalQty);
+    //
+    // // 銷售數量前10 折線圖
+    // const salQtyElement = document.getElementById('p-SalQty');
+    // const salQtyConfig = {
+    //     type: 'line',
+    //     data: {
+    //         labels: labels,
+    //         datasets: [{
+    //             label: '銷售數量',
+    //             data: data,
+    //             backgroundColor: 'rgba(75, 192, 192, 0.2)',
+    //             borderColor: 'rgba(75, 192, 192, 1)',
+    //             borderWidth: 2,
+    //             pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+    //             pointBorderColor: '#fff',
+    //             pointBorderWidth: 2,
+    //             pointRadius: 5,
+    //             pointHoverRadius: 7,
+    //             lineTension: 0.4
+    //         }]
+    //     },
+    //     options: {
+    //         responsive: true,
+    //         maintainAspectRatio: false,
+    //         plugins: {
+    //             legend: {
+    //                 display: true,
+    //                 labels: {
+    //                     color: '#333',
+    //                     font: {
+    //                         size: 14,
+    //                         weight: 'bold'
+    //                     }
+    //                 }
+    //             }
+    //         },
+    //         scales: {
+    //             x: {
+    //                 grid: {
+    //                     display: false
+    //                 },
+    //                 ticks: {
+    //                     color: '#333',
+    //                     font: {
+    //                         size: 12
+    //                     }
+    //                 }
+    //             },
+    //             y: {
+    //                 grid: {
+    //                     color: 'rgba(200, 200, 200, 0.2)',
+    //                     borderDash: [5, 5]
+    //                 },
+    //                 ticks: {
+    //                     color: '#333',
+    //                     font: {
+    //                         size: 12
+    //                     },
+    //                     beginAtZero: true
+    //                 }
+    //             }
+    //         }
+    //     }
+    // };
+    //
+    // new Chart(salQtyElement, salQtyConfig);
 
+    // 在這裡解析Thymeleaf傳遞的資料
+    var productTop10SalQty = /*[[${productTop10SalQty}]]*/ [];
+
+    // 處理productList資料，假設每個product包含 productNo 和 productSalQty 屬性
+    var labels = productTop10SalQty.map(product => product.productNo);
+    var data = productTop10SalQty.map(product => product.productSalQty);
+
+    // 混合圖表
     const salQtyElement = document.getElementById('p-SalQty');
-    const salQty = {
-        labels: [
-            '星期一', '星期二', '星期三', '星期四', '星期五' ,'星期六' ,'星期日',
-        ],
-        datasets: [{
-            label: '參加人數',
-            data: [160, 130, 140, 160, 170, 200, 180],
-        }]
+    const salQtyConfig = {
+        type: 'bar', // 設置主圖表類型為 bar
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    type: 'line', // 子圖表類型設置為 line
+                    label: '銷售數量 (折線圖)',
+                    data: data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    lineTension: 0.4
+                },
+                {
+                    type: 'bar', // 子圖表類型設置為 bar
+                    label: '銷售數量 (長方圖)',
+                    data: data,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        color: '#333',
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        color: '#333',
+                        font: {
+                            size: 12
+                        }
+                    }
+                },
+                y: {
+                    grid: {
+                        color: 'rgba(200, 200, 200, 0.2)',
+                        borderDash: [5, 5]
+                    },
+                    ticks: {
+                        color: '#333',
+                        font: {
+                            size: 12
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        }
     };
-    new Chart(salQtyElement, {
-        type: 'line',
-        data: data,
-    });
+
+    new Chart(salQtyElement, salQtyConfig);
+
 
 </script>
 

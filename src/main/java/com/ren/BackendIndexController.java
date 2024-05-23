@@ -59,10 +59,9 @@ public class BackendIndexController {
     @Autowired
     private ProductServiceImpl productSvc;
 
-    @ModelAttribute
-    public void productList(ModelMap model) {
-        List<Product> list = productSvc.getAll();
-        model.addAttribute("productList", list);
+    @ModelAttribute("productTop10SalQty")
+    public List<Product> productList() {
+        return productSvc.getTopSalQty();
     }
 
     /**
@@ -425,7 +424,6 @@ public class BackendIndexController {
     public String toBackendAlerts() {
         return "backend/alerts";
     }
-
 
     /**
      * 記錄密碼輸入錯誤的次數，

@@ -247,6 +247,11 @@ public class AdministratorController {
         }
     }
 
+    @GetMapping("/calendar")
+    public String toBackendCalendar() {
+        return "backend/administrator/calendar";
+    }
+
     // 工作清單網頁，可以看到所有新增與修改的變更與申請
     @GetMapping("/jobList")
     public String toJobList() {
