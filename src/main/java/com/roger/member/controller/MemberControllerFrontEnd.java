@@ -418,6 +418,15 @@ public class MemberControllerFrontEnd {
         // 獲取會員的通知
         List<Notice> noticeList = noticeService.findNoticesByMemberMemNo(existingMember.getMemNo());
 
+        // 獲取上架中的文章列表
+        List<ColumnArticle> publishedArticles = columnArticleService.getPublishedArticles();
+
+        if (!publishedArticles.isEmpty()) {
+            ColumnArticle firstArticle = publishedArticles.get(0);
+            // 現在您可以使用 firstArticle 來訪問第一個文章的屬性和方法
+            // 例如：firstArticle.getTitle()，firstArticle.getContent()，等等
+            session.setAttribute("onePublishedArticles", firstArticle.getArtNo());
+        }
 
         List<ColumnArticle> columnArticles = columnArticleService.findAll();
         modelMap.addAttribute("columnArticles", columnArticles);

@@ -63,7 +63,7 @@
         <main>
             <!-- Page Title -->
             <div class="bg-no-repeat bg-cover bg-right-center position-relative"
-                style="background-image: url(../../assets/img/fashion2/home-banner-3.jpg);">
+                 th:style="|background-image: url(@{../../resources/static/frontend/assets/img/fashion3/home-banner-6.jpg});|">
                 <div class="position-absolute top-0 end-0 start-0 bottom-0 opacity-3 bg-dark"></div>
                 <!-- Header Height Bar -->
                 <div class="header-height-bar border-bottom opacity-3" style="min-height: 104.865px;"></div>
@@ -88,7 +88,7 @@
                 <div class="container">
                     <div class="row gy-4">
                         <!-- Cart Items -->
-                        <div class="col-lg-8">
+                        <div class="col-lg-8 cartItems">
                             <div class="d-flex justify-content-between align-items-center pb-4 border-bottom mb-4">
                                 <h2 class="h5 mb-0">商品</h2><a class="btn btn-outline-primary btn-sm ps-2"
                                     th:href="@{/frontend/rental/rentalShop}"><i class="ci-arrow-left me-2"></i>繼續購物</a>
@@ -97,8 +97,9 @@
                                 <!--拿來裝購物車商品的 div-->
                             <div id="cartItemsContainer"></div>
 
-                            <button class="btn btn-primary d-block w-100 mt-4 refBtn" type="button">
-                                <i class="bi-arrow-repeat fs-base me-2"></i>重整購物車
+                            <button class="btn btn-primary d-block w-100 mt-4 btn_delCantRent" type="button">
+<!--                                <i class="bi-arrow-repeat fs-base me-2"></i>-->
+                                點按以刪除不能租借的商品
                             </button>
                         </div>
                         <!-- Cart Sidebar -->
@@ -166,12 +167,6 @@
                                             <span class="text-end text-mode totalPrice"></span>
                                         </li>
                                     </ul>
-                                    <div class="pt-2 pb-4">
-                                        <div class="d-flex"><input type="text" name="promo"
-                                                placeholder="Apply promo code" class="form-control form-control-sm">
-                                            <button class="btn btn-dark btn-sm ms-2">Apply</button>
-                                        </div>
-                                    </div>
                                     <div class="d-grid gap-2 mx-auto">
                                         <a class="btn btn-primary" href="/backend/rentalorder/toRentalPayment">
                                             <i class="bi-credit-card-2-back me-2"></i>準備結帳
@@ -358,35 +353,13 @@
                     let actionDiv = $("<div>", {
                         "class": "pt-2 pt-sm-0 d-flex d-sm-block ms-sm-auto"
                     }).appendTo(infoDiv);
-
                     let qtyLabel = $("<label>", {
                         "class": "form-label d-none d-sm-inline-block",
                         "text": ""
                     }).appendTo(actionDiv);
-
-                    let qtyDiv = $("<div>", {
-                        "class": "cart-qty-01"
-                    }).appendTo(actionDiv);
-
-                    let decBtn = $("<div>", {
-                        "class": "dec qty-btn qty_btn",
-                        "html": "<i class='bi bi-caret-up-fill'></i>"
-                    }).appendTo(qtyDiv);
-
-                    let qtyInput = $("<input>", {
-                        "class": "cart-qty-input form-control",
-                        "type": "text",
-                        "name": "qtybutton",
-                        "value": "1"
-                    }).appendTo(qtyDiv);
-
-                    let incBtn = $("<div>", {
-                        "class": "inc qty-btn qty_btn",
-                        "html": "<i class='bi bi-caret-down-fill'></i>"
-                    }).appendTo(qtyDiv);
-
                     let removeBtn = $("<button>", {
                         "class": "btn btn-link px-0 text-danger ms-auto",
+                        "style" : "margin-top: 30px",
                         "type": "button",
                         "html": "<i class='bi-trash3 me-2 delItem'></i><span class='delItem'>移除</span>"
                     }).appendTo(actionDiv);
@@ -409,18 +382,29 @@
         } // getAll()結束
         getAll();
 
-        $("button.refBtn").on("click", function () {
-            getAll();
-        });
+        // $("button.refBtn").on("click", function () {
+        //     getAll();
+        // });
 
+        // 刪除單個購物車商品
         $(document).on("click", ".delItem", function () {
 
+            let rentalNos = [];
             let rentalNo = $(this).closest("div.cartItem").attr("data-rentalNo");
+            rentalNos.push(rentalNo);
+            let data = {
+                "rentalNos" : rentalNos,
+                "memNo" : memNo
+            };
 
             if (confirm("確定從購物車刪除?")) {
 
-                fetch(baseUrl + apiPath + "/deleteFromCart?memNo=" + memNo + "&rentalNo=" + rentalNo, {
-                    method : "DELETE"
+                fetch(baseUrl + apiPath + "/deleteFromCart", {
+                    method : "POST",
+                    headers : {
+                        "Content-Type" : "application/json"
+                    },
+                    body : JSON.stringify(data)
                 }).then(function (response) {
                     return response.text();
                 }).then(function (data) {
@@ -432,7 +416,49 @@
 
             }
 
-        }); // 刪除購物車商品結束
+        }); // 刪除單個購物車商品結束
+
+        // 刪除全部 不能租借的商品
+        $(document).on("click", "button.btn_delCantRent", function () {
+
+            let cartItems = $(this).closest("div.cartItems");
+            let disabledItems = cartItems.find("div.disabled-item");
+            let rentalNos = [];
+
+            for (let i = 0; i < disabledItems.length; i++) {
+                rentalNos.push($(disabledItems[i]).attr("data-rentalno"));
+            }
+            if (rentalNos.length === 0) {
+                alert("還沒有商品能刪...");
+                return;
+            }
+            // console.log(rentalNos);
+            let data = {
+                "rentalNos" : rentalNos,
+                "memNo" : memNo
+            };
+
+            if (confirm("確定刪除尚不可租借的商品?")) {
+
+                fetch(baseUrl + apiPath + "/deleteFromCart", {
+                    method : "POST",
+                    headers : {
+                        "Content-Type" : "application/json"
+                    },
+                    body : JSON.stringify(data)
+                }).then(function (response) {
+                    return response.text();
+                }).then(function (data) {
+                    if (data === "ok") {
+                        alert("刪除成功");
+                        getAll();
+                    }
+                });
+
+            }
+
+        }); // 刪除全部 不能租借的商品 結束
+
 
     }); // DOMContentLoaded結束
 

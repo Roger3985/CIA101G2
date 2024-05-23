@@ -1,6 +1,8 @@
 package com.ren.administrator.service.impl;
 
+import com.aop.annotation.Boss;
 import com.aop.annotation.Employee;
+import com.aop.annotation.Manager;
 import com.ren.administrator.entity.Administrator;
 import com.ren.administrator.service.AdministratorService_interface;
 import com.ren.administrator.dao.AdministratorRepository;
@@ -53,6 +55,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
      *                      其餘資料為預設值由Service層內自動輸入
      * @return 註冊後Entity(預設最低權限)
      */
+    @Manager(title = "manager", message = "向您申請管理員帳號")
     @Override
     public Administrator register(Administrator administrator) {
         // 填入預設的資料
@@ -147,6 +150,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
      * @param administrator 前台輸入資料(在view層使用thymeleaf tag封包)
      * @return 返回更新後Entity
      */
+    @Boss(title = "boss", message = "已更改管理員資料")
     @Override
     public Administrator updateAdministrator(Administrator administrator) {
         return administratorRepository.save(administrator);
@@ -172,7 +176,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
      * @param sessionID 用於獲取SessionID，之後拿來核對會話身分
      * @return 返回登入狀態DTO
      */
-    @Employee(title = "employee", message = "登入")
+    @Employee(title = "employee", message = "已登入")
     @Override
     public void login(Administrator administrator, HttpSession session) {
         // Login 1:登入 0:登出 , Logout 1:登出 0:登入
@@ -196,7 +200,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
      *
      * @param loginState 傳入登入狀態，執行登出
      */
-    @Employee(title = "employee", message = "登出")
+    @Employee(title = "employee", message = "已登出")
     @Override
     public void logout(LoginState loginState) {
         Administrator administrator = getOneAdministrator(loginState.getAdmNo());
@@ -226,6 +230,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
      *
      * @param admNo 根據主鍵刪除該筆資料
      */
+    @Boss(title = "manager", message = "已刪除管理員資料")
     @Override
     public void deleteAdministrator(Integer admNo) {
         administratorRepository.deleteById(admNo);

@@ -35,11 +35,15 @@ public class MonitorController {
         List<Map<String, Object>> messages = new ArrayList<>();
         for (Map.Entry<Object, Object> entry : entries.entrySet()) {
             Map<String, Object> messageWithId = new HashMap<>();
-            messageWithId.put("id", entry.getKey());
-            messageWithId.put("message", entry.getValue());
+            messageWithId.put("id", entry.getKey().toString());
+            messageWithId.put("admNo", ((Monitor) entry.getValue()).getAdmNo());
+            messageWithId.put("admName", ((Monitor) entry.getValue()).getAdmName());
+            messageWithId.put("titleNo", ((Monitor) entry.getValue()).getTitleNo());
+            messageWithId.put("message", ((Monitor) entry.getValue()).getMessage());
+            messageWithId.put("messageTime", ((Monitor) entry.getValue()).getMessageTime());
+            messageWithId.put("readStat", ((Monitor) entry.getValue()).getReadStat());
             messages.add(messageWithId);
         }
-        System.out.println("歷史訊息Get!");
         return messages;
     }
 
@@ -59,10 +63,9 @@ public class MonitorController {
         Map<Object, Object> entries = redisTemplate.opsForHash().entries(userKey);
         for (Map.Entry<Object, Object> entry : entries.entrySet()) {
             Monitor monitor = (Monitor) entry.getValue();
-            monitor.setRead(true);
+            monitor.setReadStat(true);
             redisTemplate.opsForHash().put(userKey, entry.getKey(), monitor);
         }
-        System.out.println("已讀不回");
         return Map.of("status", "success");
     }
 
@@ -74,8 +77,8 @@ public class MonitorController {
      * @return 成功消息
      */
     @PostMapping("/backend/saveMessages")
-    public Map<String, String> saveMessages(HttpSession session, @RequestBody List<Monitor> messages) {
-        System.out.println("saveMessages方法被調用");
+    public Map<String, String> saveMessages(HttpSession session,
+                                            @RequestBody List<Monitor> messages) {
         LoginState loginState = (LoginState) session.getAttribute("loginState");
         if (loginState == null) {
             System.out.println("LoginState 為空");
@@ -83,12 +86,11 @@ public class MonitorController {
         }
         Integer userKey = loginState.getAdmNo();
         for (Monitor message : messages) {
-            String messageId = "message:" + UUID.randomUUID().toString();
+            String messageId = message.getMessageId();
+            System.out.println("HashKey你在嗎" + messageId);
             redisTemplate.opsForHash().put(userKey, messageId, message);
         }
-        System.out.println("儲存成功");
         return Map.of("status", "success");
     }
-
 
 }

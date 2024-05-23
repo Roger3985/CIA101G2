@@ -53,6 +53,13 @@ public class ArticleCollectionServiceImpl implements ArticleCollectionService {
         return articleCollectionRepository.findAll();
     }
 
+    /**
+     * 根據會員編號檢索與之相關的文章收藏列表。
+     */
+    @Override
+    public List<ArticleCollection> getArticleCollectionByMember(Integer memNo) {
+        return articleCollectionRepository.findArticleCollectionsByMember(memNo);
+    }
 
 
 }

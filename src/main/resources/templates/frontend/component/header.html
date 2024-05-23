@@ -105,7 +105,7 @@
                             class="px-dropdown-toggle mob-menu"></label>
                         <ul class="dropdown-menu left shadow-lg">
                             <li><a class="dropdown-item" th:href="@{/frontend/columnarticle/listAllColumnArticle}">Blog</a></li>
-                            <li><a class="dropdown-item" th:href="@{/frontend/columnarticle/oneColumnArticle}">Blog Single</a></li>
+                            <li><a class="dropdown-item" th:if="${session.loginsuccess}" th:unless="${session.onePublishedArticles == null}" th:href="@{/frontend/columnarticle/oneColumnArticle(artNo=${session.onePublishedArticles})}">Blog Single</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -128,7 +128,7 @@
                              style="width: 80px; height: 80px; border: 1px solid #ccc;"
                              alt="會員大頭貼"
                              th:if="${session.loginsuccess}">
-                        <a class="dropdown-item" th:href="@{frontend/rentalmytrack/toRentalMyTrack}" th:if="${session.loginsuccess}">追蹤清單</a>
+                        <a class="dropdown-item" th:href="@{/frontend/rentalmytrack/toRentalMyTrack}" th:if="${session.loginsuccess}">追蹤清單</a>
                         <a class="dropdown-item" th:href="@{/frontend/member/memberData}" th:if="${session.loginsuccess}">My account</a>
                         <a class="dropdown-item" th:href="@{/frontend/member/logoutMember}" th:if="${session.loginsuccess}">Logout</a>
                     </div>

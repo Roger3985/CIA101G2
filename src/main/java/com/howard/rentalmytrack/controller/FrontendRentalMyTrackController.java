@@ -61,6 +61,21 @@ public class FrontendRentalMyTrackController {
 
     }
 
+    // 刪除
+    @DeleteMapping("/deleteTrack")
+    public ResponseEntity<?> deleteTrack(@RequestParam Integer rentalNo,
+                                         @RequestParam Integer memNo) {
+
+        RentalMyTrack rentalMyTrack = rentalMyTrackService.findById(rentalNo, memNo);
+        if (rentalMyTrack != null) {
+            rentalMyTrackService.delete(rentalMyTrack);
+            return ResponseEntity.status(HttpStatus.OK).body("ok");
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body("ok");
+        }
+
+    }
+
 
 
 }

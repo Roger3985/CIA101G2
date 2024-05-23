@@ -45,10 +45,10 @@ public class Cia101G2Application {
 //		servletContext.setInitParameter("org.apache.tomcat.websocket.textBuffer.Size", "1024000");
 //	}
 
-	public static String postQueryLogisticsTradeInfo(AllInOne all){
-		QueryLogisticsTradeInfoObj obj = new QueryLogisticsTradeInfoObj();
-		obj.setAllPayLogisticsID("2659287");
-		return all.queryLogisticsTradeInfo(obj);
-	}
+//	public static String postQueryLogisticsTradeInfo(AllInOne all){
+//		QueryLogisticsTradeInfoObj obj = new QueryLogisticsTradeInfoObj();
+//		obj.setAllPayLogisticsID("2659287");
+//		return all.queryLogisticsTradeInfo(obj);
+//	}
 
 }

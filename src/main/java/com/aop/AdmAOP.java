@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Aspect
 @Component
@@ -58,7 +59,6 @@ public class AdmAOP {
 
     @AfterReturning(value = "@annotation(employee)")
     public void employee(JoinPoint joinPoint, Employee employee) {
-        System.out.println("AOP啟動");
         Integer admNo = null;
         Monitor monitor = null;
         String currentTime = null;
@@ -74,7 +74,8 @@ public class AdmAOP {
                     // 獲取當前時間
                     admNo = loginState.getAdmNo();
                     currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-                    monitor = new Monitor(loginState.getAdmNo(), loginState.getAdmName(), loginState.getTitleNo(), employee.message(), currentTime, false);
+                    String messageId = "message:" + UUID.randomUUID().toString();
+                    monitor = new Monitor(messageId, loginState.getAdmNo(), loginState.getAdmName(), loginState.getTitleNo(), employee.message(), currentTime, false);
                 }
             }
         }
@@ -91,27 +92,90 @@ public class AdmAOP {
 
     @AfterReturning(value = "@annotation(fullTime)")
     public void fullTime(JoinPoint joinPoint, FullTime fullTime) {
-        // 生成要發送的消息
-        String fullTimeMsg = fullTime.message();
-        // 將消息發送到 RabbitMQ
-        rabbitTemplate.convertAndSend("adminHeadersExchange", fullTime.title(), fullTimeMsg);
+        Integer admNo = null;
+        Monitor monitor = null;
+        String currentTime = null;
+        LoginState loginState = null;
+        // 獲取當前HTTP請求的Session
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes != null) {
+            HttpSession session = attributes.getRequest().getSession(false);
+            if (session != null) {
+                // 從Session中獲取loginState對象
+                loginState = (LoginState) session.getAttribute("loginState");
+                if (loginState != null) {
+                    // 獲取當前時間
+                    admNo = loginState.getAdmNo();
+                    currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+                    String messageId = "message:" + UUID.randomUUID().toString();
+                    monitor = new Monitor(messageId, loginState.getAdmNo(), loginState.getAdmName(), loginState.getTitleNo(), fullTime.message(), currentTime, false);
+                }
+            }
+        }
+
+        rabbitTemplate.convertAndSend("adminHeadersExchange", "", monitor, message -> {
+            message.getMessageProperties().setHeader("title", fullTime.title());
+            return message;
+        });
     }
 
     @AfterReturning(value = "@annotation(manager)")
     public void manager(JoinPoint joinPoint, Manager manager) {
-        // 生成要發送的消息
-        String managerMsg = manager.message();
-        // 將消息發送到 RabbitMQ
-        rabbitTemplate.convertAndSend("adminHeadersExchange", manager.title(), managerMsg);
+        Integer admNo = null;
+        Monitor monitor = null;
+        String currentTime = null;
+        LoginState loginState = null;
+        // 獲取當前HTTP請求的Session
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes != null) {
+            HttpSession session = attributes.getRequest().getSession(false);
+            if (session != null) {
+                // 從Session中獲取loginState對象
+                loginState = (LoginState) session.getAttribute("loginState");
+                if (loginState != null) {
+                    // 獲取當前時間
+                    admNo = loginState.getAdmNo();
+                    currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+                    String messageId = "message:" + UUID.randomUUID().toString();
+                    monitor = new Monitor(messageId, loginState.getAdmNo(), loginState.getAdmName(), loginState.getTitleNo(), manager.message(), currentTime, false);
+                }
+            }
+        }
+
+        rabbitTemplate.convertAndSend("adminHeadersExchange", "", monitor, message -> {
+            message.getMessageProperties().setHeader("title", manager.title());
+            return message;
+        });
+
     }
 
     @AfterReturning(value = "@annotation(boss)")
     public void boss(JoinPoint joinPoint, Boss boss) {
-        // 生成要發送的消息
-        String bossMsg = boss.message();
-        // 將消息發送到 RabbitMQ
-        rabbitTemplate.convertAndSend("adminHeadersExchange", boss.title(), bossMsg);
-    }
+        Integer admNo = null;
+        Monitor monitor = null;
+        String currentTime = null;
+        LoginState loginState = null;
+        // 獲取當前HTTP請求的Session
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes != null) {
+            HttpSession session = attributes.getRequest().getSession(false);
+            if (session != null) {
+                // 從Session中獲取loginState對象
+                loginState = (LoginState) session.getAttribute("loginState");
+                if (loginState != null) {
+                    // 獲取當前時間
+                    admNo = loginState.getAdmNo();
+                    currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+                    String messageId = "message:" + UUID.randomUUID().toString();
+                    monitor = new Monitor(messageId, loginState.getAdmNo(), loginState.getAdmName(), loginState.getTitleNo(), boss.message(), currentTime, false);
+                }
+            }
+        }
 
+        rabbitTemplate.convertAndSend("adminHeadersExchange", "", monitor, message -> {
+            message.getMessageProperties().setHeader("title", boss.title());
+            return message;
+        });
+    }
 
 }

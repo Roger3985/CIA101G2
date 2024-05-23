@@ -13,5 +13,14 @@ public interface ArticleCollectionService {
      */
     public List<ArticleCollection> findAll();
 
+    /**
+     * 根據會員編號檢索與之相關的文章收藏列表。
+     *
+     * @param memNo 要檢索文章收藏的會員編號
+     * @return 指定會員編號的文章收藏列表
+     * @throws IllegalArgumentException 如果 memNo 為 null
+     */
+    public List<ArticleCollection> getArticleCollectionByMember(Integer memNo);
+
 
 }
