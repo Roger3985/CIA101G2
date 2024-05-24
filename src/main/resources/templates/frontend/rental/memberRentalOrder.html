@@ -391,7 +391,7 @@
                             </div>
 
                             <div class="button-container" style="display: inline-block; margin-left: 300px">
-                                <button th:if="${rentalOrder.getrentalOrdStat() == 10}" class="btn-get-started btn btn-primary flex-shrink-0">
+                                <button th:if="${rentalOrder.getrentalOrdStat() == 10 || rentalOrder.getrentalTakeMethod() == 1}" class="btn-get-started btn btn-primary flex-shrink-0 btn_tryCancelOrder">
                                     申請取消訂單
                                 </button>
                                 <button class="btn-get-started btn btn-primary flex-shrink-0 btn_addToCart">
@@ -548,33 +548,42 @@
 
     $(function () {
 
+        // 進入頁面就自動查詢物流狀態
         let rentalOrdNo = $("h4.rentalOrdNoForUpdate").attr("id");
+        fetch(baseUrl + apiPath + "queryNewStat?rentalOrdNo=" + rentalOrdNo)
+            .then(response => response.text())
+            .then(logisticsStatus => {
 
-            fetch(baseUrl + apiPath + "queryNewStat?rentalOrdNo=" + rentalOrdNo)
-                .then(response => response.text())
-                .then(logisticsStatus => {
+                switch (logisticsStatus) {
 
-                    switch (logisticsStatus) {
+                    case "300" :
+                        $("div.process").addClass("active");
+                        break;
 
-                        case "300" :
-                            $("div.process").addClass("active");
-                            break;
+                    case "310" :
+                        $("div.uploading").addClass("active");
+                        break;
 
-                        case "310" :
-                            $("div.uploading").addClass("active");
-                            break;
+                    case "3001" :
+                        $("div.transport").addClass("active");
+                        break;
 
-                        case "3001" :
-                            $("div.transport").addClass("active");
-                            break;
+                    case "3003" :
+                        $("div.finish").addClass("active");
+                        break;
 
-                        case "3003" :
-                            $("div.finish").addClass("active");
-                            break;
+                }
 
-                    }
+            });
 
-                });
+        // 取消訂單
+        // $(document).on("click",  "button.btn_tryCancelOrder", function () {
+        //
+        //
+        //
+        // });
+
+
 
     }); // DOMContentLoaded 結束
 
