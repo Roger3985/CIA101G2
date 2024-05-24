@@ -27,16 +27,16 @@
             <div class="container-fluid">
                 <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
                 <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
-                <form method="post" th:action="@{/backend/title/updateTitle/update}" th:object="${product}">
+                <form method="post" th:action="@{/backend/title/updateTitle/update}" th:object="${title}">
                     <div class="mb-3 row">
-                        <label for="productName" class="col-sm-2 col-form-label">職位編號</label>
+                        <label for="titleNo" class="col-sm-2 col-form-label">職位編號</label>
                         <div class="col-sm-3">
                             <input type="text" th:field="*{titleNo}" class="form-control" name="titleNo" id="titleNo">
                             <span th:if="${#fields.hasErrors('titleNo')}" th:errors="*{titleNo}" class="error" id="titleNo.errors"></span>
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="productInfo" class="col-sm-2 col-form-label">職位名稱</label>
+                        <label for="titleName" class="col-sm-2 col-form-label">職位名稱</label>
                         <div class="col-sm-3">
                             <input type="text" th:field="*{titleName}" class="form-control" name="titleName" id="titleName">
                             <span th:if="${#fields.hasErrors('titleName')}" th:errors="*{titleName}" class="error" id="titleName.errors"></span>

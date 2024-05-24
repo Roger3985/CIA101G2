@@ -32,26 +32,26 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">全部商品資料:</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">全部功能權限資料:</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>管理員編號</th>
                                     <th>權限編號</th>
+                                    <th>權限名稱</th>
                                     <th>修改</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <th:block th:each="admAuthority : ${admAuthorityList}">
+                                <th:block th:each="authorityFunction : ${authorityFunctionList}">
                                     <tr>
-                                        <td th:text="${admAuthority.title.titleName}"></td>
-                                        <td th:text="${admAuthority.authorityFunction.authFuncInfo}"></td>
+                                        <td th:text="${authorityFunction.authFuncNo}"></td>
+                                        <td th:text="${authorityFunction.authFuncInfo}"></td>
                                         <td>
-                                            <form method="get" th:action="@{updateAdmAuthiroty}">
-                                                <input type="hidden" name="productNo" th:value="${admAuthority.title.titleNo}">
+                                            <form method="get" th:action="@{updateAuthorityFunction}">
+                                                <input type="hidden" name="authFuncNo" th:value="${authorityFunction.authFuncNo}">
                                                 <button type="submit">
                                                     <i class="far fa-edit"></i>
                                                 </button>

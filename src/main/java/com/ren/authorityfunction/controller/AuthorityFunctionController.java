@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/backend/authorityFunction")
+@RequestMapping("/backend/authorityfunction")
 public class AuthorityFunctionController {
 
     @Autowired
@@ -29,11 +29,11 @@ public class AuthorityFunctionController {
     }
 
     @GetMapping("/selectAuthorityFunction")
-    public String thSelectAuthorityFunction() {
+    public String toSelectAuthorityFunction() {
         return "backend/authorityfunction/selectAuthorityFunction";
     }
 
-    @GetMapping("/listAllAuthorityFunction")
+    @GetMapping("/listAllAuthorityFunctions")
     public String getAllAuthorityFunctions() {
         return "backend/authorityfunction/listAllAuthorityFunctions";
     }
@@ -56,7 +56,7 @@ public class AuthorityFunctionController {
             return "backend/authorityfunction/addAuthorityFunction";
         }
         authorityFunctionSvc.addAuthorityFunction(authorityFunction);
-        redirectAttributes.addAttribute("success", "新增成功!")
+        redirectAttributes.addAttribute("success", "新增成功!");
         return "backend/authorityfunction/addAuthorityFunction";
     }
 

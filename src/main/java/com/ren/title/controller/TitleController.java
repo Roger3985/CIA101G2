@@ -65,11 +65,27 @@ public class TitleController {
         return "backend/title/updateTitle";
     }
 
-    @PutMapping("/updateTitle")
-    public String updateTitle(@ModelAttribute("titleList") List<Title> list,
+    @GetMapping("/updateTitle")
+    public String toUpdateTitle(@ModelAttribute("titleList") List<Title> list,
                              ModelMap model) {
         model.addAttribute("title", list.get(0));
         return "backend/title/updateTitle";
+    }
+
+    @PostMapping("/updateTitle/update")
+    public String updateTitle(@Valid Title title,
+                              BindingResult result,
+                              RedirectAttributes redirectAttributes,
+                              ModelMap model) {
+        if (result.hasErrors()) {
+            model.addAttribute("title", title);
+            model.addAttribute("errors", result.getAllErrors());
+            return "backend/title/updateTitle";
+        }
+
+        titleSvc.updateTitle(title);
+        redirectAttributes.addAttribute("success", "新增成功!");
+        return "redirect:/backend/title/listAllTitles";
     }
 
 //    @DeleteMapping("/titles/{titleNo}")

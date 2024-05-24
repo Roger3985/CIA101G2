@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "productpicture")
 public class ProductPicture implements java.io.Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "productpicno", updatable = false)
     private Integer productPicNo;
     @ManyToOne

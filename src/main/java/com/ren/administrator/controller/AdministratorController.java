@@ -51,7 +51,7 @@ public class AdministratorController {
     }
 
     // 查看管理員資料
-    @GetMapping("/listOneAdministrator")
+    @GetMapping("/listOneAdministrator/{admNo}")
     public String getAdministrator(@PathVariable Integer admNo, ModelMap modelMap) {
         administratorSvc.getOneAdministrator(admNo);
         return "backend/administrator/listOneAdministrator";
@@ -161,24 +161,27 @@ public class AdministratorController {
      */
     @ModelAttribute("administratorList")
     protected List<Administrator> getAllAdministrators(){
-        List<Administrator> list = administratorSvc.getAll();
-        return list;
+        return administratorSvc.getAll();
     }
 
-    @PostMapping("/register")
-    public String register(@Valid Administrator administrator,
-                           BindingResult result,
-                           RedirectAttributes redirectAttributes,
-                           ModelMap model) {
-        if (result.hasErrors()) {
-            model.addAttribute("administrator", administrator);
-            model.addAttribute("errors", result.getAllErrors());
-            return "backend/product/updateProduct";
-        }
-        administratorSvc.register(administrator);
-        redirectAttributes.addAttribute("success", "註冊成功!");
-        return "redirect:backend/login";
-    }
+    // 改到BackendIndexController
+//    @PostMapping("/register")
+//    public String register(@Valid Administrator administrator,
+//                           BindingResult result,
+//                           RedirectAttributes redirectAttributes,
+//                           ModelMap model) {
+//
+//
+//        if (result.hasErrors()) {
+//            model.addAttribute("administrator", administrator);
+//            model.addAttribute("errors", result.getAllErrors());
+//            return "backend/register";
+//        }
+//
+//        administratorSvc.register(administrator);
+//        redirectAttributes.addAttribute("success", "註冊成功!");
+//        return "redirect:backend/login";
+//    }
 
     /**
      * 前往修改密碼

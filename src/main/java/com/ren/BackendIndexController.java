@@ -101,9 +101,19 @@ public class BackendIndexController {
                          BindingResult result,
                          ModelMap model,
                          RedirectAttributes redirectAttributes) {
+        // 檢查是否有重複信箱
+        List<Administrator> list = administratorSvc.getAll();
+        for (Administrator admin : list) {
+            model.addAttribute("administrator", administrator);
+            if (admin.getAdmEmail().equals(administrator.getAdmEmail())) {
+                model.addAttribute("emailError", "信箱重複");
+                return "backend/register";
+            }
+        }
+
         // 判斷密碼與二次密碼是否相同
         if (!administrator.getAdmPwd().equals(repeatPwd)) {
-            model.addAttribute("", "密碼與二次密碼不符!");
+            model.addAttribute("pwdError", "密碼與二次密碼不符!");
             // 順便將其他異常訊息帶回去
             if (result.hasErrors()) {
                 model.addAttribute("administrator", administrator);

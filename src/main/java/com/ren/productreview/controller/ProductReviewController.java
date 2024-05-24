@@ -1,13 +1,19 @@
 package com.ren.productreview.controller;
 
+import com.ren.product.service.impl.ProductServiceImpl;
 import com.ren.productreview.entity.ProductReview;
+import com.ren.productreview.service.impl.ProductReviewServiceImpl;
+import com.roger.member.service.impl.MemberServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,15 +21,18 @@ import java.util.stream.Collectors;
 @RequestMapping("/backend/productreview")
 public class ProductReviewController {
 
+    @Autowired
+    private ProductReviewServiceImpl productReviewSvc;
+
+    @Autowired
+    private ProductServiceImpl productSvc;
+
+    @Autowired
+    private MemberServiceImpl memberSvc;
+
     @GetMapping("/selectProductReview")
     public String toSelect() {
         return "backend/productreview/selectProductReview";
-    }
-
-    @GetMapping("/addProductReview")
-    public String toAddProductReview() {
-
-        return "backend/productreview/addProductReview";
     }
 
     @GetMapping("/listOneProductReview")
@@ -36,13 +45,69 @@ public class ProductReviewController {
         return "backend/productreview/listAllProductReviews";
     }
 
-    @GetMapping("/updateProductReview")
-    public String toUpdateProductReview() {
+    @GetMapping("/addProductReview")
+    public String toAddProductReview(ModelMap model) {
+        model.addAttribute("productReview", new ProductReview());
+        model.addAttribute("productList", productSvc.getAll());
+        model.addAttribute("memberList", memberSvc.findAll());
+        return "backend/productreview/addProductReview";
+    }
+
+    @PostMapping("/addProductReview/add")
+    public String addProductReview(@Valid ProductReview productReview,
+                                   BindingResult result,
+                                   RedirectAttributes redirectAttributes,
+                                   ModelMap model) {
+        if (result.hasErrors()) {
+            model.addAttribute("productReview", productReview);
+            model.addAttribute("productList", productSvc.getAll());
+            model.addAttribute("memberList", memberSvc.findAll());
+            return "backend/productreview/addProductReview";
+        }
+
+        redirectAttributes.addAttribute("success", "新增成功!");
+        return "redirect:/backend/productreview/listAllProductReviews";
+    }
+
+    @GetMapping("/updateProductReview/{productNo}/{memNo}")
+    public String toUpdateProductReview(@PathVariable Integer productNo,
+                                        @PathVariable Integer memNo,
+                                        ModelMap model) {
+        model.addAttribute("productReview", productReviewSvc.getOneProductReview(productNo, memNo));
+        model.addAttribute("productList", productSvc.getAll());
+        model.addAttribute("memberList", memberSvc.findAll());
         return "backend/productreview/updateProductReview";
     }
 
+    @GetMapping("/updateProductReview")
+    public String toUpdateProductReview(@ModelAttribute("productReviewList") List<ProductReview> list,
+                                        ModelMap model) {
+        model.addAttribute("productReview", list.get(0));
+        model.addAttribute("productList", productSvc.getAll());
+        model.addAttribute("memberList", memberSvc.findAll());
+        return "backend/productreview/updateProductReview";
+    }
 
+    @PostMapping("/updateProductReview/update")
+    public String updateProductReview(@Valid ProductReview productReview,
+                                      BindingResult result,
+                                      RedirectAttributes redirectAttributes,
+                                      ModelMap model) {
+        if (result.hasErrors()) {
+            model.addAttribute("productReview", productReview);
+            model.addAttribute("productList", productSvc.getAll());
+            return "backend/productreview/updateProductReview";
+        }
 
+        productReviewSvc.updateProductReview(productReview);
+        redirectAttributes.addAttribute("success", "修改成功!");
+        return "redirect:/backend/productreview/listAllProductReviews";
+    }
+
+    @ModelAttribute("productReviewList")
+    public List<ProductReview> getProductReviewList() {
+        return productReviewSvc.getAll();
+    }
 
     /**
      * 去除指定字段的錯誤信息並返回更新後的 BindingResult。

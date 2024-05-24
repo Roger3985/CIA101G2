@@ -246,10 +246,10 @@
                 <div class="dropright">
                     <a class="dropdown-item dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">商品</a>
                     <ul class="dropdown-menu border-info">
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/product/productPage}" data-breadcrumb="首頁 > 商品"><i class="fas fa-search"> </i> <span> 管理頁面</span></a></li>
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/product/selectProduct}"><i class="fas fa-search" data-breadcrumb="首頁 > 商品 >查詢資料"> </i> <span> 查詢資料</span></a></li>
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/product/addProduct}"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
-                        <li><a class="dropdown-item" th:href="@{/backend/product/updateProduct}"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
+                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/product/productPage}" data-breadcrumb="首頁 > 商品"><i class="fas fa-search"> </i> <span> 商品</span></a></li>
+                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/product/listAllProducts}"><i class="fas fa-search" data-breadcrumb="首頁 > 商品 > 查詢資料"> </i> <span> 查詢資料</span></a></li>
+                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/product/addProduct}"><i class="fas fa-plus" data-breadcrumb="首頁 > 商品 > 新增資料"> </i> <span> 新增資料</span></a></li>
+                        <li><a class="dropdown-item" th:href="@{/backend/product/updateProduct}"><i class="fas fa-edit" data-breadcrumb="首頁 > 商品 > 修改資料"> </i> <span> 修改資料</span></a></li>
                     </ul>
                 </div>
                 <div class="dropright">
@@ -266,6 +266,14 @@
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/productpicture/selectProductPicture}"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/productpicture/addProductPicture}"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
                         <li><a class="dropdown-item" th:href="@{/backend/productpicture/updateProductPicture}"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
+                    </ul>
+                </div>
+                <div class="dropright">
+                    <a class="dropdown-item dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">商品評分</a>
+                    <ul class="dropdown-menu border-info">
+                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/productreview/selectProductReview}"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
+                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/productreview/addProductReview}"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
+                        <li><a class="dropdown-item" th:href="@{/backend/productreview/updateProductReview}"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
                     </ul>
                 </div>
                 <div class="dropright">
