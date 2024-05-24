@@ -1,6 +1,6 @@
 package com.yu.rentalmyfavorite.service;
 
-import com.yu.rentalmyfavorite.dto.AddToWishList;
+
 import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
 
 import java.sql.Timestamp;

@@ -1,6 +1,6 @@
 package com.yu.rentalmyfavorite.dao;
 
-import com.yu.rentalmyfavorite.dto.AddToWishList;
+
 import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
