@@ -40,32 +40,33 @@
                                             <td>
                                                 <select type="number" id="administrator.admNo" name="administrator.admNo" title="請輸入管理員編號" th:field="*{administrator.admNo}">
                                                     <option th:each="administrator : ${administratorListData}" th:value="${administrator.admNo}" th:text="${administrator.admNo}"></option>
+                                                    <td><label class="error" th:if="${#fields.hasErrors('administrator.admNo')}" th:errors="*{administrator.admNo}" id="administrator.admNo.errors"></label></td>
                                                 </select>
                                             </td>
-                                            <td><label class="error" th:if="${#fields.hasErrors('administrator.admNo')}" th:errors="*{administrator.admNo}"></label></td>
                                         </tr>
                                         <tr>
                                             <td><label for="artTitle">專欄文章標題:</label></td>
                                             <td><input type="text" id="artTitle" title="請輸入文章標題" th:field="*{artTitle}"></td>
-                                            <td><label class="error" th:if="${#fields.hasErrors('artTitle')}" th:errors="*{artTitle}"></label></td>
+                                            <td><label class="error" th:if="${#fields.hasErrors('artTitle')}" th:errors="*{artTitle}" id="artTitle.errors"></label></td>
                                         </tr>
                                         <tr>
                                             <td><label for="artContent">專欄文章內容:</label></td>
                                             <td><textarea id="artContent" title="請輸入文章內容" th:field="*{artContent}" rows="10" cols="50"></textarea></td>
-                                            <td><label class="error" th:if="${#fields.hasErrors('artContent')}" th:errors="*{artContent}"></label></td>
+                                            <td><label class="error" th:if="${#fields.hasErrors('artContent')}" th:errors="*{artContent}" id="artContent.errors"></label></td>
                                         </tr>
                                         <tr>
                                             <td><input type="hidden" id="artTime" name="artTime" th:field="*{artTime}"></td>
-                                            <td><label class="error" th:if="${#fields.hasErrors('artTime')}" th:errors="*{artTime}"></label></td>
+                                            <td><label class="error" th:if="${#fields.hasErrors('artTime')}" th:errors="*{artTime}" id="artTime.errors"></label></td>
                                         </tr>
                                         <tr>
                                             <td><label for="artCatNo">文章分類編號:</label></td>
                                             <td>
                                                 <select type="number" id="artCatNo" name="artCatNo" title="請輸入文章分類編號" th:field="*{artCatNo}">
                                                     <option th:each="columnarticle : ${columnArticleListData}" th:value="${columnarticle.artCatNo}" th:text="${columnarticle.artCatNo}"></option>
+                                                    <label class="error" th:if="${#fields.hasErrors('artCatNo')}" th:errors="*{artCatNo}" id="artCatNo.errors"></label>
                                                 </select>
                                             </td>
-                                            <td><label class="error" th:if="${#fields.hasErrors('artCatNo')}" th:errors="*{artCatNo}"></label></td>
+                                            <td></td>
                                         </tr>
                                         <tr>
                                             <td><label for="artStat">文章狀態：</label></td>

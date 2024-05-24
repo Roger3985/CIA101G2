@@ -81,6 +81,7 @@ public class ColumnArticleControllerBackEnd {
         if (result.hasErrors()) {
             modelMap.addAttribute("columnArticleListData", columnArticleService.findAll());
             modelMap.addAttribute("administratorListData", administratorService.getAll());
+            modelMap.addAttribute("errors", result);
             return "backend/columnarticle/addColumnArticle";
         }
 
