@@ -487,20 +487,21 @@
         let baseUrl = window.location.protocol + "//" + window.location.host;
         let rentalAllPrice = 0;
         let rentalAllDepPrice = 0;
-        let memNo = 1;
 
         function getAll() {
 
             // items.length = 0;
             rentalAllPrice = 0;
             rentalAllDepPrice = 0;
-            let apiPath = "/backend/rentalorder/";
+            let apiPath = "/frontend/rentalorder/";
 
-            fetch(baseUrl + apiPath + "getFromCart?memNo=" + memNo)
+            fetch(baseUrl + apiPath + "getFromCart")
                 .then(function (response) {
                     return response.json();
                 }).then(function (data) {
-
+                    if (data === "/frontend/member/loginMember") {
+                        window.location.href = data;
+                    }
                 let itemContainer = $("ul.list-unstyled");
                 // console.log(itemContainer);
                 // 每次更新前清空，放購物車資訊的 ul
@@ -600,14 +601,12 @@
              * window.location.protocol = 當前頁面所使用之通訊協定 (ex : http: 、 https:)
              * window.location.host = 當前頁面主機名和連接阜號 (ex : localhost:8080)
             */
-            let apiPath = "/backend/rentalorder/setToCart";
+            let apiPath = "/frontend/rentalorder/setToCart";
             let $this = $(this);
             // span.rentalNo
             let rentalNo = $this.closest("div.rental").find("span.rentalNo").text().trim();
-
             let data = {
-                "rentalNo" : rentalNo,
-                "memNo" : memNo
+                "rentalNo" : rentalNo
             };
 
             fetch(baseUrl + apiPath, {
@@ -617,11 +616,11 @@
                 },
                 body : JSON.stringify(data)
             }).then(function (response) {
-                // console.log(response)
                 return response.text();
             }).then(function (rentalName) {
-                // console.log(rentalName);
-                // console.log(this);
+                if (rentalName === "/frontend/member/loginMember") {
+                    window.location.href = rentalName;
+                }
                 $this.closest("div.rental").find("span.successMsg").text("已將" + rentalName + "加入購物車!").fadeIn(0).delay(500).fadeOut(500);
             })
 
@@ -635,7 +634,6 @@
             let apiPath = "/frontend/rentalmytrack/addTrack";
             let rentalNo = $this.closest("div.rental").find("span.rentalNo").text().trim();
             let data = {
-                memNo : memNo,
                 rentalNo : rentalNo
             };
 
@@ -647,6 +645,9 @@
                 body : JSON.stringify(data)
             }).then(response => response.text())
                 .then(rentalName => {
+                    if (rentalName === "/frontend/member/loginMember") {
+                        window.location.href = rentalName;
+                    }
                     $this.closest("div.rental").find("span.successMsg").text("已加入追蹤!").fadeIn(0).delay(500).fadeOut(500);
                 });
 

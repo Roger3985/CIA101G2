@@ -89,55 +89,6 @@ public class RentalOrderController {
 
     /*--------------------------處理跳轉頁面請求的方法-------------------------------*/
 
-    // 去 前台 租借品追蹤 頁面
-    @GetMapping("/toRentalMyTrack")
-    public String toRentalMyTrack() {
-        return "/frontend/rental/rentalMyTrack";
-    }
-
-    // 去 感謝付款 頁面
-    @GetMapping("/thankForBuying")
-    public String thankForBuying(@RequestParam(required = false) Integer rentalOrdNo, ModelMap model) {
-        model.addAttribute("rentalOrdNo", rentalOrdNo);
-        return "/frontend/rental/thankForBuying";
-    }
-
-    // 去 會員租借訂單 頁面
-    @GetMapping("/toMemberRentalOrders")
-    public String toMemberRentalOrders() {
-        return "/frontend/rental/memberrentalorders";
-    }
-
-    // 去 單一租借訂單 頁面
-    @GetMapping("/toMemberRentalOrder")
-    public String toMemberRentalOrder(@RequestParam Integer rentalOrdNo, ModelMap model) {
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("rentalOrdNo", rentalOrdNo);
-        RentalOrder rentalOrder = service.getByAttributes(map).get(0);
-        model.addAttribute("rentalOrder", rentalOrder);
-
-        return "/frontend/rental/memberRentalOrder";
-    }
-
-    // 去 租借商城 首頁
-    @GetMapping("/toRentalShop")
-    public String toRentalShop() {
-        return "/frontend/rental/rentalShop";
-    }
-
-    // 去 租借商城的購物車 畫面
-    @GetMapping("/rentalCart")
-    public String toRentalCart() {
-        return "/frontend/rental/rentalCart";
-    }
-
-    // 去 租借商城的結帳 頁面
-    @GetMapping("/toRentalPayment")
-    public String toRentalPayment() {
-        return "/frontend/rental/rentalPayment";
-    }
-
     // 去 測試 頁面
     @GetMapping("/toTestEcpay")
     public String toTestEcpay() {
@@ -415,22 +366,6 @@ public class RentalOrderController {
         model.addAttribute("rentalOrderList", rentalOrderList);
         model.addAttribute("getOnAny", "true");
         return "/backend/rentalorder/selectRentalOrder";
-
-    }
-
-    // 給 會員所有訂單頁面 用的 getOnAny
-    @GetMapping("/getOnAnyForOrdersPage")
-    public String getOnAnyForOrdersPage(@RequestParam(required = false) Byte rentalOrdStat, ModelMap model) {
-
-        Map<String, Object> map = new HashMap<>();
-
-        if (rentalOrdStat != null) {
-            map.put("rentalOrdStat", rentalOrdStat);
-        }
-        List<RentalOrder> orderList = service.getByAttributes(map);
-        orderList.sort(Comparator.comparing(RentalOrder::getrentalOrdNo).reversed());
-        model.addAttribute("orderList", orderList);
-        return "frontend/rental/memberrentalorders";
 
     }
 

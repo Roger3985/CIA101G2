@@ -10,7 +10,7 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button" role="tab" aria-controls="products" aria-selected="true">一般商品</button>
             </li>
-            <li class="nav-item" role="presentation">
+            <li class="nav-item rentalCartItems" role="presentation">
                 <button class="nav-link" id="rental-tab" data-bs-toggle="tab" data-bs-target="#rental" type="button" role="tab" aria-controls="rental" aria-selected="false">租借商品</button>
             </li>
         </ul>
@@ -103,7 +103,7 @@
         </div>
         <div class="pt-4">
             <a class="btn btn-block btn-mode w-100 mb-3" href="/frontend/cart/addcartsuccess">查看商品購物車</a>
-            <a class="btn btn-block btn-outline-mode w-100" th:href="@{/backend/rentalorder/rentalCart}">查看購物車</a>
+            <a class="btn btn-block btn-outline-mode w-100" th:href="@{/frontend/rentalorder/rentalCart}">查看購物車</a>
         </div>
     </div>
 </div>
