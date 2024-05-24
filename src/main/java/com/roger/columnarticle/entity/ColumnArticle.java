@@ -5,9 +5,15 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ren.administrator.entity.Administrator;
 import com.roger.articlecollection.entity.ArticleCollection;
 import com.roger.clicklike.entity.ClickLike;
+import com.roger.columnarticle.entity.uniqueAnnotation.Create;
+import com.roger.columnarticle.entity.uniqueAnnotation.ValidArtContent;
+import com.roger.columnarticle.entity.uniqueAnnotation.ValidArtTitle;
 import com.roger.columnreply.entity.ColumnReply;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Set;
 
@@ -23,21 +29,29 @@ public class ColumnArticle implements java.io.Serializable {
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "admno", referencedColumnName = "admno")
+    @NotNull(message = "管理員編號: 請勿空白")
     private Administrator administrator;
 
 //    @Column(name = "admNo")
 //    private Integer admNo;
 
     @Column(name = "arttitle")
+    @NotEmpty(message = "專欄標題: 請勿空白!")
+    @ValidArtTitle(groups = Create.class)
     private String artTitle;
 
     @Column(name = "artcontent", columnDefinition = "longtext")
+    @ValidArtContent(groups = Create.class)
+    @NotEmpty(message = "專欄內容: 請勿空白!")
     private String artContent;
 
     @Column(name = "arttime")
+    @NotNull(message = "最新上架時間: 請勿空白!")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp artTime;
 
     @Column(name = "artcatno")
+    @NotNull(message = "文章分類編號: 請勿空白!")
     private Integer artCatNo;
 
     @Column(name = "artstat")

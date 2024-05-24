@@ -62,4 +62,13 @@ public interface ClickLikeRepository extends JpaRepository<ClickLike, Integer> {
 
     List<ClickLike> findByCompositeClickLike_MemNoAndCompositeClickLike_ArtNo(Integer memNo, Integer artNo);
 
+    /**
+     * 根據文章編號計算按讚數量。
+     *
+     * @param artNo 文章編號。
+     * @return 按讚數量。
+     */
+    @Query("SELECT COUNT(cl) FROM ClickLike cl WHERE cl.compositeClickLike.artNo = :artNo")
+    int countByArtNo(Integer artNo);
+
 }
