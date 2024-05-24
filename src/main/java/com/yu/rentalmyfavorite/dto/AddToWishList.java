@@ -1,9 +1,6 @@
 package com.yu.rentalmyfavorite.dto;
 
-import org.springframework.data.redis.core.RedisHash;
-
-@RedisHash("AddToWishList")
-public class AddToWishList {
+public class addToWishList {
 
     private Integer rentalNo;
     private Integer memNo;

@@ -230,16 +230,6 @@
                                             <label class="custom-control-label" for="price2">$4000</label>
                                         </li>
                                     </ul>
-                                    <!--                                    <div class="d-flex align-items-center pt-3">-->
-                                    <!--                                        &lt;!&ndash; Input &ndash;&gt;-->
-                                    <!--                                        <input type="number" class="form-control form-control-sm"-->
-                                    <!--                                               placeholder="$0" min="10">-->
-                                    <!--                                        &lt;!&ndash; Divider &ndash;&gt;-->
-                                    <!--                                        <div class="text-gray-350 mx-2">‒</div>-->
-                                    <!--                                        &lt;!&ndash; Input &ndash;&gt;-->
-                                    <!--                                        <input type="number" class="form-control form-control-sm"-->
-                                    <!--                                               placeholder="$4000" max="350">-->
-                                    <!--                                    </div>-->
                                 </div>
                             </div>
                             <!-- End Brands -->
@@ -257,10 +247,10 @@
                                     <i class="fs-4 lh-1 bi bi-justify-left"></i>
                                 </button>
                                 <!-- 手機模式 結束 Mobile Toggle -->
-                                <a class="btn btn-white btn-sm" th:href="@{/frontend/rental/rentalShop}">
+                                <a class="btn btn-white btn-sm" th:href="@{/frontend/rental/rentalShopGrid}">
                                     <i class="bi bi-grid"></i>
                                 </a>
-                                <a class="btn btn-white btn-sm active" href="#">
+                                <a class="btn btn-white btn-sm active" th:href="@{/frontend/rental/rentalShop}">
                                     <i class="bi bi-view-stacked"></i>
                                 </a>
                             </div>
@@ -274,16 +264,16 @@
                                     <ul class="dropdown-menu dropdown-menu-end shadow"
                                         aria-labelledby="dropdownMenuLink">
                                         <li>
-                                            <a class="sort-item" href="#">最新</a>
+                                            <a class="sort-item" data-sort="newest" th:href="@{/frontend/rental/rentalShop/{sortType}}">最新</a>
+                                        </li>
+                                        <!--                                        <li>-->
+                                        <!--                                            <a class="sort-item" data-sort="popular" href="#">最熱門</a>-->
+                                        <!--                                        </li>-->
+                                        <li>
+                                            <a class="sort-item" data-sort="low_to_high" th:href="@{/frontend/rental/rentalShop/{sortType}}">價格由低到高</a>
                                         </li>
                                         <li>
-                                            <a class="sort-item" href="#">最熱門</a>
-                                        </li>
-                                        <li>
-                                            <a class="sort-item" id="low_to_high" th:href="@{/frontend/rental/sortAllPrice/{sortType}}">價格由低到高</a>
-                                        </li>
-                                        <li>
-                                            <a class="sort-item" id="high_to_low"  th:href="@{/frontend/rental/sortAllPrice/{sortType}}">價格由高到低</a>
+                                            <a class="sort-item" data-sort="high_to_low"  th:href="@{/frontend/rental/rentalShop/{sortType}}">價格由高到低</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -325,17 +315,24 @@
                                         <a href="" class="btn btn-mode btn_addToCart"><!--  加入購物車(457)  -->
                                             <i class="fi-shopping-cart"></i>
                                         </a>
-                                        <a href="#" class="btn btn-primary"><!--  加入我的最愛  -->
+                                        <a href="" class="btn btn-primary btn_addToFAV"><!--  加入我的最愛  -->
                                             <i class="fi-heart"></i>
                                         </a>
+<!--                                        <form method="POST" th:action="@{addWish}">-->
+<!--                                            <input type="hidden" name="rentalNo" th:value="${rental.rentalNo}" readonly style="display: none;">-->
+<!--                                            <a href="" class="btn btn-primary btn_addToFAV">&lt;!&ndash;  加入我的最愛  &ndash;&gt;-->
+<!--                                                <i class="fi-heart"></i>-->
+<!--                                            </a>-->
+<!--                                        </form>-->
                                         <a href="#" class="btn btn-primary btn_addTrack">
                                             <i class="bi bi-bookmark"></i>
-                                        </a><!--  加入追蹤的圖示 <i class="fi-repeat"></i>  -->
+                                        </a><!--  加入追蹤的圖示  -->
                                         <a data-bs-toggle="modal" data-bs-target="#px-quick-view" th:href="@{/frontend/rental/rentalQuickview}"
                                            href="javascript:void(0)" class="btn btn-primary">
                                             <i class="fi-eye"></i><!--  跳窗顯示該商品畫面 (rentalQuickview.html) -->
                                         </a>
                                         <span class="successMsg" style="color: lightgreen"></span>
+                                        <span class="alreadyAddWish" style="color: lightgreen"></span>
                                     </div>
                                 </div>
                             </div>
@@ -391,68 +388,70 @@
 
 <script>
     /*
-     * 選擇排序方式：價格
+     * 選擇對應類別
+     * 使用jQuery抓取點擊事件，前台發送清求。
+     * 最後依後台判斷選擇方式並回傳對應的資料。
+    */
+
+
+
+    /*
+     * 選擇排序方式
      * 使用jQuery抓取點擊事件，前台發送清求。
      * 最後依後台判斷選擇方式並回傳對應的資料。
     */
     $(document).ready(function() {
         $('.sort-item').click(function(event) {
-            event.preventDefault(); // 阻止表單默認提交行為
-            let id = $(this).attr('id');
-            let sortType = id === "low_to_high" ? "low_to_high" : "high_to_low";
-            window.location.href = "/frontend/rental/sortAllPrice/" + sortType;
+            event.preventDefault();
+            let sortType = $(this).data('sort');
+
+            let url = "/frontend/rental/rentalShop/" + sortType;
+
+            window.location.href = url;  //重定向到指定頁面
         });
     });
-
 
     /*
      * 功能：點選加入我的最愛
      * 使用 th:attr 設置data-屬性，在點擊愛心後抓取到自訂的值&當下時間(ISO 8601 )
      * 前端傳遞數據至後端，後台針對時間轉Timestamp型態
     */
-    $(document).ready(function() {
-        $(document).on("click", ".add-to-wish-list", function(e) {
-            e.preventDefault(); // 阻止表單默認提交行為
+    $(document).on("click", "a.btn_addToFAV", function(e) {
+        e.preventDefault(); // 阻止表單默認提交行為
 
-            // window.location.protocol -> 返回當前頁面使用的協議
-            // window.location.host -> 返回當前頁面的主機名和埠號
-            // const baseUrl -> 將window.location.protocol和window.location.host，用 "//" 連接，取得當前頁面的URL
-            const baseUrl = window.location.protocol + "//" + window.location.host;
-            const rentalNo = $(this).data("rentalno");
-            const memNo = $(this).data("memNo");
-            const rentalFavTime = new Date().toISOString(); //取得當前時間(ISO 8601型態 ，只能在後端轉型)
-            console.log("抓取編號:" +rentalNo);
-            console.log("抓取會員編號:" +memNo);
-            console.log("抓取當前時間:" +rentalFavTime);
-            alert("已點選");
+        // window.location.protocol -> 返回當前頁面使用的協議
+        // window.location.host -> 返回當前頁面的主機名和埠號
+        // const baseUrl -> 將window.location.protocol和window.location.host，用 "//" 連接，取得當前頁面的URL
+        const baseUrl = window.location.protocol + "//" + window.location.host;
+        const rentalNo = $(this).closest("div.rental").find("span.rentalNo").text().trim();
+        const memNo = 1;
+        const rentalFavTime = new Date().toISOString(); //取得當前時間(ISO 8601型態 ，只能在後端轉型)
+        console.log("抓取編號:" + rentalNo);
+        console.log("抓取會員編號:" + memNo);
+        console.log("抓取當前時間:" + rentalFavTime);
+        alert("已點選");
 
-            //打包數據
-            const wishData = {
-                rentalNo: parseInt(rentalNo),
-                memNo: parseInt(memNo),
-                rentalFavTime: rentalFavTime
-            };
-            fetch(baseUrl + "/frontend/rental/rentalShop", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(wishData)  //將包裝的數據轉換成JSON格式並發送
+        //打包數據
+        const wishData = {
+            rentalNo: rentalNo,
+            memNo: memNo,
+            rentalFavTime: rentalFavTime
+        };
 
-            }).then(function(response) {   //返回一個 Promise 對象，解析為一個 Response 對象
-                return response.text();   //解析為響應的內容
-
-            }).then(function(rentalName) {
+        fetch(baseUrl + "/frontend/rentalmyfavorite/addWish", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(wishData) //將包裝的數據轉換成JSON格式並發送
+        }).then(response => response.text())
+            .then(rentalName => {
+                console.log("2 抓取打包數據:" + JSON.stringify(wishData)); //成功匯出
                 console.log(rentalName);
                 //查詢div.rental元素，並找到alreadyAddWish
                 //fadeIn(0) 立即顯示alreadyAddWish。delay(500) 延遲 500 毫秒。fadeOut(500) 在 500 毫秒內淡出alreadyAddWish。
-                $this.closest("div.rental").find("span.alreadyAddWish").text("已將" + rentalName + "加入我的最愛!").fadeIn(0).delay(500).fadeOut(500);
-
-            }).catch(function(error) {
-                console.error("Error:", error);
-                alert("新增失敗");
+                $(this).closest("div.rental").find("span.alreadyAddWish").text("已將" + rentalName + "加入我的最愛!").fadeIn(0).delay(500).fadeOut(500);
             });
-        });
     });
 
     /*

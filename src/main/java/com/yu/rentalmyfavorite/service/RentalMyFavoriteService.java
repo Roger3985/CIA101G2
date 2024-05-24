@@ -1,38 +1,43 @@
 package com.yu.rentalmyfavorite.service;
 
+import com.yu.rentalmyfavorite.dto.AddToWishList;
 import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
 public interface RentalMyFavoriteService {
+//----------------------------------------------------------------------------------------------------------------------
+//主要由redis使用
+
+    Map<String, String> getWish(Integer memNo, Integer rentalNo);
+
+    void deleteWish(Integer memNo, Integer rentalNo);
+
+    void addWish(Integer memNo, Map<String, String> wishDetails);
+
+    List<AddToWishList> findByMemNo(Integer memNo); //單筆查詢(memNo)
+
+//----------------------------------------------------------------------------------------------------------------------
+    RentalMyFavorite findByRentalNo(Integer rentalNo); //單筆查詢(rentalNo)
+
+    RentalMyFavorite findByRentalNoAndMemNo(Integer rentalNo, Integer memNo);  //複合主鍵查詢
+
+    List<RentalMyFavorite> findByRental_RentalNoAndMember_MemNo(Integer rentalNo, Integer memNo);  //複合主鍵查詢
 
     List<RentalMyFavorite> findAll();  //全部查詢(RentalMyFavorite)
 
-    RentalMyFavorite findByRentalNo(Integer rentalNo); //單筆查詢(rentalNo)
-
-    RentalMyFavorite findByMemNo(Integer memNo); //單筆查詢(memNo)
-
-    List<RentalMyFavorite> getFAVByMemNo(Integer memNo); //查詢加入最愛的會員
-
     List<RentalMyFavorite> findByRentalFavTime(Timestamp rentalFavTime); //單筆查詢(rentalFavTime)
-
-    RentalMyFavorite findByIdRentalNoAndIdMemNo(Integer rentalNo, Integer memNo);  //複合主鍵查詢
-
-    List<RentalMyFavorite> findByRentalRentalNoAndMemberMemNo(Integer rentalNo, Integer memNo);  //複合主鍵查詢
 
 //----------------------------------------------------------------------------------------------------------------------
 //主要為後端使用：增查改
 
-    RentalMyFavorite addRentalFav(RentalMyFavorite rentalMyFavorite); //新增
+    void addRentalFav(AddToWishList addToWishList); //新增
 
-    RentalMyFavorite updateRentalFav(RentalMyFavorite rentalMyFavorite); //修改
+    void delete(Integer rentalNo, Integer memNo); //刪除
 
     List<RentalMyFavorite> findByCompositeKey(Integer rentalNo);
 
     List<RentalMyFavorite> searchRentalMyFAVs(Map<String, Object> map); //複合查詢
-
 }

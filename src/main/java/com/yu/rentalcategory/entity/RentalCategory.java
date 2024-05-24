@@ -1,3 +1,4 @@
+
 package com.yu.rentalcategory.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;

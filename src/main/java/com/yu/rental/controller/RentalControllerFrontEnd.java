@@ -6,7 +6,6 @@ import com.yu.rentalcategory.entity.RentalCategory;
 import com.yu.rentalcategory.service.RentalCategoryServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -40,9 +39,9 @@ public class RentalControllerFrontEnd {
 
 
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
     // 測試區 //
-    //關鍵字查詢
+
 
 
 
@@ -53,10 +52,16 @@ public class RentalControllerFrontEnd {
         return "/frontend/index";
     }
 
-    //瀏覽全部租借品頁面 (前台)
+    //瀏覽全部租借品頁面 - 列表 (前台)
     @GetMapping("/rental/rentalShop")
     public String rentalShop() {
         return "/frontend/rental/rentalShop";
+    }
+
+    //瀏覽全部租借品頁面 - 網格 (前台)
+    @GetMapping("/rental/rentalShopGrid")
+    public String rentalShopGrid() {
+        return "/frontend/rental/rentalShopGrid";
     }
 
     //瀏覽租借須知頁面 (前台)
@@ -118,8 +123,10 @@ public class RentalControllerFrontEnd {
 
 
     //排序方法：價格低~高、價格高~低
-    @GetMapping("/rental/sortAllPrice/{sortType}")
-    public String sortAllPrice(@PathVariable("sortType") String sortType, Model model) {
+    @GetMapping("/rental/rentalShop/{sortType}")
+    public String sortAllPrice(@PathVariable("sortType") String sortType,
+                               @RequestParam(value = "rentalStat", required = false) Byte rentalStat,
+                               Model model) {
 
         //判斷選擇哪種方式
         if("low_to_high".equals(sortType)){
@@ -127,18 +134,25 @@ public class RentalControllerFrontEnd {
             for (Rental rental : sortList) {
                 System.out.println(rental.getRentalName() +":"+rental.getRentalPrice());
             }
-
             model.addAttribute("rentalListData", sortList); // 顯示價格由小到大
+
         } else if("high_to_low".equals(sortType)){
             List<Rental> sortDESCList = rentalService.findAllSortDESC();
             model.addAttribute("rentalListData", sortDESCList); // 顯示價格由大到小
+
+        } else if("newest".equals(sortType)){
+            List<Rental> newestList = rentalService.findByRentalStatDESC(rentalStat);
+            model.addAttribute("rentalListData", newestList); // 顯示最新品項
+
         } else {
             List<Rental> defaultSortList = rentalService.findAllSort();
             model.addAttribute("rentalListData", defaultSortList); // 預設價格由小到大
-        }
 
-        return "/frontend/rental/sortAllPrice"; // 查詢完成後轉交
+        }
+        return "/frontend/rental/rentalShop"; // 查詢完成後轉交
     }
+
+
 
 
 
