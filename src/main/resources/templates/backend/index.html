@@ -110,6 +110,65 @@
             background: #007bff;
             color: #fff;
         }
+
+        /* 市場概覽卡片的CSS */
+        .market-overview-card {
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        .market-overview-card .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .market-overview-card .header .title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .market-overview-card .header .actions a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .market-overview-card .overview {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .market-overview-card .overview .buy {
+            color: green;
+        }
+
+        .market-overview-card .overview .sell {
+            color: red;
+        }
+
+        .market-overview-card .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .market-overview-card .tabs a {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background: #f4f4f4;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .market-overview-card .tabs a.active {
+            background: #007bff;
+            color: #fff;
+        }
     </style>
 </head>
 <body id="page-top">
@@ -129,6 +188,31 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                <div class="section">
+                    <div class="section-header">
+                        <h2>市場概覽</h2>
+                    </div>
+                    <div class="market-overview-card">
+                        <div class="header">
+                            <div class="title">Market Overview</div>
+                            <div class="actions">
+                                <a href="#">Get Report</a>
+                            </div>
+                        </div>
+                        <div class="overview">
+                            <div class="buy">BUY $5,673</div>
+                            <div class="sell">SELL $5,982</div>
+                        </div>
+                        <div class="tabs">
+                            <a href="#" class="active">Week</a>
+                            <a href="#">Month</a>
+                            <a href="#">Year</a>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="marketOverviewChart"></canvas>
+                        </div>
+                    </div>
+                </div>
                 <div class="section">
                     <div class="section-header">
                         <h2>服務相關</h2>
@@ -308,6 +392,90 @@
     //
     // new Chart(salQtyElement, salQtyConfig);
 
+    // // 在這裡解析Thymeleaf傳遞的資料
+    // var productTop10SalQty = /*[[${productTop10SalQty}]]*/ [];
+    //
+    // // 處理productList資料，假設每個product包含 productNo 和 productSalQty 屬性
+    // var labels = productTop10SalQty.map(product => product.productNo);
+    // var data = productTop10SalQty.map(product => product.productSalQty);
+    //
+    // // 混合圖表
+    // const salQtyElement = document.getElementById('p-SalQty');
+    // const salQtyConfig = {
+    //     type: 'bar', // 設置主圖表類型為 bar
+    //     data: {
+    //         labels: labels,
+    //         datasets: [
+    //             {
+    //                 type: 'line', // 子圖表類型設置為 line
+    //                 label: '銷售數量 (折線圖)',
+    //                 data: data,
+    //                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
+    //                 borderColor: 'rgba(75, 192, 192, 1)',
+    //                 borderWidth: 2,
+    //                 pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+    //                 pointBorderColor: '#fff',
+    //                 pointBorderWidth: 2,
+    //                 pointRadius: 5,
+    //                 pointHoverRadius: 7,
+    //                 lineTension: 0.4
+    //             },
+    //             {
+    //                 type: 'bar', // 子圖表類型設置為 bar
+    //                 label: '銷售數量 (長方圖)',
+    //                 data: data,
+    //                 backgroundColor: 'rgba(54, 162, 235, 0.5)',
+    //                 borderColor: 'rgba(54, 162, 235, 1)',
+    //                 borderWidth: 1
+    //             }
+    //         ]
+    //     },
+    //     options: {
+    //         responsive: true,
+    //         maintainAspectRatio: false,
+    //         plugins: {
+    //             legend: {
+    //                 display: true,
+    //                 labels: {
+    //                     color: '#333',
+    //                     font: {
+    //                         size: 14,
+    //                         weight: 'bold'
+    //                     }
+    //                 }
+    //             }
+    //         },
+    //         scales: {
+    //             x: {
+    //                 grid: {
+    //                     display: false
+    //                 },
+    //                 ticks: {
+    //                     color: '#333',
+    //                     font: {
+    //                         size: 12
+    //                     }
+    //                 }
+    //             },
+    //             y: {
+    //                 grid: {
+    //                     color: 'rgba(200, 200, 200, 0.2)',
+    //                     borderDash: [5, 5]
+    //                 },
+    //                 ticks: {
+    //                     color: '#333',
+    //                     font: {
+    //                         size: 12
+    //                     },
+    //                     beginAtZero: true
+    //                 }
+    //             }
+    //         }
+    //     }
+    // };
+    //
+    // new Chart(salQtyElement, salQtyConfig);
+
     // 在這裡解析Thymeleaf傳遞的資料
     var productTop10SalQty = /*[[${productTop10SalQty}]]*/ [];
 
@@ -316,8 +484,8 @@
     var data = productTop10SalQty.map(product => product.productSalQty);
 
     // 混合圖表
-    const salQtyElement = document.getElementById('p-SalQty');
-    const salQtyConfig = {
+    const marketOverviewChartElement = document.getElementById('marketOverviewChart');
+    const marketOverviewChartConfig = {
         type: 'bar', // 設置主圖表類型為 bar
         data: {
             labels: labels,
@@ -390,7 +558,7 @@
         }
     };
 
-    new Chart(salQtyElement, salQtyConfig);
+    new Chart(marketOverviewChartElement, marketOverviewChartConfig);
 
 
 </script>
