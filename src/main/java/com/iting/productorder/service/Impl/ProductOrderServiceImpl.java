@@ -269,7 +269,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         } else {
             coupon = couponService.getOneCoupon(coupon.getCoupNo());
         }
-
         BigDecimal discount = coupon.getCoupDisc();
         BigDecimal totalPrice = productOrder.getProductAllPrice();
         productOrder.setProductDisc(discount);
