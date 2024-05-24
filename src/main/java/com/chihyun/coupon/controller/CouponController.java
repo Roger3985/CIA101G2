@@ -200,8 +200,6 @@ public class CouponController {
         return "backend/coupon/listOneCoupon"; // 修改成功後轉交listOne Coupon.html
     }
 
-
-
     @PostMapping("/delete")
     public String delete(@RequestParam("coupNo") Integer coupNo, ModelMap model) {
         couponSvc.deleteCoupon(coupNo);
