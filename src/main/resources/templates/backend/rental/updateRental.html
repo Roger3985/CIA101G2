@@ -93,11 +93,11 @@
                                 </div><br>
                                 <div>
                                     <label>選擇租借品類別編號:</label>
-                                    <select value="7" name="rentalCatNo" id="rentalCatNo" th:field="*{rentalCategory.rentalCatNo}"> <!--th:field，表單元素&數據綁定-->
-                                        <option value="0" selected>請選擇</option>
-                                        <option value="1" th:each="rentalCategory : ${rentalCatListData}" th:value="${rental.rentalCategory.rentalCatNo}" th:text="${rental.rentalCategory.rentalCatNo}" />
+                                    <select name="rentalCatNo" id="rentalCatNo" th:field="*{rentalCategory.rentalCatNo}"> <!--th:field，表單元素&數據綁定-->
+                                        <option value="7" selected>請選擇</option>
+                                        <option th:each="rentalCategory : ${rentalCatListData}" th:value="${rentalCategory.rentalCatNo}" th:text="${rentalCategory.rentalCatNo} + '-[' + ${rentalCategory.rentalCatName} + ']'"/>
                                     </select>
-                                    <span class="error" th:if="${#fields.hasErrors('rentalCategory.rentalCatNo')}" th:errors="*{rentalCategory.rentalCatNo}" id="rentalCategory.rentalCatNo.errors">租借品類別錯誤</span>
+                                    <span class="error" th:if="${#fields.hasErrors('rentalCategory.rentalCatNo')}" th:errors="*{rentalCategory.rentalCatNo}" id="rentalCategory.rentalCatNo.errors"></span>
                                 </div>
                                 <input type="submit" id="updateBtn" value="送出">
                                 <input type="hidden" name="rentalNo" th:value="${rental.rentalNo}">

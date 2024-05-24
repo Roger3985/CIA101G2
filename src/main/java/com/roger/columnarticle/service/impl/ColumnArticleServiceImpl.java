@@ -14,6 +14,8 @@ import com.roger.notice.entity.Notice;
 import com.roger.notice.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,6 +75,15 @@ public class ColumnArticleServiceImpl implements ColumnArticleService {
     @Override
     public ColumnArticle getOneColumnArticle(Integer artNo) {
         return columnArticleRepository.findColumnArticleByArtNo(artNo);
+    }
+
+    /**
+     * 將新的專欄文章添加到資料庫中。
+     */
+    @Override
+    public ColumnArticle addColumnArticle(ColumnArticle columnArticle) {
+        columnArticle.setArtTime(Timestamp.valueOf(String.valueOf(columnArticle.getArtTime())));
+        return columnArticleRepository.save(columnArticle);
     }
 
 
@@ -152,6 +163,24 @@ public class ColumnArticleServiceImpl implements ColumnArticleService {
     public boolean isColumnArticleCollectionByMember(Integer memNo, Integer artNo) {
         return articleCollectionRepository.existsByCompositeArticleCollection(memNo, artNo);
     }
+
+    /**
+     * 獲取上架中的專欄文章，並進行分頁處理。
+     */
+    @Override
+    public Page<ColumnArticle> getAllByArtStatColumnArticles(Pageable pageable) {
+        return columnArticleRepository.findByArtStat((byte) 0, pageable);
+    }
+
+    /**
+     * 搜尋包含指定關鍵字且狀態為 "上架中" 的專欄文章，支持分頁。
+     */
+    @Override
+    public Page<ColumnArticle> searchArticles(String keyword, Pageable pageable) {
+        byte artStat = 0; // 上架中狀態的標示值
+        return columnArticleRepository.searchByKeywordAndStatus(artStat, keyword, pageable);
+    }
+
 
     /**
      * 移除會員的專欄文章收藏。

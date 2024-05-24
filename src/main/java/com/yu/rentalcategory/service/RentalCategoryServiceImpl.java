@@ -1,8 +1,11 @@
 package com.yu.rentalcategory.service;
 
+import com.yu.rental.dao.RentalRepository;
+import com.yu.rental.entity.Rental;
 import com.yu.rentalcategory.dao.RentalCategoryRepository;
 import com.yu.rentalcategory.entity.RentalCategory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -18,6 +21,8 @@ public class RentalCategoryServiceImpl implements RentalCategoryService {
 
     @Autowired //自動裝配
     private RentalCategoryRepository repository;
+    @Autowired
+    private RentalRepository rentalRepository;
 
     /**
      * PersistenceContext注解用于注入一个EntityManager对象，
@@ -48,6 +53,8 @@ public class RentalCategoryServiceImpl implements RentalCategoryService {
         return repository.findAll();
     }
 
+    //----------------------------------------------------------------------------------------------------------------------
+    //主要為後端使用：增查改
     @Override
     public RentalCategory addRentalCat(RentalCategory rentalCategory) {
         return repository.save(rentalCategory);

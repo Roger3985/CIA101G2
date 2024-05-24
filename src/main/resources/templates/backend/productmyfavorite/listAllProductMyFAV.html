@@ -109,7 +109,7 @@
                                     <th>商品編號</th>
                                     <th>會員編號</th>
                                     <!--                  <th>加入我的最愛時間</th>-->
-                                    <th>修改</th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -118,16 +118,7 @@
                                         <td th:text="${productMyFavorite.product.productNo} + '-[' + ${productMyFavorite.product.productName} + ']'"></td>
                                         <td th:text="${productMyFavorite.member.memNo} + '-[' + ${productMyFavorite.member.memName} + ']'"></td>
                                         <!--                    <td th:text="${productMyFavorite.productFavTime}"></td>-->
-                                        <td>
-                                            <form method="post"
-                                                  th:action="@{/backend/productmyfavorite/updateProductMyFAV}">
-                                                <button th:onclick="'updateProductMyFAV(' + ${productMyFavorite.product.productNo} + ')' "
-                                                        name="productNo"
-                                                        th:value="${productMyFavorite.product.productNo}">
-                                                    <i class="far fa-edit"></i>
-                                                </button>
-                                            </form>
-                                        </td>
+
                                     </tr>
                                 </th:block>
                                 </tbody>

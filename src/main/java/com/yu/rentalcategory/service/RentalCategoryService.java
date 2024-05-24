@@ -14,6 +14,13 @@ public interface RentalCategoryService {
 
 	public List<RentalCategory> searchRentalCats(Map<String, String[]> paramsMap); //複合查詢
 
+//    List<RentalCategory> findAllSortDESC(); //以rentalPrice查詢，金額由大到小
+//
+//	List<RentalCategory> findAllSort(); //以rentalPrice查詢，金額由小到大
+
+	//----------------------------------------------------------------------------------------------------------------------
+	//主要為後端使用：增查改
+
 	public RentalCategory addRentalCat(RentalCategory rentalCategory); //新增
 
 	public RentalCategory updateRentalCat(RentalCategory rentalCategory); //修改

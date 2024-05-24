@@ -33,6 +33,15 @@ public class Cia101G2Application {
 //		String statUpdated = postQueryLogisticsTradeInfo(all);
 //		System.out.println(statUpdated);
 
+
+
+		//測試rentalFAV 進 redis
+
+
+
+
+
+
 	}
 
 //	@Bean

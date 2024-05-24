@@ -1,6 +1,7 @@
 package com.yu.rentalmyfavorite.dao;
 
-import com.iting.productorderdetail.entity.ProductOrderDetail;
+
+import com.yu.rentalmyfavorite.dto.AddToWishList;
 import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,17 +13,17 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
-public interface RentalMyFavoriteRepository extends JpaRepository<RentalMyFavorite, Long> {
+public interface RentalMyFavoriteRepository extends JpaRepository<RentalMyFavorite, RentalMyFavorite.CompositeRentalMyFavorite> {
 
     /**
      * 因繼承 JpaRepository，所以不需要實作任何方法，即可使用「新增、修改、刪除」等基本功能。
-     * 注意：JpaRepository的泛型為 <T,ID>，所以在使用繼承時，必須定義好 T 與 ID 的型別，也就是 <MemberDTO, Long>。
+     * 注意：JpaRepository的泛型為 <T,ID>，所以在使用繼承時，必須定義好 T 與 ID 的型別，也就是 <___DTO, Long>。
      */
     @Transactional
     RentalMyFavorite findByRental_RentalNo(Integer rentalNo);  //rentalNo查詢
 
     @Transactional
-    RentalMyFavorite findByMember_MemNo(Integer memNo); //memNo查詢
+    List<AddToWishList> findByMember_MemNo(Integer memNo); //memNo查詢
 
     @Transactional
     RentalMyFavorite findByRental_RentalNoAndMember_MemNo(Integer rentalNo,Integer memNo); //複合主鍵查詢
@@ -33,6 +34,7 @@ public interface RentalMyFavoriteRepository extends JpaRepository<RentalMyFavori
     @Transactional
     List<RentalMyFavorite> findByRentalFavTime(Timestamp rentalFavTime); //rentalFavTime查詢
 
+    @Transactional
     @Query(value = "SELECT * FROM RentalMyFavorite WHERE rentalNo = ?1", nativeQuery = true)
     List<RentalMyFavorite> findByCompositeKey(Integer rentalNo);
 
