@@ -1,7 +1,9 @@
 package com.yu.rentalmyfavorite.dto;
 
+import lombok.Getter;
 import org.springframework.data.redis.core.RedisHash;
 
+@Getter
 @RedisHash("AddToWishList")
 public class AddToWishList {
 
@@ -9,24 +11,12 @@ public class AddToWishList {
     private Integer memNo;
     private String rentalFavTime;
 
-    public Integer getRentalNo() {
-        return rentalNo;
-    }
-
     public void setRentalNo(Integer rentalNo) {
         this.rentalNo = rentalNo;
     }
 
-    public Integer getMemNo() {
-        return memNo;
-    }
-
     public void setMemNo(Integer memNo) {
         this.memNo = memNo;
-    }
-
-    public String getRentalFavTime() {
-        return rentalFavTime;
     }
 
     public void setRentalFavTime(String rentalFavTime) {
