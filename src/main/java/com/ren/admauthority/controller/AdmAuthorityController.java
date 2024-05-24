@@ -12,6 +12,7 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -78,18 +79,41 @@ public class AdmAuthorityController {
         return "backend/admauthority/addAdmAuthority";
     }
 
-    @PostMapping("/addAdmAuthority")
+    @PostMapping("/addAdmAuthority/add")
     public String addAdmAuthority(@Valid AdmAuthority admAuthority,
-                                  ModelMap model) {
+                                  RedirectAttributes redirectAttributes) {
         admAuthoritySvc.addAdmAuthority(admAuthority);
+        redirectAttributes.addAttribute("success", "新增成功!");
 
         return "redirect:/backend/admauthority/listAllAdmAuthorities";
     }
 
-    @PutMapping("/updateAdmAuthority")
+    // 從listAll前往
+    @GetMapping("/updateAdmAuthority/{titleNo}/{authFuncNo}")
+    public String toUpdateAdmAuthority(@PathVariable Integer titleNo,
+                                       @PathVariable Integer authFuncNo,
+                                       ModelMap model) {
+        model.addAttribute("admAuthority", admAuthoritySvc.getOneAdmAuthority(titleNo, authFuncNo));
+        model.addAttribute("titleList", titleSvc.getAll());
+        model.addAttribute("authFunctionList", authorityFunctionSvc.getAll());
+        return "backend/admauthority/updateAdmAuthority";
+    }
+
+    // 從側邊欄前往
+    @GetMapping("/updateAdmAuthority")
+    public String toUpdateAdmAuthority(@ModelAttribute("admAuthorityList") List<AdmAuthority> list,
+                                       ModelMap model) {
+        model.addAttribute("admAuthority", list.get(0));
+        model.addAttribute("titleList", titleSvc.getAll());
+        model.addAttribute("authFunctionList", authorityFunctionSvc.getAll());
+        return "backend/admauthority/updateAdmAuthority";
+    }
+
+    @PutMapping("/updateAdmAuthority/update")
     public String updateAdmAuthority(@Valid AdmAuthority admAuthority,
-                                     ModelMap model) {
+                                     RedirectAttributes redirectAttributes) {
         admAuthoritySvc.updateAdmAuthority(admAuthority);
+        redirectAttributes.addAttribute("success", "修改成功!");
 
         return "redirect:/backend/admauthority/listAllAdmAuthorities";
     }
@@ -101,8 +125,7 @@ public class AdmAuthorityController {
 
     @ModelAttribute("admAuthorityList")
     protected List<AdmAuthority> getAllData() {
-        List<AdmAuthority> list = admAuthoritySvc.getAll();
-        return list;
+        return admAuthoritySvc.getAll();
     }
 
     /**

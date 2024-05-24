@@ -7,6 +7,29 @@
 	<!-- Favicon -->
 	<link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
 	<th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+	<link th:href="@{/croppie/croppie-2.6.5.css}" rel="stylesheet"/>
+	<style>
+		.modal-lg {
+			max-width: 80% !important;
+		}
+		.cr-boundary {
+			width: 100%;
+			height: 300px;
+			position: relative;
+		}
+		.cr-viewport {
+			border-radius: 50%;
+			width: 200px;
+			height: 200px;
+			border: 2px solid #fff;
+			box-shadow: 0 0 2000px 2000px rgba(0, 0, 0, 0.5);
+		}
+		#preview {
+			display: block;
+			max-width: 100%;
+			height: auto;
+		}
+	</style>
 
 </head>
 
@@ -28,88 +51,85 @@
 			<div class="container-fluid">
 				<div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
 				<!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
-				<form method="post" th:action="@{/backend/product/addProduct/add}" th:object="${product}">
+				<form method="post" th:action="@{/backend/administrator/addAdministrator/add}" th:object="${administrator}" id="imageForm">
 					<div class="mb-3 row">
-						<label for="productCatNo" class="col-sm-2 col-form-label">商品類別編號</label>
+						<label for="admName" class="col-sm-2 col-form-label">管理員名稱</label>
+						<div class="col-sm-3">
+							<input type="text" th:field="*{admName}" class="form-control" name="admName" id="admName">
+							<span th:if="${#fields.hasErrors('admName')}" th:errors="*{admName}" class="error" id="admName.errors"></span>
+						</div>
+					</div>
+					<div class="mb-3 row">
+						<label for="admStat" class="col-sm-2 col-form-label">管理員狀態</label>
+						<div class="col-sm-3">
+							<select size="1" name="admStat" id="admStat" th:field="*{admStat}">
+								<option th:value="${0}" th:text="離職"></option>
+								<option th:value="${1}" th:text="在職"></option>
+							</select>
+						</div>
+					</div>
+					<div class="mb-3 row">
+						<label for="admEmail" class="col-sm-2 col-form-label">管理員Email</label>
+						<div class="col-sm-3">
+							<input type="text" th:field="*{admEmail}" class="form-control" name="admEmail" id="admEmail">
+							<span th:if="${#fields.hasErrors('admEmail')}" th:errors="*{admEmail}" class="error" id="admEmail.errors"></span>
+						</div>
+					</div>
+					<div class="mb-3 row">
+						<label for="titleNo" class="col-sm-2 col-form-label">職位編號</label>
                         <div class="col-sm-3">
-							<select size="1" name="productCatNo" id="productCatNo" th:field="*{productCategory.productCatNo}">
-								<option th:each="productCategory : ${productCategoryList}" th:value="${productCategory.productCatNo}" th:text="${productCategory.productCatNo} + ' : ' + ${productCategory.productCatName}"></option>
+							<select size="1" name="titleNo" id="titleNo" th:field="*{title.titleNo}">
+								<option th:each="title : ${titleList}" th:value="${title.titleNo}" th:text="${title.titleNo} + ' : ' + ${title.titleName}"></option>
 							</select>
                         </div>
 					</div>
 					<div class="mb-3 row">
-						<label for="productName" class="col-sm-2 col-form-label">商品名稱</label>
+						<label for="admHireDate" class="col-sm-2 col-form-label">入職時間</label>
 						<div class="col-sm-3">
-							<input type="text" th:field="*{productName}" class="form-control" name="productName" id="productName">
-							<span th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}" class="error" id="productName.errors"></span>
+							<input type="text" th:field="*{admHireDate}" class="form-control" name="admHireDate" id="admHireDate" placeholder="YYYY-MM-DD">
+							<span th:if="${#fields.hasErrors('admHireDate')}" th:errors="*{admHireDate}" class="error" id="admHireDate.errors"></span>
 						</div>
 					</div>
 					<div class="mb-3 row">
-						<label for="productInfo" class="col-sm-2 col-form-label">商品資訊</label>
+						<label for="admPhoto" class="col-sm-2 col-form-label">管理員照片</label>
 						<div class="col-sm-3">
-							<input type="text" th:field="*{productInfo}" class="form-control" name="productInfo" id="productInfo">
-							<span th:if="${#fields.hasErrors('productInfo')}" th:errors="*{productInfo}" class="error" id="productInfo.errors"></span>
+							<input type="file" id="admPhoto" name="uploadImg" accept="image/*" style="display: none;">
+							<label class="btn btn-info" for="admPhoto">
+								<i class="fa fa-photo"></i> 上傳圖片
+							</label>
+							<span id="imageInfo"></span>
+						</div>
+						<img id="preview" style="display: none;">
+					</div>
+
+					<!-- 裁剪圖片的模態框 -->
+					<div class="modal fade" id="cropImageModal" tabindex="-1" role="dialog" aria-labelledby="cropImageModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="cropImageModalLabel">裁剪圖片</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<div class="img-container">
+										<div id="croppie-container"></div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+									<button type="button" class="btn btn-primary" id="crop">裁剪</button>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="mb-3 row">
-						<label for="productSize" class="col-sm-2 col-form-label">尺寸</label>
-						<div class="col-sm-3">
-							<select size="1" name="productSize" id="productSize" th:field="*{productSize}">
-								<option th:value="${0}" th:text="XS"></option>
-								<option th:value="${1}" th:text="S"></option>
-								<option th:value="${2}" th:text="M"></option>
-								<option th:value="${3}" th:text="L"></option>
-								<option th:value="${4}" th:text="XL"></option>
-								<option th:value="${5}" th:text="2L"></option>
-							</select>
-						</div>
-					</div>
-					<div class="mb-3 row">
-						<label for="productColor" class="col-sm-2 col-form-label">顏色</label>
-						<div class="col-sm-3">
-							<input type="text" th:field="*{productColor}" class="form-control" name="productColor" id="productColor">
-							<span th:if="${#fields.hasErrors('productColor')}" th:errors="*{productColor}" class="error" id="productColor.errors"></span>
-						</div>
-					</div>
-					<div class="mb-3 row">
-						<label for="productPrice" class="col-sm-2 col-form-label">商品單價</label>
-						<div class="col-sm-3">
-							<input type="text" th:field="*{productPrice}" class="form-control" name="productPrice" id="productPrice">
-							<span th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}" class="error" id="productPrice.errors"></span>
-						</div>
-					</div>
-					<div class="mb-3 row">
-						<label for="productStat" class="col-sm-2 col-form-label">商品狀態</label>
-						<div class="col-sm-3">
-							<select size="1" name="productStat" id="productStat" th:field="*{productStat}">
-								<option th:value="${0}" th:text="上架"></option>
-								<option th:value="${1}" th:text="下架"></option>
-							</select>
-						</div>
-					</div>
-					<div class="mb-3 row">
-						<label for="productSalQty" class="col-sm-2 col-form-label">商品已售出數量</label>
-						<div class="col-sm-3">
-							<input type="text" th:field="*{productSalQty}" class="form-control" name="productSalQty" id="productSalQty">
-							<span th:if="${#fields.hasErrors('productSalQty')}" th:errors="*{productSalQty}" class="error" id="productSalQty.errors"></span>
-						</div>
-					</div>
-					<div class="mb-3 row">
-						<label for="productComPeople" class="col-sm-2 col-form-label">評價總人數</label>
-						<div class="col-sm-3">
-							<input type="text" th:field="*{productComPeople}" class="form-control" name="productComPeople" id="productComPeople">
-							<span th:if="${#fields.hasErrors('productComPeople')}" th:errors="*{productComPeople}" class="error" id="productComPeople.errors"></span>
-						</div>
-					</div>
-					<div class="mb-3 row">
-						<label for="productComScore" class="col-sm-2 col-form-label">評價總星數</label>
-						<div class="col-sm-3">
-							<input type="text" th:field="*{productComScore}" class="form-control" name="productComScore" id="productComScore">
-							<span th:if="${#fields.hasErrors('productComScore')}" th:errors="*{productComScore}" class="error" id="productComScore.errors"></span>
-						</div>
-					</div>
+
+
 					<div>
-						<div><button type="submit" id="submit"> 送出新增 </button></div>
+						<div>
+							<button type="submit" id="submit"> 送出新增 </button>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -131,38 +151,159 @@
 <div th:replace="backend/component/logout :: logout"></div>
 
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
-<script>
-	document.addEventListener("DOMContentLoaded", function() {
-	    // 在這裡放置你的 AJAX 請求代碼
-	    var selectedProductNo = document.getElementById('productSelect').value;
-	    sendAjaxRequest(selectedProductNo);
+
+<script th:src="@{/croppie/croppie-2.6.5.js}"></script>
+
+<script type="text/javascript">
+	// 時間選擇
+	$(document).ready(function() {
+		$('#admHireDate').datepicker({
+			format: 'yyyy-mm-dd',
+			autoclose: true,
+			todayHighlight: true
+		});
 	});
 
-	function sendAjaxRequest(selectedProductNo) {
-	    var xhr = new XMLHttpRequest();
-	    xhr.open('POST', '/backend/product/getProductDetails?productNo=' + encodeURIComponent(selectedProductNo), true);
-	    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-	    xhr.onload = function () {
-	        if (xhr.status === 200) {
-	            var productDetails = JSON.parse(xhr.responseText);
 
-	            document.getElementById('productCatNo').value = productDetails.productCategory.productCatNo;
-	            document.getElementById('productName').value = productDetails.productName;
-	            document.getElementById('productInfo').value = productDetails.productInfo;
-	            document.getElementById('productSize').value = productDetails.productSize;
-	            document.getElementById('productColor').value = productDetails.productColor;
-	            document.getElementById('productPrice').value = productDetails.productPrice;
-	            document.getElementById('productStat').value = productDetails.productStat;
-	            document.getElementById('productSalQty').value = productDetails.productSalQty;
-	            document.getElementById('productComPeople').value = productDetails.productComPeople;
-	            document.getElementById('productComScore').value = productDetails.productComScore;
-	        } else {
-	            console.error('Failed to fetch product details');
-	        }
-	    };
+	// 圖片裁切
+	(function ($) {
+		var width_crop = 300,
+				height_crop = 300,
+				type_crop = "circle",
+				width_preview = 350,
+				height_preview = 350,
+				compress_ratio = 0.85,
+				type_img = "jpeg",
+				oldImg = new Image(),
+				myCrop, file, oldImgDataUrl;
 
-	    xhr.send();
-	}
+		// 初始化Croppie插件
+		myCrop = $("#croppie-container").croppie({
+			viewport: {
+				width: width_crop,
+				height: height_crop,
+				type: type_crop
+			},
+			boundary: {
+				width: width_preview,
+				height: height_preview
+			}
+		});
+
+		// 讀取上傳的文件
+		function readFile(input) {
+			if (input.files && input.files[0]) {
+				file = input.files[0];
+			} else {
+				alert("瀏覽器不支援此功能！建議使用最新版本 Chrome");
+				return;
+			}
+
+			if (file.type.indexOf("image") === 0) {
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					console.log("File loaded successfully.");
+					oldImgDataUrl = e.target.result;
+					oldImg.src = oldImgDataUrl;
+					myCrop.croppie("bind", {
+						url: oldImgDataUrl
+					});
+				};
+				reader.readAsDataURL(file);
+			} else {
+				alert("您上傳的不是圖檔！");
+			}
+		}
+
+		// 顯示裁剪後的圖片
+		function displayCropImg(src) {
+			var html = "<img src='" + src + "' />";
+			$("#newImg").html(html);
+		}
+
+		// 當用戶選擇文件時觸發
+		$("#admPhoto").on("change", function () {
+			console.log("Change event triggered.");
+			$("#croppie-container").show();
+			readFile(this);
+			$('#cropImageModal').modal('show');
+		});
+
+		// 當Image對象的源加載完成後，顯示原始圖片的尺寸和文件大小
+		oldImg.onload = function () {
+			var width = this.width,
+					height = this.height,
+					fileSize = Math.round(file.size / 1000),
+					html = "";
+
+			html += "<p>原始圖片尺寸 " + width + "x" + height + "</p>";
+			html += "<p>檔案大小約 " + fileSize + "k</p>";
+			$("#imageInfo").html(html);
+		};
+
+		// 顯示新圖片的信息（尺寸和文件大小）
+		function displayNewImgInfo(src) {
+			var html = "",
+					filesize = src.length * 0.75;
+
+			html += "<p>裁切圖片尺寸 " + width_crop + "x" + height_crop + "</p>";
+			html += "<p>檔案大小約 " + Math.round(filesize / 1000) + "k</p>";
+			html += "<p>圖片名稱：" + file.name + "</p>";  // 顯示圖片名稱
+			$("#newImgInfo").html(html);
+		}
+
+		// 當用戶點擊裁剪按鈕時，生成裁剪後的圖像
+		$("#crop").on("click", function () {
+			// 清除之前的圖像信息
+			$("#newImg").html('');
+			$("#newImgInfo").html('');
+
+			myCrop.croppie("result", {
+				type: "canvas",
+				format: type_img,
+				quality: compress_ratio
+			}).then(function (src) {
+				displayCropImg(src);
+				$("#croppedImage").val(src);
+				displayNewImgInfo(src);
+				$('#cropImageModal').modal('hide');
+			});
+
+			myCrop.croppie("result", {
+				type: "blob",
+				format: type_img,
+				quality: compress_ratio
+			}).then(function (blob) {
+				const formData = new FormData();
+				formData.append('croppedImage', blob, 'cropped-image.' + type_img);
+				displayCropImg(URL.createObjectURL(blob));
+				document.getElementById('imageForm').appendChild(fileInput);
+				displayNewImgInfo(blob);
+				$('#cropImageModal').modal('hide');
+			});
+		});
+
+		// 當模態框關閉時，清理之前的數據
+		$('#cropImageModal').on('hidden.bs.modal', function () {
+			$("#croppie-container").croppie("destroy");
+			myCrop = $("#croppie-container").croppie({
+				viewport: {
+					width: width_crop,
+					height: height_crop,
+					type: type_crop
+				},
+				boundary: {
+					width: width_preview,
+					height: height_preview
+				}
+			});
+			$("#newImg").html('');
+			$("#newImgInfo").html('');
+		});
+
+	})(jQuery);
+
 </script>
+
 </body>
 </html>

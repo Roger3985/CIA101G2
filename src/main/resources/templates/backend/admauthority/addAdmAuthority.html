@@ -28,11 +28,11 @@
 			<div class="container-fluid">
 				<div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
 				<!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
-				<form method="post" th:action="@{/backend/product/addProduct/add}" th:object="${admAuthority}">
+				<form method="post" th:action="@{/backend/admauthority/addAdmAuthority/add}" th:object="${admAuthority}">
 					<div class="mb-3 row">
 						<label for="titleNo" class="col-sm-2 col-form-label">職位編號</label>
 						<div class="col-sm-3">
-							<select size="1" name="titleNo" id="titleNo" th:field="*{title.titleNo}">
+							<select size="1" name="titleNo" id="titleNo" th:field="*{compositeAdmAuthority.titleNo}">
 								<option th:each="title : ${titleList}" th:value="${title.titleNo}" th:text="${title.titleNo} + ' : ' + ${title.titleName}"></option>
 							</select>
 						</div>
@@ -40,7 +40,7 @@
 					<div class="mb-3 row">
 						<label for="authFuncNo" class="col-sm-2 col-form-label">權限編號</label>
 						<div class="col-sm-3">
-							<select size="1" name="authFuncNo" id="authFuncNo" th:field="*{authorityFunction.authFuncNo}">
+							<select size="1" name="authFuncNo" id="authFuncNo" th:field="*{compositeAdmAuthority.authFuncNo}">
 								<option th:each="authFunction : ${authFunctionList}" th:value="${authFunction.authFuncNo}" th:text="${authFunction.authFuncNo} + ' : ' + ${authFunction.authFuncInfo}"></option>
 							</select>
 						</div>

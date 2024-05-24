@@ -1,94 +1,103 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.ren.authorityfunction.model.*"%>
-
-<%
-   AuthorityFunctionVO authorityFunctionVO = (AuthorityFunctionVO) request.getAttribute("authorityFunctionVO");
-%>
-
-<html>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>�\���v����ƭק� - update_authorityFunction_input.jsp</title>
-
-<style>
-  table#table-1 {
-	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
-</style>
-
-<style>
-  table {
-	width: 450px;
-	background-color: white;
-	margin-top: 1px;
-	margin-bottom: 1px;
-  }
-  table, th, td {
-    border: 0px solid #CCCCFF;
-  }
-  th, td {
-    padding: 1px;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>更新商品</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
 
 </head>
-<body bgcolor='white'>
+<body id="page-top">
+<div th:replace="backend/component/loading :: loading"></div>
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                <form method="post" th:action="@{/backend/product/updateProduct/update}" th:object="${product}">
+                    <div class="mb-3 row">
+                        <label for="titleNo" class="col-sm-2 col-form-label">職位編號</label>
+                        <div class="col-sm-3">
+                            <select size="1" name="titleNo" id="titleNo" th:field="*{title.titleNo}">
+                                <option th:each="title : ${titleList}" th:value="${title.titleNo}" th:text="${title.titleNo} + ' : ' + ${title.titleName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="authFuncNo" class="col-sm-2 col-form-label">權限編號</label>
+                        <div class="col-sm-3">
+                            <select size="1" name="authFuncNo" id="authFuncNo" th:field="*{authorityFunction.authFuncNo}">
+                                <option th:each="authFunction : ${authFunctionList}" th:value="${authFunction.authFuncNo}" th:text="${authFunction.authFuncNo} + ' : ' + ${authFunction.authFuncInfo}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <div><button type="submit" id="submit"> 送出修改 </button></div>
+                    </div>
+                </form>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
 
-<table id="table-1">
-	<tr><td>
-		 <h3>�\���v���ק� - update_authorityFunction_input.jsp</h3>
-		 <h4><a href="select_authorityFunction.jsp">�^����</a></h4>
-	</td></tr>
-</table>
+        <!-- Footer -->
+        <footer th:replace="backend/component/bottom :: bottom"></footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
 
-<h3>��ƭק�:</h3>
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
 
-<%-- ���~��C --%>
-<c:if test="${not empty errorMsgs}">
-	<font style="color:red">�Эץ��H�U���~:</font>
-	<ul>
-		<c:forEach var="message" items="${errorMsgs}">
-			<li style="color:red">${message}</li>
-		</c:forEach>
-	</ul>
-</c:if>
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
 
-<FORM METHOD="post" ACTION="authorityFunction.do" name="form1">
-<table>
-	<tr>
-		<td>�ӫ~�s��:</td>
-		<td><input type="TEXT" name="authFuncNo" value="<%= (authorityFunctionVO==null)? "1" : authorityFunctionVO.getAuthFuncNo()%>" size="45"/></td>
-	</tr>
-	<tr>
-		<td>�ӫ~�W��:</td>
-		<td><input type="TEXT" name="authFuncInfo" value="<%= (authorityFunctionVO==null)? "1" : authorityFunctionVO.getAuthFuncInfo()%>" size="45"/></td>
-	</tr>
+<script th:inline="javascript">
 
-	<jsp:useBean id="authorityFunctionSvc" scope="page" class="com.ren.authorityfunction.service.impl.AuthorityFunctionServiceImpl" />
-	<tr>
-		<td>�ӫ~���O�s��:<font color=red><b>*</b></font></td>
-		<td><select size="1" name="authFuncNo">
-			<c:forEach var="authorityFunctionVO" items="${authorityFunctionSvc.all}">
-				<option value="${authorityFunctionVO.authFuncNo}" ${(authorityFunctionVO.authFuncNo==authorityFunctionVO.authFuncNo)? 'selected':'' } >${authorityFunctionVO.authFuncNo}
-			</c:forEach>
-		</select></td>
-	</tr>
-</table>
-<br>
-<input type="hidden" name="action" value="update">
-<input type="hidden" name="authFuncNo" value="<%=authorityFunctionVO.getAuthFuncNo()%>">
-<input type="submit" value="�e�X�ק�"></FORM>
+    function updateProductInstantly() {
+        var selectedProductNo = document.getElementById('productSelect').value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/backend/product/getProductInstantly?productNo=' + encodeURIComponent(selectedProductNo), true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var productDetails = JSON.parse(xhr.responseText);
+
+                document.getElementById('productCatNo').value = productDetails.productCategory.productCatNo;
+                document.getElementById('productName').value = productDetails.productName;
+                document.getElementById('productInfo').value = productDetails.productInfo;
+                document.getElementById('productSize').value = productDetails.productSize;
+                document.getElementById('productColor').value = productDetails.productColor;
+                document.getElementById('productPrice').value = productDetails.productPrice;
+                document.getElementById('productStat').value = productDetails.productStat;
+                document.getElementById('productSalQty').value = productDetails.productSalQty;
+                document.getElementById('productComPeople').value = productDetails.productComPeople;
+                document.getElementById('productComScore').value = productDetails.productComScore;
+            } else {
+                console.error('Failed to fetch product details');
+            }
+        };
+
+        xhr.send();
+    }
+</script>
+
 </body>
 </html>

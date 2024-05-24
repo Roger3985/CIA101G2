@@ -50,6 +50,18 @@ public class AdmAuthority {
             this.authFuncNo = authFuncNo;
         }
 
+        public CompositeAdmAuthority() {
+        }
+
+        public CompositeAdmAuthority(Integer titleNo) {
+            this.titleNo = titleNo;
+        }
+
+        public CompositeAdmAuthority(Integer titleNo, Integer authFuncNo) {
+            this.titleNo = titleNo;
+            this.authFuncNo = authFuncNo;
+        }
+
         @Override
         public int hashCode() {
             final int prime = 31;
