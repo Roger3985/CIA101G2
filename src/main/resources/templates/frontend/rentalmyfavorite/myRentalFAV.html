@@ -9,7 +9,7 @@
     <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
     <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template">
     <!-- title -->
-    <title>ShopApp - eCommerce Bootstrap 5 Template</title>
+    <title>租借品 - 我的最愛清單</title>
     <!-- Favicon -->
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
@@ -17,6 +17,10 @@
     <style>
         .completed-order {
             background-color: lightgray;
+        }
+        .fw-600{
+            text-align:center;
+            /*line-height: 200px;!*與包著的區塊設定同高度即可*!*/
         }
     </style>
 </head>
@@ -30,77 +34,85 @@
     Wrapper
 ========================
 -->
-<div class="wrapper">
-    <!-- header height -->
-    <div class="header-height-bar" style="min-height: 104.865px;"></div>
-    <!-- Header -->
-    <header th:replace="frontend/component/header :: header"></header>
-    <!-- End Header -->
-    <!-- Main -->
-    <main>
-        <!-- Breadcrumb -->
-        <div class="py-3 bg-gray-100">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-6 my-2">
-                        <h1 class="m-0 h4 text-center text-lg-start">我的最愛</h1>
-                    </div>
-                    <div class="col-lg-6 my-2">
-                        <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
-                            <li class="breadcrumb-item"><a class="text-nowrap" href="#"><i
-                                    class="bi bi-home"></i>Home</a></li>
-                            <li class="breadcrumb-item text-nowrap active" aria-current="page">My Account</li>
-                        </ol>
+    <div class="wrapper">
+        <!-- header height -->
+        <div class="header-height-bar" style="min-height: 104.865px;"></div>
+        <!-- Header -->
+        <header th:replace="frontend/component/header :: header"></header>
+        <!-- End Header -->
+        <!-- Main -->
+        <main>
+            <!-- Breadcrumb -->
+            <div class="py-3 bg-gray-100">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 my-2">
+                            <h1 class="m-0 h4 text-center text-lg-start">我的最愛</h1>
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
+                                <li class="breadcrumb-item"><a class="text-nowrap" href="#"><i
+                                        class="bi bi-home"></i>Home</a></li>
+                                <li class="breadcrumb-item text-nowrap active" aria-current="page">My Account</li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div><!-- End Breadcrumb --><!-- Table -->
-        <div class="py-6">
-            <div class="container">
-                <div class="row"><!-- Profile Menu -->
-                    <div class="col-lg-4 pb-4 pb-lg-0 col-xxl-3 pe-xxl-5">
-                        <div class="bg-body border border-bottom-0 shadow-lg">
-                            <div class="d-flex p-3 align-items-center">
-                                <div class="avatar avatar-lg rounded-circle"><img
-                                        src="../../assets/img/avatar/avatar-2.jpg" title="" alt=""></div>
-                                <div class="col ps-3">
-                                    <h6 class="m-0">Jennifer Winget</h6><small><a
-                                        href="#">your@email.com</a></small>
+            </div><!-- End Breadcrumb --><!-- Table -->
+            <div class="py-6">
+                <div class="container">
+                    <div class="row"><!-- Profile Menu -->
+                        <div class="col-lg-4 pb-4 pb-lg-0 col-xxl-3 pe-xxl-5">
+                            <div class="bg-body border border-bottom-0 shadow-lg">
+                                <div class="d-flex p-3 align-items-center">
+                                    <div class="avatar avatar-lg rounded-circle">
+                                        <img src="../../assets/img/avatar/avatar-2.jpg" title="" alt="">
+                                    </div>
+                                    <div class="col ps-3">
+                                        <h6 class="m-0">Jennifer Winget</h6>
+                                        <small><a href="#">your@email.com</a></small>
+                                    </div>
                                 </div>
                             </div>
                             <div class="bg-gray-200 p-3 border-bottom border-top">
                                 <h6 class="m-0">Dashboard</h6>
                             </div>
                             <ul class="list-unstyled mb-0 theme-link">
-                                <li class="border-bottom mb-0"><a
-                                        class="nav-link-style d-flex align-items-center active p-3"
-                                        href="account-order.html"><i class="bi bi-bag me-2"></i> 訂單
-                                    <div class="ms-auto badge-pill badge bg-secondary">5</div>
-                                </a></li>
-                                <li class="border-bottom mb-0"><a
-                                        class="nav-link-style d-flex align-items-center p-3"
-                                        th:href="@{/frontend/rentalMyFavorite/myProductFAV}"><i class="fi-heart me-2"></i>我的最愛 (商品)
-                                    <div class="ms-auto badge-pill badge bg-secondary">5</div>
-                                </a></li>
-                                <li class="border-bottom mb-0"><a
-                                        class="nav-link-style d-flex align-items-center p-3"
-                                        th:href="@{/frontend/rentalmyfavorite/myRentalFAV}"><i class="fi-heart me-2"></i>我的最愛 (租借品)
-                                    <div class="ms-auto badge-pill badge bg-secondary">5</div>
-                                </a></li>
-                                <li class="border-bottom mb-0"><a
-                                        class="nav-link-style d-flex align-items-center p-3"
-                                        href="account-tickets.html"><i class="bi bi-bookmark me-2"></i>我的優惠券
-                                    Tickets
-                                    <div class="ms-auto badge-pill badge bg-secondary">0</div>
-                                </a></li>
+                                <li class="border-bottom mb-0">
+                                    <a class="nav-link-style d-flex align-items-center active p-3"
+                                       href="account-order.html"><i class="bi bi-bag me-2"></i> 訂單
+                                        <div class="ms-auto badge-pill badge bg-secondary">5</div>
+                                    </a>
+                                </li>
+                                <li class="border-bottom mb-0">
+                                    <a class="nav-link-style d-flex align-items-center p-3"
+                                       th:href="@{/frontend/rentalMyFavorite/myProductFAV}">
+                                        <i class="fi-heart me-2"></i>我的最愛 (商品)
+                                        <div class="ms-auto badge-pill badge bg-secondary">5</div>
+                                    </a>
+                                </li>
+                                <li class="border-bottom mb-0">
+                                    <a class="nav-link-style d-flex align-items-center p-3"
+                                       th:href="@{/frontend/rentalmyfavorite/myRentalFAV}"><i class="fi-heart me-2"></i>我的最愛 (租借品)
+                                        <div class="ms-auto badge-pill badge bg-secondary">5</div>
+                                    </a>
+                                </li>
+                                <li class="border-bottom mb-0">
+                                    <a class="nav-link-style d-flex align-items-center p-3"
+                                       href="account-tickets.html"><i class="bi bi-bookmark me-2"></i>我的優惠券
+                                        Tickets
+                                        <div class="ms-auto badge-pill badge bg-secondary">0</div>
+                                    </a>
+                                </li>
                             </ul>
                             <div class="bg-gray-200 p-3 border-bottom">
                                 <h6 class="m-0">Account settings</h6>
                             </div>
                             <ul class="list-unstyled mb-0 theme-link">
-                                <li class="border-bottom mb-0"><a
-                                        class="nav-link-style d-flex align-items-center p-3"
-                                        href="account-profile.html"><i class="fi-user me-2"></i>Profile info</a>
+                                <li class="border-bottom mb-0">
+                                    <a class="nav-link-style d-flex align-items-center p-3"
+                                       href="account-profile.html"><i class="fi-user me-2"></i>Profile info
+                                    </a>
                                 </li>
                                 <li class="border-bottom mb-0"><a
                                         class="nav-link-style d-flex align-items-center p-3"
@@ -110,129 +122,114 @@
                                         class="nav-link-style d-flex align-items-center p-3"
                                         href="account-payment.html"><i
                                         class="bi bi-credit-card me-2"></i>Payment</a></li>
-                                <li class="border-bottom mb-0"><a
-                                        class="nav-link-style d-flex align-items-center p-3" href="#"><i
-                                        class="bi bi-box-arrow-left me-2"></i>Logout</a>
+                                <li class="border-bottom mb-0">
+                                    <a class="nav-link-style d-flex align-items-center p-3" href="#"><i
+                                            class="bi bi-box-arrow-left me-2"></i>Logout
+                                    </a>
                                 </li>
                             </ul>
-                        </div>
-                    </div><!-- End Profile Menu --><!-- Content -->
-                    <div class="col-lg-8 col-xxl-9">
-                        <div class="table-responsive fs-md mb-4">
-                            <table class="table table-bordered table-hover mb-0" id="dataTable">
-                                <thead class="text-700 bg-gray-200">
-                                    <tr>
-                                        <th class="fw-600">商品照片</th>
-                                        <th class="fw-600">商品名稱</th>
-                                        <th class="fw-600">商品價格</th>
-                                        <th class="fw-600">加入時間</th>
-                                        <th class="fw-600">操作</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <th:block th:each="rentalMyFavorite : ${rentalListData}">
+                        </div><!-- 結束 class="col-lg-4 pb-4 pb-lg-0 col-xxl-3 pe-xxl-5"-->
+                        <!-- End Profile Menu -->
+                        <!-- Content -->
+                        <div class="col-lg-8 col-xxl-9">
+                            <div class="table-responsive fs-md mb-4">
+                                <table class="table table-bordered table-hover mb-0" id="dataTable">
+                                    <thead class="text-700 bg-gray-200">
                                         <tr>
-                                            <td>
-                                                <img th:src="'data:image/png;base64,' + ${session['productImage' + rentalMyFavorite.rentalNo]}"
-                                                     alt="Product Picture" style="width: auto; height: 80px;"/>
-                                            </td>
-                                            <td class="p-3"
-                                                th:text="${session['productName' + rentalMyFavorite.rentalNo]}"></td>
-                                            <td class="p-3"
-                                                th:text="${session['productName' + rentalMyFavorite.rentalNo]}"></td>
-                                            <td class="p-3" id="favTime" th:text="${rentalMyFavorite.rentalFavTime}"></td>
-
-                                            <td class="p-3">
-                                                <input type="hidden"id="rentalNo" name="rentalNo" th:value="${rentalMyFavorite.rentalNo}"/>
-                                                <input type="hidden" id="memNo" name="memNo" th:value="${rentalMyFavorite.memNo}"/>
-                                                <button class="btn btn-link px-0 text-danger btn btn-sm btn-primary btn-remove"
-                                                        type="button" onclick="deleteProduct(this)">
-                                                    <i class="bi-trash3 me-2"></i>
-                                                    <span class="">Remove</span>
-                                                </button>
-                                            </td>
+                                            <th class="fw-600">照片</th>
+                                            <th class="fw-600">名稱</th>
+        <!--                                    <th class="fw-600">租金</th>-->
+                                            <th class="fw-600">加入時間</th>
+                                            <th class="fw-600">操作</th>
                                         </tr>
-                                    </th:block>
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        <th:block th:each="rentalMyFavorite : ${addToWishData}">
+                                            <tr>
+                                                <!-- 照片 -->
+                                                <td>
+                                                    <img th:src="@{'/icons/frontend/rental/rentalshop/' + ${rentalMyFavorite.getRental().getRentalNo()} + '.jpg'}"
+                                                         alt="" style="width: auto; height: 80px;"/>
+                                                </td>
+                                                <!-- 租借品名稱 -->
+                                                <td class="p-3" th:text="${rentalMyFavorite.getRental().getRentalName()}"></td>
+        <!--                                        &lt;!&ndash; 租金 &ndash;&gt;-->
+        <!--                                        <td class="p-3" id="rentalFavTime" th:text="${rentalMyFavorite.getRental().}"></td>-->
+                                                <!-- 加入清單時間 -->
+                                                <td class="p-3" id="rentalFavTime" th:text="${rentalMyFavorite.getRentalFavTime()}"></td>
+                                                <!-- 額外操作 -->
+                                                <td class="p-3">
+                                                    <!-- 在隱藏的 input 元素中儲存 rentalNo 和 memNo -->
+                                                    <input type="hidden" id="rentalNo" name="rentalNo" th:value="${rentalMyFavorite.getRental().getRentalNo()}"/>
+                                                    <input type="hidden" id="memNo" name="memNo" th:value="${rentalMyFavorite.getMember().getMemNo()}"/>
+                                                    <!--  點擊按鈕時調用 deleteRental 函數刪除該租賃-->
+                                                    <button class="btn btn-link px-0 text-danger btn btn-sm btn-primary btn-remove"
+                                                            type="button" onclick="deleteRental(this)">
+                                                        <i class="bi-trash3 me-2"></i>
+                                                        <span class="">Remove</span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </th:block>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                    <!--                        <div th:if="${getDetails}">-->
-                    <!--                            <div th:insert="~{frontend/productorderdetail/productorderdetail :: listOrderDetail}"></div>-->
-                    <div class="d-flex align-items-center mt-3">
-                        <div class="d-none d-lg-block">Showing: 1 - 12 of 17</div>
-                        <div class="ms-lg-auto">
-                            <ul class="pagination m-0">
-                                <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span
-                                        aria-hidden="true">«</span></a></li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span
-                                        aria-hidden="true">»</span></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- End Content -->
-            </div>
-        </div>
+                        <!--                        <div th:if="${getDetails}">-->
+                        <!--                            <div th:insert="~{frontend/productorderdetail/productorderdetail :: listOrderDetail}"></div>-->
+<!--                        <div class="d-flex align-items-center mt-3">-->
+<!--                            <div class="d-none d-lg-block">Showing: 1 - 12 of 17</div>-->
+<!--                            <div class="ms-lg-auto">-->
+<!--                                <ul class="pagination m-0">-->
+<!--                                    <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span-->
+<!--                                            aria-hidden="true">«</span></a></li>-->
+<!--                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>-->
+<!--                                    <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+<!--                                    <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--                                    <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span-->
+<!--                                            aria-hidden="true">»</span></a></li>-->
+<!--                                </ul>-->
+<!--                            </div>&lt;!&ndash; End  class="ms-lg-auto"&ndash;&gt;-->
+<!--                        </div>&lt;!&ndash; End  class="d-flex align-items-center mt-3" &ndash;&gt;-->
+                    </div><!-- End Row -->
+                </div><!-- End class="container"-->
+            </div><!-- End class="py-6" -->
+        </main><!-- End Main -->
     </div>
-</main>
-<script>
-    function deleteProduct(button) {
-        var row = button.parentNode.parentNode; // 获取要删除的行元素
-        var rentalNo = row.querySelector('input[name="rentalNo"]').value;
-        var memNo = row.querySelector('input[name="memNo"]').value;
+    <!-- Footer -->
+    <footer th:replace="frontend/component/footer :: footer"></footer>
+    <!-- End Footer -->
 
-        $.ajax({
-            type: 'POST',
-            url: '/frontend/rentalMyFavorite/deleteInstantly',
-            data: {
-                rentalNo: rentalNo,
-                memNo: memNo
-            },
-            success: function (data) {
-                row.remove();
-                console.log("删除成功");
-            },
-            error: function () {
-                console.error('删除失败');
-            }
-        });
-    }
-    //時間排序
-    document.addEventListener("DOMContentLoaded", function() {
-        var table = document.getElementById('dataTable');
-        var rows = table.querySelectorAll('tbody tr');
-        var rowsArray = Array.from(rows);
-        rowsArray.sort(function(rowA, rowB) {
-            var timeA = new Date(rowA.querySelector('#favTime').innerText);
-            var timeB = new Date(rowB.querySelector('#favTime').innerText);
-        });
+    <!--
+    ========================
+       End Wrapper
+    ========================
+    -->
+    <!-- script start -->
+    <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
+    <script>
+        function deleteRental(button) {
+            const row = button.parentNode.parentNode; // 取得要刪除的元素
+            const rentalNo = row.querySelector('input[name="rentalNo"]').value;
+            const memNo = row.querySelector('input[name="memNo"]').value;
 
-        table.querySelector('tbody').innerHTML = '';
-        rowsArray.forEach(function(row) {
-            table.querySelector('tbody').appendChild(row);
-        });
-    });
-
-</script>
-
-</main>
-<!-- End Main -->
-<!-- Footer -->
-<footer th:replace="frontend/component/footer :: footer"></footer>
-<!-- End Footer -->
-</div>
-<!--
-========================
-   End Wrapper
-========================
--->
-<!-- script start -->
-<th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
-<!-- End script start -->
-</body>
-
+            $.ajax({
+                type: 'POST',
+                url: '/frontend/rentalMyFavorite/delete',
+                data: {
+                    rentalNo: rentalNo,
+                    memNo: memNo
+                },
+                success: function (data) {
+                    row.remove();
+                    console.log("成功");
+                },
+                error: function () {
+                    console.error('失敗');
+                }
+            });
+        }
+    </script>
+    <!-- End script start -->
+    </body>
 </html>

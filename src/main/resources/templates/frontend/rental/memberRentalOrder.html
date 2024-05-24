@@ -391,6 +391,9 @@
                             </div>
 
                             <div class="button-container" style="display: inline-block; margin-left: 300px">
+                                <button th:if="${rentalOrder.getrentalOrdStat() == 10}" class="btn-get-started btn btn-primary flex-shrink-0">
+                                    申請取消訂單
+                                </button>
                                 <button class="btn-get-started btn btn-primary flex-shrink-0 btn_addToCart">
                                     <strong th:if="${rentalOrder.getrentalOrdStat() == 50}">再租一次</strong>
                                     <strong th:if="${rentalOrder.getrentalOrdStat() != 50}">再次加入購物車</strong>
@@ -511,9 +514,8 @@
     }
 
     // 再租一次
-    let memNo = 1;
     let baseUrl = window.location.protocol + "//" + window.location.host;
-    let apiPath = "/backend/rentalorder/";
+    let apiPath = "/frontend/rentalorder/";
     $("button.btn_addToCart").on("click", function () {
 
         // 取得頁面明細中所有商品編號
@@ -524,7 +526,6 @@
         // console.log(rentalNos);
         // 送進購物車
         let data = {
-            "memNo" : memNo,
             "rentalNos" : rentalNos
         };
         fetch(baseUrl + apiPath + "buyAgain", {
@@ -536,6 +537,9 @@
         }).then(function (response) {
             return response.text();
         }).then(function (url) {
+            if (url === "/frontend/member/loginMember") {
+                window.location.href = url;
+            }
             window.location.href = baseUrl + apiPath + url;
         })
 
@@ -545,10 +549,8 @@
     $(function () {
 
         let rentalOrdNo = $("h4.rentalOrdNoForUpdate").attr("id");
-        // console.log($("div.express"));
-        // if ( $("div.express") ) {
 
-            fetch(baseUrl + apiPath + "queryNewStat?memNo=" + memNo + "&rentalOrdNo=" + rentalOrdNo)
+            fetch(baseUrl + apiPath + "queryNewStat?rentalOrdNo=" + rentalOrdNo)
                 .then(response => response.text())
                 .then(logisticsStatus => {
 
@@ -573,9 +575,6 @@
                     }
 
                 });
-
-        // } // if ( $("div.express") ) 結束
-
 
     }); // DOMContentLoaded 結束
 

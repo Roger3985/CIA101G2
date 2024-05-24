@@ -1,6 +1,7 @@
 package com.yu.rental.dao;
 
 import com.yu.rental.entity.Rental;
+import com.yu.rentalcategory.entity.RentalCategory;
 import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,21 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
 
     @Transactional
     public Rental findByRentalName(String rentalName); //單筆查詢(String rentalName)
+
+    @Transactional
+    @Query("SELECT re FROM Rental re WHERE :rentalCatNo IS NULL OR " +
+            "re.rentalCategory.rentalCatNo = :rentalCatNo ORDER BY re.rentalPrice ASC")
+    List<Rental> findByRentalCatNo_OrderByRentalPriceASC(Integer rentalCatNo);  //尋找對應編號的價格排序 (升冪)
+
+    @Transactional
+    @Query("SELECT re FROM Rental re WHERE :rentalCatNo IS NULL OR " +
+            "re.rentalCategory.rentalCatNo = :rentalCatNo ORDER BY re.rentalPrice DESC")
+    List<Rental> findByRentalCatNo_OrderByRentalPriceDESC(Integer rentalCatNo);  //尋找對應編號的價格排序 (降冪)
+
+    @Transactional
+    @Query("SELECT re FROM Rental re WHERE re.rentalStat = 0 ORDER BY re.rentalNo DESC") //以rentalStat排序 (編號越晚的先顯示)
+    List<Rental> findByRentalStatDESC(Byte rentalStat);
+
 
     @Transactional
     @Query("SELECT re FROM Rental re WHERE " +
@@ -63,8 +79,7 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     @Query("SELECT re FROM Rental re WHERE re.rentalInfo LIKE %:rentalInfo%") //以rentalInfo 做模糊查詢
     List<Rental> findQueryByRentalInfo(@Param("rentalInfo") String rentalInfo);
 
-    @Query("SELECT re FROM Rental re WHERE re.rentalStat = :rentalStat") //以rentalStat 查詢
-    List<Rental> findQueryByRentalStat(@Param("rentalStat") Byte rentalStat);
+
 
     /**
      * 全文搜索

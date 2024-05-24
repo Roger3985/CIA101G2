@@ -65,9 +65,13 @@
                                         <td th:text="${productOrderDetail.productScore}"></td>
                                         <td>
                                             <form method="post" th:action="@{/backend/productorderdetail/getOne_For_Update}" style="margin-bottom: 0px;">
-                                                <input type="submit" value="修改">
-                                                <input type="hidden" name="productOrdNo" th:value="${productOrderDetail.compositeKey.productOrdNo}">
-                                                <input type="hidden" name="productNo" th:value="${productOrderDetail.compositeKey.productNo}"></form>
+                                                <button>
+
+                                                    <i class="far fa-edit"></i>
+                                                    <input type="hidden" name="productOrdNo" th:value="${productOrderDetail.compositeKey.productOrdNo}">
+                                                    <input type="hidden" name="productNo" th:value="${productOrderDetail.compositeKey.productNo}">
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 </th:block>

@@ -14,7 +14,7 @@ import java.util.List;
 public class RentalOrderRequest {
 
     private Integer rentalOrdNo; // -> 租借訂單編號
-    @NotNull
+
     private Integer memNo; // -> 會員編號
     @NotBlank
     private String rentalByrName; // -> 訂購人姓名

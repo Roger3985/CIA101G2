@@ -40,32 +40,24 @@
                     </div>
                     <div class="a">
                         <div>
-                            <form id="form" method="post" th:action="@{updateRentSet}">
+                            <form id="form" method="post" th:action="@{updateRentSet}" th:object="${rentSet}">
                                 <div>
                                     <label>選擇租借品訂單編號:</label>
-                                    <select name="rentalOrdNo" id="rentalOrdNo" th:field="*{rentSet.getRentalOrdNo()}"> <!--th:field，表單元素&數據綁定-->
-                                        <option value="0">請選擇</option>
-                                        <option th:each="rentSet : ${rentSetListData}" th:value="${rentSet.getRentalOrdNo()}"
-                                                th:text="${rentSet.getRentalOrdNo()}" />
-                                    </select>
-                                    <span class="error" th:if="${#fields.hasErrors('rentSet.getRentalOrdNo()')}" th:errors="*{rentSet.getRentalOrdNo()}" id="rentalOrdNo.errors">租借品訂單編號錯誤</span>
+                                    <input value="0" type="text" id="rentalOrdNo" name="rentalOrdNo" th:field="*{rentalOrdNo}" style="border:0px ; font-weight: bold;" readonly /><br/>
                                 </div><br>
                                 <div>
-                                    <label>選擇方案名稱:</label>
-                                    <select id="rentalSetName" name="rentalSetName" th:field="*{rentSet.getRentalSetName()}"> <!--th:field，表單元素&數據綁定-->
-                                        <option value="1">請選擇</option>
-                                        <option th:each="rentSet : ${rentSetListData}" th:value="${rentSet.getRentalSetName()}" th:text="${rentSet.getRentalSetName()}"/>
-                                    </select>
-                                    <span class="error" th:if="${#fields.hasErrors('rentSet.getRentalSetName()')}" th:errors="*{rentSet.getRentalSetName()}" id="rentalSetName.errors">方案名稱錯誤</span>
+                                    <label>輸入方案名稱:</label>
+                                    <input value="1" type="text" id="rentalSetName" name="rentalSetName"  th:field="*{rentalSetName}" onclick="hideContent('rentalSetName.errors');" /><br/>
+                                    <span class="error" th:if="${#fields.hasErrors('rentalSetName')}" th:errors="*{rentalSetName}" id="rentalSetName.errors">方案名稱錯誤</span>
                                 </div><br>
                                 <div>
                                     <label>選擇租借天數:</label>
                                     <select name="rentalSetDays" id="rentalSetDays">
                                         <option value="2" selected>請選擇</option>
-                                        <option value="0">7天</option>
-                                        <option value="1">14天</option>
+                                        <option value="0" th:selected="${rentSet.rentalSetDays == 0}">方案1(7天)</option>
+                                        <option value="1" th:selected="${rentSet.rentalSetDays == 1}">方案2(14天)</option>
                                     </select><br>
-                                    <span class="error" th:if="${#fields.hasErrors('rentSet.getRentalSetDays()')}" th:errors="*{rentSet.getRentalSetDays()}" id="rentalSetDays.errors">租借天數錯誤</span>
+                                    <span class="error" th:if="${#fields.hasErrors('rentalSetDays')}" th:errors="*{rentalSetDays}" id="rentalSetDays.errors">租借天數錯誤</span>
                                 </div><br>
                                 <input type="submit" id="updateBtn" value="送出">
                                 <input type="hidden" name="rentalOrdNo" th:value="${rentSet.getRentalOrdNo()}">
@@ -103,7 +95,7 @@
                 rentalOrdNo: parseInt($('#rentalOrdNo').val()),
                 rentalSetName: $('#rentalSetName').val(),
                 rentalSetDays: parseFloat($('#rentalSetDays').val()),
-                action: "addRentSet"
+                action: "updateRentSet"
             };
 
             fetch("/backend/rentset/updateRentSet", {

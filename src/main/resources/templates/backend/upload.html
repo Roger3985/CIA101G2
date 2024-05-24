@@ -134,25 +134,22 @@
             });
         });
 
-        // $("#crop_img").on("click", function () {
-        //     myCrop.croppie("result", {
-        //         type: "blob", // ??型?置? blob 而不是 canvas 以得到 Blob 格式的?片?据
-        //         format: type_img, // ?置?像格式，通常是 jpeg、png 或 webp
-        //         quality: compress_ratio // ?置?片?量
-        //     }).then(function (blob) {
-        //         // 在?段代?中，'blob' 是裁切后的?片的 Blob ?象
-        //         displayCropImg(URL.createObjectURL(blob)); // 使用 URL.createObjectURL(blob) ? Blob ?象???可用的 URL
-        //
-        //         // ?裁切后的 Blob ?据?置到?藏的?入字段中
-        //         // ?里? Blob ?据附加到表??据中
-        //         const formData = new FormData();
-        //         formData.append('croppedImage', blob, 'cropped-image.' + type_img);
-        //         document.getElementById('imageForm').append(formData);
-        //
-        //         // ?示裁切后的?片信息
-        //         displayNewImgInfo(blob);
-        //     });
-        // });
+        $("#crop_img").on("click", function () {
+            myCrop.croppie("result", {
+                type: "blob",
+                format: type_img,
+                quality: compress_ratio
+            }).then(function (blob) {
+
+                displayCropImg(URL.createObjectURL(blob));
+
+                const formData = new FormData();
+                formData.append('croppedImage', blob, 'cropped-image.' + type_img);
+                document.getElementById('imageForm').append(formData);
+
+                displayNewImgInfo(blob);
+            });
+        });
 
     })(jQuery);
 </script>

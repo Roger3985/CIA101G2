@@ -230,16 +230,6 @@
                                             <label class="custom-control-label" for="price2">$4000</label>
                                         </li>
                                     </ul>
-                                    <!--                                    <div class="d-flex align-items-center pt-3">-->
-                                    <!--                                        &lt;!&ndash; Input &ndash;&gt;-->
-                                    <!--                                        <input type="number" class="form-control form-control-sm"-->
-                                    <!--                                               placeholder="$0" min="10">-->
-                                    <!--                                        &lt;!&ndash; Divider &ndash;&gt;-->
-                                    <!--                                        <div class="text-gray-350 mx-2">‒</div>-->
-                                    <!--                                        &lt;!&ndash; Input &ndash;&gt;-->
-                                    <!--                                        <input type="number" class="form-control form-control-sm"-->
-                                    <!--                                               placeholder="$4000" max="350">-->
-                                    <!--                                    </div>-->
                                 </div>
                             </div>
                             <!-- End Brands -->
@@ -257,10 +247,10 @@
                                     <i class="fs-4 lh-1 bi bi-justify-left"></i>
                                 </button>
                                 <!-- 手機模式 結束 Mobile Toggle -->
-                                <a class="btn btn-white btn-sm" th:href="@{/frontend/rental/rentalShop}">
+                                <a class="btn btn-white btn-sm" th:href="@{/frontend/rental/rentalShopGrid}">
                                     <i class="bi bi-grid"></i>
                                 </a>
-                                <a class="btn btn-white btn-sm active" href="#">
+                                <a class="btn btn-white btn-sm active" th:href="@{/frontend/rental/rentalShop}">
                                     <i class="bi bi-view-stacked"></i>
                                 </a>
                             </div>
@@ -388,6 +378,9 @@
 <!-- End script start -->
 
 <script>
+
+
+
     /*
      * 選擇排序方式：價格
      * 使用jQuery抓取點擊事件，前台發送清求。

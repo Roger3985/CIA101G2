@@ -74,7 +74,7 @@
                                 <i class="ci-arrow-left me-2"></i>繼續購物
                             </a>
                         </div>
-
+                        <input id="memNoForFil" type="hidden" th:value="${member.getMemNo()}">
                         <!-- 以下追蹤品 -->
                         <th:block th:each="track : ${frontendTrackList}">
                             <div class="d-flex align-items-center flex-row w-100 pb-3 mb-3 border-bottom rentalmytrack">
@@ -227,16 +227,13 @@
 
         $(function () {
 
-            let memNo = 1;
+            let memNo = $("input#memNoForFil").val();
             let baseUrl = window.location.protocol + "//" + window.location.host;
 
             // 去除重複
             let tracks = $("div.rentalmytrack");
-            // console.log(tracks);
             $.each(tracks, function (index, track) {
 
-                // console.log($(track).find("input.memNo").val());
-                // console.log($(track).find("input.memNo").val() !== memNo.toString());
                 if ($(track).find("input.memNo").val() !== memNo.toString()) {
                     // console.log("濾掉1個");
                     // $(track).hide();
@@ -254,15 +251,14 @@
                  * window.location.protocol = 當前頁面所使用之通訊協定 (ex : http: 、 https:)
                  * window.location.host = 當前頁面主機名和連接阜號 (ex : localhost:8080)
                 */
-                let apiPath = "/backend/rentalorder/setToCart";
+                let apiPath = "/frontend/rentalorder/setToCart";
                 let $this = $(this);
                 // span.rentalNo
                 let rentalNo = $this.closest("div").find("input.rentalNo").val();
 
 
                 let data = {
-                    "rentalNo" : rentalNo,
-                    "memNo" : memNo
+                    "rentalNo" : rentalNo
                 };
 
                 fetch(baseUrl + apiPath, {
@@ -293,11 +289,14 @@
 
                 if (confirm("確定刪除追蹤?")) {
 
-                    fetch(baseUrl + apiPath + "/deleteTrack?memNo=" + memNo + "&rentalNo=" + rentalNo, {
+                    fetch(baseUrl + apiPath + "/deleteTrack?rentalNo=" + rentalNo, {
                         method : "DELETE"
                     }).then(function (response) {
                         return response.text();
                     }).then(function (data) {
+                        if (data === "/frontend/member/loginMember") {
+                            window.location.href = data;
+                        }
                         if (data === "ok") {
                             alert("刪除成功");
                             // 在這刪除該筆追蹤

@@ -5,6 +5,7 @@ import com.chihyun.news.model.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,37 +47,32 @@ public class NewsBackendController {
     }
 
     @PostMapping("insert")
-    public String insert(BindingResult result, Model model, News news,
-                         @RequestParam @NotBlank(message = "標題請勿空白") String NewsTitle,
-                         @RequestParam @NotBlank(message = "內容請勿空白") String NewsContent,
-                         @RequestParam @NotNull(message = "發布時間請勿空白") @Future(message = "發布日期不得早於現在時間") String postTime
-    ) throws IOException {
+    public String insert(@Valid News news, BindingResult result, ModelMap model,
+                         @RequestParam String postTime) throws IOException {
 
-        Timestamp postTimeParm = null;
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-            java.util.Date parseDate = dateFormat.parse(postTime);
-            postTimeParm = new Timestamp(parseDate.getTime());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        news.setPostTime(postTimeParm);
+        news.setPostTime(Timestamp.valueOf(LocalDateTime.now()));
 
-        if(result.hasFieldErrors()){
+        if (result.hasFieldErrors()) {
             List<String> errorMessage = new ArrayList<>();
-            for(FieldError error : result.getFieldErrors()){
-            errorMessage.add(error.getDefaultMessage());
-            model.addAttribute("errors", errorMessage);
-            return "backend/news/addNews";
+            for (FieldError error : result.getFieldErrors()) {
+                errorMessage.add(error.getDefaultMessage());
+                model.addAttribute("errors", errorMessage);
+                return "backend/news/addNews";
             }
         }
-
         newsService.addNews(news);
         List<News> list = newsService.getAll();
         model.addAttribute("newsListData", list);
         return "redirect:/backend/news/selectNews";
     }
 
+    @GetMapping("/updateNews")
+    public String updateNews(ModelMap modelmap) {
+        News news = new News();
+        modelmap.addAttribute("news", news);
+        modelmap.addAttribute("newsListData", newsService.getAll());
+        return "backend/news/updateNews";
+    }
 
     @PostMapping("/updateNews")
     public String getOneForUpdate(@RequestParam Integer newsNo, Model model) {
@@ -87,16 +84,17 @@ public class NewsBackendController {
     @PostMapping("/update")
     public String update(@Valid News news, BindingResult result, Model model,
                          @RequestParam String postTime) throws IOException {
-        Timestamp postTimeParm = null;
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-            java.util.Date parseDate = dateFormat.parse(postTime);
-            postTimeParm = new Timestamp(parseDate.getTime());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        news.setPostTime(postTimeParm);
+        news.setPostTime(Timestamp.valueOf(LocalDateTime.now()));
+
+        if (result.hasFieldErrors()) {
+            List<String> errorMessage = new ArrayList<>();
+            for (FieldError error : result.getFieldErrors()) {
+                errorMessage.add(error.getDefaultMessage());
+                model.addAttribute("errors", errorMessage);
+                return "backend/news/updateNews";
+            }
+        }
 
         newsService.updateNews(news);
         List<News> list = newsService.getAll();

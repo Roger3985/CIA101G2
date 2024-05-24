@@ -3,6 +3,8 @@ package com.ren.administrator.controller;
 import com.ren.administrator.dto.LoginState;
 import com.ren.administrator.entity.Administrator;
 import com.ren.administrator.service.impl.AdministratorServiceImpl;
+import com.ren.title.entity.Title;
+import com.ren.title.service.impl.TitleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +36,9 @@ public class AdministratorController {
 
     @Autowired
     private AdministratorServiceImpl administratorSvc;
+
+    @Autowired
+    private TitleServiceImpl titleSvc;
 
     /**
      * 前往管理員頁面
@@ -68,8 +74,9 @@ public class AdministratorController {
      * @return forward to addAdministrator
      */
     @GetMapping("/addAdministrator")
-    public String toAddAdministrator(Model model) {
-        model.addAttribute("Administrator", new Administrator());
+    public String toAddAdministrator(ModelMap model) {
+        model.addAttribute("administrator", new Administrator());
+        model.addAttribute("titleList", titleSvc.getAll());
         return "backend/administrator/addAdministrator";
     }
 
@@ -82,24 +89,29 @@ public class AdministratorController {
      * @return 格式錯誤forward到新增頁面，成功則forward到列表
      */
     @PostMapping("addAdministrator/add")
-    public String addAdministrator(@Valid Administrator administrator, BindingResult result, ModelMap model) {
+    public String addAdministrator(@Valid Administrator administrator,
+                                   BindingResult result,
+                                   RedirectAttributes redirectAttributes,
+                                   ModelMap model) {
         if (result.hasErrors()) {
             model.addAttribute("administrator", administrator);
+            model.addAttribute("titleList", titleSvc.getAll());
             model.addAttribute("errors", result.getAllErrors());
             return "backend/administrator/addAdministrator";
         } else {
             System.out.println("新增成功");
         }
+        redirectAttributes.addAttribute("success", "管理員已新增成功! 預設密碼將會發送到用戶信箱");
         administratorSvc.addAdministrator(administrator);
         return "redirect:/backend/administrator/listAllAdministrators";
     }
 
     // 從listAll那前往
-    @GetMapping("/updateAdministrator/{administratorNo}")
-    public String toUpdateAdministrator(ModelMap model, @PathVariable Integer admNo) {
-
+    @GetMapping("/updateAdministrator/{admNo}")
+    public String toUpdateAdministrator(@PathVariable Integer admNo,
+                                        ModelMap model) {
         model.addAttribute("administrator", administratorSvc.getOneAdministrator(admNo));
-
+        model.addAttribute("titleList", titleSvc.getAll());
         return "backend/administrator/updateAdministrator";
     }
 
@@ -110,22 +122,30 @@ public class AdministratorController {
      * @return
      */
     @GetMapping("/updateAdministrator")
-    public String toUpdateProduct(ModelMap model) {
-        List<Administrator> list = administratorSvc.getAll();
-        model.addAttribute("AdministratorList", list);
-        model.addAttribute("Administrator", list.get(FIRST));
+    public String toUpdateProduct(@ModelAttribute("administratorList") List<Administrator> list,
+                                  ModelMap model) {
+        model.addAttribute("administrator", list.get(0));
+        model.addAttribute("titleList", titleSvc.getAll());
+
         return "backend/administrator/updateAdministrator";
     }
 
 
     // 更新管理員
-    @PutMapping("update")
-    public Administrator updateAdministrator(@PathVariable Integer admNo, @RequestBody Administrator administrator) {
-        // Ensure the productNo in the path matches the productNo in the request body
-        if (!admNo.equals(administrator.getAdmNo())) {
-            throw new IllegalArgumentException("Path variable productNo must match the productNo in the request body");
+    @PutMapping("/updateAdministrator/update")
+    public String updateAdministrator(@Valid Administrator administrator,
+                                             BindingResult result,
+                                             RedirectAttributes redirectAttributes,
+                                             ModelMap model) {
+        if (result.hasErrors()) {
+            model.addAttribute("administrator", administrator);
+            model.addAttribute("titleList", titleSvc.getAll());
+            model.addAttribute("errors", result.getAllErrors());
+            return "backend/administrator/updateAdministrator";
         }
-        return administratorSvc.updateAdministrator(administrator);
+        redirectAttributes.addAttribute("success", "修改成功!");
+        administratorSvc.updateAdministrator(administrator);
+        return "redirect:/backend/administrator/listAllAdministrators";
     }
 
     // 刪除管理員
@@ -146,14 +166,17 @@ public class AdministratorController {
     }
 
     @PostMapping("/register")
-    public String register(@Valid Administrator administrator, BindingResult result, ModelMap model) {
+    public String register(@Valid Administrator administrator,
+                           BindingResult result,
+                           RedirectAttributes redirectAttributes,
+                           ModelMap model) {
         if (result.hasErrors()) {
             model.addAttribute("administrator", administrator);
             model.addAttribute("errors", result.getAllErrors());
             return "backend/product/updateProduct";
         }
         administratorSvc.register(administrator);
-        model.addAttribute("registerSuccess", "註冊成功!");
+        redirectAttributes.addAttribute("success", "註冊成功!");
         return "redirect:backend/login";
     }
 

@@ -19,6 +19,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.util.Map;
@@ -268,14 +269,14 @@ public class RedisConfig {
     }
 
     @Bean("rentalWish")
-    public RedisTemplate<Integer, Map<String, String>> rentalWishRedisTemplate(
+    public RedisTemplate<String, Map<String, String>> rentalWishRedisTemplate(
             @Qualifier("rentalDataBase") RedisConnectionFactory connectionFactory) {
-        RedisTemplate<Integer, Map<String, String>> redisTemplate = new RedisTemplate<>();
+        RedisTemplate<String, Map<String, String>> redisTemplate = new RedisTemplate<>();
         // 設置連線
         redisTemplate.setConnectionFactory(connectionFactory);
-        // 設置Serializer
-        redisTemplate.setKeySerializer(new GenericToStringSerializer<>(Integer.class));
-        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        // 設置 Serializer
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Map.class));
         return redisTemplate;
     }
 
