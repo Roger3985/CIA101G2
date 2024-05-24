@@ -7,6 +7,8 @@ import com.chihyun.mycoupon.entity.MyCoupon;
 import com.chihyun.mycoupon.model.MyCouponService;
 import com.roger.member.entity.Member;
 import com.roger.member.service.MemberService;
+import com.roger.notice.entity.Notice;
+import com.roger.notice.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -19,6 +21,9 @@ import java.util.List;
 
 @Component
 public class Scheduler {
+
+    @Autowired
+    NoticeService noticeService;
 
     @Autowired
     MemberService memberService;
@@ -66,6 +71,14 @@ public class Scheduler {
 
                     coupon.setCoupRelStat(Byte.valueOf("1"));
                     couponService.updateCoupon(coupon);
+
+                    Notice newNotice = new Notice();
+                    newNotice.setMember(memberService.findByNo(member.getMemNo()));
+                    String returnRemind = "您收到一張優惠券，請至我的優惠券查看詳情";
+                    newNotice.setNotContent(returnRemind);
+                    newNotice.setNotTime(new Timestamp(System.currentTimeMillis()));
+                    newNotice.setNotStat((byte) 0);
+                    noticeService.addNotice(newNotice);
                 }
             }
         }
