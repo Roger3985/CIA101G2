@@ -13,11 +13,17 @@
     <!-- 以下可自定義js -->
     <!-- 搜尋用js -->
     <script th:src="@{/js/frontend/component/search.js}"></script>
+    <!--即時客服-->
+<!--    <script th:src="@{/js/frontend/service/frontendChat.js}"></script>-->
+<!--    客服機器人-->
+    <script th:src="@{/js/frontend/service/robot.js}"></script>
 
 </th:block>
 <th:block th:fragment="css">
     <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet"/>
     <link th:href="@{/css/frontend/component/search.css}" rel="stylesheet"/>
+<!--    <link th:href="@{/css/frontend/service/frontendChat.css}" rel="stylesheet"/>-->
+    <link th:href="@{/css/frontend/service/robot.css}" rel="stylesheet"/>
 </th:block>
 <th:block th:fragment="components">
     <!-- Skippy & Prload -->
@@ -47,4 +53,6 @@
     <!-- Size Chart  -->
     <div th:replace="frontend/component/sizechart :: sizechart"></div>
     <!-- End Size Chart  -->
+<!--    <div th:replace="frontend/component/frontendServiceChat :: frontendServiceChat"></div>-->
+    <div th:replace="frontend/component/robot :: robot"></div>
 </th:block>

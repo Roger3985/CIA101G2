@@ -1,6 +1,7 @@
 package com.chihyun.news.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.sql.Timestamp;
 
 @Entity
@@ -10,8 +11,12 @@ public class News {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "newsno")
     private Integer newsNo;
+
+    @NotBlank(message = "標題請勿空白")
     @Column(name = "newstitle")
     private String newsTitle;
+
+    @NotBlank(message = "內容請勿空白")
     @Column(name = "newscontent", columnDefinition = "longtext")
     private String newsContent;
 

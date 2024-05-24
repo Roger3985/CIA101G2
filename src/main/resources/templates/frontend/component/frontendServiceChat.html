@@ -1,0 +1,40 @@
+<div th:fragment="frontendServiceChat" class="floating-chat">
+    <i class="bi bi-chat-dots-fill" aria-hidden="true"></i>
+    <div class="chat">
+        <div class="header">
+                <span class="title">即時客服</span>
+            <button>
+                <i class="bi bi-x-square" aria-hidden="true" style="font-size: 16px;"></i>
+            </button>
+        </div>
+        <div class="user-form" id="username-page">
+            <h2>Enter Chatroom</h2>
+            <form id="usernameForm">
+                <label for="username">Name:</label>
+                <input type="text" id="username" name="userName" required>
+                <button type="submit">Enter Chatroom</button>
+            </form>
+        </div>
+        <ul class="messages">
+<!--            <li class="other"><span>J</span>您好，想請問認養的資訊～～</li>-->
+<!--            <li class="self"><span>P</span>你好，請問你要說啥 🐶</li>-->
+<!--            <li class="other"><span>J</span>這隻狗目前有需要簽署證明嗎？</li>-->
+<!--            <li class="other"><span>J</span>或是需要家訪</li>-->
+<!--            <li class="self"><span>P</span>目前都不需要喔！</li>-->
+<!--            <li class="other"><span>J</span>那我們可以進入下一個階段！ 🐵</li>-->
+        </ul>
+        <form id="messageForm" name="messageForm">
+        <div class="footer">
+            <div class="text-box" id="message" contenteditable="true" disabled="true" data-text="輸入訊息..."></div>
+            <button id="sendMessage">送出</button>
+        </div>
+        </form>
+<!--        <form id="messageForm" name="messageForm">-->
+<!--            <div class="message-input">-->
+<!--                <input autocomplete="off" type="text" id="message" placeholder="Type your message..." >-->
+<!--                <button type="button" id="msg_btn">Send</button>-->
+<!--            </div>-->
+<!--        </form>-->
+
+    </div>
+</div>
