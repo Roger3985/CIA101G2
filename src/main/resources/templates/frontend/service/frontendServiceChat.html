@@ -1,42 +1,144 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+<html lang="zxx" data-bs-theme="light">
+
+<head><!-- metas -->
+    <meta charset="utf-8">
+    <meta name="author" content="pxdraft">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template"
+    <!-- title -->
+    <title>ShopApp - eCommerce Bootstrap 5 Template</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <!-- CSS Template -->
+    <th:block th:include="~{frontend/component/plugin/frontendplugin.html :: css}"></th:block>
     <link rel="stylesheet" th:href="@{/css/frontend/service/frontendChatbackup.css}">
-    <title>前台客服</title>
-
 </head>
+
 <body>
-<h2>前台即時客服系統</h2>
-
-<div class="user-form" id="username-page"  th:if="${session.member != null}" style="display: none">
-    <form id="usernameForm">
-        <input type="hidden" id="username" th:value="${session.member.memName}" required>
-        <button id="click" style="display: none">Enter Chatroom</button>
-    </form>
-</div>
-
-<div class="chat-container" id="chat-page"  th:if="${session.member != null}">
-
-    <div class="chat-area">
-        <div class="chat-area" id="chat-messages">
-        </div>
-
-        <form id="messageForm" name="messageForm">
-            <div class="message-input">
-                <input autocomplete="off" type="text" id="message" placeholder="Type your message...">
-                <button type="button" id="msg_btn">送出</button>
+<!-- 通用插件 -->
+<th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block><!-- 通用插件 -->
+<!--
+========================
+    Wrapper
+========================
+-->
+<div class="wrapper">
+    <!-- header height -->
+    <div class="header-height-bar" style="min-height: 104.865px;"></div>
+    <!-- Header -->
+    <header th:replace="frontend/component/header :: header"></header>
+    <!-- End Header -->
+    <!-- Main -->
+    <main>
+        <!-- Breadcrumb -->
+        <div class="py-3 bg-gray-100">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 my-2">
+                        <h1 class="m-0 h4 text-center text-lg-start">Contact Us</h1>
+                    </div>
+                    <div class="col-lg-6 my-2">
+                        <ol class="breadcrumb m-0 small justify-content-center justify-content-lg-end">
+                            <li class="breadcrumb-item"><a class="text-nowrap text-reset"
+                                                           th:href="@{/frontend/index}"><i
+                                    class="bi bi-home"></i>Home</a></li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page">Contact Us</li>
+                        </ol>
+                    </div>
+                </div>
             </div>
-        </form>
-    </div>
-</div>
-<div th:if="${session.member == null}">
-    <a th:href="@{/frontend/member/loginMember}">尚未登入喔，請先登入</a>
-</div>
+        </div><!-- End Breadcrumb --><!-- Contact us -->
+                        <div class="user-form" id="username-page" th:if="${session.member != null}"
+                             style="display: none">
+                            <form id="usernameForm">
+                                <input type="hidden" id="username" th:value="${session.member.memName}" required>
+                                <button id="click" style="display: none">Enter Chatroom</button>
+                            </form>
+                        </div>
 
+                        <div class="chat-container" id="chat-page" th:if="${session.member != null}">
+
+                            <div class="chat-area" id="chat-messages">
+                                <form id="messageForm" name="messageForm" class="row g-3 pt-3">
+                                    <div class="message-input">
+                                        <input autocomplete="off" type="text" id="message"
+                                               placeholder="Type your message...">
+                                        <button type="button" id="msg_btn">送出</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div th:if="${session.member == null}">
+                            <a th:href="@{/frontend/member/loginMember}">尚未登入喔，請先登入</a>
+                        </div>
+        <div class="bg-gray-100 section">
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <div class="text-primary display-5 mb-3"><i class="bi bi-telephone"></i></div>
+                                <div class="">
+                                    <p class="mb-0">+886 34251108</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <div class="text-primary display-5 mb-3"><i class="bi bi-printer"></i></div>
+                                <div class="">
+                                    <p class="mb-0">+886 227120589</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <div class="text-primary display-5 mb-3"><i class="bi bi-globe"></i></div>
+                                <div class="">
+                                    <p class="mb-0"><a class="text-reset" href="#">fallyilove@gmail.com</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <div class="text-primary display-5 mb-3"><i class="bi bi-geo-alt-fill"></i></div>
+                                <div class="">
+                                    <p class="mb-0">320桃園市中壢區復興路46號9樓</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Contact end -->
+    </main>
+    <!-- End Main -->
+    <!-- Footer -->
+    <footer th:replace="frontend/component/footer :: footer"></footer>
+    <!-- End Footer -->
+</div>
+<!--
+========================
+   End Wrapper
+========================
+-->
+<!-- script start -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script type="text/javascript" th:src="@{/js/frontend/service/frontendChat.js}"></script>
+<th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
+<!-- End script start -->
 </body>
+
 </html>
 

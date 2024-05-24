@@ -65,7 +65,7 @@ function closeElement() {
 // messageForm_el.addEventListener("submit", function (e) {
 //     e.preventDefault();
 // });
-var chatArea = document.querySelector("#chat-messages");
+var chatBlock = document.querySelector("#chat-messages");
 var messageInput_el = document.getElementById("messages_input");
 
 async function sendNewMessage() {
@@ -80,7 +80,7 @@ async function sendNewMessage() {
         message.innerHTML = content;
         messageContainer.classList.add('other');
         messageContainer.appendChild(message);
-        chatArea.appendChild(messageContainer);
+        chatBlock.appendChild(messageContainer);
         messageInput_el.innerText = '';
     }
     try {
@@ -105,7 +105,7 @@ async function sendNewMessage() {
                 botMsg.innerHTML = botMsgContent;
                 messageContainer.classList.add('self');
                 messageContainer.appendChild(botMsg);
-                chatArea.appendChild(messageContainer);
+                chatBlock.appendChild(messageContainer);
             }
         }else{
             const messageContainer = document.createElement('li');
@@ -115,7 +115,7 @@ async function sendNewMessage() {
             messageContainer.classList.add('self');
             // botMsg.appendChild(chaturl);
             messageContainer.appendChild(botMsg);
-            chatArea.appendChild(messageContainer);
+            chatBlock.appendChild(messageContainer);
         }
 
 
