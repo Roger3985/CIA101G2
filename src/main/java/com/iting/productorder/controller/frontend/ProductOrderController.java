@@ -18,6 +18,8 @@ import com.ren.productpicture.service.impl.ProductPictureServiceImpl;
 import com.roger.member.entity.Member;
 import com.roger.member.entity.uniqueAnnotation.Create;
 import com.roger.member.service.MemberService;
+import com.roger.notice.entity.Notice;
+import com.roger.notice.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +39,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -59,7 +62,7 @@ public class ProductOrderController {
     @Autowired
     private MyCouponService myCouponService;
     @Autowired
-    private ProductPictureServiceImpl productPictureService;
+    private NoticeService noticeService;
 
     private static final int DEFAULT_COUPON_NUMBER = 1;
 
@@ -88,6 +91,13 @@ public class ProductOrderController {
                 coupNo, myData);
 
         String result = productOrderSvc.addOneProductOrderSuccess(productOrder);
+        String returnRemind = "該筆訂單已成立且繳款成功,靜待商品寄出";
+        Notice newNotice = new Notice();
+        newNotice.setMember(memberService.findByNo(myData.getMemNo()));
+        newNotice.setNotContent(returnRemind);
+        newNotice.setNotTime(new Timestamp(System.currentTimeMillis()));
+        newNotice.setNotStat((byte) 0);
+        noticeService.addNotice(newNotice);
         cartSvc.deleteBymemNo(myData.getMemNo());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
@@ -143,6 +153,13 @@ public class ProductOrderController {
                 coupNo, myData);
 
         productOrderSvc.addOneOrderSuccess(productOrder);
+        String returnRemind = "該筆訂單已成立,但尚未繳款,請記得至現場繳納";
+        Notice newNotice = new Notice();
+        newNotice.setMember(memberService.findByNo(myData.getMemNo()));
+        newNotice.setNotContent(returnRemind);
+        newNotice.setNotTime(new Timestamp(System.currentTimeMillis()));
+        newNotice.setNotStat((byte) 0);
+        noticeService.addNotice(newNotice);
         cartSvc.deleteBymemNo(myData.getMemNo());
 
         return new ResponseEntity<>("Order placed successfully", HttpStatus.OK);}
