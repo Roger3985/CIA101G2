@@ -161,7 +161,7 @@
                                     <th:block th:each="order : ${orderList}">
                                         <tr th:id="${order.getrentalOrdNo()}" class="eachOrder">
                                             <td class="p-3">
-                                                <input class="allMemNoForFil" type="hidden" th:value="${order.getMember().getMemNo()}">
+                                                <input class="allMemNoForFil" type="hidden" th:if="${order != null}" th:value="${order.getMember().getMemNo()}">
                                                 <a class="text-mode" href="#order-details" data-bs-toggle="modal" th:text="${order.getrentalOrdNo()}"></a>
                                             </td>
                                             <td class="p-3" th:text="${#dates.format(order.getrentalBackDate(), 'yyyy 年 M 月 d 日 HH 時 m 分')}"></td>

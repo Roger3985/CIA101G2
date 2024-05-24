@@ -219,8 +219,13 @@ public class FrontendRentalOrderController {
 
     // 給 會員所有訂單頁面 用的 getOnAny
     @GetMapping("/getOnAnyForOrdersPage")
-    public String getOnAnyForOrdersPage(@RequestParam(required = false) Byte rentalOrdStat, ModelMap model) {
+    public String getOnAnyForOrdersPage(@RequestParam(required = false) Byte rentalOrdStat, HttpSession session,
+                                        ModelMap model) {
 
+        Member member = (Member) session.getAttribute("loginsuccess");
+        if (member == null) {
+            return "redirect:" + toLogin;
+        }
         Map<String, Object> map = new HashMap<>();
 
         if (rentalOrdStat != null) {
@@ -229,6 +234,7 @@ public class FrontendRentalOrderController {
         List<RentalOrder> orderList = service.getByAttributes(map);
         orderList.sort(Comparator.comparing(RentalOrder::getrentalOrdNo).reversed());
         model.addAttribute("orderList", orderList);
+        model.addAttribute("member", member);
         return "frontend/rental/memberrentalorders";
 
     }
