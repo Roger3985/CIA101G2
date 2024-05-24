@@ -33,9 +33,4 @@ public class AddToWishList {
         this.rentalFavTime = rentalFavTime;
     }
 
-    public AddToWishList(Integer rentalNo, Integer memNo, String rentalFavTime) {
-        this.rentalNo = rentalNo;
-        this.memNo = memNo;
-        this.rentalFavTime = rentalFavTime;
-    }
 }
