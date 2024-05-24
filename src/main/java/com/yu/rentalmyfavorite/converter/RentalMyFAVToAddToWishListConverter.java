@@ -1,6 +1,7 @@
 package com.yu.rentalmyfavorite.converter;
 
 
+import com.yu.rentalmyfavorite.dto.AddToWishList;
 import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
 import org.springframework.core.convert.converter.Converter;
 
