@@ -32,4 +32,10 @@ public class AddToWishList {
     public void setRentalFavTime(String rentalFavTime) {
         this.rentalFavTime = rentalFavTime;
     }
+
+    public AddToWishList(Integer rentalNo, Integer memNo, String rentalFavTime) {
+        this.rentalNo = rentalNo;
+        this.memNo = memNo;
+        this.rentalFavTime = rentalFavTime;
+    }
 }
