@@ -193,6 +193,7 @@ public class FrontendRentalOrderController {
          * 創建訂單
          * @return 若有線上付款，回傳包含請求綠界付款畫面之字串，否則回傳感謝購買頁面路徑
          */
+        order.setMemNo(member.getMemNo());
         String form = service.createOrder(order);
         // 先把字串陣列轉成整數陣列(因為service層方法需要List<Integer>)
         List<Integer> rentalNoList = order.getBuyItems().stream()
