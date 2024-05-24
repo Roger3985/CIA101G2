@@ -24,10 +24,10 @@ public class RentSetControllerBackEnd {
      * 註：
      *    進行CRUD操作時，確保在保存實體前設置外來鍵關聯。
      *    例： address(從)、user(主)
-     *    User user = new User();
-     *    Address address = new Address();
-     *    address.setUser(user);  //設置外來鍵關聯
-     *    userRepository.save(user);
+     *         User user = new User();
+     *         Address address = new Address();
+     *         address.setUser(user);  //設置外來鍵關聯
+     *         userRepository.save(user);
      */
 
 
@@ -68,24 +68,21 @@ public class RentSetControllerBackEnd {
 
 
     //處理單筆查詢(依rentalOrdNo)
-//    @PostMapping("getOneDisplay")
-//    public String getOneDisplay(@RequestParam(value = "rentalOrdNo", required = false) Integer rentalOrdNo, ModelMap model) {
-//
-//        RentSet rentSet = rentSetService.findByRentalOrdNo(rentalOrdNo);
-//        List<RentSet> rentSetList = rentSetService.findAll();
-//        model.addAttribute("rentSetList", rentSetList);
-//
-//        List<RentalOrder> rentalOrderListData = rentalOrderService.getAll();
-//        model.addAttribute("rentalOrder", new RentalOrder());
-//        model.addAttribute("rentalOrderListData",rentalOrderListData);
-//
-//        if (rentSet == null) {
-//            model.addAttribute("errors", "查無資料");
-//            return "/backend/rentset/selectRentSet";
-//        }
-//        model.addAttribute("rentSet", rentSet);
-//        return "/backend/rentset/listOneRentSet";
-//    }
+    @PostMapping("getOneDisplay")
+    public String getOneDisplay(@RequestParam(value = "rentalOrdNo", required = false) Integer rentalOrdNo,
+                                ModelMap model) {
+
+        RentSet rentSet = rentSetService.findByRentalOrdNo(rentalOrdNo);
+        List<RentSet> rentSetList = rentSetService.findAll();
+        model.addAttribute("rentSetList", rentSetList);
+
+        if (rentSet == null) {
+            model.addAttribute("errors", "查無資料");
+            return "/backend/rentset/selectRentSet";
+        }
+        model.addAttribute("rentSet", rentSet);
+        return "/backend/rentset/listOneRentSet";
+    }
 
 
     //處理單筆修改 (依rentalOrdNo)
@@ -95,10 +92,6 @@ public class RentSetControllerBackEnd {
         RentSet rentSet = rentSetService.findByRentalOrdNo(rentalOrdNo);
         List<RentSet> rentSetList = rentSetService.findAll();
         model.addAttribute("rentSetList", rentSetList);
-
-        List<RentalOrder> rentalOrderListData = rentalOrderService.getAll();
-        model.addAttribute("rentalOrder", new RentalOrder());
-        model.addAttribute("rentalOrderListData",rentalOrderListData);
 
         if (rentSet == null) {
             model.addAttribute("errors", "查無資料");
@@ -143,7 +136,7 @@ public class RentSetControllerBackEnd {
 
 
     //萬用查詢
-    @GetMapping("/search")
+    @GetMapping("search")
     public String search(@RequestParam(value = "rentalOrdNo", required = false) Integer rentalOrdNo,
                          @RequestParam(value = "rentalSetName", required = false) String rentalSetName,
                          @RequestParam(value = "rentalSetDays",required = false) Byte rentalSetDays,
