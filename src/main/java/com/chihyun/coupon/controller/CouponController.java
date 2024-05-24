@@ -192,11 +192,8 @@ public class CouponController {
             return "updateCoupon";
         }
 
-        /*************************** 2.開始修改資料 *****************************************/
-        //  CouponService empSvc = new  CouponService();
         couponSvc.updateCoupon(coupon);
 
-        /*************************** 3.修改完成,準備轉交(Send the Success view) **************/
         modelMap.addAttribute("success", "- (修改成功)");
         coupon = couponSvc.getOneCoupon(Integer.valueOf(coupon.getCoupNo()));
         modelMap.addAttribute("coupon", coupon);
