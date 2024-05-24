@@ -25,4 +25,12 @@ public interface ClickLikeService {
 
     public List<ClickLike> getLikedArticlesByMember(Integer memNo);
 
+    /**
+     * 根據文章編號獲取按讚數量。
+     *
+     * @param artNo 文章編號。
+     * @return 按讚數量。
+     */
+    public int getLikeCountByArtNo(Integer artNo);
+
 }

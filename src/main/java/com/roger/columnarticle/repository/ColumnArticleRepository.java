@@ -1,6 +1,8 @@
 package com.roger.columnarticle.repository;
 
 import com.roger.columnarticle.entity.ColumnArticle;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -52,6 +54,15 @@ public interface ColumnArticleRepository extends JpaRepository<ColumnArticle, In
     List<ColumnArticle> findByArtStat(Byte artStat);
 
     /**
+     * 根據文章狀態獲取上架中的專欄文章，並進行分頁處理。
+     *
+     * @param artStat  文章狀態，0 代表上架中。
+     * @param pageable 用於分頁的 Pageable 物件。它包含分頁的資訊，如頁碼和每頁顯示的記錄數量。
+     * @return 包含上架中專欄文章的分頁 Page 物件。這個物件包含了當前頁的專欄文章列表以及分頁資訊。
+     */
+    Page<ColumnArticle> findByArtStat(byte artStat, Pageable pageable);
+
+    /**
      * 根據會員編號和文章編號刪除專欄文章收藏記錄。
      *
      * @param memNo 會員編號，不可為 null
@@ -62,6 +73,19 @@ public interface ColumnArticleRepository extends JpaRepository<ColumnArticle, In
     @Transactional
     @Query("DELETE FROM ArticleCollection ac WHERE ac.compositeArticleCollection.memNo = :memNo AND ac.compositeArticleCollection.artNo = :artNo")
     void deleteByMemNoAndArtNo(Integer memNo, Integer artNo);
+
+    /**
+     * 搜尋標題或內容包含給定關鍵字且狀態為指定值的 {@link ColumnArticle} 實體。
+     * 搜尋不區分大小寫，並使用 SQL LIKE 運算子進行部分匹配。
+     * 支持分頁。
+     *
+     * @param artStat 文章狀態。
+     * @param keyword 要在文章標題和內容中搜尋的關鍵字。
+     * @param pageable 分頁參數。
+     * @return 符合搜尋條件的 {@link ColumnArticle} 實體的分頁結果。
+     */
+    @Query("SELECT c FROM ColumnArticle c WHERE c.artStat = :artStat AND (c.artTitle LIKE %:keyword% OR c.artContent LIKE %:keyword% OR c.administrator.admName LIKE %:keyword%)")
+    Page<ColumnArticle> searchByKeywordAndStatus(@Param("artStat") byte artStat, @Param("keyword") String keyword, Pageable pageable);
 
 
 }

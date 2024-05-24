@@ -1,6 +1,9 @@
 package com.roger.columnarticle.service;
 
 import com.roger.columnarticle.entity.ColumnArticle;
+import com.roger.notice.entity.Notice;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -22,6 +25,14 @@ public interface ColumnArticleService {
      * @return `Optional<ColumnArticle>` 包含找到的 `ColumnArticle` 物件，或 `Optional.empty()` 表示找不到。
      */
     public ColumnArticle getOneColumnArticle(Integer artNo);
+
+    /**
+     * 將新的專欄文章添加到資料庫中。
+     *
+     * @param columnArticle 要添加的 ColumnArticle 實例，包含專欄文章的相關信息。
+     * @return 新添加的 ColumnArticle 實例，帶有更新後的 ID 和其他資料庫生成的屬性。
+     */
+    public ColumnArticle addColumnArticle(ColumnArticle columnArticle);
 
     /**
      * 更新專欄文章的資料。
@@ -101,5 +112,21 @@ public interface ColumnArticleService {
      */
     public boolean isColumnArticleCollectionByMember(Integer memNo, Integer artNo);
 
+    /**
+     * 獲取上架中的專欄文章，並進行分頁處理。
+     *
+     * @param pageable 用於分頁的 Pageable 物件。它包含分頁的資訊，如頁碼和每頁顯示的記錄數量。
+     * @return 包含上架中專欄文章的分頁 Page 物件。這個物件包含了當前頁的專欄文章列表以及分頁資訊。
+     */
+    public Page<ColumnArticle> getAllByArtStatColumnArticles(Pageable pageable);
+
+    /**
+     * 搜尋包含指定關鍵字且狀態為 "上架中" 的專欄文章，支持分頁。
+     *
+     * @param keyword 搜尋關鍵字。
+     * @param pageable 分頁參數。
+     * @return 包含符合條件的專欄文章的分頁結果。
+     */
+    public Page<ColumnArticle> searchArticles(String keyword, Pageable pageable);
 
 }

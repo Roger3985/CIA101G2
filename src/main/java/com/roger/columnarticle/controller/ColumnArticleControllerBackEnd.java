@@ -3,6 +3,7 @@ package com.roger.columnarticle.controller;
 import com.ren.administrator.entity.Administrator;
 import com.ren.administrator.service.impl.AdministratorServiceImpl;
 import com.roger.columnarticle.entity.ColumnArticle;
+import com.roger.columnarticle.entity.uniqueAnnotation.Create;
 import com.roger.columnarticle.service.ColumnArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,6 +51,45 @@ public class ColumnArticleControllerBackEnd {
     public String listAllColumnArticle(Model model) {
         return "backend/columnarticle/listAllColumnArticle";
     }
+
+    /**
+     * 前往新增專欄文章頁面。
+     *
+     * @param modelMap 視圖模型，用於在頁面中儲存和傳遞資料。
+     * @return 返回 "backend/columnarticle/addColumnArticle" 視圖名稱，用於渲染新增專欄文章頁面。
+     */
+    @GetMapping("/addColumnArticleData")
+    public String addColumnArticleData(ModelMap modelMap) {
+        modelMap.addAttribute("columnarticle", new ColumnArticle());
+        return "backend/columnarticle/addColumnArticle";
+    }
+
+    /**
+     * 處理新增專欄文章的請求。
+     *
+     * @param columnArticle 接收新增專欄文章的資料物件。
+     * @param result 用於驗證輸入資料的結果物件。
+     * @param modelMap 視圖模型，用於在頁面儲存和傳遞資料。
+     * @return 如果存在錯誤，返回 "backend/columnarticle/addColumnArticle" 視圖名稱繼續顯示新增專欄文章頁面；如果成功添加專欄文章，則重定向到專欄文章列表頁面。
+     * @throws IOException 如果在處理過程中發生 I/O 錯誤。
+     */
+    @PostMapping("/addColumnArticle")
+    public String addColumnArticle(@Validated(Create.class) ColumnArticle columnArticle,
+                                   BindingResult result,
+                                   ModelMap modelMap) throws IOException {
+
+        if (result.hasErrors()) {
+            modelMap.addAttribute("columnArticleListData", columnArticleService.findAll());
+            modelMap.addAttribute("administratorListData", administratorService.getAll());
+            return "backend/columnarticle/addColumnArticle";
+        }
+
+        // 新增專欄文章
+        columnArticleService.addColumnArticle(columnArticle);
+
+        return "redirect:/backend/columnarticle/listAllColumnArticle";
+    }
+
 
     /**
      * 前往專欄文章修改頁面。
@@ -216,6 +257,7 @@ public class ColumnArticleControllerBackEnd {
         List<Administrator> list = administratorService.getAll();
         return list;
     }
+
 
 
 }

@@ -41,7 +41,7 @@
                         </div>
                         <div class="col-lg-6 my-2">
                             <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
-                                <li class="breadcrumb-item"><a class="text-nowrap" href="#"><i
+                                <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/}"><i
                                             class="bi bi-home"></i>Home</a></li>
                                 <li class="breadcrumb-item text-nowrap active" aria-current="page">Blog</li>
                             </ol>
@@ -60,16 +60,16 @@
                                     <div class="col-lg-6 my-3">
                                         <i class="bi bi-heart likeButton me-2" style="cursor: pointer;"></i>
                                         <i class="bi bi-chat-dots columnreplyButton me-2" style="cursor: pointer;"></i>
-                                        <i class="bi bi-clipboard2-heart articlecollectionButton" style="cursor: pointer;"></i>
+                                        <i class="bi bi-clipboard-heart articlecollectionButton" style="cursor: pointer;"></i>
                                     </div>
                                 </div>
                                 <div class="row" th:if="${session.loginsuccess}">
                                     <div class="col-lg-6 my-3">
-                                        <i class="bi bi-heart me-2" th:unless="${session.likedArtNoList.contains(columnArtice.artNo)}" th:onclick="'likeArticle(' + ${session.loginsuccess.memNo} + ', ' + ${columnArtice.artNo} + ')'" style="cursor: pointer;"></i>
-                                        <i class="bi bi-heart-fill me-2" id="unLikeIcon" th:if="${session.likedArtNoList.contains(columnArtice.artNo)}" th:onclick="'unLikeArticle(' + ${session.loginsuccess.memNo} + ', ' + ${columnArtice.artNo} + ')'" style="cursor: pointer;"></i>
+                                        <i class="bi bi-heart me-2" th:text="${likeCount}" th:unless="${session.likedArtNoList.contains(columnArtice.artNo)}" th:onclick="'likeArticle(' + ${session.loginsuccess.memNo} + ', ' + ${columnArtice.artNo} + ')'" style="cursor: pointer;"></i>
+                                        <i class="bi bi-heart-fill me-2" id="unLikeIcon" th:text="${likeCount}" th:if="${session.likedArtNoList.contains(columnArtice.artNo)}" th:onclick="'unLikeArticle(' + ${session.loginsuccess.memNo} + ', ' + ${columnArtice.artNo} + ')'" style="cursor: pointer;"></i>
                                         <i class="bi bi-chat-dots me-2"   th:onclick="'showCommentInputModal(' + ${session.loginsuccess.memNo} + ', ' + ${columnArtice.artNo} + ')'" style="cursor: pointer;"></i>
-                                        <i class="bi bi-clipboard2-heart me-2" th:unless="${session.articleCollections.contains(columnArtice.artNo)}" th:onclick="'columnArticleCollection(' + ${session.loginsuccess.memNo} + ', ' + ${columnArtice.artNo} + ')'" style="cursor: pointer;"></i>
-                                        <i class="bi bi-clipboard-heart-fill" th:if="${session.articleCollections.contains(columnArtice.artNo)}" th:onclick="'unColumnArticleCollection(' + ${session.loginsuccess.memNo} + ', ' + ${columnArtice.artNo} + ')'" style="cursor: pointer;"></i>
+                                        <i class="bi bi-clipboard-heart me-2" th:unless="${session.articleCollections.contains(columnArtice.artNo)}" th:onclick="'columnArticleCollection(' + ${session.loginsuccess.memNo} + ', ' + ${columnArtice.artNo} + ')'" style="cursor: pointer;"></i>
+                                        <i class="bi bi-clipboard-heart-fill me-2" th:if="${session.articleCollections.contains(columnArtice.artNo)}" th:onclick="'unColumnArticleCollection(' + ${session.loginsuccess.memNo} + ', ' + ${columnArtice.artNo} + ')'" style="cursor: pointer;"></i>
                                     </div>
                                 </div>
                                 <p th:text="${columnArtice.artContent}" style="font-size: 20px"></p>
@@ -233,11 +233,10 @@
                                         class="h5 m-0">Search</span>
                                 </div>
                                 <div class="card-body p-3">
-                                    <form class="d-flex input-group">
-                                        <input type="email" class="form-control" placeholder="Search">
+                                    <form class="d-flex input-group" th:action="@{/frontend/columnarticle/searchArticles}">
+                                        <input type="text" name="keyword" class="form-control" placeholder="Search">
                                         <button class="btn btn-primary flex-shrink-0" type="submit">
-                                            <i class="fi-search"></i>
-                                        </button>
+                                            <i class="fi-search"></i></button>
                                     </form>
                                 </div>
                             </div>

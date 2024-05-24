@@ -294,85 +294,85 @@
     <!-- script start -->
     <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
     <!-- End script start -->
-    <script>
+<!--    <script>-->
 
-        let choose_file_el = document.getElementById("choose_file");
-        choose_file_el.addEventListener("click", function () {
-            let my_input = document.getElementById("the_file");
-            my_input.click(); //input type=flie 被點
-        });
-        window.addEventListener("load", function () {
-            var the_file_element = document.getElementById("the_file");
-            the_file_element.addEventListener("change", function (e) {
-                let that = this;
-                let ul_el = document.querySelector(".picture_list");
-                ul_el.innerHTML = "";
+<!--        let choose_file_el = document.getElementById("choose_file");-->
+<!--        choose_file_el.addEventListener("click", function () {-->
+<!--            let my_input = document.getElementById("the_file");-->
+<!--            my_input.click(); //input type=flie 被點-->
+<!--        });-->
+<!--        window.addEventListener("load", function () {-->
+<!--            var the_file_element = document.getElementById("the_file");-->
+<!--            the_file_element.addEventListener("change", function (e) {-->
+<!--                let that = this;-->
+<!--                let ul_el = document.querySelector(".picture_list");-->
+<!--                ul_el.innerHTML = "";-->
 
-                for (let i = 0; i < this.files.length; i++) {
-                    let reader = new FileReader();
-                    reader.readAsDataURL(this.files[i]);
-                    reader.addEventListener("load", function () {
-                        let li_html2 = `<li>
+<!--                for (let i = 0; i < this.files.length; i++) {-->
+<!--                    let reader = new FileReader();-->
+<!--                    reader.readAsDataURL(this.files[i]);-->
+<!--                    reader.addEventListener("load", function () {-->
+<!--                        let li_html2 = `<li>-->
 
-                                                <input type="submit" class="submit" value="儲存">
-                                        </li>`;
+<!--                                                <input type="submit" class="submit" value="儲存">-->
+<!--                                        </li>`;-->
 
-                        let html_img = document.getElementById("pic");
-                        let html_newImg = document.createElement("img");
-                        html_newImg.src = `${this.result}`;
-                        html_newImg.id = "changeImg";
-                        html_newImg.style = "width: 100%; height: 100%";
-                        let html_oldImg = document.getElementById("memImg");
-                        if (html_oldImg === null) {
-                            html_oldImg = document.getElementById("changeImg")
-                        }
-                        console.log(html_oldImg);
+<!--                        let html_img = document.getElementById("pic");-->
+<!--                        let html_newImg = document.createElement("img");-->
+<!--                        html_newImg.src = `${this.result}`;-->
+<!--                        html_newImg.id = "changeImg";-->
+<!--                        html_newImg.style = "width: 100%; height: 100%";-->
+<!--                        let html_oldImg = document.getElementById("memImg");-->
+<!--                        if (html_oldImg === null) {-->
+<!--                            html_oldImg = document.getElementById("changeImg")-->
+<!--                        }-->
+<!--                        console.log(html_oldImg);-->
 
-                        html_img.replaceChild(html_newImg, html_oldImg);
+<!--                        html_img.replaceChild(html_newImg, html_oldImg);-->
 
-                        ul_el.insertAdjacentHTML("beforeend", li_html2);
-                    });
-                }
-            });
-        });
+<!--                        ul_el.insertAdjacentHTML("beforeend", li_html2);-->
+<!--                    });-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
 
-        // 處理表單提交並使用 AJAX 上傳新圖片
-        function handleAvatarUpload(event) {
-            event.preventDefault(); // 阻止默認提交行為
+<!--        // 處理表單提交並使用 AJAX 上傳新圖片-->
+<!--        function handleAvatarUpload(event) {-->
+<!--            event.preventDefault(); // 阻止默認提交行為-->
 
-            // 使用 FormData 收集表單數據
-            const formData = new FormData(event.target);
+<!--            // 使用 FormData 收集表單數據-->
+<!--            const formData = new FormData(event.target);-->
 
-            // 使用 fetch 發送 POST 請求
-            fetch('/frontend/member/newPicture', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => response.json()) // 將回應解析為 JSON 格式
-                .then(data => {
-                    if (data.success) {
-                        // 上傳成功：更新頁面上的大頭貼圖片
-                        const avatarElement = document.getElementById('memberAvatar');
-                        avatarElement.src = data.newAvatarUrl; // 更新圖片的 src 屬性
+<!--            // 使用 fetch 發送 POST 請求-->
+<!--            fetch('/frontend/member/newPicture', {-->
+<!--                method: 'POST',-->
+<!--                body: formData-->
+<!--            })-->
+<!--                .then(response => response.json()) // 將回應解析為 JSON 格式-->
+<!--                .then(data => {-->
+<!--                    if (data.success) {-->
+<!--                        // 上傳成功：更新頁面上的大頭貼圖片-->
+<!--                        const avatarElement = document.getElementById('memberAvatar');-->
+<!--                        avatarElement.src = data.newAvatarUrl; // 更新圖片的 src 屬性-->
 
-                        // 顯示成功消息
-                        alert('上傳成功！');
+<!--                        // 顯示成功消息-->
+<!--                        alert('上傳成功！');-->
 
-                        // 在上傳成功後進行重定向
-                        window.location.href = '/frontend/member/memberData';
-                    } else {
-                        // 上傳失敗：顯示錯誤消息
-                        console.error('上傳失敗:', data.error);
-                        alert('上傳失敗，請重試。');
-                    }
-                })
-                .catch(error => {
-                    // 請求過程中的錯誤處理
-                    console.error('錯誤:', error);
-                    alert('發生錯誤，請稍後重試。');
-                });
-        }
-    </script>
+<!--                        // 在上傳成功後進行重定向-->
+<!--                        window.location.href = '/frontend/member/memberData';-->
+<!--                    } else {-->
+<!--                        // 上傳失敗：顯示錯誤消息-->
+<!--                        console.error('上傳失敗:', data.error);-->
+<!--                        alert('上傳失敗，請重試。');-->
+<!--                    }-->
+<!--                })-->
+<!--                .catch(error => {-->
+<!--                    // 請求過程中的錯誤處理-->
+<!--                    console.error('錯誤:', error);-->
+<!--                    alert('發生錯誤，請稍後重試。');-->
+<!--                });-->
+<!--        }-->
+<!--    </script>-->
     <script>
         $(".camera-icon").click(function(){
             $("#avatarInput").click();
@@ -451,7 +451,7 @@
 <!--            });-->
 <!--    });-->
 <!--</script>-->
-<script>
+    <script>
         document.getElementById('avatarInput').addEventListener('change', function() {
             var preview = document.getElementById('preview');
             var file = this.files[0];
