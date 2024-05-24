@@ -4,11 +4,15 @@ import com.ren.authorityfunction.entity.AuthorityFunction;
 import com.ren.authorityfunction.service.impl.AuthorityFunctionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,23 +28,55 @@ public class AuthorityFunctionController {
         return authorityFunctionSvc.getOneAuthorityFunction(authFuncNo);
     }
 
+    @GetMapping("/selectAuthorityFunction")
+    public String thSelectAuthorityFunction() {
+        return "backend/authorityfunction/selectAuthorityFunction";
+    }
+
     @GetMapping("/listAllAuthorityFunction")
-    public List<AuthorityFunction> getAllAuthorityFunctions() {
-        return authorityFunctionSvc.getAll();
+    public String getAllAuthorityFunctions() {
+        return "backend/authorityfunction/listAllAuthorityFunctions";
     }
 
-    @PostMapping("/addAuthorityFunction")
-    public AuthorityFunction addAuthorityFunction(@RequestBody AuthorityFunction authorityFunction) {
-        return authorityFunctionSvc.addAuthorityFunction(authorityFunction);
+    @GetMapping("/addAuthorityFunction")
+    public String toAddAuthorityFunction(@ModelAttribute("authorityFunctionList") List<AuthorityFunction> list,
+                                       ModelMap model) {
+        model.addAttribute("authorityFunction", list.get(0));
+        return "backend/authorityfunction/addAuthorityFunction";
     }
 
-    @PutMapping("/updateAuthorityFunction")
-    public AuthorityFunction updateAuthorityFunction(@PathVariable Integer authFuncNo, @RequestBody AuthorityFunction authorityFunction) {
-        // Ensure the productNo in the path matches the productNo in the request body
-        if (!authFuncNo.equals(authorityFunction.getAuthFuncNo())) {
-            throw new IllegalArgumentException("Path variable productNo must match the productNo in the request body");
+    @PostMapping("/addAuthorityFunction/add")
+    public String addAuthorityFunction(@Valid AuthorityFunction authorityFunction,
+                                       BindingResult result,
+                                       RedirectAttributes redirectAttributes,
+                                       ModelMap model) {
+        if (result.hasErrors()) {
+            model.addAttribute("authorityFunction", authorityFunction);
+            model.addAttribute("errors", result.getAllErrors());
+            return "backend/authorityfunction/addAuthorityFunction";
         }
-        return authorityFunctionSvc.updateAuthorityFunction(authorityFunction);
+        authorityFunctionSvc.addAuthorityFunction(authorityFunction);
+        redirectAttributes.addAttribute("success", "新增成功!")
+        return "backend/authorityfunction/addAuthorityFunction";
+    }
+
+    @PutMapping("/updateAuthorityFunction/{authFuncNo}")
+    public String toUpdateAuthorityFunction(@PathVariable Integer authFuncNo,
+                                                       ModelMap model) {
+        model.addAttribute("authorityFunction", authorityFunctionSvc.getOneAuthorityFunction(authFuncNo));
+        return "backend/authorityfunction/updateAuthorityFunction";
+    }
+
+    @GetMapping("/updateAuthorityFunction")
+    public String toUpdateAuthorityFunction(@ModelAttribute("authorityFunctionList") List<AuthorityFunction> list,
+                                       ModelMap model) {
+        model.addAttribute("authorityFunction", list.get(0));
+        return "backend/authorityfunction/updateAuthorityFunction";
+    }
+
+    @ModelAttribute("authorityFunctionList")
+    public List<AuthorityFunction> getAuthorityFunctionList() {
+        return authorityFunctionSvc.getAll();
     }
 
 //    @DeleteMapping("/authorityFunctions/{authFuncNo}")
