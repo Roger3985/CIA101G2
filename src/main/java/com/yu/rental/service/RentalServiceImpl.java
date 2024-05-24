@@ -2,6 +2,7 @@ package com.yu.rental.service;
 
 import com.yu.rental.dao.RentalRepository;
 import com.yu.rental.entity.Rental;
+import com.yu.rentalpic.dao.RentalPicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,13 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,13 +19,6 @@ public class RentalServiceImpl implements RentalService {
 
 	@Autowired //自動裝配
 	private RentalRepository repository;
-
-	/**
-	 * PersistenceContext注解用于注入一个EntityManager对象，
-	 * 使得我们可以在RentalService类中使用这个entityManager对象执行持久化操作，例如保存、更新、删除实体对象，以及执行JPQL查询等。
-	 */
-	@PersistenceContext
-	private EntityManager entityManager;
 
 	//單筆查詢(rentalNo)
 	@Override
@@ -48,23 +36,18 @@ public class RentalServiceImpl implements RentalService {
 	public Rental findByRentalName(String rentalName) {
 		return repository.findByRentalName(rentalName); }
 
-	//處理查詢(依租借品的尺寸)
-	@Override
-	public List<Rental> getRentalSize(Integer rentalSize) {
-		return repository.findQueryByRentalSize(rentalSize);
-	}
+//	//處理查詢(依租借品的尺寸)
+//	@Override
+//	public List<Rental> getRentalSize(Integer rentalSize) {
+//		return repository.findQueryByRentalSize(rentalSize);
+//	}
+//
+//	//處理查詢(依租借品的顏色)
+//	@Override
+//	public List<Rental> getRentalColor(String rentalColor) {
+//		return repository.findQueryByRentalColor(rentalColor);
+//	}
 
-	//處理查詢(依租借品的顏色)
-	@Override
-	public List<Rental> getRentalColor(String rentalColor) {
-		return repository.findQueryByRentalColor(rentalColor);
-	}
-
-	//處理查詢(依租借品的狀態)
-	@Override
-	public List<Rental> findByStat(Byte rentalStat) {
-		return repository.findQueryByRentalStat(rentalStat);
-	}
 
 	//關鍵字查詢(依租借品的名稱 "模糊查詢")
 	@Override
@@ -91,7 +74,23 @@ public class RentalServiceImpl implements RentalService {
 		return repository.findAll(Sort.by("rentalPrice").ascending());
 	}
 
+	//金額由小到大 (取得租借清單，以價格的升冪後返回)
+	@Override
+	public List<Rental> findByRentalCatNoSort(Integer rentalCatNo) {
+		return repository.findByRentalCatNo_OrderByRentalPriceASC(rentalCatNo);
+    }
 
+	//金額由大到小 (取得租借清單，以價格的降冪後返回)
+	@Override
+	public List<Rental> findByRentalCatNoSortDESC(Integer rentalCatNo) {
+		return repository.findByRentalCatNo_OrderByRentalPriceDESC(rentalCatNo);
+    }
+
+	//以rentalStat排序 (編號越晚的先顯示)
+	@Override
+	public List<Rental> findByRentalStatDESC(Byte rentalStat){
+		return repository.findByRentalStatDESC(rentalStat);
+	}
 //----------------------------------------------------------------------------------------------------------------------
 	//主要為後端使用：增查改
 

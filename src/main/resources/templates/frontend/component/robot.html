@@ -1,0 +1,16 @@
+<div th:fragment="robot" class="floating-chat">
+    <i class="bi bi-chat-dots" aria-hidden="true"></i>
+    <div class="chat">
+        <div class="header">
+                <span class="title">客服機器人</span>
+            <button>
+                <i class="bi bi-x-square" aria-hidden="true" style="font-size: 16px;"></i>
+            </button>
+        </div>
+        <ul class="messages" id="chat-messages"></ul>
+        <div class="footer">
+            <div class="text-box" id="messages_input" contenteditable="true" disabled="true" data-text="輸入訊息..."></div>
+            <button id="sendMessage">送出</button>
+        </div>
+    </div>
+</div>

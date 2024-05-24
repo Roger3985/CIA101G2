@@ -1,39 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>updateNews</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>更新最新消息</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+
 </head>
-<body>
-    <form th:action="@{update}" method="post" th:object="${news}">
+<body id="page-top">
+<div th:replace="backend/component/loading :: loading"></div>
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <form th:action="@{update}" method="post" th:object="${news}">
+                    <div>
+                        <label>編號</label>
+                        <input type="text" th:field="*{newsNo}" readonly="readonly"/><br>
+                    </div>
 
-        <div>
-            <label>編號</label>
-            <input type="text" th:field="*{newsNo}" readonly="readonly" /><br>
-        </div>
+                    <div>
+                        <label>發布時間</label>
+                        <span id="datetime"></span>
+                        <input type="hidden" name="postTime"/><br/>
+                    </div>
 
-        <div>
-            <label>標題</label>
-            <input type="text" th:field="*{newsTitle}" onclick="hideContent('newsTitle.errors')"/><br>
-            <span th:if="${#fields.hasErrors('newsTitle')}" th:errors="*{newsTitle}" class="error"></span>
-        </div>
+                    <div>
+                        <label>標題</label>
+                        <input type="text" th:field="*{newsTitle}" onclick="hideContent('newsTitle.errors')"/><br>
+                        <span th:if="${#fields.hasErrors('newsTitle')}" th:errors="*{newsTitle}" class="error"></span>
+                    </div>
 
-        <div>
-            <label>內容</label>
-            <input type="text" th:field="*{newsContent}" onclick="hideContent('newsContent.errors')"/><br>
-            <span th:if="${#fields.hasErrors('newsContent')}" th:errors="*{newsContent}" class="error"></span>
-        </div>
+                    <div>
+                        <label>內容</label>
+                        <input type="text" th:field="*{newsContent}" onclick="hideContent('newsContent.errors')"/><br>
+                        <span th:if="${#fields.hasErrors('newsContent')}" th:errors="*{newsContent}"
+                              class="error"></span>
+                    </div>
 
-        <div>
-            <label>發布時間</label>
-            <input type="datetime-local" th:field="*{postTime}" onclick="hideContent('postTime.errors')" /><br>
-            <span th:if="${#fields.hasErrors('postTime')}" th:errors="*{postTime}" class="error"></span>
+                    <div>
+                        <button type="submit" id="submit"> 送出修改</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.container-fluid -->
         </div>
+        <!-- End of Main Content -->
 
-        <div>
-            <button type="submit" id="submit"> 送出修改 </button>
-        </div>
-    </form>
+        <!-- Footer -->
+        <footer th:replace="backend/component/bottom :: bottom"></footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
+
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+<script>
+    var now = new Date();
+    var dateTime = now.toLocaleString();
+    document.getElementById("datetime").innerHTML = dateTime;
+</script>
 
 </body>
 </html>

@@ -13,6 +13,9 @@ import com.roger.member.service.MemberService;
 import com.roger.notice.entity.Notice;
 import com.roger.notice.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,9 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping("/frontend/columnarticle")
@@ -52,15 +53,31 @@ public class ColumnArticleControllerFrontEnd {
 
     /**
      * 前往專欄文章的網頁
+     * 設定每頁顯示的文章數量為 8
      */
     @GetMapping("/listAllColumnArticle")
-    public String listAllColumnArticle(HttpSession session) {
+    public String listAllColumnArticle(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                       @RequestParam(value = "size", defaultValue = "8") Integer size,
+                                       ModelMap modelMap,
+                                       HttpSession session) {
 
+
+        // Integer size = 1;
 
         if (session.getAttribute("loginsuccess") != null) {
             Member member = (Member) session.getAttribute("loginsuccess");
             List<ClickLike> clickLikeList = clickLikeService.getLikedArticlesByMember(member.getMemNo());
             List<ArticleCollection> articleCollectionList = articleCollectionService.getArticleCollectionByMember(member.getMemNo());
+
+            // 獲取上架中的文章列表
+            List<ColumnArticle> publishedArticles = columnArticleService.getPublishedArticles();
+
+            if (!publishedArticles.isEmpty()) {
+                ColumnArticle firstArticle = publishedArticles.get(0);
+                // 現在您可以使用 firstArticle 來訪問第一個文章的屬性和方法
+                // 例如：firstArticle.getTitle()，firstArticle.getContent()，等等
+                session.setAttribute("onePublishedArticles", firstArticle.getArtNo());
+            }
 
             // 創建一個包含點讚文章編號的列表
             List<Integer> likedArtNoList = new ArrayList<>();
@@ -82,11 +99,35 @@ public class ColumnArticleControllerFrontEnd {
             session.setAttribute("articleCollectionList", articleCollectionList);
             session.setAttribute("articleCollections", articleCollections);
 
+            // 一頁展示 8 篇專欄文章
+            Pageable pageable = PageRequest.of(page, size);
+            Page<ColumnArticle> columnArticlePage = columnArticleService.getAllByArtStatColumnArticles(pageable);
+            modelMap.addAttribute("columnArticlePage", columnArticlePage);
+            System.out.println("我有幾篇文章: " + columnArticlePage);
+
+            // 將文章的點讚數添加到模型中
+            Map<Integer, Integer> likeCounts = new HashMap<>();
+            for (ColumnArticle columnArticle : columnArticlePage) {
+                int artNo = columnArticle.getArtNo();
+                int likeCount = clickLikeService.getLikeCountByArtNo(artNo);
+                likeCounts.put(artNo, likeCount);
+            }
+
+            modelMap.addAttribute("likeCounts", likeCounts);
+
             return "frontend/columnarticle/listAllColumnArticle";
+
         } else {
+            // 一頁展示 8 篇專欄文章
+            Pageable pageable = PageRequest.of(page, size);
+            Page<ColumnArticle> columnArticlePage = columnArticleService.getAllByArtStatColumnArticles(pageable);
+            modelMap.addAttribute("columnArticlePage", columnArticlePage);
+            System.out.println("我有幾篇文章: " + columnArticlePage);
+
             return "frontend/columnarticle/listAllColumnArticle";
         }
     }
+
 
 
     /**
@@ -109,6 +150,13 @@ public class ColumnArticleControllerFrontEnd {
 
         // 獲取上架中的文章列表
         List<ColumnArticle> publishedArticles = columnArticleService.getPublishedArticles();
+
+        if (!publishedArticles.isEmpty()) {
+            ColumnArticle firstArticle = publishedArticles.get(0);
+            // 現在您可以使用 firstArticle 來訪問第一個文章的屬性和方法
+            // 例如：firstArticle.getTitle()，firstArticle.getContent()，等等
+            session.setAttribute("onePublishedArticles", firstArticle.getArtNo());
+        }
 
         // 將文章列表添加到 ModelMap 中
         modelMap.addAttribute("publishedArticles", publishedArticles);
@@ -146,10 +194,14 @@ public class ColumnArticleControllerFrontEnd {
         // 獲取文章的回應數量
         int responseCount = columnArticleService.getResponseCount(artNo);
 
+        // 獲取單篇文章的按讚數量
+        int likeCount = clickLikeService.getLikeCountByArtNo(artNo);
+
         // 將專欄文章放入模型中，以便在視圖中使用
         modelMap.addAttribute("columnArtice", columnArticle);
         modelMap.addAttribute("responseCount", responseCount + " Responses"); // 單篇文章的留言數量
         modelMap.addAttribute("columnReplies", columnReplies); // 單篇文章的所有文章回覆
+        modelMap.addAttribute("likeCount", likeCount); // 單篇文章的點讚數量
 
         Member member = (Member) session.getAttribute("loginsuccess");
 
@@ -428,6 +480,80 @@ public class ColumnArticleControllerFrontEnd {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("留言提交失敗");
         }
+    }
+
+    /**
+     * 根據關鍵字搜尋狀態為 "上架中" 的專欄文章，並將結果顯示在搜尋結果頁面。
+     * 支持分頁顯示結果。
+     *
+     * @param keyword 搜尋關鍵字。
+     * @param page    當前頁碼，默認為 0。
+     * @param size    每頁顯示的文章數量，默認為 8。
+     * @param modelMap 用於傳遞搜尋結果到視圖的模型對象。
+     * @param session 當前 HTTP 會話。
+     * @return 搜尋結果的視圖名稱。如果沒有找到任何符合條件的文章，返回空列表並顯示提醒訊息。
+     */
+    @GetMapping("/searchArticles")
+    public String searchArticles(@RequestParam("keyword") String keyword,
+                                 @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                 @RequestParam(value = "size", defaultValue = "8") Integer size,
+                                 ModelMap modelMap,
+                                 HttpSession session) {
+        if (session.getAttribute("loginsuccess") != null) {
+            // 如果使用者已登入，取得使用者相關資料
+            Member member = (Member) session.getAttribute("loginsuccess");
+            List<ClickLike> clickLikeList = clickLikeService.getLikedArticlesByMember(member.getMemNo());
+            List<ArticleCollection> articleCollectionList = articleCollectionService.getArticleCollectionByMember(member.getMemNo());
+
+            // 創建一個包含點讚文章編號的列表
+            List<Integer> likedArtNoList = new ArrayList<>();
+            for (ClickLike clickLike : clickLikeList) {
+                likedArtNoList.add(clickLike.getCompositeClickLike().getArtNo());
+            }
+
+            // 創建一個包含收藏文章編號的列表
+            List<Integer> articleCollections = new ArrayList<>();
+            for (ArticleCollection articleCollection : articleCollectionList) {
+                articleCollections.add(articleCollection.getCompositeArticleCollection().getArtNo());
+            }
+
+            // 將 clickLikeList 和 likedArtNoList 存入 session
+            session.setAttribute("clickLikeList", clickLikeList);
+            session.setAttribute("likedArtNoList", likedArtNoList);
+
+            // 將 articleCollections 和 articleCollection 存入 session
+            session.setAttribute("articleCollectionList", articleCollectionList);
+            session.setAttribute("articleCollections", articleCollections);
+        }
+
+        // 確保 page 不是負數
+        page = Math.max(page, 0);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ColumnArticle> searchResults = columnArticleService.searchArticles(keyword, pageable);
+
+        System.out.println("Search Keyword: " + keyword);
+        System.out.println("Search Results: " + searchResults.getContent());
+
+        if (searchResults.isEmpty()) {
+            // 添加提醒訊息
+            modelMap.addAttribute("message", "未找到任何符合條件的文章。");
+            System.out.println("我有進來");
+        }
+
+        modelMap.addAttribute("columnArticlePage", searchResults);
+
+        // 將文章的點讚數添加到模型中
+        Map<Integer, Integer> likeCounts = new HashMap<>();
+        for (ColumnArticle columnArticle : searchResults) {
+            int artNo = columnArticle.getArtNo();
+            int likeCount = clickLikeService.getLikeCountByArtNo(artNo);
+            likeCounts.put(artNo, likeCount);
+        }
+
+        modelMap.addAttribute("likeCounts", likeCounts);
+
+        // 返回搜尋結果的視圖
+        return "frontend/columnarticle/listAllColumnArticle";
     }
 
 

@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>租借品 - 我的最愛清單 (單筆)</title>
+    <title>查詢租借品資料 (單筆)</title>
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <!-- Custom styles for this page -->
-    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
+    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
     <style>
         *{
             font-size: 12px; /* 調整字體大小 */
@@ -33,7 +33,7 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">租借品 - 我的最愛清單 (單筆)</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">查詢租借品資料 (單筆)</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -46,17 +46,15 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <div th:fragment="listOneMyFAV">
-                                    <th:block th:each="rentalMyFavorite : ${rentalMyFAVList}">
+                                    <th:block th:each="rentalMyFavorite : ${rentalMyFavorites}">
                                         <tr>
-                                            <td th:text="${rentalMyFavorite.compositeKey.getRentalNo()} + '-[' + ${rentalMyFavorite.rental.rentalName} + ']'"></td>
+                                            <td th:text="${rentalMyFavorite.rental.rentalNo} + '-[' + ${rentalMyFavorite.rental.rentalName} + ']'"></td>
                                             <br>
-                                            <td th:text="${rentalMyFavorite.compositeKey.getMemNo()} + '-[' + ${rentalMyFavorite.member.memName} + ']'"></td>
+                                            <td th:text="${rentalMyFavorite.member.memNo} + '-[' + ${rentalMyFavorite.member.memName} + ']'"></td>
                                             <br>
-                                            <td th:text="${rentalMyFavorite.getRentalFavTime()}"></td>
+                                            <td th:text="${rentalMyFavorite.rentalFavTime}"></td>
                                         </tr>
                                     </th:block>
-                                </div>
                                 </tbody>
                             </table>
                         </div>

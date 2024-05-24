@@ -3,7 +3,6 @@ package com.yu.rentalmyfavorite.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.roger.member.entity.Member;
 import com.yu.rental.entity.Rental;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -14,9 +13,8 @@ public class RentalMyFavorite implements java.io.Serializable {
 
     // 直接宣告複合識別類別的屬性 (rentalNo與memNo是複合主鍵)
     @EmbeddedId   //加上@EmbeddedId 標註，必須override此類別的hashcode()、equals()
-    private CompositeDetail compositeKey;
-
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")
+    private CompositeRentalMyFavorite compositeRentalMyFavorite;
+    
     @Column(name = "rentalfavtime")
     private Timestamp rentalFavTime;
 
@@ -32,20 +30,20 @@ public class RentalMyFavorite implements java.io.Serializable {
 
 
     // 需要宣告一個有包含複合主鍵屬性的類別，並一定要實作 java.io.Serializable 介面
-    public static class CompositeDetail implements java.io.Serializable {
+    public static class CompositeRentalMyFavorite implements java.io.Serializable {
         private static final long serialVersionUID = 1L;
 
-        @Column(name = "rentalno", updatable = false)
+        @Column(name = "rentalno")
         private Integer rentalNo;
 
-        @Column(name = "memno", updatable = false)
+        @Column(name = "memno")
         private Integer memNo;
 
         // 一定要有無參數建構子
-        public CompositeDetail() {
+        public CompositeRentalMyFavorite() {
         }
 
-        public CompositeDetail(Integer rentalNo, Integer memNo) {
+        public CompositeRentalMyFavorite(Integer rentalNo, Integer memNo) {
             this.rentalNo = rentalNo;
             this.memNo = memNo;
         }
@@ -82,8 +80,8 @@ public class RentalMyFavorite implements java.io.Serializable {
                 return true;
 
             if (obj != null && getClass() == obj.getClass()) {
-                CompositeDetail compositeKey = (CompositeDetail) obj;
-                if (rentalNo.equals(compositeKey.rentalNo) && memNo.equals(compositeKey.memNo)) {
+                CompositeRentalMyFavorite compositeRentalMyFavorite = (CompositeRentalMyFavorite) obj;
+                if (rentalNo.equals(compositeRentalMyFavorite.rentalNo) && memNo.equals(compositeRentalMyFavorite.memNo)) {
                     return true;
                 }
             }
@@ -94,19 +92,17 @@ public class RentalMyFavorite implements java.io.Serializable {
 
     public RentalMyFavorite(){}
 
-    public RentalMyFavorite(CompositeDetail compositeKey, Timestamp rentalFavTime, Rental rental, Member member) {
-        this.compositeKey = compositeKey;
+    public RentalMyFavorite(CompositeRentalMyFavorite compositeRentalMyFavorite, Timestamp rentalFavTime) {
+        this.compositeRentalMyFavorite = compositeRentalMyFavorite;
         this.rentalFavTime = rentalFavTime;
-        this.rental = rental;
-        this.member = member;
     }
 
-    public CompositeDetail getCompositeKey() {
-        return compositeKey;
+    public CompositeRentalMyFavorite getCompositeKey() {
+        return compositeRentalMyFavorite;
     }
 
-    public void setCompositeKey(CompositeDetail compositeKey) {
-        this.compositeKey = compositeKey;
+    public void setCompositeKey(CompositeRentalMyFavorite compositeRentalMyFavorite) {
+        this.compositeRentalMyFavorite = compositeRentalMyFavorite;
     }
 
     public Timestamp getRentalFavTime() {
@@ -136,8 +132,8 @@ public class RentalMyFavorite implements java.io.Serializable {
     @Override
     public String toString() {
         return "RentalMyFavorite{" +
-                "rentalNo=" + compositeKey.getRentalNo() +
-                "memNo=" + compositeKey.getMemNo() +
+                "rentalNo=" + compositeRentalMyFavorite.getRentalNo() +
+                "memNo=" + compositeRentalMyFavorite.getMemNo() +
                 ", rentalFavTime=" + rentalFavTime +
                 '}' + "\n";
     }

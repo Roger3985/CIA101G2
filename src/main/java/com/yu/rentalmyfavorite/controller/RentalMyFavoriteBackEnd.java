@@ -1,27 +1,18 @@
 package com.yu.rentalmyfavorite.controller;
 
+import com.iting.productmyfavorite.entity.ProductMyFavorite;
 import com.roger.member.entity.Member;
 import com.roger.member.service.impl.MemberServiceImpl;
 import com.yu.rental.entity.Rental;
 import com.yu.rental.service.RentalServiceImpl;
 import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
 import com.yu.rentalmyfavorite.service.RentalMyFavoriteServiceImpl;
-import com.yu.rentalpic.entity.RentalPic;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.io.IOException;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,16 +29,6 @@ public class RentalMyFavoriteBackEnd {
     @Autowired
     private MemberServiceImpl memberService;
 
-    ///////////////////////////////////    ///////////////////////////////////    ///////////////////////////////////
-    //測試區 (之後要用到前台使用)
-
-//    //瀏覽全部租借品頁面 (前台)
-//    @GetMapping("/rentalFAVList")
-//    public String rentalFAVList() {
-//        return "/backend/rentalmyfavorite/rentalFAVList";
-//    }
-    ///////////////////////////////////    ///////////////////////////////////    ///////////////////////////////////
-
 
     //顯示首頁 (後台)
     @GetMapping("/backendIndex")
@@ -58,6 +39,8 @@ public class RentalMyFavoriteBackEnd {
     //顯示查詢頁面 (後台)
     @GetMapping("/selectRentalMyFAV")
     public String selectPage(ModelMap model) {
+        RentalMyFavorite rentalMyFavorite = new RentalMyFavorite();
+        model.addAttribute("rentalMyFavorite", rentalMyFavorite);
         return "/backend/rentalmyfavorite/selectRentalMyFAV";
     }
 
@@ -65,6 +48,17 @@ public class RentalMyFavoriteBackEnd {
     @GetMapping("/listAllRentalMyFAV")
     public String listAllRentalMyFAV() {
         return "/backend/rentalmyfavorite/listAllRentalMyFAV";
+    }
+
+    //處理單筆查詢(依rentalNo)
+    @PostMapping("getOneDisplay")
+    public String getOneDisplay(@RequestParam(value = "rentalNo", required = false) String rentalNo,
+                                @RequestParam(value = "memNo", required = false) String memNo,ModelMap model) {
+
+        List<RentalMyFavorite> rentalMyFavorites = rentalMyFAVService.findByCompositeKey(Integer.valueOf(rentalNo));
+        model.addAttribute("rentalMyFavorites", rentalMyFavorites);
+
+        return "/backend/rentalmyfavorite/listOneRentalMyFAV"; // 查詢完成後轉交
     }
 
 
@@ -141,27 +135,27 @@ public class RentalMyFavoriteBackEnd {
                                              @RequestParam(value = "memNo", required = false) Integer memNo) {
 
         if (rentalNo != null && memNo != null) {
-            RentalMyFavorite list = rentalMyFAVService.findByIdRentalNoAndIdMemNo(rentalNo,memNo);
+            RentalMyFavorite list = rentalMyFAVService.findByRentalNoAndMemNo(rentalNo,memNo);
             return list; //取得RentalMyFavorite列表
         }
         return null;
     }
 
-    /**
-     * 因 @ModelAttribute寫在方法上，故將此類別中的@GetMapping Method先加入model.addAttribute("...List",...Service.getAll());
-     * referenceMemNoData()：回傳一個包含參考資料的列表或映射，透過View渲染到使用者介面上。
-     *
-     * @return 與memNo 對應的RentalMyFavorite資料庫
-     */
-    @ModelAttribute("memNoData")
-    protected RentalMyFavorite referenceMemNoData(@RequestParam(value = "memNo", required = false) Integer memNo) {
-
-        if (memNo != null) {
-            RentalMyFavorite list = rentalMyFAVService.findByMemNo(memNo);
-            return list; //取得RentalMyFavorite列表
-        }
-        return null;
-    }
+//    /**
+//     * 因 @ModelAttribute寫在方法上，故將此類別中的@GetMapping Method先加入model.addAttribute("...List",...Service.getAll());
+//     * referenceMemNoData()：回傳一個包含參考資料的列表或映射，透過View渲染到使用者介面上。
+//     *
+//     * @return 與memNo 對應的RentalMyFavorite資料庫
+//     */
+//    @ModelAttribute("memNoData")
+//    protected RentalMyFavorite referenceMemNoData(@RequestParam(value = "memNo", required = false) Integer memNo) {
+//
+//        if (memNo != null) {
+//            RentalMyFavorite list = rentalMyFAVService.findByMemNo(memNo);
+//            return list; //取得RentalMyFavorite列表
+//        }
+//        return null;
+//    }
 
     /**
      * 因 @ModelAttribute寫在方法上，故將此類別中的@GetMapping Method先加入model.addAttribute("...List",...Service.getAll());

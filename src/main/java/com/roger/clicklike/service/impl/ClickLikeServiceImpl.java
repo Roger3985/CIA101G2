@@ -124,4 +124,12 @@ public class ClickLikeServiceImpl implements ClickLikeService {
         return clickLikeRepository.findByCompositeClickLike_MemNo(memNo);
     }
 
+    /**
+     * 根據文章編號獲取按讚數量。
+     */
+    @Override
+    public int getLikeCountByArtNo(Integer artNo) {
+        return clickLikeRepository.countByArtNo(artNo);
+    }
+
 }

@@ -3,12 +3,12 @@ package com.yu.rental.service;
 import com.yu.rental.entity.Rental;
 import org.springframework.data.domain.Page;
 
-import javax.persistence.Entity;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
 public interface RentalService {
+
 
     public List<Rental> findAll();  //全部查詢(Rental)
 
@@ -24,17 +24,23 @@ public interface RentalService {
 
     public List<Rental> findAllSort(); //以rentalPrice查詢，金額由小到大
 
-    public List<Rental> getRentalSize(Integer rentalSize); //以rentalSize查詢
+//    public List<Rental> getRentalSize(Integer rentalSize); //以rentalSize查詢
+//
+//    public List<Rental> getRentalColor(String rentalColor); //以rentalColor查詢
+//
+//    public List<Rental> findByStat(Byte rentalStat);//單筆查詢(rentalStat) //以rentalStat查詢租借品狀態
 
-    public List<Rental> getRentalColor(String rentalColor); //以rentalColor查詢
+    public List<Rental> findByRentalCatNoSortDESC(Integer rentalCatNo); //以rentalPrice查詢，金額由大到小 (依rentalCatNo處理)
 
-    public List<Rental> findByStat(Byte rentalStat);//單筆查詢(rentalStat) //以rentalStat查詢租借品狀態
+    public List<Rental> findByRentalCatNoSort(Integer rentalCatNo); //以rentalPrice查詢，金額由小到大 (依rentalCatNo處理)
+
+    List<Rental> findByRentalStatDESC(Byte rentalStat); //以rentalStat排序 (編號越晚的先顯示)
 
 //----------------------------------------------------------------------------------------------------------------------
     //主要為後端使用：增查改
 
-
     public List<Rental> findByRentalCategoryRentalCatNo(Integer rentalCatNo); //rentalCatNo查詢(List集合)
+
 
     public Rental addRental(Rental rental); //新增
 

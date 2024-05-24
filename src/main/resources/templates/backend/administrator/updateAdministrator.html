@@ -27,88 +27,93 @@
             <div class="container-fluid">
                 <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
                 <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
-                <form method="post" th:action="@{updateAdministrator/update}" th:object="${administrator}">
+                <form method="post" th:action="@{/backend/administrator/addAdministrator/add}" th:object="${administrator}" id="imageForm">
                     <div class="mb-3 row">
-                        <label for="administratorSelect" class="col-sm-2 col-form-label">商品編號</label>
+                        <label for="admNo" class="col-sm-2 col-form-label">管理員編號</label>
                         <div class="col-sm-3">
-                            <select size="1" name="administratorNo" id="administratorSelect" th:onchange="|updateAdministratorInstantly()|">
-                                <option th:each="administrator : ${administratorList}" th:value="${administrator.administratorNo}" th:text="${administrator.administratorNo}"></option>
+                            <select size="1" name="admNo" id="admNo" th:field="*{admNo}">
+                                <option th:each="administrator : ${administratorList}" th:value="${administrator.admNo}" th:text="${administrator.admNo}"></option>
                             </select>
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="administratorName" class="col-sm-2 col-form-label">商品名稱</label>
+                        <label for="admName" class="col-sm-2 col-form-label">管理員名稱</label>
                         <div class="col-sm-3">
-                            <input type="text" th:field="*{admName}" class="form-control" name="administratorName" id="administratorName">
-                            <span th:if="${#fields.hasErrors('administratorName')}" th:errors="*{admName}" class="error" id="administratorName.errors"></span>
+                            <input type="text" th:field="*{admName}" class="form-control" name="admName" id="admName">
+                            <span th:if="${#fields.hasErrors('admName')}" th:errors="*{admName}" class="error" id="admName.errors"></span>
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="administratorInfo" class="col-sm-2 col-form-label">商品資訊</label>
+                        <label for="admStat" class="col-sm-2 col-form-label">管理員狀態</label>
                         <div class="col-sm-3">
-                            <input type="text" th:field="*{administratorInfo}" class="form-control" name="administratorInfo" id="administratorInfo">
-                            <span th:if="${#fields.hasErrors('administratorInfo')}" th:errors="*{administratorInfo}" class="error" id="administratorInfo.errors"></span>
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="administratorSize" class="col-sm-2 col-form-label">尺寸</label>
-                        <div class="col-sm-3">
-                            <select size="1" name="administratorSize" id="administratorSize" th:field="*{administratorSize}">
-                                <option th:value="${0}" th:text="XS"></option>
-                                <option th:value="${1}" th:text="S"></option>
-                                <option th:value="${2}" th:text="M"></option>
-                                <option th:value="${3}" th:text="L"></option>
-                                <option th:value="${4}" th:text="XL"></option>
-                                <option th:value="${5}" th:text="2L"></option>
+                            <select size="1" name="admStat" id="admStat" th:field="*{admStat}">
+                                <option th:value="${0}" th:text="離職"></option>
+                                <option th:value="${1}" th:text="在職"></option>
                             </select>
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="administratorColor" class="col-sm-2 col-form-label">顏色</label>
+                        <label for="admEmail" class="col-sm-2 col-form-label">管理員Email</label>
                         <div class="col-sm-3">
-                            <input type="text" th:field="*{administratorColor}" class="form-control" name="administratorColor" id="administratorColor">
-                            <span th:if="${#fields.hasErrors('administratorColor')}" th:errors="*{administratorColor}" class="error" id="administratorColor.errors"></span>
+                            <input type="text" th:field="*{admEmail}" class="form-control" name="admEmail" id="admEmail">
+                            <span th:if="${#fields.hasErrors('admEmail')}" th:errors="*{admEmail}" class="error" id="admEmail.errors"></span>
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="administratorPrice" class="col-sm-2 col-form-label">商品單價</label>
+                        <label for="titleNo" class="col-sm-2 col-form-label">職位編號</label>
                         <div class="col-sm-3">
-                            <input type="text" th:field="*{administratorPrice}" class="form-control" name="administratorPrice" id="administratorPrice">
-                            <span th:if="${#fields.hasErrors('administratorPrice')}" th:errors="*{administratorPrice}" class="error" id="administratorPrice.errors"></span>
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="administratorStat" class="col-sm-2 col-form-label">商品狀態</label>
-                        <div class="col-sm-3">
-                            <select size="1" name="administratorStat" id="administratorStat" th:field="*{administratorStat}">
-                                <option th:value="${0}" th:text="上架"></option>
-                                <option th:value="${1}" th:text="下架"></option>
+                            <select size="1" name="titleNo" id="titleNo" th:field="*{title.titleNo}">
+                                <option th:each="title : ${titleList}" th:value="${title.titleNo}" th:text="${title.titleNo} + ' : ' + ${title.titleName}"></option>
                             </select>
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="administratorSalQty" class="col-sm-2 col-form-label">商品已售出數量</label>
+                        <label for="admHireDate" class="col-sm-2 col-form-label">入職時間</label>
                         <div class="col-sm-3">
-                            <input type="text" th:field="*{administratorSalQty}" class="form-control" name="administratorSalQty" id="administratorSalQty">
-                            <span th:if="${#fields.hasErrors('administratorSalQty')}" th:errors="*{administratorSalQty}" class="error" id="administratorSalQty.errors"></span>
+                            <input type="text" th:field="*{admHireDate}" class="form-control" name="admHireDate" id="admHireDate" placeholder="YYYY-MM-DD">
+                            <span th:if="${#fields.hasErrors('admHireDate')}" th:errors="*{admHireDate}" class="error" id="admHireDate.errors"></span>
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="administratorComPeople" class="col-sm-2 col-form-label">評價總人數</label>
+                        <label for="admPhoto" class="col-sm-2 col-form-label">管理員照片</label>
                         <div class="col-sm-3">
-                            <input type="text" th:field="*{administratorComPeople}" class="form-control" name="administratorComPeople" id="administratorComPeople">
-                            <span th:if="${#fields.hasErrors('administratorComPeople')}" th:errors="*{administratorComPeople}" class="error" id="administratorComPeople.errors"></span>
+                            <input type="file" id="admPhoto" name="uploadImg" accept="image/*" style="display: none;">
+                            <label class="btn btn-info" for="admPhoto">
+                                <i class="fa fa-photo"></i> 上傳圖片
+                            </label>
+                            <span id="imageInfo"></span>
+                        </div>
+                        <img id="preview" style="display: none;">
+                    </div>
+
+                    <!-- 裁剪圖片的模態框 -->
+                    <div class="modal fade" id="cropImageModal" tabindex="-1" role="dialog" aria-labelledby="cropImageModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="cropImageModalLabel">裁剪圖片</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="img-container">
+                                        <div id="croppie-container"></div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                    <button type="button" class="btn btn-primary" id="crop">裁剪</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="mb-3 row">
-                        <label for="administratorComScore" class="col-sm-2 col-form-label">評價總星數</label>
-                        <div class="col-sm-3">
-                            <input type="text" th:field="*{admComScore}" class="form-control" name="administratorComScore" id="administratorComScore">
-                            <span th:if="${#fields.hasErrors('administratorComScore')}" th:errors="*{admComScore}" class="error" id="administratorComScore.errors"></span>
-                        </div>
-                    </div>
+
+
                     <div>
-                        <div><button type="submit" id="submit"> 送出修改 </button></div>
+                        <div>
+                            <button type="submit" id="submit"> 送出修改 </button>
+                        </div>
                     </div>
                 </form>
             </div>
