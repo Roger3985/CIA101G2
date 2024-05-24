@@ -45,6 +45,9 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
      */
     @Override
     public Administrator addAdministrator(Administrator administrator) {
+        String newPwd = generateRandomString(12);
+        administrator.setAdmPwd(newPwd);
+        administrator.setAdmSalt("1");
         return administratorRepository.save(administrator);
     }
 

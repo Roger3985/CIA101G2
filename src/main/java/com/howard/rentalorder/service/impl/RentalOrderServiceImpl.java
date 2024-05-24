@@ -307,7 +307,7 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         obj.setReturnURL("https://adf4-2001-b400-e389-697b-a1af-a7e7-7925-d3ce.ngrok-free.app/backend/rentalorder/receiveTradeInfos");
         obj.setNeedExtraPaidInfo("N");
         // 商店轉跳網址 (Optional)
-        obj.setClientBackURL("http://localhost:8080/backend/rentalorder/thankForBuying?rentalOrdNo=" + order.getrentalOrdNo()); // 問小吳上雲怕爆開(路徑問題)
+        obj.setClientBackURL("http://localhost:8080/frontend/rentalorder/thankForBuying?rentalOrdNo=" + order.getrentalOrdNo()); // 問小吳上雲怕爆開(路徑問題)
         String form = all.aioCheckOut(obj, null);
 
         // 付款完後把付款狀態改為 1 (已付款)

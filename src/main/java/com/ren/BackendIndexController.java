@@ -131,7 +131,6 @@ public class BackendIndexController {
      */
     @GetMapping("/login")
     public String toLogin() {
-        System.out.println("實際是我被執行哦");
         return "backend/login";
     }
 

@@ -112,10 +112,13 @@
                                         </td>
 
                                         <td>
-                                            <form method="post" th:action="@{/backend/productorder/updateProductOrder}" style="margin-bottom: 0px;"
-                                                  onsubmit="return confirmUpdate()">
-                                                <input type="submit" value="修改">
-                                                <input type="hidden" name="productOrdNo" th:value="${productorder.productOrdNo}">
+
+                                            <form method="post" th:action="@{/backend/productorder/updateProductOrder}" style="margin-bottom: 0px;"onsubmit="return confirmUpdate()">
+                                            <button
+                                                    name="productOrdNo"
+                                                    th:value="${productorder.productOrdNo}">
+                                                <i class="far fa-edit"></i>
+                                            </button>
                                             </form>
 
                                         </td>

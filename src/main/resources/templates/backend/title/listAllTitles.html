@@ -32,54 +32,26 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">全部商品資料:</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">全部職位資料:</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>商品編號</th>
-                                    <th>商品類別編號</th>
-                                    <th>商品名稱</th>
-                                    <th>商品資訊</th>
-                                    <th>尺寸</th>
-                                    <th>顏色</th>
-                                    <th>商品單價</th>
-                                    <th>商品狀態</th>
-                                    <th>商品已售出數量</th>
-                                    <th>評價總人數</th>
-                                    <th>評價總星數</th>
+                                    <th>職位編號</th>
+                                    <th>職位名稱</th>
                                     <th>修改</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <th:block th:each="product : ${productList}">
+                                <th:block th:each="ttile : ${titleList}">
                                     <tr>
-                                        <td th:text="${product.productNo}"></td>
-                                        <td th:text="${product.productCategory.productCatNo}"></td>
-                                        <td th:text="${product.productName}"></td>
-                                        <td th:text="${product.productInfo}"></td>
+                                        <td th:text="${ttile.titleNo}"></td>
+                                        <td th:text="${ttile.titleName}"></td>
                                         <td>
-                                            <span th:if="${product.productStat == 0}" th:text="XS"></span>
-                                            <span th:if="${product.productStat == 1}" th:text="S"></span>
-                                            <span th:if="${product.productStat == 2}" th:text="M"></span>
-                                            <span th:if="${product.productStat == 3}" th:text="L"></span>
-                                            <span th:if="${product.productStat == 4}" th:text="XL"></span>
-                                            <span th:if="${product.productStat == 5}" th:text="2L"></span>
-                                        </td>
-                                        <td th:text="${product.productColor}"></td>
-                                        <td th:text="${product.productPrice}"></td>
-                                        <td>
-                                            <span th:if="${product.productStat == 0}" th:text="下架"></span>
-                                            <span th:if="${product.productStat == 1}" th:text="上架"></span>
-                                        </td>
-                                        <td th:text="${product.productSalQty}"></td>
-                                        <td th:text="${product.productComPeople}"></td>
-                                        <td th:text="${product.productComScore}"></td>
-                                        <td>
-                                            <form method="get" th:action="@{updateProduct}">
-                                                <input type="hidden" name="productNo" th:value="${product.productNo}">
+                                            <form method="get" th:action="@{updateTitle}">
+                                                <input type="hidden" name="titleNo" th:value="${ttile.titleNo}">
                                                 <button type="submit">
                                                     <i class="far fa-edit"></i>
                                                 </button>
@@ -100,6 +72,25 @@
         <!-- Footer -->
         <footer th:replace="backend/component/bottom :: bottom"></footer>
         <!-- End of Footer -->
+        <!-- 通知訊息 -->
+        <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="alertModalLabel">提示</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="alertModalBody">
+                        <!-- 這裡將顯示錯誤訊息 -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="confirmButton">確定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- End of Content Wrapper -->
 </div>

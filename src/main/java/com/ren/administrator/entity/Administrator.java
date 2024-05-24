@@ -24,7 +24,6 @@ public class Administrator {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "admno")
     private Integer admNo;
-    @NotEmpty(message = "密碼不可空白")
     @Column(name = "admpwd")
     private String admPwd;
     @NotEmpty(message = "管理員名稱不可空白")

@@ -1,3 +1,4 @@
+
 package com.yu.rentalpic.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;

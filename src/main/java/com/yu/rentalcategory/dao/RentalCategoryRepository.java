@@ -42,4 +42,6 @@ public interface RentalCategoryRepository extends JpaRepository<RentalCategory, 
     @Query("SELECT re FROM RentalCategory re WHERE re.rentalDesPrice = :rentalDesPrice")
     List<RentalCategory> findQueryByRentalDesPrice(@Param("rentalDesPrice") BigDecimal rentalDesPrice);
 
+
+
 }

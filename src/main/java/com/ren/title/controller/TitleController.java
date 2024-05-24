@@ -4,11 +4,14 @@ import com.ren.title.entity.Title;
 import com.ren.title.service.impl.TitleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,33 +22,54 @@ public class TitleController {
     @Autowired
     private TitleServiceImpl titleSvc;
 
-    @GetMapping
+    @GetMapping("/selectTitle")
     public String toSelectTitle() {
         return "backend/title/selectTitle";
     }
 
     @GetMapping("/listOneTitle")
-    public String listOne(@PathVariable Integer titleNo) {
+    public String listOne(@RequestParam Integer titleNo) {
         return "/backend/title/listOneTitle";
     }
 
     @GetMapping("/listAllTitles")
-    public List<Title> listAll() {
-        return titleSvc.getAll();
+    public String listAll() {
+        return "backend/title/listAllTitles";
     }
 
-    @PostMapping("/addTitle")
-    public Title addTitle(@RequestBody Title title) {
-        return titleSvc.addTitle(title);
+    @GetMapping("/addTitle")
+    public String toAddTitle(ModelMap model) {
+        model.addAttribute("title", new Title());
+        return "backend/title/addTitle";
+    }
+
+    @PostMapping("/addTitle/add")
+    public String toAddTitle(@Valid Title title,
+                             BindingResult result,
+                             ModelMap model,
+                             RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            model.addAttribute("title", title);
+            model.addAttribute("errors", result.getAllErrors());
+            return "backend/title/addTitle";
+        }
+        titleSvc.addTitle(title);
+        redirectAttributes.addAttribute("success", "新增成功!");
+        return "redirect:/backend/title/listAllTitles";
+    }
+
+    @GetMapping("/updateTitle/{titleNo}")
+    public String toUpdateTitle(@PathVariable Integer titleNo,
+                                ModelMap model) {
+        model.addAttribute("title", titleSvc.getOneTitle(titleNo));
+        return "backend/title/updateTitle";
     }
 
     @PutMapping("/updateTitle")
-    public Title updateTitle(@PathVariable Integer titleNo, @RequestBody Title title) {
-        // Ensure the productNo in the path matches the productNo in the request body
-        if (!titleNo.equals(title.getTitleNo())) {
-            throw new IllegalArgumentException("Path variable productNo must match the productNo in the request body");
-        }
-        return titleSvc.updateTitle(title);
+    public String updateTitle(@ModelAttribute("titleList") List<Title> list,
+                             ModelMap model) {
+        model.addAttribute("title", list.get(0));
+        return "backend/title/updateTitle";
     }
 
 //    @DeleteMapping("/titles/{titleNo}")
@@ -53,7 +77,7 @@ public class TitleController {
 //        titleSvc.deleteTitle(titleNo);
 //    }
 
-    @ModelAttribute("/")
+    @ModelAttribute("titleList")
     protected List<Title> getAllTitles() {
         return titleSvc.getAll();
     }
