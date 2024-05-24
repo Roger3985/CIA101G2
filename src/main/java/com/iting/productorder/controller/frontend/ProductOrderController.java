@@ -77,7 +77,6 @@ public class ProductOrderController {
                                               @RequestParam(value = "coupNo", required = false) Integer coupNo,
                                               HttpSession session) {
         Member myData = (Member) session.getAttribute("loginsuccess");
-        session.setAttribute("loginsuccess",myData);
         if (myData == null) {
             session.setAttribute("location", "/frontend/productorder/submitOrder");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("frontend/member/loginMember");
@@ -203,8 +202,12 @@ public class ProductOrderController {
 
     @GetMapping("CartEnd")
     public String CartEnd(ModelMap model, HttpSession session) {
+
         Member myData = (Member) session.getAttribute("loginsuccess");
         Integer memNo = myData.getMemNo();
+        if(myData==null) {
+            return "redirect:/frontend/member/loginMember";
+        }
         List<ProductOrder> list = productOrderSvc.findByMember(memNo);
         model.addAttribute("productorderListData", list);
         return "frontend/cart/CartEnd";

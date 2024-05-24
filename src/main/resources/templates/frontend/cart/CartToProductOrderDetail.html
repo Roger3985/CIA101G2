@@ -277,9 +277,10 @@
                             <div class="checkout-form-list">
                                 <label for="coupNo">請輸入優惠券編號</label>
                                 <select class="form-control" size="1" name="coupNo" id="coupNo" onchange="updatePriceInstantly()">
-                                    <option value="1">請選擇</option>
-                                    <option th:each="mycoupon : ${coupons}" th:value="${mycoupon.coupon.coupNo}" th:text="${mycoupon.coupon.coupName+'優惠券折數: ' + mycoupon.coupon.coupDisc}"></option>
+                                    <option value="">請選擇</option>
+                                    <option th:each="mycoupon : ${coupons}" th:if="${mycoupon.coupon.coupNo != 1}" th:value="${mycoupon.coupon.coupNo}" th:text="${mycoupon.coupon.coupName + '優惠券折數: ' + mycoupon.coupon.coupDisc}"></option>
                                 </select>
+
                             </div>
                         </div>
                         <div class="card bg-light">
