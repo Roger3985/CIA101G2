@@ -48,6 +48,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
         String newPwd = generateRandomString(12);
         administrator.setAdmPwd(newPwd);
         administrator.setAdmSalt("1");
+        sendEmail(administrator.getAdmEmail());
         return administratorRepository.save(administrator);
     }
 
@@ -58,7 +59,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
      *                      其餘資料為預設值由Service層內自動輸入
      * @return 註冊後Entity(預設最低權限)
      */
-    @Manager(title = "manager", message = "向您申請管理員帳號")
+//    @Manager(title = "manager", message = "向您申請管理員帳號")
     @Override
     public Administrator register(Administrator administrator) {
         // 填入預設的資料

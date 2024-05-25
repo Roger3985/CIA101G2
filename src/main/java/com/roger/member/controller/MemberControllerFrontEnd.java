@@ -115,13 +115,16 @@ public class MemberControllerFrontEnd {
      * @return 要呈現的視圖名稱 "oneMember.html"。
      */
     @GetMapping("/memberData")
-    public String memberData(ModelMap modelMap, HttpSession session) {
+    public String memberData(ModelMap modelMap,
+                             HttpSession session,
+                             RedirectAttributes redirectAttributes) {
 
         // 從 HTTP 會話中獲取當前已登入的會員資料
         Member myData = (Member) session.getAttribute("loginsuccess");
 
         // 如果會員未登錄，重定向到登錄頁面
         if (myData == null) {
+            redirectAttributes.addAttribute("error", "尚未登入，請先完成登入!");
             return "redirect:/frontend/member/loginMember";
         }
 

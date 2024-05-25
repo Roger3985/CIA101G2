@@ -32,13 +32,10 @@
                                     <form method="post" th:action="@{/backend/loginPage}" th:object="${administrator}" class="user">
                                         <div class="form-group">
                                             <span th:if="${idError}" th:text="${idError}" class="error" id="idError"></span>
-                                            <input type="text" name="userId" th:value="${userId}" class="form-control form-control-user"
-                                                id="userId" aria-describedby="emailHelp"
-                                                placeholder="請輸入用戶名或信箱">
+                                            <input type="text" name="userId" th:value="${userId}" class="form-control form-control-user" id="userId" aria-describedby="emailHelp" placeholder="請輸入用戶名或信箱">
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" name="admPwd" class="form-control form-control-user"
-                                                id="admPwd" placeholder="請輸入密碼">
+                                            <input type="password" name="admPwd" class="form-control form-control-user" id="admPwd" placeholder="請輸入密碼">
                                             <span th:if="${pwdError}" th:text="${pwdError}" class="error" id="pwdError"></span>
                                         </div>
                                         <div class="form-group">

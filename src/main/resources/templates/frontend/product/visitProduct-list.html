@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -49,7 +49,6 @@
                             <li class="breadcrumb-item text-nowrap active" aria-current="page">
                                 商品
                             </li>
-                            <li class="breadcrumb-item text-nowrap active" aria-current="page">Product</li>
                         </ol>
                     </div>
                 </div>
@@ -239,10 +238,10 @@
                                     <i class="fs-4 lh-1 bi bi-justify-left"></i>
                                 </button>
                                 <!-- End Mobile Toggle -->
-                                <a class="btn btn-sm active" href="#">
+                                <a class="btn btn-sm" th:href="@{/frontend/product/visitProduct}">
                                     <i class="bi bi-grid"></i>
                                 </a>
-                                <a class="btn btn-sm" th:href="@{/frontend/product/visitProduct-list}">
+                                <a class="btn btn-sm active" href="#">
                                     <i class="bi bi-view-stacked"></i>
                                 </a>
                             </div>
@@ -267,78 +266,57 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- 商品相關 -->
+                        <!-- 商品清單 -->
                         <!-- Product Box -->
-                        <div class="row g-3">
-                            <div class="col-sm-6 col-lg-4" th:each="product : ${productList}">
-                                <div class="product-card-1">
-                                    <div class="product-card-image">
-                                        <div th:if="${product.productOnShelf}" class="badge-ribbon">
-                                            <span class="badge bg-danger">最新上市</span>
-                                        </div>
-                                        <div class="product-action productitm">
-                                            <div class="addToFAVBtn">
-                                            <a href="#" class="btn btn-outline-primary">
-                                                <input type="hidden" name="productNo" th:value="${product.productNo}">
-                                                <i class="fi-heart"></i>
-                                            </a>
-                                            </div>
-                                            <a href="#" class="btn btn-outline-primary">
-                                                <i class="fi-repeat"></i>
-                                            </a>
-                                            <a data-bs-toggle="modal" data-bs-target="#px-quick-view" href="javascript:void(0)" class="btn btn-outline-primary">
-                                                <i class="fi-eye"></i>
-                                            </a>
-                                        </div>
-                                        <div class="product-media productitm">
-                                            <a href="#">
-                                                <img class="img-fluid" th:src="@{/frontend/productPic/}" title="" alt="">
-                                            </a>
-                                            <div class="product-cart-btn addToCartBtn">
-                                                <input type="hidden" name="productNo" th:value="${product.productNo}"> <!-- Product number -->
-                                                <input type="hidden" name="productBuyQty" th:value="1"> <!-- Quantity -->
-                                                <a href="#" class="btn btn-primary btn-sm w-100 "><i class="fi-shopping-cart"></i> Add to cart</a>
-                                            </div>
-
-                                        </div>
+                        <th:block th:each="product : ${productList}">
+                            <div class="row g-0 mb-4">
+                                <div class="col-sm-4 position-relative">
+                                    <div class="badge-ribbon position-absolute top-0 mt-3">
+                                        <span class="badge bg-danger">Sale</span>
                                     </div>
-                                    <div class="product-card-info">
-                                        <div class="product-meta small">
-                                            <a th:href="@{/frontend/product/Product(product=${product.productNo})}" th:text="${product.productCategory.productCatName}"></a>
-                                        </div>
-                                        <div class="rating-star text">
-                                            <i class="bi bi-star-fill active"></i>
-                                            <i class="bi bi-star-fill active"></i>
-                                            <i class="bi bi-star-fill active"></i>
-                                            <i class="bi bi-star-fill active"></i>
-                                            <i class="bi bi-star"></i>
-                                        </div>
-                                        <h6 class="product-title"><a th:href="@{/frontend/product/Product(product=${product.productNo})}" th:text="${product.productName}"></a></h6>
-                                        <div class="product-price">
-                                            <span class="text-primary" th:text="${product.productPrice}"></span>
-                                        </div>
-                                        <div class="nav-thumbs">
-                                            <div class="form-check radio-text form-check-inline">
-                                                <input class="form-check-input" type="radio" name="size3" id="btnradio1" checked="checked">
-                                                <label class="radio-text-label" for="btnradio1">XS</label>
-                                            </div>
-                                            <div class="form-check radio-text form-check-inline">
-                                                <input class="form-check-input" type="radio" name="size3" id="btnradio2">
-                                                <label class="radio-text-label" for="btnradio2">S</label>
-                                            </div>
-                                            <div class="form-check radio-text form-check-inline">
-                                                <input class="form-check-input" type="radio" name="size3" id="btnradio3">
-                                                <label class="radio-text-label" for="btnradio3">M</label>
-                                            </div>
-                                            <div class="form-check radio-text form-check-inline">
-                                                <input class="form-check-input" type="radio" name="size3" id="btnradio4">
-                                                <label class="radio-text-label" for="btnradio4">L</label>
-                                            </div>
-                                        </div>
+                                    <a href="#">
+                                        <img class="border img-fluid w-100" src="../../assets/img/fashion/product-1.jpg" title="" alt="">
+                                    </a>
+                                </div>
+                                <div class="col-sm-8 ps-sm-4 pt-3 pt-sm-0">
+                                    <div class="rating-star text mb-2 small">
+                                        <i class="bi bi-star-fill active"></i>
+                                        <i class="bi bi-star-fill active"></i>
+                                        <i class="bi bi-star-fill active"></i>
+                                        <i class="bi bi-star-fill active"></i>
+                                        <i class="bi bi-star"></i>
+                                    </div>
+                                    <h5 class="product-title">
+                                        <a class="text-reset" href="#">Fine-knit sweater</a>
+                                    </h5>
+                                    <div class="m-0">
+                                        <p class="small mb-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                                            ad minim veniam.</p>
+                                    </div>
+                                    <div class="product-price pb-3">
+                                        <span class="text-primary fs-4">
+                                            $28.<small>50</small>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <a th:href="@{/frontend/cart/addproducttocart}" class="btn btn-mode">
+                                            <i class="fi-shopping-cart"></i>
+                                        </a>
+                                        <a href="@{/frontend/productmyfavorite/addProductTomyFAV}" class="btn btn-primary">
+                                            <i class="fi-heart"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-primary">
+                                            <i class="fi-repeat"></i>
+                                        </a>
+                                        <a data-bs-toggle="modal" data-bs-target="#px-quick-view"
+                                           href="javascript:void(0)" class="btn btn-primary">
+                                            <i class="fi-eye"></i>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </th:block>
                         <!-- End Product Box -->
                         <!-- 頁碼 -->
                         <div class="shop-bottom-bar d-flex align-items-center mt-3">
@@ -347,7 +325,7 @@
                                 <ul class="pagination">
                                     <li class="page-item">
                                         <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true">«</span>
+                                            <span aria-hidden="true">&laquo;</span>
                                         </a>
                                     </li>
                                     <li class="page-item active">
@@ -361,12 +339,32 @@
                                     </li>
                                     <li class="page-item">
                                         <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">»</span>
+                                            <span aria-hidden="true">&raquo;</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
+                    </div>
+                    <div class="productitm">
+                        <input type="hidden" name="productNo" value="1"> <!-- 產品編號 -->
+                        <input type="number" name="productBuyQty" value="1"> <!-- 購買數量 -->
+                        <button class="addToCartBtn" type="button"> <!-- 更改類型為button -->
+                            添加到購物車
+                        </button>
+                        <button class="addToFAVBtn" type="button"> <!-- 更改類型為button -->
+                            添加到最愛
+                        </button>
+                    </div>
+                    <div class="productitm">
+                        <input type="hidden" name="productNo" value="7"> <!-- 產品編號 -->
+                        <input type="number" name="productBuyQty" value="3"> <!-- 購買數量 -->
+                        <button class="addToCartBtn" type="button"> <!-- 更改類型為button -->
+                            添加到購物車
+                        </button>
+                        <button class="addToFAVBtn" type="button"> <!-- 更改類型為button -->
+                            添加到最愛
+                        </button>
                     </div>
                     <!-- End Product Box -->
                 </div>
@@ -388,7 +386,6 @@
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
 <!-- End script start -->
 <script>
-    <!-- 購物車 -->
     function testAddToCart(event) {
         var button = event.target;
         var row = button.closest('.productitm');
@@ -405,11 +402,10 @@
             url: "/frontend/cart/addproducttocart",
             data: data,
             success: function(data) {
-                console.log("Update successful");
+                console.log("更新成功");
             }
         });
     }
-
 
     var addToCartButtons = document.querySelectorAll(".addToCartBtn");
     addToCartButtons.forEach(function(button) {
@@ -420,6 +416,7 @@
         var button = event.target;
         var row = button.closest('.productitm');
         var productNo = row.querySelector('input[name="productNo"]').value;
+
         var data = {
             productNo: productNo,
         };
@@ -434,33 +431,10 @@
         });
     }
 
-    var addToFAVBtns = document.querySelectorAll(".addToFAVBtn");
+    var addToFAVBtns = document.querySelectorAll(".addToFAVBtn"); // 更正為".addToFAVBtn"
     addToFAVBtns.forEach(function(button) {
         button.addEventListener("click", testAddToFAV);
     });
-
-    <!-- 商品過濾相關 -->
-    document.querySelectorAll('.btn-outline-primary, .btn-outline-secondary, .btn-outline-info').forEach(button => {
-        button.addEventListener('click', function() {
-            // 在這裡添加按鈕點擊處理邏輯
-            console.log(this.textContent + ' button clicked');
-            // 根據按鈕文字來執行不同的操作
-            switch (this.textContent.trim()) {
-                case '最新上市':
-                    // 處理最新上市的邏輯
-                    break;
-                case '評價最高':
-                    // 處理評價最高的邏輯
-                    break;
-                case '熱門商品':
-                    // 處理熱門商品的邏輯
-                    break;
-                default:
-                    break;
-            }
-        });
-    });
-
 
 </script>
 </body>

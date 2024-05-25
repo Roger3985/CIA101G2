@@ -87,7 +87,6 @@ public class MonitorController {
         Integer userKey = loginState.getAdmNo();
         for (Monitor message : messages) {
             String messageId = message.getMessageId();
-            System.out.println("HashKey你在嗎" + messageId);
             redisTemplate.opsForHash().put(userKey, messageId, message);
         }
         return Map.of("status", "success");

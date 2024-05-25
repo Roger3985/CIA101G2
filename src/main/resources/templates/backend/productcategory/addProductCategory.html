@@ -28,84 +28,12 @@
 			<div class="container-fluid">
 				<div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
 				<!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
-				<form method="post" th:action="@{/backend/product/addProduct/add}" th:object="${product}">
+				<form method="post" th:action="@{/backend/productcategory/addProductCategory/add}" th:object="${productCategory}">
 					<div class="mb-3 row">
-						<label for="productCatNo" class="col-sm-2 col-form-label">商品類別編號</label>
-                        <div class="col-sm-3">
-							<select size="1" name="productCatNo" id="productCatNo" th:field="*{productCategory.productCatNo}">
-								<option th:each="productCategory : ${productCategoryList}" th:value="${productCategory.productCatNo}" th:text="${productCategory.productCatNo} + ' : ' + ${productCategory.productCatName}"></option>
-							</select>
-                        </div>
-					</div>
-					<div class="mb-3 row">
-						<label for="productName" class="col-sm-2 col-form-label">商品名稱</label>
+						<label for="productCatName" class="col-sm-2 col-form-label">商品類別名稱</label>
 						<div class="col-sm-3">
-							<input type="text" th:field="*{productName}" class="form-control" name="productName" id="productName">
-							<span th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}" class="error" id="productName.errors"></span>
-						</div>
-					</div>
-					<div class="mb-3 row">
-						<label for="productInfo" class="col-sm-2 col-form-label">商品資訊</label>
-						<div class="col-sm-3">
-							<input type="text" th:field="*{productInfo}" class="form-control" name="productInfo" id="productInfo">
-							<span th:if="${#fields.hasErrors('productInfo')}" th:errors="*{productInfo}" class="error" id="productInfo.errors"></span>
-						</div>
-					</div>
-					<div class="mb-3 row">
-						<label for="productSize" class="col-sm-2 col-form-label">尺寸</label>
-						<div class="col-sm-3">
-							<select size="1" name="productSize" id="productSize" th:field="*{productSize}">
-								<option th:value="${0}" th:text="XS"></option>
-								<option th:value="${1}" th:text="S"></option>
-								<option th:value="${2}" th:text="M"></option>
-								<option th:value="${3}" th:text="L"></option>
-								<option th:value="${4}" th:text="XL"></option>
-								<option th:value="${5}" th:text="2L"></option>
-							</select>
-						</div>
-					</div>
-					<div class="mb-3 row">
-						<label for="productColor" class="col-sm-2 col-form-label">顏色</label>
-						<div class="col-sm-3">
-							<input type="text" th:field="*{productColor}" class="form-control" name="productColor" id="productColor">
-							<span th:if="${#fields.hasErrors('productColor')}" th:errors="*{productColor}" class="error" id="productColor.errors"></span>
-						</div>
-					</div>
-					<div class="mb-3 row">
-						<label for="productPrice" class="col-sm-2 col-form-label">商品單價</label>
-						<div class="col-sm-3">
-							<input type="text" th:field="*{productPrice}" class="form-control" name="productPrice" id="productPrice">
-							<span th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}" class="error" id="productPrice.errors"></span>
-						</div>
-					</div>
-					<div class="mb-3 row">
-						<label for="productStat" class="col-sm-2 col-form-label">商品狀態</label>
-						<div class="col-sm-3">
-							<select size="1" name="productStat" id="productStat" th:field="*{productStat}">
-								<option th:value="${1}" th:text="上架"></option>
-								<option th:value="${0}" th:text="下架"></option>
-							</select>
-						</div>
-					</div>
-					<div class="mb-3 row">
-						<label for="productSalQty" class="col-sm-2 col-form-label">商品已售出數量</label>
-						<div class="col-sm-3">
-							<input type="text" th:field="*{productSalQty}" class="form-control" name="productSalQty" id="productSalQty">
-							<span th:if="${#fields.hasErrors('productSalQty')}" th:errors="*{productSalQty}" class="error" id="productSalQty.errors"></span>
-						</div>
-					</div>
-					<div class="mb-3 row">
-						<label for="productComPeople" class="col-sm-2 col-form-label">評價總人數</label>
-						<div class="col-sm-3">
-							<input type="text" th:field="*{productComPeople}" class="form-control" name="productComPeople" id="productComPeople">
-							<span th:if="${#fields.hasErrors('productComPeople')}" th:errors="*{productComPeople}" class="error" id="productComPeople.errors"></span>
-						</div>
-					</div>
-					<div class="mb-3 row">
-						<label for="productComScore" class="col-sm-2 col-form-label">評價總星數</label>
-						<div class="col-sm-3">
-							<input type="text" th:field="*{productComScore}" class="form-control" name="productComScore" id="productComScore">
-							<span th:if="${#fields.hasErrors('productComScore')}" th:errors="*{productComScore}" class="error" id="productComScore.errors"></span>
+							<input type="text" th:field="*{productCatName}" class="form-control" name="productCatName" id="productCatName">
+							<span th:if="${#fields.hasErrors('productCatName')}" th:errors="*{productCatName}" class="error" id="productCatName.errors"></span>
 						</div>
 					</div>
 					<div>

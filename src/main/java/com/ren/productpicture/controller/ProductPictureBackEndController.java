@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -49,7 +50,7 @@ public class ProductPictureBackEndController {
         return "/backend/productpicture/selectProductPicture";
     }
 
-    @GetMapping("/listOneProductPicture")
+    @GetMapping("/listOneProductPicture/{productPicNo}")
     public String getProductPicture(@PathVariable Integer productPicNo) {
         return "/backend/productpicture/listOneProductPicture";
     }
@@ -66,18 +67,22 @@ public class ProductPictureBackEndController {
     }
 
     @GetMapping("/addProductPicture/add")
-    public String AddProductPicture(@Valid ProductPicture productPicture, BindingResult result, ModelMap model) {
+    public String AddProductPicture(@Valid ProductPicture productPicture,
+                                    BindingResult result,
+                                    RedirectAttributes redirectAttributes,
+                                    ModelMap model) {
         if (result.hasErrors()) {
             model.addAttribute("productPicture", productPicture);
             model.addAttribute("errors", result.getAllErrors());
             return "backend/productpicture/addProductPicture";
         }
-
+        redirectAttributes.addAttribute("success", "檔案上傳中，請稍後~")
         return "redirect:/backend/productpicture/listAllProductPictures";
     }
 
     @PutMapping("/updateProductPicture")
-    public String updateProductPicture(@PathVariable Integer productCatNo, @RequestBody ProductPicture productPicture) {
+    public String updateProductPicture(@PathVariable Integer productCatNo,
+                                       @RequestBody ProductPicture productPicture) {
         return "backend/productpicture/updateProductPicture";
     }
 

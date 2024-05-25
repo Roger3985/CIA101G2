@@ -13,6 +13,7 @@ import java.util.Set;
 @Table(name = "title")
 public class Title {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "titleno")
     private Integer titleNo;
     @NotEmpty(message="職位名稱: 請勿空白")

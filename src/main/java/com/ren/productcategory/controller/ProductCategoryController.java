@@ -5,6 +5,8 @@ import com.ren.productcategory.entity.ProductCategory;
 import com.ren.productcategory.service.impl.ProductCategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -14,34 +16,50 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/backend/productCategory")
+@RequestMapping("/backend/productcategory")
 public class ProductCategoryController {
     
     @Autowired
     private ProductCategoryServiceImpl productCategorySvc;
 
+    @GetMapping("/selectProductCategory")
+    public String getProductCategory() {
+        return "backend/productcategory/selectProductCategory";
+    }
+
     @GetMapping("/listOneProductCategory")
-    public ProductCategory getProductCategory(@RequestParam Integer productCatNo) {
-        return productCategorySvc.getOneProductCategory(productCatNo);
+    public String getProductCategory(@RequestParam Integer productCatNo) {
+        return "backend/productcategory/listOneProductCategory";
     }
 
     @GetMapping("/listAllProductCategories")
-    public List<ProductCategory> getAllProductCategories() {
+    public String getAllProductCategories() {
+        return "backend/productcategory/listAllProductCategories";
+    }
+
+    @GetMapping("/addProductCategory")
+    public String toAddProductCategory(ModelMap model) {
+        model.addAttribute("productCategory", new ProductCategory());
+        return "backend/productcategory/addProductCategory";
+    }
+
+    @GetMapping("/updateProductCategory/{productCatNo}")
+    public String toUpdateProductCategory(@PathVariable Integer productCatNo,
+                                        ModelMap model) {
+        model.addAttribute("productCategory", productCategorySvc.getOneProductCategory(productCatNo));
+        return "backend/productcategory/updateProductCategory";
+    }
+
+    @GetMapping("/updateProductCategory")
+    public String toUpdateProductCategory(@ModelAttribute("productCategoryList") List<ProductCategory> list,
+                                        ModelMap model) {
+        model.addAttribute("productCategory", list.get(0));
+        return "backend/productcategory/updateProductCategory";
+    }
+
+    @ModelAttribute("productCategoryList")
+    public List<ProductCategory> getProductCategoryList() {
         return productCategorySvc.getAll();
-    }
-
-    @PostMapping("/addProductCategory")
-    public ProductCategory addProductCategory(@RequestBody ProductCategory productCategory) {
-        return productCategorySvc.addProductCategory(productCategory);
-    }
-
-    @PutMapping("/updateProductCategory")
-    public ProductCategory updateProductCategory(@PathVariable Integer productCatNo, @RequestBody ProductCategory productCategory) {
-        // Ensure the productNo in the path matches the productNo in the request body
-        if (!productCatNo.equals(productCategory.getProductCatNo())) {
-            throw new IllegalArgumentException("Path variable productNo must match the productNo in the request body");
-        }
-        return productCategorySvc.updateProductCategory(productCategory);
     }
 
 //    @DeleteMapping("/productCategories/{pCatNo}")

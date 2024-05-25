@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>商品清單</title>
+    <title>管理員清單</title>
     <!-- Favicon -->
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
@@ -32,7 +32,7 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">全部商品資料:</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">全部管理員資料:</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -72,7 +72,7 @@
                                         </td>
                                         <td th:text="${administrator.admActiveTime}"></td>
                                         <td>
-                                            <form method="get" th:action="@{updateAdministrator}">
+                                            <form method="get" th:action="@{'/backend/administrator/updateAdministrator/' + ${administrator.admNo}}">
                                                 <input type="hidden" name="admNo" th:value="${administrator.admNo}">
                                                 <button type="submit">
                                                     <i class="far fa-edit"></i>

@@ -27,21 +27,19 @@
                             </div>
                             <form method="post" th:action="@{signUp}" th:object="${administrator}" class="user">
                                 <div class="form-group">
-                                    <input name="admName" th:value="*{admName}" type="text" class="form-control form-control-user" id="admName"
-                                           placeholder="請填入姓名">
+                                    <input name="admName" th:value="*{admName}" type="text" class="form-control form-control-user" id="admName" placeholder="請填入姓名">
                                 </div>
                                 <div class="form-group">
-                                    <input name="admEmail" th:value="*{admEmail}" type="email" class="form-control form-control-user" id="admEmail"
-                                        placeholder="請填入信箱">
+                                    <span th:if="${emailError}" th:text="${emailError}" class="error" id="emailError"></span>
+                                    <input name="admEmail" th:value="*{admEmail}" type="email" class="form-control form-control-user" id="admEmail" placeholder="請填入信箱">
                                 </div>
                                 <div class="form-group row">
+                                    <span th:if="${pwdError}" th:text="${pwdError}" class="error" id="pwdError"></span>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input name="admPwd" th:value="*{admPwd}" type="password" class="form-control form-control-user"
-                                            id="admPwd" placeholder="請輸入密碼">
+                                        <input name="admPwd" th:value="*{admPwd}" type="password" class="form-control form-control-user" id="admPwd" placeholder="請輸入密碼">
                                     </div>
                                     <div class="col-sm-6">
-                                        <input name="repeatPwd" type="password" class="form-control form-control-user"
-                                            id="repeatPwd" placeholder="請輸入二次密碼">
+                                        <input name="repeatPwd" type="password" class="form-control form-control-user" id="repeatPwd" placeholder="請輸入二次密碼">
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-user btn-block">
@@ -59,6 +57,27 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- 登出訊息 -->
+                <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="alertModalLabel">提示</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" id="alertModalBody">
+                                <!-- 這裡將顯示錯誤訊息 -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" id="confirmButton">確定</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
