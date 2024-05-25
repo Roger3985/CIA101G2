@@ -49,6 +49,7 @@
               <li class="breadcrumb-item text-nowrap active" aria-current="page">
                 商品
               </li>
+              <li class="breadcrumb-item text-nowrap active" aria-current="page">Product</li>
             </ol>
           </div>
         </div>
@@ -275,10 +276,13 @@
                     <div th:if="${product.productOnShelf}" class="badge-ribbon">
                       <span class="badge bg-danger">最新上市</span>
                     </div>
-                    <div class="product-action">
-                      <a href="#" class="btn btn-outline-primary">
-                        <i class="fi-heart"></i>
-                      </a>
+                    <div class="product-action productitm">
+                      <div class="addToFAVBtn">
+                        <a  class="btn btn-outline-primary">
+                          <input type="hidden" name="productNo" th:value="${product.productNo}">
+                          <i class="fi-heart"></i>
+                        </a>
+                      </div>
                       <a href="#" class="btn btn-outline-primary">
                         <i class="fi-repeat"></i>
                       </a>
@@ -286,13 +290,16 @@
                         <i class="fi-eye"></i>
                       </a>
                     </div>
-                    <div class="product-media">
+                    <div class="product-media productitm">
                       <a href="#">
                         <img class="img-fluid" th:src="@{/frontend/productPic/}" title="" alt="">
                       </a>
-                      <div class="product-cart-btn">
-                        <a href="#" class="btn btn-primary btn-sm w-100"><i class="fi-shopping-cart"></i> Add to cart</a>
+                      <div class="product-cart-btn addToCartBtn">
+                        <input type="hidden" name="productNo" th:value="${product.productNo}"> <!-- Product number -->
+                        <input type="hidden" name="productBuyQty" th:value="1"> <!-- Quantity -->
+                        <a class="btn btn-primary btn-sm w-100 "><i class="fi-shopping-cart"></i> Add to cart</a>
                       </div>
+
                     </div>
                   </div>
                   <div class="product-card-info">
@@ -398,10 +405,11 @@
       url: "/frontend/cart/addproducttocart",
       data: data,
       success: function(data) {
-        console.log("更新成功");
+        console.log("Update successful");
       }
     });
   }
+
 
   var addToCartButtons = document.querySelectorAll(".addToCartBtn");
   addToCartButtons.forEach(function(button) {
@@ -412,7 +420,6 @@
     var button = event.target;
     var row = button.closest('.productitm');
     var productNo = row.querySelector('input[name="productNo"]').value;
-
     var data = {
       productNo: productNo,
     };
@@ -427,7 +434,7 @@
     });
   }
 
-  var addToFAVBtns = document.querySelectorAll(".addToFAVBtn"); // 更正為".addToFAVBtn"
+  var addToFAVBtns = document.querySelectorAll(".addToFAVBtn");
   addToFAVBtns.forEach(function(button) {
     button.addEventListener("click", testAddToFAV);
   });
