@@ -13,7 +13,7 @@
     <!-- Favicon -->
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
-    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+    <th:block th:include="~{frontend/component/plugin/frontendplugin.html :: css}"></th:block>
 </head>
 
 <body>
@@ -74,7 +74,7 @@
                                                 class="fw-500"></span></td>
                                         <td class="p-3" th:text="${mycoupon.coupInfo}"></td>
                                         <td class="p-3" th:text="${mycoupon.coupon.coupDisc}"></td>
-                                        <td class="p-3" th:text="${mycoupon.coupExpDate}">Delivered</td>
+                                        <td class="p-3" th:text="${mycoupon.coupExpDate}"></td>
 <!--                                        <form method="post" th:action="@{}">-->
                                             <td class="p-3 text-end"><span class="badge bg-success m-0">使用</span></td>
 <!--                                        </form>-->

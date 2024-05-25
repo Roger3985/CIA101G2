@@ -14,7 +14,7 @@
     <!-- Favicon -->
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
-    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+    <th:block th:include="~{frontend/component/plugin/frontendplugin.html :: css}"></th:block>
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
 </head>
