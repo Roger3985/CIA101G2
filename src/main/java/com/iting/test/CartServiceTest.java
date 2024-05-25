@@ -15,18 +15,16 @@ import java.util.List;
 public class CartServiceTest {
 
     public static void main(String[] args) {
-        ProductMyFavoriteService service = new ProductMyFavoriteImpl();
+        ProductMyFavoriteImpl productMyFavoriteService = new ProductMyFavoriteImpl();
 
-        // 假设会员编号是 123
-        Integer memNo = 123;
+        // 创建 ProductMyFavoriteRedis 对象
+        ProductMyFavoriteRedis productMyFavoriteRedis = new ProductMyFavoriteRedis();
+        productMyFavoriteRedis.setMemNo(123); // 设置会员编号
+        productMyFavoriteRedis.setProductNo(333); // 设置商品编号
 
-        // 调用 findByKey 方法获取收藏夹中的商品列表
-        List<ProductMyFavoriteRedis> favorites = service.findByKey(memNo);
+        // 调用 addProductMyFavorite 方法
+        productMyFavoriteService.addProductMyFavorite(productMyFavoriteRedis);
 
-        // 打印收藏夹中的商品信息
-        for (ProductMyFavoriteRedis favorite : favorites) {
-            System.out.println("Product No: " + favorite.getProductNo() + ", FavTime: " + favorite.getFavTime());
-        }
     }
 
 

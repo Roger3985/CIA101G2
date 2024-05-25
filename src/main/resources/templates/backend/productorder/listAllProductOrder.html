@@ -13,6 +13,35 @@
        background-color: darkgray;
        opacity: 0.5;}
    </style>
+    <style>
+        .badge-status {
+            display: inline-block;
+            padding: 0.5em 1em;
+            color: white;
+            border-radius: 0.25em;
+            font-size: 14px;
+        }
+        .badge-status-unpaid {
+            background-color: #ffca28; /* 淡橘色 */
+        }
+        .badge-status-failed {
+            background-color: #e57373; /* 淡紅色 */
+        }
+        .badge-status-overtime {
+            background-color: #ffffff; /* 白色 */
+            color: #000; /* 黑色字 */
+            border: 1px solid #000; /* 黑色邊框 */
+        }
+        .badge-status-paid {
+            background-color: #66bb6a; /* 淡綠色 */
+        }
+        .badge-status-refunding {
+            background-color: #42a5f5; /* 藍色 */
+        }
+        .badge-status-refunded {
+            background-color: #1e88e5; /* 深藍色 */
+        }
+    </style>
 </head>
 <body id="page-top">
 <!-- Page Wrapper -->
@@ -65,7 +94,6 @@
                                 </thead>
                                 <tbody>
                                 <th:block th:each="productorder : ${productorderListData}">
-                                    <tr th:class="${productorder.productOrdStat == 50} ? 'completed-order' : ''">
                                         <!-- 你现有的表格单元格内容 -->
                                         <td th:text="${productorder.productOrdNo}"></td>
                                         <td th:if="${productorder.member != null}" th:text="${productorder.member.memNo}"></td>
@@ -95,20 +123,20 @@
                                         <td th:text="${productorder.productRealPrice}"></td>
                                         <td th:text="${productorder.productOrdTime}"></td>
                                         <td>
-                                        <span th:if="${productorder.productStat == 0}">未付款</span>
-                                        <span th:if="${productorder.productStat == 1}">已付款</span>
+                                        <span class="badge-status badge-status-failed" th:if="${productorder.productStat == 0}">未付款</span>
+                                        <span class="badge-status badge-status-paid" th:if="${productorder.productStat == 1}">已付款</span>
                                     </td>
                                         <td>
-                                            <span th:if="${productorder.productOrdStat == 0}">訂單取消</span>
-                                            <span th:if="${productorder.productOrdStat == 10}">揀貨中</span>
-                                            <span th:if="${productorder.productOrdStat == 20}">配送中</span>
-                                            <span th:if="${productorder.productOrdStat == 30}">等待取貨</span>
-                                            <span th:if="${productorder.productOrdStat == 40}">訂單成立</span>
-                                            <span th:if="${productorder.productOrdStat == 50}">訂單完成</span>
-                                            <span th:if="${productorder.productOrdStat == 81}">申請換貨</span>
-                                            <span th:if="${productorder.productOrdStat == 82}">換貨中</span>
-                                            <span th:if="${productorder.productOrdStat == 83}">申請退貨退款</span>
-                                            <span th:if="${productorder.productOrdStat == 84}">退款中</span>
+                                            <span class="badge-status badge-status-failed" th:if="${productorder.productOrdStat == 0}">訂單取消</span>
+                                            <span class="badge-status badge-status-unpaid " th:if="${productorder.productOrdStat == 10}">揀貨中</span>
+                                            <span class="badge-status badge-status-unpaid" th:if="${productorder.productOrdStat == 20}">配送中</span>
+                                            <span class="badge-status badge-status-unpaid" th:if="${productorder.productOrdStat == 30}">等待取貨</span>
+                                            <span class="badge-status badge-status-unpaid" th:if="${productorder.productOrdStat == 40}">訂單成立</span>
+                                            <span class="badge-status badge-status-paid" th:if="${productorder.productOrdStat == 50}">訂單完成</span>
+                                            <span class="badge-status badge-status-unpaid" th:if="${productorder.productOrdStat == 81}">申請換貨</span>
+                                            <span class="badge-status badge-status-unpaid" th:if="${productorder.productOrdStat == 82}">換貨中</span>
+                                            <span  class="badge-status badge-status-refunding" th:if="${productorder.productOrdStat == 83}">申請退貨退款</span>
+                                            <span class="badge-status badge-status-refunded" th:if="${productorder.productOrdStat == 84}">退款中</span>
                                         </td>
 
                                         <td>

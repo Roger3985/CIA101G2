@@ -1,3 +1,45 @@
+var element = $('.floating-chat');
+var myStorage = localStorage;
+
+// if (!myStorage.getItem('chatID')) {
+//     myStorage.setItem('chatID', createUUID());
+// }
+
+setTimeout(function () {
+    element.addClass('enter');
+}, 1000);
+
+element.click(openElement);
+
+function openElement() {
+    var messages = element.find('.messages');
+    var textInput = element.find('.text-box');
+    element.find('>i').hide();
+    element.addClass('expand');
+    element.find('.chat').addClass('enter');
+    element.find('.contact').addClass('expand');
+    var strLength = textInput.val().length * 2;
+    textInput.keydown(onMetaAndEnter).prop("disabled", false).focus();
+    element.off('click', openElement);
+    element.find('.header button').click(closeElement);
+    element.find('#sendMessage').click(sendNewMessage);
+    messages.scrollTop(messages.prop("scrollHeight"));
+}
+
+function closeElement() {
+    element.find('.chat').removeClass('enter').hide();
+    element.find('>i').show();
+    element.removeClass('expand');
+    element.find('.contact').removeClass('expand');
+    element.find('.header button').off('click', closeElement);
+    element.find('#sendMessage').off('click', sendNewMessage);
+    element.find('.text-box').off('keydown', onMetaAndEnter).prop("disabled", true).blur();
+    setTimeout(function () {
+        element.find('.chat').removeClass('enter').show()
+        element.click(openElement);
+    }, 500);
+}
+
 const usernamePage = document.querySelector('#username-page');
 const chatPage = document.querySelector('#chat-page');
 const usernameForm = document.querySelector('#usernameForm');
@@ -15,24 +57,22 @@ let path;
 let webCtx;
 let endPointURL;
 
-window.onload = function() {
-    var usernameInput = document.getElementById('username');
-    if (usernameInput.value) {
-        // e.preventDefault();
-        userName = userNameInput.value.trim();
-        if (userName == "") {
-            alert("請至頁面登入")
-        } else {
-            console.log(userName);
-            HostPoint = `/chat/${userName}`;
-            localhost = window.location.host;
-            path = window.location.pathname;
-            endPointURL = "ws://" + localhost + HostPoint;
-            connect();
-        }
+usernameForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    userName = userNameInput.value.trim();
+    if (userName == "") {
+        alert("請輸入姓名")
+    } else {
+        console.log(userName);
+        HostPoint = `/chat/${userName}`;
+        localhost = window.location.host;
+        path = window.location.pathname;
+        endPointURL = "ws://" + localhost + HostPoint;
+        connect();
+        // usernamePage.classList.add('hidden');
+        // chatPage.classList.remove('hidden');
     }
-};
-
+});
 
 // 設定websocket連線
 // HostPoint = `/chat/${userName}`;
@@ -90,10 +130,10 @@ function connect() {
                 const messageContainer = document.createElement('div');
                 const messageTime = document.createElement('div');
                 if (historyData.sender === userName) {
-                    messageContainer.classList.add("sender");
+                    messageContainer.classList.add("other");
                     messageTime.classList.add("senderTime");
                 } else {
-                    messageContainer.classList.add("receiver");
+                    messageContainer.classList.add("self");
                     messageTime.classList.add("receiverTime");
                 }
                 messageContainer.innerHTML = showMsg;
@@ -108,10 +148,10 @@ function connect() {
             const messageContainer = document.createElement('div');
             const messageTime = document.createElement('div');
             if (message.sender === userName) {
-                messageContainer.classList.add("sender")
+                messageContainer.classList.add("other")
                 messageTime.classList.add("senderTime");
             } else {
-                messageContainer.classList.add("receiver");
+                messageContainer.classList.add("self");
                 messageTime.classList.add("receiverTime");
             }
             messageContainer.innerHTML = message;
@@ -129,7 +169,7 @@ messageInput.addEventListener("keyup", function (e) {
     }
 })
 
-var el_msg_btn = document.getElementById("msg_btn");
+var el_msg_btn = document.getElementById("sendMessage");
 el_msg_btn.addEventListener("click", function () {
     const messageContent = messageInput.value.trim();
     let now = new Date();
@@ -146,10 +186,10 @@ el_msg_btn.addEventListener("click", function () {
     if (messageContent == "") {
         alert("請輸入訊息");
     } else {
-        const messageContainer = document.createElement('div');
-        messageContainer.classList.add("sender")
+        const messageContainer = document.createElement('li');
+        messageContainer.classList.add("other")
         messageContainer.innerHTML = messageContent;
-        const messageTime = document.createElement('div');
+        const messageTime = document.createElement('li');
         messageTime.classList.add("senderTime");
         messageTime.innerHTML = nowStr;
         // messageContainer.appendChild(messageTime);
@@ -162,9 +202,15 @@ el_msg_btn.addEventListener("click", function () {
         }
         webSocket.send(JSON.stringify(jsonobj));
     }
-    chatArea.scrollTop = chatArea.scrollHeight;
+    messagesContainer.finish().animate({
+        scrollTop: messagesContainer.prop("scrollHeight")
+    }, 250);
 });
 
 
-
+function onMetaAndEnter(event) {
+    if (event.keyCode == 13) {
+        sendNewMessage();
+    }
+}
 

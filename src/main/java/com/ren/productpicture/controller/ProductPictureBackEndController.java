@@ -72,6 +72,7 @@ public class ProductPictureBackEndController {
             response.put("message", "沒有上傳圖片");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
+<<<<<<< HEAD
 
         for (MultipartFile file : files) {
             ProductPicture productPicture = new ProductPicture();
@@ -97,6 +98,10 @@ public class ProductPictureBackEndController {
         response.put("message", "檔案上傳成功");
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
+=======
+        redirectAttributes.addAttribute("success", "檔案上傳中，請稍後~");
+        return "redirect:/backend/productpicture/listAllProductPictures";
+>>>>>>> master
     }
 
     @PutMapping("/updateProductPicture")

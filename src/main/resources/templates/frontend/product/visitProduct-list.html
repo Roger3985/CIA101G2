@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -49,6 +49,7 @@
                             <li class="breadcrumb-item text-nowrap active" aria-current="page">
                                 商品
                             </li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page">Product</li>
                         </ol>
                     </div>
                 </div>
@@ -385,6 +386,7 @@
 <!-- script start -->
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
 <!-- End script start -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     function testAddToCart(event) {
         var button = event.target;
@@ -401,16 +403,17 @@
             type: 'POST',
             url: "/frontend/cart/addproducttocart",
             data: data,
-            success: function(data) {
-                console.log("更新成功");
+            success: function (data) {
+                console.log("Update successful");
             }
         });
     }
 
     var addToCartButtons = document.querySelectorAll(".addToCartBtn");
-    addToCartButtons.forEach(function(button) {
+    addToCartButtons.forEach(function (button) {
         button.addEventListener("click", testAddToCart);
     });
+
 
     function testAddToFAV(event) {
         var button = event.target;
@@ -419,22 +422,46 @@
 
         var data = {
             productNo: productNo,
+
         };
 
         $.ajax({
             type: 'POST',
             url: "/frontend/productmyfavorite/addProductTomyFAV",
             data: data,
-            success: function(data) {
-                console.log("加入成功");
+            success: function (data) {
+                console.log("Update successful");
             }
         });
     }
 
-    var addToFAVBtns = document.querySelectorAll(".addToFAVBtn"); // 更正為".addToFAVBtn"
-    addToFAVBtns.forEach(function(button) {
+    var addToFAVBtns = document.querySelectorAll(".addToFAVBtn");
+    addToFAVBtns.forEach(function (button) {
         button.addEventListener("click", testAddToFAV);
     });
+
+    <!-- 商品過濾相關 -->
+    document.querySelectorAll('.btn-outline-primary, .btn-outline-secondary, .btn-outline-info').forEach(button => {
+        button.addEventListener('click', function() {
+            // 在這裡添加按鈕點擊處理邏輯
+            console.log(this.textContent + ' button clicked');
+            // 根據按鈕文字來執行不同的操作
+            switch (this.textContent.trim()) {
+                case '最新上市':
+                    // 處理最新上市的邏輯
+                    break;
+                case '評價最高':
+                    // 處理評價最高的邏輯
+                    break;
+                case '熱門商品':
+                    // 處理熱門商品的邏輯
+                    break;
+                default:
+                    break;
+            }
+        });
+    });
+
 
 </script>
 </body>

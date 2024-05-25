@@ -1,8 +1,8 @@
 package com.howard.rentalorder.controller;
 
-import com.howard.rentalorder.dto.DeleteCantRent;
-import com.howard.rentalorder.dto.RentalOrderRequest;
-import com.howard.rentalorder.dto.SetToCart;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.howard.rentalorder.dto.*;
 import com.howard.rentalorder.entity.RentalOrder;
 import com.howard.rentalorder.service.impl.LogisticsStateService;
 import com.howard.rentalorder.service.impl.RentalCartServiceImpl;
@@ -13,28 +13,24 @@ import com.roger.member.entity.Member;
 import com.roger.member.repository.MemberRepository;
 import com.yu.rental.dao.RentalRepository;
 import com.yu.rental.entity.Rental;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.HmacAlgorithms;
+import org.apache.commons.codec.digest.HmacUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.*;
 
-import static com.howard.util.HmacSignature.generateSignature;
+import static com.utils.JsonUtil.toJson;
+
 
 @Controller
 @RequestMapping("/frontend/rentalorder")
@@ -218,6 +214,21 @@ public class FrontendRentalOrderController {
 
     }
 
+    // 取消訂單
+    @PostMapping("/tryCancelOrder")
+    public ResponseEntity<?> tryCancelOrder(@RequestBody Integer rentalNo, HttpSession session) {
+
+        Member member = (Member) session.getAttribute("loginsuccess");
+        if (member == null) {
+            return ResponseEntity.status(HttpStatus.OK).body(toLogin);
+        }
+
+
+
+        return ResponseEntity.status(HttpStatus.OK).body("ok");
+
+    }
+
     // 給 會員所有訂單頁面 用的 getOnAny
     @GetMapping("/getOnAnyForOrdersPage")
     public String getOnAnyForOrdersPage(@RequestParam(required = false) Byte rentalOrdStat, HttpSession session,
@@ -372,62 +383,77 @@ public class FrontendRentalOrderController {
 
     private static final String CHANNEL_ID = "2005342190";
     private static final String CHANNEL_SECRET = "44c865afc4d0e1d4575ea90a87616108";
-    private static final String REQUEST_URL = "https://sandbox-api-pay.line.me/v3/payments/request";
+    private static final String REQUEST_URL = "https://sandbox-api-pay.line.me";
+    private static final String REQUEST_URI = "/v3/payments/request";
+
+    public static String encrypt(final String keys, final String data) {
+        return toBase64String(HmacUtils.getInitializedMac(HmacAlgorithms.HMAC_SHA_256, keys.getBytes()).doFinal(data.getBytes()));
+    }
+
+    public static String toBase64String(byte[] bytes) {
+        byte[] byteArray = Base64.encodeBase64(bytes);
+        return new String(byteArray);
+    }
 
     @PostMapping("/testLinePay")
-    public void testLinePay() {
-
-        String orderId = "11111";
-        int amount = 100; // 支付金額
-        String currency = "TWD";
-        String productName = "好看衣服";
-        String confirmUrl = "http://localhost:8080/backend/rentalorder/thankForBuying";
-        String cancelUrl = "http://localhost:8080/backend/rentalorder/rentalCart";
-
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("amount", amount);
-        requestBody.put("currency", currency);
-        requestBody.put("orderId", orderId);
-        requestBody.put("packages", new JSONObject().put("id", "package_id").put("amount", amount).put("name", productName));
-        requestBody.put("redirectUrls", new JSONObject().put("confirmUrl", confirmUrl).put("cancelUrl", cancelUrl));
-
-        String nonce = UUID.randomUUID().toString();
-        String data = CHANNEL_SECRET + REQUEST_URL + requestBody.toString() + nonce;
-        String signature = null;
+    public String testLinePay() {
+        System.out.println("有進來方法");
         try {
-            signature = generateSignature(CHANNEL_SECRET, data);
+            ObjectMapper objectMapper = new ObjectMapper();
+            // RequestApi
+            // 此處對應下方Request Body 所需的json格式物件
+            CheckoutPaymentRequestForm form = new CheckoutPaymentRequestForm();
+            form.setAmount(new BigDecimal("100"));
+            form.setCurrency("TWD");
+            form.setOrderId("123451237");
+            System.out.println("有裝完基本form");
+            ProductPackageForm productPackageForm = new ProductPackageForm();
+            productPackageForm.setId("1");
+            productPackageForm.setName("fallElove");
+            productPackageForm.setAmount(new BigDecimal("100"));
+            System.out.println("有裝完productPackageForm");
+            ProductForm productForm = new ProductForm();
+            productForm.setId("1");
+            productForm.setName("testPackage");
+            productForm.setImageUrl("");
+            productForm.setQuantity(new BigDecimal("10"));
+            productForm.setPrice(new BigDecimal("10"));
+            productPackageForm.setProducts(Arrays.asList(productForm));
+            System.out.println("有裝完productForm");
+            form.setPackages(Arrays.asList(productPackageForm));
+            RedirectUrls redirectUrls = new RedirectUrls();
+            redirectUrls.setConfirmUrl("https://www.google.com");
+            form.setRedirectUrls(redirectUrls);
+            System.out.println("有set到r重島url");
+            String nonce = UUID.randomUUID().toString();
+            String requestBody = objectMapper.writeValueAsString(form);
+            String signature = encrypt(CHANNEL_SECRET, CHANNEL_SECRET + REQUEST_URI + toJson(form) + nonce);
+            System.out.println("有設定好簽名了====" + signature);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("X-LINE-ChannelId", CHANNEL_ID);
+            headers.set("X-LINE-Authorization-Nonce", nonce);
+            headers.set("X-LINE-Authorization", signature);
+            System.out.println("有設定好header了===" + headers);
+            HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<String> response = restTemplate.exchange(REQUEST_URI, HttpMethod.POST, entity, String.class);
+            System.out.println("有取到回應喔喔喔===" + response);
+            if (response.getStatusCode() == HttpStatus.OK) {
+                // 解析響應以獲得支付 URL
+                JsonNode rootNode = objectMapper.readTree(response.getBody());
+                String paymentUrl = rootNode.path("info").path("paymentUrl").asText();
+                return "redirect:" + paymentUrl;
+            } else {
+                return "redirect:/frontend/member/loginMember"; // 前往錯誤頁面
+            }
+
+
+
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.out.println("好像哪裡錯了喔====");
         }
-        try {
-            signature = generateSignature(CHANNEL_SECRET, data);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        HttpPost post = new HttpPost(REQUEST_URL);
-        post.setHeader("Content-Type", "application/json");
-        post.setHeader("X-LINE-ChannelId", CHANNEL_ID);
-        post.setHeader("X-LINE-Authorization-Nonce", nonce);
-        post.setHeader("X-LINE-Authorization", signature);
-
-        try {
-            post.setEntity(new StringEntity(requestBody.toString()));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-             CloseableHttpResponse response = httpClient.execute(post)) {
-
-            String responseString = EntityUtils.toString(response.getEntity());
-            System.out.println("Response: " + responseString);
-
-            JSONObject responseJson = new JSONObject(responseString);
-            // 處理 responseJson 以取得交易ID等信息
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
+        return "redirect:/frontend/member/loginMember"; // 前往錯誤頁面
 
     }
 

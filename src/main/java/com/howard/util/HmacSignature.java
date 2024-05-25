@@ -5,7 +5,6 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
 public class HmacSignature {
-
     public static String generateSignature(String secret, String data) throws Exception {
         Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
         SecretKeySpec secret_key = new SecretKeySpec(secret.getBytes(), "HmacSHA256");

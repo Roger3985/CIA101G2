@@ -14,6 +14,7 @@
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
     <th:block th:include="~{frontend/component/plugin/frontendplugin.html :: css}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/frontend/service/frontendChatbackup.css}">
 </head>
 
 <body>
@@ -50,38 +51,29 @@
                 </div>
             </div>
         </div><!-- End Breadcrumb --><!-- Contact us -->
-        <section class="section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 my-3 pe-lg-8">
-                        <h3 class="mb-2 h2">Get in Touch</h3>
-                        <p class="fw-400">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        </p>
-                        <form class="row g-3 pt-3">
-                            <div class="col-md-6"><input type="text" class="form-control" id="type"
-                                                         placeholder="Name*">
-                            </div>
-                            <div class="col-md-6"><input type="email" class="form-control" id="inputEmail4"
-                                                         placeholder="Email*"></div>
-                            <div class="col-12"><input type="text" class="form-control" id="inputAddress"
-                                                       placeholder="Subject*"></div>
-                            <div class="col-12"><textarea class="form-control" placeholder="Leave a comment here"
-                                                          id="floatingTextarea2" rows="4"></textarea></div>
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-primary">Send</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-lg-6 my-3">
-                        <div class="ratio ratio-16x9">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3617.2490359444173!2d121.22244777461775!3d24.95764034136345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x346823ea50c732a5%3A0x1b5e6ee66e9fec49!2z57ev6IKyVGliYU1l6ZmE6Kit5Lit5aOi6IG36KiT5Lit5b-D!5e0!3m2!1szh-TW!2stw!4v1716223305651!5m2!1szh-TW!2stw"
-                                    width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-                                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <div class="user-form" id="username-page" th:if="${session.member != null}"
+                             style="display: none">
+                            <form id="usernameForm">
+                                <input type="hidden" id="username" th:value="${session.member.memName}" required>
+                                <button id="click" style="display: none">Enter Chatroom</button>
+                            </form>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+
+                        <div class="chat-container" id="chat-page" th:if="${session.member != null}">
+
+                            <div class="chat-area" id="chat-messages">
+                                <form id="messageForm" name="messageForm" class="row g-3 pt-3">
+                                    <div class="message-input">
+                                        <input autocomplete="off" type="text" id="message"
+                                               placeholder="Type your message...">
+                                        <button type="button" id="msg_btn">送出</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div th:if="${session.member == null}">
+                            <a th:href="@{/frontend/member/loginMember}">尚未登入喔，請先登入</a>
+                        </div>
         <div class="bg-gray-100 section">
             <div class="container">
                 <div class="row g-4">
@@ -141,8 +133,12 @@
 ========================
 -->
 <!-- script start -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script type="text/javascript" th:src="@{/js/frontend/service/frontendChat.js}"></script>
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
 <!-- End script start -->
 </body>
 
 </html>
+

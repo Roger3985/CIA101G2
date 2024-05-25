@@ -5,14 +5,17 @@ import com.chihyun.servicerecord.dto.ChatMessage;
 
 import com.chihyun.servicerecord.dto.State;
 import com.google.gson.Gson;
+import com.roger.member.entity.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.ModelMap;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
@@ -45,9 +48,9 @@ public class ServiceController {
         staticChatMessageRedisTemplate = this.chatMessageRedisTemplate;
     }
 
-
     @OnOpen
-    public void onOpen(@PathParam("userName") String userName, Session userSession) throws IOException {
+    public void onOpen(@PathParam("userName") String userName,
+                       Session userSession) throws IOException {
         sessionsMap.put(userName, userSession);
 
         System.out.println(staticChatRedisTemplate);
@@ -66,7 +69,6 @@ public class ServiceController {
             }
         }
     }
-
 
     @OnMessage
     public void onMessage(Session userSession, String message) {
@@ -113,7 +115,6 @@ public class ServiceController {
                 }
             }
         }
-
     }
 
     @OnError
@@ -142,12 +143,12 @@ public class ServiceController {
         staticChatRedisTemplate.opsForList().rightPush(key, message);
     }
 
-    private List<String> getHistoryMsg(String sender, String receiver) {
+    private List<String> getHistoryMsg(String sender,
+                                       String receiver) {
         String getKey = new StringBuilder(sender).append(":").append(receiver).toString();
         List<String> historyData = staticChatRedisTemplate.opsForList().range(getKey, 0, -1);
         return historyData;
     }
-
 
 }
 

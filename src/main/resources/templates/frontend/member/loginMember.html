@@ -13,7 +13,7 @@
     <!-- Favicon -->
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
-    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+    <th:block th:include="~{frontend/component/plugin/frontendplugin.html :: css}"></th:block>
 </head>
 
 <body>
@@ -170,6 +170,8 @@
         <!-- Footer -->
         <footer th:replace="frontend/component/footer :: footer"></footer>
         <!-- End Footer -->
+
+        <div th:replace="frontend/component/modalmsg :: modalmsg"></div>
     </div>
     <!--
     ========================
@@ -179,6 +181,8 @@
     <!-- script start -->
     <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
     <!-- End script start -->
+    <script th:src="@{/js/frontend/component/modalmsg.js}"></script>
+
     <!-- jQuery code -->
 </body>
 <script>
