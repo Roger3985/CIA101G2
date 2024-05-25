@@ -65,14 +65,6 @@ public class RentalOrderServiceImpl implements RentalOrderService {
             rentalOrder.setrentalPayStat((Byte) map.get("rentalPayStat"));
         }
         if (map.containsKey("rentalOrdStat")) {
-            // 若訂單狀態 = 50(訂單完成)，則改變歸還狀態為 1(已歸還)、改變明細中所有商品狀態為 0(上架)
-            if ((byte)map.get("rentalOrdStat") == (byte) 50) {
-                rentalOrder.setRtnStat((byte) 1);
-                for (RentalOrderDetails detail : details) {
-                    detail.getRental().setRentalStat((byte) 0);
-                }
-            }
-
             rentalOrder.setrentalOrdStat((Byte) map.get("rentalOrdStat"));
         }
         if (map.containsKey("rtnStat")) {
@@ -96,6 +88,13 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         }
         if (map.containsKey("rtnCompensation")) {
             rentalOrder.setRtnCompensation((BigDecimal) map.get("rtnCompensation"));
+        }
+        // 若訂單狀態 = 50(訂單完成)，則改變歸還狀態為 1(已歸還)、改變明細中所有商品狀態為 0(上架)
+        if ((byte)map.get("rentalOrdStat") == (byte) 50) {
+            rentalOrder.setRtnStat((byte) 1);
+            for (RentalOrderDetails detail : details) {
+                detail.getRental().setRentalStat((byte) 0);
+            }
         }
         repository.save(rentalOrder);
 
@@ -289,10 +288,12 @@ public class RentalOrderServiceImpl implements RentalOrderService {
             order.setrentalOrdStat((byte) 30);
         }
 
+        String uuId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 20);
+
         AllInOne all = new AllInOne("");
         AioCheckOutALL obj = new AioCheckOutALL();
         // 訂單號碼(規定大小寫英文+數字)
-        String merchantTradeNo = "Member" + order.getMember().getMemName() + order.getrentalOrdNo() + "TTT";
+        String merchantTradeNo = uuId;
         obj.setMerchantTradeNo( merchantTradeNo );
         // 交易時間(先把毫秒部分切掉)
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
