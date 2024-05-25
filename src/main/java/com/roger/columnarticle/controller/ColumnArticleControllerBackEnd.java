@@ -60,7 +60,8 @@ public class ColumnArticleControllerBackEnd {
      */
     @GetMapping("/addColumnArticleData")
     public String addColumnArticleData(ModelMap modelMap) {
-        modelMap.addAttribute("columnarticle", new ColumnArticle());
+        ColumnArticle columnArticle = new ColumnArticle();
+        modelMap.addAttribute("columnArticle", columnArticle);
         return "backend/columnarticle/addColumnArticle";
     }
 
@@ -81,12 +82,19 @@ public class ColumnArticleControllerBackEnd {
         if (result.hasErrors()) {
             modelMap.addAttribute("columnArticleListData", columnArticleService.findAll());
             modelMap.addAttribute("administratorListData", administratorService.getAll());
-            modelMap.addAttribute("errors", result);
+            modelMap.addAttribute("errors", result.getAllErrors());
+            modelMap.addAttribute("columnArticle", columnArticle);
             return "backend/columnarticle/addColumnArticle";
         }
 
-        // 新增專欄文章
-        columnArticleService.addColumnArticle(columnArticle);
+        try {
+            // 新增專欄文章
+            columnArticleService.addColumnArticle(columnArticle);
+        } catch (Exception e) {
+            // 處理異常情況，例如數據庫操作失敗
+            modelMap.addAttribute("errorMessage", "新增專欄文章時發生錯誤：" + e.getMessage());
+            return "backend/columnarticle/addColumnArticle";
+        }
 
         return "redirect:/backend/columnarticle/listAllColumnArticle";
     }

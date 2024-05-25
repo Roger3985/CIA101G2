@@ -1,0 +1,207 @@
+    <!DOCTYPE html>
+    <html lang="en" data-bs-theme="light" xmlns:th="http://www.thymeleaf.org">
+
+    <head><!-- metas -->
+        <meta charset="utf-8">
+        <meta name="author" content="pxdraft">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+        <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
+        <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template">
+        <!-- title -->
+        <title>ShopApp - eCommerce Bootstrap 5 Template</title>
+        <!-- Favicon -->
+        <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+        <!-- CSS Template -->
+        <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+        <style>
+            #preview {
+                max-width: 100px;
+                max-height: 100px;
+                margin-top: 10px;
+                /*border: 1px solid #ccc;*/
+                /*padding: 5px;*/
+            }
+        </style>
+    </head>
+
+    <body>
+    <!-- 通用插件 -->
+    <th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block>
+    <!-- 通用插件 -->
+        <!--
+        ========================
+            Wrapper
+        ========================
+        -->
+        <div class="wrapper">
+            <!-- header height -->
+            <div class="header-height-bar" style="min-height: 104.865px;"></div>
+            <!-- Header -->
+            <header th:replace="frontend/component/header :: header"></header>
+            <!-- End Header -->
+            <!-- Main -->
+            <main>
+                <!-- Breadcrumb -->
+                <div class="py-3 bg-gray-100">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 my-2">
+                                <h1 class="m-0 h4 text-center text-lg-start">Profile</h1>
+                            </div>
+                            <div class="col-lg-6 my-2">
+                                <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
+                                    <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/}"><i
+                                                class="bi bi-home"></i>Home</a></li>
+                                    <li class="breadcrumb-item text-nowrap active" aria-current="page">Profile</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- End Breadcrumb --><!-- Table -->
+                <div class="py-6">
+                    <div class="container">
+                        <div class="row">
+                            <th:block th:insert="~{frontend/member/component/profile-menu.html}"></th:block><!-- Profile Menu -->
+                            <div class="col-lg-8 col-xxl-9">
+                                <div class="card mb-5">
+                                    <div class="card-header py-3">
+                                        <div>
+                                            <h5 class="m-0" style="display: inline;">ClickLikes</h5>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <label class="form-label">
+                                                收藏的專欄文章
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <div th:each="clicklike : ${clickLikeList}" th:unless="${#lists.isEmpty(clickLikeList)}">
+                                                <a href="#" class="clicklike-link">
+                                                    <input type="button" class="form-control" th:value="${clicklike.columnArticle.artTitle}" readonly style="text-align: left; color: black;">
+                                                    <input type="hidden" id="artContent" class="form-control" th:value="${clicklike.columnArticle.artContent}">
+                                                    <input type="hidden" id="artTime" class="form-control" th:value="${clicklike.columnArticle.artTime}">
+                                                    <input type="hidden" id="memNo" class="form-control" th:value="${clicklike.member.memNo}">
+                                                    <input type="hidden" id="artNo" class="form-control" th:value="${clicklike.columnArticle.artNo}">
+                                                </a>
+                                            </div>
+                                            <!-- 如果沒有點讚的專欄文章 -->
+                                            <p th:if="${#lists.isEmpty(clickLikeList)}" class="form-control" style="text-align: left; color: black;">
+                                                你沒有點讚的專欄文章
+                                            </p>
+                                            <!-- 專欄文章內容的彈出對話框 -->
+                                            <div class="modal fade" id="articleContentModal" tabindex="-1" aria-labelledby="articleContentModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="articleTitle">專欄內容</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+<!--                                                            <div id="articleTitle" style="text-align: left; color: black; font-size: 1em;"></div>-->
+                                                            <div id="articleContentBody"></div>
+                                                            <div id="articleTime" style="text-align: right; color: grey; font-size: 0.8em;"></div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-primary" id="confirmButton">關閉</button>
+                                                            <!-- 取消按鈕 -->
+                                                            <button type="button" class="btn btn-danger" id="deleteButton">取消點讚</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Content -->
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <!-- End Main -->
+            <!-- Footer -->
+            <footer th:replace="frontend/component/footer :: footer"></footer>
+            <!-- End Footer -->
+        </div>
+        <!--
+        ========================
+           End Wrapper
+        ========================
+        -->
+        <!-- script start -->
+        <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
+        <!-- End script start -->
+    </body>
+    <script>
+        $(document).ready(function(){
+            // 將點擊事件綁定到具有類 .clicklike-link 的元素
+            $(document).on("click", ".clicklike-link", function(event){
+                event.preventDefault();
+                var artTitle = $(this).find("input[type=button]").val(); // 獲取專欄文章的標題
+                var artContent = $(this).find("input[id=artContent]").val(); // 獲取專欄文章的內容
+                var artTime = $(this).find("input[id=artTime]").val(); // 獲取專欄文章上架的時間
+
+                $("#articleTitle").text(artTitle); // 在模態框中顯示專欄文章的標題
+                $("#articleContentBody").text(artContent); // 在模態框中顯示專欄文章的內容
+                $("#articleTime").text(artTime); // 在模態框中顯示專欄文章上架的時間
+
+                // 將 memNo 保存到變數中
+                var memNo = $(this).find("input[id=memNo]").val();
+                // 將 artNo 保存在變數中
+                var artNo = $(this).find("input[id=artNo]").val();
+
+                console.log("memNo:", memNo);
+                console.log("artNo:", artNo);
+
+                // 將 memNo 和 artNo 顯示在模態框中
+                $("#articleContentModal").data('memNo', memNo);
+                $("#articleContentModal").data('artNo', artNo);
+
+                $("#articleContentModal").modal("show"); // 顯示模態框
+            });
+
+            // 刪除按鈕點擊事件
+            $("#deleteButton").click(function(){
+                // 獲取會員編號跟文章編號或其他必要的信息
+                var memNo = $("#articleContentModal").data('memNo');
+                var artNo = $("#articleContentModal").data('artNo');
+
+                console.log("memNo:", memNo);
+                console.log("artNo:", artNo);
+
+                // 發送 Ajax 請求取消點讚
+                $.ajax({
+                    url: '/frontend/columnarticle/unlike/' + memNo + '/' + artNo, // 注意這裡將 memNo 和 artNo 作為路徑變量傳遞
+                    method: 'POST',
+                    contentType: 'application/json',
+                    success: function(response){
+                        // 取消點讚成功後的操作
+                        console.log("取消點讚成功");
+                        alert("取消點讚成功");
+                        $("#articleContentModal").modal("hide"); // 隱藏彈出對話框
+                        location.reload(); // 重新刷新頁面
+                        // 可以添加其他更新用戶界面的操作
+                    },
+                    error: function(xhr, status, error){
+                        // 處理刪除失敗的情況
+                        console.error("取消點讚失敗:", error);
+                    }
+                });
+            });
+
+            // 點選關閉按鈕時關閉模態框
+            $(".close").click(function(){
+                $("#articleContentModal").modal("hide");
+            });
+
+            // 點擊確認按鈕時關閉模態框
+            $("#confirmButton").click(function(){
+                $("#articleContentModal").modal("hide");
+            });
+        });
+    </script>
+
+</html>
