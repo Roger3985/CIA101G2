@@ -32,6 +32,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -166,9 +167,14 @@ public class ProductOrderController {
 
 
     @PostMapping("insertOrder")
-    public String insertOrder(@Validated(Create.class) CartRedis cartRedis, BindingResult result, ModelMap model, HttpSession session) {
+    public String insertOrder(@Validated(Create.class) CartRedis cartRedis,
+                              BindingResult result,
+                              ModelMap model,
+                              HttpSession session,
+                              RedirectAttributes redirectAttributes) {
         Member myData = (Member) session.getAttribute("loginsuccess");
         if (myData == null) {
+            redirectAttributes.addAttribute("errorMessage", "請先登入帳號!");
             return "redirect:/frontend/member/loginMember";
         }
 
