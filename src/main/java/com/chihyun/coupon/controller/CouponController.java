@@ -52,15 +52,15 @@ public class CouponController {
     public String insert(@Valid Coupon coupon, BindingResult result, ModelMap modelMap,
                          @RequestParam(name = "coupExpDate") String coupExpDate,
                          @RequestParam(name = "coupRelDate") String coupRelDate) throws IOException {
-
-        if (result.hasFieldErrors()) {
-            List<String> errorMessage = new ArrayList<>();
-            for (FieldError error : result.getFieldErrors()) {
-                errorMessage.add(error.getDefaultMessage());
-                modelMap.addAttribute("errors", errorMessage);
-                return "backend/coupon/addCoupon";
-            }
-        }
+//
+//        if (result.hasFieldErrors()) {
+//            List<String> errorMessage = new ArrayList<>();
+//            for (FieldError error : result.getFieldErrors()) {
+//                errorMessage.add(error.getDefaultMessage());
+//                modelMap.addAttribute("errors", errorMessage);
+//                return "backend/coupon/addCoupon";
+//            }
+//        }
 
         result = removeFieldError(coupon, result, "coupExpDate");
         result = removeFieldError(coupon, result, "coupRelDate");
