@@ -1,10 +1,14 @@
 package com.yu.rentalmyfavorite.controller;
 
+import com.google.gson.Gson;
 import com.roger.member.entity.Member;
 import com.roger.member.service.impl.MemberServiceImpl;
 import com.yu.rental.entity.Rental;
 import com.yu.rental.service.RentalServiceImpl;
 
+import com.yu.rentalcategory.dao.RentalCategoryRepository;
+import com.yu.rentalcategory.entity.RentalCategory;
+import com.yu.rentalcategory.service.RentalCategoryServiceImpl;
 import com.yu.rentalmyfavorite.dto.AddToWishList;
 import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
 import com.yu.rentalmyfavorite.service.RentalMyFavoriteServiceImpl;
@@ -21,12 +25,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+
 @Controller
 @RequestMapping("/frontend/rentalmyfavorite") //對應資料夾路徑
 public class RentalMyFavoriteFrontEnd {
 
     @Autowired  // 自動裝配
     private RentalMyFavoriteServiceImpl rentalMyFAVService;
+    @Autowired
+    private RentalCategoryServiceImpl rentalCategoryService;
     @Autowired
     private RentalServiceImpl rentalService;
     @Autowired
@@ -42,6 +50,7 @@ public class RentalMyFavoriteFrontEnd {
     // 瀏覽全部最愛清單頁面 (前台)
     @GetMapping("/myRentalFAV")
     public String myRentalFAV(ModelMap model, HttpSession session) {
+
         // 檢查用戶是否登錄，重定向到登錄頁面
         Member myData = (Member) session.getAttribute("loginsuccess");
         if (myData == null) {
@@ -50,15 +59,24 @@ public class RentalMyFavoriteFrontEnd {
         Integer memNo = myData.getMemNo();
         List<AddToWishList> addToWishData = rentalMyFAVService.findByMemNo(memNo);
 
-        // 從 Redis 取出資料並設置到會話中
-        addToWishData.forEach(addToWish -> {
-            Map<String, String> wishDetails = rentalMyFAVService.getWish(memNo, addToWish.getRentalNo());
-            session.setAttribute("rentalName" + addToWish.getRentalNo(), wishDetails.get("rentalName"));
-            session.setAttribute("rentalPrice" + addToWish.getRentalNo(), wishDetails.get("rentalPrice"));
+        // 從 Redis 取出資料並設置到會話中 (wishDetails)
+        List<Map<String, String>> redisData = rentalMyFAVService.getWishFromRedis(memNo.toString());
+        redisData.forEach(wishDetails -> {
+            session.setAttribute("rentalName" + wishDetails.get("rentalNo"), wishDetails.get("rentalName"));
+            session.setAttribute("rentalSize" + wishDetails.get("rentalNo"), wishDetails.get("rentalSize"));
+
+            // 查詢rentalCategory表格中的rentalDesPrice屬性
+            Integer rentalCatNo = Integer.valueOf(wishDetails.get("rentalCatNo"));
+            RentalCategory rentalCategory = rentalCategoryService.findRentalCategory_RentalCatNo(rentalCatNo).orElse(null);
+            if (rentalCategory != null) {
+                session.setAttribute("rentalDesPrice" + wishDetails.get("rentalNo"), rentalCategory.getRentalDesPrice().toString());
+            } else {
+                session.setAttribute("rentalDesPrice" + wishDetails.get("rentalNo"), "N/A");
+            }
         });
 
-        model.addAttribute("myData", myData);
-        model.addAttribute("addToWishData", addToWishData);
+        model.addAttribute("myData", myData);  //會員資訊
+        model.addAttribute("addToWishData", addToWishData); //最愛清單
         return "/frontend/rentalmyfavorite/myRentalFAV";
     }
 
@@ -73,18 +91,23 @@ public class RentalMyFavoriteFrontEnd {
     @ResponseBody
     public Map<String, String> addWish(@RequestBody Map<String, Object> requestData,
                                        ModelMap model, HttpSession session) {
+
         Map<String, String> response = new HashMap<>();
 
+        //使用Gson對象的toJson方法，將response轉換為JSON格式
+        Gson gson = new Gson();
+        String abc = gson.toJson(response);
+
         String rentalNo = requestData.get("rentalNo").toString();
-        String rentalFavTimeStr = (String) requestData.get("rentalFavTime");
-        Timestamp rentalFavTime = null;
+        String rentalFavTimeStr = requestData.get("rentalFavTime").toString(); // 修改這裡
+        Timestamp rentalFavTime;
 
         // rentalFavTime 日期取得
         try {
             Instant instant = Instant.parse(rentalFavTimeStr);
             rentalFavTime = Timestamp.from(instant);
         } catch (DateTimeParseException e) {
-            response.put("message", "Invalid date format");
+            response.put("message", "日期格式無效");
             return response;
         }
 
@@ -106,14 +129,11 @@ public class RentalMyFavoriteFrontEnd {
             addToWishList.setMemNo(memNo); // 匯入會員編號
             addToWishList.setRentalNo(Integer.valueOf(rentalNo)); // 匯入租借品編號
 
-            rentalMyFAVService.addRentalFav(addToWishList); // 新增資料至資料庫
-            System.out.println("抓到addToWishList (我是去sql)：" + addToWishList);
-
             Map<String, String> wishDetails = new HashMap<>();
             wishDetails.put("rentalNo", rentalNo);
             wishDetails.put("memNo", String.valueOf(memNo)); // 將memNo轉換為字串
             wishDetails.put("rentalFavTime", rentalFavTime.toString());
-            rentalMyFAVService.addWish(memNo, wishDetails); // 新增到 Redis
+            rentalMyFAVService.addWish(String.valueOf(memNo), wishDetails); // 新增到 Redis
             System.out.println("抓到wishDetails (我是去redis)：" + wishDetails);
 
             List<AddToWishList> rentalMyFAVs = rentalMyFAVService.findByMemNo(myData.getMemNo());
@@ -128,8 +148,6 @@ public class RentalMyFavoriteFrontEnd {
         }
         return response;
     }
-
-
 
 
     /**
@@ -159,7 +177,7 @@ public class RentalMyFavoriteFrontEnd {
 
             rentalMyFAVService.deleteWish(memNo, rentalNo); // 從 Redis 刪除
             List<AddToWishList> addToWishList = rentalMyFAVService.findByMemNo(memNo); // 更新清單
-            session.setAttribute("memNo", memNo);
+            session.setAttribute("addToWishList", addToWishList);
             response.put("addToWishList", addToWishList);
             response.put("message", "Success");
 

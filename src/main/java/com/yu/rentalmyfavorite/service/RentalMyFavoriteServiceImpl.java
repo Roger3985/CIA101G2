@@ -1,11 +1,14 @@
 package com.yu.rentalmyfavorite.service;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import com.roger.member.repository.MemberRepository;
 import com.yu.rental.dao.RentalRepository;
+import com.yu.rentalcategory.dao.RentalCategoryRepository;
+import com.yu.rentalcategory.entity.RentalCategory;
 import com.yu.rentalmyfavorite.dao.RentalMyFavoriteRepository;
 import com.yu.rentalmyfavorite.dto.AddToWishList;
 import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
@@ -21,14 +24,13 @@ import javax.annotation.PostConstruct;
 @Service
 public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
 
-//    private static StringRedisTemplate staticRentalWishRedisTemplate;
-
     @Autowired //自動裝配
     private RentalMyFavoriteRepository repository;
     @Autowired
     private RentalRepository rentalRepository;
     @Autowired
     private MemberRepository memRepository;
+
 
     //redis使用
     @Autowired
@@ -38,25 +40,35 @@ public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
     //----------------------------------------------------------------------------------------------------------------------
     //主要為redis使用：
 
-    // 從 Redis 取得最愛清單
+    // 從 Redis 取得最愛清單 (依據key值搜索)
     @Override
-    public Map<String, String> getWish(Integer memNo, Integer rentalNo) {
-        Map<Object, Object> result = rentalWishRedisTemplate.opsForHash().entries(memNo.toString() + ":" + rentalNo.toString());
-        Map<String, String> resultMap = new HashMap<>();
-        result.forEach((key, value) -> resultMap.put(key.toString(), value.toString()));
-        return resultMap;
+    public List<Map<String, String>> getWishFromRedis(String memNo) {
+
+        Set<String> keys = rentalWishRedisTemplate.keys("member:" + memNo + ":myFAVItem:*");
+        List<Map<String, String>> resultList = new ArrayList<>();
+        if (keys != null) {
+            for (String key : keys) {
+                Map<Object, Object> result = rentalWishRedisTemplate.opsForHash().entries(key);
+                Map<String, String> resultMap = new HashMap<>();
+                result.forEach((k, v) -> resultMap.put(k.toString(), v.toString()));
+                resultList.add(resultMap);
+            }
+        }
+        return resultList;
     }
 
     // 刪除 Redis 中的最愛清單
     @Override
     public void deleteWish(Integer memNo, Integer rentalNo) {
-        rentalWishRedisTemplate.opsForHash().delete(memNo.toString(), rentalNo.toString());
+        String key = "member:" + memNo + ":myFAVItem:" + rentalNo;
+        rentalWishRedisTemplate.delete(key);
     }
 
     // 加入最愛清單到 Redis
     @Override
-    public void addWish(Integer memNo, Map<String, String> wishDetails) {
-        rentalWishRedisTemplate.opsForHash().putAll(memNo.toString(), wishDetails);
+    public void addWish(String memNo, Map<String, String> wishDetails) {
+        rentalWishRedisTemplate.opsForHash().putAll("member : " + memNo.toString()
+                          + ": myFAVItem : " + wishDetails.get("rentalNo"), wishDetails);
     }
 
     //查詢(memNo)
