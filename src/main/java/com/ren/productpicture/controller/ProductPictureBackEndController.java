@@ -1,29 +1,29 @@
 package com.ren.productpicture.controller;
 
+import com.ren.product.entity.Product;
 import com.ren.product.service.impl.ProductServiceImpl;
 import com.ren.productpicture.entity.ProductPicture;
 import com.ren.productpicture.service.impl.ProductPictureServiceImpl;
-import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import com.roger.member.service.impl.MemberServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.ren.util.Validator.validateFileType;
@@ -39,11 +39,7 @@ public class ProductPictureBackEndController {
     private ProductServiceImpl productSvc;
 
     @Autowired
-    private RabbitTemplate rabbitTemplate;
-
-    @Autowired
-    private AmqpAdmin amqpAdmin;
-
+    private MemberServiceImpl memberSvc;
 
     @GetMapping("/selectProductPicture")
     public String toProductPicture() {
@@ -55,34 +51,69 @@ public class ProductPictureBackEndController {
         return "/backend/productpicture/listOneProductPicture";
     }
 
-    @GetMapping("/listAllProductCategories")
+    @GetMapping("/listAllProductPictures")
     public String getAllProductCategories() {
-        return "/backend/productpicture/listAllProductPicture";
+        return "/backend/productpicture/listAllProductPictures";
     }
 
     @GetMapping("/addProductPicture")
-    public String toAddProductPicture(Model model) {
-        model.addAttribute("productPicture", new ProductPicture());
+    public String toAddProductPicture(ModelMap model) {
+        model.addAttribute("productList", productSvc.getAll());
         return "backend/productpicture/addProductPicture";
     }
 
-    @GetMapping("/addProductPicture/add")
-    public String AddProductPicture(@Valid ProductPicture productPicture,
-                                    BindingResult result,
-                                    RedirectAttributes redirectAttributes,
-                                    ModelMap model) {
-        if (result.hasErrors()) {
-            model.addAttribute("productPicture", productPicture);
-            model.addAttribute("errors", result.getAllErrors());
-            return "backend/productpicture/addProductPicture";
+    @PostMapping("/addProductPicture/add")
+    public ResponseEntity<Map<String, Object>> upload(@RequestParam("productNo") Integer productNo,
+                                                      @RequestParam("productPic") MultipartFile[] files) throws IOException {
+        Map<String, Object> response = new HashMap<>();
+
+        if (files.length == 0) {
+            response.put("success", false);
+            response.put("message", "沒有上傳圖片");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-        redirectAttributes.addAttribute("success", "檔案上傳中，請稍後~")
-        return "redirect:/backend/productpicture/listAllProductPictures";
+
+        for (MultipartFile file : files) {
+            ProductPicture productPicture = new ProductPicture();
+            Product product = productPicture.getProduct();
+            product.setProductNo(productNo);
+            byte[] upfile = file.getBytes();
+            String fileType = file.getContentType();
+            productPicture.setMimeType(fileType);
+
+            // 檢查檔案類別，如果是jpeg或png等已壓縮檔案，直接上傳，如果不是，執行壓縮
+            if (validateFileType(fileType)) {
+                productPicture.setProductPic(upfile);
+                productPictureSvc.addProductPicture(productPicture);
+            } else {
+                productPictureSvc.storeFile(upfile, productPicture);
+            }
+            // 這裡是將上傳成功消息傳送到RabbitMQ
+            String productName = productSvc.getOneProduct(productNo).getProductName();
+            notifyUploadSuccess(productNo, productName);
+        }
+
+        response.put("success", true);
+        response.put("message", "檔案上傳成功");
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PutMapping("/updateProductPicture")
-    public String updateProductPicture(@PathVariable Integer productCatNo,
-                                       @RequestBody ProductPicture productPicture) {
+    public String updateProductPicture(@ModelAttribute("productPictureList") List<ProductPicture> productPictureList,
+                                       ModelMap model) {
+        model.addAttribute("productPicture", productPictureList.get(0));
+        model.addAttribute("productList", productSvc.getAll());
+        model.addAttribute("memberList", memberSvc.findAll());
+        return "backend/productpicture/updateProductPicture";
+    }
+
+    @GetMapping("/updateProductPicture/{productPicNo}")
+    public String toUploadPictures(@PathVariable Integer productPicNo,
+                                   ModelMap model) {
+        model.addAttribute("productPicture", productPictureSvc.getOneProductPicture(productPicNo));
+        model.addAttribute("productList", productSvc.getAll());
+        model.addAttribute("memberList", memberSvc.findAll());
         return "backend/productpicture/updateProductPicture";
     }
 
@@ -91,15 +122,10 @@ public class ProductPictureBackEndController {
         productPictureSvc.deleteProductPicture(productPicNo);
     }
 
-    @GetMapping("/uploadPictures")
-    public String toUploadPictures(ModelMap model) {
-        model.addAttribute("productPicture", new ProductPicture());
-        model.addAttribute("productList", productSvc.getAll());
-        return "backend/productpicture/uploadPictures";
-    }
-
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@Valid ProductPicture productPicture, BindingResult result, ModelMap model,
+    public ResponseEntity<String> upload(@Valid ProductPicture productPicture,
+                                         BindingResult result,
+                                         ModelMap model,
                                              @RequestParam("productPic") MultipartFile file) throws IOException {
 
         if (file.isEmpty()) {
@@ -228,6 +254,14 @@ public class ProductPictureBackEndController {
     @ModelAttribute("productPictureList")
     public List<ProductPicture> getProductPictureList() {
         return productPictureSvc.getAll();
+    }
+
+    private void notifyUploadSuccess(Integer productNo, String productName) {
+        // 這裡是將消息傳送到RabbitMQ的邏輯，您需要根據實際情況實作
+        // 可以使用 RabbitTemplate 來傳送消息
+//        String productInfo = productNo.toString() + " : " + productName;
+//        String message =  " 的圖片上傳成功。";
+//        rabbitTemplate.convertAndSend("exchangeName", "routingKey", message);
     }
     
     /**

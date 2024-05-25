@@ -12,6 +12,14 @@ function connect() {
     });
 }
 
+var onlineUsersSpan = document.getElementById('online-users');
+
+function subscribeToOnlineUsers() {
+    stompClient.subscribe('/topic/onlineUsers', function (message) {
+        onlineUsersSpan.textContent = message.body;
+    });
+}
+
 // 獲取當前用戶的識別標識
 function fetchCurrentUser() {
     return fetch('/backend/getCurrentUser')
@@ -20,6 +28,33 @@ function fetchCurrentUser() {
             currentUserAdmNo = data;
             console.log('當前用戶 admNo: ' + currentUserAdmNo);
         });
+}
+
+// 創建專屬佇列
+function createUserQueue(userAdmNo) {
+    fetch('/backend/createUserQueue', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            userAdmNo: userAdmNo
+        })
+    })
+        .then(response => response.text())
+        .then(data => {
+            console.log(data);
+        });
+}
+
+// 訂閱專屬佇列
+function subscribeToUserQueue() {
+    var userQueue = '/queue/user-' + currentUserAdmNo;
+    stompClient.subscribe(userQueue, function (message) {
+        var messageObject = JSON.parse(message.body);
+        console.log('收到动态消息: ' + message.body);
+        showMessage(messageObject);
+    });
 }
 
 // 根據用戶職位訂閱相關佇列

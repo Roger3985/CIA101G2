@@ -59,4 +59,11 @@ public class RabbitMQListener {
     public void listenBoss(String message) {
         messagingTemplate.convertAndSend("/topic/boss", message);
     }
+
+//    @RabbitListener(queues = "#{dynamicQueueService.queueNames}")
+//    public void listenDynamicQueue(String message) {
+//        JsonNode messageObject = new ObjectMapper().readTree(message);
+//        String userAdmNo = messageObject.get("userAdmNo").asText();
+//        messagingTemplate.convertAndSend("/queue/user-" + userAdmNo, message);
+//    }
 }

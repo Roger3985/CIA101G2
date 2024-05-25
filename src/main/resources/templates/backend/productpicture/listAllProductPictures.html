@@ -4,43 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ListAll</title>
-    <!-- Favicon -->
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
-    <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
-
 </head>
 <body id="page-top">
 <div th:replace="backend/component/loading :: loading"></div>
-<!-- Page Wrapper -->
 <div id="wrapper">
-    <!-- Sidebar -->
     <ul th:replace="backend/component/sidebar :: sidebar"></ul>
-    <!-- End of Sidebar -->
-    <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
-        <!-- Main Content -->
         <div id="content">
-            <!-- Topbar -->
             <nav th:replace="backend/component/nav :: nav"></nav>
-            <!-- End of Topbar -->
-            <!-- Begin Page Content -->
             <div class="container-fluid">
                 <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
                 <!-- 內容請寫在這裡呦~~~~ -->
 
 
-
+                <div class="progress-container">
+                    <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                </div>
             </div>
-            <!-- /.container-fluid -->
         </div>
-        <!-- End of Main Content -->
-
-        <!-- Footer -->
         <footer th:replace="backend/component/bottom :: bottom"></footer>
-        <!-- End of Footer -->
-        <!-- 通知訊息 -->
         <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -51,7 +36,6 @@
                         </button>
                     </div>
                     <div class="modal-body" id="alertModalBody">
-                        <!-- 這裡將顯示錯誤訊息 -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-dismiss="modal" id="confirmButton">確定</button>
@@ -60,21 +44,61 @@
             </div>
         </div>
     </div>
-    <!-- End of Content Wrapper -->
 </div>
-<!-- End of Page Wrapper -->
-
-<!-- Scroll to Top Button-->
 <a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
-<!-- Logout Modal-->
 <div th:replace="backend/component/logout :: logout"></div>
-
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
-<!-- Page level plugins -->
 <script th:src="@{/backend/vendor/datatables/jquery.dataTables.min.js}"></script>
 <script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-<!-- Page level custom scripts -->
 <script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
+<script>
+    var stompClient = null;
+    var currentUserAdmNo = null;
 
+    function connect() {
+        var socket = new SockJS('/admin');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            console.log('已連接: ' + frame);
+            subscribeToUserQueue();
+        });
+    }
+
+    function fetchCurrentUser() {
+        return fetch('/backend/getCurrentUser')
+            .then(response => response.json())
+            .then(data => {
+                currentUserAdmNo = data;
+                console.log('當前用戶 admNo: ' + currentUserAdmNo);
+            });
+    }
+
+    function subscribeToUserQueue() {
+        var queue = '/queue/user-' + currentUserAdmNo;
+        stompClient.subscribe(queue, function (message) {
+            var messageObject = JSON.parse(message.body);
+            console.log('收到消息: ' + message.body);
+            updateProgress(messageObject);
+        });
+    }
+
+    function updateProgress(message) {
+        var progressBar = document.getElementById('progress-bar');
+        var progress = message.progress;
+        progressBar.style.width = progress + '%';
+        progressBar.setAttribute('aria-valuenow', progress);
+        progressBar.textContent = progress + '%';
+
+        if (progress === 100) {
+            alert('上傳完成');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        fetchCurrentUser().then(() => {
+            connect();
+        });
+    });
+</script>
 </body>
 </html>

@@ -36,167 +36,91 @@
         <div class="py-3 bg-gray-100">
             <div class="container">
                 <div class="row align-items-center">
-                    <div class="col-lg-6 my-2"><h1 class="m-0 h4 text-center text-lg-start">Shop</h1></div>
+                    <div class="col-lg-6 my-2">
+                        <h1 class="m-0 h4 text-center text-lg-start">Shop</h1>
+                    </div>
                     <div class="col-lg-6 my-2">
                         <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
-                            <li class="breadcrumb-item"><a class="text-nowrap" href="#"><i
-                                    class="bi bi-home"></i>Home</a></li>
+                            <li class="breadcrumb-item">
+                                <a class="text-nowrap" href="#">
+                                    <i class="bi bi-home"></i>
+                                    Home
+                                </a>
+                            </li>
                             <li class="breadcrumb-item text-nowrap active" aria-current="page">Product</li>
                         </ol>
                     </div>
                 </div>
             </div>
-        </div><!-- End Breadcrumb --><!-- Product Details -->
+        </div>
+        <!-- End Breadcrumb -->
+        <!-- Product Details -->
         <section class="product-details py-6">
             <div class="container">
-                <div class="row align-items-start"><!-- Product Gallery -->
+                <div class="row align-items-start">
+                    <!-- Product Gallery -->
                     <div class="col-lg-4 lightbox-gallery product-gallery sticky-lg-top sticky-lg-top-header">
                         <div class="swiper swiper_gallery swiper-fade swiper-initialized swiper-horizontal swiper-pointer-events swiper-backface-hidden">
                             <div class="swiper-wrapper" id="swiper-wrapper-55a1ed0d21b8d9af" aria-live="polite">
-                                <div class="swiper-slide swiper-slide-visible swiper-slide-active" role="group"
-                                     aria-label="1 / 6"
-                                     style="width: 516px; opacity: 1; transform: translate3d(0px, 0px, 0px);">
-                                    <div class="pd-gallery-slide"><a class="gallery-link"
-                                                                     href="../../assets/img/fashion/product-x-1.jpg"><i
-                                            class="bi bi-arrows-fullscreen"></i></a> <img
-                                            src="../../assets/img/fashion/product-x-1.jpg" class="img-fluid" title=""
-                                            alt=""></div>
-                                </div>
-                                <div class="swiper-slide swiper-slide-next" role="group" aria-label="2 / 6"
-                                     style="width: 516px; opacity: 0; transform: translate3d(-516px, 0px, 0px);">
-                                    <div class="pd-gallery-slide"><a class="gallery-link"
-                                                                     href="../../assets/img/fashion/product-x-2.jpg"><i
-                                            class="bi bi-arrows-fullscreen"></i></a> <img
-                                            src="../../assets/img/fashion/product-x-2.jpg" class="img-fluid" title=""
-                                            alt=""></div>
-                                </div>
-                                <div class="swiper-slide" role="group" aria-label="3 / 6"
-                                     style="width: 516px; opacity: 0; transform: translate3d(-1032px, 0px, 0px);">
-                                    <div class="pd-gallery-slide"><a class="gallery-link"
-                                                                     href="../../assets/img/fashion/product-x-3.jpg"><i
-                                            class="bi bi-arrows-fullscreen"></i></a> <img
-                                            src="../../assets/img/fashion/product-x-3.jpg" class="img-fluid" title=""
-                                            alt=""></div>
-                                </div>
-                                <div class="swiper-slide" role="group" aria-label="4 / 6"
-                                     style="width: 516px; opacity: 0; transform: translate3d(-1548px, 0px, 0px);">
-                                    <div class="pd-gallery-slide"><a class="gallery-link"
-                                                                     href="../../assets/img/fashion/product-x-4.jpg"><i
-                                            class="bi bi-arrows-fullscreen"></i></a> <img
-                                            src="../../assets/img/fashion/product-x-4.jpg" class="img-fluid" title=""
-                                            alt=""></div>
-                                </div>
-                                <div class="swiper-slide" role="group" aria-label="5 / 6"
-                                     style="width: 516px; opacity: 0; transform: translate3d(-2064px, 0px, 0px);">
-                                    <div class="pd-gallery-slide"><a class="gallery-link"
-                                                                     href="../../assets/img/fashion/product-x-5.jpg"><i
-                                            class="bi bi-arrows-fullscreen"></i></a> <img
-                                            src="../../assets/img/fashion/product-x-5.jpg" class="img-fluid" title=""
-                                            alt=""></div>
-                                </div>
-                                <div class="swiper-slide" role="group" aria-label="6 / 6"
-                                     style="width: 516px; opacity: 0; transform: translate3d(-2580px, 0px, 0px);">
-                                    <div class="pd-gallery-slide"><a class="gallery-link"
-                                                                     href="../../assets/img/fashion/product-x-6.jpg"><i
-                                            class="bi bi-arrows-fullscreen"></i></a> <img
-                                            src="../../assets/img/fashion/product-x-6.jpg" class="img-fluid" title=""
-                                            alt=""></div>
+                                <!-- 預計使用th:each將所有該商品的照片列出 -->
+                                <div class="swiper-slide swiper-slide-visible swiper-slide-active" role="group" aria-label="1 / 6" style="width: 516px; opacity: 1; transform: translate3d(0px, 0px, 0px);">
+                                    <div class="pd-gallery-slide">
+                                        <a class="gallery-link" href="../../assets/img/fashion/product-x-1.jpg">
+                                            <i class="bi bi-arrows-fullscreen"></i>
+                                        </a>
+                                        <img src="../../assets/img/fashion/product-x-1.jpg" class="img-fluid" title="" alt="">
+                                    </div>
                                 </div>
                             </div>
-                            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+                            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+                        </div>
                         <div class="swiper swiper_thumb_gallery product-thumb swiper-initialized swiper-horizontal swiper-pointer-events swiper-free-mode swiper-backface-hidden swiper-thumbs">
-                            <div class="swiper-wrapper" id="swiper-wrapper-b62c589e07109e8a9" aria-live="polite"
-                                 style="transform: translate3d(0px, 0px, 0px);">
-                                <div class="swiper-slide swiper-slide-visible swiper-slide-active swiper-slide-thumb-active"
-                                     role="group" aria-label="1 / 6" style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb"><img
-                                            src="../../assets/img/fashion/product-x-1.jpg" class="img-fluid" title=""
-                                            alt=""></div>
+                            <div class="swiper-wrapper" id="swiper-wrapper-b62c589e07109e8a9" aria-live="polite" style="transform: translate3d(0px, 0px, 0px);">
+                                <div class="swiper-slide swiper-slide-visible swiper-slide-active swiper-slide-thumb-active" role="group" aria-label="1 / 6" style="width: 95.2px; margin-right: 10px;">
+                                    <div class="pd-gallery-slide-thumb"><img src="../../assets/img/fashion/product-x-1.jpg" class="img-fluid" title="" alt=""></div>
                                 </div>
-                                <div class="swiper-slide swiper-slide-visible swiper-slide-next" role="group"
-                                     aria-label="2 / 6" style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb"><img
-                                            src="../../assets/img/fashion/product-x-2.jpg" class="img-fluid" title=""
-                                            alt=""></div>
+                                <div class="swiper-slide swiper-slide-visible swiper-slide-next" role="group" aria-label="2 / 6" style="width: 95.2px; margin-right: 10px;">
+                                    <div class="pd-gallery-slide-thumb"><img src="../../assets/img/fashion/product-x-2.jpg" class="img-fluid" title="" alt=""></div>
                                 </div>
-                                <div class="swiper-slide swiper-slide-visible" role="group" aria-label="3 / 6"
-                                     style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb"><img
-                                            src="../../assets/img/fashion/product-x-3.jpg" class="img-fluid" title=""
-                                            alt=""></div>
+                                <div class="swiper-slide swiper-slide-visible" role="group" aria-label="3 / 6" style="width: 95.2px; margin-right: 10px;">
+                                    <div class="pd-gallery-slide-thumb"><img src="../../assets/img/fashion/product-x-3.jpg" class="img-fluid" title="" alt=""></div>
                                 </div>
-                                <div class="swiper-slide swiper-slide-visible" role="group" aria-label="4 / 6"
-                                     style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb"><img
-                                            src="../../assets/img/fashion/product-x-4.jpg" class="img-fluid" title=""
-                                            alt=""></div>
+                                <div class="swiper-slide swiper-slide-visible" role="group" aria-label="4 / 6" style="width: 95.2px; margin-right: 10px;">
+                                    <div class="pd-gallery-slide-thumb"><img src="../../assets/img/fashion/product-x-4.jpg" class="img-fluid" title="" alt=""></div>
                                 </div>
-                                <div class="swiper-slide swiper-slide-visible" role="group" aria-label="5 / 6"
-                                     style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb"><img
-                                            src="../../assets/img/fashion/product-x-5.jpg" class="img-fluid" title=""
-                                            alt=""></div>
+                                <div class="swiper-slide swiper-slide-visible" role="group" aria-label="5 / 6" style="width: 95.2px; margin-right: 10px;">
+                                    <div class="pd-gallery-slide-thumb"><img src="../../assets/img/fashion/product-x-5.jpg" class="img-fluid" title="" alt=""></div>
                                 </div>
-                                <div class="swiper-slide" role="group" aria-label="6 / 6"
-                                     style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb"><img
-                                            src="../../assets/img/fashion/product-x-6.jpg" class="img-fluid" title=""
-                                            alt=""></div>
+                                <div class="swiper-slide" role="group" aria-label="6 / 6" style="width: 95.2px; margin-right: 10px;">
+                                    <div class="pd-gallery-slide-thumb"><img src="../../assets/img/fashion/product-x-6.jpg" class="img-fluid" title="" alt=""></div>
                                 </div>
                             </div>
-                            <div class="swiper-arrow-style-03 swiper-next swiper-next-pd-details_thumb" tabindex="0"
-                                 role="button" aria-label="Next slide" aria-controls="swiper-wrapper-b62c589e07109e8a9"
-                                 aria-disabled="false"><i class="bi bi-chevron-right"></i></div>
-                            <div class="swiper-arrow-style-03 swiper-prev swiper-prev-pd-details_thumb swiper-button-disabled"
-                                 tabindex="-1" role="button" aria-label="Previous slide"
-                                 aria-controls="swiper-wrapper-b62c589e07109e8a9" aria-disabled="true"><i
-                                    class="bi bi-chevron-left"></i></div>
+                            <div class="swiper-arrow-style-03 swiper-next swiper-next-pd-details_thumb" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-b62c589e07109e8a9" aria-disabled="false"><i class="bi bi-chevron-right"></i></div>
+                            <div class="swiper-arrow-style-03 swiper-prev swiper-prev-pd-details_thumb swiper-button-disabled" tabindex="-1" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-b62c589e07109e8a9" aria-disabled="true"><i class="bi bi-chevron-left"></i></div>
                             <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
-                    </div><!-- End Product Gallery --><!-- Product Details -->
+                    </div>
+                    <!-- End Product Gallery -->
+                    <!-- Product Details -->
                     <div class="col-md-7 col-lg-5 ps-lg-5 mt-5 mt-lg-0">
                         <div class="product-detail">
                             <div class="products-brand pb-2"><span>Brand name</span></div>
                             <div class="products-title mb-2"><h4 class="h4">Fine-knit sweater</h4></div>
-                            <div class="rating-star text small pb-4"><i class="bi bi-star-fill active"></i> <i
-                                    class="bi bi-star-fill active"></i> <i class="bi bi-star-fill active"></i> <i
-                                    class="bi bi-star-fill active"></i> <i class="bi bi-star"></i> <small>(4 Reviews
-                                )</small></div>
-                            <div class="product-description"><p>Lorem ipsum dolor sit amet, consectetur adipisic elit
-                                eiusm tempor incidid ut labore et dolore magna aliqua. Ut enim ad minim venialo quis
-                                nostrud exercitation ullamco</p></div>
+                            <div class="rating-star text small pb-4"><i class="bi bi-star-fill active"></i> <i class="bi bi-star-fill active"></i> <i class="bi bi-star-fill active"></i> <i class="bi bi-star-fill active"></i> <i class="bi bi-star"></i> <small>(4 Reviews )</small></div>
+                            <div class="product-description"><p>Lorem ipsum dolor sit amet, consectetur adipisic elit eiusm tempor incidid ut labore et dolore magna aliqua. Ut enim ad minim venialo quis nostrud exercitation ullamco</p></div>
                             <div class="product-attribute"><label class="fs-6 text-mode pb-2 fw-500">Size</label>
                                 <div class="nav-thumbs nav mb-3">
-                                    <div class="form-check radio-text form-check-inline me-2"><input
-                                            class="form-check-input" type="radio" name="size_d3" id="xs_2" checked="">
+                                    <div class="form-check radio-text form-check-inline me-2"><input class="form-check-input" type="radio" name="size_d3" id="xs_2" checked="">
                                         <label class="radio-text-label" for="xs_2">XS</label></div>
-                                    <div class="form-check radio-text form-check-inline me-2"><input
-                                            class="form-check-input" type="radio" name="size_d3" id="s_2"> <label
-                                            class="radio-text-label" for="s_2">S</label></div>
-                                    <div class="form-check radio-text form-check-inline me-2"><input
-                                            class="form-check-input" type="radio" name="size_d3" id="m_2"> <label
-                                            class="radio-text-label" for="m_2">M</label></div>
-                                    <div class="form-check radio-text form-check-inline me-2"><input
-                                            class="form-check-input" type="radio" name="size_d3" id="l_2"> <label
-                                            class="radio-text-label" for="l_2">L</label></div>
+                                    <div class="form-check radio-text form-check-inline me-2"><input class="form-check-input" type="radio" name="size_d3" id="s_2"> <label class="radio-text-label" for="s_2">S</label></div>
+                                    <div class="form-check radio-text form-check-inline me-2"><input class="form-check-input" type="radio" name="size_d3" id="m_2"> <label class="radio-text-label" for="m_2">M</label></div>
+                                    <div class="form-check radio-text form-check-inline me-2"><input class="form-check-input" type="radio" name="size_d3" id="l_2"> <label class="radio-text-label" for="l_2">L</label></div>
                                 </div>
                                 <label class="fs-6 text-mode pb-2 fw-500">Color</label>
                                 <div class="nav-thumbs nav mb-3">
-                                    <div class="form-check radio-color large form-check-inline me-2"><input
-                                            class="form-check-input" type="radio" name="color_1" id="color_01"
-                                            checked=""> <label class="radio-color-label" for="color_01"><span
-                                            style="background-color: #126532;"></span></label></div>
-                                    <div class="form-check radio-color large form-check-inline me-2"><input
-                                            class="form-check-input" type="radio" name="color_1" id="color_2"> <label
-                                            class="radio-color-label" for="color_2"><span
-                                            style="background-color: #ff9922;"></span></label></div>
-                                    <div class="form-check radio-color large form-check-inline me-2"><input
-                                            class="form-check-input" type="radio" name="color_1" id="color_3"> <label
-                                            class="radio-color-label" for="color_3"><span
-                                            style="background-color: #326598;"></span></label></div>
-                                    <div class="form-check radio-color large form-check-inline me-2"><input
-                                            class="form-check-input" type="radio" name="color_1" id="color_4"> <label
-                                            class="radio-color-label" for="color_4"><span
-                                            style="background-color: #126578;"></span></label></div>
+                                    <div class="form-check radio-color large form-check-inline me-2"><input class="form-check-input" type="radio" name="color_1" id="color_01" checked=""> <label class="radio-color-label" for="color_01"><span style="background-color: #126532;"></span></label></div>
+                                    <div class="form-check radio-color large form-check-inline me-2"><input class="form-check-input" type="radio" name="color_1" id="color_2"> <label class="radio-color-label" for="color_2"><span style="background-color: #ff9922;"></span></label></div>
+                                    <div class="form-check radio-color large form-check-inline me-2"><input class="form-check-input" type="radio" name="color_1" id="color_3"> <label class="radio-color-label" for="color_3"><span style="background-color: #326598;"></span></label></div>
+                                    <div class="form-check radio-color large form-check-inline me-2"><input class="form-check-input" type="radio" name="color_1" id="color_4"> <label class="radio-color-label" for="color_4"><span style="background-color: #126578;"></span></label></div>
                                 </div>
                             </div>
                             <div class="count-down count-down-02 mb-3" data-countdown="January 01, 2024 15:00:00">
@@ -223,30 +147,21 @@
                                     <button class="btn btn-outline-mode"><i class="fi-repeat"></i></button>
                                 </div>
                             </div>
-                            <div class="product-info-buttons nav pt-4"><a href="#" class="me-3" data-bs-toggle="modal"
-                                                                          data-bs-target="#px_size_chart_modal"><i
-                                    class="bi bi-scissors"></i>Size guide</a> <a href="#" class=""
-                                                                                 data-bs-toggle="modal"
-                                                                                 data-bs-target="#px_shipping_modal"><i
-                                    class="bi bi-truck me-2"></i>Shipping</a> <a href="#" class="ms-auto"
-                                                                                 data-bs-toggle="modal"
-                                                                                 data-bs-target="#px_ask_modal"><i
-                                    class="bi bi-envelope ms-auto"></i>Ask about product</a></div>
-                            <div class="pt-3 border-top mt-3 small"><p class="theme-link mb-2"><label
-                                    class="m-0 text-mode">Categories:</label> <a href="#">Sunglasses</a>, <a href="#">Winter</a>,
+                            <div class="product-info-buttons nav pt-4"><a href="#" class="me-3" data-bs-toggle="modal" data-bs-target="#px_size_chart_modal"><i class="bi bi-scissors"></i>Size guide</a> <a href="#" class="" data-bs-toggle="modal" data-bs-target="#px_shipping_modal"><i class="bi bi-truck me-2"></i>Shipping</a> <a href="#" class="ms-auto" data-bs-toggle="modal" data-bs-target="#px_ask_modal"><i class="bi bi-envelope ms-auto"></i>Ask about product</a></div>
+                            <div class="pt-3 border-top mt-3 small"><p class="theme-link mb-2"><label class="m-0 text-mode">Categories:</label> <a href="#">Sunglasses</a>, <a href="#">Winter</a>,
                                 <a href="#">Shorts</a>, <a href="#">Cool</a></p>
                                 <p class="theme-link mb-2"><label class="m-0 text-mode">Tags:</label> <a href="#">Fashion</a>,
                                     <a href="#">Women</a>, <a href="#">Winter</a></p>
-                                <p class="theme-link m-0"><label class="m-0 text-mode">Share:</label> <a
-                                        class="icon icon-sm icon-secondary me-2" href="#"><i class="bi bi-facebook"></i>
+                                <p class="theme-link m-0"><label class="m-0 text-mode">Share:</label> <a class="icon icon-sm icon-secondary me-2" href="#"><i class="bi bi-facebook"></i>
                                 </a><a class="icon icon-sm icon-secondary me-2" href="#"><i class="bi bi-twitter"></i>
                                 </a><a class="icon icon-sm icon-secondary me-2" href="#"><i class="bi bi-instagram"></i>
                                 </a><a class="icon icon-sm icon-secondary me-2" href="#"><i class="bi bi-linkedin"></i></a>
                                 </p></div>
-                            <div class="pt-4"><img class="img-fluid" src="../../assets/img/fashion/payment-details.png"
-                                                   title="" alt=""></div>
+                            <div class="pt-4"><img class="img-fluid" src="../../assets/img/fashion/payment-details.png" title="" alt=""></div>
                         </div>
-                    </div><!-- End Product Details --><!-- Sidebar -->
+                    </div>
+                    <!-- End Product Details -->
+                    <!-- Sidebar -->
                     <div class="col-md-5 col-lg-3 mt-5 mt-lg-0">
                         <div class="border p-3">
                             <div class="d-flex border-bottom pb-3 mb-3">
@@ -268,31 +183,23 @@
                         <div class="mt-3"><a href="#"><img class="w-100"
                                                            src="../../assets/img/fashion/mega-menu-banner.jpg" title=""
                                                            alt=""></a></div>
-                    </div><!-- End Sidebar --></div>
+                    </div>
+                    <!-- End Sidebar --></div>
             </div>
-        </section><!-- End Product Details --><!-- Product Tabs -->
+        </section>
+        <!-- End Product Details -->
+        <!-- Product Tabs -->
         <section class="pb-6 py-md-6 pb-lg-10 pt-lg-5">
             <div class="container">
                 <div class="product-tabs">
                     <ul class="nav product-nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation"><a href="#" class="nav-link active"
-                                                                    id="pd_description_tab" data-bs-toggle="tab"
-                                                                    data-bs-target="#pd_description" role="tab"
-                                                                    aria-controls="pd_description" aria-selected="true">Description</a>
+                        <li class="nav-item" role="presentation"><a href="#" class="nav-link active" id="pd_description_tab" data-bs-toggle="tab" data-bs-target="#pd_description" role="tab" aria-controls="pd_description" aria-selected="true">Description</a>
                         </li>
-                        <li class="nav-item" role="presentation"><a href="#" class="nav-link" id="pd_information_tab"
-                                                                    data-bs-toggle="tab"
-                                                                    data-bs-target="#px_information" role="tab"
-                                                                    aria-controls="px_information"
-                                                                    aria-selected="false">Information</a></li>
-                        <li class="nav-item" role="presentation"><a href="#" class="nav-link" id="pd_reviews_tab"
-                                                                    data-bs-toggle="tab" data-bs-target="#pd_reviews"
-                                                                    role="tab" aria-controls="pd_reviews"
-                                                                    aria-selected="false">Reviews</a></li>
+                        <li class="nav-item" role="presentation"><a href="#" class="nav-link" id="pd_information_tab" data-bs-toggle="tab" data-bs-target="#px_information" role="tab" aria-controls="px_information" aria-selected="false">Information</a></li>
+                        <li class="nav-item" role="presentation"><a href="#" class="nav-link" id="pd_reviews_tab" data-bs-toggle="tab" data-bs-target="#pd_reviews" role="tab" aria-controls="pd_reviews" aria-selected="false">Reviews</a></li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="pd_description" role="tabpanel"
-                             aria-labelledby="pd_description_tab">
+                        <div class="tab-pane fade show active" id="pd_description" role="tabpanel" aria-labelledby="pd_description_tab">
                             <div class="row">
                                 <div class="col-lg-7 pe-lg-10"><h5>Details Description</h5>
                                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
@@ -328,8 +235,7 @@
                                     </blockquote>
                                 </div>
                                 <div class="col-lg-5">
-                                    <div class="pb-3"><img src="../../assets/img/fashion/product-3.jpg"
-                                                           class="img-fluid" title="" alt=""></div>
+                                    <div class="pb-3"><img src="../../assets/img/fashion/product-3.jpg" class="img-fluid" title="" alt=""></div>
                                     <div class="row g-3">
                                         <div class="col-sm-6">
                                             <div class="d-flex border p-3">
@@ -372,8 +278,7 @@
                                         <tbody>
                                         <tr>
                                             <th class="fw-500 text-mode">Product #</th>
-                                            <td class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisic
-                                                elit
+                                            <td class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisic elit
                                             </td>
                                         </tr>
                                         <tr>
@@ -421,105 +326,61 @@
                                     <div class="row align-items-end">
                                         <div class="col-sm-6"><h5 class="m-0">Reviews</h5>
                                             <div class="rating-star small"><i class="bi small bi-star-fill active"></i>
-                                                <i class="bi small bi-star-fill active"></i> <i
-                                                        class="bi small bi-star-fill active"></i> <i
-                                                        class="bi small bi-star-fill active"></i> <i
-                                                        class="bi small bi-star"></i> <span>4.85/5 (400 Reviews)</span>
+                                                <i class="bi small bi-star-fill active"></i> <i class="bi small bi-star-fill active"></i> <i class="bi small bi-star-fill active"></i> <i class="bi small bi-star"></i> <span>4.85/5 (400 Reviews)</span>
                                             </div>
                                         </div>
                                         <div class="col-sm-6 text-sm-end"><a href="#">View all review</a></div>
                                     </div>
                                     <div class="d-flex review-box border-top mt-4 pt-4">
                                         <div>
-                                            <div class="review-image"><img class="img-fluid"
-                                                                           src="../../assets/img/fashion/product-1.jpg"
-                                                                           title="" alt=""></div>
+                                            <div class="review-image"><img class="img-fluid" src="../../assets/img/fashion/product-1.jpg" title="" alt=""></div>
                                         </div>
                                         <div class="col ps-3"><h6>Nancy Bayer</h6>
                                             <div class="rating-star small"><i class="bi small bi-star-fill active"></i>
-                                                <i class="bi small bi-star-fill active"></i> <i
-                                                        class="bi small bi-star-fill active"></i> <i
-                                                        class="bi small bi-star-fill active"></i> <i
-                                                        class="bi small bi-star"></i> <span>13 April 2012</span></div>
-                                            <p class="m-0 pt-3">Lorem ipsum dolor sit amet, consectetur adipisicing
-                                                elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-                                                ut aliquip ex ea commodo consequat. Duis aute irure dolor</p></div>
+                                                <i class="bi small bi-star-fill active"></i> <i class="bi small bi-star-fill active"></i> <i class="bi small bi-star-fill active"></i> <i class="bi small bi-star"></i> <span>13 April 2012</span></div>
+                                            <p class="m-0 pt-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor</p></div>
                                     </div>
                                     <div class="d-flex review-box border-top mt-4 pt-4">
                                         <div>
-                                            <div class="review-image"><img class="img-fluid"
-                                                                           src="../../assets/img/fashion/product-1.jpg"
-                                                                           title="" alt=""></div>
+                                            <div class="review-image"><img class="img-fluid" src="../../assets/img/fashion/product-1.jpg" title="" alt=""></div>
                                         </div>
                                         <div class="col ps-3"><h6>Nancy Bayer</h6>
                                             <div class="rating-star small"><i class="bi small bi-star-fill active"></i>
-                                                <i class="bi small bi-star-fill active"></i> <i
-                                                        class="bi small bi-star-fill active"></i> <i
-                                                        class="bi small bi-star-fill active"></i> <i
-                                                        class="bi small bi-star"></i> <span>13 April 2012</span></div>
-                                            <p class="m-0 pt-3">Lorem ipsum dolor sit amet, consectetur adipisicing
-                                                elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-                                                ut aliquip ex ea commodo consequat. Duis aute irure dolor</p></div>
+                                                <i class="bi small bi-star-fill active"></i> <i class="bi small bi-star-fill active"></i> <i class="bi small bi-star-fill active"></i> <i class="bi small bi-star"></i> <span>13 April 2012</span></div>
+                                            <p class="m-0 pt-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor</p></div>
                                     </div>
                                     <div class="d-flex review-box border-top mt-4 pt-4">
                                         <div>
-                                            <div class="review-image"><img class="img-fluid"
-                                                                           src="../../assets/img/fashion/product-1.jpg"
-                                                                           title="" alt=""></div>
+                                            <div class="review-image"><img class="img-fluid" src="../../assets/img/fashion/product-1.jpg" title="" alt=""></div>
                                         </div>
                                         <div class="col ps-3"><h6>Nancy Bayer</h6>
                                             <div class="rating-star small"><i class="bi small bi-star-fill active"></i>
-                                                <i class="bi small bi-star-fill active"></i> <i
-                                                        class="bi small bi-star-fill active"></i> <i
-                                                        class="bi small bi-star-fill active"></i> <i
-                                                        class="bi small bi-star"></i> <span>13 April 2012</span></div>
-                                            <p class="m-0 pt-3">Lorem ipsum dolor sit amet, consectetur adipisicing
-                                                elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-                                                ut aliquip ex ea commodo consequat. Duis aute irure dolor</p></div>
+                                                <i class="bi small bi-star-fill active"></i> <i class="bi small bi-star-fill active"></i> <i class="bi small bi-star-fill active"></i> <i class="bi small bi-star"></i> <span>13 April 2012</span></div>
+                                            <p class="m-0 pt-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor</p></div>
                                     </div>
                                     <div class="d-flex review-box border-top mt-4 pt-4">
                                         <div>
-                                            <div class="review-image"><img class="img-fluid"
-                                                                           src="../../assets/img/fashion/product-1.jpg"
-                                                                           title="" alt=""></div>
+                                            <div class="review-image"><img class="img-fluid" src="../../assets/img/fashion/product-1.jpg" title="" alt=""></div>
                                         </div>
                                         <div class="col ps-3"><h6>Nancy Bayer</h6>
                                             <div class="rating-star small"><i class="bi small bi-star-fill active"></i>
-                                                <i class="bi small bi-star-fill active"></i> <i
-                                                        class="bi small bi-star-fill active"></i> <i
-                                                        class="bi small bi-star-fill active"></i> <i
-                                                        class="bi small bi-star"></i> <span>13 April 2012</span></div>
-                                            <p class="m-0 pt-3">Lorem ipsum dolor sit amet, consectetur adipisicing
-                                                elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-                                                ut aliquip ex ea commodo consequat. Duis aute irure dolor</p></div>
+                                                <i class="bi small bi-star-fill active"></i> <i class="bi small bi-star-fill active"></i> <i class="bi small bi-star-fill active"></i> <i class="bi small bi-star"></i> <span>13 April 2012</span></div>
+                                            <p class="m-0 pt-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor</p></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 mt-4 mt-lg-0">
-                                    <div class="border p-4 sticky-lg-top review-form"><h5
-                                            class="mb-3 pb-3 border-bottom">WRITE A REVIEW</h5>
+                                    <div class="border p-4 sticky-lg-top review-form"><h5 class="mb-3 pb-3 border-bottom">WRITE A REVIEW</h5>
                                         <form>
                                             <div class="row g-2">
-                                                <div class="col-sm-6"><label class="form-label">Name</label> <input
-                                                        type="text" name="name" class="form-control form-control-sm">
+                                                <div class="col-sm-6"><label class="form-label">Name</label> <input type="text" name="name" class="form-control form-control-sm">
                                                 </div>
-                                                <div class="col-sm-6"><label class="form-label">Email</label> <input
-                                                        type="text" name="email" class="form-control form-control-sm">
+                                                <div class="col-sm-6"><label class="form-label">Email</label> <input type="text" name="email" class="form-control form-control-sm">
                                                 </div>
-                                                <div class="col-sm-12"><label
-                                                        class="form-label m-0 pe-3 w-100">Rating</label>
-                                                    <div class="rating-star"><i class="bi small bi-star-fill"></i> <i
-                                                            class="bi small bi-star-fill"></i> <i
-                                                            class="bi small bi-star-fill"></i> <i
-                                                            class="bi small bi-star-fill"></i> <i
-                                                            class="bi small bi-star-fill"></i></div>
+                                                <div class="col-sm-12"><label class="form-label m-0 pe-3 w-100">Rating</label>
+                                                    <div class="rating-star"><i class="bi small bi-star-fill"></i> <i class="bi small bi-star-fill"></i> <i class="bi small bi-star-fill"></i> <i class="bi small bi-star-fill"></i> <i class="bi small bi-star-fill"></i></div>
                                                 </div>
                                                 <div class="col-sm-12"><label class="form-label">Review Title</label>
-                                                    <input type="text" name="review"
-                                                           class="form-control form-control-sm"></div>
+                                                    <input type="text" name="review" class="form-control form-control-sm"></div>
                                                 <div class="col-sm-12"><label class="form-label">Body of Review
                                                     (1500)</label> <textarea rows="5" class="form-control"></textarea>
                                                 </div>
@@ -543,8 +404,7 @@
                         <p class="fs-6 m-0">Read Today’s News.</p></div>
                 </div>
                 <div class="swiper-hover-arrow position-relative">
-                    <div class="swiper swiper-container swiper-initialized swiper-horizontal swiper-pointer-events"
-                         data-swiper-options="{
+                    <div class="swiper swiper-container swiper-initialized swiper-horizontal swiper-pointer-events" data-swiper-options="{
                               &quot;slidesPerView&quot;: 2,
                               &quot;spaceBetween&quot;: 24,
                               &quot;loop&quot;: true,
