@@ -1,7 +1,9 @@
 package com.howard.rentalorder.service.impl;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.howard.rentalorder.dao.RentalOrderRepository;
-import com.howard.rentalorder.dto.RentalOrderRequest;
+import com.howard.rentalorder.dto.*;
 import com.howard.rentalorder.entity.RentalOrder;
 import com.howard.rentalorder.service.RentalOrderService;
 import com.howard.rentalorderdetails.dao.RentalOrderDetailsRepository;
@@ -15,13 +17,19 @@ import ecpay.payment.integration.AllInOne;
 import ecpay.payment.integration.domain.AioCheckOutALL;
 import ecpay.payment.integration.domain.DoActionObj;
 import ecpay.payment.integration.domain.QueryTradeInfoObj;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.HmacUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.view.RedirectView;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.params.ScanParams;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
@@ -46,12 +54,30 @@ public class RentalOrderServiceImpl implements RentalOrderService {
     RentalRepository rentalRepository;
 
     @Autowired
+    RentalCartServiceImpl cartService;
+
+    @Autowired
     LogisticsStateService logisticsStateService;
 
     JedisPool jedisPool = null;
 
     public RentalOrderServiceImpl() {
         jedisPool = JedisUtil.getJedisPool();
+    }
+
+    // 刪除訂單
+    public void deleteOrder(Integer rentalOrdNo) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("rentalOrdNo", rentalOrdNo);
+        RentalOrder order = getByAttributes(map).get(0);
+
+        // 找出明細並刪除
+        Set<RentalOrderDetails> details = order.getRentalOrderDetailses();
+        detailsRepository.deleteAll(details);
+        // 然後刪訂單
+        repository.delete(order);
+
     }
 
     @Transactional
@@ -204,7 +230,7 @@ public class RentalOrderServiceImpl implements RentalOrderService {
     }
 
     @Transactional
-    public String createOrder(RentalOrderRequest req) {
+    public String createOrder(RentalOrderRequest req, HttpServletRequest sReq) {
         // 新增訂單
         RentalOrder order = new RentalOrder();
         Optional<Member> members = memberRepository.findById(req.getMemNo());
@@ -260,17 +286,20 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         // 明細放進訂單主體
         order.setRentalOrderDetailses(details);
 
-
-        // 若沒有呼叫綠界金流方法(rentalPayMethod = 2，也就是現場付款)，則付款狀態(rentalPayStat)維持 0(未付款)
+        // 若沒有呼叫綠界金流或Line Pay金流方法(rentalPayMethod = 2，也就是現場付款)，則付款狀態(rentalPayStat)維持 0(未付款)
         if (order.getrentalPayMethod() == (byte) 2) {
-            order.setrentalOrdStat((byte) 30);
+            order.setrentalOrdStat((byte) 40);
             return "thankForBuying";
         }
-
-        // 拼接綠界成立訂單的商品明細(綠界商品明細規定各品名之間以#區隔)
-        String itemNames = String.join("#", rentalNames);
-        // 呼叫綠界成立訂單的方法並回傳
-        return ecpayCheckout(order, itemNames);
+        // 如果選綠界
+        if (order.getrentalPayMethod() == (byte) 1) {
+            // 拼接綠界成立訂單的商品明細(綠界商品明細規定各品名之間以#區隔)
+            String itemNames = String.join("#", rentalNames);
+            // 呼叫綠界成立訂單的方法並回傳
+            return ecpayCheckout(order, itemNames);
+        }
+        // 如果不選現場也不選綠界 = 選 line pay
+        return linePayCheckOut(order, sReq);
 
     } // createOrder 方法結束
 
@@ -376,7 +405,7 @@ public class RentalOrderServiceImpl implements RentalOrderService {
     }
 
     /**
-     * 產生刷退押金訂單
+     * 產生綠界刷退押金訂單
      * @param order 要刷退的那筆訂單
      * @return 裝有 綠界對於刷退的回應資訊的 map
      */
@@ -442,5 +471,111 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         }
 
     } // 產生刷退押金訂單 結束
+
+
+    private static final String CHANNEL_ID = "2005342190";
+    private static final String CHANNEL_SECRET = "44c865afc4d0e1d4575ea90a87616108";
+    private static final String REQUEST_URL = "https://sandbox-api-pay.line.me";
+    private static final String REQUEST_URI = "/v3/payments/request";
+
+    // 把資料轉換成指定格式字串
+    public static String encrypt(final String keys, final String data) {
+        return toBase64String(HmacUtils.getHmacSha256(keys.getBytes()).doFinal(data.getBytes()));
+    }
+
+    // 轉換成 Base64 字串
+    public static String toBase64String(byte[] bytes) {
+        byte[] byteArray = Base64.encodeBase64(bytes);
+        return new String(byteArray);
+    }
+
+    // Line Pay
+    public String linePayCheckOut(RentalOrder order, HttpServletRequest sReq) {
+
+        if (order.getrentalTakeMethod() == (byte) 1) {
+            order.setrentalOrdStat((byte) 30);
+        }
+
+        try {
+            // 設定訂單主體
+            ObjectMapper objectMapper = new ObjectMapper();
+            CheckoutPaymentRequestForm form = new CheckoutPaymentRequestForm();
+            // 付款總金額 (所有 package 的 總租金 + 總押金 加總)
+            form.setAmount( order.getrentalAllPrice().add(order.getrentalAllDepPrice()) );
+            // 貨幣種類 (還支援 USD、JPY、THB)
+            form.setCurrency("TWD");
+            // 訂單編號
+            form.setOrderId(String.valueOf(order.getrentalOrdNo()));
+            // 設定 packages
+            ProductPackageForm productPackageForm = new ProductPackageForm();
+            // package 的 id (packages 為陣列，裡面可裝 1 個以上的 package)(設為 1，因為不曉得分 package 的用途，所以先全部在一個 package)
+            productPackageForm.setId("1");
+            // package 的名稱 (不知道設甚麼，所以放專案名稱)
+            productPackageForm.setName("fallELove");
+            // 一個 package 裡所有商品總價 (總租金 + 總押金)
+            productPackageForm.setAmount( order.getrentalAllPrice().add(order.getrentalAllDepPrice()) );
+            // 設定 products (products 為陣列，裡面可裝 1 個以上的 product)
+            List<ProductForm> products = new ArrayList<>();
+            for (RentalOrderDetails detail : order.getRentalOrderDetailses()) {
+                ProductForm productForm = new ProductForm();
+                // 商品 id
+                productForm.setId( String.valueOf(detail.getRental().getRentalNo()) );
+                // 商品名稱
+                productForm.setName( String.valueOf(detail.getRental().getRentalName()) );
+                // 商品 img (資料庫空的所以隨便設)
+                productForm.setImageUrl("https://static.wikia.nocookie.net/worldpedias/images/0/0f/Patrick_Star.PNG/revision/latest?cb=20140620143247&path-prefix=zh");
+                // 商品數量
+                productForm.setQuantity(new BigDecimal(1));
+                // 商品價格 (個別商品的 租金 + 押金)
+                productForm.setPrice( detail.getRentalPrice().add(detail.getRentalDesPrice()) );
+                // 商品放進 List 裡
+                products.add(productForm);
+            }
+            // 把 products 放進 packages 裡
+            productPackageForm.setProducts(products);
+            // 把 packages 放進 訂單主體 裡
+            form.setPackages(Arrays.asList(productPackageForm));
+            // 設定 url
+            RedirectUrls redirectUrls = new RedirectUrls();
+            String baseUrl = sReq.getScheme() + "://" + sReq.getServerName() + ":" + sReq.getServerPort() + sReq.getContextPath();
+            // 付款完成後跳轉的 url
+            redirectUrls.setConfirmUrl(baseUrl + "/frontend/rentalorder/thankForBuying");
+            // 取消付款時跳轉的 url
+            redirectUrls.setCancelUrl(baseUrl + "/frontend/rentalorder/linePayCancel?rentalOrdNo=" + order.getrentalOrdNo());
+            form.setRedirectUrls(redirectUrls);
+            // 設定請求資訊
+            String nonce = UUID.randomUUID().toString();
+            String requestBody = objectMapper.writeValueAsString(form);
+            String signature = encrypt(CHANNEL_SECRET, CHANNEL_SECRET + REQUEST_URI + objectMapper.writeValueAsString(form) + nonce);
+            // 設定請求標頭
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("X-LINE-ChannelId", CHANNEL_ID);
+            headers.set("X-LINE-Authorization-Nonce", nonce);
+            headers.set("X-LINE-Authorization", signature);
+            // 設定請求主體
+            HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
+            RestTemplate restTemplate = new RestTemplate();
+            // 送出請求
+            ResponseEntity<String> response = restTemplate.exchange(REQUEST_URL + REQUEST_URI, HttpMethod.POST, entity, String.class);
+            System.out.println("回應在這    " + response);
+            if (response.getStatusCode() == HttpStatus.OK) {
+                // 付款完後把付款狀態改為 1 (已付款)
+                order.setrentalPayStat((byte) 1);
+                // 從回應物件中獲取支付 URL
+                JsonNode rootNode = objectMapper.readTree(response.getBody());
+                String paymentUrl = rootNode.path("info").path("paymentUrl").path("web").asText();
+                return paymentUrl;
+            } else {
+                return "/frontend/rentalorder/linePayCancel?rentalOrdNo=" + order.getrentalOrdNo();
+            }
+
+        } catch (Exception e) {
+            System.out.println("喔是喔真的假的5555555");
+        }
+
+        return "/frontend/rentalorder/linePayCancel?rentalOrdNo=" + order.getrentalOrdNo();
+
+    } // Line Pay 結束
 
 }
