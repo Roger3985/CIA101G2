@@ -20,10 +20,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -55,6 +52,15 @@ public class CouponController {
     public String insert(@Valid Coupon coupon, BindingResult result, ModelMap modelMap,
                          @RequestParam(name = "coupExpDate") String coupExpDate,
                          @RequestParam(name = "coupRelDate") String coupRelDate) throws IOException {
+
+        if (result.hasFieldErrors()) {
+            List<String> errorMessage = new ArrayList<>();
+            for (FieldError error : result.getFieldErrors()) {
+                errorMessage.add(error.getDefaultMessage());
+                modelMap.addAttribute("errors", errorMessage);
+                return "backend/coupon/addCoupon";
+            }
+        }
 
         result = removeFieldError(coupon, result, "coupExpDate");
         result = removeFieldError(coupon, result, "coupRelDate");
@@ -273,9 +279,6 @@ public class CouponController {
         for (ConstraintViolation<?> violation : violations) {
             strBuilder.append(violation.getMessage() + "<br>");
         }
-        //==== 以下第92~96行是當前面第77行返回 /src/main/resources/templates/back-end/emp/select_page.html用的 ====
-//	    model.addAttribute("empVO", new EmpVO());
-//    	EmpService empSvc = new EmpService();
         List<Coupon> list = couponSvc.getAll();
         model.addAttribute("couponListData", list);     // for selectCoupon.html 第97 109行用
         String message = strBuilder.toString();
