@@ -76,7 +76,7 @@ public class ProductPictureBackEndController {
             model.addAttribute("errors", result.getAllErrors());
             return "backend/productpicture/addProductPicture";
         }
-        redirectAttributes.addAttribute("success", "檔案上傳中，請稍後~")
+        redirectAttributes.addAttribute("success", "檔案上傳中，請稍後~");
         return "redirect:/backend/productpicture/listAllProductPictures";
     }
 
