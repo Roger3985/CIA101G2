@@ -94,8 +94,8 @@ public class NoticeControllerFrontEnd {
     }
 
     /**
-     * 前往查看全部通知消息(包括已讀跟未讀)
-     * @return
+     * 前往查看全部通知消息(包括已讀跟未讀)。
+     * @return 單個會員的訊息視圖。
      */
     @GetMapping("/memberNoticeData")
     public String memberNoticeData(ModelMap modelMap,

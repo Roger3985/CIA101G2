@@ -33,7 +33,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <form method="post" th:action="@{addColumnArticle}" th:object="${columnarticle}">
+                                <form method="post" th:action="@{/backend/columnarticle/addColumnArticle}" th:object="${columnArticle}">
                                     <table>
                                         <tr>
                                             <td><label for="administrator.admNo">管理員編號:</label></td>
@@ -42,21 +42,21 @@
                                                     <option th:each="administrator : ${administratorListData}" th:value="${administrator.admNo}" th:text="${administrator.admNo}"></option>
                                                 </select>
                                             </td>
-                                            <td><label class="error" th:if="${#fields.hasErrors('administrator.admNo')}" th:errors="*{administrator.admNo}"></label></td>
+                                            <td><label class="error" th:if="${#fields.hasErrors('administrator.admNo')}" th:errors="*{administrator.admNo}" id="administrator.admNo.errors"></label></td>
                                         </tr>
                                         <tr>
                                             <td><label for="artTitle">專欄文章標題:</label></td>
                                             <td><input type="text" id="artTitle" title="請輸入文章標題" th:field="*{artTitle}"></td>
-                                            <td><label class="error" th:if="${#fields.hasErrors('artTitle')}" th:errors="*{artTitle}"></label></td>
+                                            <td><label class="error" th:if="${#fields.hasErrors('artTitle')}" th:errors="*{artTitle}" id="artTitle.errors"></label></td>
                                         </tr>
                                         <tr>
                                             <td><label for="artContent">專欄文章內容:</label></td>
                                             <td><textarea id="artContent" title="請輸入文章內容" th:field="*{artContent}" rows="10" cols="50"></textarea></td>
-                                            <td><label class="error" th:if="${#fields.hasErrors('artContent')}" th:errors="*{artContent}"></label></td>
+                                            <td><span  th:if="${#fields.hasErrors('artContent')}" th:errors="*{artContent}" class="error" id="artContent.errors"></span></td>
                                         </tr>
                                         <tr>
                                             <td><input type="hidden" id="artTime" name="artTime" th:field="*{artTime}"></td>
-                                            <td><label class="error" th:if="${#fields.hasErrors('artTime')}" th:errors="*{artTime}"></label></td>
+                                            <td><span  th:if="${#fields.hasErrors('artTime')}" th:errors="*{artTime}" class="error" id="artTime.errors"></span></td>
                                         </tr>
                                         <tr>
                                             <td><label for="artCatNo">文章分類編號:</label></td>
@@ -65,7 +65,7 @@
                                                     <option th:each="columnarticle : ${columnArticleListData}" th:value="${columnarticle.artCatNo}" th:text="${columnarticle.artCatNo}"></option>
                                                 </select>
                                             </td>
-                                            <td><label class="error" th:if="${#fields.hasErrors('artCatNo')}" th:errors="*{artCatNo}"></label></td>
+                                            <td><span  th:if="${#fields.hasErrors('artCatNo')}" th:errors="*{artCatNo}" class="error" id="artCatNo.errors"></span></td>
                                         </tr>
                                         <tr>
                                             <td><label for="artStat">文章狀態：</label></td>
@@ -144,49 +144,93 @@
             artStatInput.value = '0';
         });
     </script>
-    <script>
-        $(document).ready(function() {
-            // 在表單提交時更新通知內容字段為手動輸入的值
-            $('form').submit(function(event) {
-                // 獲取手動輸入的通知內容
-                var articleInput = $('#artContent').val().trim();
+<!--    <script>-->
+<!--        $(document).ready(function() {-->
+<!--            // 在表單提交時更新通知內容字段為手動輸入的值-->
+<!--            $('form').submit(function(event) {-->
+<!--                // 獲取手動輸入的通知內容-->
+<!--                var articleInput = $('#artContent').val().trim();-->
 
-                // 獲取選擇的下拉式選單值
-                var selectValue = $('select[name="artContent"]').val();
+<!--                // 獲取選擇的下拉式選單值-->
+<!--                var selectValue = $('select[name="artContent"]').val();-->
 
-                // 移除手動輸入的通知內容中的逗號
-                articleInput = articleInput.split(',').join('');
+<!--                // 移除手動輸入的通知內容中的逗號-->
+<!--                articleInput = articleInput.split(',').join('');-->
 
-                // 如果手動輸入的通知內容存在，將手動輸入的值設置為通知內容的值
-                if (articleInput !== '') {
-                    $('input[name="artContent"]').val(manualInput);
-                    $('select[name="artContent"]').removeAttr('name'); // 移除下拉選單的 name 屬性，避免被提交
-                } else if (selectValue !== '') { // 如果手動輸入為空且選擇了下拉式選單，將下拉選單的值設置為通知內容的值
-                    $('input[name="artContent"]').val(selectValue);
-                } else {
-                    // event.preventDefault(); // 如果手動輸入和下拉選單都沒有值，阻止表單提交
-                }
-            });
+<!--                // 如果手動輸入的通知內容存在，將手動輸入的值設置為通知內容的值-->
+<!--                if (articleInput !== '') {-->
+<!--                    $('input[name="artContent"]').val(manualInput);-->
+<!--                    $('select[name="artContent"]').removeAttr('name'); // 移除下拉選單的 name 屬性，避免被提交-->
+<!--                } else if (selectValue !== '') { // 如果手動輸入為空且選擇了下拉式選單，將下拉選單的值設置為通知內容的值-->
+<!--                    $('input[name="artContent"]').val(selectValue);-->
+<!--                } else {-->
+<!--                    // event.preventDefault(); // 如果手動輸入和下拉選單都沒有值，阻止表單提交-->
+<!--                }-->
+<!--            });-->
 
-            // 去除下拉式選單中重複的值
-            var uniqueValues = {};
-            $('select[name="artContent"] option').each(function() {
-                var text = $(this).text();
-                uniqueValues[text] = text;
-            });
+<!--            // 去除下拉式選單中重複的值-->
+<!--            var uniqueValues = {};-->
+<!--            $('select[name="artContent"] option').each(function() {-->
+<!--                var text = $(this).text();-->
+<!--                uniqueValues[text] = text;-->
+<!--            });-->
 
-            $('select[name="artContent"]').empty();
+<!--            $('select[name="artContent"]').empty();-->
 
-            // 添加未選擇的選項
-            var defaultOption = $('<option>').text('未選擇').val('');
-            $('select[name="artContent"]').append(defaultOption);
+<!--            // 添加未選擇的選項-->
+<!--            var defaultOption = $('<option>').text('未選擇').val('');-->
+<!--            $('select[name="artContent"]').append(defaultOption);-->
 
-            for (var value in uniqueValues) {
-                var option = $('<option>').text(value).val(value);
-                $('select[name="artContent"]').append(option);
-            }
-        });
-    </script>
+<!--            for (var value in uniqueValues) {-->
+<!--                var option = $('<option>').text(value).val(value);-->
+<!--                $('select[name="artContent"]').append(option);-->
+<!--            }-->
+<!--        });-->
+<!--    </script>-->
+<!--    <script>-->
+<!--        $(document).ready(function() {-->
+<!--            // 在表單提交時更新通知內容字段為手動輸入的值-->
+<!--            $('form').submit(function(event) {-->
+<!--                // 獲取手動輸入的通知內容-->
+<!--                var articleInput = $('#artContent').val().trim();-->
+
+<!--                // 獲取選擇的下拉式選單值-->
+<!--                var selectValue = $('select[name="artCatNo"]').val();-->
+
+<!--                // 移除手動輸入的通知內容中的逗號-->
+<!--                articleInput = articleInput.split(',').join('');-->
+
+<!--                // 如果手動輸入的通知內容存在，將手動輸入的值設置為通知內容的值-->
+<!--                if (articleInput !== '') {-->
+<!--                    $('input[name="artContent"]').val(articleInput);-->
+<!--                    $('select[name="artCatNo"]').removeAttr('name'); // 移除下拉選單的 name 屬性，避免被提交-->
+<!--                } else if (selectValue !== '') { // 如果手動輸入為空且選擇了下拉式選單，將下拉選單的值設置為通知內容的值-->
+<!--                    $('input[name="artContent"]').val(selectValue);-->
+<!--                } else {-->
+<!--                    event.preventDefault(); // 如果手動輸入和下拉選單都沒有值，阻止表單提交-->
+<!--                }-->
+<!--            });-->
+
+<!--            // 去除下拉式選單中重複的值-->
+<!--            var uniqueValues = {};-->
+<!--            $('select[name="artCatNo"] option').each(function() {-->
+<!--                var text = $(this).text();-->
+<!--                uniqueValues[text] = text;-->
+<!--            });-->
+
+<!--            $('select[name="artCatNo"]').empty();-->
+
+<!--            // 添加未選擇的選項-->
+<!--            var defaultOption = $('<option>').text('未選擇').val('');-->
+<!--            $('select[name="artCatNo"]').append(defaultOption);-->
+
+<!--            for (var value in uniqueValues) {-->
+<!--                var option = $('<option>').text(value).val(value);-->
+<!--                $('select[name="artCatNo"]').append(option);-->
+<!--            }-->
+<!--        });-->
+<!--    </script>-->
+
 
 </main>
 </body>
