@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class RentalCategoryServiceImpl implements RentalCategoryService {
@@ -36,10 +37,20 @@ public class RentalCategoryServiceImpl implements RentalCategoryService {
     public RentalCategory findByCatNo(Integer rentalCatNo) {
         return repository.findByRentalCatNo(rentalCatNo);	}
 
+    @Override
+    public Optional<RentalCategory> findRentalCategory_RentalCatNo(Integer rentalCatNo) {
+        return repository.findRentalCategory_RentalCatNo(rentalCatNo);
+    }
+
     //單筆查詢
     @Override
     public RentalCategory getRentalCatName(String rentalCatName) {
         return repository.findByRentalCatName(rentalCatName);	}
+
+    //單筆查詢
+    @Override
+    public List<RentalCategory> getRentalDesPrice(BigDecimal rentalDesPrice) {
+        return repository.findByRentalDesPrice(rentalDesPrice);	}
 
     //單筆查詢
     @Override

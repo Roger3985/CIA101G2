@@ -29,7 +29,31 @@ public class RentalControllerBackEnd {
     private RentalServiceImpl rentalService;
     @Autowired
     private RentalCategoryServiceImpl rentalCategoryService;
+////////////////////////////////////////////////////////////////////////////////////////////////
+    // 測試區 //
+//處理單筆查詢(依rentalNo)
+@PostMapping("getDisplayRentalSize")
+public String getDisplayRentalSize(@RequestParam(value = "rentalSize", required = false) String rentalSize, ModelMap model) {
 
+    List<Rental> sizeData = rentalService.findByRentalColor(rentalSize);  //取得對應數據
+    List<Rental> rentalList = rentalService.findAll();
+    model.addAttribute("rentalList", rentalList); //取的findAll()資料
+
+    List<RentalCategory> rentalCatListData = rentalCategoryService.findAll();
+    model.addAttribute("rentalCategory", new RentalCategory());
+    model.addAttribute("rentalCatListData",rentalCatListData);
+
+    if (sizeData == null) {
+        model.addAttribute("errors", "查無資料");
+        return "/backend/rental/select_page";
+    }
+    model.addAttribute("sizeData", sizeData);
+    return "/backend/rental/listOneRental";
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
 
     //顯示首頁 (後台)
     @GetMapping("/backendIndex")

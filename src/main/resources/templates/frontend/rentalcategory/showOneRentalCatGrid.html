@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="zxx">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <!-- metas -->
@@ -14,6 +14,7 @@
     <!-- Favicon -->
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
+    <th:block th:include="~{frontend/component/plugin/frontendplugin.html :: css}"></th:block>
     <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
     <style>
         span.successMsg {
@@ -22,6 +23,7 @@
         }
     </style>
 </head>
+
 <body>
 <!-- 通用插件 -->
 <th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block>
@@ -93,10 +95,10 @@
                                             <div class="collapse" id="shop_cat_1">
                                                 <ul class="nav nav-pills flex-column nav-hierarchy">
                                                     <li class="nav-item">
-                                                        <a th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=1'}" class="nav-link">西裝</a>
+                                                        <a th:href="@{'/frontend/rentalcategory/showOneRentalCatGrid?rentalCatNo=1'}" class="nav-link">西裝</a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=1'}" class="nav-link">襯衫</a>
+                                                        <a th:href="@{'/frontend/rentalcategory/showOneRentalCatGrid?rentalCatNo=1'}" class="nav-link">襯衫</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -109,10 +111,10 @@
                                             <div class="collapse" id="shop_cat_2">
                                                 <ul class="nav nav-pills flex-column nav-hierarchy">
                                                     <li class="nav-item">
-                                                        <a th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=2'}" class="nav-link">婚紗</a>
+                                                        <a th:href="@{'/frontend/rentalcategory/showOneRentalCatGrid?rentalCatNo=2'}" class="nav-link">婚紗</a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=3'}" class="nav-link">禮服</a>
+                                                        <a th:href="@{'/frontend/rentalcategory/showOneRentalCatGrid?rentalCatNo=3'}" class="nav-link">禮服</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -224,7 +226,7 @@
                     <!-- End Sidebar -->
                     <!-- 商品列表 -->
                     <div class="col-lg-8 col-xl-9">
-                        <div class="shop-top-bar d-flex pb-3"><!-- 切換顯示&排序的區塊 -->
+                        <div class="shop-top-bar d-flex pb-3">
                             <!-- 列表呈現方式 (網格or直列) -->
                             <div class="layout-change">
                                 <!-- 手機模式  Mobile Toggle -->
@@ -250,101 +252,88 @@
                                     <ul class="dropdown-menu dropdown-menu-end shadow"
                                         aria-labelledby="dropdownMenuLink">
                                         <li>
-                                            <a class="sort-item" data-sort="newest" th:href="@{/frontend/rental/rentalShop/{sortType}}">最新</a>
+                                            <a class="sort-item" data-sort="newest" th:href="@{/frontend/rental/rentalShopGrid/{sortType}}">最新</a>
                                         </li>
                                         <li>
-                                            <a class="sort-item" data-sort="low_to_high" th:href="@{/frontend/rental/rentalShop/{sortType}}">價格由低到高</a>
+                                            <a class="sort-item" data-sort="low_to_high" th:href="@{/frontend/rental/rentalShopGrid/{sortType}}">價格由低到高</a>
                                         </li>
                                         <li>
-                                            <a class="sort-item" data-sort="high_to_low"  th:href="@{/frontend/rental/rentalShop/{sortType}}">價格由高到低</a>
+                                            <a class="sort-item" data-sort="high_to_low"  th:href="@{/frontend/rental/rentalShopGrid/{sortType}}">價格由高到低</a>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                        <!-- 商品 -->
-                        <div id="rental-list">
-                        <th:block th:each="rental : ${rentalListData}">
-                            <div class="row g-0 mb-4 rental">
-                                <div class="col-sm-4 position-relative">
-                                    <div class="badge-ribbon position-absolute top-0 mt-3">
-                                        <span class="badge bg-danger">Sale</span>
+                        <div class="row g-3">
+                            <th:block th:each="rental : ${rentalListData}"><!-- 商品開始 -->
+                                <div class="col-sm-6 col-lg-4">
+                                    <div class="product-card-1 rentalShopGrid">
+                                        <div class="product-card-image">
+                                            <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
+                                            <!--  操作 (開始)  -->
+                                            <div class="product-action">
+                                                <a href="" class="btn btn-primary btn_addToFAV"><!--  加入我的最愛  -->
+                                                    <i class="fi-heart"></i>
+                                                </a>
+                                                <a href="#" class="btn btn-primary btn_addTrack"><!--  加入追蹤  -->
+                                                    <i class="bi bi-bookmark"></i>
+                                                </a>
+                                                <span class="successMsg" style="color: lightgreen"></span>
+                                            </div>
+                                            <!--  操作 (結束)  -->
+                                            <div class="product-media">
+                                                <a th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
+                                                    <img class="img-fluid rentalPicSmallGrid"
+                                                         th:src="@{'/icons/frontend/rental/rentalshop/' + ${rental.rentalNo} + '.jpg'}"
+                                                         title="" alt="">
+                                                </a>
+                                                <div class="product-cart-btn">
+                                                    <a href="#" class="btn btn-primary btn-sm w-100">
+                                                        <i class="fi-shopping-cart"></i>加入購物車</a>
+                                                    <span class="successMsg" style="color: lightgreen"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="product-card-info">
+                                            <h6 class="product-title">
+                                                <a th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
+                                                    <span th:text="${rental.rentalName}"></span></a><br>
+                                                <div class="rating-star text">
+                                                    <i class="bi bi-star-fill active"></i>
+                                                    <i class="bi bi-star-fill active"></i>
+                                                    <i class="bi bi-star-fill active"></i>
+                                                    <i class="bi bi-star-fill active"></i>
+                                                    <i class="bi bi-star"></i>
+                                                </div>
+                                            </h6>
+                                            <h6 class="product-price">
+                                                <span class="text-primary fs-4" th:text="'$' + ${rental.rentalCategory.rentalDesPrice}"></span><!-- 押金 -->
+                                                <del class="fs-sm text-muted">
+                                                    <small><span th:text="'$' + ${rental.rentalPrice}"></span></small><!-- 定價 -->
+                                                </del>
+                                            </h6>
+                                        </div>
                                     </div>
-                                <a th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}"><!-- 對應品項查詢 -->
-                                    <img class="border img-fluid w-100 rentalShopPic" th:src="@{'/icons/frontend/rental/rentalshop/' + ${rental.rentalNo} + '.jpg'}"
-                                         th:width="276" th:height="310" title="" alt="">
-                                </a>
                                 </div>
-                                <div class="col-sm-8 ps-sm-4 pt-3 pt-sm-0" style="transform: translate3d(0px, 20px, 0px);">
-                                    <div class="rating-star text mb-2 small"><!-- 評價 -->
-                                        <i class="bi bi-star-fill active"></i>
-                                        <i class="bi bi-star-fill active"></i>
-                                        <i class="bi bi-star-fill active"></i>
-                                        <i class="bi bi-star-fill active"></i>
-                                        <i class="bi bi-star"></i>
-                                    </div>
-                                    <h5 class="product-title">
-                                        <a class="text-reset" th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
-                                            <span th:text="${rental.rentalName}"></span></a><!-- 租借品名稱 -->
-                                    </h5>
-                                    <div class="m-0">
-                                        <p class="small mb-2"><span>編號：</span><span class="rentalNo" th:text="${rental.rentalNo}"></span></p><!-- 租借品編號 -->
-                                        <p class="small mb-2"><span th:text="${rental.rentalInfo}"></span></p><!-- 租借品介紹 -->
-                                    </div>
-                                    <div class="product-price pb-3">
-                                        <span class="text-primary fs-4" th:text="'$' + ${rental.rentalCategory.rentalDesPrice}"></span><!-- 押金 -->
-                                        <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del><!-- 定價 -->
-                                    </div>
-                                    <div>
-                                        <a href="" class="btn btn-mode btn_addToCart"><!--  加入購物車(457)  -->
-                                            <i class="fi-shopping-cart"></i>
-                                        </a>
-                                        <a href="" class="btn btn-primary btn_addToFAV"><!--  加入我的最愛  -->
-                                            <i class="fi-heart"></i>
-                                        </a>
-                                        <a href="#" class="btn btn-primary btn_addTrack">
-                                            <i class="bi bi-bookmark"></i>
-                                        </a>
-<!--                                        <a data-bs-toggle="modal" data-bs-target="#px-quick-view" th:href="@{/frontend/rental/rentalQuickview}"-->
-<!--                                           href="javascript:void(0)" class="btn btn-primary">-->
-<!--                                            <i class="fi-eye"></i>&lt;!&ndash;  跳窗顯示該商品畫面 (rentalQuickview.html) &ndash;&gt;-->
-<!--                                        </a>-->
-                                        <span class="successMsg" style="color: lightgreen"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </th:block>
-                        </div>
-                        <!-- 商品  結束 -->
-                        <!-- 分頁區  -->
+                            </th:block><!-- 商品結束 -->
+                        </div> <!--  結束 <div class="row g-3">   -->
+                        <!-- 頁籤 -->
                         <div class="shop-bottom-bar d-flex align-items-center mt-3">
                             <div>Showing: 1 - 12 of 17</div>
                             <div class="ms-auto">
                                 <ul class="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item active">
-                                        <a class="page-link" href="#">1</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">2</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">3</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span
+                                            aria-hidden="true">«</span></a></li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span
+                                            aria-hidden="true">»</span></a></li>
                                 </ul>
                             </div>
-                        </div><!-- 分頁區  結束  -->
-                    </div><!--   <div class="col-lg-8 col-xl-9">-->
-                    <!-- 商品列表結束 -->
+                        </div><!-- 結束頁籤 -->
+                    </div>
+                    <!-- End Product Box -->
                 </div>
             </div>
         </section>
@@ -363,7 +352,6 @@
 <!-- script start -->
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
 <!-- End script start -->
-
 <script>
     /*
      * 選擇對應顏色
@@ -416,7 +404,7 @@
             event.preventDefault();
             let sortType = $(this).data('sort');
 
-            let url = "/frontend/rental/rentalShop/" + sortType;
+            let url = "/frontend/rental/rentalShopGrid/" + sortType;
 
             window.location.href = url;  //重定向到指定頁面
         });
@@ -503,9 +491,9 @@
                 .then(function (response) {
                     return response.json();
                 }).then(function (data) {
-                    if (data === "/frontend/member/loginMember") {
-                        window.location.href = data;
-                    }
+                if (data === "/frontend/member/loginMember") {
+                    window.location.href = data;
+                }
                 let itemContainer = $("ul.list-unstyled");
                 // console.log(itemContainer);
                 // 每次更新前清空，放購物車資訊的 ul
