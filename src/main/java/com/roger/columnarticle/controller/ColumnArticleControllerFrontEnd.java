@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/frontend/columnarticle")
@@ -115,6 +116,19 @@ public class ColumnArticleControllerFrontEnd {
 
             modelMap.addAttribute("likeCounts", likeCounts);
 
+            // 調用 findAllPublishedOrderByArtTimeDesc 方法，獲得所有的專欄文章依照時間先後順序取得
+            List<ColumnArticle> allArticlesByArtTimeDesc = columnArticleService.findAllPublishedOrderByArtTimeDesc();
+
+            // 取出目前上架中最新的四篇文章
+            List<ColumnArticle> topFourArticles = allArticlesByArtTimeDesc.stream().limit(4).collect(Collectors.toList());
+            modelMap.addAttribute("topFourArticles", topFourArticles);
+
+            // 點讚數量最多的文章
+            List<Object[]> mostLikedArticles = clickLikeService.getMostLikedArticles();
+            if (!mostLikedArticles.isEmpty()) {
+                modelMap.addAttribute("mostLikedArticles", mostLikedArticles);
+            }
+
             return "frontend/columnarticle/listAllColumnArticle";
 
         } else {
@@ -123,6 +137,19 @@ public class ColumnArticleControllerFrontEnd {
             Page<ColumnArticle> columnArticlePage = columnArticleService.getAllByArtStatColumnArticles(pageable);
             modelMap.addAttribute("columnArticlePage", columnArticlePage);
             System.out.println("我有幾篇文章: " + columnArticlePage);
+
+            // 調用 findAllPublishedOrderByArtTimeDesc 方法，獲得所有的專欄文章依照時間先後順序取得
+            List<ColumnArticle> allArticlesByArtTimeDesc = columnArticleService.findAllPublishedOrderByArtTimeDesc();
+
+            // 取出目前上架中最新的四篇文章
+            List<ColumnArticle> topFourArticles = allArticlesByArtTimeDesc.stream().limit(4).collect(Collectors.toList());
+            modelMap.addAttribute("topFourArticles", topFourArticles);
+
+            // 點讚數量最多的文章
+            List<Object[]> mostLikedArticles = clickLikeService.getMostLikedArticles();
+            if (!mostLikedArticles.isEmpty()) {
+                modelMap.addAttribute("mostLikedArticles", mostLikedArticles);
+            }
 
             return "frontend/columnarticle/listAllColumnArticle";
         }
@@ -228,10 +255,36 @@ public class ColumnArticleControllerFrontEnd {
             // 將 articleCollections 和 articleCollection 存入 session
             session.setAttribute("articleCollectionList", articleCollectionList);
             session.setAttribute("articleCollections", articleCollections);
+
+            // 調用 findAllPublishedOrderByArtTimeDesc 方法，獲得所有的專欄文章依照時間先後順序取得
+            List<ColumnArticle> allArticlesByArtTimeDesc = columnArticleService.findAllPublishedOrderByArtTimeDesc();
+
+            // 取出目前上架中最新的四篇文章
+            List<ColumnArticle> topFourArticles = allArticlesByArtTimeDesc.stream().limit(4).collect(Collectors.toList());
+            modelMap.addAttribute("topFourArticles", topFourArticles);
+
+            // 點讚數量最多的文章
+            List<Object[]> mostLikedArticles = clickLikeService.getMostLikedArticles();
+            if (!mostLikedArticles.isEmpty()) {
+                modelMap.addAttribute("mostLikedArticles", mostLikedArticles);
+            }
         }
+
+        // 調用 findAllPublishedOrderByArtTimeDesc 方法，獲得所有的專欄文章依照時間先後順序取得
+        List<ColumnArticle> allArticlesByArtTimeDesc = columnArticleService.findAllPublishedOrderByArtTimeDesc();
+
+        // 取出目前上架中最新的四篇文章
+        List<ColumnArticle> topFourArticles = allArticlesByArtTimeDesc.stream().limit(4).collect(Collectors.toList());
+        modelMap.addAttribute("topFourArticles", topFourArticles);
 
         // 將 columnReplies 存入 session
         session.setAttribute("columnReplies", columnReplies);
+
+        // 點讚數量最多的文章
+        List<Object[]> mostLikedArticles = clickLikeService.getMostLikedArticles();
+        if (!mostLikedArticles.isEmpty()) {
+            modelMap.addAttribute("mostLikedArticles", mostLikedArticles);
+        }
 
         // 返回單個專欄文章的頁面
         return "/frontend/columnarticle/singleColumnArticle";
@@ -551,6 +604,13 @@ public class ColumnArticleControllerFrontEnd {
         }
 
         modelMap.addAttribute("likeCounts", likeCounts);
+
+        // 調用 findAllPublishedOrderByArtTimeDesc 方法，獲得所有的專欄文章依照時間先後順序取得
+        List<ColumnArticle> allArticlesByArtTimeDesc = columnArticleService.findAllPublishedOrderByArtTimeDesc();
+
+        // 取出目前上架中最新的四篇文章
+        List<ColumnArticle> topFourArticles = allArticlesByArtTimeDesc.stream().limit(4).collect(Collectors.toList());
+        modelMap.addAttribute("topFourArticles", topFourArticles);
 
         // 返回搜尋結果的視圖
         return "frontend/columnarticle/listAllColumnArticle";

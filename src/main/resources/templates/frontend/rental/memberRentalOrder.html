@@ -338,19 +338,31 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <h5>收件人資料</h5>
+                                    <br>
                                     <span>
                                             <span th:text="${rentalOrder.getrentalRcvName()}"></span>
                                             <br>
                                             <span th:text="${rentalOrder.getrentalRcvPhone()}"></span>
                                             <br>
                                             <span th:text="${rentalOrder.getrentalAddr()}"></span>
+                                            <br>
+                                            <span th:switch="${rentalOrder.getrentalTakeMethod()}">
+                                                <span th:case="1">取貨方式 : 到店取貨</span>
+                                                <span th:case="2">取貨方式 : 宅配</span>
+                                            </span>
                                         </span>
                                 </div>
                                 <div class="col-md-6">
                                     <h5>訂單摘要</h5>
+                                    <br>
                                     <p th:text="'總租金 : $' + ${rentalOrder.getrentalAllPrice()}"></p>
                                     <p th:text="'總押金 : $' + ${rentalOrder.getrentalAllDepPrice()}"></p>
                                     <p th:text="'合計 : $' + ${rentalOrder.getrentalAllPrice() + rentalOrder.getrentalAllDepPrice()}"><strong>總金額: $299</strong></p>
+                                    <div th:switch="${rentalOrder.getrentalPayMethod()}">
+                                        <p th:case="1">付款方式 : 信用卡</p>
+                                        <p th:case="2">付款方式 : 現場付款</p>
+                                        <p th:case="3">付款方式 : Line Pay</p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -449,16 +461,36 @@
     // 進度顯示 168
     let divForOrderStat = $("div.timeline");
     let orderStat = divForOrderStat.attr("data-stat");
+    let c1 = $("div.c1");
     let c2 = $("div.c2");
     let c3 = $("div.c3");
     let c4 = $("div.c4");
     let c5 = $("div.c5");
+    let c1toc2 = $("i.c1toc2");
     let c2toc3 = $("i.c2toc3");
     let c3toc4 = $("i.c3toc4");
     let c4toc5 = $("i.c4toc5");
 
     switch (orderStat) {
-        case "10": // 已付款
+        case "40" : // 已成立但沒付款
+            c1.css("border", "4px solid gray");
+            c1.find("i").css("color", "gray");
+            c2.css("border", "4px solid gray");
+            c2.find("i").css("color", "gray");
+            c3.css("border", "4px solid gray");
+            c3.find("i").css("color", "gray");
+            c4.css("border", "4px solid gray");
+            c4.find("i").css("color", "gray");
+            c5.css("border", "4px solid gray");
+            c5.find("i").css("color", "gray");
+
+            c1toc2.css("color", "gray");
+            c2toc3.css("color", "gray");
+            c3toc4.css("color", "gray");
+            c4toc5.css("color", "gray");
+            break;
+
+        case "10" : // 已付款
             c2.css("border", "4px solid gray");
             c2.find("i").css("color", "gray");
             c3.css("border", "4px solid gray");
@@ -473,7 +505,7 @@
             c4toc5.css("color", "gray");
             break;
 
-        case "20": // 配送中
+        case "20" : // 配送中
             c3.css("border", "4px solid gray");
             c3.find("i").css("color", "gray");
             c4.css("border", "4px solid gray");
@@ -485,7 +517,7 @@
             c4toc5.css("color", "gray");
             break;
 
-        case "30": // 等待取貨中
+        case "30" : // 等待取貨中
             c3.css("border", "4px solid gray");
             c3.find("i").css("color", "gray");
             c4.css("border", "4px solid gray");
@@ -497,7 +529,7 @@
             c4toc5.css("color", "gray");
             break;
 
-        case "35": // 租用中
+        case "35" : // 租用中
             c4.css("border", "4px solid gray");
             c4.find("i").css("color", "gray");
             c5.css("border", "4px solid gray");
@@ -506,7 +538,7 @@
             c4toc5.css("color", "gray");
             break;
 
-        case "45": // 已歸還
+        case "45" : // 已歸還
             c5.css("border", "4px solid gray");
             c5.find("i").css("color", "gray");
             break;

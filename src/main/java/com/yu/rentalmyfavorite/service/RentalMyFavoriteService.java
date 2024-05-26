@@ -12,11 +12,11 @@ public interface RentalMyFavoriteService {
 //----------------------------------------------------------------------------------------------------------------------
 //主要由redis使用
 
-    Map<String, String> getWish(Integer memNo, Integer rentalNo);
+    List<Map<String, String>> getWishFromRedis(String memNo);
 
     void deleteWish(Integer memNo, Integer rentalNo);
 
-    void addWish(Integer memNo, Map<String, String> wishDetails);
+    void addWish(String memNo, Map<String, String> wishDetails);
 
     List<AddToWishList> findByMemNo(Integer memNo); //單筆查詢(memNo)
 

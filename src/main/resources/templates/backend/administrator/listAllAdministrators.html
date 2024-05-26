@@ -62,7 +62,7 @@
                                         </td>
                                         <td th:text="${administrator.admEmail}"></td>
                                         <td th:text="${administrator.title.titleNo}"></td>
-                                        <td th:text="${administrator.admHireDate}"></td>
+                                        <td th:text="${#dates.format(administrator.admHireDate, 'yyyy-MM-dd')}"></td>
                                         <td>
                                             <img th:src="@{/backend/administrator/DBGifReader} + '?admNo=' + ${administrator.admNo}" alt="Profile Picture">
                                         </td>
@@ -70,7 +70,7 @@
                                             <span th:if="${administrator.admLogin == 1}" th:text="登入"></span>
                                             <span th:if="${administrator.admLogin == 0}" th:text="未登入"></span>
                                         </td>
-                                        <td th:text="${administrator.admActiveTime}"></td>
+                                        <td th:text="${#dates.format(administrator.admActiveTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                                         <td>
                                             <form method="get" th:action="@{'/backend/administrator/updateAdministrator/' + ${administrator.admNo}}">
                                                 <input type="hidden" name="admNo" th:value="${administrator.admNo}">

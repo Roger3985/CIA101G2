@@ -181,6 +181,14 @@ public class ColumnArticleServiceImpl implements ColumnArticleService {
         return columnArticleRepository.searchByKeywordAndStatus(artStat, keyword, pageable);
     }
 
+    /**
+     * 獲取所有目前上架的專欄文章，並按照發布時間降序排序。
+     */
+    @Override
+    public List<ColumnArticle> findAllPublishedOrderByArtTimeDesc() {
+        return columnArticleRepository.findAllPublishedOrderByArtTimeDesc();
+    }
+
 
     /**
      * 移除會員的專欄文章收藏。

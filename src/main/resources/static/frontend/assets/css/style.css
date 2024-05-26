@@ -10840,6 +10840,11 @@ progress {
     max-width: 100%;
     height: auto
 }
+.rentalPicChange {
+    width: 300px;
+    height: 430px;
+    overflow: hidden
+}
 
 .img-thumbnail {
     padding: .25rem;
@@ -16619,6 +16624,11 @@ fieldset:disabled .btn {
     padding: var(--bs-modal-padding)
 }
 
+.rentalSkippopup {
+    padding: var(--bs-modal-padding);
+    margin: 0 auto; /* 使用 margin 屬性文字框置中 */
+}
+
 .modal-footer {
     display: flex;
     flex-shrink: 0;
@@ -18853,7 +18863,12 @@ fieldset:disabled .btn {
 }
 
 .w-100 {
-    width: 100% !important
+    width: 100%
+}
+
+.rentalShopPic {
+    width: 220px;
+    height: 290px;
 }
 
 .w-auto {
@@ -36083,7 +36098,13 @@ img {
 .product-card-1 {
     border: 1px solid var(--bs-gray-300);
     position: relative;
-    background: var(--bs-body-bg)
+    background: var(--bs-body-bg);
+}
+.rentalShopGrid {
+    border: 1px solid var(--bs-gray-300);
+    position: relative;
+    background: var(--bs-body-bg);
+    margin-bottom: 1rem;
 }
 
 .product-card-1 .badge-ribbon {
@@ -38042,6 +38063,19 @@ img {
     cursor: pointer;
     width: 100%
 }
+.rentalPicSmall {
+    border: 2px solid transparent;
+    cursor: pointer;
+    width: 90px;
+    height: 120px;
+}
+
+.rentalPicSmallGrid {
+    border: 2px solid transparent;
+    cursor: pointer;
+    width: 115px;
+    height: 320px;
+}
 
 .product-details .product-gallery .product-thumb .swiper-slide.swiper-slide-thumb-active img {
     border-color: var(--bs-primary)
@@ -38114,8 +38148,8 @@ img {
 
 .review-box .review-image {
     width: 100px;
-    height: 100px;
-    border-radius: 50%;
+    height: 150px;
+    /*border-radius: 90%;*/
     overflow: hidden
 }
 

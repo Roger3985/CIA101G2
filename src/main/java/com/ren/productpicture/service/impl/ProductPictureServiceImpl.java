@@ -5,13 +5,17 @@ import com.ren.productpicture.entity.ProductPicture;
 import com.ren.product.dao.ProductRepository;
 import com.ren.productpicture.dao.ProductPictureRepository;
 import com.ren.productpicture.service.ProductPictureService_interface;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -22,12 +26,27 @@ public class ProductPictureServiceImpl implements ProductPictureService_interfac
 	@Autowired
 	private ProductPictureRepository productPictureRepository;
 
-	@Autowired
-	private SimpMessagingTemplate messagingTemplate;
+//	public void sendProgress(String sessionId, int progress) {
+//		messagingTemplate.convertAndSendToUser(sessionId, "/topic/progress", progress);
+//	}
+//
+//	@Autowired
+//	private SimpMessagingTemplate messagingTemplate;
 
-	public void sendProgress(String sessionId, int progress) {
-		messagingTemplate.convertAndSendToUser(sessionId, "/topic/progress", progress);
-	}
+//	@Autowired
+//	private RabbitTemplate rabbitTemplate;
+//
+//	@Value("${rabbitmq.exchange}")
+//	private String exchange;
+//
+//	@Value("${rabbitmq.routingkey}")
+//	private String routingkey;
+
+//	public void notifyUploadProgress(String userAdmNo, int progress) {
+//		Map<String, Object> message = new HashMap<>();
+//		message.put("progress", progress);
+//		rabbitTemplate.convertAndSend(exchange, routingkey + "." + userAdmNo, message);
+//	}
 
 	/**
 	 * 新增商品照片
@@ -154,4 +173,5 @@ public class ProductPictureServiceImpl implements ProductPictureService_interfac
 			throw new RuntimeException(e);
 		}
 	}
+
 }

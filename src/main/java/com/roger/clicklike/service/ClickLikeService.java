@@ -33,4 +33,16 @@ public interface ClickLikeService {
      */
     public int getLikeCountByArtNo(Integer artNo);
 
+    /**
+     * 獲取點讚數最多的文章。
+     *
+     * 此方法從資料庫中查詢每篇文章的編號及其點讚數量，並按點讚數量降序排列。
+     * 返回的列表中的每個元素都是一個Object數組，其中：
+     * - 第一個元素是文章編號 (artNo)
+     * - 第二個元素是點讚數量 (likeCount)
+     *
+     * @return 包含點讚數最多文章及其點讚數量的列表
+     */
+    public List<Object[]> getMostLikedArticles();
+
 }

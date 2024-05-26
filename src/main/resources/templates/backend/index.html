@@ -88,7 +88,7 @@
         .chart-container {
             position: relative;
             height: 40vh;
-            width: 80vw;
+            width: 100%;
         }
 
         .nav-tabs {
@@ -169,6 +169,7 @@
             background: #007bff;
             color: #fff;
         }
+
     </style>
 </head>
 <body id="page-top">
@@ -211,6 +212,14 @@
                         <div class="chart-container">
                             <canvas id="marketOverviewChart"></canvas>
                         </div>
+                        <div class="sort-options">
+                            <label for="sortOptions">排序方式：</label>
+                            <select id="sortOptions">
+                                <option value="default">默認</option>
+                                <option value="ascending">升序</option>
+                                <option value="descending">降序</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="section">
@@ -230,14 +239,16 @@
                     </div>
                     <div class="card-set">
                         <a class="card" th:href="@{/backend/administrator}" target="_blank">
-                            <div class="thumb-container" th:style="|background-image: url('https://lh3.googleusercontent.com/CZUV5ERpGmSi37S437q9yGrBDpTrCTaA_BFBe1AoFuaYuYCGGRw_Qvv4j1q3lcw7YeSJYTXoUi5UhYNA_J9XFioJb2F1wOhNTfIufwLd2SNuMxHRzPI=w960');|"></div>
+                            <div class="thumb-container"
+                                 th:style="|background-image: url('https://lh3.googleusercontent.com/CZUV5ERpGmSi37S437q9yGrBDpTrCTaA_BFBe1AoFuaYuYCGGRw_Qvv4j1q3lcw7YeSJYTXoUi5UhYNA_J9XFioJb2F1wOhNTfIufwLd2SNuMxHRzPI=w960');|"></div>
                             <div class="content-container">
                                 <span class="title">管理員專區</span>
                                 <span class="description">前往管理員頁面</span>
                             </div>
                         </a>
                         <a class="card" th:href="@{/backend/member}" target="_blank">
-                            <div class="thumb-container" style="background-image: url('https://lh3.googleusercontent.com/fnAWs0CZd5Ux984uoPYWo2zKxzkSq4DgaqRfOyEMLDY2E4dJ0LtxJpuAo_vACJS9FImkgokKKGDHZ5VSMSRWUacm9Up56bolNoMPcSK-LfB2-OTunQ=w960');"></div>
+                            <div class="thumb-container"
+                                 style="background-image: url('https://lh3.googleusercontent.com/fnAWs0CZd5Ux984uoPYWo2zKxzkSq4DgaqRfOyEMLDY2E4dJ0LtxJpuAo_vACJS9FImkgokKKGDHZ5VSMSRWUacm9Up56bolNoMPcSK-LfB2-OTunQ=w960');"></div>
                             <div class="content-container">
                                 <span class="title">會員專區</span>
                                 <span class="description">前往會員管理頁面</span>
@@ -246,14 +257,16 @@
                     </div>
                     <div class="card-set">
                         <a class="card" th:href="@{/backend/service}" target="_blank">
-                            <div class="thumb-container" style="background-image: url('https://lh3.googleusercontent.com/cOI8fyZSqiEzQzBOzSqDjePihKw8h7OPzGn_SkeOubAUXIBFzsyP0-h1rQ7WcjeZneeOTjpUpKAv3f8xkiBkR-VXQEm-oDn7vkVsKh7vlA2myxY5CR8=w960');"></div>
+                            <div class="thumb-container"
+                                 style="background-image: url('https://lh3.googleusercontent.com/cOI8fyZSqiEzQzBOzSqDjePihKw8h7OPzGn_SkeOubAUXIBFzsyP0-h1rQ7WcjeZneeOTjpUpKAv3f8xkiBkR-VXQEm-oDn7vkVsKh7vlA2myxY5CR8=w960');"></div>
                             <div class="content-container">
                                 <span class="title">客服專區</span>
                                 <span class="description">前往客服管理頁面</span>
                             </div>
                         </a>
                         <a class="card" th:href="@{/backend/column}" target="_blank">
-                            <div class="thumb-container" style="background-image: url('https://lh3.googleusercontent.com/CZUV5ERpGmSi37S437q9yGrBDpTrCTaA_BFBe1AoFuaYuYCGGRw_Qvv4j1q3lcw7YeSJYTXoUi5UhYNA_J9XFioJb2F1wOhNTfIufwLd2SNuMxHRzPI=w960');"></div>
+                            <div class="thumb-container"
+                                 style="background-image: url('https://lh3.googleusercontent.com/CZUV5ERpGmSi37S437q9yGrBDpTrCTaA_BFBe1AoFuaYuYCGGRw_Qvv4j1q3lcw7YeSJYTXoUi5UhYNA_J9XFioJb2F1wOhNTfIufwLd2SNuMxHRzPI=w960');"></div>
                             <div class="content-container">
                                 <span class="title">專欄專區</span>
                                 <span class="description">前往專欄管理頁面</span>
@@ -266,14 +279,16 @@
                     </div>
                     <div class="card-set">
                         <a class="card" th:href="@{/backend/product}" target="_blank">
-                            <div class="thumb-container" style="background-image: url('https://lh3.googleusercontent.com/fnAWs0CZd5Ux984uoPYWo2zKxzkSq4DgaqRfOyEMLDY2E4dJ0LtxJpuAo_vACJS9FImkgokKKGDHZ5VSMSRWUacm9Up56bolNoMPcSK-LfB2-OTunQ=w960');"></div>
+                            <div class="thumb-container"
+                                 style="background-image: url('https://lh3.googleusercontent.com/fnAWs0CZd5Ux984uoPYWo2zKxzkSq4DgaqRfOyEMLDY2E4dJ0LtxJpuAo_vACJS9FImkgokKKGDHZ5VSMSRWUacm9Up56bolNoMPcSK-LfB2-OTunQ=w960');"></div>
                             <div class="content-container">
                                 <span class="title">商品專區</span>
                                 <span class="description">前往商品管理頁面</span>
                             </div>
                         </a>
                         <a class="card" th:href="@{/backend/rental}" target="_blank">
-                            <div class="thumb-container" style="background-image: url('https://lh3.googleusercontent.com/cOI8fyZSqiEzQzBOzSqDjePihKw8h7OPzGn_SkeOubAUXIBFzsyP0-h1rQ7WcjeZneeOTjpUpKAv3f8xkiBkR-VXQEm-oDn7vkVsKh7vlA2myxY5CR8=w960');"></div>
+                            <div class="thumb-container"
+                                 style="background-image: url('https://lh3.googleusercontent.com/cOI8fyZSqiEzQzBOzSqDjePihKw8h7OPzGn_SkeOubAUXIBFzsyP0-h1rQ7WcjeZneeOTjpUpKAv3f8xkiBkR-VXQEm-oDn7vkVsKh7vlA2myxY5CR8=w960');"></div>
                             <div class="content-container">
                                 <span class="title">租借品專區</span>
                                 <span class="description">前往租借品管理頁面</span>
@@ -319,246 +334,170 @@
         });
     });
 
-    // // 在這裡解析Thymeleaf傳遞的資料
-    // var productTop10SalQty = /*[[${productTop10SalQty}]]*/ [];
-    //
-    // // 處理productList資料，假設每個product包含 productNo 和 productSalQty 屬性
-    // var labels = productTop10SalQty.map(product => product.productNo);
-    // var data = productTop10SalQty.map(product => product.productSalQty);
-    //
-    // // 銷售數量前10 折線圖
-    // const salQtyElement = document.getElementById('p-SalQty');
-    // const salQtyConfig = {
-    //     type: 'line',
-    //     data: {
-    //         labels: labels,
-    //         datasets: [{
-    //             label: '銷售數量',
-    //             data: data,
-    //             backgroundColor: 'rgba(75, 192, 192, 0.2)',
-    //             borderColor: 'rgba(75, 192, 192, 1)',
-    //             borderWidth: 2,
-    //             pointBackgroundColor: 'rgba(75, 192, 192, 1)',
-    //             pointBorderColor: '#fff',
-    //             pointBorderWidth: 2,
-    //             pointRadius: 5,
-    //             pointHoverRadius: 7,
-    //             lineTension: 0.4
-    //         }]
-    //     },
-    //     options: {
-    //         responsive: true,
-    //         maintainAspectRatio: false,
-    //         plugins: {
-    //             legend: {
-    //                 display: true,
-    //                 labels: {
-    //                     color: '#333',
-    //                     font: {
-    //                         size: 14,
-    //                         weight: 'bold'
-    //                     }
-    //                 }
-    //             }
-    //         },
-    //         scales: {
-    //             x: {
-    //                 grid: {
-    //                     display: false
-    //                 },
-    //                 ticks: {
-    //                     color: '#333',
-    //                     font: {
-    //                         size: 12
-    //                     }
-    //                 }
-    //             },
-    //             y: {
-    //                 grid: {
-    //                     color: 'rgba(200, 200, 200, 0.2)',
-    //                     borderDash: [5, 5]
-    //                 },
-    //                 ticks: {
-    //                     color: '#333',
-    //                     font: {
-    //                         size: 12
-    //                     },
-    //                     beginAtZero: true
-    //                 }
-    //             }
-    //         }
-    //     }
-    // };
-    //
-    // new Chart(salQtyElement, salQtyConfig);
+    const customTitle = {
+        id: 'customTitle',
+        beforeLayout: (chart, args, opts) => {
+            if (!opts.x.display) {
+                return;
+            }
 
-    // // 在這裡解析Thymeleaf傳遞的資料
-    // var productTop10SalQty = /*[[${productTop10SalQty}]]*/ [];
-    //
-    // // 處理productList資料，假設每個product包含 productNo 和 productSalQty 屬性
-    // var labels = productTop10SalQty.map(product => product.productNo);
-    // var data = productTop10SalQty.map(product => product.productSalQty);
-    //
-    // // 混合圖表
-    // const salQtyElement = document.getElementById('p-SalQty');
-    // const salQtyConfig = {
-    //     type: 'bar', // 設置主圖表類型為 bar
-    //     data: {
-    //         labels: labels,
-    //         datasets: [
-    //             {
-    //                 type: 'line', // 子圖表類型設置為 line
-    //                 label: '銷售數量 (折線圖)',
-    //                 data: data,
-    //                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
-    //                 borderColor: 'rgba(75, 192, 192, 1)',
-    //                 borderWidth: 2,
-    //                 pointBackgroundColor: 'rgba(75, 192, 192, 1)',
-    //                 pointBorderColor: '#fff',
-    //                 pointBorderWidth: 2,
-    //                 pointRadius: 5,
-    //                 pointHoverRadius: 7,
-    //                 lineTension: 0.4
-    //             },
-    //             {
-    //                 type: 'bar', // 子圖表類型設置為 bar
-    //                 label: '銷售數量 (長方圖)',
-    //                 data: data,
-    //                 backgroundColor: 'rgba(54, 162, 235, 0.5)',
-    //                 borderColor: 'rgba(54, 162, 235, 1)',
-    //                 borderWidth: 1
-    //             }
-    //         ]
-    //     },
-    //     options: {
-    //         responsive: true,
-    //         maintainAspectRatio: false,
-    //         plugins: {
-    //             legend: {
-    //                 display: true,
-    //                 labels: {
-    //                     color: '#333',
-    //                     font: {
-    //                         size: 14,
-    //                         weight: 'bold'
-    //                     }
-    //                 }
-    //             }
-    //         },
-    //         scales: {
-    //             x: {
-    //                 grid: {
-    //                     display: false
-    //                 },
-    //                 ticks: {
-    //                     color: '#333',
-    //                     font: {
-    //                         size: 12
-    //                     }
-    //                 }
-    //             },
-    //             y: {
-    //                 grid: {
-    //                     color: 'rgba(200, 200, 200, 0.2)',
-    //                     borderDash: [5, 5]
-    //                 },
-    //                 ticks: {
-    //                     color: '#333',
-    //                     font: {
-    //                         size: 12
-    //                     },
-    //                     beginAtZero: true
-    //                 }
-    //             }
-    //         }
-    //     }
-    // };
-    //
-    // new Chart(salQtyElement, salQtyConfig);
+            const { ctx } = chart;
+            ctx.font = opts.x.font || '12px "Helvetica Neue", Helvetica, Arial, sans-serif';
 
-    // 在這裡解析Thymeleaf傳遞的資料
-    var productTop10SalQty = /*[[${productTop10SalQty}]]*/ [];
-
-    // 處理productList資料，假設每個product包含 productNo 和 productSalQty 屬性
-    var labels = productTop10SalQty.map(product => product.productNo);
-    var data = productTop10SalQty.map(product => product.productSalQty);
-
-    // 混合圖表
-    const marketOverviewChartElement = document.getElementById('marketOverviewChart');
-    const marketOverviewChartConfig = {
-        type: 'bar', // 設置主圖表類型為 bar
-        data: {
-            labels: labels,
-            datasets: [
-                {
-                    type: 'line', // 子圖表類型設置為 line
-                    label: '銷售數量 (折線圖)',
-                    data: data,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 2,
-                    pointBackgroundColor: 'rgba(75, 192, 192, 1)',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
-                    lineTension: 0.4
-                },
-                {
-                    type: 'bar', // 子圖表類型設置為 bar
-                    label: '銷售數量 (長方圖)',
-                    data: data,
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }
-            ]
+            const { width } = ctx.measureText(opts.x.text);
+            chart.options.layout.padding.right = width * 1.3;
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: true,
-                    labels: {
-                        color: '#333',
-                        font: {
-                            size: 14,
-                            weight: 'bold'
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    grid: {
-                        display: false
-                    },
-                    ticks: {
-                        color: '#333',
-                        font: {
-                            size: 12
-                        }
-                    }
-                },
-                y: {
-                    grid: {
-                        color: 'rgba(200, 200, 200, 0.2)',
-                        borderDash: [5, 5]
-                    },
-                    ticks: {
-                        color: '#333',
-                        font: {
-                            size: 12
-                        },
-                        beginAtZero: true
-                    }
-                }
+        afterDraw: (chart, args, opts) => {
+            const { ctx, scales: { x, y }, chartArea: { top, bottom, left, right } } = chart;
+
+            if (opts.x.display) {
+                ctx.fillStyle = opts.x.color || Chart.defaults.color;
+                ctx.font = opts.x.font || '16px "Helvetica Neue", Helvetica, Arial, sans-serif';
+                ctx.fillText(opts.x.text, right + (opts.x.offsetX || 0), bottom + ((opts.x.offsetY * -1) || 0));
+            }
+
+            if (opts.y.display) {
+                ctx.fillStyle = opts.y.color || Chart.defaults.color;
+                ctx.font = opts.y.font || '12px "Helvetica Neue", Helvetica, Arial, sans-serif';
+                ctx.fillText(opts.y.text, opts.y.offsetX || 3, top + ((opts.y.offsetY * -1) || 15));
             }
         }
     };
 
-    new Chart(marketOverviewChartElement, marketOverviewChartConfig);
+    document.addEventListener('DOMContentLoaded', function () {
+        // 在這裡解析Thymeleaf傳遞的資料
+        var productTop10SalQty = /*[[${productTop10SalQty}]]*/ [];
+
+        productTop10SalQty.sort((a, b) => a.productNo - b.productNo);
+
+        // 處理productList資料，假設每個product包含 productNo 和 productSalQty 屬性
+        var labels = productTop10SalQty.map(product => (product.productNo + ' : ' + product.productName));
+        var data = productTop10SalQty.map(product => product.productSalQty);
+
+        const marketOverviewChartElement = document.getElementById('marketOverviewChart');
+        const marketOverviewChartConfig = {
+            type: 'bar', // 設置主圖表類型為 bar
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        type: 'line', // 子圖表類型設置為 line
+                        label: '銷售數量 (折線圖)',
+                        data: data,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        lineTension: 0.4
+                    },
+                    {
+                        type: 'bar', // 子圖表類型設置為 bar
+                        label: '銷售數量 (長方圖)',
+                        data: data,
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        right: 0
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            color: '#333',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            usePointStyle: true, // 使用点样式
+                            generateLabels: (chart) => {
+                                const labels = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+                                labels.forEach((label, index) => {
+                                    if (chart.data.datasets[index].type === 'line') {
+                                        label.pointStyle = 'circle'; // 自定义折线图样式
+                                    } else {
+                                        label.pointStyle = 'rect'; // 柱状图样式
+                                    }
+                                });
+                                return labels;
+                            }
+                        }
+                    },
+                    customTitle: {
+                        y: {
+                            display: true,
+                            text: '銷售數量',
+                            color: '#333',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            offsetX: 3,
+                            offsetY: 25
+                        },
+                        x: {
+                            display: true,
+                            text: '商品',
+                            color: '#333',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            offsetX: 5,
+                            offsetY: -17
+                        }
+                    }
+                }
+            },
+            plugins: [customTitle]
+        };
+
+        const marketOverviewChart = new Chart(marketOverviewChartElement, marketOverviewChartConfig);
+
+        // 排序選項的事件監聽器
+        document.getElementById('sortOptions').addEventListener('change', function (event) {
+            const sortOrder = event.target.value;
+
+            let sortedLabels = [...labels];
+            let sortedData = [...data];
+
+            if (sortOrder === 'ascending') {
+                const sorted = productTop10SalQty.sort((a, b) => a.productSalQty - b.productSalQty);
+                sortedLabels = sorted.map(product => '商品編號 ' + product.productNo);
+                sortedData = sorted.map(product => product.productSalQty);
+            } else if (sortOrder === 'descending') {
+                const sorted = productTop10SalQty.sort((a, b) => b.productSalQty - a.productSalQty);
+                sortedLabels = sorted.map(product => '商品編號 ' + product.productNo);
+                sortedData = sorted.map(product => product.productSalQty);
+            } else {
+                // 默認順序
+                const sorted = productTop10SalQty.sort((a, b) => a.productNo - b.productNo);
+                sortedLabels = sorted.map(product => '商品編號 ' + product.productNo);
+                sortedData = sorted.map(product => product.productSalQty);
+            }
+
+            marketOverviewChart.data.labels = sortedLabels;
+            marketOverviewChart.data.datasets[0].data = sortedData;
+            marketOverviewChart.data.datasets[1].data = sortedData;
+
+            marketOverviewChart.update();
+        });
+
+        document.getElementById('sortOptions').value = 'default';
+        document.getElementById('sortOptions').dispatchEvent(new Event('change'));
+    });
 
 
 </script>

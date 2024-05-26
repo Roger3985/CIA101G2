@@ -20,6 +20,8 @@
     <button type="submit">line pay測試</button>
 </form>
 
+
+
 <!-- line pay -->
 
 <!-- 綠界物流測試 -->
@@ -38,60 +40,72 @@
     //     fetch("/backend/rentalorder/rentalCart").then()
     // })
 
-
-    document.querySelector("button.btn").addEventListener("click", function () {
-        fetch("/backend/rentalorder/ecpayCheckout", {
-            method: "POST", // 指定是POST請求
-            headers: {
-                "Content-Type" : "application/x-www-form-urlencoded",
-                "Accept": "text/html"// 預期返回的是HTML
-            }
-        })
-            .then(response => response.text()) // 將回應轉為text
-            .then(html => {
-                // 將回傳的HTML表單放到頁面中
-                let formContainer = document.getElementById("ecpayFormContainer");
-                console.log(formContainer);
-                formContainer.innerHTML = html;
-                // 自動提交表單，如果表單自帶JavaScript自動提交則不需要這行
-                formContainer.querySelector('form').submit();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    })
+    // document.querySelector("button.btn").addEventListener("click", function () {
+    //     fetch("/backend/rentalorder/ecpayCheckout", {
+    //         method: "POST", // 指定是POST請求
+    //         headers: {
+    //             "Content-Type" : "application/x-www-form-urlencoded",
+    //             "Accept": "text/html"// 預期返回的是HTML
+    //         }
+    //     })
+    //         .then(response => response.text()) // 將回應轉為text
+    //         .then(html => {
+    //             // 將回傳的HTML表單放到頁面中
+    //             let formContainer = document.getElementById("ecpayFormContainer");
+    //             console.log(formContainer);
+    //             formContainer.innerHTML = html;
+    //             // 自動提交表單，如果表單自帶JavaScript自動提交則不需要這行
+    //             formContainer.querySelector('form').submit();
+    //         })
+    //         .catch(error => {
+    //             console.error('Error:', error);
+    //         });
+    // })
 
 
     $(function () {
 
-        $("button.logistics").on("click", function () {
+        // $("button.logistics").on("click", function () {
+        //
+        //     fetch("/backend/rentalorder/createShippingOrder", {
+        //         method : "POST",
+        //         headers: {
+        //             "Content-Type" : "application/x-www-form-urlencoded",
+        //             "Accept": "text/html"// 預期返回的是HTML
+        //         }
+        //     }).then(function (response) {
+        //         return response.text();
+        //     }).then(function (data) {
+        //
+        //         // let newWindow = window.open("", "_blank");
+        //         // newWindow.document.write(data);
+        //         //
+        //         // newWindow.onload = function () {
+        //         //     newWindow.document.getElementById("postForm").submit();
+        //         // }
+        //
+        //
+        //         let logisticsFormContainer = $("#logisticsFormContainer");
+        //         logisticsFormContainer.html(data);
+        //         console.log(data);
+        //         logisticsFormContainer.find("form").submit();
+        //
+        //     });
+        //
+        // });
 
-            fetch("/backend/rentalorder/createShippingOrder", {
-                method : "POST",
-                headers: {
-                    "Content-Type" : "application/x-www-form-urlencoded",
-                    "Accept": "text/html"// 預期返回的是HTML
-                }
-            }).then(function (response) {
-                return response.text();
-            }).then(function (data) {
-
-                // let newWindow = window.open("", "_blank");
-                // newWindow.document.write(data);
-                //
-                // newWindow.onload = function () {
-                //     newWindow.document.getElementById("postForm").submit();
-                // }
-
-
-                let logisticsFormContainer = $("#logisticsFormContainer");
-                logisticsFormContainer.html(data);
-                console.log(data);
-                logisticsFormContainer.find("form").submit();
-
-            });
-
-        });
+        // line pay
+        // $(document).on("click", "button#forLinePay", function () {
+        //
+        //     fetch("/frontend/rentalorder/testLinePay", {
+        //         method : "POST"
+        //     }).then(response => response.json())
+        //         .then(data => {
+        //             // console.log(data);
+        //             window.location.href = data.info.paymentUrl.web;
+        //         });
+        //
+        // });
 
 
     });

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -84,6 +85,24 @@ public class ColumnReplyServiceImpl implements ColumnReplyService {
     @Override
     public ColumnReply getColumnReplyByColumnReplyNo(Integer columnReplyNo) {
         return columnReplyRepository.findByColumnReplyNo(columnReplyNo);
+    }
+
+    /**
+     * 根據 columnReplyNo 刪除 ColumnReply 實體。
+     */
+    @Override
+    @Transactional
+    public void deleteColumnReplyColumnReplyNo(Integer columnReplyNo) {
+        columnReplyRepository.deleteByColumnReplyNo(columnReplyNo);
+    }
+
+    /**
+     * 編輯 ColumnReply 實體。
+     */
+    @Override
+    @Transactional
+    public ColumnReply edit(ColumnReply columnReply) {
+        return columnReplyRepository.save(columnReply);
     }
 
 }

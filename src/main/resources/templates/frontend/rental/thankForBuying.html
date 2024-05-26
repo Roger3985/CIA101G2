@@ -58,6 +58,7 @@
                         <i class="bi bi-check-circle" style="font-size: 5rem; color: green;"></i>
                         <h2>已經收到您的訂單，感謝您的購買!</h2>
                         <h3 th:if="${rentalOrdNo != null}" th:text="'訂單編號 : ' + ${rentalOrdNo}"></h3>
+                        <h3 th:if="${orderId != null}" th:text="'訂單編號 : ' + ${orderId}"></h3>
                         <h3 th:if="${rentalOrdNo == null}" th:text="麻煩依照指定之租借時間至現場取貨"></h3>
                         <p class="text-muted">訂單後續追蹤部分請至會員頁面</p>
                         <button class="btn btn-primary d-block w-100 backToShop" type="button">
