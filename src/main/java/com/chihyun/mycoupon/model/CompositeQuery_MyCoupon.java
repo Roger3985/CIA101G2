@@ -1,6 +1,7 @@
-package com.chihyun.mycoupon.entity;
+package com.chihyun.mycoupon.model;
 
 import com.chihyun.coupon.entity.Coupon;
+import com.chihyun.mycoupon.entity.MyCoupon;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 

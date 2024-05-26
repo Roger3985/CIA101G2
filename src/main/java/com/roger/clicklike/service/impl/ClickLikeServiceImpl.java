@@ -132,4 +132,12 @@ public class ClickLikeServiceImpl implements ClickLikeService {
         return clickLikeRepository.countByArtNo(artNo);
     }
 
+    /**
+     * 獲取點讚數最多的文章。
+     */
+    @Override
+    public List<Object[]> getMostLikedArticles() {
+        return clickLikeRepository.findMostLikedArticles();
+    }
+
 }

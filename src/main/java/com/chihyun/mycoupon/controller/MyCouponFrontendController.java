@@ -81,7 +81,6 @@ public class MyCouponFrontendController {
         if (optional.isPresent()) {
             myCoupon.setCoupon(optional.get().getCoupon());
             myCoupon.setCoupUsedStat(Byte.valueOf("1"));
-            myCoupon.setCoupInfo(optional.get().getCoupInfo());
             myCoupon.setCoupExpDate(myCoupon.getCoupon().getCoupExpDate());
             myCouponSvc.updateMyCoupon(myCoupon);
         }

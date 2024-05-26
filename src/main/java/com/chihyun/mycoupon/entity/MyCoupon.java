@@ -23,8 +23,6 @@ public class MyCoupon {
     private Member member;
     @Column(name = "coupusedstat")
     private Byte coupUsedStat;
-    @Column(name = "coupinfo")
-    private String coupInfo;
     @Column(name = "coupexpdate")
     private Timestamp coupExpDate;
 
@@ -108,14 +106,6 @@ public class MyCoupon {
 
     public void setCoupUsedStat(Byte coupUsedStat) {
         this.coupUsedStat = coupUsedStat;
-    }
-
-    public String getCoupInfo() {
-        return coupInfo;
-    }
-
-    public void setCoupInfo(String coupInfo) {
-        this.coupInfo = coupInfo;
     }
 
     public Timestamp getCoupExpDate() {

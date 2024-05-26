@@ -18,6 +18,8 @@ public interface RentalService {
 
     public Rental findByRentalName(String rentalName);//單筆查詢(rentalName)
 
+    List<Rental> findByRentalColor(String rentalColor);  //處理查詢(依租借品的顏色)
+
     public List<Rental> getRentalName(String rentalName); //以rentalName 做模糊查詢
 
     public List<Rental> findAllSortDESC(); //以rentalPrice查詢，金額由大到小

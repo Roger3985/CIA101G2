@@ -179,7 +179,7 @@ public class ReportControllerFrontEnd {
             // 新增點讚的通知消息
             Notice newNotice = new Notice();
             newNotice.setMember(member);
-            newNotice.setNotContent("你對留言:" + columnReplyService.getColumnReplyByColumnReplyNo(artReplyNo).getComContent() + "檢舉成功，檢舉內容為: " + reportReason + "我們會盡快處理，感謝妳提供的意見");
+            newNotice.setNotContent("你對留言:" + columnReplyService.getColumnReplyByColumnReplyNo(artReplyNo).getComContent() + "檢舉成功，檢舉內容為: " + reportReason + "，我們會盡快處理，感謝妳提供的意見");
             newNotice.setNotTime(new Timestamp(System.currentTimeMillis()));
             newNotice.setNotStat((byte) 0);
             noticeService.addNotice(newNotice);

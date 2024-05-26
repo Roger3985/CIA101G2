@@ -31,8 +31,7 @@ public class ClickLikeControllerFrontEnd {
     private MyCouponService myCouponSvc;
 
     /**
-     * 前往查看單個會員的全部點讚的專欄文章
-     * @return
+     * 前往查看單個會員點讚的專欄文章
      */
     @GetMapping("/memberClikeLikeData")
     public String memberClikeLikeData(ModelMap modelMap,
@@ -44,7 +43,7 @@ public class ClickLikeControllerFrontEnd {
 
         // 如果會員未登錄，重定向到登錄頁面
         if (myData == null) {
-            redirectAttributes.addAttribute("error", "登入失敗");
+            redirectAttributes.addAttribute("error", "尚未登入，請先完成登入!");
             return "redirect:/frontend/member/loginMember";
         } else {
             List<ClickLike> clickLikeList = clickLikeService.getLikedArticlesByMember(myData.getMemNo());

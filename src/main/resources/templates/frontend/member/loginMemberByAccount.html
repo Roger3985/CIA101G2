@@ -13,7 +13,7 @@
     <!-- Favicon -->
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
-    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+    <th:block th:include="~{frontend/component/plugin/frontendplugin.html :: css}"></th:block>
 </head>
 
 <body>
@@ -42,7 +42,7 @@
                         </div>
                         <div class="col-lg-6 my-2">
                             <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
-                                <li class="breadcrumb-item"><a class="text-nowrap" href="#"><i
+                                <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/}"><i
                                             class="bi bi-home"></i>Home</a></li>
                                 <li class="breadcrumb-item text-nowrap active" aria-current="page">Login</li>
                             </ol>

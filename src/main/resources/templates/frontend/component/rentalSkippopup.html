@@ -1,0 +1,86 @@
+<!-- Sipping Popup  -->
+<div th:fragment="rentalSkippopup" class="modal-shipping-view modal fade" id="px_rentalInstruction_modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">租借須知</h4>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="rentalSkippopup">
+                <!-- 文章列表 -->
+                <div class="left-align">
+                    <span style="font-family:Arial,Helvetica,sans-serif">
+                        <span style="color:#ff0000">
+                            <strong><span style="font-size:22px">租借流程</span></strong><!-- 標題 -->
+                        </span><br><br>
+                        <span style="font-size:16px">1. 於官網挑選服裝</span><br>
+                        <span style="font-size:16px">2. 將您想預約的服裝加入購物車
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;(若暫無庫存，可以先將喜愛之商品點選「追蹤」，若有庫存會及時通知。)</span><br>
+                        <span style="font-size:16px">3. 確認租借日期、金額與配送方式</span><br>
+                        <span style="font-size:16px">4. 付款完成後，官方安排配送程序
+                              (依據商品寄出日期開始計算使用天數)</span><br>
+                        <span style="font-size:16px">&nbsp;&nbsp;&nbsp;&nbsp;★ 租借天數：借1件（租7天）、借2件以上(租14天)</span><br>
+                        <span style="font-size:16px">&nbsp;&nbsp;&nbsp;&nbsp;★ 運費金額：NT$100</span><br>
+                        <span style="font-size:16px">5. 於歸還日前寄回該商品，即完成訂單</span><br>
+                        <hr/>
+                        <span style="font-size:22px">
+                            <strong><span style="color:#ff0000">租借需知</span></strong><!-- 標題 -->
+                        </span><br><br>
+                        <span style="font-size:16px"><strong>★ 租借押金：</strong>(1) 小禮服 -> 押金NT$2000
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2) 西裝、婚紗 -> 押金NT$4000</span><br>
+                        <span style="font-size:16px"><strong>★ 租借天數：</strong>借1件（租7天）、2件以上 (租14天)</span><br>
+                        <span style="font-size:16px"><strong>★ 追蹤品項：</strong>
+                              若想租借品項暫無庫存，可將欲租借但尚無庫存之租借品加入追蹤清單，
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;亦可選擇期望租借日，待品項上架後，會訊息通知。
+                        </span><br>
+                        <span style="font-size:16px"><strong>★ 歸還規則：</strong>
+                              (1) 在預計時間內歸還，押金全數歸還
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              (2) 延遲1天，押金扣50%
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              (3) 延遲2天(含2天以上)，押金不歸還
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              (4) 歸還的最後一天為客戶寄出當天
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              (5) 歸還前3天會發送mail提醒歸還
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              (6) 若中途有換貨，"預計歸還時間" 依照原本訂單的歸還日</span><br>
+                        <span style="font-size:16px"><strong>★ 退換貨規則：</strong>
+                              (1) 只能換貨一次，需酌收 NT$200手續費
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              (2) 若需換貨，僅提供尺寸工換，不可換顏色
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(僅提供1次換貨，並會酌收 NT$200手續費)
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              (3) 若需更換顏色，須走退貨流程 (詳細請與客服聯繫)
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              (4) 若下單多筆品項想單一更換的話，須走退貨流程</span><br><br>
+                        <span style="font-size:16px">★ 租借之服裝並非量身訂製亦非全然是全新商品，可參考各種款式之尺碼對照表，
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;選擇符合您身型的尺碼讓服裝穿起來較合身，但不保證百分之百符合顧客的尺寸，
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;若有特殊需求請與門市服務人員洽詢。</span><br>
+                        <span style="font-size:16px">★ 租用服裝若必須自行修改者，嚴禁使用釘書機(針)、雙面膠、膠類等加工服裝，
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;請使用針線或別針做任何加工修改，使用完後請恢復原狀再做歸還。如汙損或遺失，
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;必須賠償修補或整洗與之費用和等同天數的租金，客戶不得異議。</span><br>
+                        <span style="font-size:16px">★ 已完成訂單者，因可歸責付定金人之事由，
+                            致不能履行時，不得請求返還定金。</span><br>
+                        <span style="font-size:16px">★ 請勿侵佔租賃之服裝與道具，謊報少寄或已寄還，
+                            以免觸犯侵佔罪及詐欺罪，<br>&nbsp;&nbsp;&nbsp;&nbsp;依法判五年以下有期徒刑。
+                            請客戶自重~勿觸法！</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Sipping Popup  -->

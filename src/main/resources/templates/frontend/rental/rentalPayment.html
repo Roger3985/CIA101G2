@@ -13,7 +13,17 @@
     <!-- Favicon -->
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
-    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+    <th:block th:include="~{frontend/component/plugin/frontendplugin.html :: css}"></th:block>
+
+    <style>
+
+        .hidden {
+            display: none !important;
+        }
+
+    </style>
+
+
 </head>
 
 <body>
@@ -142,10 +152,6 @@
                                                 <span class="small letter-spacing-2">地址</span>
                                                 <h6 class="m-0 mt-1" id="byrAddr">新北市汐止區</h6>
                                             </div>
-                                            <!--                                            <div class="col-4">-->
-                                            <!--                                                <span class="small letter-spacing-2">手機號碼</span>-->
-                                            <!--                                                <h6 class="m-0 mt-1">0912345678</h6>-->
-                                            <!--                                            </div>-->
 
                                         </div>
                                     </div>
@@ -209,7 +215,7 @@
                                     <div class="col-sm-6">
                                         <span class="small letter-spacing-2">期望租借日期</span>
                                         <input class="form-control" type="datetime-local" id="cc-number_1"
-                                               name="rentalDate" data-format="card" placeholder="Card number" required>
+                                               name="rentalDateNormal" data-format="card" placeholder="Card number" required>
                                     </div>
                                     <div class="col-sm-6">
                                         <span class="small letter-spacing-2">付款方式</span>
@@ -218,9 +224,24 @@
                                             <option name="2" value="2">現場付款</option>
                                             <option name="3" value="3">Line Pay(僅限到店取貨)</option>
                                         </select>
-                                        <!--                                        <input class="form-control" type="text" id="cc-number"-->
-                                        <!--                                                                 data-format="card" placeholder="Your Name">-->
+                                        <form id="formForLinePay" th:action="@{/frontend/rentalorder/linePay}" method="post" style="display: none">
+                                            <textarea name="jsonData" style="display:none;"></textarea>
+<!--                                            <input type="hidden" name="rentalByrName">-->
+<!--                                            <input type="hidden" name="rentalByrPhone">-->
+<!--                                            <input type="hidden" name="rentalByrEmail">-->
+<!--                                            <input type="hidden" name="rentalRcvName">-->
+<!--                                            <input type="hidden" name="rentalRcvPhone">-->
+<!--                                            <input type="hidden" name="rentalTakeMethod">-->
+<!--                                            <input type="hidden" name="rentalAddr">-->
+<!--                                            <input type="hidden" name="rentalPayMethod">-->
+<!--                                            <input type="hidden" name="rentalDate">-->
+<!--                                            <input type="hidden" name="rentSet">-->
+<!--                                            <input type="hidden" name="rentalAllPrice">-->
+<!--                                            <input type="hidden" name="rentalAllDepPrice">-->
+<!--                                            <input type="hidden" name="buyItems">-->
+                                        </form>
                                     </div>
+
                                     <div class="col-sm-6">
                                         <div class="row">
                                             <div class="col-7 form-group">
@@ -248,6 +269,9 @@
                                         <span id="return-date"></span>
                                         <button class="btn btn-primary d-block w-100 createOrder" type="button" >
                                             確認結帳 <!-- 565 -->
+                                        </button>
+                                        <button class="btn btn-primary d-block w-100 linePay hidden" type="button" >
+                                            Line Pay結帳 <!-- 565 -->
                                         </button>
                                     </div>
                                 </div>
@@ -355,7 +379,75 @@
         } // getAll()結束
         // 進來頁面就先取一次
         getAll();
-        // console.log("getall結束後 : " + $("span.rentalAllDepPrice").text());
+
+        // 依據所選付款方式來顯示長相一樣但作用不同的按鈕
+        $("select[name='rentalPayMethod']").on("change", function () {
+            if ($("select[name='rentalPayMethod']").val() === "3") {
+                $("button.createOrder").addClass("hidden");
+                $("button.linePay").removeClass("hidden");
+            } else {
+                $("button.createOrder").removeClass("hidden");
+                $("button.linePay").addClass("hidden");
+            }
+        });
+
+        // line pay 結帳
+        $(document).on("click", "button.linePay", function () {
+
+            if (items.length === 0) {
+                alert("好像沒有商品可以結帳喔!再去逛逛吧!");
+                return;
+            }
+            let rentalDate = $("input[name='rentalDateNormal']").val();
+            let rentalTakeMethod = $("select[name='rentalTakeMethod']").val();
+            let rentalPayMethod = $("select[name='rentalPayMethod']").val();
+            if (rentalTakeMethod === "2" && rentalPayMethod === "2") {
+                alert("溫馨提醒 : 宅配方式只接受線上付款喔");
+                return;
+            }
+            if (rentalDate === "") {
+                alert("請輸入日期!");
+                return;
+            }
+            if (rentalTakeMethod === "2") {
+                alert("溫馨提醒 : 目前Line Pay只支援現場取貨方式喔");
+                return;
+            }
+
+            // $("input[name='rentalByrName']").val($("h6#byrname").text());
+            // $("input[name='rentalByrPhone']").val($("h6#byrphone").text());
+            // $("input[name='rentalByrEmail']").val($("h6#byremail").text());
+            // $("input[name='rentalRcvName']").val($("h6#rcvname").text());
+            // $("input[name='rentalRcvPhone']").val($("h6#rcvphone").text());
+            // $("input[name='rentalTakeMethod']").val(rentalTakeMethod);
+            // $("input[name='rentalAddr']").val($("h6#rentalAddr").text());
+            // $("input[name='rentalPayMethod']").val(rentalPayMethod);
+            // $("input[name='rentalDate']").val(rentalDate);
+            // $("input[name='rentSet']").val($("select[name='rentSet']").val());
+            // $("input[name='rentalAllPrice']").val($("span.rentalAllPrice").text());
+            // $("input[name='rentalAllDepPrice']").val($("span.rentalAllDepPrice").text());
+            // $("input[name='buyItems']").val(JSON.stringify(items));
+            var jsonData = {
+                rentalByrName: $("h6#byrname").text(),
+                rentalByrPhone: $("h6#byrphone").text(),
+                rentalByrEmail: $("h6#byremail").text(),
+                rentalRcvName: $("h6#rcvname").text(),
+                rentalRcvPhone: $("h6#rcvphone").text(),
+                rentalTakeMethod: rentalTakeMethod,
+                rentalAddr: $("h6#rentalAddr").text(),
+                rentalPayMethod: rentalPayMethod,
+                rentalDate: rentalDate,
+                rentSet: $("select[name='rentSet']").val(),
+                rentalAllPrice: $("span.rentalAllPrice").text(),
+                rentalAllDepPrice: $("span.rentalAllDepPrice").text(),
+                buyItems: items  // 這裡假設items已經是一個物件或數組
+            };
+
+            $("textarea[name='jsonData']").val(JSON.stringify(jsonData));
+            $("form#formForLinePay").submit();
+
+        });
+
 
         // 從明細刪除商品
         $(document).on("click", ".delBtn", function () {
@@ -475,12 +567,18 @@
                 return;
             }
             // console.log("第一道檢查完時 : " + rentalAllDepPrice);
-            if ($("input[name='rentalDate']").val() === "") {
-                alert("請輸入日期!");
+
+            let rentalDate = $("input[name='rentalDateNormal']").val();
+            let rentalTakeMethod = $("select[name='rentalTakeMethod']").val();
+            let rentalPayMethod = $("select[name='rentalPayMethod']").val();
+            let reqUrl = "createOrder";
+
+            if (rentalTakeMethod === "2" && rentalPayMethod === "2") {
+                alert("溫馨提醒 : 宅配方式只接受線上付款喔");
                 return;
             }
-            if ($("select[name='rentalTakeMethod']").val() === "2" && $("select[name='rentalPayMethod']").val() === "2") {
-                alert("溫馨提醒 : 宅配方式只接受線上付款喔");
+            if (rentalDate === "") {
+                alert("請輸入日期!");
                 return;
             }
 
@@ -491,17 +589,17 @@
                 rentalByrEmail : $("h6#byremail").text(),
                 rentalRcvName : $("h6#rcvname").text(),
                 rentalRcvPhone : $("h6#rcvphone").text(),
-                rentalTakeMethod : $("select[name='rentalTakeMethod']").val(),
+                rentalTakeMethod : rentalTakeMethod,
                 rentalAddr : $("h6#rentalAddr").text(),
-                rentalPayMethod : $("select[name='rentalPayMethod']").val(),
-                rentalDate : $("input[name='rentalDate']").val(),
+                rentalPayMethod : rentalPayMethod,
+                rentalDate : rentalDate,
                 rentSet : $("select[name='rentSet']").val(),
                 rentalAllPrice : $("span.rentalAllPrice").text(),
                 rentalAllDepPrice : $("span.rentalAllDepPrice").text(),
                 buyItems : items
             };
 
-            fetch(baseUrl + apiPath + "createOrder", {
+            fetch(baseUrl + apiPath + reqUrl, {
                 method : "POST",
                 headers : {
                     "Content-Type" : "application/json"

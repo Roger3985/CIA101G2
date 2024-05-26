@@ -1,74 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <title>listOneCoupon.html</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>優惠券資料</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+    <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
-    <style>
-        .wrap{
-            overflow:hidden;
-            border-radius:10px 10px 0px 0px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
-        }
-        table{
-            font-family: 'Oswald', sans-serif;
-            border-collapse:collapse;
-        }
-        th{
-            background-color:#ced4da;
-            color:black;
-            width:25vw;
-            height:75px;
-        }
-        td{
-            background-color:#ffffff;
-            width:25vw;
-            height:50px;
-            text-align:center;
-        }
-        tr{
-            border-bottom: 1px solid #dddddd;
-        }
-        tr:last-of-type{
-            border-bottom: 2px solid #ced4da;
-        }
-        tr:nth-of-type(even) td{
-            background-color:#f3f3f3;
-        }
-    </style>
 
 </head>
-<body>
-修改成功!
-<table id="example" class="display" style="width: 100%;">
-    <thead>
-    <tr>
-        <th>優惠券編號</th>
-        <th>優惠券名稱</th>
-        <th>使用條件</th>
-        <th>折扣</th>
-        <th>建立日期</th>
-        <th>失效日期</th>
-        <th>發放日期</th>
-        <th>發放狀態</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td th:text="${coupon.coupNo}"></td>
-        <td th:text="${coupon.coupName}"></td>
-        <td th:text="${coupon.coupCond}"></td>
-        <td th:text="${coupon.coupDisc}"></td>
-        <td th:text="${coupon.coupAddDate}"></td>
-        <td th:text="${coupon.coupExpDate}"></td>
-        <td th:text="${coupon.coupRelDate}"></td>
-        <td>
-            <span th:if="${coupon.coupRelStat == 0}" th:text="未發放"></span>
-            <span th:if="${coupon.coupRelStat == 1}" th:text="已發放"></span>
-        </td>
-    </tr>
-    </tbody>
-</table>
-</body>
+<body id="page-top">
+<div th:replace="backend/component/loading :: loading"></div>
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">單筆優惠券資料</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>優惠券編號</th>
+                                    <th>優惠券名稱</th>
+                                    <th>發放條件</th>
+                                    <th>優惠資訊</th>
+                                    <th>折扣</th>
+                                    <th>建立日期</th>
+                                    <th>失效日期</th>
+                                    <th>發放日期</th>
+                                    <th>發放狀態</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${coupon.coupNo}"></td>
+                                    <td th:text="${coupon.coupName}"></td>
+                                    <td th:text="${coupon.coupCond}"></td>
+                                    <td th:text="${coupon.coupInfo}"></td>
+                                    <td th:text="${coupon.coupDisc}"></td>
+                                    <td th:text="${coupon.coupAddDate}"></td>
+                                    <td th:text="${coupon.coupExpDate}"></td>
+                                    <td th:text="${coupon.coupRelDate}"></td>
+                                    <td>
+                                        <span th:if="${coupon.coupRelStat == 0}" th:text="未發放"></span>
+                                        <span th:if="${coupon.coupRelStat == 1}" th:text="已發放"></span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
 
-</html>
+        <!-- Footer -->
+        <footer th:replace="backend/component/bottom :: bottom"></footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
+
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+<!-- Page level plugins -->
+<script th:src="@{/backend/vendor/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+<!-- Page level custom scripts -->
+<script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
+
+</body>

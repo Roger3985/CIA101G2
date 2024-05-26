@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -42,11 +43,11 @@ public class RentalServiceImpl implements RentalService {
 //		return repository.findQueryByRentalSize(rentalSize);
 //	}
 //
-//	//處理查詢(依租借品的顏色)
-//	@Override
-//	public List<Rental> getRentalColor(String rentalColor) {
-//		return repository.findQueryByRentalColor(rentalColor);
-//	}
+	//處理查詢(依租借品的顏色)
+	@Override
+	public List<Rental> findByRentalColor(String rentalColor) {
+		return repository.findByRentalColorContaining(rentalColor);
+	}
 
 
 	//關鍵字查詢(依租借品的名稱 "模糊查詢")

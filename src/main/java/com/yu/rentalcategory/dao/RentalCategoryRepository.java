@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RentalCategoryRepository extends JpaRepository<RentalCategory, Long> {
@@ -23,12 +24,15 @@ public interface RentalCategoryRepository extends JpaRepository<RentalCategory, 
     @Transactional
     public RentalCategory findByRentalCatName(String rentalCatName);
 
+    @Transactional
+    @Query("SELECT re FROM RentalCategory re WHERE re.rentalDesPrice = :rentalDesPrice")
+    List<RentalCategory> findByRentalDesPrice(BigDecimal rentalDesPrice);
 
+    @Transactional
+    @Query("SELECT re FROM RentalCategory re WHERE re.rentalCatNo = :rentalCatNo")
+    Optional<RentalCategory> findRentalCategory_RentalCatNo(Integer rentalCatNo);
 
     //自定義查詢(使用JPQL語法)
-    @Query("SELECT re FROM RentalCategory re WHERE re.rentalCatNo = :rentalCatNo")
-    List<RentalCategory> findQueryByRentalCatNo(@Param("rentalCatNo") Integer rentalCatNo);
-
     @Query("SELECT re FROM RentalCategory re WHERE re.rentalCatName LIKE %:rentalCatName%")
     List<RentalCategory> findQueryByRentalCatName(@Param("rentalCatName") String rentalCatName);
 
@@ -39,8 +43,7 @@ public interface RentalCategoryRepository extends JpaRepository<RentalCategory, 
     List<RentalCategory> findQueryByRentalRentedQty(@Param("rentalRentedQty") Integer rentalRentedQty);
 
 
-    @Query("SELECT re FROM RentalCategory re WHERE re.rentalDesPrice = :rentalDesPrice")
-    List<RentalCategory> findQueryByRentalDesPrice(@Param("rentalDesPrice") BigDecimal rentalDesPrice);
+
 
 
 
