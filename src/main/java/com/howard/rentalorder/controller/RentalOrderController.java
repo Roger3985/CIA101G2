@@ -177,7 +177,7 @@ public class RentalOrderController {
     /*---------------------------處理CRUD請求的方法---------------------------------*/
 
     @PostMapping("/createOrder")
-    public ResponseEntity<?> createOrder(@RequestBody @Valid RentalOrderRequest order) {
+    public ResponseEntity<?> createOrder(@RequestBody @Valid RentalOrderRequest order, HttpServletRequest sReq) {
         /*-------------------------創建訂單時，設定初始參數-------------------------*/
 
         // 下單時間 = 現在
@@ -209,7 +209,7 @@ public class RentalOrderController {
          * 創建訂單
          * @return 若有線上付款，回傳包含請求綠界付款畫面之字串，否則回傳感謝購買頁面路徑
          */
-        String form = service.createOrder(order);
+        String form = service.createOrder(order, sReq);
         // 先把字串陣列轉成整數陣列(因為service層方法需要List<Integer>)
         List<Integer> rentalNoList = order.getBuyItems().stream()
                 .map(Integer::parseInt)
@@ -493,68 +493,6 @@ public class RentalOrderController {
     }
 
     /*----------------------------line pay----------------------------------*/
-
-    private static final String CHANNEL_ID = "2005342190";
-    private static final String CHANNEL_SECRET = "44c865afc4d0e1d4575ea90a87616108";
-    private static final String REQUEST_URL = "https://sandbox-api-pay.line.me/v3/payments/request";
-
-    @PostMapping("/testLinePay")
-    public void testLinePay() {
-
-        String orderId = "11111";
-        int amount = 100; // 支付金額
-        String currency = "TWD";
-        String productName = "好看衣服";
-        String confirmUrl = "http://localhost:8080/backend/rentalorder/thankForBuying";
-        String cancelUrl = "http://localhost:8080/backend/rentalorder/rentalCart";
-
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("amount", amount);
-        requestBody.put("currency", currency);
-        requestBody.put("orderId", orderId);
-        requestBody.put("packages", new JSONObject().put("id", "package_id").put("amount", amount).put("name", productName));
-        requestBody.put("redirectUrls", new JSONObject().put("confirmUrl", confirmUrl).put("cancelUrl", cancelUrl));
-
-        String nonce = UUID.randomUUID().toString();
-        String data = CHANNEL_SECRET + REQUEST_URL + requestBody.toString() + nonce;
-        String signature = null;
-        try {
-            signature = generateSignature(CHANNEL_SECRET, data);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            signature = generateSignature(CHANNEL_SECRET, data);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        HttpPost post = new HttpPost(REQUEST_URL);
-        post.setHeader("Content-Type", "application/json");
-        post.setHeader("X-LINE-ChannelId", CHANNEL_ID);
-        post.setHeader("X-LINE-Authorization-Nonce", nonce);
-        post.setHeader("X-LINE-Authorization", signature);
-
-        try {
-            post.setEntity(new StringEntity(requestBody.toString()));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-             CloseableHttpResponse response = httpClient.execute(post)) {
-
-            String responseString = EntityUtils.toString(response.getEntity());
-            System.out.println("Response: " + responseString);
-
-            JSONObject responseJson = new JSONObject(responseString);
-            // 處理 responseJson 以取得交易ID等信息
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-
-    }
-
     /*----------------------------line pay----------------------------------*/
 
 

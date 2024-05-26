@@ -1,5 +1,6 @@
 package com.howard.rentalorder.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.howard.rentalorder.dto.*;
@@ -8,6 +9,7 @@ import com.howard.rentalorder.service.impl.LogisticsStateService;
 import com.howard.rentalorder.service.impl.RentalCartServiceImpl;
 import com.howard.rentalorder.service.impl.RentalOrderServiceImpl;
 import com.howard.rentalorder.service.impl.RentalOrderShippingService;
+import com.howard.rentalorderdetails.entity.RentalOrderDetails;
 import com.howard.rentalorderdetails.service.impl.RentalOrderDetailsServiceImpl;
 import com.roger.member.entity.Member;
 import com.roger.member.repository.MemberRepository;
@@ -22,7 +24,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.view.RedirectView;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.math.BigDecimal;
@@ -79,6 +85,33 @@ public class FrontendRentalOrderController {
 
     String toLogin = "/frontend/member/loginMember";
 
+    private void setInitArgForCreateOrder(RentalOrderRequest order) {
+        // 下單時間 = 現在
+        order.setrentalOrdTime(new Timestamp(System.currentTimeMillis()));
+        // 預計租借日期 = 現在 (此為初步實作，之後由到貨狀態決定)
+        order.setrentalDate(new Timestamp(System.currentTimeMillis()));
+        /*
+         * 預計歸還日期(rentalBackDate)，邏輯如下 :
+         * 方案(rentStat) = 1 ? 歸還日期 = 現在 + 7天 : 歸還日期 = 現在 + 14天
+         */
+        int rentSet1 = 86400;
+        if (Integer.valueOf(order.getRentSet()) == 1) {
+            order.setrentalBackDate(new Timestamp(System.currentTimeMillis() + rentSet1 * 7));
+        } else {
+            order.setrentalBackDate(new Timestamp(System.currentTimeMillis() + rentSet1 * 14));
+        }
+        // 實際歸還日期(因為資料庫設定NotNull，所以先設定為現在)
+        order.setrentalRealBackDate(new Timestamp(System.currentTimeMillis()));
+        // 付款狀態先設定 = 0(未付款)
+        order.setrentalPayStat((byte) 0);
+        // 訂單狀態 = 10(撿貨中)
+        order.setrentalOrdStat((byte) 10);
+        // 歸還狀態 = 0(未歸還)
+        order.setRtnStat((byte) 0);
+        // 歸還註記(因為資料庫設定NotNull，所以先設定為"尚未歸還")
+        order.setRtnRemark("尚未歸還");
+    }
+
     /*--------------------------所有方法共用-------------------------------*/
 
     /*--------------------------處理跳轉頁面請求的方法-------------------------------*/
@@ -94,9 +127,28 @@ public class FrontendRentalOrderController {
 
     // 去 感謝付款 頁面
     @GetMapping("/thankForBuying")
-    public String thankForBuying(@RequestParam(required = false) Integer rentalOrdNo, ModelMap model) {
+    public String thankForBuying(@RequestParam(required = false) Integer rentalOrdNo,
+                                 @RequestParam(required = false) Integer orderId, ModelMap model) {
         model.addAttribute("rentalOrdNo", rentalOrdNo);
+        model.addAttribute("orderId", orderId);
         return "/frontend/rental/thankForBuying";
+    }
+
+    // 去 付款已取消 頁面
+    @GetMapping("/linePayCancel")
+    public String linePayCancel(@RequestParam(required = false) Integer rentalOrdNo, ModelMap model) {
+        // 重新加回購物車
+        Map<String, Object> map = new HashMap<>();
+        map.put("rentalOrdNo", rentalOrdNo);
+        RentalOrder order = service.getByAttributes(map).get(0);
+        List<RentalOrderDetails> details = detailsService.getByAttributes(map);
+        SetToCart setToCart = new SetToCart();
+        setToCart.setMemNo(order.getMember().getMemNo());
+        for (RentalOrderDetails detail : details) {
+            assembleAndSet(setToCart, detail.getRental());
+        }
+        service.deleteOrder(rentalOrdNo);
+        return "frontend/rental/linePayCancel";
     }
 
     // 去 會員租借訂單 頁面
@@ -153,44 +205,21 @@ public class FrontendRentalOrderController {
 
     @PostMapping("/createOrder")
     public ResponseEntity<?> createOrder(@RequestBody @Valid RentalOrderRequest order,
-                                         HttpSession session) {
+                                         HttpSession session, HttpServletRequest sReq) {
 
         Member member = (Member) session.getAttribute("loginsuccess");
         if (member == null) {
             return ResponseEntity.status(HttpStatus.OK).body(toLogin);
         }
         /*-------------------------創建訂單時，設定初始參數-------------------------*/
-        // 下單時間 = 現在
-        order.setrentalOrdTime(new Timestamp(System.currentTimeMillis()));
-        // 預計租借日期 = 現在 (此為初步實作，之後由到貨狀態決定)
-        order.setrentalDate(new Timestamp(System.currentTimeMillis()));
-        /*
-         * 預計歸還日期(rentalBackDate)，邏輯如下 :
-         * 方案(rentStat) = 1 ? 歸還日期 = 現在 + 7天 : 歸還日期 = 現在 + 14天
-         */
-        int rentSet1 = 86400;
-        if (Integer.valueOf(order.getRentSet()) == 1) {
-            order.setrentalBackDate(new Timestamp(System.currentTimeMillis() + rentSet1 * 7));
-        } else {
-            order.setrentalBackDate(new Timestamp(System.currentTimeMillis() + rentSet1 * 14));
-        }
-        // 實際歸還日期(因為資料庫設定NotNull，所以先設定為現在)
-        order.setrentalRealBackDate(new Timestamp(System.currentTimeMillis()));
-        // 付款狀態先設定 = 0(未付款)
-        order.setrentalPayStat((byte) 0);
-        // 訂單狀態 = 10(撿貨中)
-        order.setrentalOrdStat((byte) 10);
-        // 歸還狀態 = 0(未歸還)
-        order.setRtnStat((byte) 0);
-        // 歸還註記(因為資料庫設定NotNull，所以先設定為"尚未歸還")
-        order.setRtnRemark("尚未歸還");
+        setInitArgForCreateOrder(order);
         /*-------------------------執行創建訂單流程-------------------------*/
         /**
          * 創建訂單
          * @return 若有線上付款，回傳包含請求綠界付款畫面之字串，否則回傳感謝購買頁面路徑
          */
         order.setMemNo(member.getMemNo());
-        String form = service.createOrder(order);
+        String form = service.createOrder(order, sReq);
         // 先把字串陣列轉成整數陣列(因為service層方法需要List<Integer>)
         List<Integer> rentalNoList = order.getBuyItems().stream()
                 .map(Integer::parseInt)
@@ -381,81 +410,33 @@ public class FrontendRentalOrderController {
 
     /*----------------------------line pay----------------------------------*/
 
-    private static final String CHANNEL_ID = "2005342190";
-    private static final String CHANNEL_SECRET = "44c865afc4d0e1d4575ea90a87616108";
-    private static final String REQUEST_URL = "https://sandbox-api-pay.line.me";
-    private static final String REQUEST_URI = "/v3/payments/request";
-
-    public static String encrypt(final String keys, final String data) {
-        return toBase64String(HmacUtils.getInitializedMac(HmacAlgorithms.HMAC_SHA_256, keys.getBytes()).doFinal(data.getBytes()));
-    }
-
-    public static String toBase64String(byte[] bytes) {
-        byte[] byteArray = Base64.encodeBase64(bytes);
-        return new String(byteArray);
-    }
-
-    @PostMapping("/testLinePay")
-    public String testLinePay() {
-        System.out.println("有進來方法");
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            // RequestApi
-            // 此處對應下方Request Body 所需的json格式物件
-            CheckoutPaymentRequestForm form = new CheckoutPaymentRequestForm();
-            form.setAmount(new BigDecimal("100"));
-            form.setCurrency("TWD");
-            form.setOrderId("123451237");
-            System.out.println("有裝完基本form");
-            ProductPackageForm productPackageForm = new ProductPackageForm();
-            productPackageForm.setId("1");
-            productPackageForm.setName("fallElove");
-            productPackageForm.setAmount(new BigDecimal("100"));
-            System.out.println("有裝完productPackageForm");
-            ProductForm productForm = new ProductForm();
-            productForm.setId("1");
-            productForm.setName("testPackage");
-            productForm.setImageUrl("");
-            productForm.setQuantity(new BigDecimal("10"));
-            productForm.setPrice(new BigDecimal("10"));
-            productPackageForm.setProducts(Arrays.asList(productForm));
-            System.out.println("有裝完productForm");
-            form.setPackages(Arrays.asList(productPackageForm));
-            RedirectUrls redirectUrls = new RedirectUrls();
-            redirectUrls.setConfirmUrl("https://www.google.com");
-            form.setRedirectUrls(redirectUrls);
-            System.out.println("有set到r重島url");
-            String nonce = UUID.randomUUID().toString();
-            String requestBody = objectMapper.writeValueAsString(form);
-            String signature = encrypt(CHANNEL_SECRET, CHANNEL_SECRET + REQUEST_URI + toJson(form) + nonce);
-            System.out.println("有設定好簽名了====" + signature);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.set("X-LINE-ChannelId", CHANNEL_ID);
-            headers.set("X-LINE-Authorization-Nonce", nonce);
-            headers.set("X-LINE-Authorization", signature);
-            System.out.println("有設定好header了===" + headers);
-            HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-            RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<String> response = restTemplate.exchange(REQUEST_URI, HttpMethod.POST, entity, String.class);
-            System.out.println("有取到回應喔喔喔===" + response);
-            if (response.getStatusCode() == HttpStatus.OK) {
-                // 解析響應以獲得支付 URL
-                JsonNode rootNode = objectMapper.readTree(response.getBody());
-                String paymentUrl = rootNode.path("info").path("paymentUrl").asText();
-                return "redirect:" + paymentUrl;
-            } else {
-                return "redirect:/frontend/member/loginMember"; // 前往錯誤頁面
-            }
 
 
-
-        } catch (Exception e) {
-            System.out.println("好像哪裡錯了喔====");
+    @PostMapping("/linePay")
+    public RedirectView linePay(@RequestParam("jsonData") String jsonData,
+                                    HttpSession session, HttpServletRequest sReq) {
+        Member member = (Member) session.getAttribute("loginsuccess");
+        if (member == null) {
+            return new RedirectView(toLogin);
         }
-        return "redirect:/frontend/member/loginMember"; // 前往錯誤頁面
+        ObjectMapper objectMapper = new ObjectMapper();
+        RentalOrderRequest order = new RentalOrderRequest();
+        try {
+            order = objectMapper.readValue(jsonData, RentalOrderRequest.class);
+        } catch (JsonProcessingException e) {
+            System.out.println("發生轉換錯誤了喔喔喔");
+        }
+        /*-------------------------創建訂單時，設定初始參數-------------------------*/
+        setInitArgForCreateOrder(order);
+        order.setMemNo(member.getMemNo());
+        /*----------------------------執行創建訂單流程----------------------------*/
+        String paymentUrl = service.createOrder(order, sReq);
+        return new RedirectView(paymentUrl);
 
     }
+
+
+
 
     /*----------------------------line pay----------------------------------*/
 
