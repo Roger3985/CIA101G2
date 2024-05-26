@@ -23,6 +23,14 @@
                 <div id="productListContainer">
                     <!-- 商品將顯示在這裡 -->
                 </div>
+                <div class="offcanvas-footer border-top p-3">
+
+                    <div class="row g-0 pt-2 mt-2 border-top fw-bold text-mode">
+                        <div class="col-8"><span id="AllPrice" class="text-mode">合計</span></div>
+                        <div class="col-4 text-end"><span class="ml-auto totalPrice"></span></div>
+                    </div>
+
+                </div>
             </div>
             <!-- 租借商品 -->
             <div class="tab-pane fade" id="rental" role="tabpanel" aria-labelledby="rental-tab" th:each="rental : ${rentalListData}">
@@ -56,54 +64,14 @@
                     </li>
                     <!-- 這裡可以放更多購物車物件 -->
                 </ul>
+
             </div>
         </div>
-    </div>
-    <div class="offcanvas-footer border-top p-3">
-        <div class="row g-0 py-2">
-            <div class="col-8"><span class="text-mode">總租金</span></div>
-            <div class="col-4 text-end"><span class="ml-auto rentalAllPriceForMiniCart"></span></div>
-        </div>
-        <div class="row g-0 py-2">
-            <div class="col-8"><span class="text-mode">總押金</span></div>
-            <div class="col-4 text-end"><span class="ml-auto rentalAllDepPriceForMiniCart"></span></div>
-        </div>
-        <div class="row g-0 pt-2 mt-2 border-top fw-bold text-mode">
-            <div class="col-8"><span class="text-mode">合計</span></div>
-            <div class="col-4 text-end"><span class="ml-auto totalPrice"></span></div>
-        </div>
-        <div class="pt-4">
-            <a class="btn btn-block btn-mode w-100 mb-3" href="/frontend/cart/addcartsuccess">查看商品購物車</a>
-            <a class="btn btn-block btn-outline-mode w-100" th:href="@{/frontend/rentalorder/rentalCart}">查看購物車</a>
-        </div>
+    </div><div class="offcanvas-footer border-top p-3">
+
+    <div class="pt-4">
+        <a class="btn btn-block btn-mode w-100 mb-3" href="/frontend/cart/addcartsuccess">查看商品購物車</a>
+        <a class="btn btn-block btn-outline-mode w-100" th:href="@{/frontend/rentalorder/rentalCart}">查看購物車</a>
     </div>
 </div>
-<script>
-    // 假設這是您從後端獲取的商品列表資料
-    var productList = [
-        { productName: "商品1", productPrice: "$10" },
-        { productName: "商品2", productPrice: "$20" },
-        { productName: "商品3", productPrice: "$30" }
-    ];
-
-    // 找到商品列表的容器元素
-    var productListContainer = document.getElementById("productListContainer");
-
-    // 清空容器內的所有內容
-    productListContainer.innerHTML = '';
-
-    // 將每個商品添加到容器中
-    productList.forEach(function(product) {
-        // 創建商品項目的HTML元素
-        var productItem = document.createElement("div");
-        productItem.classList.add("product-item");
-        productItem.innerHTML = `
-    <div class="product-name">${product.productName}</div>
-    <div class="product-price">${product.productPrice}</div>
-  `;
-        // 將商品項目添加到商品列表容器中
-        productListContainer.appendChild(productItem);
-    });
-
-</script>
-
+</div>

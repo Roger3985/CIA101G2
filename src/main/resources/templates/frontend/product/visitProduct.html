@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
   <!-- metas -->
   <meta charset="utf-8">
@@ -15,8 +14,23 @@
   <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
   <!-- CSS Template -->
   <th:block th:include="~{frontend/component/plugin/frontendplugin.html :: css}"></th:block>
-</head>
+  <style>
+    .cart-notice {
+      position: absolute;
+      top: -40px; /* 将提示字样位置调整到更高 */
+      left: 50%;
+      transform: translateX(-50%);
+      color: #28a745; /* 绿色字体 */
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      z-index: 10000; /* 确保提示在最上层 */
+      background-color: transparent; /* 移除背景颜色 */
+      white-space: nowrap; /* 防止文字换行 */
+    }
+  </style>
 
+</head>
 <body>
 <!-- 通用插件 -->
 <th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block>
@@ -70,7 +84,7 @@
               <!-- Categories -->
               <div class="shop-sidebar-block">
                 <div class="shop-sidebar-title">
-                  <a class="h5" data-bs-toggle="collapse" href="#shop_categories" role="button" aria-expanded="true" aria-controls="shop_categories">
+                  <a class="h5" data-bs-toggle="collapse" href="#shop_categories" role="button" aria-expanded="true" aria.controls="shop_categories">
                     類別
                     <i class="bi bi-chevron-up"></i>
                   </a>
@@ -82,7 +96,7 @@
                     </li>
                     <li class="nav-item">
                       <a href="#" class="nav-link">男性</a>
-                      <a data-bs-toggle="collapse" href="#shop_cat_1" role="button" aria-expanded="false" aria-controls="shop_cat_1" class="s-icon"></a>
+                      <a data-bs-toggle="collapse" href="#shop_cat_1" role="button" aria-expanded="false" aria.controls="shop_cat_1" class="s-icon"></a>
                       <div class="collapse" id="shop_cat_1">
                         <ul class="nav nav-pills flex-column nav-hierarchy">
                           <li class="nav-item">
@@ -99,7 +113,7 @@
                     </li>
                     <li class="nav-item">
                       <a href="#" class="nav-link">女性</a>
-                      <a data-bs-toggle="collapse" href="#shop_cat_2" role="button" aria-expanded="false" aria-controls="shop_cat_2" class="s-icon"></a>
+                      <a data-bs-toggle="collapse" href="#shop_cat_2" role="button" aria-expanded="false" aria.controls="shop_cat_2" class="s-icon"></a>
                       <div class="collapse" id="shop_cat_2">
                         <ul class="nav nav-pills flex-column nav-hierarchy">
                           <li class="nav-item">
@@ -121,7 +135,7 @@
               <!-- Color -->
               <div class="shop-sidebar-block">
                 <div class="shop-sidebar-title">
-                  <a class="h5" data-bs-toggle="collapse" href="#shop_Color" role="button" aria-expanded="true" aria-controls="shop_Color">Color <i class="bi bi-chevron-up"></i></a>
+                  <a class="h5" data-bs-toggle="collapse" href="#shop_Color" role="button" aria-expanded="true" aria.controls="shop_Color">Color <i class="bi bi-chevron-up"></i></a>
                 </div>
                 <div class="shop-sidebar-list collapse show" id="shop_Color">
                   <ul>
@@ -157,7 +171,7 @@
               <div class="shop-sidebar-block">
                 <div class="shop-sidebar-title">
                   <a class="h5" data-bs-toggle="collapse" href="#shop_brand" role="button"
-                     aria-expanded="true" aria-controls="shop_brand">
+                     aria-expanded="true" aria.controls="shop_brand">
                     Size <i class="bi bi-chevron-up"></i>
                   </a>
                 </div>
@@ -194,7 +208,7 @@
               <!-- Brands -->
               <div class="shop-sidebar-block">
                 <div class="shop-sidebar-title">
-                  <a class="h5" data-bs-toggle="collapse" href="#shop_price" role="button" aria-expanded="true" aria-controls="shop_price">Price <i class="bi bi-chevron-up"></i></a>
+                  <a class="h5" data-bs-toggle="collapse" href="#shop_price" role="button" aria-expanded="true" aria.controls="shop_price">Price <i class="bi bi-chevron-up"></i></a>
                 </div>
                 <div class="shop-sidebar-list collapse show" id="shop_price">
                   <ul>
@@ -295,11 +309,11 @@
                         <img class="img-fluid" th:src="@{/frontend/productPic/}" title="" alt="">
                       </a>
                       <div class="product-cart-btn addToCartBtn">
-                        <input type="hidden" name="productNo" th:value="${product.productNo}"> <!-- Product number -->
-                        <input type="hidden" name="productBuyQty" th:value="1"> <!-- Quantity -->
-                        <a class="btn btn-primary btn-sm w-100 "><i class="fi-shopping-cart"></i> Add to cart</a>
+                        <input type="hidden" name="productNo" th:value="${product.productNo}">
+                        <input type="hidden" name="productBuyQty" th:value="1">
+                        <a class="btn btn-primary btn-sm w-100"><i class="fi-shopping-cart"></i> Add To Cart</a>
+                        <div class="cart-notice" style="display: none;">已加入購物車</div>
                       </div>
-
                     </div>
                   </div>
                   <div class="product-card-info">
@@ -388,10 +402,12 @@
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
 <!-- End script start -->
 <script>
-  <!-- 購物車 -->
+  // 購物車
   function testAddToCart(event) {
-    var button = event.target;
-    var row = button.closest('.productitm');
+    event.preventDefault();
+    var button = event.target.closest('a'); // 找到最接近的<a>元素
+    var row = button.closest('.addToCartBtn'); // 找到最近的包含该按钮的商品项
+    var cartNotice = row.querySelector('.cart-notice'); // 找到该商品项内部的提示信息元素
     var productNo = row.querySelector('input[name="productNo"]').value;
     var productBuyQty = row.querySelector('input[name="productBuyQty"]').value;
 
@@ -406,8 +422,10 @@
       data: data,
       success: function(response) {
         console.log("Update successful");
-        button.querySelector('.cart-notice').style.display = 'block';
-
+        cartNotice.style.display = 'block';
+        setTimeout(function() {
+          cartNotice.style.display = 'none';
+        }, 2000);
       },
       error: function(error) {
         console.log("Error:", error);
@@ -415,14 +433,14 @@
     });
   }
 
-
-  var addToCartButtons = document.querySelectorAll(".addToCartBtn");
+  var addToCartButtons = document.querySelectorAll(".addToCartBtn .btn-primary");
   addToCartButtons.forEach(function(button) {
     button.addEventListener("click", testAddToCart);
   });
 
   function testAddToFAV(event) {
-    var button = event.target;
+    event.preventDefault();
+    var button = event.target.closest('a');
     var row = button.closest('.productitm');
     var productNo = row.querySelector('input[name="productNo"]').value;
     var data = {
@@ -439,12 +457,12 @@
     });
   }
 
-  var addToFAVBtns = document.querySelectorAll(".addToFAVBtn");
+  var addToFAVBtns = document.querySelectorAll(".addToFAVBtn a");
   addToFAVBtns.forEach(function(button) {
     button.addEventListener("click", testAddToFAV);
   });
 
-  <!-- 商品過濾相關 -->
+  // 商品過濾相關
   document.querySelectorAll('.btn-outline-primary, .btn-outline-secondary, .btn-outline-info').forEach(button => {
     button.addEventListener('click', function() {
       // 在這裡添加按鈕點擊處理邏輯
@@ -467,7 +485,7 @@
   });
 
 
+
 </script>
 </body>
-
 </html>

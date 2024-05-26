@@ -181,9 +181,12 @@
                 </div>
             </div>
             <!-- Cart -->
-            <div class="nav-item"><a class="nav-link" data-bs-toggle="offcanvas" href="#modalMiniCart" role="button"
-                                     aria-controls="modalMiniCart"><span class="" data-cart-items="8"><i
-                    class="fi-shopping-cart"></i></span></a></div><!-- Mobile Toggle -->
+            <div class="nav-item">
+                <a class="nav-link" data-bs-toggle="offcanvas" href="#modalMiniCart" role="button" aria-controls="modalMiniCart" onclick="updateMiniCart()">
+                    <span class="" data-cart-items="8"><i class="fi-shopping-cart"></i></span>
+                </a>
+            </div>
+            <!-- Mobile Toggle -->
             <button
                     class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -192,5 +195,91 @@
         </div>
         </div>
     </nav>
+    <style>
+        .product-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .product-item:last-child {
+            border-bottom: none;
+        }
+
+        .product-image img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .product-details {
+            flex-grow: 1;
+        }
+
+        .product-name {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .product-price, .product-quantity {
+            font-size: 12px;
+            color: #555;
+        }
+    </style>
+    <script>
+        function updateMiniCart() {
+            $.ajax({
+                type: 'GET',
+                url: "/frontend/cart/minicart",
+                success: function(response) {
+                    var productListContainer = document.getElementById("productListContainer");
+                    productListContainer.innerHTML = ''; // 清空之前的内容
+
+                    if (response.error) {
+                        // 处理用户未登录的情况
+                        console.log(response.error);
+                        return;
+                    }
+
+                    var cartItems = response.cartItems; // 直接获取 cartItems 数组
+
+                    cartItems.forEach(function(item) {
+                        var productItem = document.createElement("div");
+                        productItem.classList.add("product-item");
+                        productItem.innerHTML = `
+                    <div class="product-image">
+                        <img src="data:image/jpeg;base64,${item.firstPic}" alt="${item.productName}">
+                    </div>
+                    <div class="product-details">
+                        <div class="product-name">${item.productName}</div>
+                        <div class="product-price">價格: ${item.productPrice}</div>
+                        <div class="product-quantity">數量: ${item.productBuyQty}</div>
+                    </div>
+                `;
+                        productListContainer.appendChild(productItem);
+                    });
+
+                    // 计算总金额
+                    var totalPrice = 0;
+                    cartItems.forEach(function(item) {
+                        var productPrice = parseFloat(item.productPrice);
+                        var productQty = parseInt(item.productBuyQty);
+                        totalPrice += productPrice * productQty;
+                    });
+
+                    // 显示总金额
+                    document.getElementById('AllPrice').textContent = '總金額: ' + totalPrice; // 假设价格是小数，保留两位小数
+                },
+                error: function(error) {
+                    console.log("Error:", error);
+                }
+            });
+        }
+
+    </script>
 </header>
 <!-- End Header -->

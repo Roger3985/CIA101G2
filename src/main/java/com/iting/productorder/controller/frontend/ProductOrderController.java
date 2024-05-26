@@ -225,23 +225,18 @@ public class ProductOrderController {
 
     @GetMapping("CartEnd")
     public String CartEnd(ModelMap model, HttpSession session) {
-
         Member myData = (Member) session.getAttribute("loginsuccess");
-        Integer memNo = myData.getMemNo();
-        if(myData==null) {
+        if(myData == null) {
             return "redirect:/frontend/member/loginMember";
         }
+        Integer memNo = myData.getMemNo();
         List<ProductOrder> list = productOrderSvc.findByMember(memNo);
         model.addAttribute("productorderListData", list);
         return "frontend/cart/CartEnd";
     }
 
 
-    @PostMapping("loginPage")
-    public String loginPage(ModelMap model, HttpSession session) {
-        Member myData = (Member) session.getAttribute("loginsuccess");
-        return "frontend/product/visitProduct";
-    }
+
 
 //    @PostMapping("MemberGetAll")
 //    public String getAll(@RequestParam("productOrdNo") Integer productOrdNo, @RequestParam("productNo") Integer productNo, ModelMap model) {

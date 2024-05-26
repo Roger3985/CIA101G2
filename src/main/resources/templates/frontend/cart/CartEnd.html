@@ -16,6 +16,12 @@
         .completed-order {
             background-color: #E1F5FE !important; /* 淡藍色背景 */
         }
+        .nolink {
+            color: #0a53be;
+        }
+        .active{
+            color: red;
+        }
 
         .page-title {
             background-color: #E1F5FE; /* 使用淡藍色 */
@@ -218,19 +224,19 @@
         <div class="container my-4">
             <ul class="nav nav-tabs" id="orderTabs" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="all-orders-tab" data-bs-toggle="tab" data-bs-target="#all-orders" type="button" role="tab" aria-controls="all-orders" aria-selected="true">全部訂單</button>
+                    <button class="nav-link active nolink" id="all-orders-tab" data-bs-toggle="tab" data-bs-target="#all-orders" type="button" role="tab" aria-controls="all-orders" aria-selected="true">全部訂單</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="processing-orders-tab" data-bs-toggle="tab" data-bs-target="#processing-orders" type="button" role="tab" aria-controls="processing-orders" aria-selected="false">待處理訂單</button>
+                    <button class="nav-link nolink" id="processing-orders-tab" data-bs-toggle="tab" data-bs-target="#processing-orders" type="button" role="tab" aria-controls="processing-orders" aria-selected="false">待處理訂單</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="shipped-orders-tab" data-bs-toggle="tab" data-bs-target="#shipped-orders" type="button" role="tab" aria-controls="shipped-orders" aria-selected="false">申請退換貨訂單</button>
+                    <button class="nav-link nolink" id="shipped-orders-tab" data-bs-toggle="tab" data-bs-target="#shipped-orders" type="button" role="tab" aria-controls="shipped-orders" aria-selected="false">申請退換貨訂單</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="completed-orders-tab" data-bs-toggle="tab" data-bs-target="#completed-orders" type="button" role="tab" aria-controls="completed-orders" aria-selected="false">已完成訂單</button>
+                    <button class="nav-link nolink" id="completed-orders-tab" data-bs-toggle="tab" data-bs-target="#completed-orders" type="button" role="tab" aria-controls="completed-orders" aria-selected="false">已完成訂單</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="cancelled-orders-tab" data-bs-toggle="tab" data-bs-target="#cancelled-orders" type="button" role="tab" aria-controls="cancelled-orders" aria-selected="false">已取消訂單</button>
+                    <button class="nav-link nolink" id="cancelled-orders-tab" data-bs-toggle="tab" data-bs-target="#cancelled-orders" type="button" role="tab" aria-controls="cancelled-orders" aria-selected="false">已取消訂單</button>
                 </li>
             </ul>
             <div class="tab-content" id="orderTabsContent">
