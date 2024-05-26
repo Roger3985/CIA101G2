@@ -270,71 +270,69 @@
             <!-- 商品相關 -->
             <!-- Product Box -->
             <div class="row g-3">
-              <div class="col-sm-6 col-lg-4" th:each="product : ${productList}">
-                <div class="product-card-1">
-                  <div class="product-card-image">
-                    <div th:if="${product.productOnShelf}" class="badge-ribbon">
-                      <span class="badge bg-danger">最新上市</span>
-                    </div>
-                    <div class="product-action productitm">
-                      <div class="addToFAVBtn">
-                        <a  class="btn btn-outline-primary">
-                          <input type="hidden" name="productNo" th:value="${product.productNo}">
-                          <i class="fi-heart"></i>
-                        </a>
-                      </div>
-                      <a href="#" class="btn btn-outline-primary">
-                        <i class="fi-repeat"></i>
-                      </a>
-                      <a data-bs-toggle="modal" data-bs-target="#px-quick-view" href="javascript:void(0)" class="btn btn-outline-primary">
-                        <i class="fi-eye"></i>
-                      </a>
-                    </div>
-                    <div class="product-media productitm">
-                      <a href="#">
-                        <img class="img-fluid" th:src="@{/frontend/productPic/}" title="" alt="">
-                      </a>
-                      <div class="product-cart-btn addToCartBtn">
-                        <input type="hidden" name="productNo" th:value="${product.productNo}"> <!-- Product number -->
-                        <input type="hidden" name="productBuyQty" th:value="1"> <!-- Quantity -->
-                        <a class="btn btn-primary btn-sm w-100 "><i class="fi-shopping-cart"></i> Add to cart</a>
+              <div class="col-sm-6 col-lg-4" th:each="productDTO : ${productDTOList}">
+                      <div class="product-card-1">
+                        <div class="product-card-image">
+                          <div th:if="${productDTO.productOnShelfSet}" class="badge-ribbon">
+                            <span class="badge bg-danger">最新上市</span>
+                          </div>
+                          <div class="product-action productitm">
+<!--                            <div class="addToFAVBtn">-->
+<!--                              <a class="btn btn-outline-primary">-->
+<!--                                <input type="hidden" name="productNo" th:value="${product.productNo}">-->
+<!--                                <i class="fi-heart"></i>-->
+<!--                              </a>-->
+<!--                            </div>-->
+                            <a href="#" class="btn btn-outline-primary">
+                              <i class="fi-repeat"></i>
+                            </a>
+                            <a data-bs-toggle="modal" data-bs-target="#px-quick-view" href="javascript:void(0)" class="btn btn-outline-primary">
+                              <i class="fi-eye"></i>
+                            </a>
+                          </div>
+                          <div class="product-media productitm">
+                            <a href="#">
+                              <img class="img-fluid" th:src="@{/frontend/productPic/}" title="" alt="">
+                            </a>
+<!--                            <div class="product-cart-btn addToCartBtn">-->
+<!--                              <input type="hidden" name="productNo" th:value="${product.productNo}"> &lt;!&ndash; Product number &ndash;&gt;-->
+<!--                              <input type="hidden" name="productBuyQty" th:value="1"> &lt;!&ndash; Quantity &ndash;&gt;-->
+<!--                              <a class="btn btn-primary btn-sm w-100 "><i class="fi-shopping-cart"></i> Add to cart</a>-->
+<!--                            </div>-->
+                          </div>
+                        </div>
+                        <div class="product-card-info">
+                          <div class="product-meta small">
+                            <a th:href="@{/frontend/product/Product(productCatNo=${productDTO.productCatNo})(productName=${productDTO.productName})}" th:text="${productDTO.productCatName}"></a>
+                          </div>
+                          <div class="rating-star text">
+                            <i class="bi bi-star-fill active"></i>
+                            <i class="bi bi-star-fill active"></i>
+                            <i class="bi bi-star-fill active"></i>
+                            <i class="bi bi-star-fill active"></i>
+                            <i class="bi bi-star"></i>
+                          </div>
+                          <h6 class="product-title">
+<!--                            <a th:href="@{/frontend/product/Product(product=${product.productNo})}" th:text="${productDTO.productName}"></a>-->
+                          </h6>
+                          <div class="product-price" th:each="productPrice : ${productDTO.productSizeSet}">
+                            <span class="text-primary" th:text="${productPrice}"></span>
+                          </div>
+                          <div class="nav-thumbs">
+                            <ul>
+                              <th:block th:each="productSize : ${productDTO.productSizeSet}">
+                                <li>
+                                  <div class="form-check radio-text form-check-inline">
+                                    <input class="form-check-input" type="radio" name="size3" id="btnradio1">
+                                    <label class="radio-text-label" for="btnradio1" th:text="${sizes[productSize]}"></label>
+                                  </div>
+                                </li>
+                              </th:block>
+                            </ul>
+                          </div>
+                        </div>
                       </div>
 
-                    </div>
-                  </div>
-                  <div class="product-card-info">
-                    <div class="product-meta small">
-                      <a th:href="@{/frontend/product/oneProduct(productNo=${product.productNo})}" th:text="${product.productCategory.productCatName}"></a>
-                    </div>
-                    <div class="rating-star text">
-                      <i class="bi bi-star-fill active"></i>
-                      <i class="bi bi-star-fill active"></i>
-                      <i class="bi bi-star-fill active"></i>
-                      <i class="bi bi-star-fill active"></i>
-                      <i class="bi bi-star"></i>
-                    </div>
-                    <h6 class="product-title"><a th:href="@{/frontend/product/oneProduct(productNo=${product.productNo})}" th:text="${product.productName}"></a></h6>
-                    <div class="product-price">
-                      <span class="text-primary" th:text="${product.productPrice}"></span>
-                    </div>
-                    <div class="nav-thumbs">
-                      <div class="form-check radio-text form-check-inline">
-                        <input class="form-check-input" type="radio" name="size3" id="btnradio1" checked="checked">
-                        <label class="radio-text-label" for="btnradio1">XS</label>
-                      </div>
-                      <div class="form-check radio-text form-check-inline">
-                        <input class="form-check-input" type="radio" name="size3" id="btnradio2">
-                        <label class="radio-text-label" for="btnradio2">S</label>
-                      </div>
-                      <div class="form-check radio-text form-check-inline">
-                        <input class="form-check-input" type="radio" name="size3" id="btnradio3">
-                        <label class="radio-text-label" for="btnradio3">M</label>
-                      </div>
-                      <div class="form-check radio-text form-check-inline">
-                        <input class="form-check-input" type="radio" name="size3" id="btnradio4">
-                        <label class="radio-text-label" for="btnradio4">L</label>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>

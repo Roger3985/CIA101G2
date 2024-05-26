@@ -36,13 +36,26 @@ public class ProductFrontEndController {
     // 前往商品瀏覽頁面
     @GetMapping("/visitProduct-list")
     public String toVisitProductList(ModelMap model) {
-        model.addAttribute("productList", productSvc.getAll());
+        List<Product> productList = productSvc.getAll();
+        Map<String, Set<Integer>> visitProducts = new HashMap<>();
+
+        for (Product product : productList) {
+            String key = product.getProductCategory().getProductCatNo() + "-" + product.getProductName();
+            visitProducts.putIfAbsent(key, new HashSet<>());
+            visitProducts.get(key).add(product.getProductSize());
+        }
+
+        model.addAttribute("productList", productList);
+        model.addAttribute("visitProducts", visitProducts);
         return "frontend/product/visitProduct-list";
     }
 
     @GetMapping("/visitProduct")
     public String toVisitProduct(ModelMap model) {
-        model.addAttribute("productList", productSvc.getAll());
+        model.addAttribute("productDTOList", productSvc.getVisitProduct());
+        String[] sizes = {"XS", "S", "M", "L", "XL", "2L"};
+        model.addAttribute("sizes", sizes);
+
         return "frontend/product/visitProduct";
     }
 

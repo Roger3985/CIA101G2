@@ -1,8 +1,11 @@
 package com.ren.product.service.impl;
 
+import com.ren.product.dto.ProductDTO;
 import com.ren.product.entity.Product;
 import com.ren.product.dao.ProductRepository;
 import com.ren.product.service.ProductService_interface;
+import com.ren.productcategory.dao.ProductCategoryRepository;
+import com.ren.productcategory.service.impl.ProductCategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,12 +13,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Entity;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.ren.util.Constants.*;
 
@@ -27,6 +28,9 @@ public class ProductServiceImpl implements ProductService_interface {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private ProductCategoryServiceImpl productCategorySvc;
 
     /**
      * 新增單項商品
@@ -340,6 +344,54 @@ public class ProductServiceImpl implements ProductService_interface {
     @Override
     public void deleteByProductCatName(String productCatName) {
         productRepository.deleteProductsByProductCategory_ProductCatName(productCatName);
+    }
+
+    public List<ProductDTO> getVisitProduct() {
+        List<Product> productList = getAll();
+        ProductDTO productDTO = new ProductDTO();
+        var productUniqueKeySet = new HashSet<String>();
+
+        // 以商品類別編號-商品名稱作為uniqueKey
+        for (Product product : productList) {
+            productUniqueKeySet.add(product.getProductCategory().getProductCatNo() + "-" + product.getProductName());
+        }
+
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for (var key : productUniqueKeySet) {
+            String[] parts = key.split("-");
+            Integer productCatNo = Integer.valueOf(parts[0]);
+            String productName = parts[1];
+            List<Product> list = getVisitProducts(productCatNo, productName);
+            productDTO.setProductID(key);
+            productDTO.setProductCatNo(productCatNo);
+            String productCatName = productCategorySvc.getOneProductCategory(productCatNo).getProductCatName();
+            productDTO.setProductCatName(productCatName);
+            productDTO.setProductName(productName);
+            HashSet<BigDecimal> productPriceSet = new HashSet<>();
+            HashSet<Integer> productSizeSet = new HashSet<>();
+            HashSet<String> productColorSet = new HashSet<>();
+            HashSet<Timestamp> productOnShelfSet = new HashSet<>();
+            for (Product product : list) {
+                productPriceSet.add(product.getProductPrice());
+                if (product.getProductSize() != null) {
+                    productSizeSet.add(product.getProductSize());
+                }
+
+                if (product.getProductColor() != null) {
+                    productColorSet.add(product.getProductColor());
+                }
+
+                if (product.getProductOnShelf() != null) {
+                    productOnShelfSet.add(product.getProductOnShelf());
+                }
+            }
+            productDTO.setProductPriceSet(productPriceSet);
+            productDTO.setProductSizeSet(productSizeSet);
+            productDTO.setProductColorSet(productColorSet);
+            productDTO.setProductOnShelfSet(productOnShelfSet);
+            productDTOList.add(productDTO);
+        }
+        return productDTOList;
     }
 
 
