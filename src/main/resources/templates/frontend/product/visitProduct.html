@@ -27,382 +27,357 @@
 ========================
 -->
 <div class="wrapper">
-    <!-- header height -->
-    <div class="header-height-bar" style="min-height: 114.406px;"></div>
-    <!-- Header -->
-    <header th:replace="frontend/component/header :: header"></header>
-    <!-- End Header -->
-    <!-- Main -->
-    <main>
-        <!-- Breadcrumb -->
-        <div class="py-3 bg-gray-100">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-6 my-2">
-                        <h1 class="m-0 h4 text-center text-lg-start">Shop</h1>
-                    </div>
-                    <div class="col-lg-6 my-2">
-                        <ol class="breadcrumb m-0 small justify-content-center justify-content-lg-end">
-                            <li class="breadcrumb-item">
-                                <a class="text-nowrap text-reset" href="#">首頁</a>
-                            </li>
-                            <li class="breadcrumb-item text-nowrap active" aria-current="page">
-                                商品
-                            </li>
-                            <li class="breadcrumb-item text-nowrap active" aria-current="page">Product</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
+  <!-- header height -->
+  <div class="header-height-bar" style="min-height: 114.406px;"></div>
+  <!-- Header -->
+  <header th:replace="frontend/component/header :: header"></header>
+  <!-- End Header -->
+  <!-- Main -->
+  <main>
+    <!-- Breadcrumb -->
+    <div class="py-3 bg-gray-100">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6 my-2">
+            <h1 class="m-0 h4 text-center text-lg-start">Shop</h1>
+          </div>
+          <div class="col-lg-6 my-2">
+            <ol class="breadcrumb m-0 small justify-content-center justify-content-lg-end">
+              <li class="breadcrumb-item">
+                <a class="text-nowrap text-reset" href="#">首頁</a>
+              </li>
+              <li class="breadcrumb-item text-nowrap active" aria-current="page">
+                商品
+              </li>
+              <li class="breadcrumb-item text-nowrap active" aria-current="page">Product</li>
+            </ol>
+          </div>
         </div>
-        <!-- End Breadcrumb -->
-        <!-- Shop -->
-        <section class="py-6">
-            <div class="container">
-                <div class="row">
-                    <!-- Sidebar -->
-                    <div class="col-lg-4 col-xl-3 pe-xl-5 offcanvas-lg offcanvas-start px-0 px-lg-3" tabindex="-1"
-                         id="shop_filter" aria-labelledby="shop_filterLabel">
-                        <div class="offcanvas-header border-bottom">
-                            <h5 class="offcanvas-title" id="shop_filterLabel">商品過濾器</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                                    data-bs-target="#shop_filter" aria-label="Close"></button>
-                        </div>
-                        <div class="offcanvas-body flex-column">
-                            <!-- Categories -->
-                            <div class="shop-sidebar-block">
-                                <div class="shop-sidebar-title">
-                                    <a class="h5" data-bs-toggle="collapse" href="#shop_categories" role="button"
-                                       aria-expanded="true" aria-controls="shop_categories">
-                                        類別
-                                        <i class="bi bi-chevron-up"></i>
-                                    </a>
-                                </div>
-                                <div class="shop-category-list collapse show" id="shop_categories">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link active">所有商品</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">男性</a>
-                                            <a data-bs-toggle="collapse" href="#shop_cat_1" role="button"
-                                               aria-expanded="false" aria-controls="shop_cat_1" class="s-icon"></a>
-                                            <div class="collapse" id="shop_cat_1">
-                                                <ul class="nav nav-pills flex-column nav-hierarchy">
-                                                    <li class="nav-item">
-                                                        <a href="#" class="nav-link">西裝</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a href="#" class="nav-link">襯衫</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a href="#" class="nav-link">配件</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">女性</a>
-                                            <a data-bs-toggle="collapse" href="#shop_cat_2" role="button"
-                                               aria-expanded="false" aria-controls="shop_cat_2" class="s-icon"></a>
-                                            <div class="collapse" id="shop_cat_2">
-                                                <ul class="nav nav-pills flex-column nav-hierarchy">
-                                                    <li class="nav-item">
-                                                        <a href="#" class="nav-link">禮服</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a href="#" class="nav-link">婚紗</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a href="#" class="nav-link">配件</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- End Categories -->
-                            <!-- Color -->
-                            <div class="shop-sidebar-block">
-                                <div class="shop-sidebar-title">
-                                    <a class="h5" data-bs-toggle="collapse" href="#shop_Color" role="button"
-                                       aria-expanded="true" aria-controls="shop_Color">Color <i
-                                            class="bi bi-chevron-up"></i></a>
-                                </div>
-                                <div class="shop-sidebar-list collapse show" id="shop_Color">
-                                    <ul>
-                                        <li class="custom-checkbox checkbox-color">
-                                            <input class="custom-control-input" id="colorsidebar1" type="checkbox"
-                                                   checked="">
-                                            <label class="custom-control-label" style="color: #1F45FC;"
-                                                   for="colorsidebar1">
-                                                <span class="text-body">藍色</span>
-                                            </label>
-                                        </li>
-                                        <li class="custom-checkbox checkbox-color">
-                                            <input class="custom-control-input" id="colorsidebar2" type="checkbox">
-                                            <label class="custom-control-label" style="color: #FCD71E;"
-                                                   for="colorsidebar2">
-                                                <span class="text-body">黃色</span>
-                                            </label>
-                                        </li>
-                                        <li class="custom-checkbox checkbox-color">
-                                            <input class="custom-control-input" id="colorsidebar3" type="checkbox">
-                                            <label class="custom-control-label" style="color: #000;"
-                                                   for="colorsidebar3">
-                                                <span class="text-body">黑色</span>
-                                            </label>
-                                        </li>
-                                        <li class="custom-checkbox checkbox-color">
-                                            <input class="custom-control-input" id="colorsidebar4" type="checkbox">
-                                            <label class="custom-control-label" style="color: #f73636;"
-                                                   for="colorsidebar4">
-                                                <span class="text-body">紅色</span>
-                                            </label>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- End Color -->
-                            <!-- 大小size -->
-                            <div class="shop-sidebar-block">
-                                <div class="shop-sidebar-title">
-                                    <a class="h5" data-bs-toggle="collapse" href="#shop_brand" role="button"
-                                       aria-expanded="true" aria-controls="shop_brand">
-                                        Size <i class="bi bi-chevron-up"></i>
-                                    </a>
-                                </div>
-                                <div class="shop-sidebar-list collapse show" id="shop_brand">
-                                    <ul>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="brand1" type="checkbox">
-                                            <label class="custom-control-label" for="brand1">XS</label>
-                                        </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="brand2" type="checkbox">
-                                            <label class="custom-control-label" for="brand2">S</label>
-                                        </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="brand3" type="checkbox">
-                                            <label class="custom-control-label" for="brand3">M</label>
-                                        </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="brand4" type="checkbox">
-                                            <label class="custom-control-label" for="brand4">L</label>
-                                        </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="brand5" type="checkbox">
-                                            <label class="custom-control-label" for="brand5">XL</label>
-                                        </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="brand6" type="checkbox">
-                                            <label class="custom-control-label" for="brand6">2L</label>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- Size結束 -->
-                            <!-- Brands -->
-                            <div class="shop-sidebar-block">
-                                <div class="shop-sidebar-title">
-                                    <a class="h5" data-bs-toggle="collapse" href="#shop_price" role="button"
-                                       aria-expanded="true" aria-controls="shop_price">Price <i
-                                            class="bi bi-chevron-up"></i></a>
-                                </div>
-                                <div class="shop-sidebar-list collapse show" id="shop_price">
-                                    <ul>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="price1" type="checkbox">
-                                            <label class="custom-control-label" for="price1">$2000 - $5000</label>
-                                        </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="price2" type="checkbox">
-                                            <label class="custom-control-label" for="price2">$4000 - $8000</label>
-                                        </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="price3" type="checkbox">
-                                            <label class="custom-control-label" for="price3">$10000 - $20000</label>
-                                        </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="price4" type="checkbox">
-                                            <label class="custom-control-label" for="price4">$20000 以上</label>
-                                        </li>
-                                    </ul>
-                                    <div class="d-flex align-items-center pt-3">
-                                        <!-- Input -->
-                                        <input type="number" class="form-control form-control-sm" placeholder="$2000">
-                                        <!-- Divider -->
-                                        <div class="text-gray-350 mx-2">‒</div>
-                                        <!-- Input -->
-                                        <input type="number" class="form-control form-control-sm" placeholder="$40000">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Brands -->
-                        </div>
-                    </div>
-                    <!-- End Sidebar -->
-                    <!-- Product Box -->
-                    <!-- 商品過濾 -->
-                    <div class="col-lg-8 col-xl-9">
-                        <div class="shop-top-bar d-flex pb-3">
-                            <div class="layout-change me-auto">
-                                <!-- Mobile Toggle -->
-                                <button class="btn btn-sm d-lg-none" type="button" data-bs-toggle="offcanvas"
-                                        data-bs-target="#shop_filter" aria-controls="shop_filter">
-                                    <i class="fs-4 lh-1 bi bi-justify-left"></i>
-                                </button>
-                                <!-- End Mobile Toggle -->
-                                <a class="btn btn-sm active" href="#">
-                                    <i class="bi bi-grid"></i>
-                                </a>
-                                <a class="btn btn-sm" th:href="@{/frontend/product/visitProduct-list}">
-                                    <i class="bi bi-view-stacked"></i>
-                                </a>
-                            </div>
-                            <div class="d-flex align-items-center ms-3">
-                                <button class="btn btn-sm btn-primary me-2">最新上市</button>
-                                <button class="btn btn-sm btn-secondary me-2">評價最高</button>
-                                <button class="btn btn-sm btn-info me-2">熱門商品</button>
-                            </div>
-                            <div class="shortby-dropdown ms-auto">
-                                <div class="dropdown">
-                                    <a class="btn btn-none btn-sm border dropdown-toggle text-mode" href="#"
-                                       role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
-                                       aria-expanded="false">Short by</a>
-                                    <ul class="dropdown-menu dropdown-menu-end shadow"
-                                        aria-labelledby="dropdownMenuLink">
-                                        <li><a class="dropdown-item" href="#">特色</a></li>
-                                        <li><a class="dropdown-item" href="#">最暢銷</a></li>
-                                        <li><a class="dropdown-item" href="#">依字母順序-順序</a></li>
-                                        <li><a class="dropdown-item" href="#">依字母順序-倒序</a></li>
-                                        <li><a class="dropdown-item" href="#">價格由低到高</a></li>
-                                        <li><a class="dropdown-item" href="#">價格由高到低</a></li>
-                                        <li><a class="dropdown-item" href="#">依上市時間排序-順序</a></li>
-                                        <li><a class="dropdown-item" href="#">依上市時間排序-倒序</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 商品相關 -->
-                        <!-- Product Box -->
-                        <div class="row g-3" th:with="visitProducts=${new java.util.HashMap()}">
-                            <div class="col-sm-6 col-lg-4" th:each="product : ${productList}">
-                                <th:block th:with="key=${product.productCategory.productCatNo + '-' + product.productName}">
-                                    <th:block th:if="${!visitProducts.containsKey(key)}">
-                                        <th:block th:with="visitProducts.put(key, new java.util.HashSet())">
-                                            <div class="product-card-1">
-                                                <div class="product-card-image">
-                                                    <div th:if="${product.productOnShelf}" class="badge-ribbon">
-                                                        <span class="badge bg-danger">最新上市</span>
-                                                    </div>
-                                                    <div class="product-action productitm">
-                                                        <div class="addToFAVBtn">
-                                                            <a class="btn btn-outline-primary">
-                                                                <input type="hidden" name="productNo" th:value="${product.productNo}">
-                                                                <i class="fi-heart"></i>
-                                                            </a>
-                                                        </div>
-                                                        <a href="#" class="btn btn-outline-primary">
-                                                            <i class="fi-repeat"></i>
-                                                        </a>
-                                                        <a data-bs-toggle="modal" data-bs-target="#px-quick-view" href="javascript:void(0)" class="btn btn-outline-primary">
-                                                            <i class="fi-eye"></i>
-                                                        </a>
-                                                    </div>
-                                                    <div class="product-media productitm">
-                                                        <a href="#">
-                                                            <img class="img-fluid" th:src="@{/frontend/productPic/}" title="" alt="">
-                                                        </a>
-                                                        <div class="product-cart-btn addToCartBtn">
-                                                            <input type="hidden" name="productNo" th:value="${product.productNo}"> <!-- Product number -->
-                                                            <input type="hidden" name="productBuyQty" th:value="1"> <!-- Quantity -->
-                                                            <a class="btn btn-primary btn-sm w-100 "><i class="fi-shopping-cart"></i> Add to cart</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="product-card-info">
-                                                    <div class="product-meta small">
-                                                        <a th:href="@{/frontend/product/Product(product=${product.productNo})}" th:text="${product.productCategory.productCatName}"></a>
-                                                    </div>
-                                                    <div class="rating-star text">
-                                                        <i class="bi bi-star-fill active"></i>
-                                                        <i class="bi bi-star-fill active"></i>
-                                                        <i class="bi bi-star-fill active"></i>
-                                                        <i class="bi bi-star-fill active"></i>
-                                                        <i class="bi bi-star"></i>
-                                                    </div>
-                                                    <h6 class="product-title">
-                                                        <a th:href="@{/frontend/product/Product(product=${product.productNo})}" th:text="${product.productName}"></a>
-                                                    </h6>
-                                                    <div class="product-price">
-                                                        <span class="text-primary" th:text="${product.productPrice}"></span>
-                                                    </div>
-                                                    <div class="nav-thumbs">
-                                                        <ul>
-                                                            <th:block th:each="p : ${productList}">
-                                                                <th:block th:if="${p.productCategory.productCatNo == product.productCategory.productCatNo and p.productName == product.productName}">
-                                                                    <th:block th:with="sizeSet=${visitProducts.get(key)}">
-                                                                        <th:block th:if="${#lists.add(sizeSet, p.productSize)}">
-                                                                            <li>
-                                                                                <div class="form-check radio-text form-check-inline">
-                                                                                    <input class="form-check-input" type="radio" name="size3" id="btnradio1">
-                                                                                    <label class="radio-text-label" for="btnradio1" th:text="${#strings.array(['XS', 'S', 'M', 'L', 'XL', '2L'])[p.productSize]}"></label>
-                                                                                </div>
-                                                                            </li>
-                                                                        </th:block>
-                                                                    </th:block>
-                                                                </th:block>
-                                                            </th:block>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </th:block>
-                                    </th:block>
-                                </th:block>
-                            </div>
-                        </div>
-                        <!-- End Product Box -->
-                        <!-- 頁碼 -->
-                        <div class="shop-bottom-bar d-flex align-items-center mt-3">
-                            <div>Showing: 1 - 12 of 17</div>
-                            <div class="ms-auto">
-                                <ul class="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true">«</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item active">
-                                        <a class="page-link" href="#">1</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">2</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">3</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">»</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Product Box -->
-                </div>
+      </div>
+    </div>
+    <!-- End Breadcrumb -->
+    <!-- Shop -->
+    <section class="py-6">
+      <div class="container">
+        <div class="row">
+          <!-- Sidebar -->
+          <div class="col-lg-4 col-xl-3 pe-xl-5 offcanvas-lg offcanvas-start px-0 px-lg-3" tabindex="-1" id="shop_filter" aria-labelledby="shop_filterLabel">
+            <div class="offcanvas-header border-bottom">
+              <h5 class="offcanvas-title" id="shop_filterLabel">商品過濾器</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#shop_filter" aria-label="Close"></button>
             </div>
-        </section>
-        <!-- End Shop -->
-    </main>
-    <!-- End Main -->
-    <!-- Footer -->
-    <footer th:replace="frontend/component/footer :: footer"></footer>
-    <!-- End Footer -->
+            <div class="offcanvas-body flex-column">
+              <!-- Categories -->
+              <div class="shop-sidebar-block">
+                <div class="shop-sidebar-title">
+                  <a class="h5" data-bs-toggle="collapse" href="#shop_categories" role="button" aria-expanded="true" aria-controls="shop_categories">
+                    類別
+                    <i class="bi bi-chevron-up"></i>
+                  </a>
+                </div>
+                <div class="shop-category-list collapse show" id="shop_categories">
+                  <ul class="nav flex-column">
+                    <li class="nav-item">
+                      <a href="#" class="nav-link active">所有商品</a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">男性</a>
+                      <a data-bs-toggle="collapse" href="#shop_cat_1" role="button" aria-expanded="false" aria-controls="shop_cat_1" class="s-icon"></a>
+                      <div class="collapse" id="shop_cat_1">
+                        <ul class="nav nav-pills flex-column nav-hierarchy">
+                          <li class="nav-item">
+                            <a href="#" class="nav-link">西裝</a>
+                          </li>
+                          <li class="nav-item">
+                            <a href="#" class="nav-link">襯衫</a>
+                          </li>
+                          <li class="nav-item">
+                            <a href="#" class="nav-link">配件</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">女性</a>
+                      <a data-bs-toggle="collapse" href="#shop_cat_2" role="button" aria-expanded="false" aria-controls="shop_cat_2" class="s-icon"></a>
+                      <div class="collapse" id="shop_cat_2">
+                        <ul class="nav nav-pills flex-column nav-hierarchy">
+                          <li class="nav-item">
+                            <a href="#" class="nav-link">禮服</a>
+                          </li>
+                          <li class="nav-item">
+                            <a href="#" class="nav-link">婚紗</a>
+                          </li>
+                          <li class="nav-item">
+                            <a href="#" class="nav-link">配件</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <!-- End Categories -->
+              <!-- Color -->
+              <div class="shop-sidebar-block">
+                <div class="shop-sidebar-title">
+                  <a class="h5" data-bs-toggle="collapse" href="#shop_Color" role="button" aria-expanded="true" aria-controls="shop_Color">Color <i class="bi bi-chevron-up"></i></a>
+                </div>
+                <div class="shop-sidebar-list collapse show" id="shop_Color">
+                  <ul>
+                    <li class="custom-checkbox checkbox-color">
+                      <input class="custom-control-input" id="colorsidebar1" type="checkbox" checked="">
+                      <label class="custom-control-label" style="color: #1F45FC;" for="colorsidebar1">
+                        <span class="text-body">藍色</span>
+                      </label>
+                    </li>
+                    <li class="custom-checkbox checkbox-color">
+                      <input class="custom-control-input" id="colorsidebar2" type="checkbox">
+                      <label class="custom-control-label" style="color: #FCD71E;" for="colorsidebar2">
+                        <span class="text-body">黃色</span>
+                      </label>
+                    </li>
+                    <li class="custom-checkbox checkbox-color">
+                      <input class="custom-control-input" id="colorsidebar3" type="checkbox">
+                      <label class="custom-control-label" style="color: #000;" for="colorsidebar3">
+                        <span class="text-body">黑色</span>
+                      </label>
+                    </li>
+                    <li class="custom-checkbox checkbox-color">
+                      <input class="custom-control-input" id="colorsidebar4" type="checkbox">
+                      <label class="custom-control-label" style="color: #f73636;" for="colorsidebar4">
+                        <span class="text-body">紅色</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <!-- End Color -->
+              <!-- 大小size -->
+              <div class="shop-sidebar-block">
+                <div class="shop-sidebar-title">
+                  <a class="h5" data-bs-toggle="collapse" href="#shop_brand" role="button"
+                     aria-expanded="true" aria-controls="shop_brand">
+                    Size <i class="bi bi-chevron-up"></i>
+                  </a>
+                </div>
+                <div class="shop-sidebar-list collapse show" id="shop_brand">
+                  <ul>
+                    <li class="custom-checkbox">
+                      <input class="custom-control-input" id="brand1" type="checkbox">
+                      <label class="custom-control-label" for="brand1">XS</label>
+                    </li>
+                    <li class="custom-checkbox">
+                      <input class="custom-control-input" id="brand2" type="checkbox">
+                      <label class="custom-control-label" for="brand2">S</label>
+                    </li>
+                    <li class="custom-checkbox">
+                      <input class="custom-control-input" id="brand3" type="checkbox">
+                      <label class="custom-control-label" for="brand3">M</label>
+                    </li>
+                    <li class="custom-checkbox">
+                      <input class="custom-control-input" id="brand4" type="checkbox">
+                      <label class="custom-control-label" for="brand4">L</label>
+                    </li>
+                    <li class="custom-checkbox">
+                      <input class="custom-control-input" id="brand5" type="checkbox">
+                      <label class="custom-control-label" for="brand5">XL</label>
+                    </li>
+                    <li class="custom-checkbox">
+                      <input class="custom-control-input" id="brand6" type="checkbox">
+                      <label class="custom-control-label" for="brand6">2L</label>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <!-- Size結束 -->
+              <!-- Brands -->
+              <div class="shop-sidebar-block">
+                <div class="shop-sidebar-title">
+                  <a class="h5" data-bs-toggle="collapse" href="#shop_price" role="button" aria-expanded="true" aria-controls="shop_price">Price <i class="bi bi-chevron-up"></i></a>
+                </div>
+                <div class="shop-sidebar-list collapse show" id="shop_price">
+                  <ul>
+                    <li class="custom-checkbox">
+                      <input class="custom-control-input" id="price1" type="checkbox">
+                      <label class="custom-control-label" for="price1">$2000 - $5000</label>
+                    </li>
+                    <li class="custom-checkbox">
+                      <input class="custom-control-input" id="price2" type="checkbox">
+                      <label class="custom-control-label" for="price2">$4000 - $8000</label>
+                    </li>
+                    <li class="custom-checkbox">
+                      <input class="custom-control-input" id="price3" type="checkbox">
+                      <label class="custom-control-label" for="price3">$10000 - $20000</label>
+                    </li>
+                    <li class="custom-checkbox">
+                      <input class="custom-control-input" id="price4" type="checkbox">
+                      <label class="custom-control-label" for="price4">$20000 以上</label>
+                    </li>
+                  </ul>
+                  <div class="d-flex align-items-center pt-3">
+                    <!-- Input -->
+                    <input type="number" class="form-control form-control-sm" placeholder="$2000">
+                    <!-- Divider -->
+                    <div class="text-gray-350 mx-2">‒</div>
+                    <!-- Input -->
+                    <input type="number" class="form-control form-control-sm" placeholder="$40000">
+                  </div>
+                </div>
+              </div>
+              <!-- End Brands -->
+            </div>
+          </div>
+          <!-- End Sidebar -->
+          <!-- Product Box -->
+          <!-- 商品過濾 -->
+          <div class="col-lg-8 col-xl-9">
+            <div class="shop-top-bar d-flex pb-3">
+              <div class="layout-change me-auto">
+                <!-- Mobile Toggle -->
+                <button class="btn btn-sm d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#shop_filter" aria-controls="shop_filter">
+                  <i class="fs-4 lh-1 bi bi-justify-left"></i>
+                </button>
+                <!-- End Mobile Toggle -->
+                <a class="btn btn-sm active" href="#">
+                  <i class="bi bi-grid"></i>
+                </a>
+                <a class="btn btn-sm" th:href="@{/frontend/product/visitProduct-list}">
+                  <i class="bi bi-view-stacked"></i>
+                </a>
+              </div>
+              <div class="d-flex align-items-center ms-3">
+                <button class="btn btn-sm btn-primary me-2">最新上市</button>
+                <button class="btn btn-sm btn-secondary me-2">評價最高</button>
+                <button class="btn btn-sm btn-info me-2">熱門商品</button>
+              </div>
+              <div class="shortby-dropdown ms-auto">
+                <div class="dropdown">
+                  <a class="btn btn-none btn-sm border dropdown-toggle text-mode" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">Short by</a>
+                  <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="#">特色</a></li>
+                    <li><a class="dropdown-item" href="#">最暢銷</a></li>
+                    <li><a class="dropdown-item" href="#">依字母順序-順序</a></li>
+                    <li><a class="dropdown-item" href="#">依字母順序-倒序</a></li>
+                    <li><a class="dropdown-item" href="#">價格由低到高</a></li>
+                    <li><a class="dropdown-item" href="#">價格由高到低</a></li>
+                    <li><a class="dropdown-item" href="#">依上市時間排序-順序</a></li>
+                    <li><a class="dropdown-item" href="#">依上市時間排序-倒序</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- 商品相關 -->
+            <!-- Product Box -->
+            <div class="row g-3">
+              <div class="col-sm-6 col-lg-4" th:each="product : ${productList}">
+                <div class="product-card-1">
+                  <div class="product-card-image">
+                    <div th:if="${product.productOnShelf}" class="badge-ribbon">
+                      <span class="badge bg-danger">最新上市</span>
+                    </div>
+                    <div class="product-action productitm">
+                      <div class="addToFAVBtn">
+                        <a  class="btn btn-outline-primary">
+                          <input type="hidden" name="productNo" th:value="${product.productNo}">
+                          <i class="fi-heart"></i>
+                        </a>
+                      </div>
+                      <a href="#" class="btn btn-outline-primary">
+                        <i class="fi-repeat"></i>
+                      </a>
+                      <a data-bs-toggle="modal" data-bs-target="#px-quick-view" href="javascript:void(0)" class="btn btn-outline-primary">
+                        <i class="fi-eye"></i>
+                      </a>
+                    </div>
+                    <div class="product-media productitm">
+                      <a href="#">
+                        <img class="img-fluid" th:src="@{/frontend/productPic/}" title="" alt="">
+                      </a>
+                      <div class="product-cart-btn addToCartBtn">
+                        <input type="hidden" name="productNo" th:value="${product.productNo}"> <!-- Product number -->
+                        <input type="hidden" name="productBuyQty" th:value="1"> <!-- Quantity -->
+                        <a class="btn btn-primary btn-sm w-100 "><i class="fi-shopping-cart"></i> Add to cart</a>
+                      </div>
+
+                    </div>
+                  </div>
+                  <div class="product-card-info">
+                    <div class="product-meta small">
+                      <a th:href="@{/frontend/product/oneProduct(productNo=${product.productNo})}" th:text="${product.productCategory.productCatName}"></a>
+                    </div>
+                    <div class="rating-star text">
+                      <i class="bi bi-star-fill active"></i>
+                      <i class="bi bi-star-fill active"></i>
+                      <i class="bi bi-star-fill active"></i>
+                      <i class="bi bi-star-fill active"></i>
+                      <i class="bi bi-star"></i>
+                    </div>
+                    <h6 class="product-title"><a th:href="@{/frontend/product/oneProduct(productNo=${product.productNo})}" th:text="${product.productName}"></a></h6>
+                    <div class="product-price">
+                      <span class="text-primary" th:text="${product.productPrice}"></span>
+                    </div>
+                    <div class="nav-thumbs">
+                      <div class="form-check radio-text form-check-inline">
+                        <input class="form-check-input" type="radio" name="size3" id="btnradio1" checked="checked">
+                        <label class="radio-text-label" for="btnradio1">XS</label>
+                      </div>
+                      <div class="form-check radio-text form-check-inline">
+                        <input class="form-check-input" type="radio" name="size3" id="btnradio2">
+                        <label class="radio-text-label" for="btnradio2">S</label>
+                      </div>
+                      <div class="form-check radio-text form-check-inline">
+                        <input class="form-check-input" type="radio" name="size3" id="btnradio3">
+                        <label class="radio-text-label" for="btnradio3">M</label>
+                      </div>
+                      <div class="form-check radio-text form-check-inline">
+                        <input class="form-check-input" type="radio" name="size3" id="btnradio4">
+                        <label class="radio-text-label" for="btnradio4">L</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Product Box -->
+            <!-- 頁碼 -->
+            <div class="shop-bottom-bar d-flex align-items-center mt-3">
+              <div>Showing: 1 - 12 of 17</div>
+              <div class="ms-auto">
+                <ul class="pagination">
+                  <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                      <span aria-hidden="true">«</span>
+                    </a>
+                  </li>
+                  <li class="page-item active">
+                    <a class="page-link" href="#">1</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">2</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">3</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                      <span aria-hidden="true">»</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- End Product Box -->
+        </div>
+      </div>
+    </section>
+    <!-- End Shop -->
+  </main>
+  <!-- End Main -->
+  <!-- Footer -->
+  <footer th:replace="frontend/component/footer :: footer"></footer>
+  <!-- End Footer -->
 </div>
 <!--
 ========================
@@ -413,79 +388,78 @@
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
 <!-- End script start -->
 <script>
-    <!--
-    購物車 -->
-    function testAddToCart(event) {
-        var button = event.target;
-        var row = button.closest('.productitm');
-        var productNo = row.querySelector('input[name="productNo"]').value;
-        var productBuyQty = row.querySelector('input[name="productBuyQty"]').value;
+  <!-- 購物車 -->
+  function testAddToCart(event) {
+    var button = event.target;
+    var row = button.closest('.productitm');
+    var productNo = row.querySelector('input[name="productNo"]').value;
+    var productBuyQty = row.querySelector('input[name="productBuyQty"]').value;
 
-        var data = {
-            productNo: productNo,
-            productBuyQty: productBuyQty
-        };
+    var data = {
+      productNo: productNo,
+      productBuyQty: productBuyQty
+    };
 
-        $.ajax({
-            type: 'POST',
-            url: "/frontend/cart/addproducttocart",
-            data: data,
-            success: function (data) {
-                console.log("Update successful");
-            }
-        });
-    }
-
-
-    var addToCartButtons = document.querySelectorAll(".addToCartBtn");
-    addToCartButtons.forEach(function (button) {
-        button.addEventListener("click", testAddToCart);
+    $.ajax({
+      type: 'POST',
+      url: "/frontend/cart/addproducttocart",
+      data: data,
+      success: function(data) {
+        console.log("Update successful");
+      }
     });
+  }
 
-    function testAddToFAV(event) {
-        var button = event.target;
-        var row = button.closest('.productitm');
-        var productNo = row.querySelector('input[name="productNo"]').value;
-        var data = {
-            productNo: productNo,
-        };
 
-        $.ajax({
-            type: 'POST',
-            url: "/frontend/productmyfavorite/addProductTomyFAV",
-            data: data,
-            success: function (data) {
-                console.log("加入成功");
-            }
-        });
-    }
+  var addToCartButtons = document.querySelectorAll(".addToCartBtn");
+  addToCartButtons.forEach(function(button) {
+    button.addEventListener("click", testAddToCart);
+  });
 
-    var addToFAVBtns = document.querySelectorAll(".addToFAVBtn");
-    addToFAVBtns.forEach(function (button) {
-        button.addEventListener("click", testAddToFAV);
+  function testAddToFAV(event) {
+    var button = event.target;
+    var row = button.closest('.productitm');
+    var productNo = row.querySelector('input[name="productNo"]').value;
+    var data = {
+      productNo: productNo,
+    };
+
+    $.ajax({
+      type: 'POST',
+      url: "/frontend/productmyfavorite/addProductTomyFAV",
+      data: data,
+      success: function(data) {
+        console.log("加入成功");
+      }
     });
+  }
 
-    <!-- 商品過濾相關 -->
-    document.querySelectorAll('.btn-outline-primary, .btn-outline-secondary, .btn-outline-info').forEach(button => {
-        button.addEventListener('click', function () {
-            // 在這裡添加按鈕點擊處理邏輯
-            console.log(this.textContent + ' button clicked');
-            // 根據按鈕文字來執行不同的操作
-            switch (this.textContent.trim()) {
-                case '最新上市':
-                    // 處理最新上市的邏輯
-                    break;
-                case '評價最高':
-                    // 處理評價最高的邏輯
-                    break;
-                case '熱門商品':
-                    // 處理熱門商品的邏輯
-                    break;
-                default:
-                    break;
-            }
-        });
+  var addToFAVBtns = document.querySelectorAll(".addToFAVBtn");
+  addToFAVBtns.forEach(function(button) {
+    button.addEventListener("click", testAddToFAV);
+  });
+
+  <!-- 商品過濾相關 -->
+  document.querySelectorAll('.btn-outline-primary, .btn-outline-secondary, .btn-outline-info').forEach(button => {
+    button.addEventListener('click', function() {
+      // 在這裡添加按鈕點擊處理邏輯
+      console.log(this.textContent + ' button clicked');
+      // 根據按鈕文字來執行不同的操作
+      switch (this.textContent.trim()) {
+        case '最新上市':
+          // 處理最新上市的邏輯
+          break;
+        case '評價最高':
+          // 處理評價最高的邏輯
+          break;
+        case '熱門商品':
+          // 處理熱門商品的邏輯
+          break;
+        default:
+          break;
+      }
     });
+  });
 
 
 </script>

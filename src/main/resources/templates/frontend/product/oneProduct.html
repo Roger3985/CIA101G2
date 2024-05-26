@@ -9,7 +9,7 @@
     <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
     <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template">
     <!-- title -->
-    <title>ShopApp - eCommerce Bootstrap 5 Template</title>
+    <title th:text="${product.productCategory.productCatName} + ' : ' + ${product.productName}"></title>
     <!-- Favicon -->
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
@@ -65,34 +65,19 @@
                                 <!-- 預計使用th:each將所有該商品的照片列出 -->
                                 <div class="swiper-slide swiper-slide-visible swiper-slide-active" role="group" aria-label="1 / 6" style="width: 516px; opacity: 1; transform: translate3d(0px, 0px, 0px);">
                                     <div class="pd-gallery-slide">
-                                        <a class="gallery-link" href="../../assets/img/fashion/product-x-1.jpg">
+                                        <a class="gallery-link" th:href="@{/frontend/productpicture/DBPhotoReader} + '?productPicNo=' + ${picNo}">
                                             <i class="bi bi-arrows-fullscreen"></i>
                                         </a>
-                                        <img src="../../assets/img/fashion/product-x-1.jpg" class="img-fluid" title="" alt="">
+                                        <img th:src="@{/frontend/productpicture/DBPhotoReader} + '?productPicNo=' + ${picNo}" class="img-fluid" title="" alt="">
                                     </div>
                                 </div>
                             </div>
                             <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
                         </div>
                         <div class="swiper swiper_thumb_gallery product-thumb swiper-initialized swiper-horizontal swiper-pointer-events swiper-free-mode swiper-backface-hidden swiper-thumbs">
-                            <div class="swiper-wrapper" id="swiper-wrapper-b62c589e07109e8a9" aria-live="polite" style="transform: translate3d(0px, 0px, 0px);">
-                                <div class="swiper-slide swiper-slide-visible swiper-slide-active swiper-slide-thumb-active" role="group" aria-label="1 / 6" style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb"><img src="../../assets/img/fashion/product-x-1.jpg" class="img-fluid" title="" alt=""></div>
-                                </div>
-                                <div class="swiper-slide swiper-slide-visible swiper-slide-next" role="group" aria-label="2 / 6" style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb"><img src="../../assets/img/fashion/product-x-2.jpg" class="img-fluid" title="" alt=""></div>
-                                </div>
-                                <div class="swiper-slide swiper-slide-visible" role="group" aria-label="3 / 6" style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb"><img src="../../assets/img/fashion/product-x-3.jpg" class="img-fluid" title="" alt=""></div>
-                                </div>
-                                <div class="swiper-slide swiper-slide-visible" role="group" aria-label="4 / 6" style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb"><img src="../../assets/img/fashion/product-x-4.jpg" class="img-fluid" title="" alt=""></div>
-                                </div>
-                                <div class="swiper-slide swiper-slide-visible" role="group" aria-label="5 / 6" style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb"><img src="../../assets/img/fashion/product-x-5.jpg" class="img-fluid" title="" alt=""></div>
-                                </div>
-                                <div class="swiper-slide" role="group" aria-label="6 / 6" style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb"><img src="../../assets/img/fashion/product-x-6.jpg" class="img-fluid" title="" alt=""></div>
+                            <div th:each="picNo, iterStat : ${picNoList}" class="swiper-wrapper" id="swiper-wrapper-b62c589e07109e8a9" aria-live="polite" style="transform: translate3d(0px, 0px, 0px);">
+                                <div class="swiper-slide swiper-slide-visible swiper-slide-active swiper-slide-thumb-active" role="group" aria-label="${iterStat.index + 1} / ${totalPictures}" style="width: 95.2px; margin-right: 10px;">
+                                    <div class="pd-gallery-slide-thumb"><img th:src="@{/frontend/productpicture/DBPhotoReader} + '?productPicNo=' + ${picNo}" class="img-fluid" title="" alt=""></div>
                                 </div>
                             </div>
                             <div class="swiper-arrow-style-03 swiper-next swiper-next-pd-details_thumb" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-b62c589e07109e8a9" aria-disabled="false"><i class="bi bi-chevron-right"></i></div>
@@ -103,14 +88,27 @@
                     <!-- Product Details -->
                     <div class="col-md-7 col-lg-5 ps-lg-5 mt-5 mt-lg-0">
                         <div class="product-detail">
-                            <div class="products-brand pb-2"><span>Brand name</span></div>
-                            <div class="products-title mb-2"><h4 class="h4">Fine-knit sweater</h4></div>
-                            <div class="rating-star text small pb-4"><i class="bi bi-star-fill active"></i> <i class="bi bi-star-fill active"></i> <i class="bi bi-star-fill active"></i> <i class="bi bi-star-fill active"></i> <i class="bi bi-star"></i> <small>(4 Reviews )</small></div>
-                            <div class="product-description"><p>Lorem ipsum dolor sit amet, consectetur adipisic elit eiusm tempor incidid ut labore et dolore magna aliqua. Ut enim ad minim venialo quis nostrud exercitation ullamco</p></div>
+                            <div class="products-brand pb-2">
+                                <span th:text="${product.productCategory.productCatName}"></span>
+                            </div>
+                            <div class="products-title mb-2">
+                                <h4 class="h4" th:text="${product.productName}"></h4>
+                            </div>
+                            <div class="rating-star text small pb-4">
+                                <i class="bi bi-star" id="star1"></i>
+                                <i class="bi bi-star" id="star2"></i>
+                                <i class="bi bi-star" id="star3"></i>
+                                <i class="bi bi-star" id="star4"></i>
+                                <i class="bi bi-star" id="star5"></i>
+                                <small th:text="'(' + ${totalReviews} + ' Reviews )'"></small>
+                            </div>
+                            <div class="product-description"><p th:text="${product.productInfo}"></p></div>
                             <div class="product-attribute"><label class="fs-6 text-mode pb-2 fw-500">Size</label>
                                 <div class="nav-thumbs nav mb-3">
-                                    <div class="form-check radio-text form-check-inline me-2"><input class="form-check-input" type="radio" name="size_d3" id="xs_2" checked="">
-                                        <label class="radio-text-label" for="xs_2">XS</label></div>
+                                    <div class="form-check radio-text form-check-inline me-2">
+                                        <input class="form-check-input" type="radio" name="size_d3" id="xs_2" checked="">
+                                        <label class="radio-text-label" for="xs_2">XS</label>
+                                    </div>
                                     <div class="form-check radio-text form-check-inline me-2"><input class="form-check-input" type="radio" name="size_d3" id="s_2"> <label class="radio-text-label" for="s_2">S</label></div>
                                     <div class="form-check radio-text form-check-inline me-2"><input class="form-check-input" type="radio" name="size_d3" id="m_2"> <label class="radio-text-label" for="m_2">M</label></div>
                                     <div class="form-check radio-text form-check-inline me-2"><input class="form-check-input" type="radio" name="size_d3" id="l_2"> <label class="radio-text-label" for="l_2">L</label></div>
@@ -895,6 +893,27 @@
 <!-- script start -->
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
 <!-- End script start -->
+
+<script th:inline="javascript">
+    $(document).ready(function() {
+        var productScore = /*[[${productScore}]]*/ 0;
+        var starElements = [$('#star1'), $('#star2'), $('#star3'), $('#star4'), $('#star5')];
+
+        starElements.forEach((star, index) => {
+            if (productScore >= index + 1) {
+                star.addClass('bi-star-fill');
+                star.removeClass('bi-star');
+            } else if (productScore > index) {
+                star.addClass('bi-star-half');
+                star.removeClass('bi-star', 'bi-star-fill');
+            } else {
+                star.addClass('bi-star');
+                star.removeClass('bi-star-fill', 'bi-star-half');
+            }
+        });
+    });
+</script>
+
 </body>
 
 </html>
