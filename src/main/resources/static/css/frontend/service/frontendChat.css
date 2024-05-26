@@ -1,4 +1,4 @@
-body {
+body.chatbody  {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
@@ -107,7 +107,8 @@ body {
 }
 
 .message p {
-    padding: 0 12px;
+    margin: 0;
+    padding: 10px;
     border-radius: 15px;
     word-wrap: break-word;
 }
@@ -122,10 +123,32 @@ body {
     height: 10px;
 }
 
-.sender {
+/*.sender {*/
+/*    background-color: #3498db;*/
+/*    color: #fff;*/
+/*    align-self: flex-end;*/
+/*    &:after {*/
+/*        border-right: 10px solid transparent;*/
+/*        right: -10px;*/
+/*    }*/
+/*}*/
+
+.sender{
+
     background-color: #3498db;
     color: #fff;
     align-self: flex-end;
+}
+
+.sender::after{
+    position: absolute;
+    top: 10px;
+    content: "";
+    width: 0;
+    height: 0;
+    border-top: 10px solid rgb(227, 230, 235);
+    border-right: 10px solid transparent;
+    right: -10px;
 }
 
 .receiver {
@@ -160,7 +183,7 @@ body {
 .message-input button {
     padding: 10px;
     border: none;
-    background-color: #3498db;
+    background-color: #e63946;
     color: #fff;
     border-radius: 5px;
     cursor: pointer;
@@ -211,4 +234,11 @@ body {
 a.logout {
     color: #fff;
     text-decoration: none;
+}
+
+.chatunlogin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
 }
