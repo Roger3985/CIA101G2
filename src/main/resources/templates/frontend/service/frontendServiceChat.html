@@ -57,7 +57,7 @@
         <section class="section" style="padding-top: 10px;padding-bottom: 10px;">
             <div class="container" style="display: flex; justify-content: center;">
                 <div th:if="${session.member == null}" class="chatunlogin">
-                    <a th:href="@{/frontend/member/loginMember}">請點擊此處登入會員</a>
+                    <a th:href="@{/frontend/member/loginMember}">您尚未登入，請點擊此處登入會員</a>
                 </div>
                 <div class="user-form" id="username-page" th:if="${session.member != null}"
                      style="display: none">

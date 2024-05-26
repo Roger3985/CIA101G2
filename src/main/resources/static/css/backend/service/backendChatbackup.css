@@ -18,40 +18,19 @@ body.chatbody {
     max-height: 600px;
     margin: 20px;
     border: 1px solid #ccc;
-    background-color: #f7f9fb;
+    background-color: #fff;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
-
-.username-replying{
-    display: flex;
-    align-items: center;
-    /*align-self: flex-start;*/
-    flex-direction: column;
-    height:50px;
-    border-top-left-radius:5px;
-    border-top-right-radius:5px;
-    text-align:left;
-    font-size:20px;
-    margin-bottom: 10px;
-    line-height:50px;
-    font-weight: 600;
-    /*color:#152C5B;*/
-    color:#5a5c69;
-    background-color: #FFFFFF;
-    border-bottom-color: #0a3622;
-    /*color:#fff;*/
-    /*background-color: #e63946;*/}
 
 .users-list {
     flex: 1;
     border-right: 1px solid #ccc;
     padding: 20px;
     box-sizing: border-box;
-    /*background-color: rgba(78, 115, 223, 0.5);*/
-    background-color: #E5ECFF;
-    color: #5a5c69;
+    background-color: #3498db;
+    color: #fff;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
     display: flex;
@@ -62,20 +41,6 @@ body.chatbody {
 .users-list-container {
     height: 100%;
     overflow-y: scroll;
-
-    &::-webkit-scrollbar {
-        width: 10px;
-    }
-
-    &::-webkit-scrollbar-track {
-        border-radius: 10px;
-        background-color: rgba(78, 115, 223, 0.1);
-    }
-
-    &::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        background-color: rgba(78, 115, 223, 0.2);
-    }
 }
 
 .users-list h2 {
@@ -103,7 +68,7 @@ body.chatbody {
     border-radius: 5px;
 }
 
-.chat_img {
+.user-item img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -124,7 +89,7 @@ body.chatbody {
     flex: 3;
     display: flex;
     flex-direction: column;
-    padding: 0;
+    padding: 20px;
     box-sizing: border-box;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
@@ -139,30 +104,10 @@ body.chatbody {
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
-
-    margin-left: 10px;
-    margin-right: 10px;
-
-    padding-right: 10px;
-
-    &::-webkit-scrollbar {
-        width: 10px;
-    }
-
-    &::-webkit-scrollbar-track {
-        border-radius: 10px;
-        background-color: rgba(78, 115, 223, 0.1);
-    }
-
-    &::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        background-color: rgba(78, 115, 223, 0.2);
-    }
 }
 
 .message p {
-    margin: 0;
-    padding: 4px 8px;
+    padding: 0 12px;
     border-radius: 15px;
     word-wrap: break-word;
 }
@@ -178,14 +123,14 @@ body.chatbody {
 }
 
 .sender {
-    background-color: #e3e6eb;
-    color: #000000;
+    background-color: #3498db;
+    color: #fff;
     align-self: flex-end;
 }
 
 .receiver {
-    background-color: #e3e6eb;
-    color: #000000;
+    background-color: #ecf0f1;
+    color: #333;
     align-self: flex-start;
 }
 
@@ -202,14 +147,8 @@ body.chatbody {
 }
 
 .message-input {
-    /*margin-top: auto;*/
+    margin-top: auto;
     display: flex;
-
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    margin-top: 10px;
-
 }
 
 .message-input input {
@@ -221,9 +160,9 @@ body.chatbody {
 }
 
 .message-input button {
-    padding: 8px 10px;
+    padding: 10px;
     border: none;
-    background-color: #4e73df;
+    background-color: #3498db;
     color: #fff;
     border-radius: 5px;
     cursor: pointer;
@@ -274,4 +213,11 @@ body.chatbody {
 a.logout {
     color: #fff;
     text-decoration: none;
+}
+.username-replying{
+    box-sizing:border-box;
+    padding: 0 20px;
+    background-clip: content-box;
+    background-color: lightblue;
+    text-align:center
 }

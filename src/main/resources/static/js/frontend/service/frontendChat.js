@@ -167,7 +167,10 @@ el_msg_btn.addEventListener("click", function () {
         chatArea.appendChild(messageTime);
         messageInput.value = '';
         var jsonobj = {
-            type: "chatMsgB", sender: `${userName}`, receiver: "host", message: messageContent,
+            type: "chatMsgB",
+            sender: `${userName}`,
+            receiver: "host",
+            message: messageContent,
             timestamp: nowStr
         }
         webSocket.send(JSON.stringify(jsonobj));
