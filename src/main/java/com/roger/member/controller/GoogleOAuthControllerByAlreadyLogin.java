@@ -2,11 +2,15 @@ package com.roger.member.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.roger.columnarticle.entity.ColumnArticle;
+import com.roger.columnarticle.service.ColumnArticleService;
 import com.roger.member.dto.AccessToken;
 import com.roger.member.dto.ExchangeTokenRequest;
 import com.roger.member.dto.RefreshTokenRequest;
 import com.roger.member.entity.Member;
 import com.roger.member.service.MemberService;
+import com.roger.notice.entity.Notice;
+import com.roger.notice.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -55,6 +59,12 @@ public class GoogleOAuthControllerByAlreadyLogin {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private NoticeService noticeService;
+
+    @Autowired
+    private ColumnArticleService columnArticleService;
 
     private String GOOGLE_CLIENT_ID = "XXX";
 
@@ -210,6 +220,39 @@ public class GoogleOAuthControllerByAlreadyLogin {
             memberService.register(newMember);
             session.setAttribute("loginsuccess", newMember);
 
+            // 設置加入成功的消息
+            Notice newNotice = new Notice();
+            newNotice.setMember(newMember);
+            newNotice.setNotContent("您的會員註冊已成功，歡迎加入我們fallElove的大家庭");
+            newNotice.setNotTime(new Timestamp(System.currentTimeMillis()));
+            newNotice.setNotStat((byte) 0);
+
+            noticeService.addNotice(newNotice);
+
+            // 獲取未讀取通知的數量
+            int unreadNoticeCount = noticeService.getUnreadNoticeCount(newMember);
+            // 獲取會員的通知
+            List<Notice> noticeList = noticeService.findNoticesByMemberMemNo(newMember.getMemNo());
+
+            session.setAttribute("noticeList", noticeList);
+            session.setAttribute("unreadNoticeCount", unreadNoticeCount);
+
+            // 獲取上架中的文章列表
+            List<ColumnArticle> publishedArticles = columnArticleService.getPublishedArticles();
+
+            if (!publishedArticles.isEmpty()) {
+                ColumnArticle firstArticle = publishedArticles.get(0);
+                // 現在您可以使用 firstArticle 來訪問第一個文章的屬性和方法
+                // 例如：firstArticle.getTitle()，firstArticle.getContent()，等等
+                session.setAttribute("onePublishedArticles", firstArticle.getArtNo());
+            }
+
+            List<ColumnArticle> columnArticles = columnArticleService.findAll();
+            modelMap.addAttribute("columnArticles", columnArticles);
+
+            // 設置重定向目標為 `/frontend/cart/addcartsuccess`
+            session.setAttribute("location", "/frontend/cart/addcartsuccess");
+
         } else {
             // 將提供的第三方: 1(Google) 設置進去資料庫
             member.setProvider((byte) 1);
@@ -230,6 +273,32 @@ public class GoogleOAuthControllerByAlreadyLogin {
 
             // 設置 session
             session.setAttribute("loginsuccess", member);
+
+            // 獲取會員的通知
+            List<Notice> noticeList = noticeService.findNoticesByMemberMemNo(member.getMemNo());
+
+            // 獲取上架中的文章列表
+            List<ColumnArticle> publishedArticles = columnArticleService.getPublishedArticles();
+
+            if (!publishedArticles.isEmpty()) {
+                ColumnArticle firstArticle = publishedArticles.get(0);
+                // 現在您可以使用 firstArticle 來訪問第一個文章的屬性和方法
+                // 例如：firstArticle.getTitle()，firstArticle.getContent()，等等
+                session.setAttribute("onePublishedArticles", firstArticle.getArtNo());
+            }
+
+            List<ColumnArticle> columnArticles = columnArticleService.findAll();
+            modelMap.addAttribute("columnArticles", columnArticles);
+
+            // 獲取未讀取通知的數量
+            int unreadNoticeCount = noticeService.getUnreadNoticeCount(member);
+
+            // 登入成功後，將通知訊息儲存到會話中
+            session.setAttribute("noticeList", noticeList);
+            session.setAttribute("unreadNoticeCount", unreadNoticeCount);
+
+            // 設置重定向目標為 `/frontend/cart/addcartsuccess`
+            session.setAttribute("location", "/frontend/cart/addcartsuccess");
         }
         return result;
     }

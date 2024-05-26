@@ -45,39 +45,72 @@
                         </div>
                     </form>
                 </div>
+                <!-- 彈出式視窗模態 -->
+                <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">提示</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="modalBody">
+                                <!-- 彈出式視窗內容將在此顯示 -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <!-- End Login Popup  -->
 <script>
-    $('#loginForm').submit(function(event) {
-        // 防止表單默認提交
-        event.preventDefault();
+    // 處理表單提交事件
+    document.addEventListener("DOMContentLoaded", function() {
+        const loginForm = document.querySelector("#loginForm");
+        const errorMessage = document.getElementById("errorMessage");
 
-        // 獲取表單數據
-        var formData = $(this).serialize();
+        loginForm.addEventListener("submit", function(event) {
+            event.preventDefault(); // 阻止表單預設提交行為
+            errorMessage.innerText = ""; // 清空錯誤訊息
 
-        // 發送 POST 請求到後端控制器
-        $.ajax({
-            type: "POST",
-            url: "/frontend/member/loginPageByPopup",
-            data: formData,
-            contentType: 'application/x-www-form-urlencoded',
-            success: function(response) {
-                // 登入成功處理
-                $('#errorMessage').text(''); // 清除錯誤消息
-                // 可以執行其他操作，例如關閉彈窗或重定向
-                $('#topbarlogin').modal('hide');
-                // 在這裡可以添加其他處理邏輯，例如重定向或刷新頁面
-            },
-            error: function(xhr, status, error) {
-                // 登入失敗處理
-                // 顯示錯誤消息
-                var errorMessage = JSON.parse(xhr.responseText);
-                $('#errorMessage').text(errorMessage.message);
-                // 在這裡可以添加其他失敗處理邏輯，例如清除表單數據或保留輸入內容
-            }
+            const formData = {
+                identifier: loginForm.querySelector('input[name="identifier"]').value,
+                password: loginForm.querySelector('input[name="password"]').value,
+                autoLoginMember: loginForm.querySelector('input[name="autoLoginMember"]').checked ? 1 : 0
+            };
+
+            fetch("/frontend/member/loginPageByPopup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("網路回應不正常");
+                    }
+                    return response.json(); // 將回應內容轉換為JSON格式
+                })
+                .then(data => {
+                    // 根據控制器的回應結果顯示提示訊息或錯誤訊息
+                    if(data.startsWith("成功")) {
+                        // 顯示成功訊息
+                        displayModal(data);
+                    } else {
+                        // 顯示錯誤訊息在頁面上
+                        errorMessage.innerText = "錯誤：" + data;
+                    }
+                })
+                .catch(error => {
+                    console.error("發生錯誤:", error);
+                    // 在此處理JavaScript自身的錯誤
+                });
         });
     });
 </script>
+

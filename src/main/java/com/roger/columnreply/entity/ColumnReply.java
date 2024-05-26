@@ -7,6 +7,9 @@ import com.roger.member.entity.Member;
 import com.roger.report.entity.Report;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.util.Set;
 
@@ -25,7 +28,10 @@ public class ColumnReply implements java.io.Serializable {
     @JsonManagedReference
     @JoinColumn(name = "memno", referencedColumnName = "memno")
     private Member member;
+
     @Column(name = "comcontent")
+    @NotNull
+    @Size(max = 255)
     private String comContent;
     @Column(name = "comtime")
     private Timestamp comTime;

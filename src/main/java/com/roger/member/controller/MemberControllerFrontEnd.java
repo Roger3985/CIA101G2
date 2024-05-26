@@ -210,10 +210,17 @@ public class MemberControllerFrontEnd {
      */
     @GetMapping("/updateData")
     public String updateData(ModelMap modelMap,
-                             HttpSession session) {
+                             HttpSession session,
+                             RedirectAttributes redirectAttributes) {
 
         // 從會話中獲取已登錄的會員資料
         Member oldData = (Member) session.getAttribute("loginsuccess");
+
+        // 如果會員未登錄，重定向到登錄頁面
+        if (oldData == null) {
+            redirectAttributes.addAttribute("error", "尚未登入，請先完成登入!");
+            return "redirect:/frontend/member/loginMember";
+        }
 
         // 將會員的地址拆分為陣列
         String[] add = oldData.getMemAdd().split(" ");
@@ -221,8 +228,29 @@ public class MemberControllerFrontEnd {
         // 如果會員的地址陣列長度為1，則直接將會員的資料添加到 modelMap 中
         if (add.length == 1) {
             modelMap.addAttribute("data", oldData);
+            List<MyCoupon> list = myCouponSvc.getAllMyCouponMem(oldData.getMemNo());
+            System.out.println(list);
+            List<MyCoupon> showMyCoupon = new ArrayList<>();
+            for (MyCoupon mycoupons : list) {
+                if (mycoupons.getCoupUsedStat() == 0) {
+                    showMyCoupon.add(mycoupons);
+                }
+            }
+            int myCouponQTY = showMyCoupon.size();
+            modelMap.addAttribute("myCouponQTY", myCouponQTY);
             return "frontend/member/updateMember";
         }
+
+        List<MyCoupon> list = myCouponSvc.getAllMyCouponMem(oldData.getMemNo());
+        System.out.println(list);
+        List<MyCoupon> showMyCoupon = new ArrayList<>();
+        for (MyCoupon mycoupons : list) {
+            if (mycoupons.getCoupUsedStat() == 0) {
+                showMyCoupon.add(mycoupons);
+            }
+        }
+        int myCouponQTY = showMyCoupon.size();
+        modelMap.addAttribute("myCouponQTY", myCouponQTY);
 
         // 設置會員的地址為第三部分，並將地址的國家和地區添加到 modelMap 中
         oldData.setMemAdd(add[2]);
@@ -447,6 +475,8 @@ public class MemberControllerFrontEnd {
         session.setAttribute("noticeList", noticeList);
         session.setAttribute("unreadNoticeCount", unreadNoticeCount);
 
+        // 設置重定向目標為 `/frontend/cart/addcartsuccess`
+        session.setAttribute("location", "/frontend/cart/addcartsuccess");
 
         System.out.println(unreadNoticeCount);
 
@@ -485,27 +515,34 @@ public class MemberControllerFrontEnd {
         return "frontend/member/loginMember";
     }
 
-    // 其他 import 和類的定義部分
-
     /**
-     * 用於處理彈出式登錄。
+     * 處理會員登入請求（帳號或郵箱和密碼）。
+     * 此方法處理 HTTP POST 請求到 '/frontend/member/loginPageByPopup' URL 路徑，
+     * 接收會員的帳號或郵箱和密碼，並嘗試進行登入操作。
+     * 如果登入成功，將會員的資訊儲存到會話中，並重新導向到原始請求的 URI。
+     * 如果會員狀態是被禁止使用（狀態為 2），則刪除該會員的無權限標記，並顯示相關訊息。
+     * 如果登入失敗，增加會員的登入嘗試次數。
+     * 如果會員的登入嘗試次數達到或超過五次，將停權該會員並返回相關提示消息。
+     * 如果剩餘嘗試次數少於等於三次，顯示剩餘的嘗試次數。
      *
-     * @param identifier         使用者輸入的識別符（電子郵件或帳戶）。
-     * @param memPwd             使用者輸入的密碼。
-     * @param autoLoginMember    標誌，指示是否要求自動登錄。
-     * @param session            HttpSession 物件，用於管理會話數據。
-     * @param response           HttpServletResponse 物件，用於發送響應。
-     * @param request            HttpServletRequest 物件，用於處理請求。
-     * @return                   ResponseEntity 包含 JSON 格式的響應。
+     * @param identifier 會員的帳號或郵箱。
+     * @param memPwd 會員的密碼。
+     * @param autoLoginMember 是否自動登入會員。
+     * @param modelMap 包含模型屬性的 'ModelMap'。
+     * @param session 用於存儲和訪問會員資訊的會話對象。
+     * @param response 用於處理重新導向的回應對象。
+     * @param request 用於確定請求路徑的請求對象。
+     * @return 登入成功時，返回 null 並重新導向到原始請求的 URI；
+     *         登入失敗時，返回對應的登入頁面名稱並顯示錯誤訊息。
      */
     @PostMapping("/loginPageByPopup")
-    @ResponseBody
-    public ResponseEntity<?> loginPageByPopup(@RequestParam("identifier") String identifier,
-                                              @RequestParam("password") String memPwd,
-                                              @RequestParam(value = "autoLoginMember", defaultValue = "0") Byte autoLoginMember,
-                                              HttpSession session,
-                                              HttpServletResponse response,
-                                              HttpServletRequest request) {
+    public String loginPageByPopup(@ModelAttribute("identifier") String identifier,
+                                   @ModelAttribute("password") String memPwd,
+                                   @RequestParam(value = "autoLoginMember", defaultValue = "0") Byte autoLoginMember,
+                                   ModelMap modelMap,
+                                   HttpSession session,
+                                   HttpServletResponse response,
+                                   HttpServletRequest request) {
 
         // 獲取重定向的 URI 或設置默認值
         String uri = session.getAttribute("URI") == null ? "/" : session.getAttribute("URI").toString();
@@ -514,10 +551,11 @@ public class MemberControllerFrontEnd {
         // 檢查帳號或信箱和密碼是否為空
         if (identifier.isEmpty() || memPwd.isEmpty()) {
             if (identifier.isEmpty()) {
-                return ResponseEntity.badRequest().body("帳號或信箱不能空白，請重新輸入!");
+                modelMap.addAttribute("message", "帳號或信箱不能空白，請重新輸入!");
             } else {
-                return ResponseEntity.badRequest().body("密碼不能空白，請重新輸入!");
+                modelMap.addAttribute("message", "密碼不能空白，請重新輸入!");
             }
+            return "frontend/member/loginMember";
         }
 
         // 從會話中獲取儲存的登錄失敗次數 Map 物件
@@ -550,11 +588,15 @@ public class MemberControllerFrontEnd {
             // 根據不同的正則表達式返回不同的錯誤消息
             if (validateEmail(identifier)) {
                 // 信箱登入
-                return ResponseEntity.badRequest().body("沒有該會員信箱，請確認您的信箱。");
+                modelMap.addAttribute("message", "沒有該會員信箱，請確認您的信箱。");
             } else if (validateAccout(identifier)){
                 // 帳號登入
-                return ResponseEntity.badRequest().body("沒有該會員帳號，請確認您的帳號。");
+                modelMap.addAttribute("message", "沒有該會員帳號，請確認您的帳號。");
+            } else {
+                // 其他錯誤
+                modelMap.addAttribute("message", "會員帳號跟信箱有誤請重新確認");
             }
+            return "frontend/member/loginMember";
         }
 
         // 使用會員ID作為 `loginAttemptsMap` 的鍵，以跟蹤同一會員的登入失敗次數
@@ -565,7 +607,8 @@ public class MemberControllerFrontEnd {
         if (existingMember.getMemStat() == 2) {
             // 刪除無權限會員的標記
             redisTemplate.delete("noFun" + existingMember.getMemNo().toString());
-            return ResponseEntity.badRequest().body("此會員已無權限，請洽詢相關的工作人員");
+            modelMap.addAttribute("noFun", "此會員已無權限，請洽詢相關的工作人員");
+            return "frontend/member/loginMember";
         }
 
         // 如果登錄失敗
@@ -574,24 +617,42 @@ public class MemberControllerFrontEnd {
             attemptCount++;
             loginAttemptsMap.put(memberKey, attemptCount);
 
-            // 返回錯誤訊息
+            // 如果嘗試次數達到或超過五次，則停權該會員並返回提示訊息
+            if (attemptCount >= 5) {
+                modelMap.addAttribute("message", "此會員已遭停權，請聯繫官方客服尋求幫助");
+                // 停權會員
+                if (validateEmail(identifier)) {
+                    banMemberByMail(identifier, session, modelMap);
+                } else if (validateAccout(identifier)){
+                    banMemberByMemAcc(identifier, session, modelMap);
+                }
+                return "frontend/member/loginMember";
+            }
+
+            // 細分登入失敗的原因
             if (existingMember != null) {
+                // 檢查密碼是否正確
                 if (!existingMember.getMemPwd().equals(memPwd)) {
-                    return ResponseEntity.badRequest().body("密碼輸入錯誤，請重新輸入!");
+                    // 密碼錯誤
+                    modelMap.addAttribute("message", "密碼輸入錯誤，請重新輸入!");
                 } else {
-                    return ResponseEntity.badRequest().body("未知的登入錯誤，請稍後再試。");
+                    // 因為會員存在但密碼正確，所以可能是其他原因造成的錯誤
+                    modelMap.addAttribute("message", "未知的登入錯誤，請稍後再試。");
                 }
             } else {
+                // 會員不存在，所以可能是帳號或信箱錯誤
                 if (validateEmail(identifier)) {
-                    return ResponseEntity.badRequest().body("信箱錯誤，請重新輸入!");
+                    modelMap.addAttribute("message", "信箱錯誤，請重新輸入!");
                 } else if (validateAccout(identifier)){
-                    return ResponseEntity.badRequest().body("帳號錯誤，請重新輸入!");
+                    modelMap.addAttribute("message", "帳號錯誤，請重新輸入!");
                 }
             }
 
             if (5 - attemptCount <= 3) {
-                return ResponseEntity.badRequest().body("您剩餘 " + (5 - attemptCount) + " 次嘗試次數");
+                modelMap.addAttribute("message", "您剩餘 " + (5 - attemptCount) + " 次嘗試次數");
             }
+
+            return "frontend/member/loginMember";
         }
 
         // 登錄成功，清除該會員登錄失敗的次數
@@ -600,14 +661,38 @@ public class MemberControllerFrontEnd {
 
         // FIXME 修改
         // 獲取會員的通知
-        Notice notice = noticeService.getOneByMember(loginData);
+        List<Notice> noticeList = noticeService.findNoticesByMemberMemNo(existingMember.getMemNo());
+
+        // 獲取上架中的文章列表
+        List<ColumnArticle> publishedArticles = columnArticleService.getPublishedArticles();
+
+        if (!publishedArticles.isEmpty()) {
+            ColumnArticle firstArticle = publishedArticles.get(0);
+            // 現在您可以使用 firstArticle 來訪問第一個文章的屬性和方法
+            // 例如：firstArticle.getTitle()，firstArticle.getContent()，等等
+            session.setAttribute("onePublishedArticles", firstArticle.getArtNo());
+        }
+
+        List<ColumnArticle> columnArticles = columnArticleService.findAll();
+        modelMap.addAttribute("columnArticles", columnArticles);
+
+        // 獲取未讀取通知的數量
+        int unreadNoticeCount = noticeService.getUnreadNoticeCount(existingMember);
+
+        System.out.println(noticeList);
 
         // 從會話中移除 "URI" 屬性，以避免重複重定向
         session.removeAttribute("URI");
 
         // 登入成功後，將會員訊息和通知訊息儲存到會話中
         session.setAttribute("loginsuccess", loginData);
-        session.setAttribute("notice", notice);
+        session.setAttribute("noticeList", noticeList);
+        session.setAttribute("unreadNoticeCount", unreadNoticeCount);
+
+        // 設置重定向目標為 `/frontend/cart/addcartsuccess`
+        session.setAttribute("location", "/frontend/cart/addcartsuccess");
+
+        System.out.println(unreadNoticeCount);
 
         System.out.println("autoLoginMember: " + autoLoginMember);
 
@@ -632,195 +717,18 @@ public class MemberControllerFrontEnd {
             System.out.println("自動登入信息已存入");
         }
 
-        System.out.println("登入成功");
+        // 重定向到原始請求的 URI
+        try {
+            response.sendRedirect(projectUri + uri);
+            return null;
+        } catch (IOException e) {
+            // 處理重定向的 IOException
+            e.printStackTrace();
+        }
 
-        // 登錄成功後，將用戶重定向到前台首頁
-        String redirectUrl = "index";
-        // 返回成功的 JSON 響應
-        return ResponseEntity.ok().header("Location", redirectUrl).build();
+        return "frontend/member/loginMember";
     }
 
-//    /**
-//     * 控制器方法，用於處理彈出式登錄。
-//     *
-//     * @param identifier         使用者輸入的識別符（電子郵件或帳戶）。
-//     * @param memPwd             使用者輸入的密碼。
-//     * @param autoLoginMember    標誌，指示是否要求自動登錄。
-//     * @param modelMap           ModelMap 物件，用於為視圖添加屬性。
-//     * @param session            HttpSession 物件，用於管理會話數據。
-//     * @param response           HttpServletResponse 物件，用於發送響應。
-//     * @param request            HttpServletRequest 物件，用於處理請求。
-//     * @return                   視圖名稱或如果重定向則為 null。
-//     */
-//    @PostMapping("/loginPageByPopup")
-//    public String loginPageByPopup(@ModelAttribute("identifier") String identifier,
-//                                   @ModelAttribute("password") String memPwd,
-//                                   @RequestParam(value = "autoLoginMember", defaultValue = "0") Byte autoLoginMember,
-//                                   ModelMap modelMap,
-//                                   HttpSession session,
-//                                   HttpServletResponse response,
-//                                   HttpServletRequest request) {
-//
-//        // 獲取重定向的 URI 或設置默認值
-//        String uri = session.getAttribute("URI") == null ? "/" : session.getAttribute("URI").toString();
-//        String projectUri = session.getServletContext().getContextPath();
-//
-//        // 檢查帳號或信箱和密碼是否為空
-//        if (identifier.isEmpty() || memPwd.isEmpty()) {
-//            if (identifier.isEmpty()) {
-//                modelMap.addAttribute("message", "帳號或信箱不能空白，請重新輸入!");
-//            } else {
-//                modelMap.addAttribute("message", "密碼不能空白，請重新輸入!");
-//            }
-//            return "frontend/member/loginMember";
-//        }
-//
-//        // 從會話中獲取儲存的登錄失敗次數 Map 物件
-//        Map<String, Integer> loginAttemptsMap = (Map<String, Integer>) session.getAttribute("loginAttemptsMap");
-//        if (loginAttemptsMap == null) {
-//            // 如果 Map 尚未初始化，創建一個新的 Map
-//            loginAttemptsMap = new HashMap<>();
-//            session.setAttribute("loginAttemptsMap", loginAttemptsMap);
-//        }
-//
-//        // 根據請求路徑確定使用帳號還是信箱登入
-//        // 宣告會員跟會員編號，於後續參數驗證後賦值
-//        Member loginData = null;
-//        Integer memNo = null;
-//        Member existingMember = null;
-//        String memberKey = null;
-//
-//        if (validateEmail(identifier)) {
-//            // 使用信箱進行登入
-//            loginData = memberService.login(identifier, memPwd);
-//            existingMember = memberService.findByMail(identifier);
-//        } else if (validateAccout(identifier)){
-//            // 使用帳號進行登入
-//            loginData = memberService.loginByMemAcc(identifier, memPwd);
-//            existingMember = memberService.findByMemAcc(identifier);
-//        }
-//
-//        // 檢查會員是否存在於資料庫中
-//        if (existingMember == null) {
-//            // 根據不同的正則表達式返回不同的錯誤消息
-//            if (validateEmail(identifier)) {
-//                // 信箱登入
-//                modelMap.addAttribute("message", "沒有該會員信箱，請確認您的信箱。");
-//            } else if (validateAccout(identifier)){
-//                // 帳號登入
-//                modelMap.addAttribute("message", "沒有該會員帳號，請確認您的帳號。");
-//            } else {
-//                // 其他錯誤
-//                modelMap.addAttribute("message", "會員帳號跟信箱有誤請重新確認");
-//            }
-//            return "frontend/member/loginMember";
-//        }
-//
-//        // 使用會員ID作為 `loginAttemptsMap` 的鍵，以跟蹤同一會員的登入失敗次數
-//        memberKey = existingMember.getMemNo().toString();
-//        Integer attemptCount = loginAttemptsMap.getOrDefault(memberKey, 0);
-//
-//        // 如果會員狀態是 2，表示會員已經被禁止使用
-//        if (existingMember.getMemStat() == 2) {
-//            // 刪除無權限會員的標記
-//            redisTemplate.delete("noFun" + existingMember.getMemNo().toString());
-//            modelMap.addAttribute("noFun", "此會員已無權限，請洽詢相關的工作人員");
-//            return "frontend/member/loginMember";
-//        }
-//
-//        // 如果登錄失敗
-//        if (loginData == null) {
-//            // 增加該會員的登錄失敗次數
-//            attemptCount++;
-//            loginAttemptsMap.put(memberKey, attemptCount);
-//
-//            // 如果嘗試次數達到或超過五次，則停權該會員並返回提示訊息
-//            if (attemptCount >= 5) {
-//                modelMap.addAttribute("message", "此會員已遭停權，請聯繫官方客服尋求幫助");
-//                // 停權會員
-//                if (validateEmail(identifier)) {
-//                    banMemberByMail(identifier, session, modelMap);
-//                } else if (validateAccout(identifier)){
-//                    banMemberByMemAcc(identifier, session, modelMap);
-//                }
-//                return "frontend/member/loginMember";
-//            }
-//
-//            // 細分登入失敗的原因
-//            if (existingMember != null) {
-//                // 檢查密碼是否正確
-//                if (!existingMember.getMemPwd().equals(memPwd)) {
-//                    // 密碼錯誤
-//                    modelMap.addAttribute("message", "密碼輸入錯誤，請重新輸入!");
-//                } else {
-//                    // 因為會員存在但密碼正確，所以可能是其他原因造成的錯誤
-//                    modelMap.addAttribute("message", "未知的登入錯誤，請稍後再試。");
-//                }
-//            } else {
-//                // 會員不存在，所以可能是帳號或信箱錯誤
-//                if (validateEmail(identifier)) {
-//                    modelMap.addAttribute("message", "信箱錯誤，請重新輸入!");
-//                } else if (validateAccout(identifier)){
-//                    modelMap.addAttribute("message", "帳號錯誤，請重新輸入!");
-//                }
-//            }
-//
-//            if (5 - attemptCount <= 3) {
-//                modelMap.addAttribute("message", "您剩餘 " + (5 - attemptCount) + " 次嘗試次數");
-//            }
-//
-//            return "frontend/member/loginMember";
-//        }
-//
-//        // 登錄成功，清除該會員登錄失敗的次數
-//        System.out.println("登入成功");
-//        loginAttemptsMap.remove(memberKey);
-//
-//        // FIXME 修改
-//        // 獲取會員的通知
-//        Notice notice = noticeService.getOneByMember(existingMember);
-//
-//        // 從會話中移除 "URI" 屬性，以避免重複重定向
-//        session.removeAttribute("URI");
-//
-//        // 登入成功後，將會員訊息和通知訊息儲存到會話中
-//        session.setAttribute("loginsuccess", loginData);
-//        session.setAttribute("notice", notice);
-//
-//        System.out.println("autoLoginMember: " + autoLoginMember);
-//
-//        memNo = existingMember.getMemNo();
-//        // 確認會員是否要自動登入
-//        if (autoLoginMember != null && autoLoginMember == YES) {
-//            // 如果 autoLoginMember 不為空且值為 1，表示用戶要自動登入
-//            // 添加處理自動登入的邏輯，例如生成一個 token，存入 cookie 和 redis
-//            // 這裡的範例代碼是將自動登入的信息存入 redis 和 cookie 中
-//            // 生成名為 autoLoginMember 的 cookie，其值設置為一個亂數生成的字符串，分別存入給會員與 redis 資料庫，做身分核對
-//            String random = generateRandomString(40);
-//            Cookie cookie = new Cookie("autoLoginMember", random);
-//
-//            // 設置存活 7 天
-//            cookie.setMaxAge(604800);
-//
-//            // 設置 cookie 的路徑為 / frontend，當訪問所有的前台網頁都可以獲取這個 cookie
-//            cookie.setPath(request.getContextPath() + "/frontend");
-//            response.addCookie(cookie);
-//            memStrIntRedisTemplate.opsForValue().set(random, memNo);
-//            System.out.println("cookie 存入");
-//            System.out.println("自動登入信息已存入");
-//        }
-//
-//        // 重定向到原始請求的 URI
-//        try {
-//            response.sendRedirect(projectUri + uri);
-//            return null;
-//        } catch (IOException e) {
-//            // 處理重定向的 IOException
-//            e.printStackTrace();
-//        }
-//
-//        return "frontend/member/loginMember";
-//    }
 
     /**
      * 停權指定的會員信箱並立即登出該會員。
@@ -1030,6 +938,22 @@ public class MemberControllerFrontEnd {
         session.setAttribute("noticeList", noticeList);
         session.setAttribute("unreadNoticeCount", unreadNoticeCount);
 
+        // 獲取上架中的文章列表
+        List<ColumnArticle> publishedArticles = columnArticleService.getPublishedArticles();
+
+        if (!publishedArticles.isEmpty()) {
+            ColumnArticle firstArticle = publishedArticles.get(0);
+            // 現在您可以使用 firstArticle 來訪問第一個文章的屬性和方法
+            // 例如：firstArticle.getTitle()，firstArticle.getContent()，等等
+            session.setAttribute("onePublishedArticles", firstArticle.getArtNo());
+        }
+
+        List<ColumnArticle> columnArticles = columnArticleService.findAll();
+        modelMap.addAttribute("columnArticles", columnArticles);
+
+        // 設置重定向目標為 `/frontend/cart/addcartsuccess`
+        session.setAttribute("location", "/frontend/cart/addcartsuccess");
+
         // 發送驗證郵件
         memberService.verifyMail(member.getMemMail(), "Fall衣Love感謝你的註冊!", "驗證碼為:", null);
 
@@ -1220,12 +1144,21 @@ public class MemberControllerFrontEnd {
      * @return 如果驗證成功，則重定向到之前的 URI ; 如果驗證失敗，則返回 "frontend/member/varifiedMail" 視圖。
      */
     @GetMapping("/sendMail")
-    public String sendMail(@RequestParam("sendMail") String code, ModelMap modelMap, HttpSession session) {
+    public String sendMail(@RequestParam("sendMail") String code,
+                           ModelMap modelMap,
+                           HttpSession session,
+                           RedirectAttributes redirectAttributes) {
 
         // 獲取之前儲存的URI，默認為"/"
         String uri = session.getAttribute("URI") == null ? "/" : session.getAttribute("URI").toString();
         // 從會話中獲取當前登錄的會員物件
         Member member = (Member) session.getAttribute("loginsuccess");
+
+        // 如果會員未登錄，重定向到登錄頁面
+        if (member == null) {
+            redirectAttributes.addAttribute("error", "尚未登入，請先完成登入!");
+            return "redirect:/frontend/member/loginMember";
+        }
 
         // 使用 Redis 讀取資療
         String getCode = redisTemplate.opsForValue().get("templateID" + member.getMemMail());
@@ -1282,7 +1215,27 @@ public class MemberControllerFrontEnd {
      * @return 變更密碼頁面的視圖名稱。
      */
     @GetMapping("/newPassword")
-    public String newPassword() {
+    public String newPassword(HttpSession session,
+                              ModelMap modelMap,
+                              RedirectAttributes redirectAttributes) {
+        Member member = (Member) session.getAttribute("loginsuccess");
+
+        // 如果會員未登錄，重定向到登錄頁面
+        if (member == null) {
+            redirectAttributes.addAttribute("error", "尚未登入，請先完成登入!");
+            return "redirect:/frontend/member/loginMember";
+        }
+
+        List<MyCoupon> list = myCouponSvc.getAllMyCouponMem(member.getMemNo());
+        System.out.println(list);
+        List<MyCoupon> showMyCoupon = new ArrayList<>();
+        for (MyCoupon mycoupons : list) {
+            if (mycoupons.getCoupUsedStat() == 0) {
+                showMyCoupon.add(mycoupons);
+            }
+        }
+        int myCouponQTY = showMyCoupon.size();
+        modelMap.addAttribute("myCouponQTY", myCouponQTY);
         return "frontend/member/changePassword";
     }
 
@@ -1376,13 +1329,31 @@ public class MemberControllerFrontEnd {
      */
     @GetMapping("/newMemberName")
     public String newMemberName(ModelMap modelMap,
-                                HttpSession session) {
+                                HttpSession session,
+                                RedirectAttributes redirectAttributes) {
 
         // 從會話中獲取當前登入的會員訊息
         Member member = (Member) session.getAttribute("loginsuccess");
 
+        // 如果會員未登錄，重定向到登錄頁面
+        if (member == null) {
+            redirectAttributes.addAttribute("error", "尚未登入，請先完成登入!");
+            return "redirect:/frontend/member/loginMember";
+        }
+
         // 將會員舊名稱添加到模型中，以便在前端頁面中預填
         modelMap.addAttribute("oldMemberName", member.getMemName());
+
+        List<MyCoupon> list = myCouponSvc.getAllMyCouponMem(member.getMemNo());
+        System.out.println(list);
+        List<MyCoupon> showMyCoupon = new ArrayList<>();
+        for (MyCoupon mycoupons : list) {
+            if (mycoupons.getCoupUsedStat() == 0) {
+                showMyCoupon.add(mycoupons);
+            }
+        }
+        int myCouponQTY = showMyCoupon.size();
+        modelMap.addAttribute("myCouponQTY", myCouponQTY);
 
         // 返回變更會員名稱頁面的視圖名稱
         return "frontend/member/changeMemberName";
@@ -1467,13 +1438,31 @@ public class MemberControllerFrontEnd {
      */
     @GetMapping("/newMemberAccount")
     public String newMemberAccount(ModelMap modelMap,
-                                   HttpSession session) {
+                                   HttpSession session,
+                                   RedirectAttributes redirectAttributes) {
 
         // 從會話中獲取當前登入的會員訊息
         Member member = (Member) session.getAttribute("loginsuccess");
 
+        // 如果會員未登錄，重定向到登錄頁面
+        if (member == null) {
+            redirectAttributes.addAttribute("error", "尚未登入，請先完成登入!");
+            return "redirect:/frontend/member/loginMember";
+        }
+
         // 將會員舊帳號添加到模型中，以便在前端頁面中預填
         modelMap.addAttribute("oldMemberAccount", member.getMemAcc());
+
+        List<MyCoupon> list = myCouponSvc.getAllMyCouponMem(member.getMemNo());
+        System.out.println(list);
+        List<MyCoupon> showMyCoupon = new ArrayList<>();
+        for (MyCoupon mycoupons : list) {
+            if (mycoupons.getCoupUsedStat() == 0) {
+                showMyCoupon.add(mycoupons);
+            }
+        }
+        int myCouponQTY = showMyCoupon.size();
+        modelMap.addAttribute("myCouponQTY", myCouponQTY);
 
         // 返回變更會員帳號名稱頁面的視圖名稱
         return "frontend/member/changeMemberAccount";
@@ -1564,13 +1553,31 @@ public class MemberControllerFrontEnd {
      */
     @GetMapping("/newMemberMobile")
     public String newMemberMobile(ModelMap modelMap,
-                                  HttpSession session) {
+                                  HttpSession session,
+                                  RedirectAttributes redirectAttributes) {
 
         // 從會話中獲取當前登錄的會員訊息
         Member member = (Member) session.getAttribute("loginsuccess");
 
+        // 如果會員未登錄，重定向到登錄頁面
+        if (member == null) {
+            redirectAttributes.addAttribute("error", "尚未登入，請先完成登入!");
+            return "redirect:/frontend/member/loginMember";
+        }
+
         // 將會員舊電話添加到模型中，以便在前端頁面中預填
         modelMap.addAttribute("oldMemberMobile", member.getMemMob());
+
+        List<MyCoupon> list = myCouponSvc.getAllMyCouponMem(member.getMemNo());
+        System.out.println(list);
+        List<MyCoupon> showMyCoupon = new ArrayList<>();
+        for (MyCoupon mycoupons : list) {
+            if (mycoupons.getCoupUsedStat() == 0) {
+                showMyCoupon.add(mycoupons);
+            }
+        }
+        int myCouponQTY = showMyCoupon.size();
+        modelMap.addAttribute("myCouponQTY", myCouponQTY);
 
         // 返回變更會員電話頁面的視圖名稱
         return "frontend/member/changeMemberMobile";
@@ -1665,13 +1672,31 @@ public class MemberControllerFrontEnd {
      */
     @GetMapping("/newMemberMail")
     public String newMemberMail(ModelMap modelMap,
-                                HttpSession session) {
+                                HttpSession session,
+                                RedirectAttributes redirectAttributes) {
 
         // 從會話中獲取當前登錄的會員訊息
         Member member = (Member) session.getAttribute("loginsuccess");
 
+        // 如果會員未登錄，重定向到登錄頁面
+        if (member == null) {
+            redirectAttributes.addAttribute("error", "尚未登入，請先完成登入!");
+            return "redirect:/frontend/member/loginMember";
+        }
+
         // 將會員舊信箱添加到模型中，以便在前端頁面中預填
         modelMap.addAttribute("oldMemberMail", member.getMemMail());
+
+        List<MyCoupon> list = myCouponSvc.getAllMyCouponMem(member.getMemNo());
+        System.out.println(list);
+        List<MyCoupon> showMyCoupon = new ArrayList<>();
+        for (MyCoupon mycoupons : list) {
+            if (mycoupons.getCoupUsedStat() == 0) {
+                showMyCoupon.add(mycoupons);
+            }
+        }
+        int myCouponQTY = showMyCoupon.size();
+        modelMap.addAttribute("myCouponQTY", myCouponQTY);
 
         // 返回變更會員地址頁面的視圖名稱
         return "frontend/member/changeMemberMail";
@@ -1768,13 +1793,31 @@ public class MemberControllerFrontEnd {
      */
     @GetMapping("/newMemberAddress")
     public String newMemberAddress(ModelMap modelMap,
-                                   HttpSession session) {
+                                   HttpSession session,
+                                   RedirectAttributes redirectAttributes) {
 
         // 從會話中獲取當前登錄的會員訊息
         Member member = (Member) session.getAttribute("loginsuccess");
 
+        // 如果會員未登錄，重定向到登錄頁面
+        if (member == null) {
+            redirectAttributes.addAttribute("error", "尚未登入，請先完成登入!");
+            return "redirect:/frontend/member/loginMember";
+        }
+
         // 將會員舊地址添加到模型中，以便在前端頁面中預填
         modelMap.addAttribute("oldMemberAddress", member.getMemAdd());
+
+        List<MyCoupon> list = myCouponSvc.getAllMyCouponMem(member.getMemNo());
+        System.out.println(list);
+        List<MyCoupon> showMyCoupon = new ArrayList<>();
+        for (MyCoupon mycoupons : list) {
+            if (mycoupons.getCoupUsedStat() == 0) {
+                showMyCoupon.add(mycoupons);
+            }
+        }
+        int myCouponQTY = showMyCoupon.size();
+        modelMap.addAttribute("myCouponQTY", myCouponQTY);
 
         // 返回變更會員地址頁面的視圖名稱
         return "frontend/member/changeMemberAddress";
@@ -1857,13 +1900,31 @@ public class MemberControllerFrontEnd {
      */
     @GetMapping("/newMemberCreditCard")
     public String newMemberCreditCard(ModelMap modelMap,
-                                      HttpSession session) {
+                                      HttpSession session,
+                                      RedirectAttributes redirectAttributes) {
 
         // 從會話中獲取當前登錄的會員訊息
         Member member = (Member) session.getAttribute("loginsuccess");
 
+        // 如果會員未登錄，重定向到登錄頁面
+        if (member == null) {
+            redirectAttributes.addAttribute("error", "尚未登入，請先完成登入!");
+            return "redirect:/frontend/member/loginMember";
+        }
+
         // 將會員舊信用卡添加到模型中，以便在前端頁面中預填
         modelMap.addAttribute("oldMemberCreditCard", member.getMemCard());
+
+        List<MyCoupon> list = myCouponSvc.getAllMyCouponMem(member.getMemNo());
+        System.out.println(list);
+        List<MyCoupon> showMyCoupon = new ArrayList<>();
+        for (MyCoupon mycoupons : list) {
+            if (mycoupons.getCoupUsedStat() == 0) {
+                showMyCoupon.add(mycoupons);
+            }
+        }
+        int myCouponQTY = showMyCoupon.size();
+        modelMap.addAttribute("myCouponQTY", myCouponQTY);
 
         // 返回變更會員信用卡頁面的視圖名稱
         return "frontend/member/changeMemberCreditCard";
@@ -1898,11 +1959,12 @@ public class MemberControllerFrontEnd {
         // 從會話中獲取當前登錄的會員訊息
         Member member = (Member) session.getAttribute("loginsuccess");
 
+
         // 檢查舊會員信用卡是否為空白
         if (oldMemberCreditCard != null) {
             if (oldMemberCreditCard.isEmpty()) {
                 modelMap.addAttribute("emptyoldMemberCreditCard", "舊會員信用卡不可為空白，請重新輸入!");
-            } else if (!member.getMemAdd().equals(oldMemberCreditCard)) {
+            } else if (!member.getMemCard().equals(oldMemberCreditCard)) {
                 // 檢查舊會員信用哪是否輸入正確
                 modelMap.addAttribute("oldMemberCreditCardError", "會員信用卡輸入有誤，請重新輸入!");
             }

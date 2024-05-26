@@ -36,4 +36,16 @@ public interface ColumnReplyRepository extends JpaRepository<ColumnReply, Intege
      */
     ColumnReply findByColumnReplyNo(Integer columnReplyNo);
 
+    /**
+     * 根據 columnReplyNo 刪除相應的 ColumnReply 實體。
+     *
+     * 此方法從資料庫中刪除具有給定 columnReplyNo 的 ColumnReply 實體。
+     * 如果不存在具有給定 columnReplyNo 的實體，則該方法不執行任何操作。
+     *
+     * @param columnReplyNo 要刪除的 ColumnReply 的唯一標識符。
+     *                      不能為空。
+     * @throws IllegalArgumentException 如果給定的 columnReplyNo 為空。
+     */
+    void deleteByColumnReplyNo(Integer columnReplyNo);
+
 }
