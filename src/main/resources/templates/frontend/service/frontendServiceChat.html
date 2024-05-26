@@ -15,6 +15,9 @@
     <!-- CSS Template -->
     <th:block th:include="~{frontend/component/plugin/frontendplugin.html :: css}"></th:block>
     <link rel="stylesheet" th:href="@{/css/frontend/service/frontendChat.css}">
+    <style>
+
+    </style>
 </head>
 
 <body class="chatbody">
@@ -38,23 +41,23 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6 my-2">
-                        <h1 class="m-0 h4 text-center text-lg-start">Contact Us</h1>
+                        <h1 class="m-0 h4 text-center text-lg-start">聯繫客服</h1>
                     </div>
                     <div class="col-lg-6 my-2">
                         <ol class="breadcrumb m-0 small justify-content-center justify-content-lg-end">
                             <li class="breadcrumb-item"><a class="text-nowrap text-reset"
                                                            th:href="@{/frontend/index}"><i
                                     class="bi bi-home"></i>Home</a></li>
-                            <li class="breadcrumb-item text-nowrap active" aria-current="page">Contact Us</li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page">聯繫客服</li>
                         </ol>
                     </div>
                 </div>
             </div>
         </div><!-- End Breadcrumb --><!-- Contact us -->
-        <section class="section">
-            <div class="container">
+        <section class="section" style="padding-top: 10px;padding-bottom: 10px;">
+            <div class="container" style="display: flex; justify-content: center;">
                 <div th:if="${session.member == null}" class="chatunlogin">
-                    <a th:href="@{/frontend/member/loginMember}">尚未登入喔，請先登入</a>
+                    <a th:href="@{/frontend/member/loginMember}">請點擊此處登入會員</a>
                 </div>
                 <div class="user-form" id="username-page" th:if="${session.member != null}"
                      style="display: none">
@@ -63,14 +66,19 @@
                         <button id="click" style="display: none">Enter Chatroom</button>
                     </form>
                 </div>
-
                 <div class="chat-container" id="chat-page" th:if="${session.member != null}">
-                    <div class="chat-area">
-                        <div class="chat-area" id="chat-messages"></div>
+                    <div class="chat-area" style="padding-top: 0;">
+                        <div class="chat-box-header">即時客服</div>
+                        <div class="chat-area" id="chat-messages" style="
+                                border-left-width: 10px;
+                                margin-left: 10px;
+                                margin-right: 10px;
+                                padding-right: 10px;
+                                border-right-width: 10px;"></div>
                         <form id="messageForm" name="messageForm">
-                            <div class="message-input">
+                            <div class="message-input" style="margin: 10px;">
                                 <input autocomplete="off" type="text" id="message"
-                                       placeholder="Type your message...">
+                                       placeholder="請輸入訊息...">
                                 <button type="button" id="msg_btn">送出</button>
                             </div>
                         </form>
