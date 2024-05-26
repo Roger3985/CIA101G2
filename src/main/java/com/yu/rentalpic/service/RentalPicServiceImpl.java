@@ -19,7 +19,6 @@ public class RentalPicServiceImpl implements RentalPicService {
     @Autowired //自動裝配
     private RentalPicRepository repository;
 
-
     //全部查詢(RentalPic)
     @Override
     public List<RentalPic> findAll() {
@@ -80,7 +79,4 @@ public class RentalPicServiceImpl implements RentalPicService {
     public void updatePicture(RentalPic rentalPic, byte[] rentalFile) {
         repository.updateRentalFileById(rentalPic.getRentalPicNo(), rentalFile);
     }
-
-
-
 }

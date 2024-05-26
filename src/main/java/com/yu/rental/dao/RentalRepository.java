@@ -1,5 +1,6 @@
 package com.yu.rental.dao;
 
+import com.roger.columnarticle.entity.ColumnArticle;
 import com.yu.rental.entity.Rental;
 import com.yu.rentalcategory.entity.RentalCategory;
 import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
@@ -16,7 +17,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
-public interface RentalRepository extends JpaRepository<Rental, Long> {
+public interface RentalRepository extends JpaRepository<Rental, Integer> {
 
     /**
      * 因繼承 JpaRepository，所以不需要實作任何方法，即可使用「新增、修改、刪除」等基本功能。
@@ -76,12 +77,27 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     @Query("SELECT re FROM Rental re WHERE re.rentalSize = :rentalSize") //以rentalSize 查詢
     List<Rental> findQueryByRentalSize(@Param("rentalSize") Integer rentalSize);
 
-//    @Query("SELECT re FROM Rental re WHERE re.rentalColor LIKE %:rentalColor%") //以rentalColor 做模糊查詢
-//    List<Rental> findQueryByRentalColor(String rentalColor);
 
     @Query("SELECT re FROM Rental re WHERE re.rentalInfo LIKE %:rentalInfo%") //以rentalInfo 做模糊查詢
     List<Rental> findQueryByRentalInfo(@Param("rentalInfo") String rentalInfo);
 
+
+    /**
+     * 關鍵字搜索
+     *
+     * @param keyword 關鍵字
+     * @param pageable 分頁
+     * @return 符合條件的結果
+     *
+     */
+    @Transactional
+    @Query("SELECT re FROM Rental re WHERE re.rentalStat = :rentalStat " +
+            "OR (re.rentalName LIKE %:keyword% OR re.rentalColor LIKE %:keyword%) " +
+            "OR re.rentalSize = :rentalSize ")
+    Page<Rental> findByKeyword_Status_SizeAndPrice(@Param("keyword") String keyword,
+                                                   @Param("rentalStat") byte rentalStat,
+                                                   @Param("rentalSize") int rentalSize,
+                                                   Pageable pageable);
 
 
     /**
