@@ -14,20 +14,14 @@
     <!-- Favicon -->
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
-    <th:block th:include="~{frontend/component/plugin/frontendplugin.html :: css}"></th:block>
-
+    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
     <style>
-
         span.successMsg {
             /* 確保初始狀態為隱藏，以便fadeIn能正常工作 */
             display: none;
         }
-
     </style>
-
-
 </head>
-
 <body>
 <!-- 通用插件 -->
 <th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block>
@@ -102,10 +96,7 @@
                                                         <a th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=1'}" class="nav-link">西裝</a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=1'}" class="nav-link">西裝</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=1'}" class="nav-link">西裝</a>
+                                                        <a th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=1'}" class="nav-link">襯衫</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -131,44 +122,41 @@
                             </div>
                             <!-- 顏色 -->
                             <div class="shop-sidebar-block">
-                                <div class="shop-sidebar-title">
-                                    <a class="h5" data-bs-toggle="collapse" href="#shop_Color" role="button"
-                                       aria-expanded="true" aria-controls="shop_Color">
-                                        Color <i class="bi bi-chevron-up"></i>
-                                    </a>
-                                </div>
-                                <div class="shop-sidebar-list collapse show" id="shop_Color">
-                                    <ul>
-                                        <li class="custom-checkbox checkbox-color">
-                                            <input class="custom-control-input" id="colorsidebar1" type="checkbox"
-                                                   checked="">
-                                            <label class="custom-control-label" style="color: #1F45FC;"
-                                                   for="colorsidebar1">
-                                                <span class="text-body">Royal Blue</span>
-                                            </label>
-                                        </li>
-                                        <li class="custom-checkbox checkbox-color">
-                                            <input class="custom-control-input" id="colorsidebar2" type="checkbox">
-                                            <label class="custom-control-label" style="color: #FCD71E;"
-                                                   for="colorsidebar2">
-                                                <span class="text-body">Yellow</span>
-                                            </label>
-                                        </li>
-                                        <li class="custom-checkbox checkbox-color">
-                                            <input class="custom-control-input" id="colorsidebar3" type="checkbox">
-                                            <label class="custom-control-label" style="color: #000;"
-                                                   for="colorsidebar3">
-                                                <span class="text-body">Black</span>
-                                            </label>
-                                        </li>
-                                        <li class="custom-checkbox checkbox-color">
-                                            <input class="custom-control-input" id="colorsidebar4" type="checkbox">
-                                            <label class="custom-control-label" style="color: #f73636;"
-                                                   for="colorsidebar4">
-                                                <span class="text-body">Red</span>
-                                            </label>
-                                        </li>
-                                    </ul>
+                                <div class="shop-sidebar-block">
+                                    <div class="shop-sidebar-title">
+                                        <a class="h5" data-bs-toggle="collapse" href="#shop_Color" role="button"
+                                           aria-expanded="true" aria-controls="shop_Color">
+                                            顏色 <i class="bi bi-chevron-up"></i>
+                                        </a>
+                                    </div>
+                                    <div class="shop-sidebar-list collapse show" id="shop_Color">
+                                        <ul>
+                                            <li class="custom-checkbox">
+                                                <input class="custom-control-input" id="colorsidebar1" type="checkbox" value="藍色">
+                                                <label class="custom-control-label" for="colorsidebar1">
+                                                    <span class="text-body">藍色</span>
+                                                </label>
+                                            </li>
+                                            <li class="custom-checkbox">
+                                                <input class="custom-control-input" id="colorsidebar2" type="checkbox" value="白色">
+                                                <label class="custom-control-label" for="colorsidebar2">
+                                                    <span class="text-body">白色</span>
+                                                </label>
+                                            </li>
+                                            <li class="custom-checkbox">
+                                                <input class="custom-control-input" id="colorsidebar3" type="checkbox" value="黑色">
+                                                <label class="custom-control-label" for="colorsidebar3">
+                                                    <span class="text-body">黑色</span>
+                                                </label>
+                                            </li>
+                                            <li class="custom-checkbox">
+                                                <input class="custom-control-input" id="colorsidebar4" type="checkbox" value="紅色">
+                                                <label class="custom-control-label" for="colorsidebar4">
+                                                    <span class="text-body">紅色</span>
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                             <!-- End Color -->
@@ -177,7 +165,7 @@
                                 <div class="shop-sidebar-title">
                                     <a class="h5" data-bs-toggle="collapse" href="#shop_brand" role="button"
                                        aria-expanded="true" aria-controls="shop_brand">
-                                        Size <i class="bi bi-chevron-up"></i>
+                                        尺寸 <i class="bi bi-chevron-up"></i>
                                     </a>
                                 </div>
                                 <div class="shop-sidebar-list collapse show" id="shop_brand">
@@ -230,9 +218,8 @@
                                         </li>
                                     </ul>
                                 </div>
-                            </div>
-                            <!-- End Brands -->
-                        </div>
+                            </div><!-- End Brands -->
+                        </div><!-- <div class="offcanvas-body flex-column">  -->
                     </div>
                     <!-- End Sidebar -->
                     <!-- 商品列表 -->
@@ -265,9 +252,6 @@
                                         <li>
                                             <a class="sort-item" data-sort="newest" th:href="@{/frontend/rental/rentalShop/{sortType}}">最新</a>
                                         </li>
-                                        <!--                                        <li>-->
-                                        <!--                                            <a class="sort-item" data-sort="popular" href="#">最熱門</a>-->
-                                        <!--                                        </li>-->
                                         <li>
                                             <a class="sort-item" data-sort="low_to_high" th:href="@{/frontend/rental/rentalShop/{sortType}}">價格由低到高</a>
                                         </li>
@@ -279,6 +263,7 @@
                             </div>
                         </div>
                         <!-- 商品 -->
+                        <div id="rental-list">
                         <th:block th:each="rental : ${rentalListData}">
                             <div class="row g-0 mb-4 rental">
                                 <div class="col-sm-4 position-relative">
@@ -286,11 +271,11 @@
                                         <span class="badge bg-danger">Sale</span>
                                     </div>
                                 <a th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}"><!-- 對應品項查詢 -->
-                                    <img class="border img-fluid w-100" th:src="@{'/icons/frontend/rental/rentalshop/' + ${rental.rentalNo} + '.jpg'}"
+                                    <img class="border img-fluid w-100 rentalShopPic" th:src="@{'/icons/frontend/rental/rentalshop/' + ${rental.rentalNo} + '.jpg'}"
                                          th:width="276" th:height="310" title="" alt="">
                                 </a>
                                 </div>
-                                <div class="col-sm-8 ps-sm-4 pt-3 pt-sm-0">
+                                <div class="col-sm-8 ps-sm-4 pt-3 pt-sm-0" style="transform: translate3d(0px, 20px, 0px);">
                                     <div class="rating-star text mb-2 small"><!-- 評價 -->
                                         <i class="bi bi-star-fill active"></i>
                                         <i class="bi bi-star-fill active"></i>
@@ -317,25 +302,19 @@
                                         <a href="" class="btn btn-primary btn_addToFAV"><!--  加入我的最愛  -->
                                             <i class="fi-heart"></i>
                                         </a>
-<!--                                        <form method="POST" th:action="@{addWish}">-->
-<!--                                            <input type="hidden" name="rentalNo" th:value="${rental.rentalNo}" readonly style="display: none;">-->
-<!--                                            <a href="" class="btn btn-primary btn_addToFAV">&lt;!&ndash;  加入我的最愛  &ndash;&gt;-->
-<!--                                                <i class="fi-heart"></i>-->
-<!--                                            </a>-->
-<!--                                        </form>-->
                                         <a href="#" class="btn btn-primary btn_addTrack">
                                             <i class="bi bi-bookmark"></i>
-                                        </a><!--  加入追蹤的圖示  -->
-                                        <a data-bs-toggle="modal" data-bs-target="#px-quick-view" th:href="@{/frontend/rental/rentalQuickview}"
-                                           href="javascript:void(0)" class="btn btn-primary">
-                                            <i class="fi-eye"></i><!--  跳窗顯示該商品畫面 (rentalQuickview.html) -->
                                         </a>
+<!--                                        <a data-bs-toggle="modal" data-bs-target="#px-quick-view" th:href="@{/frontend/rental/rentalQuickview}"-->
+<!--                                           href="javascript:void(0)" class="btn btn-primary">-->
+<!--                                            <i class="fi-eye"></i>&lt;!&ndash;  跳窗顯示該商品畫面 (rentalQuickview.html) &ndash;&gt;-->
+<!--                                        </a>-->
                                         <span class="successMsg" style="color: lightgreen"></span>
-                                        <span class="alreadyAddWish" style="color: lightgreen"></span>
                                     </div>
                                 </div>
                             </div>
                         </th:block>
+                        </div>
                         <!-- 商品  結束 -->
                         <!-- 分頁區  -->
                         <div class="shop-bottom-bar d-flex align-items-center mt-3">
@@ -364,7 +343,7 @@
                                 </ul>
                             </div>
                         </div><!-- 分頁區  結束  -->
-                    </div>
+                    </div><!--   <div class="col-lg-8 col-xl-9">-->
                     <!-- 商品列表結束 -->
                 </div>
             </div>
@@ -387,11 +366,44 @@
 
 <script>
     /*
-     * 選擇對應類別
+     * 選擇對應顏色
      * 使用jQuery抓取點擊事件，前台發送清求。
      * 最後依後台判斷選擇方式並回傳對應的資料。
     */
+    $(document).ready(function() {
+        $('input[type="checkbox"]').change(function() {
+            // 收集已選中的顏色值
+            const selectedColors = [];
+            $('input[type="checkbox"]:checked').each(function() {
+                selectedColors.push($(this).val());
+            });
 
+            // 發送 AJAX 請求到後端
+            $.ajax({
+                url: '/getDisplayColor',
+                type: 'GET',
+                data: { color: selectedColors.join(',') }, // 傳遞選中的顏色值作為參數
+                success: function(data) {
+                    // 更新頁面上的商品列表
+                    updateProductList(data);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+
+        // 更新頁面上的商品列表
+        function updateProductList(rentals) {
+            // 清空原有的商品列表
+            $('#product-list').empty();
+
+            // 循環添加新的商品信息
+            rentals.forEach(function(rental) {
+                $('#product-list').append('<div>' + rental.rentalName + ' - ' + rental.rentalColor + '</div>');
+            });
+        }
+    });
 
 
     /*
@@ -423,17 +435,13 @@
         // const baseUrl -> 將window.location.protocol和window.location.host，用 "//" 連接，取得當前頁面的URL
         const baseUrl = window.location.protocol + "//" + window.location.host;
         const rentalNo = $(this).closest("div.rental").find("span.rentalNo").text().trim();
-        const memNo = 1;
         const rentalFavTime = new Date().toISOString(); //取得當前時間(ISO 8601型態 ，只能在後端轉型)
         console.log("抓取編號:" + rentalNo);
-        console.log("抓取會員編號:" + memNo);
         console.log("抓取當前時間:" + rentalFavTime);
-        alert("已點選");
 
         //打包數據
         const wishData = {
             rentalNo: rentalNo,
-            memNo: memNo,
             rentalFavTime: rentalFavTime
         };
 
@@ -445,11 +453,8 @@
             body: JSON.stringify(wishData) //將包裝的數據轉換成JSON格式並發送
         }).then(response => response.text())
             .then(rentalName => {
-                console.log("2 抓取打包數據:" + JSON.stringify(wishData)); //成功匯出
-                console.log(rentalName);
-                //查詢div.rental元素，並找到alreadyAddWish
-                //fadeIn(0) 立即顯示alreadyAddWish。delay(500) 延遲 500 毫秒。fadeOut(500) 在 500 毫秒內淡出alreadyAddWish。
-                $(this).closest("div.rental").find("span.alreadyAddWish").text("已將" + rentalName + "加入我的最愛!").fadeIn(0).delay(500).fadeOut(500);
+                // console.log("2 抓取打包數據:" + JSON.stringify(wishData)); //成功匯出
+                console.log(rentalName + "已加入我的最愛");
             });
     });
 

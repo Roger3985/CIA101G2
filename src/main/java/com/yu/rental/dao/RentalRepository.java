@@ -32,6 +32,9 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     public Rental findByRentalName(String rentalName); //單筆查詢(String rentalName)
 
     @Transactional
+    public List<Rental> findByRentalColorContaining(String rentalColor); // 查詢顏色(String rentalColor)
+
+    @Transactional
     @Query("SELECT re FROM Rental re WHERE :rentalCatNo IS NULL OR " +
             "re.rentalCategory.rentalCatNo = :rentalCatNo ORDER BY re.rentalPrice ASC")
     List<Rental> findByRentalCatNo_OrderByRentalPriceASC(Integer rentalCatNo);  //尋找對應編號的價格排序 (升冪)
@@ -73,8 +76,8 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     @Query("SELECT re FROM Rental re WHERE re.rentalSize = :rentalSize") //以rentalSize 查詢
     List<Rental> findQueryByRentalSize(@Param("rentalSize") Integer rentalSize);
 
-    @Query("SELECT re FROM Rental re WHERE re.rentalColor LIKE %:rentalColor%") //以rentalColor 做模糊查詢
-    List<Rental> findQueryByRentalColor(@Param("rentalColor") String rentalColor);
+//    @Query("SELECT re FROM Rental re WHERE re.rentalColor LIKE %:rentalColor%") //以rentalColor 做模糊查詢
+//    List<Rental> findQueryByRentalColor(String rentalColor);
 
     @Query("SELECT re FROM Rental re WHERE re.rentalInfo LIKE %:rentalInfo%") //以rentalInfo 做模糊查詢
     List<Rental> findQueryByRentalInfo(@Param("rentalInfo") String rentalInfo);

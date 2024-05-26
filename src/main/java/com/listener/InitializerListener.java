@@ -35,9 +35,10 @@ public class InitializerListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         // 獲得ServletContext物件
         ServletContext context = sce.getServletContext();
-        // 載入線上人數，存入ServletContext
-        AtomicInteger onlineUsers = loadOnlineUsersCounter();
-        context.setAttribute("onlineUsers", onlineUsers);
+        // 改用WebSocket統計
+//        // 載入線上人數，存入ServletContext
+//        AtomicInteger onlineUsers = loadOnlineUsersCounter();
+//        context.setAttribute("onlineUsers", onlineUsers);
         // 統計放入Redis資料庫內的登入狀態數量(登入人數)，存入ServletContext
         AtomicInteger onlineAdms = new AtomicInteger(admRedisTemplate.keys("*").size());
         context.setAttribute("onlineAdms", onlineAdms);
@@ -51,10 +52,10 @@ public class InitializerListener implements ServletContextListener {
      */
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        ServletContext context = sce.getServletContext();
-        // 將在線人數存入，當應用程式重啟時可讀取而不遺失資料
-        AtomicInteger onlineUsers = (AtomicInteger) context.getAttribute("onlineUsers");
-        saveOnlineUsersCounter(onlineUsers);
+//        ServletContext context = sce.getServletContext();
+//        // 將在線人數存入，當應用程式重啟時可讀取而不遺失資料
+//        AtomicInteger onlineUsers = (AtomicInteger) context.getAttribute("onlineUsers");
+//        saveOnlineUsersCounter(onlineUsers);
     }
 
     /**

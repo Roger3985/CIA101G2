@@ -44,9 +44,15 @@
                         </div>
 
                         <div>
-                            <label>優惠條件:</label>
+                            <label>發放條件:</label>
                             <input type="text" th:field="*{coupCond}" onclick="hideContent('coupCond.errors');" /><br/>
                             <span  th:if="${#fields.hasErrors('coupCond')}" th:errors="*{coupCond}" class="error" id="coupCond.errors"></span>
+                        </div>
+
+                        <div>
+                            <label>優惠資訊:</label>
+                            <input type="text" th:field="*{coupInfo}" onclick="hideContent('coupInfo.errors');" /><br/>
+                            <span  th:if="${#fields.hasErrors('coupInfo')}" th:errors="*{coupInfo}" class="error" id="coupInfo.errors"></span>
                         </div>
 
                         <div>

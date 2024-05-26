@@ -23,7 +23,7 @@ public class Coupon {
     @Column(name = "coupname")
     private String coupName;
 
-    @NotBlank(message = "使用條件: 請勿空白")
+    @NotBlank(message = "發放條件: 請勿空白")
     @Column(name = "coupcond")
     private String coupCond;
 
@@ -49,6 +49,11 @@ public class Coupon {
 
     @Column(name = "couprelstat")
     private Byte coupRelStat;
+
+    @NotBlank(message = "優惠資訊: 請勿空白")
+    @Column(name = "coupinfo")
+    private String coupInfo;
+
     @JsonBackReference
     @OneToMany(mappedBy = "coupon", cascade = CascadeType.ALL)
     private Set<ProductOrder> productOrders;
@@ -118,6 +123,14 @@ public class Coupon {
 
     public void setCoupRelStat(Byte coupRelStat) {
         this.coupRelStat = coupRelStat;
+    }
+
+    public String getCoupInfo() {
+        return coupInfo;
+    }
+
+    public void setCoupInfo(String coupInfo) {
+        this.coupInfo = coupInfo;
     }
 
     public Set<ProductOrder> getProductOrders() {

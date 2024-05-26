@@ -13,7 +13,7 @@
         <!-- Favicon -->
         <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
         <!-- CSS Template -->
-        <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+        <th:block th:include="~{frontend/component/plugin/frontendplugin.html :: css}"></th:block>
         <style>
             #preview {
                 max-width: 100px;
@@ -67,7 +67,7 @@
                                 <div class="card mb-5">
                                     <div class="card-header py-3">
                                         <div>
-                                            <h5 class="m-0" style="display: inline;">ClickLikes</h5>
+                                            <h5 class="m-0" style="display: inline;">ArticleCollections</h5>
                                         </div>
                                     </div>
                                     <div class="card-body">
@@ -76,18 +76,18 @@
                                                 收藏的專欄文章
                                                 <span class="text-danger">*</span>
                                             </label>
-                                            <div th:each="clicklike : ${clickLikeList}" th:unless="${#lists.isEmpty(clickLikeList)}">
-                                                <a href="#" class="clicklike-link">
-                                                    <input type="button" class="form-control" th:value="${clicklike.columnArticle.artTitle}" readonly style="text-align: left; color: black;">
-                                                    <input type="hidden" id="artContent" class="form-control" th:value="${clicklike.columnArticle.artContent}">
-                                                    <input type="hidden" id="artTime" class="form-control" th:value="${clicklike.columnArticle.artTime}">
-                                                    <input type="hidden" id="memNo" class="form-control" th:value="${clicklike.member.memNo}">
-                                                    <input type="hidden" id="artNo" class="form-control" th:value="${clicklike.columnArticle.artNo}">
+                                            <div th:each="articlecollection : ${articleCollectionList}" th:unless="${#lists.isEmpty(articleCollectionList)}">
+                                                <a href="#" class="articlecollection-link">
+                                                    <input type="button" class="form-control" th:value="${articlecollection.columnArticle.artTitle}" readonly style="text-align: left; color: black;">
+                                                    <input type="hidden" id="artContent" class="form-control" th:value="${articlecollection.columnArticle.artContent}">
+                                                    <input type="hidden" id="artTime" class="form-control" th:value="${articlecollection.columnArticle.artTime}">
+                                                    <input type="hidden" id="memNo" class="form-control" th:value="${articlecollection.member.memNo}">
+                                                    <input type="hidden" id="artNo" class="form-control" th:value="${articlecollection.columnArticle.artNo}">
                                                 </a>
                                             </div>
-                                            <!-- 如果沒有點讚的專欄文章 -->
-                                            <p th:if="${#lists.isEmpty(clickLikeList)}" class="form-control" style="text-align: left; color: black;">
-                                                你沒有點讚的專欄文章
+                                            <!-- 如果沒有收藏的專欄文章 -->
+                                            <p th:if="${#lists.isEmpty(articleCollectionList)}" class="form-control" style="text-align: left; color: black;">
+                                                你沒有收藏的專欄文章
                                             </p>
                                             <!-- 專欄文章內容的彈出對話框 -->
                                             <div class="modal fade" id="articleContentModal" tabindex="-1" aria-labelledby="articleContentModalLabel" aria-hidden="true">
@@ -107,7 +107,7 @@
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-primary" id="confirmButton">關閉</button>
                                                             <!-- 取消按鈕 -->
-                                                            <button type="button" class="btn btn-danger" id="deleteButton">取消點讚</button>
+                                                            <button type="button" class="btn btn-danger" id="deleteButton">取消收藏</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -137,8 +137,8 @@
     </body>
     <script>
         $(document).ready(function(){
-            // 將點擊事件綁定到具有類 .clicklike-link 的元素
-            $(document).on("click", ".clicklike-link", function(event){
+            // 將點擊事件綁定到具有類 .articlecollection-link 的元素
+            $(document).on("click", ".articlecollection-link", function(event){
                 event.preventDefault();
                 var artTitle = $(this).find("input[type=button]").val(); // 獲取專欄文章的標題
                 var artContent = $(this).find("input[id=artContent]").val(); // 獲取專欄文章的內容
@@ -172,15 +172,15 @@
                 console.log("memNo:", memNo);
                 console.log("artNo:", artNo);
 
-                // 發送 Ajax 請求取消點讚
+                // 發送 Ajax 請求取消收藏
                 $.ajax({
-                    url: '/frontend/columnarticle/unlike/' + memNo + '/' + artNo, // 注意這裡將 memNo 和 artNo 作為路徑變量傳遞
+                    url: '/frontend/columnarticle/unColumnArticleCollection/' + memNo + '/' + artNo, // 注意這裡將 memNo 和 artNo 作為路徑變量傳遞
                     method: 'POST',
                     contentType: 'application/json',
                     success: function(response){
-                        // 取消點讚成功後的操作
-                        console.log("取消點讚成功");
-                        alert("取消點讚成功");
+                        // 取消收藏成功後的操作
+                        console.log("取消收藏成功");
+                        alert("取消收藏成功");
                         $("#articleContentModal").modal("hide"); // 隱藏彈出對話框
                         location.reload(); // 重新刷新頁面
                         // 可以添加其他更新用戶界面的操作

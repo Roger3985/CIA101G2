@@ -6,6 +6,8 @@ import com.roger.columnreply.entity.ColumnReply;
 import com.roger.member.entity.Member;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 
 @Entity
@@ -42,6 +44,8 @@ public class Report implements java.io.Serializable {
     private Timestamp reportTime;
 
     @Column(name = "reportreason")
+    @NotNull
+    @Size(max = 300)
     private String reportReason;
 
     @Column(name = "reporttype")

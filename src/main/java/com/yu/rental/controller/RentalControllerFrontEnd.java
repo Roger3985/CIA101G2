@@ -4,17 +4,13 @@ import com.yu.rental.entity.Rental;
 import com.yu.rental.service.RentalServiceImpl;
 import com.yu.rentalcategory.entity.RentalCategory;
 import com.yu.rentalcategory.service.RentalCategoryServiceImpl;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/frontend") //對應資料夾路徑
@@ -88,21 +84,21 @@ public class RentalControllerFrontEnd {
         return "/frontend/rental/skipInstructions";
     }
 
-    //顯示單筆租借品 (快速查看)
-    @GetMapping("/rental/rentalQuickview")
-    public String rentalQuickview(@RequestParam(value = "rentalNo") Integer rentalNo, ModelMap model) {
-        //建立返回數據的對象
-        Rental rental = rentalService.findByNo(rentalNo);
-        model.addAttribute("rentalCategory", new RentalCategory());
-        List<RentalCategory> rentalCatListData = rentalCategoryService.findAll();
-        model.addAttribute("rentalCatListData",rentalCatListData); //所有租借品類別資訊
-        if (rental == null) {
-            model.addAttribute("errors", "errors");
-            return "/frontend/rental/rentalShop";
-        }
-        model.addAttribute("rental", rental);
-        return "/frontend/rental/rentalQuickview";
-    }
+//    //顯示單筆租借品 (快速查看)
+//    @GetMapping("/rental/rentalQuickview")
+//    public String rentalQuickview(@RequestParam(value = "rentalNo") Integer rentalNo, ModelMap model) {
+//        //建立返回數據的對象
+//        Rental rental = rentalService.findByNo(rentalNo);
+//        model.addAttribute("rentalCategory", new RentalCategory());
+//        List<RentalCategory> rentalCatListData = rentalCategoryService.findAll();
+//        model.addAttribute("rentalCatListData",rentalCatListData); //所有租借品類別資訊
+//        if (rental == null) {
+//            model.addAttribute("errors", "errors");
+//            return "/frontend/rental/rentalShop";
+//        }
+//        model.addAttribute("rental", rental);
+//        return "/frontend/rental/rentalQuickview";
+//    }
 
 
     //顯示單筆租借品頁面 (需求為查看商品頁面，故使用Get請求)
@@ -152,15 +148,53 @@ public class RentalControllerFrontEnd {
         return "/frontend/rental/rentalShop"; // 查詢完成後轉交
     }
 
+    //排序方法：價格低~高、價格高~低
+    @GetMapping("/rental/rentalShopGrid/{sortType}")
+    public String sortAll(@PathVariable("sortType") String sortType,
+                          @RequestParam(value = "rentalStat", required = false) Byte rentalStat,
+                          Model model) {
 
+        //判斷選擇哪種方式
+        if("low_to_high".equals(sortType)){
+            List<Rental> sortList = rentalService.findAllSort();
+            for (Rental rental : sortList) {
+                System.out.println(rental.getRentalName() +":"+rental.getRentalPrice());
+            }
+            model.addAttribute("rentalListData", sortList); // 顯示價格由小到大
+
+        } else if("high_to_low".equals(sortType)){
+            List<Rental> sortDESCList = rentalService.findAllSortDESC();
+            model.addAttribute("rentalListData", sortDESCList); // 顯示價格由大到小
+
+        } else if("newest".equals(sortType)){
+            List<Rental> newestList = rentalService.findByRentalStatDESC(rentalStat);
+            model.addAttribute("rentalListData", newestList); // 顯示最新品項
+
+        } else {
+            List<Rental> defaultSortList = rentalService.findAllSort();
+            model.addAttribute("rentalListData", defaultSortList); // 預設價格由小到大
+
+        }
+        return "/frontend/rental/rentalShopGrid"; // 查詢完成後轉交
+    }
 
 
 
     //處理查詢(依租借品的顏色)
-//    @GetMapping("/getDisplayColor")
-//    public String getDisplayColor(@RequestParam("rentalColor") String rentalColor, ModelMap model) {
-//
-//        List<Rental> colorList = rentalService.getRentalColor(rentalColor); //找出符合相關顏色的，放入list
+    @GetMapping("/getDisplayColor")
+    @ResponseBody
+    public List<Rental> getDisplayColor(@RequestParam(value = "color", required = false)
+                                        String rentalColor, ModelMap model) {
+
+        //判斷是否選擇顏色
+        if (rentalColor == null || rentalColor.isEmpty()) {
+            return rentalService.findAll(); // 如果沒有指定顏色，則返回所有商品
+        } else {
+            return rentalService.findByRentalColor(rentalColor); // 找出符合相關顏色的，放入list
+        }
+
+
+//        List<Rental> colorList = rentalService.findByRentalColor(rentalColor); //找出符合相關顏色的，放入list
 //        model.addAttribute("colorList", colorList);
 //        model.addAttribute("rentalCategory", new RentalCategory());
 //        List<RentalCategory> rentalCatListData = rentalCategoryService.findAll();
@@ -172,7 +206,7 @@ public class RentalControllerFrontEnd {
 //        }
 //        model.addAttribute("rentalColor", rentalColor);
 //        return "/frontend/rental/listOneRental"; // 查詢完成後轉交listOneRental.html
-//    }
+    }
 
 
 //    //處理查詢(依租借品的尺寸)

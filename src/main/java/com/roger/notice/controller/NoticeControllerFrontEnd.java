@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -99,7 +100,8 @@ public class NoticeControllerFrontEnd {
      */
     @GetMapping("/memberNoticeData")
     public String memberNoticeData(ModelMap modelMap,
-                                   HttpSession session) {
+                                   HttpSession session,
+                                   RedirectAttributes redirectAttributes) {
 
         // 從 HTTP 會話中獲取當前已登入的會員跟通知資料
         Member myData = (Member) session.getAttribute("loginsuccess");
@@ -107,6 +109,7 @@ public class NoticeControllerFrontEnd {
 
         // 如果會員未登錄，重定向到登錄頁面
         if (myData == null) {
+            redirectAttributes.addAttribute("error", "尚未登入，請先完成登入!");
             return "redirect:/frontend/member/loginMember";
         }
 

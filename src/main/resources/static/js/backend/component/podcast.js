@@ -8,24 +8,88 @@ function connect() {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         console.log('已連接: ' + frame);
+        // 訂閱職位相關佇列
         subscribeToTopic();
+        // 統計在線人數
+        subscribeToOnlineUsers();
+        // 創建專屬佇列
+        createUserQueue(currentUserAdmNo);
+        //訂閱專屬佇列
+        subscribeToUserQueue();
+    });
+}
+
+var onlineUsersSpan = document.getElementById('online-users');
+
+function subscribeToOnlineUsers() {
+    stompClient.subscribe('/topic/onlineUsers', function (message) {
+        onlineUsersSpan.textContent = message.body;
     });
 }
 
 // 獲取當前用戶的識別標識
 function fetchCurrentUser() {
     return fetch('/backend/getCurrentUser')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error(text) });
+            }
+            return response.json();
+        })
         .then(data => {
             currentUserAdmNo = data;
             console.log('當前用戶 admNo: ' + currentUserAdmNo);
+            connect(); // 在獲取到用戶後再連接 WebSocket
+        })
+        .catch(error => {
+            console.error('獲取當前用戶失敗:', error);
         });
+}
+
+// 創建專屬佇列
+function createUserQueue(userAdmNo) {
+    fetch('/backend/createUserQueue', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            userAdmNo: userAdmNo
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error(text) });
+            }
+            return response.text();
+        })
+        .then(data => {
+            console.log('已創建專屬佇列');
+        })
+        .catch(error => {
+            console.error('創建專屬佇列失敗:', error);
+        });
+}
+
+// 訂閱專屬佇列
+function subscribeToUserQueue() {
+    var userQueue = '/queue/user-' + currentUserAdmNo;
+    stompClient.subscribe(userQueue, function (message) {
+        var messageObject = JSON.parse(message.body);
+        console.log('收到動態訊息: ' + message.body);
+        showMessage(messageObject);
+    });
 }
 
 // 根據用戶職位訂閱相關佇列
 function subscribeToTopic() {
     fetch('/backend/getUserTitle')
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error(text) });
+            }
+            return response.text();
+        })
         .then(userTitle => {
             var topic = '';
             switch (userTitle) {
@@ -54,6 +118,9 @@ function subscribeToTopic() {
                     console.log('過濾掉自己的消息');
                 }
             });
+        })
+        .catch(error => {
+            console.error('訂閱相關佇列失敗:', error);
         });
 }
 
@@ -61,7 +128,12 @@ function subscribeToTopic() {
 document.addEventListener('DOMContentLoaded', function () {
     fetchCurrentUser().then(() => {
         fetch('/backend/getMessages')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text) });
+                }
+                return response.json();
+            })
             .then(messages => {
                 let unreadCount = 0;
                 messages.forEach(msg => {
@@ -71,6 +143,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     showMessage(msg, !msg.readStat, msg.messageId);
                 });
                 document.getElementById('alert-counter').textContent = unreadCount;
+            })
+            .catch(error => {
+                console.error('獲取歷史訊息失敗:', error);
             });
     });
 });
@@ -83,13 +158,21 @@ document.getElementById('alertsDropdown').addEventListener('click', function (ev
         dropdownMenu.classList.remove('show');
         markAllAsRead();
         fetch('/backend/markAllAsRead', { method: 'POST' })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text) });
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.status === "success") {
                     console.log('所有消息已標記為已讀');
                 } else {
                     console.error('標記消息為已讀失敗');
                 }
+            })
+            .catch(error => {
+                console.error('標記消息為已讀失敗:', error);
             });
     } else {
         dropdownMenu.classList.add('show');
@@ -103,13 +186,21 @@ document.addEventListener('click', function (event) {
         dropdownMenu.classList.remove('show');
         markAllAsRead();
         fetch('/backend/markAllAsRead', { method: 'POST' })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text) });
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.status === "success") {
                     console.log('所有消息已標記為已讀');
                 } else {
                     console.error('標記消息為已讀失敗');
                 }
+            })
+            .catch(error => {
+                console.error('標記消息為已讀失敗:', error);
             });
     }
 });
@@ -126,7 +217,9 @@ window.addEventListener('beforeunload', function () {
             },
             body: JSON.stringify(alerts)
         }).then(response => {
-            console.log('收到回應:', response);
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error(text) });
+            }
             return response.json();
         }).then(data => {
             if (data.status === "success") {
@@ -218,4 +311,5 @@ function markAllAsRead() {
     });
 }
 
-connect();
+// 初始化WebSocket連接
+fetchCurrentUser();

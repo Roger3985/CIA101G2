@@ -1,8 +1,10 @@
 <!-- Footer -->
 <th:block th:fragment="bottom">
 <div>
-    <span th:text="'在線人數' + ${application.onlineUsers}"></span>
-    <span th:text="'在線管理員人數' + ${application.onlineAdms}"></span>
+    <div>
+        在線人數 : <span id="online-users">0</span>
+    </div>
+    <span th:text="'在線管理員人數 : ' + ${application.onlineAdms}"></span>
 </div>
 <footer class="sticky-footer bg-white">
     <div class="container my-auto">

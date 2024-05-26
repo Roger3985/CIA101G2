@@ -71,4 +71,17 @@ public interface ClickLikeRepository extends JpaRepository<ClickLike, Integer> {
     @Query("SELECT COUNT(cl) FROM ClickLike cl WHERE cl.compositeClickLike.artNo = :artNo")
     int countByArtNo(Integer artNo);
 
+    /**
+     * 查找點讚數最多的文章。
+     *
+     * 這個查詢會選擇每篇文章的編號以及對應的點讚數量，並按點讚數量降序排列。
+     * 返回的列表中的每個元素都是一個Object數組，其中：
+     * - 第一個元素是文章編號 (artNo)
+     * - 第二個元素是點讚數量 (likeCount)
+     *
+     * @return 包含點讚數最多的文章及其點讚數量的列表
+     */
+    @Query("SELECT cl.columnArticle.artNo, COUNT(cl) as likeCount from ClickLike cl GROUP BY cl.columnArticle.artNo ORDER BY likeCount DESC")
+    List<Object[]> findMostLikedArticles();
+
 }

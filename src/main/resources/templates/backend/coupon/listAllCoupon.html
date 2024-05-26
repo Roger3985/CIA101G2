@@ -4,40 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>listAllCoupon.html</title>
-    <link rel="stylesheet" th:href="@{/css/backend/member/try.css}"/>
-    <link rel="stylesheet" th:href="@{/css/backend/member/try2.css}"/>
-    <link th:href="@{/css/backend/index/styles.css}" rel="stylesheet"/>
-    <link th:href="@{/css/backend/index/index.css}" rel="stylesheet"/>
-
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+    <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
-    <style>
-        h1 {
-            text-align: center;
-        }
-        /*main {*/
-        /*    margin-top: 50px;*/
-        /*    padding: 20px;*/
-        /*}*/
-        h1 {
-            text-align: center;
-            font-size: 2em;
-            border-radius: 10px;
-            width: 80%;
-            /*color: #fff;*/
-            /*background-color: #5bc0de;*/
-            padding: 0 250px;
-            margin: 0 auto;
-            /*margin-bottom: 20px;*/
-            /*box-shadow: 0 4px 6px rgba(0, 0, 0, 0.9);*/
-        }
-        .card-body {
-            flex: 1 1 auto;
-            min-height: 1px;
-        }
-</style>
+
 </head>
 <body id="page-top">
+<div th:replace="backend/component/loading :: loading"></div>
 <!-- Page Wrapper -->
 <div id="wrapper">
     <!-- Sidebar -->
@@ -53,11 +28,11 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
-        <main>
-            <table id="example" class="display" style="width: 100%;">
+                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h1 class="m-0 font-weight-bold text-primary">優惠券資料</h1>
+                        <h6 class="m-0 font-weight-bold text-primary">所有優惠券資料:</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -66,7 +41,8 @@
                                 <tr>
                                     <th>優惠券編號</th>
                                     <th>優惠券名稱</th>
-                                    <th>使用條件</th>
+                                    <th>發放條件</th>
+                                    <th>優惠資訊</th>
                                     <th>折扣</th>
                                     <th>建立日期</th>
                                     <th>失效日期</th>
@@ -82,6 +58,7 @@
                                         <td th:text="${coupon.coupNo}"></td>
                                         <td th:text="${coupon.coupName}"></td>
                                         <td th:text="${coupon.coupCond}"></td>
+                                        <td th:text="${coupon.coupInfo}"></td>
                                         <td th:text="${coupon.coupDisc}"></td>
                                         <td th:text="${coupon.coupAddDate}"></td>
                                         <td th:text="${coupon.coupExpDate}"></td>
@@ -113,18 +90,16 @@
                         </div>
                     </div>
                 </div>
-            </table>
-        </main>
+            </div>
+            <!-- /.container-fluid -->
         </div>
-        <!-- /.container-fluid -->
-    </div>
-    <!-- End of Main Content -->
+        <!-- End of Main Content -->
 
         <!-- Footer -->
         <footer th:replace="backend/component/bottom :: bottom"></footer>
         <!-- End of Footer -->
-</div>
-<!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Content Wrapper -->
 </div>
 <!-- End of Page Wrapper -->
 
@@ -139,9 +114,6 @@
 <script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 <!-- Page level custom scripts -->
 <script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
-    <script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
-    <script th:src="@{/js/backend/member/the.js}"></script>
-    <script th:src="@{/js/backend/member/the2.js}"></script>
     <script>
         let table = new DataTable("#example");
         $("#btn_delete").click(function () {

@@ -87,5 +87,13 @@ public interface ColumnArticleRepository extends JpaRepository<ColumnArticle, In
     @Query("SELECT c FROM ColumnArticle c WHERE c.artStat = :artStat AND (c.artTitle LIKE %:keyword% OR c.artContent LIKE %:keyword% OR c.administrator.admName LIKE %:keyword%)")
     Page<ColumnArticle> searchByKeywordAndStatus(@Param("artStat") byte artStat, @Param("keyword") String keyword, Pageable pageable);
 
+    /**
+     * 獲取所有目前上架的專欄文章，並按照發布時間降序排序。
+     *
+     * @return 按照發布時間從最新到最早排序的上架專欄文章列表
+     */
+    @Query("SELECT ca FROM ColumnArticle ca WHERE ca.artStat = 0 ORDER BY ca.artTime DESC")
+    List<ColumnArticle> findAllPublishedOrderByArtTimeDesc();
+
 
 }

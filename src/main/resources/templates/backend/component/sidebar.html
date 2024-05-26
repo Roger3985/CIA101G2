@@ -73,7 +73,7 @@
         </div>
     </li>
 
-    <!-- Nav Item -  Collapse Menu -->
+    <!-- Nav Item - Member Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMember"
            aria-expanded="true" aria-controls="collapseMember">
@@ -88,8 +88,6 @@
                     <ul class="dropdown-menu border-info">
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/member/memberlist}"><i class="fas fa-search"> </i> <span> 查詢全部資料</span></a></li>
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/member/getMemberData}"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
-<!--                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/member/addMember}"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>-->
-<!--                        <li><a class="dropdown-item" th:href="@{/backend/member/updateMember}"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>-->
                     </ul>
                 </div>
                 <div class="dropright">
@@ -98,7 +96,6 @@
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/notice/noticelist}"><i class="fas fa-search"> </i> <span> 查詢全部資料</span></a></li>
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/notice/getNoticeOneData}"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/notice/addNoticeData}"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
-<!--                        <li><a class="dropdown-item" th:href="@{/backend/notice/updateNotice}"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>-->
                     </ul>
                 </div>
                 <div class="dropright">
@@ -120,7 +117,7 @@
         </div>
     </li>
 
-    <!-- Nav Item -  Collapse Menu -->
+    <!-- Nav Item - Customer Service Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCustomerService"
            aria-expanded="true" aria-controls="collapseCustomerService">
@@ -165,7 +162,7 @@
         </div>
     </li>
 
-    <!-- Nav Item - Utilities Collapse Menu -->
+    <!-- Nav Item - Column Management Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseColumn"
            aria-expanded="true" aria-controls="collapseColumn">
@@ -179,45 +176,31 @@
                     <a class="dropdown-item dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">專欄文章</a>
                     <ul class="dropdown-menu border-info">
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/columnarticle/listAllColumnArticle}"><i class="fas fa-search"> </i> <span> 查詢全部資料</span></a></li>
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/columnarticle/selectColumnArticle}"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/columnarticle/addColumnArticleData}"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
-<!--                        <li><a class="dropdown-item" th:href="@{/backend/columnarticle/updateColumnArticleData}"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>-->
                     </ul>
                 </div>
                 <div class="dropright">
                     <a class="dropdown-item dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">點讚</a>
                     <ul class="dropdown-menu border-info">
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/clicklike/listAllClickLike}"><i class="fas fa-search"> </i> <span> 查詢全部資料</span></a></li>
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/clicklike/selectClickLike}"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
-<!--                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/clicklike/addClickLike}"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>-->
-<!--                        <li><a class="dropdown-item" th:href="@{/backend/clicklike/updateClickLike}"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>-->
                     </ul>
                 </div>
                 <div class="dropright">
                     <a class="dropdown-item dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">文章收藏</a>
                     <ul class="dropdown-menu border-info">
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/articlecollection/listAllArticleCollection}"><i class="fas fa-search"> </i> <span> 查詢全部資料</span></a></li>
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/articlecollection/selectArticleCollection}"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
-<!--                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/articlecollection/addArticleCollection}"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>-->
-<!--                        <li><a class="dropdown-item" th:href="@{/backend/articlecollection/updateArticleCollection}"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>-->
                     </ul>
                 </div>
                 <div class="dropright">
                     <a class="dropdown-item dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">回覆檢舉</a>
                     <ul class="dropdown-menu border-info">
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/report/listAllReport}"><i class="fas fa-search"> </i> <span> 查詢全部資料</span></a></li>
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/report/selectReport}"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
-<!--                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/report/addReport}"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>-->
-<!--                        <li><a class="dropdown-item" th:href="@{/backend/report/updateReport}"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>-->
                     </ul>
                 </div>
                 <div class="dropright">
                     <a class="dropdown-item dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">專欄文章回覆</a>
                     <ul class="dropdown-menu border-info">
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/columnreply/listAllColumnReply}"><i class="fas fa-search"> </i> <span> 查詢全部資料</span></a></li>
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/columnreply/selectColumnReply}"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
-<!--                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/columnreply/addColumnReply}"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>-->
-<!--                        <li><a class="dropdown-item" th:href="@{/backend/columnreply/updateColumnReply}"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>-->
                     </ul>
                 </div>
             </div>
@@ -233,7 +216,7 @@
         <span> Store</span>
     </div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
+    <!-- Nav Item - Product Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProduct"
            aria-expanded="true" aria-controls="collapseProduct">
@@ -309,7 +292,7 @@
         </div>
     </li>
 
-    <!-- Nav Item - Charts -->
+    <!-- Nav Item - Rental Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRental"
            aria-expanded="true" aria-controls="collapseRental">
@@ -350,10 +333,6 @@
                     <a class="dropdown-item dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">租借品訂單</a>
                     <ul class="dropdown-menu border-info">
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalorder/selectRentalOrder}"><i class="fas fa-search"> </i> <span> 訂單管理</span></a></li>
-                        <!--                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalorder/addRentalOrder}"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>-->
-                        <!--                        <li><a class="dropdown-item" th:href="@{/backend/rentalorder/updateRentalOrder}"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>-->
-                        <!--                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalorder/addToCart}"><i class="fas fa-plus"> </i> <span> 加入購物車</span></a></li>-->
-                        <!--                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/rentalorder/toRentalCart}"><i class="fas fa-search"> </i> <span> 查看購物車</span></a></li>-->
                     </ul>
                 </div>
                 <div class="dropright">
@@ -392,7 +371,7 @@
         </div>
     </li>
 
-    <!-- Nav Item - Tables -->
+    <!-- Nav Item - Space Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSpace"
            aria-expanded="true" aria-controls="collapseSpace">

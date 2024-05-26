@@ -13,12 +13,7 @@
     <!-- Favicon -->
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
-    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
-<!--    <style>-->
-<!--        .img-fluid {-->
-<!--            display: none; /* 預設隱藏圖片 */-->
-<!--        }-->
-<!--    </style>-->
+    <th:block th:include="~{frontend/component/plugin/frontendplugin.html :: css}"></th:block>
 </head>
 
 <body>
@@ -62,117 +57,106 @@
                 <div class="row"><!-- Product Gallery -->
                     <div class="col-lg-6 lightbox-gallery product-gallery">
                         <div class="swiper swiper_gallery swiper-fade swiper-initialized swiper-horizontal swiper-pointer-events swiper-backface-hidden">
-                            <div class="swiper-wrapper" id="swiper-wrapper-2f788858255a100c8" aria-live="polite">
+                            <div class="swiper-wrapper" id="swiper-wrapper-2f788858255a100c8" aria-live="polite" style="transform: translateY(30px);">
                                 <div class="swiper-slide swiper-slide-visible swiper-slide-active" role="group"
-                                     aria-label="1 / 6"
-                                     style="width: 516px; opacity: 1; transform: translate3d(0px, 0px, 0px);">
-                                    <div class="pd-gallery-slide">
+                                     aria-label="1 / 6">
+                                    <div class="pd-gallery-slide" style="display: flex; justify-content: center; align-items: center;">
                                         <!-- 全螢幕大圖  -->
-                                        <a class="gallery-link" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '.jpg'}"
-                                           th:width="356" th:height="356">
-                                            <i class="bi bi-arrows-fullscreen"></i></a>
+                                        <a class="gallery-link" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '00.jpg'}">
+<!--                                            <i class="bi bi-arrows-fullscreen"></i>-->
+                                        </a>
                                         <!-- 一般顯示  -->
-                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '.jpg'}"
-                                             th:width="356" th:height="356" class="img-fluid" title="" alt="">
+                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '00.jpg'}"
+                                             width="356" height="356" class="img-fluid rentalPicChange" title="" alt="">
                                     </div>
                                 </div>
                                 <div class="swiper-slide swiper-slide-next" role="group" aria-label="2 / 6"
-                                     style="width: 516px; opacity: 0; transform: translate3d(-516px, 0px, 0px);">
-                                    <div class="pd-gallery-slide">
-                                        <a class="gallery-link" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '01.jpg'}"
-                                           th:width="356" th:height="356">
-                                            <i class="bi bi-arrows-fullscreen"></i>
+                                     style="width: 600px; opacity: 1; transform: translate3d(0px, 0px, 0px);">
+                                    <div class="pd-gallery-slide" style="display: flex; justify-content: center; align-items: center;">
+                                        <a class="gallery-link" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '01.jpg'}">
+<!--                                            <i class="bi bi-arrows-fullscreen"></i>-->
                                         </a>
                                         <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '01.jpg'}"
-                                             th:width="356" th:height="356" class="img-fluid" title="" alt="">
+                                             width="356" height="356" class="img-fluid rentalPicChange" title="" alt="">
                                     </div>
                                 </div>
                                 <div class="swiper-slide" role="group" aria-label="3 / 6"
                                      style="width: 516px; opacity: 0; transform: translate3d(-1032px, 0px, 0px);">
-                                    <div class="pd-gallery-slide">
-                                        <a class="gallery-link" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '02.jpg'}"
-                                           th:width="356" th:height="356">
-                                            <i class="bi bi-arrows-fullscreen"></i></a>
+                                    <div class="pd-gallery-slide" style="display: flex; justify-content: center; align-items: center;">
+                                        <a class="gallery-link" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '02.jpg'}">
+<!--                                            <i class="bi bi-arrows-fullscreen"></i>-->
+                                        </a>
                                         <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '02.jpg'}"
-                                             th:width="356" th:height="356" class="img-fluid" title="" alt="">
+                                             width="356" height="356" class="img-fluid rentalPicChange" title="" alt="">
                                     </div>
                                 </div>
                                 <div class="swiper-slide" role="group" aria-label="4 / 6"
                                      style="width: 516px; opacity: 0; transform: translate3d(-1548px, 0px, 0px);">
-                                    <div class="pd-gallery-slide">
-                                        <a class="gallery-link" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '03.jpg'}"
-                                           th:width="356" th:height="356">
-                                            <i class="bi bi-arrows-fullscreen"></i></a>
-                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '03.jpg'}"
-                                             th:width="356" th:height="356" class="img-fluid" title="" alt="">
+                                    <div class="pd-gallery-slide" style="display: flex; justify-content: center; align-items: center;">
+                                        <a class="gallery-link" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '00.jpg'}">
+<!--                                            <i class="bi bi-arrows-fullscreen"></i>-->
+                                        </a>
+                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '00.jpg'}"
+                                             width="356" height="356" class="img-fluid rentalPicChange" title="" alt="">
                                     </div>
                                 </div>
-                                <div class="swiper-slide" role="group" aria-label="5 / 6"
-                                     style="width: 516px; opacity: 0; transform: translate3d(-2064px, 0px, 0px);">
-                                    <div class="pd-gallery-slide">
-                                        <a class="gallery-link" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '04.jpg'}"
-                                           th:width="356" th:height="356">
-                                            <i class="bi bi-arrows-fullscreen"></i></a>
-                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '04.jpg'}"
-                                             th:width="356" th:height="356" class="img-fluid" title="" alt="">
-                                    </div>
-                                </div>
+<!--                                <div class="swiper-slide" role="group" aria-label="5 / 6"-->
+<!--                                     style="width: 516px; opacity: 0; transform: translate3d(-2064px, 0px, 0px);">-->
+<!--                                    <div class="pd-gallery-slide" style="display: flex; justify-content: center; align-items: center;">-->
+<!--                                        <a class="gallery-link" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '04.jpg'}"-->
+<!--                                           width="356" height="356">-->
+<!--                                            <i class="bi bi-arrows-fullscreen"></i></a>-->
+<!--                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '04.jpg'}"-->
+<!--                                             width="356" height="356" class="img-fluid rentalPicChange" title="" alt="">-->
+<!--                                    </div>-->
+<!--                                </div>-->
                                 <div class="swiper-slide" role="group" aria-label="6 / 6"
                                      style="width: 516px; opacity: 0; transform: translate3d(-2580px, 0px, 0px);">
-<!--                                    <div class="pd-gallery-slide">-->
-<!--                                        <a class="gallery-link" th:src="@{/icons/frontend/rental/gown1.jpg}" th:attr="width=356, height=356" >-->
-<!--                                            <i class="bi bi-arrows-fullscreen"></i></a> -->
-<!--                                        <img th:src="@{/icons/frontend/rental/2.jpg}" th:attr="width=356, height=356"  class="img-fluid"-->
-<!--                                            title="" alt="">-->
-<!--                                    </div>-->
                                 </div>
-                            </div>
+                            </div><!-- 結束  <div class="swiper-wrapper" id="swiper-wrapper-2f788858255a100c8" aria-live="polite"> -->
                             <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
                         </div>
                         <!--  該商品圖片輪播區  -->
-                        <div class="swiper swiper_thumb_gallery product-thumb swiper-initialized swiper-horizontal swiper-pointer-events swiper-free-mode swiper-backface-hidden swiper-thumbs">
-                            <div class="swiper-wrapper" id="swiper-wrapper-e8a3f9d6a5818fef" aria-live="polite"
-                                 style="transform: translate3d(0px, 0px, 0px);">
+                        <div class="swiper swiper_thumb_gallery product-thumb swiper-initialized swiper-horizontal
+                                    swiper-pointer-events swiper-free-mode swiper-backface-hidden swiper-thumbs">
+                            <div class="swiper-wrapper" id="swiper-wrapper-e8a3f9d6a5818fef" aria-live="polite">
                                 <div class="swiper-slide swiper-slide-visible swiper-slide-active swiper-slide-thumb-active"
-                                     role="group" aria-label="1 / 6" style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb">
-                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '.jpg'}"
+                                     role="group" aria-label="1 / 6" style="width: 95.2px; margin-right: 10px;
+                                      transform: translate3d(50px, 0px, 0px);">
+                                    <div class="pd-gallery-slide-thumb rentalPicSmall">
+                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '00.jpg'}"
                                              th:width="63.2" th:height="63.2" class="img-fluid" title="" alt="">
                                     </div>
                                 </div>
                                 <div class="swiper-slide swiper-slide-visible swiper-slide-next" role="group"
-                                     aria-label="2 / 6" style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb">
+                                     aria-label="2 / 6" style="width: 95.2px; margin-right: 10px;
+                                      transform: translate3d(50px, 0px, 0px);">
+                                    <div class="pd-gallery-slide-thumb rentalPicSmall">
                                         <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '01.jpg'}"
                                              th:width="63.2" th:height="63.2" class="img-fluid" title="" alt="">
                                     </div>
                                 </div>
                                 <div class="swiper-slide swiper-slide-visible" role="group" aria-label="3 / 6"
-                                     style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb">
+                                     style="width: 95.2px; margin-right: 10px;
+                                      transform: translate3d(50px, 0px, 0px);">
+                                    <div class="pd-gallery-slide-thumb rentalPicSmall">
                                         <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '02.jpg'}"
                                              th:width="63.2" th:height="63.2" class="img-fluid" title="" alt="">
                                     </div>
                                 </div>
                                 <div class="swiper-slide swiper-slide-visible" role="group" aria-label="4 / 6"
-                                     style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb">
-                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '03.jpg'}"
+                                     style="width: 95.2px; margin-right: 10px;
+                                      transform: translate3d(50px, 0px, 0px);">
+                                    <div class="pd-gallery-slide-thumb rentalPicSmall">
+                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '00.jpg'}"
                                              th:width="63.2" th:height="63.2" class="img-fluid" title="" alt="">
                                     </div>
                                 </div>
-                                <div class="swiper-slide swiper-slide-visible" role="group" aria-label="5 / 6"
-                                     style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb">
-                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '04.jpg'}"
-                                             th:width="63.2" th:height="63.2" class="img-fluid" title="" alt="">
-                                    </div>
-                                </div>
-<!--                                <div class="swiper-slide" role="group" aria-label="6 / 6"-->
+<!--                                <div class="swiper-slide swiper-slide-visible" role="group" aria-label="5 / 6"-->
 <!--                                     style="width: 95.2px; margin-right: 10px;">-->
-<!--                                    <div class="pd-gallery-slide-thumb">-->
-<!--                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '.jpg'}"-->
-<!--                                             th:width="63.2" th:height="63.2" class="img-img-fluid" title="" alt="">-->
+<!--                                    <div class="pd-gallery-slide-thumb rentalPicSmall">-->
+<!--                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '04.jpg'}"-->
+<!--                                             th:width="63.2" th:height="63.2" class="img-fluid" title="" alt="">-->
 <!--                                    </div>-->
 <!--                                </div>-->
                             </div>
@@ -186,113 +170,90 @@
                                     class="bi bi-chevron-left"></i></div>
                             <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
                         </div>
-                    </div><!-- End Product Gallery -->
-
+                    </div><!-- End   <div class="col-lg-6 lightbox-gallery product-gallery"> -->
                     <!-- 單一個租借品資訊(依編號異動) -->
-                    <div class="col-lg-6 ps-lg-5" th:object="${rental}">
+                    <div class="col-lg-6 ps-lg-5" th:object="${rental}"
+                         style="transform: translate3d(0px, 50px, 0px);">
                         <div class="product-detail pt-4 pt-lg-0">
-                            <div class="products-brand pb-2">編號：<span th:text="${rental.rentalNo}"></span></div>
+                            <div class="products-brand pb-2">
+                                編號：<span th:text="${rental.rentalNo}"></span>
+                            </div>
                             <div class="products-title mb-2">
                                 <h4 class="h4"><span th:text="${rental.rentalName}"></span></h4>
                             </div>
-                            <div class="rating-star text small pb-4"><i class="bi bi-star-fill active"></i> <i
-                                    class="bi bi-star-fill active"></i> <i class="bi bi-star-fill active"></i> <i
-                                    class="bi bi-star-fill active"></i> <i class="bi bi-star"></i> <small>(4 Reviews
-                                )</small></div>
-                            <div class="product-description">
-                                <p><span th:text="${rental.rentalInfo}"></span></p>
-                            </div>
+                            <div class="rating-star text small pb-4">
+                                <i class="bi bi-star-fill active"></i>
+                                <i class="bi bi-star-fill active"></i>
+                                <i class="bi bi-star-fill active"></i>
+                                <i class="bi bi-star-fill active"></i>
+                                <i class="bi bi-star"></i>
+                                <small>(4 Reviews)</small></div>
+<!--                            <div class="product-description">-->
+<!--                                <p><span th:text="${rental.rentalInfo}"></span></p>-->
+<!--                            </div>-->
                             <!--  大小篩選   -->
-                            <div class="product-attribute"><label class="fs-6 text-mode pb-2 fw-500">Size</label>
+                            <div class="product-attribute">
+<!--                                <label class="fs-6 text-mode pb-2 fw-500">Size</label>-->
                                 <div class="nav-thumbs nav mb-3">
-                                    <div class="form-check radio-text form-check-inline me-2"><input
-                                            class="form-check-input" type="radio" name="size_d3" id="xs_2"
-                                            checked="">
-                                        <label class="radio-text-label" for="xs_2"><span th:text="XS"></span></label>
+                                    <div class="form-check radio-text form-check-inline me-2"><b>Size：</b>
+                                        <input class="form-check-input" type="radio" name="size_d3" id="xs_2" checked="">
+                                        <label class="radio-text-label" for="xs_2" th:switch="${rental.rentalSize}">
+                                                <span th:case="0">XS</span>
+                                                <span th:case="1">S</span>
+                                                <span th:case="2">M</span>
+                                                <span th:case="3">L</span>
+                                                <span th:case="4">XL</span>
+                                                <span th:case="5">2L</span>
+                                        </label>
                                     </div>
-                                    <div class="form-check radio-text form-check-inline me-2"><input
-                                            class="form-check-input" type="radio" name="size_d3" id="s_2"> <label
-                                            class="radio-text-label" for="s_2"><span th:text="S"></span></label></div>
-                                    <div class="form-check radio-text form-check-inline me-2"><input
-                                            class="form-check-input" type="radio" name="size_d3" id="m_2"> <label
-                                            class="radio-text-label" for="m_2"><span th:text="M"></span></label></div>
-                                    <div class="form-check radio-text form-check-inline me-2"><input
-                                            class="form-check-input" type="radio" name="size_d3" id="l_2"> <label
-                                            class="radio-text-label" for="l_2"><span th:text="L"></span></label></div>
-                                    <div class="form-check radio-text form-check-inline me-2"><input
-                                            class="form-check-input" type="radio" name="size_d3" id="xl_2"> <label
-                                            class="radio-text-label" for="xl_2"><span th:text="XL"></span></label></div>
-                                    <div class="form-check radio-text form-check-inline me-2"><input
-                                            class="form-check-input" type="radio" name="size_d3" id="2l_2"> <label
-                                            class="radio-text-label" for="2l_2"><span th:text="2L"></span></label></div>
                                 </div>
                                 <!-- 顏色篩選 -->
-                                <label class="fs-6 text-mode pb-2 fw-500"><b>顏色： </b><span th:text="${rental.rentalColor}"></span></label>
-                                <!--                                <div class="nav-thumbs nav mb-3">-->
-                                <!--                                    <div class="form-check radio-color large form-check-inline me-2"><input-->
-                                <!--                                            class="form-check-input" type="radio" name="color_1" id="color_01"-->
-                                <!--                                            checked=""> <label class="radio-color-label" for="color_01"><span-->
-                                <!--                                            style="background-color: #126532;"></span></label></div>-->
-                                <!--                                    <div class="form-check radio-color large form-check-inline me-2"><input-->
-                                <!--                                            class="form-check-input" type="radio" name="color_1" id="color_2">-->
-                                <!--                                        <label class="radio-color-label" for="color_2"><span-->
-                                <!--                                                style="background-color: #ff9922;"></span></label></div>-->
-                                <!--                                    <div class="form-check radio-color large form-check-inline me-2"><input-->
-                                <!--                                            class="form-check-input" type="radio" name="color_1" id="color_3">-->
-                                <!--                                        <label class="radio-color-label" for="color_3"><span-->
-                                <!--                                                style="background-color: #326598;"></span></label></div>-->
-                                <!--                                    <div class="form-check radio-color large form-check-inline me-2"><input-->
-                                <!--                                            class="form-check-input" type="radio" name="color_1" id="color_4">-->
-                                <!--                                        <label class="radio-color-label" for="color_4"><span-->
-                                <!--                                                style="background-color: #126578;"></span></label></div>-->
-                                <!--                                </div>-->
+                                <label class="fs-6 text-mode pb-2 fw-500"><b>顏色：</b>
+                                    <span th:text="${rental.rentalColor}"></span>
+                                </label>
                             </div>
 
-                            <!--     排成器顯示區域開始   -->
-                            <div class="count-down count-down-02 mb-3" data-countdown="January 01, 2024 15:00:00">
-                                <div class="days"><span class="count">00</span><span class="title">Day</span></div>
-                                <div class="hours"><span class="count">00</span><span class="title">Hour</span>
-                                </div>
-                                <div class="minutes"><span class="count">00</span><span class="title">Minute</span>
-                                </div>
-                                <div class="seconds"><span class="count">00</span><span class="title">Second</span>
-                                </div>
-                            </div>
-                            <!--     排成器顯示區域結束   -->
+<!--                            &lt;!&ndash;     排成器顯示區域開始   &ndash;&gt;-->
+<!--                            <div class="count-down count-down-02 mb-3" data-countdown="January 01, 2024 15:00:00">-->
+<!--                                <div class="days"><span class="count">00</span><span class="title">Day</span></div>-->
+<!--                                <div class="hours"><span class="count">00</span><span class="title">Hour</span>-->
+<!--                                </div>-->
+<!--                                <div class="minutes"><span class="count">00</span><span class="title">Minute</span>-->
+<!--                                </div>-->
+<!--                                <div class="seconds"><span class="count">00</span><span class="title">Second</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            &lt;!&ndash;     排成器顯示區域結束   &ndash;&gt;-->
 
                             <div class="product-price fs-3 fw-500 mb-2">
-                                <del class="text-muted fs-6"><span th:text="'$' + ${rental.rentalPrice}"></span></del><!--  原本定價  -->
-                                <span class="text-primary" th:text="'$' + ${rentalCategory.rentalDesPrice}"></span><!--  目前租借價  -->
+                                <del class="text-muted fs-6">NT$ <span th:text="'$' + ${rental.rentalPrice}"></span></del><!--  原本定價  -->
+                                <span class="text-primary" th:text="'NT$ ' + ${rental.rentalCategory.rentalDesPrice}"></span><!--  目前租借價  -->
                             </div>
                             <div class="product-detail-actions d-flex flex-wrap pt-3">
-                                <div class="cart-qty me-3 mb-3">
-                                    <div class="dec qty-btn qty_btn">-</div>
-                                    <input class="cart-qty-input form-control" type="text" name="qtybutton"
-                                           th:text="${rentalCategory.rentalStockQty}" th:value="1">
-                                    <div class="inc qty-btn qty_btn">+</div>
-                                </div>
+<!--                                <div class="cart-qty me-3 mb-3">-->
+<!--                                    <div class="dec qty-btn qty_btn">-</div>-->
+<!--                                    <input class="cart-qty-input form-control" type="text" name="qtybutton"-->
+<!--                                           th:text="${rentalCategory.rentalStockQty}" th:value="1">-->
+<!--                                    <div class="inc qty-btn qty_btn">+</div>-->
+<!--                                </div>-->
                                 <div class="cart-button mb-3 d-flex">
                                     <button class="btn btn-mode me-3"><i class="fi-shopping-cart"></i> 加入購物車
                                     </button>
                                     <button class="btn btn-outline-mode me-3"><i class="fi-heart"></i></button><!--  加入我的最愛  -->
-                                    <button class="btn btn-outline-mode">追蹤</button><!--  加入我的追蹤：圖示 <i class="fi-repeat"></i>-->
+                                    <button class="btn btn-outline-mode">追蹤</button><!--  加入我的追蹤 -->
                                 </div>
                             </div>
                             <div class="product-info-buttons nav pt-4">
                                 <a href="#" class="me-3" data-bs-toggle="modal" data-bs-target="#px_size_chart_modal">
                                     <i class="bi bi-scissors"></i>尺寸表</a>
-
-                                <a th:href="@{/frontend/rental/skipInstructions}" class="" data-bs-toggle="modal"
-                                   data-bs-target="#px_shipping_modal"><i class="bi bi-truck me-2"></i>租借須知</a>
+                                <a href="#" class="" data-bs-toggle="modal"
+                                   data-bs-target="#px_rentalInstruction_modal"><i class="bi bi-truck me-2"></i>租借須知</a>
 
                                 <a href="#" class="ms-auto" data-bs-toggle="modal" data-bs-target="#px_ask_modal">
-                                    <i class="bi bi-envelope ms-auto"></i>我有疑問</a></div> <!--  可轉交客服網頁  -->
-
+                                    <i class="bi bi-envelope ms-auto"></i>我有疑問   <!-- 轉交客服網頁 -->
+                                </a>
+                            </div>
                             <div class="pt-3 border-top mt-3 small">
-                                <p class="theme-link mb-2"><label class="m-0 text-mode">關鍵字:</label> <a
-                                        th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=1'}">西裝</a>,
-                                    <a th:href="@{/frontend/rental/rentalShop}">正裝</a>
-                                </p>
                                 <p class="theme-link m-0"><label class="m-0 text-mode">分享:</label> <a
                                         class="icon icon-sm icon-secondary me-2" href="#"><i
                                         class="bi bi-facebook"></i>
@@ -304,8 +265,9 @@
                                         class="bi bi-linkedin"></i></a>
                                 </p>
                             </div>
-                            <div class="pt-4"><img class="img-fluid"
-                                                   src="../../assets/img/fashion/payment-details.png" title="" alt=""></div>
+                            <div class="pt-4">
+                                <img class="img-fluid" src="../../assets/img/fashion/payment-details.png" title="" alt="">
+                            </div>
                         </div>
                     </div><!-- End Product Details -->
                 </div>
@@ -320,13 +282,17 @@
                                                                     id="pd_description_tab" data-bs-toggle="tab" data-bs-target="#pd_description"
                                                                     role="tab" aria-controls="pd_description" aria-selected="true">詳細介紹</a>
                         </li>
-                        <li class="nav-item" role="presentation"><a href="#" class="nav-link"
-                                                                    id="pd_information_tab" data-bs-toggle="tab" data-bs-target="#px_information"
-                                                                    role="tab" aria-controls="px_information" aria-selected="false"
-                                                                    tabindex="-1">資訊(可放size範圍圖)</a></li>
-                        <li class="nav-item" role="presentation"><a href="#" class="nav-link" id="pd_reviews_tab"
-                                                                    data-bs-toggle="tab" data-bs-target="#pd_reviews" role="tab"
-                                                                    aria-controls="pd_reviews" aria-selected="false" tabindex="-1">客戶回饋</a></li>
+                        <li class="nav-item" role="presentation">
+                            <a href="#" class="nav-link" id="pd_information_tab" data-bs-toggle="tab" data-bs-target="#px_information"
+                               role="tab" aria-controls="px_information" aria-selected="false"
+                               tabindex="-1">尺寸詳情
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a href="#" class="nav-link" id="pd_reviews_tab" data-bs-toggle="tab" data-bs-target="#pd_reviews"
+                               role="tab" aria-controls="pd_reviews" aria-selected="false" tabindex="-1">名人回饋
+                            </a>
+                        </li>
                     </ul>
 
                     <div class="tab-content" id="myTabContent">
@@ -409,83 +375,45 @@
                         <div class="tab-pane fade" id="px_information" role="tabpanel"
                              aria-labelledby="pd_information_tab">
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <table class="table text-sm">
-                                        <tbody>
-                                        <tr>
-                                            <th class="fw-500 text-mode">左邊資訊1</th>
-                                            <td class="text-muted">Lorem ipsum dolor sit amet, consectetur
-                                                adipisic
-                                                elit
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th class="fw-500 text-mode">左邊資訊2</th>
-                                            <td class="text-muted">consectetur adipisic elit eiusm tempor</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="fw-500 text-mode">左邊資訊3</th>
-                                            <td class="text-muted">Ut enim ad minim venialo quis nostrud</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="fw-500 text-mode">左邊資訊4</th>
-                                            <td class="text-muted">labore et dolore magna aliqua.</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!--     資訊(可放size範圍圖) 的內容     -->
-                                <div class="col-lg-6">
-                                    <table class="table text-sm">
-                                        <tbody>
-                                        <tr>
-                                            <th class="fw-500 text-mode">右邊資訊1</th>
-                                            <td class="text-muted">dolor sit amet</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="fw-500 text-mode">右邊資訊2</th>
-                                            <td class="text-muted">Lorem ipsum dolor sit amet</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="fw-500 text-mode">右邊資訊3</th>
-                                            <td class="text-muted">Lorem ipsum dolor sit amet</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="fw-500 text-mode">右邊資訊4</th>
-                                            <td class="text-muted">Lorem ipsum dolor sit amet</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="modal-body">
+                                    <div style="text-align: center;">
+                                        <img class="border" th:src="@{'/icons/frontend/rental/menSize.jpg'}"
+                                             width="700" height="auto" title="" alt="">
+                                    </div>
+                                    <br>
+                                    <div style="text-align: center;">
+                                        <img class="border" th:src="@{'/icons/frontend/rental/womenSize.jpg'}"
+                                             width="600" height="auto" title="" alt="">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <!--     資訊(可放size範圍圖) 的內容 已結束    -->
                         <!--     客戶回饋區    -->
                         <div class="tab-pane fade" id="pd_reviews" role="tabpanel" aria-labelledby="pd_reviews_tab">
-                            <div class="row">
+                            <div class="row justify-content-center">
                                 <!--       以前客戶回饋       -->
                                 <div class="col-lg-8 pe-lg-8">
-                                    <div class="row align-items-end">
+                                    <div class="row align-items-center">
                                         <div class="col-sm-6">
-                                            <h5 class="m-0">客戶回饋</h5>
+                                            <h5 class="m-0">回饋分享</h5>
                                             <div class="rating-star small"><i
                                                     class="bi small bi-star-fill active"></i>
                                                 <i class="bi small bi-star-fill active"></i> <i
                                                         class="bi small bi-star-fill active"></i> <i
                                                         class="bi small bi-star-fill active"></i> <i
-                                                        class="bi small bi-star"></i> <span>4.85/5 (400 Reviews)</span>
+                                                        class="bi small bi-star"></i> <span>4.85/5 </span>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6 text-sm-end"><a href="#">View all review</a></div>
                                     </div>
                                     <div class="d-flex review-box border-top mt-4 pt-4">
                                         <div>
-                                            <div class="review-image"><img class="img-fluid"
-                                                                           src="../../assets/img/fashion/product-1.jpg" title="" alt="">
+                                            <div class="review-image">
+                                                <img class="img-fluid" th:src="@{'/icons/frontend/rental/back/1.jpg'}" title="" alt="">
                                             </div>
                                         </div>
                                         <div class="col ps-3">
-                                            <h6>Nancy Bayer</h6>
+                                            <h6>柯小嬿</h6>
                                             <div class="rating-star small"><i
                                                     class="bi small bi-star-fill active"></i>
                                                 <i class="bi small bi-star-fill active"></i> <i
@@ -493,17 +421,18 @@
                                                         class="bi small bi-star-fill active"></i> <i
                                                         class="bi small bi-star"></i> <span>13 April 2012</span>
                                             </div>
-                                            <p class="m-0 pt-3">回饋內容</p>
+                                            <p class="m-0 pt-3">這款婚紗設計得非常典雅，細節精緻，穿上後宛如公主。
+                                                整體剪裁貼合身形，顯得高貴典雅。無論是婚禮現場還是拍照，都讓我成為全場焦點。這是我夢想中的婚紗！</p>
                                         </div>
                                     </div>
                                     <div class="d-flex review-box border-top mt-4 pt-4">
                                         <div>
-                                            <div class="review-image"><img class="img-fluid"
-                                                                           src="../../assets/img/fashion/product-1.jpg" title="" alt="">
+                                            <div class="review-image">
+                                                <img class="img-fluid" th:src="@{'/icons/frontend/rental/back/3.jpg'}" title="" alt="">
                                             </div>
                                         </div>
                                         <div class="col ps-3">
-                                            <h6>Nancy Bayer</h6>
+                                            <h6>金小賢</h6>
                                             <div class="rating-star small"><i
                                                     class="bi small bi-star-fill active"></i>
                                                 <i class="bi small bi-star-fill active"></i> <i
@@ -511,17 +440,18 @@
                                                         class="bi small bi-star-fill active"></i> <i
                                                         class="bi small bi-star"></i> <span>13 April 2012</span>
                                             </div>
-                                            <p class="m-0 pt-3">回饋內容</p>
+                                            <p class="m-0 pt-3">這間的西裝剪裁非常合身，布料質感上乘，穿起來十分舒適而且透氣。
+                                                參加公司重要會議時，整個人顯得非常專業且自信，讓我在職場上更具競爭力。非常推薦！</p>
                                         </div>
                                     </div>
                                     <div class="d-flex review-box border-top mt-4 pt-4">
                                         <div>
-                                            <div class="review-image"><img class="img-fluid"
-                                                                           src="../../assets/img/fashion/product-1.jpg" title="" alt="">
+                                            <div class="review-image">
+                                                <img class="img-fluid" th:src="@{'/icons/frontend/rental/back/2.jpg'}" title="" alt="">
                                             </div>
                                         </div>
                                         <div class="col ps-3">
-                                            <h6>Nancy Bayer</h6>
+                                            <h6>蔡小林</h6>
                                             <div class="rating-star small"><i
                                                     class="bi small bi-star-fill active"></i>
                                                 <i class="bi small bi-star-fill active"></i> <i
@@ -529,17 +459,18 @@
                                                         class="bi small bi-star-fill active"></i> <i
                                                         class="bi small bi-star"></i> <span>13 April 2012</span>
                                             </div>
-                                            <p class="m-0 pt-3">回饋內容</p>
+                                            <p class="m-0 pt-3">禮服的質感非常好，穿上後舒適不緊繃，設計簡約卻不失高貴。
+                                                參加晚會時，這款禮服讓我顯得格外迷人，吸引了眾多目光。完美的設計和舒適的穿著體驗讓我非常滿意！</p>
                                         </div>
                                     </div>
                                     <div class="d-flex review-box border-top mt-4 pt-4">
                                         <div>
-                                            <div class="review-image"><img class="img-fluid"
-                                                                           src="../../assets/img/fashion/product-1.jpg" title="" alt="">
+                                            <div class="review-image">
+                                                <img class="img-fluid" th:src="@{'/icons/frontend/rental/back/4.jpg'}" title="" alt="">
                                             </div>
                                         </div>
                                         <div class="col ps-3">
-                                            <h6>Nancy Bayer</h6>
+                                            <h6>胡小歌</h6>
                                             <div class="rating-star small"><i
                                                     class="bi small bi-star-fill active"></i>
                                                 <i class="bi small bi-star-fill active"></i> <i
@@ -547,47 +478,11 @@
                                                         class="bi small bi-star-fill active"></i> <i
                                                         class="bi small bi-star"></i> <span>13 April 2012</span>
                                             </div>
-                                            <p class="m-0 pt-3">回饋內容</p>
+                                            <p class="m-0 pt-3">西裝的做工非常精細，從領口到袖口的細節都處理得很好。
+                                                布料選用高級面料，觸感柔軟，穿著舒適。適合各種正式場合，讓我在商務會議和晚宴中都能大放異彩。</p>
                                         </div>
                                     </div>
                                 </div><!--       以前客戶回饋 (結束)       -->
-                                <!--       填寫回饋單       -->
-                                <div class="col-lg-4">
-                                    <div class="border p-4 sticky-lg-top review-form mt-4 mt-lg-0">
-                                        <h5 class="mb-3 pb-3 border-bottom">填寫回饋單</h5>
-                                        <form>
-                                            <div class="row g-2">
-                                                <div class="col-sm-6"><label class="form-label">Name</label> <input
-                                                        type="text" name="name"
-                                                        class="form-control form-control-sm">
-                                                </div>
-                                                <div class="col-sm-6"><label class="form-label">Email</label> <input
-                                                        type="text" name="email"
-                                                        class="form-control form-control-sm">
-                                                </div>
-                                                <div class="col-sm-12"><label
-                                                        class="form-label m-0 pe-3 w-100">Rating</label>
-                                                    <div class="rating-star"><i class="bi small bi-star-fill"></i>
-                                                        <i class="bi small bi-star-fill"></i> <i
-                                                                class="bi small bi-star-fill"></i> <i
-                                                                class="bi small bi-star-fill"></i> <i
-                                                                class="bi small bi-star-fill"></i></div>
-                                                </div>
-                                                <div class="col-sm-12"><label class="form-label">回饋標題</label>
-                                                    <input type="text" name="review"
-                                                           class="form-control form-control-sm">
-                                                </div>
-                                                <div class="col-sm-12"><label class="form-label">回饋內容
-                                                    (1500)</label> <textarea rows="5"
-                                                                             class="form-control"></textarea>
-                                                </div>
-                                                <div class="col-sm-12 pt-2">
-                                                    <button class="btn btn-primary">送出回饋</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div><!--       填寫回饋單 (結束)      -->
                             </div>
                         </div>
                         <!--     客戶回饋區 (結束)    -->

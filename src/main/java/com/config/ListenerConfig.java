@@ -1,7 +1,7 @@
 package com.config;
 
 import com.listener.InitializerListener;
-import com.listener.OnlineUsers;
+//import com.listener.OnlineUsers;
 import com.listener.backend.LoginStateListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
@@ -17,8 +17,8 @@ import java.util.EventListener;
 @Configuration
 public class ListenerConfig {
 
-    @Autowired
-    private OnlineUsers onlineUsers;
+//    @Autowired
+//    private OnlineUsers onlineUsers;
 
     @Autowired
     private InitializerListener initializerListener;
@@ -26,10 +26,10 @@ public class ListenerConfig {
     @Autowired
     private LoginStateListener loginStateListener;
 
-    @Bean
-    public ServletListenerRegistrationBean<EventListener> registrationOnlineUsers() {
-        return new ServletListenerRegistrationBean<>(onlineUsers);
-    }
+//    @Bean
+//    public ServletListenerRegistrationBean<EventListener> registrationOnlineUsers() {
+//        return new ServletListenerRegistrationBean<>(onlineUsers);
+//    }
 
     @Bean
     public ServletListenerRegistrationBean<EventListener> registrationInitializerListener() {
