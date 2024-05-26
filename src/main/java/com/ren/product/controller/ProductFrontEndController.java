@@ -2,7 +2,9 @@ package com.ren.product.controller;
 
 import com.ren.product.entity.Product;
 import com.ren.product.service.impl.ProductServiceImpl;
+import com.ren.productpicture.entity.ProductPicture;
 import com.ren.productpicture.service.impl.ProductPictureServiceImpl;
+import com.ren.productreview.entity.ProductReview;
 import com.ren.productreview.service.impl.ProductReviewServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -45,9 +47,29 @@ public class ProductFrontEndController {
     }
 
     @GetMapping("/oneProduct")
-    public String toOneProduct(@RequestParam("productNo") Integer productNo, ModelMap model) {
-
-
+    public String toOneProduct(@RequestParam("productNo") Integer productNo,
+                               ModelMap model) {
+        List<ProductReview> list = productReviewSvc.getByProductNo(productNo);
+        // 計算共有多少評價
+        Long totalReviews = list.stream().count();
+        // 計算評價幾分
+        Double productScore = list.stream()
+                .mapToInt(productReview -> productReview.getProductScore())
+                .average()
+                .orElse(Double.valueOf("0"));
+        List<ProductPicture> productPictures = productPictureSvc.getByProductNo(productNo);
+        var picNoList = new ArrayList<Integer>();
+        Integer totalPictures = 0;
+        for (var productPicture : productPictures) {
+            picNoList.add(productPicture.getProductPicNo());
+            totalPictures++;
+        }
+        model.addAttribute("product", productSvc.getOneProduct(productNo));
+        model.addAttribute("productReviewList", list);
+        model.addAttribute("picNoList", picNoList);
+        model.addAttribute("totalPictures", totalPictures);
+        model.addAttribute("totalReviews", totalReviews);
+        model.addAttribute("productScore", productScore);
         return "frontend/product/oneProduct";
     }
 

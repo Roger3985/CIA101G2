@@ -176,6 +176,26 @@ public class ProductServiceImpl implements ProductService_interface {
         return productRepository.findByAttributes(product.getProductNo(), product.getProductCategory().getProductCatNo(), product.getProductName(), product.getProductInfo(), product.getProductSize(), product.getProductColor(), product.getProductPrice(), product.getProductStat(), product.getProductSalQty(), product.getProductComPeople(), product.getProductComScore(), product.getProductOnShelf(), product.getProductOffShelf());
     }
 
+    @Override
+    public List<Product> getVisitProducts(Integer productCatNo, String productName) {
+        return productRepository.findProductsByProductCategory_ProductCatNoAndProductName(productCatNo, productName);
+    }
+
+    @Override
+    public List<Product> getDifSize(Integer productCatNo, String productName, String productColor) {
+        return productRepository.findProductsByProductCategory_ProductCatNoAndProductNameAndProductColor(productCatNo, productName, productColor);
+    }
+
+    @Override
+    public List<Product> getDifColor(Integer productCatNo, String productName, Integer productSize) {
+        return productRepository.findProductsByProductCategory_ProductCatNoAndProductNameAndProductSize(productCatNo, productName, productSize);
+    }
+
+    @Override
+    public List<Product> getMyProduct(Integer productCatNo, String productName, String productColor, Integer productSize) {
+        return productRepository.findProductsByProductCategory_ProductCatNoAndProductNameAndProductColorAndProductSize(productCatNo, productName, productColor, productSize);
+    }
+
     /**
      * 全文搜索
      *
@@ -321,4 +341,6 @@ public class ProductServiceImpl implements ProductService_interface {
     public void deleteByProductCatName(String productCatName) {
         productRepository.deleteProductsByProductCategory_ProductCatName(productCatName);
     }
+
+
 }

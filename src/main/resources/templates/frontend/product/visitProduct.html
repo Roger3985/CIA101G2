@@ -304,7 +304,7 @@
                   </div>
                   <div class="product-card-info">
                     <div class="product-meta small">
-                      <a th:href="@{/frontend/product/Product(product=${product.productNo})}" th:text="${product.productCategory.productCatName}"></a>
+                      <a th:href="@{/frontend/product/oneProduct(productNo=${product.productNo})}" th:text="${product.productCategory.productCatName}"></a>
                     </div>
                     <div class="rating-star text">
                       <i class="bi bi-star-fill active"></i>
@@ -313,7 +313,7 @@
                       <i class="bi bi-star-fill active"></i>
                       <i class="bi bi-star"></i>
                     </div>
-                    <h6 class="product-title"><a th:href="@{/frontend/product/Product(product=${product.productNo})}" th:text="${product.productName}"></a></h6>
+                    <h6 class="product-title"><a th:href="@{/frontend/product/oneProduct(productNo=${product.productNo})}" th:text="${product.productName}"></a></h6>
                     <div class="product-price">
                       <span class="text-primary" th:text="${product.productPrice}"></span>
                     </div>

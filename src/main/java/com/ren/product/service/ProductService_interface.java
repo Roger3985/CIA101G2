@@ -124,6 +124,14 @@ public interface ProductService_interface {
 	 */
 	Page<Product> searchProducts(String keyword, Integer page, Integer size);
 
+	List<Product> getVisitProducts(Integer productCatNo, String productName);
+
+	List<Product> getDifSize(Integer productCatNo, String productName, String productColor);
+
+	List<Product> getDifColor(Integer productCatNo, String productName, Integer productSize);
+
+	List<Product> getMyProduct(Integer productCatNo, String productName, String productColor, Integer productSize);
+
 	/**
 	 * 更新單筆商品資料
 	 *
