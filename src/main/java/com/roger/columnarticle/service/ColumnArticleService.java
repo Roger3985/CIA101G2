@@ -129,4 +129,11 @@ public interface ColumnArticleService {
      */
     public Page<ColumnArticle> searchArticles(String keyword, Pageable pageable);
 
+    /**
+     * 獲取所有目前上架的專欄文章，並按照發布時間降序排序。
+     *
+     * @return 按照發布時間從最新到最早排序的上架專欄文章列表
+     */
+    public List<ColumnArticle> findAllPublishedOrderByArtTimeDesc();
+
 }

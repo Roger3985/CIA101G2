@@ -62,7 +62,7 @@
                                 <div class="card-body p-4">
                                     <form th:action="@{changeMemberCreditCard}" method="post" enctype="multipart/form-data">
                                         <div class="row">
-                                            <div class="col-sm-12 mb-3" th:if="${oldMemberCreditCard != null}">
+                                            <div class="col-sm-12 mb-3" th:if="${oldMemberCreditCard != null && !#strings.isEmpty(oldMemberCreditCard) }">
                                                 <div class="form-group"><label for="oldMemberCreditCard" class="form-label">
                                                     Old Member Credit Card
                                                     <span class="text-danger">*</span>

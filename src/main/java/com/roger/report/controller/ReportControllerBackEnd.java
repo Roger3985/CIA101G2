@@ -1,7 +1,12 @@
 package com.roger.report.controller;
 
 import com.ren.administrator.entity.Administrator;
+import com.roger.columnreply.entity.ColumnReply;
+import com.roger.columnreply.service.ColumnReplyService;
 import com.roger.member.entity.Member;
+import com.roger.member.service.MemberService;
+import com.roger.notice.entity.Notice;
+import com.roger.notice.service.NoticeService;
 import com.roger.report.entity.Report;
 import com.roger.report.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Controller
@@ -24,7 +30,16 @@ public class ReportControllerBackEnd {
     public Member member;
 
     @Autowired
+    MemberService memberService;
+
+    @Autowired
+    ColumnReplyService columnReplyService;
+
+    @Autowired
     ReportService reportService;
+
+    @Autowired
+    NoticeService noticeService;
 
     @Autowired
     @Qualifier("colStrStr")
@@ -144,6 +159,11 @@ public class ReportControllerBackEnd {
         // 更新回覆檢舉
         reportService.edit(report);
 
+        // 將檢舉的文章回覆變成顯示
+        ColumnReply columnReply =  columnReplyService.getColumnReplyByColumnReplyNo(report.getColumnReply().getColumnReplyNo());
+        columnReply.setComStat((byte) 1);
+        columnReplyService.edit(columnReply);
+
         // 更新 Redis 儲存
         redisTemplate.opsForValue().set("noType:reports" + reportNo, reportNo);
 
@@ -161,7 +181,8 @@ public class ReportControllerBackEnd {
      * @return 處理成功後重定向到 `/backend/report/listAllReport` 頁面。
      */
     @PostMapping("/reNoTypeReport")
-    public String reNoTypeReport(@ModelAttribute("reportNo") String reportNo) {
+    public String reNoTypeReport(@ModelAttribute("reportNo") String reportNo,
+                                 HttpSession session) {
 
         // 查找與會員編號相關的回覆檢舉
         Report report = reportService.findReportByReportNo(Integer.valueOf(reportNo));
@@ -171,6 +192,31 @@ public class ReportControllerBackEnd {
 
         // 更新回覆檢舉
         reportService.edit(report);
+
+        // 將檢舉的文章回覆變成不顯示
+        ColumnReply columnReply =  columnReplyService.getColumnReplyByColumnReplyNo(report.getColumnReply().getColumnReplyNo());
+        columnReply.setComStat((byte) 0);
+        columnReplyService.edit(columnReply);
+
+        // 找到回覆檢舉的檢舉人
+        Member member = memberService.findByNo(report.getMember().getMemNo());
+
+        // 設置檢舉處理好的消息
+        Notice newNotice = new Notice();
+        newNotice.setMember(member);
+        newNotice.setNotContent("您對留言:" + columnReply.getComContent() + "的檢舉，已處理完畢");
+        newNotice.setNotTime(new Timestamp(System.currentTimeMillis()));
+        newNotice.setNotStat((byte) 0);
+
+        noticeService.addNotice(newNotice);
+
+        // 獲取未讀取通知的數量
+        int unreadNoticeCount = noticeService.getUnreadNoticeCount(member);
+        // 獲取會員的通知
+        List<Notice> noticeList = noticeService.findNoticesByMemberMemNo(member.getMemNo());
+
+        session.setAttribute("noticeList", noticeList);
+        session.setAttribute("unreadNoticeCount", unreadNoticeCount);
 
         // 檢查 Redis 中的鍵是否存在，如果存在則刪除
         String key = "noType:reports" + reportNo;

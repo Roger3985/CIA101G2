@@ -39,4 +39,25 @@ public interface ColumnReplyService {
      * @return 對應於給定編號的列回覆對象，如果未找到則返回 null
      */
     public ColumnReply getColumnReplyByColumnReplyNo(Integer columnReplyNo);
+
+    /**
+     * 根據 columnReplyNo 刪除 ColumnReply 實體。
+     *
+     * 此方法從資料庫中刪除具有給定 columnReplyNo 的 ColumnReply 實體。
+     * 如果不存在此類實體，該方法將不執行任何操作並直接返回。
+     *
+     * @param columnReplyNo 要刪除的 ColumnReply 的唯一標識符。
+     *                      不能為空。
+     * @throws IllegalArgumentException 如果給定的 columnReplyNo 為空。
+     */
+    public void deleteColumnReplyColumnReplyNo(Integer columnReplyNo);
+
+    /**
+     * 編輯 ColumnReply 實體。
+     *
+     * @param columnReply 要編輯的 ColumnReply 實體。不能為 null。
+     * @return 編輯後的 ColumnReply 實體。
+     */
+    public ColumnReply edit(ColumnReply columnReply);
+
 }

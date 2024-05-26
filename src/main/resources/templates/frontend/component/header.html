@@ -103,8 +103,8 @@
                     <li class="dropdown nav-item"><a href="#" class="nav-link">專欄文章</a> <label
                             class="px-dropdown-toggle mob-menu"></label>
                         <ul class="dropdown-menu left shadow-lg">
-                            <li><a class="dropdown-item" th:href="@{/frontend/columnarticle/listAllColumnArticle}">Blog</a></li>
-                            <li><a class="dropdown-item" th:if="${session.loginsuccess}" th:unless="${session.onePublishedArticles == null}" th:href="@{/frontend/columnarticle/oneColumnArticle(artNo=${session.onePublishedArticles})}">Blog Single</a></li>
+                            <li><a class="dropdown-item" th:href="@{/frontend/columnarticle/listAllColumnArticle}">Articles</a></li>
+                            <li><a class="dropdown-item" th:if="${session.loginsuccess}" th:unless="${session.onePublishedArticles == null}" th:href="@{/frontend/columnarticle/oneColumnArticle(artNo=${session.onePublishedArticles})}">Article Single</a></li>
                         </ul>
                     </li>
                 </ul>
