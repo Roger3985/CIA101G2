@@ -141,6 +141,7 @@ import com.iting.cart.service.CartService;
 
 import com.iting.productorder.entity.ProductOrder;
 import com.iting.productorder.service.ProductOrderService;
+import com.ren.product.entity.Product;
 import com.ren.product.service.impl.ProductServiceImpl;
 import com.ren.productpicture.entity.ProductPicture;
 import com.ren.productpicture.service.impl.ProductPictureServiceImpl;
@@ -193,7 +194,7 @@ public class CartController {
 
 
     @PostMapping("/cart/ProductOrderSuccess")
-    public String ProductOrderSuccess(HttpSession session,Model model) {
+    public String ProductOrderSuccess(HttpSession session, Model model) {
 //        Member myData = (Member) session.getAttribute("loginsuccess");
 //        Integer memNo = myData.getMemNo();
 //        List<ProductOrder> list = productOrderService.findByMember(memNo);
@@ -201,8 +202,9 @@ public class CartController {
         return "frontend/cart/ProductOrderPaySuccess";
 
     }
+
     @GetMapping("/cart/ProductOrderSuccessful")
-    public String ProductOrderSuccessful(HttpSession session,Model model) {
+    public String ProductOrderSuccessful(HttpSession session, Model model) {
         Member myData = (Member) session.getAttribute("loginsuccess");
         Integer memNo = myData.getMemNo();
         List<ProductOrder> list = productOrderService.findByMember(memNo);
@@ -265,7 +267,7 @@ public class CartController {
                     cartItem.setMemNo(successmemNo);
                     cartSvc.updateCart(cartItem);
                 }
-                List<CartRedis> newcartListData =  cartSvc.findByCompositeKey(successmemNo);
+                List<CartRedis> newcartListData = cartSvc.findByCompositeKey(successmemNo);
                 session.removeAttribute("oldcartListData");
                 model.addAttribute("cartListData", newcartListData);
                 memNo = session.getAttribute("memNo");
@@ -308,9 +310,6 @@ public class CartController {
 
         return "frontend/cart/Cart";
     }
-
-
-
 
 
 //    public BindingResult removeFieldError(CartRedis cart, BindingResult result, String removedFieldname) {

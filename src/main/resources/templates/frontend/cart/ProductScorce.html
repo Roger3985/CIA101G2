@@ -208,6 +208,7 @@
                                 <thead class="text-700 bg-gray-200">
                                 <tr>
                                     <th class="fw-600">商品訂單編號</th>
+                                    <th class="fw-600">商品圖片</th>
                                     <th class="fw-600">商品名稱</th>
                                     <th class="fw-600">商品大小</th>
                                     <th class="fw-600">商品單價</th>
@@ -218,10 +219,14 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <form th:each="productOrderDetail : ${productOrderDetails}" th:object="${productOrderDetail}" th:action="@{/frontend/productorderdetail/senddetailInstantly}" method="post" style="margin-bottom: 0px;">
+                                <form th:each="productOrderDetail : ${productOrderDetails}"  th:action="@{/frontend/productorderdetail/senddetailInstantly}" method="post" style="margin-bottom: 0px;">
                                     <tr class="notouch">
                                         <td class="p-3" th:text="${productOrderDetail.compositeKey.productOrdNo}"></td>
-                                        <td class="p-3" th:text="${productOrderDetail.product.productName}"></td>
+                                        <td class="p-3" >
+                                            <img th:src="'data:image/png;base64,' + ${session['productImage' + productOrderDetail.product.productNo]}" alt="Product Picture" style="width: auto; height: 80px;" />
+                                        </td>
+                                        <td class="p-3" th:text="${productOrderDetail.product.productName}">
+                                        </td>
                                         <td class="p-3">
                                             <span th:if="${productOrderDetail.product.productSize == 0}">XS</span>
                                             <span th:if="${productOrderDetail.product.productSize == 1}">S</span>
@@ -232,7 +237,7 @@
                                         </td>
                                         <td class="p-3" th:text="${productOrderDetail.product.productPrice}"></td>
                                         <td class="p-3" th:text="${productOrderDetail.productOrdQty}"></td>
-                                        <td class="editable-cell" th:field="*{productComContent}">
+                                        <td class="editable-cell" >
                                             <input type="text" class="form-control" name="productComContent" th:id="'productComContent_' + ${productOrderDetail.compositeKey.productOrdNo}" th:value="${productOrderDetail?.productComContent}">
                                         </td>
                                         <td class="editable-cell">
@@ -300,6 +305,7 @@
                 var productScoreValue = productScoreSelect.value.trim();
                 if (productComContentValue !== '' || productScoreValue !== '') {
                     submitButton.disabled = true;
+                    submitButton.style.backgroundColor = '#6c757d';
                 } else {
                     submitButton.disabled = false;
                 }

@@ -404,8 +404,13 @@
       type: 'POST',
       url: "/frontend/cart/addproducttocart",
       data: data,
-      success: function(data) {
+      success: function(response) {
         console.log("Update successful");
+        button.querySelector('.cart-notice').style.display = 'block';
+
+      },
+      error: function(error) {
+        console.log("Error:", error);
       }
     });
   }

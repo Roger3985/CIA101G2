@@ -243,14 +243,14 @@ public class ProductOrderController {
         return "frontend/product/visitProduct";
     }
 
-    @PostMapping("MemberGetAll")
-    public String getAll(@RequestParam("productOrdNo") Integer productOrdNo, @RequestParam("productNo") Integer productNo, ModelMap model) {
-        ProductOrderDetail productOrderDetail = productOrderDetailService.findByproductOrdNoAndproductNo(productOrdNo, productNo);
-        model.addAttribute("productOrderDetail", productOrderDetail);
-        Product product = productService.getOneProduct(productNo);
-        model.addAttribute("product", product);
-        return "frontend/cart/ProductScorce";
-    }
+//    @PostMapping("MemberGetAll")
+//    public String getAll(@RequestParam("productOrdNo") Integer productOrdNo, @RequestParam("productNo") Integer productNo, ModelMap model) {
+//        ProductOrderDetail productOrderDetail = productOrderDetailService.findByproductOrdNoAndproductNo(productOrdNo, productNo);
+//        model.addAttribute("productOrderDetail", productOrderDetail);
+//        Product product = productService.getOneProduct(productNo);
+//        model.addAttribute("product", product);
+//        return "frontend/cart/ProductScorce";
+//    }
 
     public BindingResult removeFieldError(ProductOrder productOrder, BindingResult result, String removedFieldName) {
         List<FieldError> errorsListToKeep = result.getFieldErrors().stream()
