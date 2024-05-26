@@ -1,5 +1,6 @@
 package com.ren.monitor.rabbitmq.listener;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -60,8 +61,9 @@ public class RabbitMQListener {
         messagingTemplate.convertAndSend("/topic/boss", message);
     }
 
-    @RabbitListener(queues = "#{dynamicQueueService.queueNames}")
-    public void listenDynamicQueue(String message) {
+    @RabbitListener(queues = "#{rabbitService.queueNames}")
+    public void listenDynamicQueue(String message) throws JsonProcessingException {
+        System.out.println("在自定義佇列傳送消息~");
         JsonNode messageObject = new ObjectMapper().readTree(message);
         String userAdmNo = messageObject.get("userAdmNo").asText();
         messagingTemplate.convertAndSend("/queue/user-" + userAdmNo, message);

@@ -26,27 +26,27 @@ public class ProductPictureServiceImpl implements ProductPictureService_interfac
 	@Autowired
 	private ProductPictureRepository productPictureRepository;
 
-	public void sendProgress(String sessionId, int progress) {
-		messagingTemplate.convertAndSendToUser(sessionId, "/topic/progress", progress);
-	}
+//	public void sendProgress(String sessionId, int progress) {
+//		messagingTemplate.convertAndSendToUser(sessionId, "/topic/progress", progress);
+//	}
+//
+//	@Autowired
+//	private SimpMessagingTemplate messagingTemplate;
 
-	@Autowired
-	private SimpMessagingTemplate messagingTemplate;
+//	@Autowired
+//	private RabbitTemplate rabbitTemplate;
+//
+//	@Value("${rabbitmq.exchange}")
+//	private String exchange;
+//
+//	@Value("${rabbitmq.routingkey}")
+//	private String routingkey;
 
-	@Autowired
-	private RabbitTemplate rabbitTemplate;
-
-	@Value("${rabbitmq.exchange}")
-	private String exchange;
-
-	@Value("${rabbitmq.routingkey}")
-	private String routingkey;
-
-	public void notifyUploadProgress(String userAdmNo, int progress) {
-		Map<String, Object> message = new HashMap<>();
-		message.put("progress", progress);
-		rabbitTemplate.convertAndSend(exchange, routingkey + "." + userAdmNo, message);
-	}
+//	public void notifyUploadProgress(String userAdmNo, int progress) {
+//		Map<String, Object> message = new HashMap<>();
+//		message.put("progress", progress);
+//		rabbitTemplate.convertAndSend(exchange, routingkey + "." + userAdmNo, message);
+//	}
 
 	/**
 	 * 新增商品照片

@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class RabbitService {
@@ -18,22 +20,30 @@ public class RabbitService {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @Value("${rabbitmq.exchange}")
-    private String exchange;
+    @Autowired
+    private HeadersExchange exchange;
+
+    private final Set<String> queueNames = new HashSet<>();
+
+    public Set<String> getQueueNames() {
+        return queueNames;
+    }
 
     public void createQueueForUser(String userAdmNo) {
-        String queueName = "userQueue_" + userAdmNo;
+        String queueName = "queue_" + userAdmNo;
+        // 建立會自動銷毀的queue
         Queue queue = new Queue(queueName, true, false, true);
         amqpAdmin.declareQueue(queue);
-
-        Binding binding = BindingBuilder.bind(queue).to(new HeadersExchange(exchange)).where("userAdmNo").matches(userAdmNo);
+        // 建立綁定規則
+        Binding binding = BindingBuilder.bind(queue).to(exchange).where("userAdmNo").matches(userAdmNo);
         amqpAdmin.declareBinding(binding);
+        System.out.println("已建立專屬佇列");
     }
 
     public void notifyUploadProgress(String userAdmNo, int progress) {
         Map<String, Object> message = new HashMap<>();
         message.put("progress", progress);
         message.put("userAdmNo", userAdmNo);
-        rabbitTemplate.convertAndSend(exchange, null, message);
+        rabbitTemplate.convertAndSend(exchange.getName(), null, message);
     }
 }

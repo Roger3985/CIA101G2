@@ -88,7 +88,7 @@ public class AdministratorController {
      * @param model 用於將前端輸入資料與錯誤訊息導至前端
      * @return 格式錯誤forward到新增頁面，成功則forward到列表
      */
-    @PostMapping("addAdministrator/add")
+    @PostMapping("/addAdministrator/add")
     public String addAdministrator(@Valid Administrator administrator,
                                    BindingResult result,
                                    RedirectAttributes redirectAttributes,
