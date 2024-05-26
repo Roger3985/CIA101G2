@@ -12,6 +12,7 @@
             <th>優惠券編號</th>
             <th>會員編號</th>
             <th>優惠券資訊</th>
+            <th>優惠券折扣</th>
             <th>優惠券有效日期</th>
 <!--            <th>使用狀態</th>-->
         </tr>
@@ -21,7 +22,8 @@
                 <tr>
                     <td th:text="${mycoupon.coupon.coupNo}"></td>
                     <td th:text="${mycoupon.member.memNo}"></td>
-                    <td th:text="${mycoupon.coupInfo}"></td>
+                    <td th:text="${mycoupon.coupon.coupInfo}"></td>
+                    <td th:text="${mycoupon.coupon.coupDisc}"></td>
                     <td th:text="${mycoupon.coupExpDate}"></td>
 
                     <td>

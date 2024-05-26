@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增客服機器人關鍵字</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+    <style>
+
+    </style>
+</head>
+
+<body id="page-top">
+<div th:replace="backend/component/loading :: loading"></div>
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+<!--                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>-->
+                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
+                <form method="post" th:action="@{/backend/servicerobot/insert}" th:object="${serviceRobot}">
+<!--                    <div class="mb-3 row">-->
+<!--                        <label for="keywordNo" class="col-sm-2 col-form-label">編號</label>-->
+<!--                        <div class="col-sm-3">-->
+<!--                            <input type="text" th:field="*{keywordNo}" class="form-control" name="keywordNo" id="keywordNo">-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div class="mb-3 row">
+                        <label for="keywordName" class="col-sm-2 col-form-label">關鍵字</label>
+                        <div class="col-sm-3">
+                            <textarea type="text" th:field="*{keywordName}" class="form-control" name="keywordName" id="keywordName"
+                                      cols="30" rows="2" placeholder="請輸入關鍵字..."></textarea>
+                            <span th:if="${#fields.hasErrors('keywordName')}" th:errors="*{keywordName}" class="error" id="keywordName.errors"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="responseContent" class="col-sm-2 col-form-label">預設回覆內容</label>
+                        <div class="col-sm-3">
+                            <textarea th:field="*{responseContent}" class="form-control" name="responseContent" id="responseContent"
+                                      cols="30" rows="10" placeholder="請輸入預計回覆內容..."></textarea>
+                            <span th:if="${#fields.hasErrors('responseContent')}" th:errors="*{responseContent}" class="error" id="responseContent.errors"></span>
+                        </div>
+                    </div>
+                    <div>
+                        <div><button type="submit" id="submit">送出新增</button></div>
+                    </div>
+                </form>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="backend/component/bottom :: bottom"></footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
+
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+
+</body>
+</html>

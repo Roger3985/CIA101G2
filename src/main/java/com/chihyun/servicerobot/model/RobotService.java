@@ -5,6 +5,8 @@ import com.chihyun.servicerobot.entity.ServiceRobot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service("robotService")
@@ -20,6 +22,15 @@ public class RobotService {
 
     public void updateRobotReply(ServiceRobot serviceRobot){
         robotRepository.save(serviceRobot);
+    }
+
+    public ServiceRobot getOneReply(Integer keywordNo){
+        Optional<ServiceRobot> optional = robotRepository.findById(keywordNo);
+        return optional.orElse(null);
+    }
+
+    public List<ServiceRobot> getAll(){
+        return robotRepository.findAll();
     }
 
     public Set<ServiceRobot> getResponse(String keywordName){
