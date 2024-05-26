@@ -1,5 +1,7 @@
 package com.yu.rentalmyfavorite.controller;
 
+import com.chihyun.mycoupon.entity.MyCoupon;
+import com.chihyun.mycoupon.model.MyCouponService;
 import com.google.gson.Gson;
 import com.roger.member.entity.Member;
 import com.roger.member.service.impl.MemberServiceImpl;
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +42,8 @@ public class RentalMyFavoriteFrontEnd {
     private RentalServiceImpl rentalService;
     @Autowired
     private MemberServiceImpl memberService;
-
+    @Autowired
+    private MyCouponService myCouponSvc;
 
     /**
      * 確認會員是否登入。
@@ -74,6 +78,17 @@ public class RentalMyFavoriteFrontEnd {
                 session.setAttribute("rentalDesPrice" + wishDetails.get("rentalNo"), "N/A");
             }
         });
+
+        List<MyCoupon> list = myCouponSvc.getAllMyCouponMem(myData.getMemNo());
+        System.out.println(list);
+        List<MyCoupon> showMyCoupon = new ArrayList<>();
+        for (MyCoupon mycoupons : list) {
+            if (mycoupons.getCoupUsedStat() == 0) {
+                showMyCoupon.add(mycoupons);
+            }
+        }
+        int myCouponQTY = showMyCoupon.size();
+        model.addAttribute("myCouponQTY", myCouponQTY);
 
         model.addAttribute("myData", myData);  //會員資訊
         model.addAttribute("addToWishData", addToWishData); //最愛清單
