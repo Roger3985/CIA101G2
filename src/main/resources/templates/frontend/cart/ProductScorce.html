@@ -92,6 +92,15 @@
             padding: 1rem;
             background-color: #f8f9fa;
         }
+        .editable-cell {
+            white-space: nowrap;
+        }
+        .rating-input {
+            min-width: 120px; /* 確保星等下拉選單的最小寬度 */
+        }
+        .comment-input {
+            min-width: 200px; /* 確保評價內容輸入框的最小寬度 */
+        }
     </style>
 </head>
 
@@ -157,13 +166,13 @@
                                 <li class="border-bottom mb-0">
                                     <a class="nav-link-style d-flex align-items-center active p-3" th:href="@{/frontend/productorder/CartEnd}">
                                         <i class="bi bi-bag me-2"></i>商品訂單
-                                        <div class="ms-auto badge-pill badge bg-secondary">5</div>
+                                        <!--                                        <div class="ms-auto badge-pill badge bg-secondary">5</div>-->
                                     </a>
                                 </li>
                                 <li class="border-bottom mb-0">
                                     <a class="nav-link-style d-flex align-items-center p-3" th:href="@{/frontend/productmyfavorite/myProductFAV}">
                                         <i class="fi-heart me-2"></i>我的最愛(商品)
-                                        <div class="ms-auto badge-pill badge bg-secondary">5</div>
+                                        <!--                                        <div class="ms-auto badge-pill badge bg-secondary">5</div>-->
                                     </a>
                                 </li>
                                 <li class="border-bottom mb-0">
@@ -207,11 +216,9 @@
                             <table class="table table-bordered table-hover mb-0" id="dataTable">
                                 <thead class="text-700 bg-gray-200">
                                 <tr>
-                                    <th class="fw-600">商品訂單編號</th>
-                                    <th class="fw-600">商品圖片</th>
-                                    <th class="fw-600">商品名稱</th>
-                                    <th class="fw-600">商品大小</th>
-                                    <th class="fw-600">商品單價</th>
+                                    <th class="fw-600">訂單編號</th>
+                                    <th class="fw-600">圖片</th>
+                                    <th class="fw-600">名稱</th>
                                     <th class="fw-600">購買數量</th>
                                     <th class="fw-600">評價內容</th>
                                     <th class="fw-600">評價星等</th>
@@ -219,38 +226,37 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <form th:each="productOrderDetail : ${productOrderDetails}"  th:action="@{/frontend/productorderdetail/senddetailInstantly}" method="post" style="margin-bottom: 0px;">
+                                <form th:each="productOrderDetail : ${productOrderDetails}" th:action="@{/frontend/productorderdetail/senddetailInstantly}" method="post" style="margin-bottom: 0px;">
                                     <tr class="notouch">
                                         <td class="p-3" th:text="${productOrderDetail.compositeKey.productOrdNo}"></td>
-                                        <td class="p-3" >
+                                        <td class="p-3">
                                             <img th:src="'data:image/png;base64,' + ${session['productImage' + productOrderDetail.product.productNo]}" alt="Product Picture" style="width: auto; height: 80px;" />
                                         </td>
-                                        <td class="p-3" th:text="${productOrderDetail.product.productName}">
-                                        </td>
                                         <td class="p-3">
+                                            <span th:text="${productOrderDetail.product.productName}"></span>
+                                            <br>大小:
                                             <span th:if="${productOrderDetail.product.productSize == 0}">XS</span>
                                             <span th:if="${productOrderDetail.product.productSize == 1}">S</span>
                                             <span th:if="${productOrderDetail.product.productSize == 2}">M</span>
                                             <span th:if="${productOrderDetail.product.productSize == 3}">L</span>
                                             <span th:if="${productOrderDetail.product.productSize == 4}">XL</span>
                                             <span th:if="${productOrderDetail.product.productSize == 5}">2L</span>
+                                            <br>價格:
+                                            <span th:text="${productOrderDetail.product.productPrice}"></span>
                                         </td>
-                                        <td class="p-3" th:text="${productOrderDetail.product.productPrice}"></td>
                                         <td class="p-3" th:text="${productOrderDetail.productOrdQty}"></td>
-                                        <td class="editable-cell" >
+                                        <td class="p-3 editable-cell">
                                             <input type="text" class="form-control" name="productComContent" th:id="'productComContent_' + ${productOrderDetail.compositeKey.productOrdNo}" th:value="${productOrderDetail?.productComContent}">
                                         </td>
-                                        <td class="editable-cell">
-                                            <div>
-                                                <select size="1" name="productScore" class="form-control productScore" th:id="'productScore_' + ${productOrderDetail.compositeKey.productOrdNo}">
-                                                    <option value="" disabled selected>評分</option>
-                                                    <option value="1" th:selected="${productOrderDetail?.productScore == 1}">一顆星</option>
-                                                    <option value="2" th:selected="${productOrderDetail?.productScore == 2}">兩顆星</option>
-                                                    <option value="3" th:selected="${productOrderDetail?.productScore == 3}">三顆星</option>
-                                                    <option value="4" th:selected="${productOrderDetail?.productScore == 4}">四顆星</option>
-                                                    <option value="5" th:selected="${productOrderDetail?.productScore == 5}">五顆星</option>
-                                                </select>
-                                            </div>
+                                        <td class="p-3 rating-input editable-cell">
+                                            <select size="1" name="productScore" class="form-control productScore" th:id="'productScore_' + ${productOrderDetail.compositeKey.productOrdNo}">
+                                                <option value="" disabled selected>評分</option>
+                                                <option value="1" th:selected="${productOrderDetail?.productScore == 1}">一顆星</option>
+                                                <option value="2" th:selected="${productOrderDetail?.productScore == 2}">兩顆星</option>
+                                                <option value="3" th:selected="${productOrderDetail?.productScore == 3}">三顆星</option>
+                                                <option value="4" th:selected="${productOrderDetail?.productScore == 4}">四顆星</option>
+                                                <option value="5" th:selected="${productOrderDetail?.productScore == 5}">五顆星</option>
+                                            </select>
                                         </td>
                                         <td>
                                             <button type="submit" class="submit-btn" id="submitBtn">確認</button>

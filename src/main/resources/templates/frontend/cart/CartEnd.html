@@ -13,6 +13,20 @@
     <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
     <link th:href="@{/frontend/assets/css/bootstrap.min.css}" rel="stylesheet">
     <style>
+        .btn-custom {
+            background-color: black;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 7px;
+            font-size: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            background-color: #f06292;
+        }
+
         .completed-order {
             background-color: #E1F5FE !important; /* 淡藍色背景 */
         }
@@ -301,9 +315,10 @@
                                     </td>
                                     <td>
                                         <form method="post" th:action="@{/frontend/productorderdetail/productorderdetail}" style="margin-bottom: 0px;">
-                                            <input class="btn btn-dark" type="submit" value="明細(評價)">
+                                            <input class="btn btn-custom" type="submit" value="明細(評價)">
                                             <input type="hidden" name="productOrdNo" th:value="${productOrder.productOrdNo}">
                                         </form>
+
                                     </td>
                                 </tr>
                             </th:block>
