@@ -64,8 +64,8 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
     public Administrator register(Administrator administrator) {
         // 填入預設的資料
         administrator.setAdmStat(ACTIVE);
-//        administrator.getTitle().setTitleNo(4);
-//        administrator.setAdmHireDate(new Date(new java.util.Date().getTime()));
+        administrator.getTitle().setTitleNo(1);
+        administrator.setAdmHireDate(new java.sql.Date(new Date().getTime()));
         administrator.setAdmSalt("1");
         administrator.setAdmLogin(LOGIN_STATE_LOGOUT);
         administrator.setAdmLogout(LOGOUT_STATE_LOGOUT);
@@ -177,8 +177,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
      * 返回DTO到Controller、Filter、Listener等處理請求、回應的層級來存入Session
      *
      * @param administrator 使用查詢方法取得Entity，身分核對後將Entity傳入方法內修改登入狀態
-     * @param sessionID 用於獲取SessionID，之後拿來核對會話身分
-     * @return 返回登入狀態DTO
+     * @param session 用於獲取SessionID，之後拿來核對會話身分
      */
     @Employee(title = "employee", message = "已登入")
     @Override
