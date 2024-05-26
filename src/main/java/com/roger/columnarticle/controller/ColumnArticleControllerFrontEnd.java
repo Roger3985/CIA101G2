@@ -226,7 +226,7 @@ public class ColumnArticleControllerFrontEnd {
 
         // 將專欄文章放入模型中，以便在視圖中使用
         modelMap.addAttribute("columnArtice", columnArticle);
-        modelMap.addAttribute("responseCount", responseCount + " Responses"); // 單篇文章的留言數量
+        modelMap.addAttribute("responseCount", responseCount + " 個回應"); // 單篇文章的留言數量
         modelMap.addAttribute("columnReplies", columnReplies); // 單篇文章的所有文章回覆
         modelMap.addAttribute("likeCount", likeCount); // 單篇文章的點讚數量
 
