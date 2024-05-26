@@ -1,9 +1,10 @@
 package com.howard.rentalorder.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.howard.rentalorder.dto.*;
+import com.howard.rentalorder.dto.DeleteCantRent;
+import com.howard.rentalorder.dto.RentalOrderRequest;
+import com.howard.rentalorder.dto.SetToCart;
 import com.howard.rentalorder.entity.RentalOrder;
 import com.howard.rentalorder.service.impl.LogisticsStateService;
 import com.howard.rentalorder.service.impl.RentalCartServiceImpl;
@@ -15,27 +16,22 @@ import com.roger.member.entity.Member;
 import com.roger.member.repository.MemberRepository;
 import com.yu.rental.dao.RentalRepository;
 import com.yu.rental.entity.Rental;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.digest.HmacAlgorithms;
-import org.apache.commons.codec.digest.HmacUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.*;
-
-import static com.utils.JsonUtil.toJson;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -83,8 +79,37 @@ public class FrontendRentalOrderController {
         return memberRepository.findAll();
     }
 
+    /**
+     * 返回登入頁面的請求路徑
+     */
     String toLogin = "/frontend/member/loginMember";
 
+    /**
+     * 組裝購物車資料參數然後把租借品資訊存入購物車
+     * @param setToCart : 含有成員變數 rentalNo、memNo、List<Integer> rentalNos 的 dto
+     * @param rental : 用 rentalNo 找出的租借品
+     */
+    public void assembleAndSet(SetToCart setToCart, Rental rental) {
+
+        Map<String, String> map = new HashMap<>();
+        map.put("rentalNo", String.valueOf(rental.getRentalNo()));
+        map.put("rentalCatNo", String.valueOf(rental.getRentalCategory().getRentalCatNo()));
+        map.put("rentalName", rental.getRentalName());
+        map.put("rentalPrice", String.valueOf(rental.getRentalPrice()));
+        map.put("rentalDesPrice", String.valueOf(rental.getRentalCategory().getRentalDesPrice()));
+        map.put("rentalSize", String.valueOf(rental.getRentalSize()));
+        map.put("rentalColor", rental.getRentalColor());
+        map.put("rentalInfo", rental.getRentalInfo());
+        map.put("rentalStat", String.valueOf(rental.getRentalStat()));
+
+        cartService.setToCart(setToCart.getMemNo(), map);
+
+    }
+
+    /**
+     * 初始化訂單參數
+     * @param order 要被成立的訂單
+     */
     private void setInitArgForCreateOrder(RentalOrderRequest order) {
         // 下單時間 = 現在
         order.setrentalOrdTime(new Timestamp(System.currentTimeMillis()));
@@ -112,7 +137,23 @@ public class FrontendRentalOrderController {
         order.setRtnRemark("尚未歸還");
     }
 
-    /*--------------------------所有方法共用-------------------------------*/
+    /**
+     * 把購物車清空、更新其他會員購物車裡商品的狀態
+     * @param member 成立訂單的會員
+     * @param order 該筆訂單
+     */
+    public void cleanAndUpdateCart(Member member, RentalOrderRequest order) {
+        // 先把字串陣列轉成整數陣列(因為service層方法需要List<Integer>)
+        List<Integer> rentalNoList = order.getBuyItems().stream()
+                .map(Integer::parseInt)
+                .toList();
+        // 把購物車清空
+        cartService.deleteFromCart(member.getMemNo(), rentalNoList);
+        // 更新 Redis 裡其他購物車資料，有加入明細裡的商品的，租借品狀態改為 1 (已預約)
+        cartService.updateCart(rentalNoList, "rentalStat", "1");
+    }
+
+    /*------------------------------所有方法共用-----------------------------------*/
 
     /*--------------------------處理跳轉頁面請求的方法-------------------------------*/
 
@@ -128,9 +169,19 @@ public class FrontendRentalOrderController {
     // 去 感謝付款 頁面
     @GetMapping("/thankForBuying")
     public String thankForBuying(@RequestParam(required = false) Integer rentalOrdNo,
-                                 @RequestParam(required = false) Integer orderId, ModelMap model) {
+                                 @RequestParam(required = false) String orderId, ModelMap model) {
+        /*----------------------LinePay的情況下----------------------*/
+        if (orderId != null) { // 現在的 orderId 是用 UUID 生成的，並非資料庫中真正 rentalOrdNo
+            String returnCode = service.linePayConfirm(orderId);
+            if (returnCode.equals("0000")) {
+                model.addAttribute("orderId", service.findTrueRentalOrdNo(orderId));
+                return "/frontend/rental/thankForBuying";
+            } else {
+                System.out.println("交易有問題喔，結果代碼是 " + returnCode);
+            }
+        }
+        /*------------------------其他情況下------------------------*/
         model.addAttribute("rentalOrdNo", rentalOrdNo);
-        model.addAttribute("orderId", orderId);
         return "/frontend/rental/thankForBuying";
     }
 
@@ -168,9 +219,7 @@ public class FrontendRentalOrderController {
         if (session.getAttribute("loginsuccess") == null) {
             return "redirect:" + toLogin;
         }
-        Map<String, Object> map = new HashMap<>();
-        map.put("rentalOrdNo", rentalOrdNo);
-        RentalOrder rentalOrder = service.getByAttributes(map).get(0);
+        RentalOrder rentalOrder = service.findOrderByOrdNo(rentalOrdNo);
         model.addAttribute("rentalOrder", rentalOrder);
         return "/frontend/rental/memberRentalOrder";
     }
@@ -193,10 +242,12 @@ public class FrontendRentalOrderController {
     // 去 租借商城的結帳 頁面
     @GetMapping("/toRentalPayment")
     public String toRentalPayment(HttpSession session) {
+
         if (session.getAttribute("loginsuccess") == null) {
             return "redirect:" + toLogin;
         }
         return "/frontend/rental/rentalPayment";
+
     }
 
     /*--------------------------處理跳轉頁面請求的方法-------------------------------*/
@@ -220,14 +271,7 @@ public class FrontendRentalOrderController {
          */
         order.setMemNo(member.getMemNo());
         String form = service.createOrder(order, sReq);
-        // 先把字串陣列轉成整數陣列(因為service層方法需要List<Integer>)
-        List<Integer> rentalNoList = order.getBuyItems().stream()
-                .map(Integer::parseInt)
-                .toList();
-        // 把購物車清空
-        cartService.deleteFromCart(member.getMemNo(), rentalNoList);
-        // 更新 Redis 裡其他購物車資料，有加入明細裡的商品的，租借品狀態改為 1 (已預約)
-        cartService.updateCart(rentalNoList, "rentalStat", "1");
+        cleanAndUpdateCart(member, order);
         // 回傳帶有付款畫面 html 的 form 字串
         return ResponseEntity.status(HttpStatus.CREATED).body(form);
 
@@ -287,6 +331,7 @@ public class FrontendRentalOrderController {
     // 加入購物車
     @PostMapping("/setToCart")
     public ResponseEntity<?> setToCart(@RequestBody SetToCart setToCart, HttpSession session) {
+
         Member member = (Member) session.getAttribute("loginsuccess");
         if (member == null) {
             return ResponseEntity.status(HttpStatus.OK).body(toLogin);
@@ -301,6 +346,7 @@ public class FrontendRentalOrderController {
     // 再買一次
     @PostMapping("/buyAgain")
     public ResponseEntity<?> buyAgain(@RequestBody SetToCart setToCart, HttpSession session) {
+
         Member member = (Member) session.getAttribute("loginsuccess");
         if (member == null) {
             return ResponseEntity.status(HttpStatus.OK).body(toLogin);
@@ -314,31 +360,10 @@ public class FrontendRentalOrderController {
 
     }
 
-    /**
-     * 組裝購物車資料參數然後把租借品資訊存入購物車
-     * @param setToCart : 含有成員變數 rentalNo、memNo、List<Integer> rentalNos 的 dto
-     * @param rental : 用 rentalNo 找出的租借品
-     */
-    public void assembleAndSet(SetToCart setToCart, Rental rental) {
-
-        Map<String, String> map = new HashMap<>();
-        map.put("rentalNo", String.valueOf(rental.getRentalNo()));
-        map.put("rentalCatNo", String.valueOf(rental.getRentalCategory().getRentalCatNo()));
-        map.put("rentalName", rental.getRentalName());
-        map.put("rentalPrice", String.valueOf(rental.getRentalPrice()));
-        map.put("rentalDesPrice", String.valueOf(rental.getRentalCategory().getRentalDesPrice()));
-        map.put("rentalSize", String.valueOf(rental.getRentalSize()));
-        map.put("rentalColor", rental.getRentalColor());
-        map.put("rentalInfo", rental.getRentalInfo());
-        map.put("rentalStat", String.valueOf(rental.getRentalStat()));
-
-        cartService.setToCart(setToCart.getMemNo(), map);
-
-    }
-
     // 取出購物車商品資訊
     @GetMapping("/getFromCart")
     public ResponseEntity<?> getFromCart(HttpSession session) {
+
         Member member = (Member) session.getAttribute("loginsuccess");
         if (member == null) {
             return ResponseEntity.status(HttpStatus.OK).body(toLogin);
@@ -352,6 +377,7 @@ public class FrontendRentalOrderController {
     @PostMapping("/deleteFromCart")
     public ResponseEntity<?> deleteFromCart(@RequestBody DeleteCantRent deleteCantRent,
                                             HttpSession session) {
+
         Member member = (Member) session.getAttribute("loginsuccess");
         if (member == null) {
             return ResponseEntity.status(HttpStatus.OK).body(toLogin);
@@ -361,24 +387,7 @@ public class FrontendRentalOrderController {
 
     }
 
-    // 從購物車刪除商品
-//    @PostMapping("/deleteFromCart")
-//    public ResponseEntity<?> deleteFromCart(@RequestBody DeleteCantRent deleteCantRent,
-//                                            HttpSession session) {
-//
-//        Member member = (Member) session.getAttribute("loginsuccess");
-//
-//        cartService.deleteFromCart(member.getMemNo(), deleteCantRent.getRentalNos());
-//
-//        session.setAttribute("loginsuccess", member);
-//
-//        return ResponseEntity.status(HttpStatus.OK).body("ok");
-//
-//    }
-
-
     /*----------------------------有關購物車的方法----------------------------------*/
-
 
     /*----------------------------有關物流的方法----------------------------------*/
 
@@ -386,9 +395,7 @@ public class FrontendRentalOrderController {
     @PostMapping("/createShippingOrder")
     public ResponseEntity<?> createShippingOrder(@RequestParam Integer rentalOrdNo) {
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("rentalOrdNo", rentalOrdNo);
-        RentalOrder order = service.getByAttributes(map).get(0);
+        RentalOrder order = service.findOrderByOrdNo(rentalOrdNo);
         order.setrentalOrdStat((byte) 20);
         String formHTML = shippingService.shipping(rentalOrdNo);
         return ResponseEntity.status(HttpStatus.OK).body(formHTML);
@@ -402,7 +409,7 @@ public class FrontendRentalOrderController {
         if (member == null) {
             return ResponseEntity.status(HttpStatus.OK).body(toLogin);
         }
-        // 目前只有回傳物流狀態碼，可依照需求增加鑰取的值
+        // 目前只有回傳物流狀態碼，可依照需求增加要取的值
         String logisticsStatus = logisticsStateService.postQueryLogisticsTradeInfo(member.getMemNo(), rentalOrdNo);
         return ResponseEntity.status(HttpStatus.OK).body(logisticsStatus);
 
@@ -411,10 +418,11 @@ public class FrontendRentalOrderController {
     /*----------------------------line pay----------------------------------*/
 
 
-
+    // 產生並送出付款請求
     @PostMapping("/linePay")
     public RedirectView linePay(@RequestParam("jsonData") String jsonData,
                                     HttpSession session, HttpServletRequest sReq) {
+
         Member member = (Member) session.getAttribute("loginsuccess");
         if (member == null) {
             return new RedirectView(toLogin);
@@ -431,12 +439,10 @@ public class FrontendRentalOrderController {
         order.setMemNo(member.getMemNo());
         /*----------------------------執行創建訂單流程----------------------------*/
         String paymentUrl = service.createOrder(order, sReq);
+        cleanAndUpdateCart(member, order);
         return new RedirectView(paymentUrl);
 
     }
-
-
-
 
     /*----------------------------line pay----------------------------------*/
 
