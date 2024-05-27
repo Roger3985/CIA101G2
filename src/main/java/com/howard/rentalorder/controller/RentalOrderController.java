@@ -493,6 +493,18 @@ public class RentalOrderController {
     }
 
     /*----------------------------line pay----------------------------------*/
+
+    // LinePay 刷退
+    @PostMapping("/depRefundForLinePay")
+    public ResponseEntity<?> depRefundForLinePay(@RequestBody Integer rentalOrdNo) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("rentalOrdNo", rentalOrdNo);
+        Map<String, String> refundInfos = service.refundForLinePay(service.getByAttributes(map).get(0));
+        return ResponseEntity.status(HttpStatus.OK).body(refundInfos);
+
+    }
+
     /*----------------------------line pay----------------------------------*/
 
 
