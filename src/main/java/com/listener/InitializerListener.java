@@ -42,6 +42,7 @@ public class InitializerListener implements ServletContextListener {
         // 統計放入Redis資料庫內的登入狀態數量(登入人數)，存入ServletContext
         AtomicInteger onlineAdms = new AtomicInteger(admRedisTemplate.keys("*").size());
         context.setAttribute("onlineAdms", onlineAdms);
+
     }
 
     /**
