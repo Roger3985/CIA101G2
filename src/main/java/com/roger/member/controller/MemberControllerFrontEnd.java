@@ -2,6 +2,7 @@ package com.roger.member.controller;
 
 import com.chihyun.mycoupon.entity.MyCoupon;
 import com.chihyun.mycoupon.model.MyCouponService;
+import com.iting.cart.entity.Cart;
 import com.roger.clicklike.entity.ClickLike;
 import com.roger.clicklike.service.ClickLikeService;
 import com.roger.columnarticle.entity.ColumnArticle;
@@ -475,9 +476,6 @@ public class MemberControllerFrontEnd {
         session.setAttribute("noticeList", noticeList);
         session.setAttribute("unreadNoticeCount", unreadNoticeCount);
 
-        // 設置重定向目標為 `/frontend/cart/addcartsuccess`
-        session.setAttribute("location", "/frontend/cart/addcartsuccess");
-
         System.out.println(unreadNoticeCount);
 
         System.out.println("autoLoginMember: " + autoLoginMember);
@@ -501,6 +499,13 @@ public class MemberControllerFrontEnd {
             memStrIntRedisTemplate.opsForValue().set(random, memNo);
             System.out.println("cookie 存入");
             System.out.println("自動登入信息已存入");
+        }
+
+        if (session.getAttribute("location") != null) {
+            Cart cartList = (Cart) session.getAttribute("cartList");
+            modelMap.addAttribute("cartList");
+            // 回到視圖目標為 `/frontend/cart/Cart`
+            return "/frontend/cart/Cart";
         }
 
         // 重定向到原始請求的 URI
