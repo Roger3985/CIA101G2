@@ -3,6 +3,7 @@ package com.roger.member.controller;
 import com.chihyun.mycoupon.entity.MyCoupon;
 import com.chihyun.mycoupon.model.MyCouponService;
 import com.iting.cart.entity.Cart;
+import com.iting.cart.entity.CartRedis;
 import com.roger.clicklike.entity.ClickLike;
 import com.roger.clicklike.service.ClickLikeService;
 import com.roger.columnarticle.entity.ColumnArticle;
@@ -502,10 +503,14 @@ public class MemberControllerFrontEnd {
         }
 
         if (session.getAttribute("location") != null) {
-            Cart cartList = (Cart) session.getAttribute("cartList");
-            modelMap.addAttribute("cartList");
+            List< CartRedis > cartListData = (List< CartRedis >) session.getAttribute("cartListData");
+            modelMap.addAttribute("cartListData", cartListData);
             // 回到視圖目標為 `/frontend/cart/Cart`
+            session.removeAttribute("location");
             return "/frontend/cart/Cart";
+        } else if (session.getAttribute("location2") != null) {
+            session.removeAttribute("location2");
+            return "redirect:/frontend/service/frontendServiceChat";
         }
 
         // 重定向到原始請求的 URI

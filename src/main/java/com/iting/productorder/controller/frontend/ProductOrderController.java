@@ -173,9 +173,8 @@ public class ProductOrderController {
                               RedirectAttributes redirectAttributes) {
         Member myData = (Member) session.getAttribute("loginsuccess");
         if (myData == null) {
-            redirectAttributes.addAttribute("errorMessage", "請先登入帳號!");
+            redirectAttributes.addAttribute("error", "請先登入帳號!");
             session.setAttribute("location", "/frontend/cart/addcartsuccess");
-            session.setAttribute("cartList",new CartRedis() );
             return "redirect:/frontend/member/loginMember";
         }
 
@@ -185,6 +184,7 @@ public class ProductOrderController {
         model.addAttribute("coupons", getValidCoupons(memNo));
         model.addAttribute("productOrder", productOrder);
         session.setAttribute("productOrder", productOrder);
+
 
         return "frontend/cart/CartToProductOrderDetail";
     }
