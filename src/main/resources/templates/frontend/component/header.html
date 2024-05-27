@@ -233,6 +233,8 @@
         }
     </style>
     <script>
+        import data from "../../../static/frontend/assets/vendor/bootstrap/js/src/dom/data";
+
         function updateMiniCart() {
             $.ajax({
                 type: 'GET',
@@ -280,6 +282,26 @@
                     console.log("Error:", error);
                 }
             });
+        }
+
+        function updateRentalMiniCart() {
+
+            let baseUrl = window.location.protocol + "//" + window.location.host;
+            let apiPath = "frontend/rentalorder/"
+
+            fetch(baseUrl + apiPath + "getFromCart").then(response => response.json()).then(data => {
+
+                let rentalContainer = $("div#rentalListContainer");
+                rentalContainer.innerHTML = ""; // 清空之前的内容
+
+                Object.entries(data).forEach(([key, item]) => {
+
+
+
+                });
+
+            });
+
         }
 
     </script>
