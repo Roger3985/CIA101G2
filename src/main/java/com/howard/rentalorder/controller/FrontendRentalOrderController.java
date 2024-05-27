@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -232,8 +233,11 @@ public class FrontendRentalOrderController {
 
     // 去 租借商城的購物車 畫面
     @GetMapping("/rentalCart")
-    public String toRentalCart(HttpSession session) {
+    public String toRentalCart(HttpSession session,
+                               RedirectAttributes redirectAttributes) {
         if (session.getAttribute("loginsuccess") == null) {
+            redirectAttributes.addAttribute("error","尚未登入，請先登入!");
+            session.setAttribute("location3", "/frontend/rentalorder/rentalCart");
             return "redirect:" + toLogin;
         }
         return "/frontend/rental/rentalCart";

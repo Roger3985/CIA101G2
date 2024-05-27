@@ -511,6 +511,9 @@ public class MemberControllerFrontEnd {
         } else if (session.getAttribute("location2") != null) {
             session.removeAttribute("location2");
             return "redirect:/frontend/service/frontendServiceChat";
+        } else if (session.getAttribute("location3") != null) {
+            session.removeAttribute("location3");
+            return "redirect:/frontend/rentalorder/rentalCart";
         }
 
         // 重定向到原始請求的 URI
