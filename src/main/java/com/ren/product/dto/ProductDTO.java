@@ -6,6 +6,7 @@ import com.ren.productpicture.entity.ProductPicture;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.List;
 
 public class ProductDTO {
     private String productID;
@@ -13,6 +14,9 @@ public class ProductDTO {
     private String productCatName;
     private String productName;
     private String productInfo;
+    private Integer productScorePeople;
+    private Double productScore;
+    private List<Product> productList;
     private HashSet<BigDecimal> productPriceSet;
     private HashSet<Integer> productSizeSet;
     private HashSet<String> productColorSet;
@@ -23,6 +27,87 @@ public class ProductDTO {
 
     public ProductDTO(String productID) {
         this.productID = productID;
+    }
+
+    public ProductDTO(Integer productCatNo, String productCatName, String productName, String productInfo, Integer productScorePeople, Double productScore, List<Product> productList, HashSet<BigDecimal> productPriceSet, HashSet<Integer> productSizeSet, HashSet<String> productColorSet, HashSet<Timestamp> productOnShelfSet) {
+        this.productCatNo = productCatNo;
+        this.productCatName = productCatName;
+        this.productName = productName;
+        this.productInfo = productInfo;
+        this.productScorePeople = productScorePeople;
+        this.productScore = productScore;
+        this.productList = productList;
+        this.productPriceSet = productPriceSet;
+        this.productSizeSet = productSizeSet;
+        this.productColorSet = productColorSet;
+        this.productOnShelfSet = productOnShelfSet;
+    }
+
+    public ProductDTO(String productID, Integer productCatNo, String productCatName, String productName, String productInfo, Integer productScorePeople, Double productScore, List<Product> productList, HashSet<BigDecimal> productPriceSet, HashSet<Integer> productSizeSet, HashSet<String> productColorSet, HashSet<Timestamp> productOnShelfSet) {
+        this.productID = productID;
+        this.productCatNo = productCatNo;
+        this.productCatName = productCatName;
+        this.productName = productName;
+        this.productInfo = productInfo;
+        this.productScorePeople = productScorePeople;
+        this.productScore = productScore;
+        this.productList = productList;
+        this.productPriceSet = productPriceSet;
+        this.productSizeSet = productSizeSet;
+        this.productColorSet = productColorSet;
+        this.productOnShelfSet = productOnShelfSet;
+    }
+
+    public ProductDTO(Integer productCatNo, String productCatName, String productName, String productInfo, Double productScore, List<Product> productList, HashSet<BigDecimal> productPriceSet, HashSet<Integer> productSizeSet, HashSet<String> productColorSet, HashSet<Timestamp> productOnShelfSet) {
+        this.productCatNo = productCatNo;
+        this.productCatName = productCatName;
+        this.productName = productName;
+        this.productInfo = productInfo;
+        this.productScore = productScore;
+        this.productList = productList;
+        this.productPriceSet = productPriceSet;
+        this.productSizeSet = productSizeSet;
+        this.productColorSet = productColorSet;
+        this.productOnShelfSet = productOnShelfSet;
+    }
+
+    public ProductDTO(String productID, Integer productCatNo, String productCatName, String productName, String productInfo, Double productScore, List<Product> productList, HashSet<BigDecimal> productPriceSet, HashSet<Integer> productSizeSet, HashSet<String> productColorSet, HashSet<Timestamp> productOnShelfSet) {
+        this.productID = productID;
+        this.productCatNo = productCatNo;
+        this.productCatName = productCatName;
+        this.productName = productName;
+        this.productInfo = productInfo;
+        this.productScore = productScore;
+        this.productList = productList;
+        this.productPriceSet = productPriceSet;
+        this.productSizeSet = productSizeSet;
+        this.productColorSet = productColorSet;
+        this.productOnShelfSet = productOnShelfSet;
+    }
+
+    public ProductDTO(Integer productCatNo, String productCatName, String productName, String productInfo, List<Product> productList, HashSet<BigDecimal> productPriceSet, HashSet<Integer> productSizeSet, HashSet<String> productColorSet, HashSet<Timestamp> productOnShelfSet) {
+        this.productCatNo = productCatNo;
+        this.productCatName = productCatName;
+        this.productName = productName;
+        this.productInfo = productInfo;
+        this.productList = productList;
+        this.productPriceSet = productPriceSet;
+        this.productSizeSet = productSizeSet;
+        this.productColorSet = productColorSet;
+        this.productOnShelfSet = productOnShelfSet;
+    }
+
+    public ProductDTO(String productID, Integer productCatNo, String productCatName, String productName, String productInfo, List<Product> productList, HashSet<BigDecimal> productPriceSet, HashSet<Integer> productSizeSet, HashSet<String> productColorSet, HashSet<Timestamp> productOnShelfSet) {
+        this.productID = productID;
+        this.productCatNo = productCatNo;
+        this.productCatName = productCatName;
+        this.productName = productName;
+        this.productInfo = productInfo;
+        this.productList = productList;
+        this.productPriceSet = productPriceSet;
+        this.productSizeSet = productSizeSet;
+        this.productColorSet = productColorSet;
+        this.productOnShelfSet = productOnShelfSet;
     }
 
     public ProductDTO(String productID, Integer productCatNo, String productCatName, String productName, String productInfo, HashSet<BigDecimal> productPriceSet, HashSet<Integer> productSizeSet, HashSet<String> productColorSet, HashSet<Timestamp> productOnShelfSet) {
@@ -139,5 +224,29 @@ public class ProductDTO {
 
     public void setProductCatName(String productCatName) {
         this.productCatName = productCatName;
+    }
+
+    public List<Product> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
+    }
+
+    public Double getProductScore() {
+        return productScore;
+    }
+
+    public void setProductScore(Double productScore) {
+        this.productScore = productScore;
+    }
+
+    public Integer getProductScorePeople() {
+        return productScorePeople;
+    }
+
+    public void setProductScorePeople(Integer productScorePeople) {
+        this.productScorePeople = productScorePeople;
     }
 }

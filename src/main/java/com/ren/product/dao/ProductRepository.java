@@ -255,6 +255,13 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
      */
     List<Product> findProductsByProductCategory_ProductCatNoAndProductNameAndProductColorAndProductSize(Integer productCatNo, String productName, String productColor, Integer productSize);
 
+
+    List<Product> findProductsByProductColor(String productColor);
+
+    List<Product> findProductsByProductSize(Integer productSize);
+
+    List<Product> findProductsByProductPriceBetween(BigDecimal min, BigDecimal max);
+
     /**
      * 自定義更新商品上架狀態方法
      *

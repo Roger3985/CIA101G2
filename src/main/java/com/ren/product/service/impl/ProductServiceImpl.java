@@ -6,8 +6,11 @@ import com.ren.product.dao.ProductRepository;
 import com.ren.product.service.ProductService_interface;
 import com.ren.productcategory.dao.ProductCategoryRepository;
 import com.ren.productcategory.service.impl.ProductCategoryServiceImpl;
+import com.ren.productreview.entity.ProductReview;
+import com.ren.productreview.service.impl.ProductReviewServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,9 @@ public class ProductServiceImpl implements ProductService_interface {
 
     @Autowired
     private ProductCategoryServiceImpl productCategorySvc;
+
+    @Autowired
+    private ProductReviewServiceImpl productReviewSvc;
 
     /**
      * 新增單項商品
@@ -214,6 +220,21 @@ public class ProductServiceImpl implements ProductService_interface {
         return productRepository.findAll(keyword, pageable);
     }
 
+    @Override
+    public List<Product> getProductsByColor(String productColor) {
+        return productRepository.findProductsByProductColor(productColor);
+    }
+
+    @Override
+    public List<Product> getProductsBySize(Integer productSize) {
+        return productRepository.findProductsByProductSize(productSize);
+    }
+
+    @Override
+    public List<Product> getProductsByPrice(BigDecimal minProductPrice, BigDecimal maxProductPrice) {
+        return productRepository.findProductsByProductPriceBetween(minProductPrice, maxProductPrice);
+    }
+
     /**
      * 更新單筆商品資料
      *
@@ -346,9 +367,7 @@ public class ProductServiceImpl implements ProductService_interface {
         productRepository.deleteProductsByProductCategory_ProductCatName(productCatName);
     }
 
-    public List<ProductDTO> getVisitProduct() {
-        List<Product> productList = getAll();
-        ProductDTO productDTO = new ProductDTO();
+    public List<ProductDTO> getVisitProduct(List<Product> productList) {
         var productUniqueKeySet = new HashSet<String>();
 
         // 以商品類別編號-商品名稱作為uniqueKey
@@ -358,6 +377,7 @@ public class ProductServiceImpl implements ProductService_interface {
 
         List<ProductDTO> productDTOList = new ArrayList<>();
         for (var key : productUniqueKeySet) {
+            ProductDTO productDTO = new ProductDTO();
             String[] parts = key.split("-");
             Integer productCatNo = Integer.valueOf(parts[0]);
             String productName = parts[1];
@@ -367,11 +387,16 @@ public class ProductServiceImpl implements ProductService_interface {
             String productCatName = productCategorySvc.getOneProductCategory(productCatNo).getProductCatName();
             productDTO.setProductCatName(productCatName);
             productDTO.setProductName(productName);
+            productDTO.setProductList(list);
             HashSet<BigDecimal> productPriceSet = new HashSet<>();
             HashSet<Integer> productSizeSet = new HashSet<>();
             HashSet<String> productColorSet = new HashSet<>();
             HashSet<Timestamp> productOnShelfSet = new HashSet<>();
+            Integer productTotalScore = 0;
+            Integer productScorePeople = 0;
+            Double productScore = 0.0;
             for (Product product : list) {
+                System.out.println("productNo: " + product.getProductNo());
                 productPriceSet.add(product.getProductPrice());
                 if (product.getProductSize() != null) {
                     productSizeSet.add(product.getProductSize());
@@ -384,14 +409,154 @@ public class ProductServiceImpl implements ProductService_interface {
                 if (product.getProductOnShelf() != null) {
                     productOnShelfSet.add(product.getProductOnShelf());
                 }
+                List<ProductReview> productReviews = productReviewSvc.getByProductNo(product.getProductNo());
+                for (ProductReview productReview : productReviews) {
+                    productTotalScore += productReview.getProductScore();
+                    productScorePeople ++;
+                }
+
             }
+            if (productScorePeople != 0) {
+                productScore = (double) productTotalScore / productScorePeople;
+                productScore = Math.round(productScore * 10.0) / 10.0;
+            }
+            productDTO.setProductScorePeople(productScorePeople);
+            productDTO.setProductScore(productScore);
             productDTO.setProductPriceSet(productPriceSet);
             productDTO.setProductSizeSet(productSizeSet);
             productDTO.setProductColorSet(productColorSet);
             productDTO.setProductOnShelfSet(productOnShelfSet);
             productDTOList.add(productDTO);
+            System.out.println("productDTOListNumber: " + productDTOList.size());
         }
         return productDTOList;
+    }
+
+    public Page<ProductDTO> getVisitProduct(List<Product> productList, Pageable pageable) {
+        // 計算uniqueKeySet大小
+        var productUniqueKeySet = new HashSet<String>();
+        for (Product product : productList) {
+            productUniqueKeySet.add(product.getProductCategory().getProductCatNo() + "-" + product.getProductName());
+        }
+
+        int totalSize = productUniqueKeySet.size();
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), totalSize);
+
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        int currentIndex = 0;
+
+        for (var key : productUniqueKeySet) {
+            if (currentIndex >= start && currentIndex < end) {
+                ProductDTO productDTO = new ProductDTO();
+                String[] parts = key.split("-");
+                Integer productCatNo = Integer.valueOf(parts[0]);
+                String productName = parts[1];
+                List<Product> list = getVisitProducts(productCatNo, productName);
+                productDTO.setProductID(key);
+                productDTO.setProductCatNo(productCatNo);
+                String productCatName = productCategorySvc.getOneProductCategory(productCatNo).getProductCatName();
+                productDTO.setProductCatName(productCatName);
+                productDTO.setProductName(productName);
+                productDTO.setProductList(list);
+                HashSet<BigDecimal> productPriceSet = new HashSet<>();
+                HashSet<Integer> productSizeSet = new HashSet<>();
+                HashSet<String> productColorSet = new HashSet<>();
+                HashSet<Timestamp> productOnShelfSet = new HashSet<>();
+                Integer productTotalScore = 0;
+                Integer productScorePeople = 0;
+                Double productScore = 0.0;
+                for (Product product : list) {
+                    System.out.println("productNo: " + product.getProductNo());
+                    productPriceSet.add(product.getProductPrice());
+                    if (product.getProductSize() != null) {
+                        productSizeSet.add(product.getProductSize());
+                    }
+
+                    if (product.getProductColor() != null) {
+                        productColorSet.add(product.getProductColor());
+                    }
+
+                    if (product.getProductOnShelf() != null) {
+                        productOnShelfSet.add(product.getProductOnShelf());
+                    }
+                    List<ProductReview> productReviews = productReviewSvc.getByProductNo(product.getProductNo());
+                    for (ProductReview productReview : productReviews) {
+                        productTotalScore += productReview.getProductScore();
+                        productScorePeople++;
+                    }
+
+                }
+                if (productScorePeople != 0) {
+                    productScore = (double) productTotalScore / productScorePeople;
+                    productScore = Math.round(productScore * 10.0) / 10.0;
+                }
+                productDTO.setProductScorePeople(productScorePeople);
+                productDTO.setProductScore(productScore);
+                productDTO.setProductPriceSet(productPriceSet);
+                productDTO.setProductSizeSet(productSizeSet);
+                productDTO.setProductColorSet(productColorSet);
+                productDTO.setProductOnShelfSet(productOnShelfSet);
+                productDTOList.add(productDTO);
+            }
+            currentIndex++;
+        }
+
+        return new PageImpl<>(productDTOList, pageable, totalSize);
+    }
+
+    public ProductDTO getOneProductDTO(Integer productNo) {
+        ProductDTO productDTO = new ProductDTO();
+        Product product = getOneProduct(productNo);
+        if (product != null) {
+            Integer productCatNo = product.getProductCategory().getProductCatNo();
+            String productName = product.getProductName();
+            productDTO.setProductID(productCatNo + "-" + productName);
+            productDTO.setProductCatNo(productCatNo);
+            productDTO.setProductName(productName);
+            productDTO.setProductCatName(product.getProductCategory().getProductCatName());
+            List<Product> list = getVisitProducts(productCatNo, productName);
+            productDTO.setProductList(list);
+            HashSet<BigDecimal> productPriceSet = new HashSet<>();
+            HashSet<Integer> productSizeSet = new HashSet<>();
+            HashSet<String> productColorSet = new HashSet<>();
+            HashSet<Timestamp> productOnShelfSet = new HashSet<>();
+            Integer productTotalScore = 0;
+            Integer productScorePeople = 0;
+            Double productScore = 0.0;
+            for (Product pro : list) {
+                System.out.println("productNo: " + pro.getProductNo());
+                productPriceSet.add(pro.getProductPrice());
+                if (pro.getProductSize() != null) {
+                    productSizeSet.add(pro.getProductSize());
+                }
+
+                if (pro.getProductColor() != null) {
+                    productColorSet.add(pro.getProductColor());
+                }
+
+                if (product.getProductOnShelf() != null) {
+                    productOnShelfSet.add(pro.getProductOnShelf());
+                }
+                List<ProductReview> productReviews = productReviewSvc.getByProductNo(pro.getProductNo());
+                for (ProductReview productReview : productReviews) {
+                    productTotalScore += productReview.getProductScore();
+                    productScorePeople ++;
+                }
+
+            }
+            if (productScorePeople != 0) {
+                productScore = (double) productTotalScore / productScorePeople;
+                productScore = Math.round(productScore * 10.0) / 10.0;
+            }
+            productDTO.setProductScorePeople(productScorePeople);
+            productDTO.setProductScore(productScore);
+            productDTO.setProductPriceSet(productPriceSet);
+            productDTO.setProductSizeSet(productSizeSet);
+            productDTO.setProductColorSet(productColorSet);
+            productDTO.setProductOnShelfSet(productOnShelfSet);
+        }
+        return productDTO;
     }
 
 

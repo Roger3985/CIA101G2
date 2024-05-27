@@ -1,5 +1,6 @@
 package com.ren.product.controller;
 
+import com.ren.product.dto.ProductDTO;
 import com.ren.product.entity.Product;
 import com.ren.product.service.impl.ProductServiceImpl;
 import com.ren.productpicture.entity.ProductPicture;
@@ -7,6 +8,9 @@ import com.ren.productpicture.service.impl.ProductPictureServiceImpl;
 import com.ren.productreview.entity.ProductReview;
 import com.ren.productreview.service.impl.ProductReviewServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,40 +41,74 @@ public class ProductFrontEndController {
     // 前往商品瀏覽頁面
     @GetMapping("/visitProduct-list")
     public String toVisitProductList(ModelMap model) {
-        List<Product> productList = productSvc.getAll();
-        Map<String, Set<Integer>> visitProducts = new HashMap<>();
+        model.addAttribute("productDTOList", productSvc.getVisitProduct(productSvc.getAll()));
+        String[] sizes = {"XS", "S", "M", "L", "XL", "2L"};
+        model.addAttribute("sizes", sizes);
 
-        for (Product product : productList) {
-            String key = product.getProductCategory().getProductCatNo() + "-" + product.getProductName();
-            visitProducts.putIfAbsent(key, new HashSet<>());
-            visitProducts.get(key).add(product.getProductSize());
-        }
-
-        model.addAttribute("productList", productList);
-        model.addAttribute("visitProducts", visitProducts);
         return "frontend/product/visitProduct-list";
     }
 
+//    @GetMapping("/visitProduct")
+//    public String toVisitProduct(ModelMap model) {
+//        model.addAttribute("productDTOList", productSvc.getVisitProduct(productSvc.getAll()));
+//        String[] sizes = {"XS", "S", "M", "L", "XL", "2L"};
+//        model.addAttribute("sizes", sizes);
+//
+//        return "frontend/product/visitProduct";
+//    }
+
     @GetMapping("/visitProduct")
-    public String toVisitProduct(ModelMap model) {
-        model.addAttribute("productDTOList", productSvc.getVisitProduct());
+    public String toVisitProduct(ModelMap model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "15") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductDTO> productPage = productSvc.getVisitProduct(productSvc.getAll(), pageable);
+
+        model.addAttribute("productPage", productPage);
+        model.addAttribute("productDTOList", productPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productPage.getTotalPages());
         String[] sizes = {"XS", "S", "M", "L", "XL", "2L"};
         model.addAttribute("sizes", sizes);
 
         return "frontend/product/visitProduct";
     }
 
+    @GetMapping("/filterProducts")
+    public String filterProducts(@RequestParam Map<String, String> filters, ModelMap model) {
+        Set<String> keys = filters.keySet();
+        List<List<Product>> middleManipulation = new ArrayList<>();
+        for (String key : keys) {
+            List<Product> list = null;
+            switch (key) {
+                case "color":
+                    list = productSvc.getProductsByColor(filters.get(key));
+                    break;
+                case "size":
+                    list = productSvc.getProductsBySize(Integer.valueOf(filters.get(key)));
+                    break;
+                case "price":
+                    String[] prices = filters.get(key).split("-");
+                    BigDecimal minPrice = new BigDecimal(prices[0]);
+                    BigDecimal maxPrice = new BigDecimal(prices[1]);
+                    list = productSvc.getProductsByPrice(minPrice, maxPrice);
+                    break;
+            }
+            middleManipulation.add(list);
+        }
+
+        List<Product> totalList = middleManipulation.stream()
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
+
+        model.addAttribute("productDTOList", productSvc.getVisitProduct(totalList));
+        String[] sizes = {"XS", "S", "M", "L", "XL", "2L"};
+        model.addAttribute("sizes", sizes);
+        return "frontend/product/visitProduct :: product-fragment";
+    }
+
     @GetMapping("/oneProduct")
     public String toOneProduct(@RequestParam("productNo") Integer productNo,
                                ModelMap model) {
-        List<ProductReview> list = productReviewSvc.getByProductNo(productNo);
-        // 計算共有多少評價
-        Long totalReviews = list.stream().count();
-        // 計算評價幾分
-        Double productScore = list.stream()
-                .mapToInt(productReview -> productReview.getProductScore())
-                .average()
-                .orElse(Double.valueOf("0"));
+        ProductDTO productDTO = productSvc.getOneProductDTO(productNo);
         List<ProductPicture> productPictures = productPictureSvc.getByProductNo(productNo);
         var picNoList = new ArrayList<Integer>();
         Integer totalPictures = 0;
@@ -77,24 +116,26 @@ public class ProductFrontEndController {
             picNoList.add(productPicture.getProductPicNo());
             totalPictures++;
         }
-        model.addAttribute("product", productSvc.getOneProduct(productNo));
-        model.addAttribute("productReviewList", list);
+
+//        model.addAttribute("product", product);
+//        model.addAttribute("productReviewList", list);
+//        model.addAttribute("totalReviews", totalReviews);
+//        model.addAttribute("productScore", productScore);
         model.addAttribute("picNoList", picNoList);
         model.addAttribute("totalPictures", totalPictures);
-        model.addAttribute("totalReviews", totalReviews);
-        model.addAttribute("productScore", productScore);
+        model.addAttribute("productDTO", productDTO);
         return "frontend/product/oneProduct";
     }
 
-    @GetMapping("/Product")
-    public String search(@RequestParam("productNo") Integer productNo,
-                         ModelMap model) {
+//    @GetMapping("/Product")
+//    public String search(@RequestParam("productNo") Integer productNo,
+//                         ModelMap model) {
 //        Page<Product> products = productSvc.searchProducts(keyword, page, size);
 //        model.addAttribute("products", products.getContent());
 //        model.addAttribute("currentPage", page);
 //        model.addAttribute("totalPages", products.getTotalPages());
-        return "frontend/product/oneProduct";
-    }
+//        return "frontend/product/oneProduct";
+//    }
 
     @GetMapping
     public String recommendProducts() {

@@ -9,7 +9,7 @@
     <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
     <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template">
     <!-- title -->
-    <title th:text="${product.productCategory.productCatName} + ' : ' + ${product.productName}"></title>
+    <title th:text="${productDTO.productCatName} + ' : ' + ${productDTO.productName}"></title>
     <!-- Favicon -->
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
@@ -89,20 +89,17 @@
                     <div class="col-md-7 col-lg-5 ps-lg-5 mt-5 mt-lg-0">
                         <div class="product-detail">
                             <div class="products-brand pb-2">
-                                <span th:text="${product.productCategory.productCatName}"></span>
+                                <span th:text="${productDTO.productCatName}"></span>
                             </div>
                             <div class="products-title mb-2">
-                                <h4 class="h4" th:text="${product.productName}"></h4>
+                                <h4 class="h4" th:text="${productDTO.productName}"></h4>
                             </div>
                             <div class="rating-star text small pb-4">
-                                <i class="bi bi-star" id="star1"></i>
-                                <i class="bi bi-star" id="star2"></i>
-                                <i class="bi bi-star" id="star3"></i>
-                                <i class="bi bi-star" id="star4"></i>
-                                <i class="bi bi-star" id="star5"></i>
-                                <small th:text="'(' + ${totalReviews} + ' Reviews )'"></small>
+                                <th:block th:each="star : ${#numbers.sequence(1, 5)}">
+                                    <i th:classappend="${star <= productDTO.productScore ? 'bi bi-star-fill star' : (star - 0.5 <= productDTO.productScore ? 'bi bi-star-half star-half' : 'bi bi-star star-empty')}"></i>
+                                </th:block>
                             </div>
-                            <div class="product-description"><p th:text="${product.productInfo}"></p></div>
+                            <div class="product-description"><p th:text="${productDTO.productInfo}"></p></div>
                             <div class="product-attribute"><label class="fs-6 text-mode pb-2 fw-500">Size</label>
                                 <div class="nav-thumbs nav mb-3">
                                     <div class="form-check radio-text form-check-inline me-2">
@@ -394,7 +391,9 @@
                     </div>
                 </div>
             </div>
-        </section><!-- End Product Tabs --><!-- You may also like -->
+        </section>
+        <!-- End Product Tabs -->
+        <!-- You may also like -->
         <section class="section bg-gray-100">
             <div class="container">
                 <div class="row justify-content-center mb-4 mb-lg-6">

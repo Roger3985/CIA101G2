@@ -4,6 +4,7 @@ import com.ren.product.entity.Product;
 import org.springframework.data.domain.Page;
 
 import javax.persistence.Entity;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -131,6 +132,12 @@ public interface ProductService_interface {
 	List<Product> getDifColor(Integer productCatNo, String productName, Integer productSize);
 
 	List<Product> getMyProduct(Integer productCatNo, String productName, String productColor, Integer productSize);
+
+	List<Product> getProductsByColor(String productColor);
+
+	List<Product> getProductsBySize(Integer productSize);
+
+	List<Product> getProductsByPrice(BigDecimal minProductPrice, BigDecimal maxProductPrice);
 
 	/**
 	 * 更新單筆商品資料

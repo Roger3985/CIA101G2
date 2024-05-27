@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (productResults.length > 0) {
                         resultsHtml += '<h3>商品</h3>';
                         resultsHtml += productResults.map(result => `
-                        <a href="/frontend/product/Product?productNo=${result.productNo}" class="d-block mb-2">
+                        <a href="/frontend/product/oneProduct?productNo=${result.productNo}" class="d-block mb-2">
                             <h4>${result.productName}</h4>
                             <p>${result.productInfo}</p>
                         </a>
