@@ -12,13 +12,13 @@ public interface RentalMyFavoriteService {
 //----------------------------------------------------------------------------------------------------------------------
 //主要由redis使用
 
-    List<Map<String, String>> getWishFromRedis(String memNo);
+//    List<Map<String, String>> getWishFromRedis(String memNo);
 
     void deleteWish(Integer memNo, Integer rentalNo);
 
-    void addWish(String memNo, Map<String, String> wishDetails);
+//    void addWish(String memNo, Map<String, String> wishDetails);
 
-    List<AddToWishList> findByMemNo(Integer memNo); //單筆查詢(memNo)
+    List<AddToWishList> getWishFromRedis(Integer memNo);
 
 //----------------------------------------------------------------------------------------------------------------------
     RentalMyFavorite findByRentalNo(Integer rentalNo); //單筆查詢(rentalNo)
@@ -36,9 +36,8 @@ public interface RentalMyFavoriteService {
 
     void addRentalFav(AddToWishList addToWishList); //新增
 
-    void delete(Integer rentalNo, Integer memNo); //刪除
 
     List<RentalMyFavorite> findByCompositeKey(Integer rentalNo);
 
-    List<RentalMyFavorite> searchRentalMyFAVs(Map<String, Object> map); //複合查詢
+//    List<RentalMyFavorite> searchRentalMyFAVs(Map<String, Object> map); //複合查詢
 }

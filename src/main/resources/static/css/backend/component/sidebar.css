@@ -1,36 +1,21 @@
-/* 使側邊欄在滑鼠移過時擴展 */
-#accordionSidebar {
-    width: 70px; /* 設置側邊欄的初始寬度 */
-    transition: width 0.3s; /* 設置擴展動畫 */
-}
-
-#accordionSidebar:hover {
-    width: 250px; /* 設置擴展後的寬度 */
-}
-
-/* 隱藏或顯示詳細選單 */
-.collapse-inner,
-.dropright .dropdown-menu {
+.nav-item .collapse-inner {
     display: none;
-    opacity: 0;
-    transition: opacity 0.3s; /* 設置柔順效果 */
 }
-
-#accordionSidebar:hover .collapse-inner,
-#accordionSidebar:hover .dropdown-menu {
+.nav-item:hover .collapse-inner {
     display: block;
-    opacity: 1;
 }
-
-/* 設置子菜單的柔順展開效果 */
-.dropright .dropdown-menu {
+.nav-item:hover > .nav-link {
+    background-color: #f8f9fa;
+}
+.collapse-inner .dropdown-menu {
+    display: none;
     position: absolute;
-    left: 100%; /* 確保子菜單在父菜單的右邊 */
+    left: 100%;
     top: 0;
-    transition: opacity 0.3s, left 0.3s; /* 設置柔順效果 */
-    z-index: 1000; /* 確保子菜單顯示在前面 */
 }
-
-#accordionSidebar:hover .dropright .dropdown-menu {
-    left: 250px; /* 根據需要調整子菜單的位置 */
+.collapse-inner .dropright:hover .dropdown-menu {
+    display: block;
+}
+.dropright .dropdown-toggle::after {
+    display: none;
 }

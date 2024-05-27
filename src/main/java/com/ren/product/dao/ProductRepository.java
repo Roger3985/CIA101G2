@@ -68,7 +68,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
      * @param pageable 設定搜尋結果為第幾分頁、有幾筆資料，將搜尋結果以分頁呈現
      * @return 返回分頁搜尋結果
      */
-    @Query("SELECT p FROM Product p WHERE CONCAT(p.productNo, ' ', p.productCategory.productCatNo, ' ', p.productCategory.productCatName, ' ', p.productName, ' ', p.productInfo, ' ', p.productColor) LIKE %?1%")
+    @Query("SELECT p FROM Product p WHERE CONCAT(p.productCategory.productCatNo, ' ', p.productCategory.productCatName, ' ', p.productName, ' ', p.productInfo, ' ', p.productColor) LIKE %?1%")
     Page<Product> findAll(String keyword, Pageable pageable);
 
 //    @Query(value = "SELECT * FROM product WHERE MATCH(productNo, productName, productInfo) " + "AGAINST (?1)", nativeQuery = true)
@@ -211,6 +211,56 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             @Param("productOnShelf") Timestamp productOnShelf,
             @Param("productOffShelf") Timestamp productOffShelf
     );
+
+    /**
+     * 前台搜尋同一件商品(類別 + 名稱一樣)
+     * 一件商品代表一件衣服
+     *
+     * @param productCatNo 商品類別
+     * @param productName 商品名稱
+     * @return 返回同一個商品(List)
+     */
+    List<Product> findProductsByProductCategory_ProductCatNoAndProductName(Integer productCatNo, String productName);
+
+    /**
+     * 返回可選擇顏色的商品
+     *
+     * @param productCatNo
+     * @param productName
+     * @param productSize
+     * @return
+     */
+    List<Product> findProductsByProductCategory_ProductCatNoAndProductNameAndProductSize(Integer productCatNo, String productName, Integer productSize);
+
+    /**
+     * 找到同一個商品其他顏色的衣服
+     * 同一商品定義(類別一樣、名稱一樣)
+     *
+     * @param productCatNo 商品類別
+     * @param productName 商品名稱
+     * @param productColor 商品顏色
+     * @return 返回同一顏色商品(List)
+     */
+    List<Product> findProductsByProductCategory_ProductCatNoAndProductNameAndProductColor(Integer productCatNo, String productName, String productColor);
+
+    /**
+     * 返回客人可購買的商品List(當客人在前台點擊商品時，及選好商品種類與商品名稱，
+     * 而後根據喜好選size與顏色，此時應返回可以提供給顧客的商品)
+     *
+     * @param productCatNo 商品類別編號
+     * @param productName 商品名稱
+     * @param productColor 商品顏色
+     * @param productSize 商品尺寸
+     * @return 返回商品list
+     */
+    List<Product> findProductsByProductCategory_ProductCatNoAndProductNameAndProductColorAndProductSize(Integer productCatNo, String productName, String productColor, Integer productSize);
+
+
+    List<Product> findProductsByProductColor(String productColor);
+
+    List<Product> findProductsByProductSize(Integer productSize);
+
+    List<Product> findProductsByProductPriceBetween(BigDecimal min, BigDecimal max);
 
     /**
      * 自定義更新商品上架狀態方法

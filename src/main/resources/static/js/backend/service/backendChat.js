@@ -67,14 +67,30 @@ function connect() {
             connectedUsersList.innerHTML = '';
             for (let i = 0; i < memlist.length; i++) {
                 console.log(memlist[i]);
-                const memListContainer = document.createElement('li');
-                memListContainer.innerHTML = memlist[i];
-                connectedUsersList.appendChild(memListContainer);
-                memListContainer.addEventListener("click", function (e) {
+                const listItem = document.createElement('li');
+                listItem.classList.add('user-item');
+                listItem.id = memlist[i];
+
+                const userImage = document.createElement('img');
+                userImage.classList.add('chat_img');
+                userImage.src = '/images/user_icon.png';
+                userImage.alt = memlist[i];
+
+                const usernameSpan = document.createElement('span');
+                usernameSpan.textContent = memlist[i];
+
+                listItem.appendChild(userImage);
+                listItem.appendChild(usernameSpan);
+
+
+                connectedUsersList.appendChild(listItem);
+
+                listItem.addEventListener("click", function (e) {
+
                     alert("hi" + memlist[i]);
                     memName = memlist[i];
                     let userReplying_el = document.querySelector(".username-replying");
-                    userReplying_el.innerHTML = memName;
+                    userReplying_el.innerHTML = '正在回覆... '+memName;
                     chatArea.innerHTML = '';
                     // // 清除未讀訊息的數量
                     unreadMessage[memName] = 0;
@@ -89,6 +105,7 @@ function connect() {
                 var showMsg = historyData.message;
                 var showMsgTime = historyData.timestamp;
                 const messageContainer = document.createElement('div');
+                messageContainer.classList.add('message');
                 const messageTime = document.createElement('div');
                 if (historyData.sender === "host") {
                     messageContainer.classList.add("sender");
@@ -97,8 +114,10 @@ function connect() {
                     messageContainer.classList.add("receiver");
                     messageTime.classList.add("receiverTime");
                 }
-                messageContainer.innerHTML = showMsg;
+                const message_block = document.createElement('p');
+                message_block.innerHTML = showMsg;
                 messageTime.innerHTML = showMsgTime;
+                messageContainer.appendChild(message_block);
                 chatArea.appendChild(messageContainer);
                 chatArea.appendChild(messageTime);
             }
@@ -107,13 +126,17 @@ function connect() {
             // 過濾所有來自會員的訊息，僅接收當前聊天室的會員傳送訊息進來
             if (jsonObj.receiver === memName || jsonObj.sender === memName) {
                 const messageContainer = document.createElement('div');
+                messageContainer.classList.add('message');
                 const messageTime = document.createElement('div');
                 messageContainer.classList.add("receiver");
                 messageTime.classList.add("receiverTime");
-                messageContainer.innerHTML = message;
+                const message_block = document.createElement('p');
+                message_block.innerHTML = message;
                 messageTime.innerHTML = msgTime;
+                messageContainer.appendChild(message_block);
                 chatArea.appendChild(messageContainer);
                 chatArea.appendChild(messageTime);
+                chatArea.scrollTop = chatArea.scrollHeight;
             } else {
                 // 如果不是當前聊天的會員，傳送訊息過來，則在該會員旁邊顯示未讀訊息
 
@@ -163,8 +186,11 @@ el_msg_btn.addEventListener("click", function () {
         alert("請輸入訊息");
     } else {
         const messageContainer = document.createElement('div');
-        messageContainer.innerHTML = messageContent;
+        messageContainer.classList.add('message')
         messageContainer.classList.add("sender")
+        const message_block = document.createElement('p');
+        message_block.innerHTML = messageContent;
+        messageContainer.appendChild(message_block);
         const messageTime = document.createElement('div');
         messageTime.classList.add("senderTime");
         messageTime.innerHTML = nowStr;

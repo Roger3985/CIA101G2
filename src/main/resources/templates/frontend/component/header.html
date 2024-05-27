@@ -51,7 +51,7 @@
                         </li>
                         <li class="nav-item"><a href="#" class="nav-link text-white" data-bs-toggle="modal"
                                                 data-bs-target="#topbarlogin" th:unless="${session.loginsuccess}"><i
-                                class="fi-user me-2"></i>Login</a></li>
+                                class="fi-user me-2"></i>登入</a></li>
                         <!--                        <li class="nav-item"><a th:href="@{frontend/member/loginpopup.html}" class="nav-link text-white" data-bs-toggle="modal"-->
                         <!--                                                data-bs-target="#topbarlogin"><i class="fi-user me-2"></i>Login</a></li>-->
                     </ul><!-- Top social -->
@@ -103,8 +103,8 @@
                     <li class="dropdown nav-item"><a href="#" class="nav-link">專欄文章</a> <label
                             class="px-dropdown-toggle mob-menu"></label>
                         <ul class="dropdown-menu left shadow-lg">
-                            <li><a class="dropdown-item" th:href="@{/frontend/columnarticle/listAllColumnArticle}">Articles</a></li>
-                            <li><a class="dropdown-item" th:if="${session.loginsuccess}" th:unless="${session.onePublishedArticles == null}" th:href="@{/frontend/columnarticle/oneColumnArticle(artNo=${session.onePublishedArticles})}">Article Single</a></li>
+                            <li><a class="dropdown-item" th:href="@{/frontend/columnarticle/listAllColumnArticle}">全部專欄文章</a></li>
+                            <li><a class="dropdown-item" th:if="${session.loginsuccess}" th:unless="${session.onePublishedArticles == null}" th:href="@{/frontend/columnarticle/oneColumnArticle(artNo=${session.onePublishedArticles})}">推薦的專欄文章</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -120,16 +120,16 @@
                     class="fi-user"></i></a>
                 <div class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="dropdown_myaccount">
                     <div class="d-flex flex-column align-items-center">
-                        <a class="dropdown-item" th:href="@{/frontend/member/loginMember}" th:unless="${session.loginsuccess}">Login</a>
-                        <a class="dropdown-item" th:href="@{/frontend/member/addMemberData}" th:unless="${session.loginsuccess}">Register</a>
+                        <a class="dropdown-item" th:href="@{/frontend/member/loginMember}" th:unless="${session.loginsuccess}">登入</a>
+                        <a class="dropdown-item" th:href="@{/frontend/member/addMemberData}" th:unless="${session.loginsuccess}">註冊</a>
                         <img th:src="@{/frontend/member/picture(memno=${session.loginsuccess.getMemNo()})}"
                              id="memberAvatar"
                              style="width: 80px; height: 80px; border: 1px solid #ccc;"
                              alt="會員大頭貼"
                              th:if="${session.loginsuccess}">
                         <a class="dropdown-item" th:href="@{/frontend/rentalmytrack/toRentalMyTrack}" th:if="${session.loginsuccess}">追蹤清單</a>
-                        <a class="dropdown-item" th:href="@{/frontend/member/memberData}" th:if="${session.loginsuccess}">My account</a>
-                        <a class="dropdown-item" th:href="@{/frontend/member/logoutMember}" th:if="${session.loginsuccess}">Logout</a>
+                        <a class="dropdown-item" th:href="@{/frontend/member/memberData}" th:if="${session.loginsuccess}">個人資訊</a>
+                        <a class="dropdown-item" th:href="@{/frontend/member/logoutMember}" th:if="${session.loginsuccess}">登出</a>
                     </div>
                 </div>
             </div>

@@ -9,6 +9,52 @@
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin: 20px;
+        }
+        /* 新增 header 类的样式，用于搜索输入框和 Add new 按钮的布局 */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px; /* 调整间距 */
+        }
+        .header input[type="search"] {
+            padding: 5px;
+            font-size: 16px;
+        }
+        .header button {
+            padding: 5px 10px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px; /* 调整表格与上方内容的间距 */
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .out-of-stock {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
 
 </head>
 <body id="page-top">
@@ -36,6 +82,9 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
+                            <form class="header" th:action="@{/backend/product/addProduct}">
+                                <button>Add new</button>
+                            </form>
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>

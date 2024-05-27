@@ -47,13 +47,13 @@
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-lg-6 my-2">
-                            <h1 class="m-0 h4 text-center text-lg-start">Profile</h1>
+                            <h1 class="m-0 h4 text-center text-lg-start">個人資訊</h1>
                         </div>
                         <div class="col-lg-6 my-2">
                             <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
                                 <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/}"><i
-                                            class="bi bi-home"></i>Home</a></li>
-                                <li class="breadcrumb-item text-nowrap active" aria-current="page">Profile</li>
+                                            class="bi bi-home"></i>首頁</a></li>
+                                <li class="breadcrumb-item text-nowrap active" aria-current="page">個人資訊</li>
                             </ol>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                                 <div class="card-header py-3">
                                     <div>
                                         <h5 class="m-0" style="display: flex; align-items: center; position: relative;">
-                                            Profile Update (想單獨修改可以點擊表格中的資料)
+                                            個人資訊 (想單獨修改可以點擊表格中的資料)
                                             <a class="nav-link-style d-flex align-items-center p-3"
                                                th:href="@{/frontend/clicklike/memberClikeLikeData}"
                                                style="display: inline-block; transform: scale(0.8); position: absolute; right: 0;">
@@ -126,7 +126,7 @@
                                     <div id="preview"></div>
                                     <div class="row">
                                         <div class="col-sm-6 mb-3"><label class="form-label">
-                                            Name
+                                            姓名
                                             <span class="text-danger">*</span>
                                         </label>
                                             <a th:href="@{newMemberName}">
@@ -134,7 +134,7 @@
                                             </a>
                                         </div>
                                         <div class="col-sm-6 mb-3"><label class="form-label">
-                                            Account
+                                            帳號
                                             <span class="text-danger">*</span>
                                         </label>
                                             <a th:href="@{newMemberAccount}">
@@ -142,7 +142,7 @@
                                             </a>
                                         </div>
                                         <div class="col-sm-6 mb-3"><label class="form-label">
-                                            Password
+                                            密碼
                                             <span class="text-danger">*</span>
                                         </label>
                                             <a th:href="@{newPassword}">
@@ -150,7 +150,7 @@
                                             </a>
                                         </div>
                                         <div class="col-sm-6 mb-3"><label class="form-label">
-                                            Phone
+                                            電話
                                             <span class="text-danger">*</span>
                                         </label>
                                             <a th:href="@{newMemberMobile}">
@@ -159,14 +159,14 @@
                                         </div>
                                         <div class="col-sm-6 mb-3">
                                             <label class="form-label">
-                                                Gender
+                                                性別
                                                 <span class="text-danger">*</span>
                                             </label>
                                             <input type="text" class="form-control" th:if="${session.loginsuccess.getMemGender() == 1}" value="男性" readonly style="color: black;">
                                             <input type="text" class="form-control" th:if="${session.loginsuccess.getMemGender() == 2}" value="女性" readonly style="color: black;">
                                         </div>
                                         <div class="col-sm-6 mb-3"><label class="form-label">
-                                            Email
+                                            信箱
                                             <span class="text-danger">*</span>
                                         </label>
                                             <a th:href="@{newMemberMail}">
@@ -174,13 +174,13 @@
                                             </a>
                                         </div>
                                         <div class="col-sm-6 mb-3"><label class="form-label">
-                                            Birthday
+                                            生日
                                             <span class="text-danger">*</span>
                                         </label>
                                             <input type="text" class="form-control" th:value="${session.loginsuccess.getMemBd()}" readonly style="color: black;">
                                         </div>
                                         <div class="col-sm-6 mb-3"><label class="form-label">
-                                            Address
+                                            地址
                                             <span class="text-danger">*</span>
                                         </label>
                                             <a th:href="@{newMemberAddress}">
@@ -188,8 +188,8 @@
                                             </a>
                                         </div>
                                         <div class="col-sm-6 mb-3"><label class="form-label">
-                                            Credit card
-                                            <span class="text-danger">*</span>
+                                            信用卡
+                                            <span class="text-black">*</span>
                                         </label>
                                             <a th:href="@{newMemberCreditCard}">
                                                 <input type="button" class="form-control" th:value="${session.loginsuccess.getMemCard()}" readonly style="text-align: left; color: black;" onmouseover="this.style.color='red';" onmouseout="this.style.color='black';">
