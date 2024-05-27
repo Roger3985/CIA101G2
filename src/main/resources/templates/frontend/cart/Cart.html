@@ -13,6 +13,46 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
     <style>
+        /* 自定义弹窗样式 */
+        .custom-alert {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            width: 300px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            color:  red ;
+            font-size:1.1em ;
+            font-weight: bolder;
+        }
+
+        .custom-alert-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .custom-alert-close-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 25px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .custom-alert-close-btn:hover {
+            color: #333;
+        }
+    </style>
+
+    <style>
         .remove-btn {
             color: #e57373; /* 淡粉色 */
             border: none;
@@ -108,6 +148,12 @@
     </div>
     <!-- End Page Title -->
     <!-- Section -->
+    <div id="customAlert" class="custom-alert">
+        <div class="custom-alert-content">
+            <span id="customAlertMessage"></span>
+            <button id="customAlertCloseBtn" class="custom-alert-close-btn">&times;</button>
+        </div>
+    </div>
     <form th:action="@{/frontend/productorder/insertOrder}" method="post" th:object="${cartListData}" onsubmit="return validateForm()">
         <div class="container">
             <table class="table product-table">
@@ -142,15 +188,17 @@
                             <span th:if="${cart.productSize == 5}">2L</span>
                         </td>
                         <td class="price" th:id="productPrice" name="productPrice" th:text="${cart.productPrice}"></td>
-                        <td>
-                            <div class="cart-qty-01">
-                                <button type="button" class="inc qty-btn" onclick="updateQuantity(this, -1)">
-                                    <i class="bi bi-caret-down-fill"></i>
-                                </button>
-                                <input class="cart-qty-input form-control" type="text" name="productBuyQty" th:value="${cart.productBuyQty}" onchange="updateBackendQuantity(this)">
-                                <button type="button" class="dec qty-btn" onclick="updateQuantity(this, 1)">
-                                    <i class="bi bi-caret-up-fill"></i>
-                                </button>
+                        <td style="text-align: center;">
+                            <div style="display: flex; justify-content: center; align-items: center;">
+                                <div class="cart-qty-01">
+                                    <button type="button" class="inc qty-btn" onclick="updateQuantity(this, -1)">
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </button>
+                                    <input class="cart-qty-input form-control" type="text" name="productBuyQty" th:value="${cart.productBuyQty}" onchange="updateBackendQuantity(this)">
+                                    <button type="button" class="dec qty-btn" onclick="updateQuantity(this, 1)">
+                                        <i class="bi bi-caret-up-fill"></i>
+                                    </button>
+                                </div>
                             </div>
                         </td>
                         <td th:id="productAllPrice" name="productAllPrice" th:text="'$' + ${cart.productBuyQty * cart.productPrice}" th:onchange="updatePrice()"></td>
@@ -303,21 +351,34 @@
             }
         });
     }
-
-    // 檢查是否有商品
-    function checkCartNotEmpty() {
-        var cartItems = /*[[ ${cartListData} ]]*/ []; // 從Thymeleaf中獲取購物車數據
-        if (cartItems.length === 0) {
-            // 沒有商品時觸發警告
-            alert("您的購物車為空，請先添加商品！");
-            return false; // 返回 false 阻止表單提交
-        }
-        return true; // 返回 true 表示可以提交表單
+    function customAlert(message) {
+        // 设置弹窗消息
+        document.getElementById("customAlertMessage").innerHTML = message;
+        // 显示弹窗
+        document.getElementById("customAlert").style.display = "block";
     }
 
-    // 表單提交前的驗證
+    // 关闭自定义弹窗
+    document.getElementById("customAlertCloseBtn").addEventListener("click", function () {
+        document.getElementById("customAlert").style.display = "none";
+    });
+
+    // 检查是否有商品
+    function checkCartNotEmpty() {
+        var cartItems = /*[[ ${cartListData} ]]*/ []; // 从Thymeleaf中获取购物车数据
+        if (cartItems.length === 0) {
+            // 购物车为空时触发警告
+            var alertMessage = "您的購物車為空，請先添加商品！";
+            // 显示自定义弹窗
+            customAlert(alertMessage);
+            return false; // 返回 false 阻止表单提交
+        }
+        return true; // 返回 true 表示可以提交表单
+    }
+
+    // 表单提交前的验证
     function validateForm() {
-        return checkCartNotEmpty(); // 呼叫檢查購物車是否為空的函數
+        return checkCartNotEmpty(); // 调用检查购物车是否为空的函数
     }
 </script>
 

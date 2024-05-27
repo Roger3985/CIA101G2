@@ -36,7 +36,7 @@ public class ProductOrderDetail  implements Serializable{
     @Column(name = "productrealprice")
     private BigDecimal productRealPrice;
     @Column(name = "productcomcontent")
-    @Pattern(regexp = "^(|[(|\\u4e00-\\u9fa5)(a-zA-Z0-9_\\s,\\.\\。\\，)]{4,40})$", message = "只能是中、英文字母、數字、_、空格、逗點和句點")
+//    @Pattern(regexp = "^(|[(|\\u4e00-\\u9fa5)(a-zA-Z0-9_\\s,\\.\\。\\，)]{4,40})$", message = "只能是中、英文字母、數字、_、空格、逗點和句點")
     private String productComContent;
     @Column(name = "productscore")
     private Integer productScore;

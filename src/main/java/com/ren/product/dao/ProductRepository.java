@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -69,6 +70,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
      * @return 返回分頁搜尋結果
      */
     @Query("SELECT p FROM Product p WHERE CONCAT(p.productCategory.productCatNo, ' ', p.productCategory.productCatName, ' ', p.productName, ' ', p.productInfo, ' ', p.productColor) LIKE %?1%")
+    @Transactional
     Page<Product> findAll(String keyword, Pageable pageable);
 
 //    @Query(value = "SELECT * FROM product WHERE MATCH(productNo, productName, productInfo) " + "AGAINST (?1)", nativeQuery = true)
@@ -220,6 +222,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
      * @param productName 商品名稱
      * @return 返回同一個商品(List)
      */
+    @Transactional
     List<Product> findProductsByProductCategory_ProductCatNoAndProductName(Integer productCatNo, String productName);
 
     /**
@@ -230,6 +233,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
      * @param productSize
      * @return
      */
+    @Transactional
     List<Product> findProductsByProductCategory_ProductCatNoAndProductNameAndProductSize(Integer productCatNo, String productName, Integer productSize);
 
     /**
@@ -241,6 +245,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
      * @param productColor 商品顏色
      * @return 返回同一顏色商品(List)
      */
+    @Transactional
     List<Product> findProductsByProductCategory_ProductCatNoAndProductNameAndProductColor(Integer productCatNo, String productName, String productColor);
 
     /**
@@ -253,13 +258,16 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
      * @param productSize 商品尺寸
      * @return 返回商品list
      */
+    @Transactional
     List<Product> findProductsByProductCategory_ProductCatNoAndProductNameAndProductColorAndProductSize(Integer productCatNo, String productName, String productColor, Integer productSize);
 
-
+    @Transactional
     List<Product> findProductsByProductColor(String productColor);
 
+    @Transactional
     List<Product> findProductsByProductSize(Integer productSize);
 
+    @Transactional
     List<Product> findProductsByProductPriceBetween(BigDecimal min, BigDecimal max);
 
     /**
@@ -375,5 +383,15 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Transactional
     @Modifying
     void deleteProductsByProductCategory_ProductCatName(String productCatName);
+
+
+    @Query("SELECT p FROM Product p WHERE p.productStat = :productStat " +
+            "AND (:#{#filters['color']} IS NULL OR p.productColor = :#{#filters['color']}) " +
+            "AND (:#{#filters['size']} IS NULL OR p.productSize = :#{#filters['size']}) " +
+            "AND (:#{#filters['price']} IS NULL OR (p.productPrice BETWEEN :#{#filters['priceLow']} AND :#{#filters['priceHigh']}))")
+    @Transactional
+    Page<Product> findFilteredProducts(@Param("filters") Map<String, String> filters,
+                                       @Param("productStat") Byte productStat,
+                                       Pageable pageable);
 
 }
