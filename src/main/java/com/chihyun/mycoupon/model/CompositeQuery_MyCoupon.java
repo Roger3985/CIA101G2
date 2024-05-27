@@ -22,7 +22,7 @@ public class CompositeQuery_MyCoupon {
 
         Predicate predicate = null;
 
-        if ("coupNo".equals(columnName) || "coupRelStat".equals(columnName)) {
+        if ("coupNo".equals(columnName) || "coupRelStat".equals(columnName) || "memNo".equals(columnName)) {
             predicate = builder.equal(root.get(columnName), Integer.valueOf(value));
         } else if ("coupName".equals(columnName)) {
             predicate = builder.like(root.get(columnName), "%" + value + "%");

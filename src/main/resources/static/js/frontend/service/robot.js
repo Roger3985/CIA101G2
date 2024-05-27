@@ -7,7 +7,7 @@ var element = $('.floating-chat');
 element.click(openElement);
 
 function openElement() {
-    var messages = element.find('.messages');
+    var robotmessages = element.find('.robotmessages');
     var textInput = element.find('.text-box');
     element.find('>i').hide();
     element.addClass('expand');
@@ -18,7 +18,7 @@ function openElement() {
     element.off('click', openElement);
     element.find('.header button').click(closeElement);
     element.find('#sendMessage').click(sendNewMessage);
-    messages.scrollTop(messages.prop("scrollHeight"));
+    robotmessages.scrollTop(robotmessages.prop("scrollHeight"));
 }
 
 function closeElement() {
@@ -42,7 +42,7 @@ function closeElement() {
 //
 //     if (!newMessage) return;
 //
-//     var messagesContainer = $('.messages');
+//     var messagesContainer = $('.robotmessages');
 //
 //     messagesContainer.append([
 //         '<li class="other">',
@@ -65,7 +65,7 @@ function closeElement() {
 // messageForm_el.addEventListener("submit", function (e) {
 //     e.preventDefault();
 // });
-var chatBlock = document.querySelector("#chat-messages");
+var chatBlock = document.querySelector("#chat-robotmessages");
 var messageInput_el = document.getElementById("messages_input");
 
 async function sendNewMessage() {
@@ -123,7 +123,7 @@ async function sendNewMessage() {
         console.error('Error:', error);
         // const errorMessage = document.createElement('div');
         // errorMessage.textContent = 'An error occurred. Please try again.';
-        // document.getElementById('messages').appendChild(errorMessage);
+        // document.getElementById('robotmessages').appendChild(errorMessage);
     }
 }
 
