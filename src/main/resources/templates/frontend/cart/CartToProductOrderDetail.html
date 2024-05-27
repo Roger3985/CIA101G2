@@ -294,7 +294,9 @@
                             <li class="list-group-item p-3" th:each="productOrderDetail : ${productOrder.ProductOrderDetails}">
                                 <div class="row g-2">
                                     <div>
+                                        <a th:href="@{/frontend/product/oneProduct(productNo=${productOrderDetail.product.productNo})}">
                                         <img th:src="'data:image/png;base64,' + ${session['productImage' + productOrderDetail.product.productNo]}" alt="Product Picture" style="width: auto; height: 80px;" />
+                                        </a>
                                         <span th:text="${productOrderDetail.product.productName}" style="font-size: larger;"></span>
                                     </div>
                                     <div>
