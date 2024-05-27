@@ -488,10 +488,12 @@ public class ProductServiceImpl implements ProductService_interface {
                     }
 
                 }
+
                 if (productScorePeople != 0) {
                     productScore = (double) productTotalScore / productScorePeople;
                     productScore = Math.round(productScore * 10.0) / 10.0;
                 }
+
                 productDTO.setProductScorePeople(productScorePeople);
                 productDTO.setProductScore(productScore);
                 productDTO.setProductPriceSet(productPriceSet);
@@ -653,9 +655,9 @@ public class ProductServiceImpl implements ProductService_interface {
             productDTOList.add(productDTO);
         }
 
-        // 前端點擊過濾條件
+        // 前端点击过滤条件
         if (filters != null) {
-            // 根據顏色過濾
+            // 根据颜色过滤
             if (filters.containsKey("color")) {
                 String[] colors = filters.get("color").split(",");
                 productDTOList = productDTOList.stream()
@@ -663,7 +665,7 @@ public class ProductServiceImpl implements ProductService_interface {
                         .collect(Collectors.toList());
             }
 
-            // 根據尺寸過濾
+            // 根据尺寸过滤
             if (filters.containsKey("size")) {
                 String[] sizes = filters.get("size").split(",");
                 List<Integer> sizeList = Arrays.stream(sizes).map(Integer::valueOf).collect(Collectors.toList());
@@ -672,13 +674,21 @@ public class ProductServiceImpl implements ProductService_interface {
                         .collect(Collectors.toList());
             }
 
-            // 根據價格範圍過濾
+            // 根据价格范围过滤
             if (filters.containsKey("priceRange")) {
-                String[] priceRange = filters.get("priceRange").split("-");
-                BigDecimal minPrice = new BigDecimal(priceRange[0]);
-                BigDecimal maxPrice = new BigDecimal(priceRange[1]);
+                String[] priceRanges = filters.get("priceRange").split(",");
                 productDTOList = productDTOList.stream()
-                        .filter(productDTO -> productDTO.getProductPriceSet().stream().anyMatch(price -> price.compareTo(minPrice) >= 0 && price.compareTo(maxPrice) <= 0))
+                        .filter(productDTO -> {
+                            for (String range : priceRanges) {
+                                String[] prices = range.split("-");
+                                BigDecimal minPrice = new BigDecimal(prices[0]);
+                                BigDecimal maxPrice = new BigDecimal(prices[1]);
+                                if (productDTO.getProductPriceSet().stream().anyMatch(price -> price.compareTo(minPrice) >= 0 && price.compareTo(maxPrice) <= 0)) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        })
                         .collect(Collectors.toList());
             }
         }
@@ -691,6 +701,7 @@ public class ProductServiceImpl implements ProductService_interface {
 
         return new PageImpl<>(pagedProductDTOList, pageable, totalSize);
     }
+
 
     public ProductDTO getOneProductDTO(Integer productNo) {
         ProductDTO productDTO = new ProductDTO();

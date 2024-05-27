@@ -499,6 +499,7 @@ End Wrapper
     document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
         checkbox.addEventListener('change', function () {
             const filters = {};
+
             document.querySelectorAll('.filter-checkbox:checked').forEach(checkedBox => {
                 const filterType = checkedBox.dataset.filterType;
                 const filterValue = checkedBox.dataset.filterValue;
@@ -508,7 +509,11 @@ End Wrapper
                 filters[filterType].push(filterValue);
             });
 
-            const params = new URLSearchParams(filters).toString();
+            const params = new URLSearchParams();
+            for (const key in filters) {
+                params.append(key, filters[key].join(','));
+            }
+
             const productContainer = document.querySelector('#product-container');
 
             productContainer.innerHTML = '';
@@ -520,7 +525,6 @@ End Wrapper
                 .catch(error => console.log('error', error));
         });
     });
-
 
 </script>
 </body>
