@@ -42,12 +42,18 @@
                     <div class="col-lg-6 my-2">
                         <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
                             <li class="breadcrumb-item">
-                                <a class="text-nowrap" href="#">
+                                <a class="text-nowrap" th:href="@{/frontend/index}">
+                                    首頁
                                     <i class="bi bi-home"></i>
-                                    Home
                                 </a>
                             </li>
-                            <li class="breadcrumb-item text-nowrap active" aria-current="page">Product</li>
+                            <li class="breadcrumb-item">
+                                <a class="text-nowrap" th:href="@{/frontend/product/visitProduct}">
+                                    商品
+                                    <i class="bi bi-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page">商品詳情</li>
                         </ol>
                     </div>
                 </div>
@@ -700,14 +706,14 @@
                                     <div class="product-card-info">
                                         <div class="product-meta small"><a href="#">Clothing</a>, <a href="#">Men</a>
                                         </div>
-                                        <div class="rating-star text"><i class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i class="bi bi-star"></i></div>
+                                        <div class="rating-star text">
+                                            <th:block th:each="star : ${#numbers.sequence(1, 5)}">
+                                                <i th:classappend="${star <= productDTO.productScore ? 'bi bi-star-fill star' : (star - 0.5 <= productDTO.productScore ? 'bi bi-star-half star-half' : 'bi bi-star star-empty')}"></i>
+                                            </th:block>
+                                        </div>
                                         <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                        <div class="product-price"><span
-                                                class="text-primary">$28.<small>50</small></span>
-                                            <del class="fs-sm text-muted">$38.<small>50</small></del>
+                                        <div class="product-price" th:each="productPrice : ${productDTO.productPriceSet}">
+                                            <span class="text-primary" th:text="'$' + ${productPrice}"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -716,8 +722,11 @@
                                  data-swiper-slide-index="5" style="width: 156px; margin-right: 24px;">
                                 <div class="product-card-1">
                                     <div class="product-card-image">
-                                        <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                        <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
+                                        <div class="badge-ribbon">
+                                            <span class="badge bg-danger">Sale</span>
+                                        </div>
+                                        <div class="product-action">
+                                            <a href="#" class="btn btn-outline-primary"><i
                                                 class="fi-heart"></i> </a><a href="#" class="btn btn-outline-primary"><i
                                                 class="fi-repeat"></i> </a><a data-bs-toggle="modal"
                                                                               data-bs-target="#px-quick-view"
@@ -735,8 +744,8 @@
                                     <div class="product-card-info">
                                         <div class="product-meta small"><a href="#">Clothing</a>, <a href="#">Men</a>
                                         </div>
-                                        <div class="rating-star text"><i class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
+                                        <div class="rating-star text"><i class="bi bi-star-fill active"></i>
+                                            <i class="bi bi-star-fill active"></i> <i
                                                 class="bi bi-star-fill active"></i> <i
                                                 class="bi bi-star-fill active"></i> <i class="bi bi-star"></i></div>
                                         <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>

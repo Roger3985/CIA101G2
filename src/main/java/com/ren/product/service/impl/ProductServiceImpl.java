@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.ren.util.Constants.*;
 
@@ -503,6 +504,192 @@ public class ProductServiceImpl implements ProductService_interface {
         }
 
         return new PageImpl<>(productDTOList, pageable, totalSize);
+    }
+
+    public Page<ProductDTO> getVisitProduct(List<Product> productList, Pageable pageable, String sortType) {
+        // 計算uniqueKeySet大小
+        var productUniqueKeySet = new HashSet<String>();
+        for (Product product : productList) {
+            productUniqueKeySet.add(product.getProductCategory().getProductCatNo() + "-" + product.getProductName());
+        }
+
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for (var key : productUniqueKeySet) {
+            ProductDTO productDTO = new ProductDTO();
+            String[] parts = key.split("-");
+            Integer productCatNo = Integer.valueOf(parts[0]);
+            String productName = parts[1];
+            List<Product> list = getVisitProducts(productCatNo, productName);
+            productDTO.setProductID(key);
+            productDTO.setProductCatNo(productCatNo);
+            String productCatName = productCategorySvc.getOneProductCategory(productCatNo).getProductCatName();
+            productDTO.setProductCatName(productCatName);
+            productDTO.setProductName(productName);
+            productDTO.setProductList(list);
+            HashSet<BigDecimal> productPriceSet = new HashSet<>();
+            HashSet<Integer> productSizeSet = new HashSet<>();
+            HashSet<String> productColorSet = new HashSet<>();
+            HashSet<Timestamp> productOnShelfSet = new HashSet<>();
+            Integer productTotalScore = 0;
+            Integer productScorePeople = 0;
+            Double productScore = 0.0;
+            for (Product product : list) {
+                productPriceSet.add(product.getProductPrice());
+                if (product.getProductSize() != null) {
+                    productSizeSet.add(product.getProductSize());
+                }
+                if (product.getProductColor() != null) {
+                    productColorSet.add(product.getProductColor());
+                }
+                if (product.getProductOnShelf() != null) {
+                    productOnShelfSet.add(product.getProductOnShelf());
+                }
+                List<ProductReview> productReviews = productReviewSvc.getByProductNo(product.getProductNo());
+                for (ProductReview productReview : productReviews) {
+                    productTotalScore += productReview.getProductScore();
+                    productScorePeople++;
+                }
+            }
+            if (productScorePeople != 0) {
+                productScore = (double) productTotalScore / productScorePeople;
+                productScore = Math.round(productScore * 10.0) / 10.0;
+            }
+            productDTO.setProductScorePeople(productScorePeople);
+            productDTO.setProductScore(productScore);
+            productDTO.setProductPriceSet(productPriceSet);
+            productDTO.setProductSizeSet(productSizeSet);
+            productDTO.setProductColorSet(productColorSet);
+            productDTO.setProductOnShelfSet(productOnShelfSet);
+            productDTOList.add(productDTO);
+        }
+
+        // 根據 sortType 排序
+        switch (sortType) {
+            case "newest":
+                productDTOList.sort(Comparator.comparing(
+                        p -> p.getProductOnShelfSet().stream().findFirst().orElse(null),
+                        Comparator.nullsLast(Comparator.reverseOrder())));
+                break;
+            case "rating":
+                productDTOList.sort(Comparator.comparing(ProductDTO::getProductScore, Comparator.nullsLast(Comparator.reverseOrder())));
+                break;
+            case "priceLowToHigh":
+                productDTOList.sort(Comparator.comparing(
+                        p -> p.getProductPriceSet().stream().findFirst().orElse(null),
+                        Comparator.nullsLast(Comparator.naturalOrder())));
+                break;
+            case "priceHighToLow":
+                productDTOList.sort(Comparator.comparing(
+                        p -> p.getProductPriceSet().stream().findFirst().orElse(null),
+                        Comparator.nullsLast(Comparator.reverseOrder())));
+                break;
+            default:
+                break;
+        }
+
+        int totalSize = productDTOList.size();
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), totalSize);
+
+        List<ProductDTO> pagedProductDTOList = productDTOList.subList(start, end);
+
+        return new PageImpl<>(pagedProductDTOList, pageable, totalSize);
+    }
+
+    public Page<ProductDTO> getVisitProduct(List<Product> productList, Pageable pageable, Map<String, String> filters) {
+        // 计算uniqueKeySet大小
+        var productUniqueKeySet = new HashSet<String>();
+        for (Product product : productList) {
+            productUniqueKeySet.add(product.getProductCategory().getProductCatNo() + "-" + product.getProductName());
+        }
+
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for (var key : productUniqueKeySet) {
+            ProductDTO productDTO = new ProductDTO();
+            String[] parts = key.split("-");
+            Integer productCatNo = Integer.valueOf(parts[0]);
+            String productName = parts[1];
+            List<Product> list = getVisitProducts(productCatNo, productName);
+            productDTO.setProductID(key);
+            productDTO.setProductCatNo(productCatNo);
+            String productCatName = productCategorySvc.getOneProductCategory(productCatNo).getProductCatName();
+            productDTO.setProductCatName(productCatName);
+            productDTO.setProductName(productName);
+            productDTO.setProductList(list);
+            HashSet<BigDecimal> productPriceSet = new HashSet<>();
+            HashSet<Integer> productSizeSet = new HashSet<>();
+            HashSet<String> productColorSet = new HashSet<>();
+            HashSet<Timestamp> productOnShelfSet = new HashSet<>();
+            Integer productTotalScore = 0;
+            Integer productScorePeople = 0;
+            Double productScore = 0.0;
+            for (Product product : list) {
+                productPriceSet.add(product.getProductPrice());
+                if (product.getProductSize() != null) {
+                    productSizeSet.add(product.getProductSize());
+                }
+                if (product.getProductColor() != null) {
+                    productColorSet.add(product.getProductColor());
+                }
+                if (product.getProductOnShelf() != null) {
+                    productOnShelfSet.add(product.getProductOnShelf());
+                }
+                List<ProductReview> productReviews = productReviewSvc.getByProductNo(product.getProductNo());
+                for (ProductReview productReview : productReviews) {
+                    productTotalScore += productReview.getProductScore();
+                    productScorePeople++;
+                }
+            }
+            if (productScorePeople != 0) {
+                productScore = (double) productTotalScore / productScorePeople;
+                productScore = Math.round(productScore * 10.0) / 10.0;
+            }
+            productDTO.setProductScorePeople(productScorePeople);
+            productDTO.setProductScore(productScore);
+            productDTO.setProductPriceSet(productPriceSet);
+            productDTO.setProductSizeSet(productSizeSet);
+            productDTO.setProductColorSet(productColorSet);
+            productDTO.setProductOnShelfSet(productOnShelfSet);
+            productDTOList.add(productDTO);
+        }
+
+        // 前端點擊過濾條件
+        if (filters != null) {
+            // 根據顏色過濾
+            if (filters.containsKey("color")) {
+                String[] colors = filters.get("color").split(",");
+                productDTOList = productDTOList.stream()
+                        .filter(productDTO -> Arrays.stream(colors).anyMatch(color -> productDTO.getProductColorSet().contains(color)))
+                        .collect(Collectors.toList());
+            }
+
+            // 根據尺寸過濾
+            if (filters.containsKey("size")) {
+                String[] sizes = filters.get("size").split(",");
+                List<Integer> sizeList = Arrays.stream(sizes).map(Integer::valueOf).collect(Collectors.toList());
+                productDTOList = productDTOList.stream()
+                        .filter(productDTO -> productDTO.getProductSizeSet().stream().anyMatch(sizeList::contains))
+                        .collect(Collectors.toList());
+            }
+
+            // 根據價格範圍過濾
+            if (filters.containsKey("priceRange")) {
+                String[] priceRange = filters.get("priceRange").split("-");
+                BigDecimal minPrice = new BigDecimal(priceRange[0]);
+                BigDecimal maxPrice = new BigDecimal(priceRange[1]);
+                productDTOList = productDTOList.stream()
+                        .filter(productDTO -> productDTO.getProductPriceSet().stream().anyMatch(price -> price.compareTo(minPrice) >= 0 && price.compareTo(maxPrice) <= 0))
+                        .collect(Collectors.toList());
+            }
+        }
+
+        int totalSize = productDTOList.size();
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), totalSize);
+
+        List<ProductDTO> pagedProductDTOList = productDTOList.subList(start, end);
+
+        return new PageImpl<>(pagedProductDTOList, pageable, totalSize);
     }
 
     public ProductDTO getOneProductDTO(Integer productNo) {

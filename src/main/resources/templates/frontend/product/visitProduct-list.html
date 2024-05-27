@@ -44,12 +44,9 @@
                     <div class="col-lg-6 my-2">
                         <ol class="breadcrumb m-0 small justify-content-center justify-content-lg-end">
                             <li class="breadcrumb-item">
-                                <a class="text-nowrap text-reset" href="#">首頁</a>
+                                <a class="text-nowrap text-reset" th:href="@{/frontend/index}">首頁</a>
                             </li>
-                            <li class="breadcrumb-item text-nowrap active" aria-current="page">
-                                商品
-                            </li>
-                            <li class="breadcrumb-item text-nowrap active" aria-current="page">Product</li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page">商品</li>
                         </ol>
                     </div>
                 </div>
@@ -247,9 +244,9 @@
                                 </a>
                             </div>
                             <div class="d-flex align-items-center ms-3">
-                                <button class="btn btn-sm btn-primary me-2">最新上市</button>
-                                <button class="btn btn-sm btn-secondary me-2">評價最高</button>
-                                <button class="btn btn-sm btn-info me-2">熱門商品</button>
+                                <button class="btn btn-sm btn-primary me-2 sort-button" data-sort="newest">最新上市</button>
+                                <button class="btn btn-sm btn-secondary me-2 sort-button" data-sort="highestRating">評價最高</button>
+                                <button class="btn btn-sm btn-info me-2 sort-button" data-sort="popular">熱門商品</button>
                             </div>
                             <div class="shortby-dropdown ms-auto">
                                 <div class="dropdown">
@@ -269,7 +266,7 @@
                         </div>
                         <!-- 商品清單 -->
                         <!-- Product Box -->
-                        <th:block th:each="product : ${productList}">
+                        <th:block th:each="productDTO : ${productDTOList}">
                             <div class="row g-0 mb-4">
                                 <div class="col-sm-4 position-relative">
                                     <div class="badge-ribbon position-absolute top-0 mt-3">
@@ -281,24 +278,18 @@
                                 </div>
                                 <div class="col-sm-8 ps-sm-4 pt-3 pt-sm-0">
                                     <div class="rating-star text mb-2 small">
-                                        <i class="bi bi-star-fill active"></i>
-                                        <i class="bi bi-star-fill active"></i>
-                                        <i class="bi bi-star-fill active"></i>
-                                        <i class="bi bi-star-fill active"></i>
-                                        <i class="bi bi-star"></i>
+                                        <th:block th:each="star : ${#numbers.sequence(1, 5)}">
+                                            <i th:classappend="${star <= productDTO.productScore ? 'bi bi-star-fill star' : (star - 0.5 <= productDTO.productScore ? 'bi bi-star-half star-half' : 'bi bi-star star-empty')}"></i>
+                                        </th:block>
                                     </div>
                                     <h5 class="product-title">
-                                        <a class="text-reset" href="#">Fine-knit sweater</a>
+                                        <a class="text-reset" th:href="@{/frontend/product/oneProduct(productNo=${productDTO.productList.get(0).productNo})}" th:text="${productDTO.productName}"></a>
                                     </h5>
                                     <div class="m-0">
-                                        <p class="small mb-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                                            ad minim veniam.</p>
+                                        <p class="small mb-2" th:text="${productDTO.productInfo}"></p>
                                     </div>
-                                    <div class="product-price pb-3">
-                                        <span class="text-primary fs-4">
-                                            $28.<small>50</small>
-                                        </span>
+                                    <div class="product-price pb-3" th:each="productPrice : ${productDTO.productPriceSet}">
+                                        <span class="text-primary fs-4" th:text="'$' + ${productPrice}"></span>
                                     </div>
                                     <div>
                                         <a th:href="@{/frontend/cart/addproducttocart}" class="btn btn-mode">
@@ -320,27 +311,22 @@
                         </th:block>
                         <!-- End Product Box -->
                         <!-- 頁碼 -->
+                        <!-- 分頁控件 -->
                         <div class="shop-bottom-bar d-flex align-items-center mt-3">
-                            <div>Showing: 1 - 12 of 17</div>
+                            <div th:text="'Showing: ' + ${currentPage * 15 + 1} + ' - ' + (${currentPage + 1} * 15 > ${productPage.totalElements} ? ${productPage.totalElements} : (${currentPage + 1} * 15)) + ' of ' + ${productPage.totalElements}"></div>
                             <div class="ms-auto">
                                 <ul class="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
+                                    <li class="page-item" th:classappend="${productPage.hasPrevious()} ? '' : 'disabled'">
+                                        <a class="page-link" th:href="@{/frontend/product/visitProduct-list(page=${currentPage - 1}, size=15)}" aria-label="Previous">
+                                            <span aria-hidden="true">«</span>
                                         </a>
                                     </li>
-                                    <li class="page-item active">
-                                        <a class="page-link" href="#">1</a>
+                                    <li class="page-item" th:each="i : ${#numbers.sequence(0, productPage.totalPages - 1)}" th:classappend="${i == currentPage} ? 'active' : ''">
+                                        <a class="page-link" th:href="@{/frontend/product/visitProduct-list(page=${i}, size=15)}" th:text="${i + 1}"></a>
                                     </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">2</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">3</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
+                                    <li class="page-item" th:classappend="${productPage.hasNext()} ? '' : 'disabled'">
+                                        <a class="page-link" th:href="@{/frontend/product/visitProduct-list(page=${currentPage + 1}, size=15)}" aria-label="Next">
+                                            <span aria-hidden="true">»</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -386,7 +372,6 @@
 <!-- script start -->
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
 <!-- End script start -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     function testAddToCart(event) {
         var button = event.target;
@@ -440,25 +425,42 @@
         button.addEventListener("click", testAddToFAV);
     });
 
-    <!-- 商品過濾相關 -->
-    document.querySelectorAll('.btn-outline-primary, .btn-outline-secondary, .btn-outline-info').forEach(button => {
-        button.addEventListener('click', function() {
-            // 在這裡添加按鈕點擊處理邏輯
-            console.log(this.textContent + ' button clicked');
-            // 根據按鈕文字來執行不同的操作
-            switch (this.textContent.trim()) {
-                case '最新上市':
-                    // 處理最新上市的邏輯
-                    break;
-                case '評價最高':
-                    // 處理評價最高的邏輯
-                    break;
-                case '熱門商品':
-                    // 處理熱門商品的邏輯
-                    break;
-                default:
-                    break;
-            }
+    <!--商品過濾相關 -->
+    document.querySelectorAll('.sort-button').forEach(button => {
+        button.addEventListener('click', function () {
+            const sortType = this.dataset.sort;
+
+            axios(`/frontend/product/visitProduct-list?sortType=${sortType}`)
+                .then(response => response.text())
+                .then(html => {
+                    document.querySelector('#product-container').innerHTML = html;
+                })
+                .catch(error => console.log('error', error));
+        });
+    });
+
+    document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            const filters = {};
+            document.querySelectorAll('.filter-checkbox:checked').forEach(checkedBox => {
+                const filterType = checkedBox.dataset.filterType;
+                const filterValue = checkedBox.dataset.filterValue;
+                if (!filters[filterType]) {
+                    filters[filterType] = [];
+                }
+                filters[filterType].push(filterValue);
+            });
+
+            const params = new URLSearchParams(filters).toString();
+            const productContainer = document.querySelector('#product-container');
+
+            productContainer.innerHTML = '';
+
+            axios.get(`/frontend/product/filterProducts?${params}`)
+                .then(response => {
+                    productContainer.innerHTML = response.data;
+                })
+                .catch(error => console.log('error', error));
         });
     });
 
