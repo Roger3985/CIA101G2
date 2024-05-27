@@ -219,14 +219,20 @@ public class CartController {
         Integer successmemNo;
         Member member;
         Object memNo;
-
+        memNo = session.getAttribute("memNo");
+        Integer memNoInt2 = Integer.valueOf(memNo.toString());
+        List<CartRedis> cartListData1 = cartSvc.findByCompositeKey(memNoInt2);
+        model.addAttribute("cartListData", cartListData1);
         // 检查会话中是否存在购物车信息
         List<CartRedis> oldcartListData = (List<CartRedis>) session.getAttribute("oldcartListData");
+
 
         if (oldcartListData != null && !oldcartListData.isEmpty()) {
             member = (Member) session.getAttribute("loginsuccess");
             if (member != null) {
+                System.out.println("1");
                 successmemNo = member.getMemNo();
+                System.out.println("2");
                 for (CartRedis cartItem : oldcartListData) {
                     cartItem.setMemNo(successmemNo);
                     cartSvc.updateCart(cartItem);
@@ -236,26 +242,16 @@ public class CartController {
                 model.addAttribute("cartListData", newcartListData);
                 memNo = session.getAttribute("memNo");
                 if (memNo != null) {
+
                     Integer memNoInt = Integer.valueOf(memNo.toString());
                     cartSvc.deleteBymemNo(memNoInt);
+                    session.removeAttribute("memNo");
                 }
             } else {
                 memNo = session.getAttribute("memNo");
                 if (memNo != null) {
                     Integer memNoInt = Integer.valueOf(memNo.toString());
                     List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNoInt);
-                    for (CartRedis cartItem : cartListData) {
-                        Integer cartProductNo = cartItem.getProductNo();
-                        List<ProductPicture> productPictures = productPictureService.getByProductNo(cartProductNo);
-                        if (productPictures != null && !productPictures.isEmpty()) {
-                            ProductPicture firstProductPicture = productPictures.get(0);
-                            byte[] firstPic = firstProductPicture.getProductPic();
-                            Integer productNo = firstProductPicture.getProduct().getProductNo();
-                            String base64Image = Base64.getEncoder().encodeToString(firstPic);
-                            session.setAttribute("productImage" + productNo, base64Image);
-                            model.addAttribute("productImage" + productNo, base64Image);
-                        }
-                    }
                     model.addAttribute("cartListData", cartListData);
                 }
             }
@@ -286,6 +282,7 @@ public class CartController {
 
         return "frontend/cart/Cart";
     }
+
 
     @PostMapping("/cart/coupNoInstantly")
     @ResponseBody

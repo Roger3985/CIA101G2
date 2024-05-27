@@ -15,6 +15,34 @@
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
     <th:block th:include="~{frontend/component/plugin/frontendplugin.html :: css}"></th:block>
+    <style>
+
+        .custom-alert {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 65%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            color: black;
+            font-size: 1.1em;
+            font-weight: bolder;
+            background-color: #c4c4c9;
+            border: none;
+            box-shadow: none;
+            padding: 5px;
+            border-radius: 10px;
+        }
+
+        .custom-alert-content {
+            padding: 0; /* 去除 padding */
+            text-align: center;
+            margin: 0; /* 去除 margin */
+        }
+
+    </style>
+
+
 </head>
 
 <body>
@@ -35,7 +63,7 @@
     <!-- Main -->
     <main>
         <!-- Breadcrumb -->
-        <div class="py-3 bg-gray-100">
+        <div class="py-3 " style="background-color: #e1f5fe;">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6 my-2">
@@ -331,15 +359,20 @@
                                                          title=""
                                                          alt="">
                                                 </a>
-                                                <div class="product-cart-btn addToCartBtn">
+                                                <div class="product-cart-btn addToCartBtn" >
                                                     <input type="hidden" name="productNo"
                                                            th:value="${productDTO.productList.get(0).productNo}">
                                                     <!-- Product number -->
                                                     <input type="hidden" name="productBuyQty" th:value="1">
                                                     <!-- Quantity -->
-                                                    <a class="btn btn-primary btn-sm w-100 "><i
+                                                    <a class="btn btn-primary btn-sm w-100 " style=" background-color:#7f8c8d;"><i
                                                             class="fi-shopping-cart"></i> Add to cart</a>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div id="customAlert" class="custom-alert">
+                                            <div class="custom-alert-content">
+                                                <span id="customAlertMessage"></span>
                                             </div>
                                         </div>
                                         <div class="product-card-info">
@@ -432,35 +465,53 @@
 <script>
   // 購物車
   function testAddToCart(event) {
-    event.preventDefault();
-    var button = event.target.closest('a'); // 找到最接近的<a>元素
-    var row = button.closest('.addToCartBtn'); // 找到最近的包含该按钮的商品项
-    var productNo = row.querySelector('input[name="productNo"]').value;
-    var productBuyQty = row.querySelector('input[name="productBuyQty"]').value;
+      event.preventDefault();
+      var button = event.target.closest('a'); // 找到最接近的<a>元素
+      var row = button.closest('.addToCartBtn'); // 找到最近的包含該按鈕的商品項
+      var productNo = row.querySelector('input[name="productNo"]').value;
+      var productBuyQty = row.querySelector('input[name="productBuyQty"]').value;
 
-    var data = {
-      productNo: productNo,
-      productBuyQty: productBuyQty
-    };
+      var data = {
+          productNo: productNo,
+          productBuyQty: productBuyQty
+      };
 
-    $.ajax({
-      type: 'POST',
-      url: "/frontend/cart/addproducttocart",
-      data: data,
-      success: function(response) {
-        console.log("Update successful");
-      },
-      error: function(error) {
-        console.log("Error:", error);
-      }
-    });
+      $.ajax({
+          type: 'POST',
+          url: "/frontend/cart/addproducttocart",
+          data: data,
+          success: function(response) {
+              console.log("Update successful");
+              showCustomAlert(row, "加入購物車成功");
+          },
+          error: function(error) {
+              console.log("Error:", error);
+              showCustomAlert(row, "加入購物車失敗");
+          }
+      });
+  }
+
+  function showCustomAlert(container, message) {
+      var customAlert = document.createElement('div');
+      customAlert.className = 'custom-alert';
+      var customAlertContent = document.createElement('div');
+      customAlertContent.className = 'custom-alert-content';
+      customAlertContent.textContent = message;
+      customAlert.appendChild(customAlertContent);
+
+      container.appendChild(customAlert);
+      customAlert.style.display = 'block';
+
+      setTimeout(function() {
+          customAlert.style.display = 'none';
+          container.removeChild(customAlert);
+      }, 1000);
   }
 
   var addToCartButtons = document.querySelectorAll(".addToCartBtn .btn-primary");
   addToCartButtons.forEach(function(button) {
-    button.addEventListener("click", testAddToCart);
+      button.addEventListener("click", testAddToCart);
   });
-
   function testAddToFAV(event) {
     event.preventDefault();
     var button = event.target.closest('a');
