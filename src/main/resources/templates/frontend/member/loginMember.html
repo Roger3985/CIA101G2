@@ -186,6 +186,28 @@
     <!-- jQuery code -->
 </body>
 <script>
+    document.getElementById('avatarInput').addEventListener('change', function() {
+        var preview = document.getElementById('preview');
+        var file = this.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function() {
+            var img = new Image();
+            img.src = reader.result;
+            img.style.maxWidth = '100%';
+            img.style.maxHeight = '100%';
+            preview.innerHTML = '';
+            preview.appendChild(img);
+        }
+
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = 'No image selected';
+        }
+    });
+</script>
+<script>
     document.getElementById("buildAuthUrlForm").addEventListener("submit", (event) => {
         event.preventDefault();
 
@@ -331,61 +353,9 @@
         // 自動提交表單
         document.getElementById("content").click();
 
-        alert("第三方登入成功")
+        // 彈出成功消息
+        alert("建立第三方連結成功");
     }
-
-    // // 添加表單提交事件監聽器
-    // document.getElementById("exchangeTokenForm").addEventListener("submit", (event) => {
-    //     event.preventDefault(); // 防止表單自動提交
-    //
-    //     // 獲取表單中的值
-    //     var codeValue = document.getElementById("code").value;
-    //
-    //     // 指定 http method、url
-    //     const http = new XMLHttpRequest();
-    //     const method = "POST";
-    //     const url = "http://localhost:8080/google/exchangeToken";
-    //     http.open(method, url);
-    //
-    //     // 添加 request body 中的參數
-    //     var data = {
-    //         "code": codeValue
-    //     }
-    //
-    //     // 發出 http request 請求
-    //     http.setRequestHeader("Content-Type", "application/json");
-    //     http.send(JSON.stringify(data));
-    //
-    //     // 處理 http request 的回調函數
-    //     http.onreadystatechange = (e) => {
-    //         var outputStatus = document.getElementById("exchangeTokenForm-outputStatus");
-    //         var output = document.getElementById("exchangeTokenForm-output");
-    //         showOutput(http, outputStatus, output);
-    //     }
-    // });
-    //
-    // // 函數：顯示 http request 的回應結果
-    // function showOutput(http, outputStatus, output) {
-    //     outputStatus.style.backgroundColor = "#D0D0D0";
-    //     outputStatus.innerHTML = http.status;
-    //
-    //     output.style.backgroundColor = "#D0D0D0";
-    //     try {
-    //         output.innerHTML = JSON.stringify(JSON.parse(http.responseText), null, 4);
-    //     } catch (e) {
-    //         output.innerHTML = http.responseText;
-    //     }
-    // }
-
-    // document.addEventListener("DOMContentLoaded", function() {
-    //     const codeInput = document.getElementById("code").value; // 獲取輸入框的值
-    //
-    //     if (codeInput && document.getElementById("exchangeTokenForm")) {
-    //         console.log("輸入框有值，自動提交表單");
-    //         document.getElementById("exchangeTokenForm").submit(); // 自動提交表單
-    //     }
-    // });
-
 </script>
 <script>
     // 獲取包含 JSON 資料的元素
@@ -405,10 +375,21 @@
 
     // 提交表單
     document.getElementById("getUserForm").click();
-</script>
-<script>
-    // 前端處理重定向
-    // window.location.href = .headers.get('Location');
+
+
+    // 發送 AJAX 請求到購物主頁
+    const http = new XMLHttpRequest();
+    const method = "GET";
+    const url = "/frontend/member/memberData"; // 個人主頁的 URL
+    http.open(method, url);
+    http.send();
+
+    http.onreadystatechange = (e) => {
+        // 如果請求成功，跳轉到個人主頁
+        if (http.readyState === 4 && http.status === 200) {
+            window.location.href = url;
+        }
+    };
 </script>
 
 <style>
@@ -496,5 +477,4 @@
 
 
 </style>
-
 </html>
