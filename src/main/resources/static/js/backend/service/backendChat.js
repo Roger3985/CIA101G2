@@ -87,7 +87,7 @@ function connect() {
 
                 listItem.addEventListener("click", function (e) {
 
-                    alert("hi" + memlist[i]);
+                    // alert("hi" + memlist[i]);
                     memName = memlist[i];
                     let userReplying_el = document.querySelector(".username-replying");
                     userReplying_el.innerHTML = '正在回覆... '+memName;
