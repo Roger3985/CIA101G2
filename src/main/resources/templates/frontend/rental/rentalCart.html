@@ -75,8 +75,8 @@
                         <div class="col-lg-6 my-2">
                             <ol
                                 class="breadcrumb breadcrumb-light m-0 small justify-content-center justify-content-lg-end">
-                                <li class="breadcrumb-item"><a class="text-nowrap" href="#">首頁</a></li>
-                                <li class="breadcrumb-item text-nowrap active" aria-current="page">你的購物車</li>
+                                <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/frontend/rental/rentalShop}">租借品首頁</a></li>
+                                <li class="breadcrumb-item text-nowrap active" aria-current="page">購物車</li>
                             </ol>
                         </div>
                     </div>
@@ -193,274 +193,291 @@
     -->
     <!-- script start -->
     <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
-    <!-- End script start -->
-</body>
 
-<script>
+    <script>
 
-    $(function () {
+        $(function () {
 
-        let baseUrl = window.location.protocol + "//" + window.location.host;
-        let apiPath = "/frontend/rentalorder";
-        let memNo = 1;
-        let rentalAllPrice = 0;
-        let rentalAllDepPrice = 0;
+            let baseUrl = window.location.protocol + "//" + window.location.host;
+            let apiPath = "/frontend/rentalorder";
+            let memNo = 1;
+            let rentalAllPrice = 0;
+            let rentalAllDepPrice = 0;
 
-        function getAll() {
+            function getAll() {
 
-            rentalAllPrice = 0;
-            rentalAllDepPrice = 0;
+                rentalAllPrice = 0;
+                rentalAllDepPrice = 0;
 
-            fetch(baseUrl + apiPath + "/getFromCart?memNo=" + memNo)
-                .then(function (response) {
-                    return response.json();
-                }).then(function (data) {
+                fetch(baseUrl + apiPath + "/getFromCart?memNo=" + memNo)
+                    .then(function (response) {
+                        return response.json();
+                    }).then(function (data) {
 
-                const container = $("div#cartItemsContainer");
-                container.empty();  // 清除先前的内容
+                    const container = $("div#cartItemsContainer");
+                    container.empty();  // 清除先前的内容
 
-                let totalItems = Object.keys(data).length; // 計算購物車商品數量
-                $("span[data-cart-items]").attr("data-cart-items", totalItems); // 更新購物車商品數量圖示
-                // console.log(data);
-                // console.log(Object.entries(data));
-               /* 遍歷陣列裡每個元素，每個元素都是一對 key, item，以下舉例
-                *
-                * [陣列1, 陣列2]
-                * 陣列1 => ["member : 1 : cartItem : 5011", {rentalCatNo : "5", rentalColor : "深卡其色"...}]
-               */
-                Object.entries(data).forEach(([key, item]) => {
+                    let totalItems = Object.keys(data).length; // 計算購物車商品數量
+                    $("span[data-cart-items]").attr("data-cart-items", totalItems); // 更新購物車商品數量圖示
+                    // console.log(data);
+                    // console.log(Object.entries(data));
+                    /* 遍歷陣列裡每個元素，每個元素都是一對 key, item，以下舉例
+                     *
+                     * [陣列1, 陣列2]
+                     * 陣列1 => ["member : 1 : cartItem : 5011", {rentalCatNo : "5", rentalColor : "深卡其色"...}]
+                    */
+                    Object.entries(data).forEach(([key, item]) => {
 
-                    let rentalSize = "";
-                    switch (item.rentalSize) { // 把 size 數字換成對應英文
-                        case "0" :
-                            rentalSize = "XS"
-                            break;
-                        case "1" :
-                            rentalSize = "S"
-                            break;
-                        case "2" :
-                            rentalSize = "M"
-                            break;
-                        case "3" :
-                            rentalSize = "L"
-                            break;
-                        case "4" :
-                            rentalSize = "XL"
-                            break;
-                        case "5" :
-                            rentalSize = "2L"
-                            break;
-                    }
+                        let rentalSize = "";
+                        switch (item.rentalSize) { // 把 size 數字換成對應英文
+                            case "0" :
+                                rentalSize = "XS"
+                                break;
+                            case "1" :
+                                rentalSize = "S"
+                                break;
+                            case "2" :
+                                rentalSize = "M"
+                                break;
+                            case "3" :
+                                rentalSize = "L"
+                                break;
+                            case "4" :
+                                rentalSize = "XL"
+                                break;
+                            case "5" :
+                                rentalSize = "2L"
+                                break;
+                        }
 
-                    // 創造一個 div，並給予模板需要的 class
+                        // 創造一個 div，並給予模板需要的 class
 
-                    // 創建商品被借走時的特效物件
+                        // 創建商品被借走時的特效物件
 
-                    let productDiv = $("<div>", {
-                        "class" : "d-flex align-items-center flex-row w-100 pb-3 mb-3 border-bottom cartItem",
-                        "data-rentalNo" : item.rentalNo,
+                        let productDiv = $("<div>", {
+                            "class" : "d-flex align-items-center flex-row w-100 pb-3 mb-3 border-bottom cartItem",
+                            "data-rentalNo" : item.rentalNo,
+                        });
+
+                        if (item.rentalStat !== "0") {
+                            productDiv.addClass("disabled-item");
+                            let rentalNo = item.rentalNo;
+
+                            let overlayDiv = $("<div>", {
+                                "class" : "overlay"
+                            }).appendTo(productDiv);
+
+                            $("<span>", {
+                                "text": "商品被搶先預約了...還是先加入追蹤?",
+                                "class": "overlay-text"
+                            }).appendTo(overlayDiv);
+
+                            $("<button>", {
+                                "class": "btn btn-sm btn-light btn_addTrack",
+                                "text": "追蹤",
+                                "click": function(e) {
+
+                                    e.preventDefault();
+                                    let target = $(e.target);
+                                    let apiPath = "/frontend/rentalmytrack/addTrack";
+                                    let data = {
+                                        rentalNo : rentalNo,
+                                        memNo : memNo
+                                    };
+
+                                    fetch(baseUrl + apiPath, {
+                                        method : "POST",
+                                        headers : {
+                                            "Content-Type" : "application/json"
+                                        },
+                                        body : JSON.stringify(data)
+                                    }).then(response => response.text())
+                                        .then(rentalName => {
+                                            target.closest("div.overlay").find("span.successMsg").text("已加入追蹤!").fadeIn(0).delay(500).fadeOut(500);
+                                        });
+
+                                }
+                            }).appendTo(overlayDiv);
+                            $("<span>", {
+                                "class" : "successMsg",
+                                "style" : "color : green"
+                            }).appendTo(overlayDiv);
+
+                        }
+
+
+                        // 繼續創建正常商品資訊物件
+
+                        let link = $("<a>" , {
+                            "class" : "d-inline-block flex-shrink-0 me-3",
+                            "href" : "#"
+                        }).appendTo(productDiv);
+                        let img = $("<img>", {
+                            "src" : "/icons/frontend/rental/rentalshop/" + item.rentalNo + ".jpg",
+                            "width" : "120",
+                            "alt" : "Product"
+                        }).appendTo(link);
+                        let infoDiv = $("<div>", {
+                            "class" : "d-flex flex-column flex-sm-row col"
+                        }).appendTo(productDiv);
+                        let detailsDiv = $("<div>", {
+                            "class" : "pe-sm-2"
+                        }).appendTo(infoDiv);
+                        let title = $("<h3>", {
+                            "class" : "product-title fs-5 mb-1"
+                        }).appendTo(detailsDiv);
+                        let titleLink = $("<a>", {
+                            "class" : "",
+                            "href" : "#",
+                            "text" : item.rentalName
+                        }).appendTo(title);
+                        let sizeDiv = $("<div>", {
+                            "class" : "small",
+                            "html" : "<span class=\"text-muted me-2\">尺寸 :</span>" + rentalSize
+                        }).appendTo(detailsDiv);
+                        let colorDiv = $("<div>", {
+                            "class" : "small",
+                            "html" : "<span class=\"text-muted me-2\">顏色 :</span>" + item.rentalColor
+                        }).appendTo(detailsDiv);
+                        let quanDiv = $("<div>", {
+                            "class" : "small",
+                            "html" : "<span class=\"text-muted me-2\">數量 : 1</span>"
+                        }).appendTo(detailsDiv);
+                        let priceDiv = $("<div>", {
+                            "class" : "lead pt-1",
+                            "text" : item.rentalPrice
+                        }).appendTo(detailsDiv);
+                        // 114
+                        let actionDiv = $("<div>", {
+                            "class": "pt-2 pt-sm-0 d-flex d-sm-block ms-sm-auto"
+                        }).appendTo(infoDiv);
+                        let qtyLabel = $("<label>", {
+                            "class": "form-label d-none d-sm-inline-block",
+                            "text": ""
+                        }).appendTo(actionDiv);
+                        let removeBtn = $("<button>", {
+                            "class": "btn btn-link px-0 text-danger ms-auto",
+                            "style" : "margin-top: 30px",
+                            "type": "button",
+                            "html": "<i class='bi-trash3 me-2 delItem'></i><span class='delItem'>移除</span>"
+                        }).appendTo(actionDiv);
+
+                        container.append(productDiv);
+
+                        if (item.rentalStat === "0") {
+                            rentalAllPrice += parseFloat(item.rentalPrice);
+                            rentalAllDepPrice += parseFloat(item.rentalDesPrice);
+                        }
+
                     });
 
-                    if (item.rentalStat !== "0") {
-                        productDiv.addClass("disabled-item");
-                        let rentalNo = item.rentalNo;
+                    $("span.rentalAllPrice").text(rentalAllPrice);
+                    $("span.rentalAllDepPrice").text(rentalAllDepPrice);
+                    $("span.totalPrice").text( (rentalAllPrice + rentalAllDepPrice) );
 
-                        let overlayDiv = $("<div>", {
-                            "class" : "overlay"
-                        }).appendTo(productDiv);
+                });
 
-                        $("<span>", {
-                            "text": "商品被搶先預約了...還是先加入追蹤?",
-                            "class": "overlay-text"
-                        }).appendTo(overlayDiv);
+            } // getAll()結束
+            getAll();
 
-                        $("<button>", {
-                            "class": "btn btn-sm btn-light btn_addTrack",
-                            "text": "追蹤",
-                            "click": function(e) {
+            // $("button.refBtn").on("click", function () {
+            //     getAll();
+            // });
 
-                                e.preventDefault();
-                                let target = $(e.target);
-                                let apiPath = "/frontend/rentalmytrack/addTrack";
-                                let data = {
-                                    rentalNo : rentalNo,
-                                    memNo : memNo
-                                };
+// 刪除單個購物車商品
+            $(document).on("click", ".delItem", function () {
+                let rentalNos = [];
+                let rentalNo = $(this).closest("div.cartItem").attr("data-rentalNo");
+                rentalNos.push(rentalNo);
+                let data = {
+                    "rentalNos" : rentalNos
+                };
 
-                                fetch(baseUrl + apiPath, {
-                                    method : "POST",
-                                    headers : {
-                                        "Content-Type" : "application/json"
-                                    },
-                                    body : JSON.stringify(data)
-                                }).then(response => response.text())
-                                    .then(rentalName => {
-                                        target.closest("div.overlay").find("span.successMsg").text("已加入追蹤!").fadeIn(0).delay(500).fadeOut(500);
-                                    });
-
+                swal({
+                    title: "確定從購物車删除?",
+                    text: "",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        fetch(baseUrl + apiPath + "/deleteFromCart", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(data)
+                        }).then(function (response) {
+                            return response.text();
+                        }).then(function (data) {
+                            if (data === "ok") {
+                                swal("删除成功!", "", "success");
+                                // 假设 getAll() 是一个函数，用来刷新或重新获取购物车数据
+                                getAll();
                             }
-                        }).appendTo(overlayDiv);
-                        $("<span>", {
-                            "class" : "successMsg",
-                            "style" : "color : green"
-                        }).appendTo(overlayDiv);
-
+                        });
+                    } else {
+                        swal("您的商品沒被刪除!");
                     }
+                });
+            }); // 刪除單個購物車商品結束
 
 
-                    // 繼續創建正常商品資訊物件
+            // 刪除全部 不能租借的商品
+            $(document).on("click", "button.btn_delCantRent", function () {
 
-                    let link = $("<a>" , {
-                        "class" : "d-inline-block flex-shrink-0 me-3",
-                        "href" : "#"
-                    }).appendTo(productDiv);
-                    let img = $("<img>", {
-                        "src" : "/icons/frontend/rental/rentalshop/" + item.rentalNo + ".jpg",
-                        "width" : "120",
-                        "alt" : "Product"
-                    }).appendTo(link);
-                    let infoDiv = $("<div>", {
-                        "class" : "d-flex flex-column flex-sm-row col"
-                    }).appendTo(productDiv);
-                    let detailsDiv = $("<div>", {
-                        "class" : "pe-sm-2"
-                    }).appendTo(infoDiv);
-                    let title = $("<h3>", {
-                        "class" : "product-title fs-5 mb-1"
-                    }).appendTo(detailsDiv);
-                    let titleLink = $("<a>", {
-                        "class" : "",
-                        "href" : "#",
-                        "text" : item.rentalName
-                    }).appendTo(title);
-                    let sizeDiv = $("<div>", {
-                        "class" : "small",
-                        "html" : "<span class=\"text-muted me-2\">尺寸 :</span>" + rentalSize
-                    }).appendTo(detailsDiv);
-                    let colorDiv = $("<div>", {
-                        "class" : "small",
-                        "html" : "<span class=\"text-muted me-2\">顏色 :</span>" + item.rentalColor
-                    }).appendTo(detailsDiv);
-                    let quanDiv = $("<div>", {
-                        "class" : "small",
-                        "html" : "<span class=\"text-muted me-2\">數量 : 1</span>"
-                    }).appendTo(detailsDiv);
-                    let priceDiv = $("<div>", {
-                        "class" : "lead pt-1",
-                        "text" : item.rentalPrice
-                    }).appendTo(detailsDiv);
-                    // 114
-                    let actionDiv = $("<div>", {
-                        "class": "pt-2 pt-sm-0 d-flex d-sm-block ms-sm-auto"
-                    }).appendTo(infoDiv);
-                    let qtyLabel = $("<label>", {
-                        "class": "form-label d-none d-sm-inline-block",
-                        "text": ""
-                    }).appendTo(actionDiv);
-                    let removeBtn = $("<button>", {
-                        "class": "btn btn-link px-0 text-danger ms-auto",
-                        "style" : "margin-top: 30px",
-                        "type": "button",
-                        "html": "<i class='bi-trash3 me-2 delItem'></i><span class='delItem'>移除</span>"
-                    }).appendTo(actionDiv);
+                let cartItems = $(this).closest("div.cartItems");
+                let disabledItems = cartItems.find("div.disabled-item");
+                let rentalNos = [];
 
-                    container.append(productDiv);
+                for (let i = 0; i < disabledItems.length; i++) {
+                    rentalNos.push($(disabledItems[i]).attr("data-rentalno"));
+                }
+                if (rentalNos.length === 0) {
+                    swal("溫馨提醒", "還沒有商品能刪...", "warning");
+                    return;
+                }
+                // console.log(rentalNos);
+                let data = {
+                    "rentalNos" : rentalNos,
+                    "memNo" : memNo
+                };
 
-                    if (item.rentalStat === "0") {
-                        rentalAllPrice += parseFloat(item.rentalPrice);
-                        rentalAllDepPrice += parseFloat(item.rentalDesPrice);
+                swal({
+                    title: "確定删除所有還不能租借的商品?",
+                    text: "",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                }).then((willDelete) => {
+
+                    if (willDelete) {
+
+                        fetch(baseUrl + apiPath + "/deleteFromCart", {
+                            method : "POST",
+                            headers : {
+                                "Content-Type" : "application/json"
+                            },
+                            body : JSON.stringify(data)
+                        }).then(function (response) {
+                            return response.text();
+                        }).then(function (data) {
+                            if (data === "ok") {
+                                swal("刪除成功", "", "success");
+                                getAll();
+                            }
+                        });
+
                     }
 
                 });
 
-                $("span.rentalAllPrice").text(rentalAllPrice);
-                $("span.rentalAllDepPrice").text(rentalAllDepPrice);
-                $("span.totalPrice").text( (rentalAllPrice + rentalAllDepPrice) );
-
-            });
-
-        } // getAll()結束
-        getAll();
-
-        // $("button.refBtn").on("click", function () {
-        //     getAll();
-        // });
-
-        // 刪除單個購物車商品
-        $(document).on("click", ".delItem", function () {
-
-            let rentalNos = [];
-            let rentalNo = $(this).closest("div.cartItem").attr("data-rentalNo");
-            rentalNos.push(rentalNo);
-            let data = {
-                "rentalNos" : rentalNos
-            };
-
-            if (confirm("確定從購物車刪除?")) {
-
-                fetch(baseUrl + apiPath + "/deleteFromCart", {
-                    method : "POST",
-                    headers : {
-                        "Content-Type" : "application/json"
-                    },
-                    body : JSON.stringify(data)
-                }).then(function (response) {
-                    return response.text();
-                }).then(function (data) {
-                    if (data === "ok") {
-                        alert("刪除成功");
-                        getAll();
-                    }
-                });
-
-            }
-
-        }); // 刪除單個購物車商品結束
-
-        // 刪除全部 不能租借的商品
-        $(document).on("click", "button.btn_delCantRent", function () {
-
-            let cartItems = $(this).closest("div.cartItems");
-            let disabledItems = cartItems.find("div.disabled-item");
-            let rentalNos = [];
-
-            for (let i = 0; i < disabledItems.length; i++) {
-                rentalNos.push($(disabledItems[i]).attr("data-rentalno"));
-            }
-            if (rentalNos.length === 0) {
-                alert("還沒有商品能刪...");
-                return;
-            }
-            // console.log(rentalNos);
-            let data = {
-                "rentalNos" : rentalNos,
-                "memNo" : memNo
-            };
-
-            if (confirm("確定刪除尚不可租借的商品?")) {
-
-                fetch(baseUrl + apiPath + "/deleteFromCart", {
-                    method : "POST",
-                    headers : {
-                        "Content-Type" : "application/json"
-                    },
-                    body : JSON.stringify(data)
-                }).then(function (response) {
-                    return response.text();
-                }).then(function (data) {
-                    if (data === "ok") {
-                        alert("刪除成功");
-                        getAll();
-                    }
-                });
-
-            }
-
-        }); // 刪除全部 不能租借的商品 結束
+            }); // 刪除全部 不能租借的商品 結束
 
 
-    }); // DOMContentLoaded結束
+        }); // DOMContentLoaded結束
 
-</script>
-
+    </script>
+    <!-- End script start -->
+</body>
 </html>
