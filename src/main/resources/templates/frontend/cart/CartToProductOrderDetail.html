@@ -71,7 +71,7 @@
         }
 
         .page-title {
-            background-color: #e1f5fe;
+            background-color: #E1F5FE;
             color: black;
             padding: 20px 0;
         }
@@ -147,6 +147,45 @@
             background-color: #333;
         }
     </style>
+    <style>
+        /* 自定义弹窗样式 */
+        .custom-alert {
+            display: none;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            width: 300px;
+            background-color: #f8f9fa;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            color:  red ;
+            font-size:1.3em ;
+            font-weight: bolder;
+        }
+
+        .custom-alert-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .custom-alert-close-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 25px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .custom-alert-close-btn:hover {
+            color: #333;
+        }
+    </style>
 </head>
 
 <body>
@@ -170,11 +209,17 @@
                     </div>
                     <div class="col-lg-6 my-2">
                         <ol class="breadcrumb breadcrumb-light m-0 small justify-content-center justify-content-lg-end">
-                            <li class="breadcrumb-item"><a class="text-nowrap" href="#">Home</a></li>
-                            <li class="breadcrumb-item text-nowrap active" aria-current="page">Your cart</li>
+                            <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/frontend/product/visitProduct}">商品頁面</a></li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page">購物車</li>
                         </ol>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div id="customAlert" class="custom-alert">
+            <div class="custom-alert-content">
+                <span id="customAlertMessage"></span>
+                <button id="customAlertCloseBtn" class="custom-alert-close-btn">&times;</button>
             </div>
         </div>
         <section class="section">
@@ -249,7 +294,9 @@
                             <li class="list-group-item p-3" th:each="productOrderDetail : ${productOrder.ProductOrderDetails}">
                                 <div class="row g-2">
                                     <div>
+                                        <a th:href="@{/frontend/product/oneProduct(productNo=${productOrderDetail.product.productNo})}">
                                         <img th:src="'data:image/png;base64,' + ${session['productImage' + productOrderDetail.product.productNo]}" alt="Product Picture" style="width: auto; height: 80px;" />
+                                        </a>
                                         <span th:text="${productOrderDetail.product.productName}" style="font-size: larger;"></span>
                                     </div>
                                     <div>
@@ -377,7 +424,25 @@
         }
     }
 
-    // 提取表单验证逻辑为单独的函数
+    // 自定義彈窗顯示函數
+    function customAlert(message) {
+        var customAlert = document.getElementById('customAlert');
+        var customAlertMessage = document.getElementById('customAlertMessage');
+        var customAlertCloseBtn = document.getElementById('customAlertCloseBtn');
+
+        // 設置彈窗消息
+        customAlertMessage.innerText = message;
+
+        // 顯示彈窗
+        customAlert.style.display = 'block';
+
+        // 註冊關閉按鈕事件
+        customAlertCloseBtn.onclick = function() {
+            customAlert.style.display = 'none';
+        };
+    }
+
+    // 檢查表單的函數
     function validateForm() {
         var productByrName = document.getElementById('productByrName').value;
         var productByrPhone = document.getElementById('productByrPhone').value;
@@ -389,34 +454,32 @@
 
         // 檢查訂購人姓名是否為非空
         if (productByrName.trim() === '') {
-            alert('訂購人姓名不能為空');
+            customAlert('訂購人姓名不能為空');
             return false;
         }
         if (productTakeMethod.trim() === '') {
-            alert('請選擇運送方式');
+            customAlert('請選擇運送方式');
             return false;
         }
         if (productPayMethod.trim() === '') {
-            alert('請選擇付款方式');
+            customAlert('請選擇付款方式');
             return false;
         }
 
-
         // 檢查手機號碼是否為非空且僅包含數字
         if (!/^09\d{8}$/.test(productByrPhone)) {
-            alert('訂購人手機號碼不正確,請輸入09開頭電話號碼');
+            customAlert('訂購人手機號碼不正確,請輸入09開頭電話號碼');
             return false;
         }
 
         // 檢查電子郵件地址是否為非空且符合格式
         if (productByrEmail.trim() === '' || !emailRegex.test(productByrEmail)) {
-            alert('訂購人Email不正確');
+            customAlert('訂購人Email不正確');
             return false;
         }
 
-
         if (productTakeMethod === '2' && productAddr.trim() === '') {
-            alert('宅配住址不能為空');
+            customAlert('宅配住址不能為空');
             return false;
         }
 

@@ -144,7 +144,7 @@ public class ProductOrderController {
         Member myData = (Member) session.getAttribute("loginsuccess");
         session.setAttribute("loginsuccess",myData);
         if (myData == null) {
-            session.setAttribute("location", "/frontend/productorder/submitOrder");
+//            session.setAttribute("location", "/frontend/productorder/submitOrder");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("frontend/member/loginMember");
         }
 
@@ -168,13 +168,13 @@ public class ProductOrderController {
 
     @PostMapping("insertOrder")
     public String insertOrder(@Validated(Create.class) CartRedis cartRedis,
-                              BindingResult result,
                               ModelMap model,
                               HttpSession session,
                               RedirectAttributes redirectAttributes) {
         Member myData = (Member) session.getAttribute("loginsuccess");
         if (myData == null) {
-            redirectAttributes.addAttribute("errorMessage", "請先登入帳號!");
+            redirectAttributes.addAttribute("error", "請先登入帳號!");
+            session.setAttribute("location", "/frontend/cart/addcartsuccess");
             return "redirect:/frontend/member/loginMember";
         }
 
@@ -184,6 +184,7 @@ public class ProductOrderController {
         model.addAttribute("coupons", getValidCoupons(memNo));
         model.addAttribute("productOrder", productOrder);
         session.setAttribute("productOrder", productOrder);
+
 
         return "frontend/cart/CartToProductOrderDetail";
     }
@@ -225,32 +226,27 @@ public class ProductOrderController {
 
     @GetMapping("CartEnd")
     public String CartEnd(ModelMap model, HttpSession session) {
-
         Member myData = (Member) session.getAttribute("loginsuccess");
-        Integer memNo = myData.getMemNo();
-        if(myData==null) {
+        if(myData == null) {
             return "redirect:/frontend/member/loginMember";
         }
+        Integer memNo = myData.getMemNo();
         List<ProductOrder> list = productOrderSvc.findByMember(memNo);
         model.addAttribute("productorderListData", list);
         return "frontend/cart/CartEnd";
     }
 
 
-    @PostMapping("loginPage")
-    public String loginPage(ModelMap model, HttpSession session) {
-        Member myData = (Member) session.getAttribute("loginsuccess");
-        return "frontend/product/visitProduct";
-    }
 
-    @PostMapping("MemberGetAll")
-    public String getAll(@RequestParam("productOrdNo") Integer productOrdNo, @RequestParam("productNo") Integer productNo, ModelMap model) {
-        ProductOrderDetail productOrderDetail = productOrderDetailService.findByproductOrdNoAndproductNo(productOrdNo, productNo);
-        model.addAttribute("productOrderDetail", productOrderDetail);
-        Product product = productService.getOneProduct(productNo);
-        model.addAttribute("product", product);
-        return "frontend/cart/ProductScorce";
-    }
+
+//    @PostMapping("MemberGetAll")
+//    public String getAll(@RequestParam("productOrdNo") Integer productOrdNo, @RequestParam("productNo") Integer productNo, ModelMap model) {
+//        ProductOrderDetail productOrderDetail = productOrderDetailService.findByproductOrdNoAndproductNo(productOrdNo, productNo);
+//        model.addAttribute("productOrderDetail", productOrderDetail);
+//        Product product = productService.getOneProduct(productNo);
+//        model.addAttribute("product", product);
+//        return "frontend/cart/ProductScorce";
+//    }
 
     public BindingResult removeFieldError(ProductOrder productOrder, BindingResult result, String removedFieldName) {
         List<FieldError> errorsListToKeep = result.getFieldErrors().stream()

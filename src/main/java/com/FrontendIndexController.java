@@ -1,23 +1,17 @@
-package com.ren;
+package com;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ren.product.entity.Product;
 import com.ren.product.service.impl.ProductServiceImpl;
 import com.yu.rental.entity.Rental;
 import com.yu.rental.service.RentalServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.Entity;
+import javax.mail.Session;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -28,13 +22,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Controller
-@RequestMapping("/frontend")
 public class FrontendIndexController {
 
     @Autowired
     ProductServiceImpl productSvc;
 
-    @Autowired
     RentalServiceImpl rentalSvc;
 
     /**
@@ -42,23 +34,31 @@ public class FrontendIndexController {
      *
      * @return forward to frontend index
      */
-    @GetMapping("/index")
-    public String toFrontendIndex(HttpServletRequest req) {
-        Cookie[] cookies = req.getCookies();
-        for (var cookie : cookies) {
-            System.out.println("cookieName: " + cookie.getName() + ", cookieValue: " + cookie.getValue());
+    @GetMapping("/")
+    public String toFrontendIndex(HttpServletRequest req,
+                                  HttpSession session) {
+//        Cookie[] cookies = req.getCookies();
+//        for (var cookie : cookies) {
+//            System.out.println("cookieName: " + cookie.getName() + ", cookieValue: " + cookie.getValue());
+//        }
+
+        String location = "";
+
+        if ((location = (String) session.getAttribute("location")) != null) {
+            return "redirect:" + location;
         }
-        return "frontend/index";
+
+        return "/index";
     }
 
-    @GetMapping("/searchTest")
+    @GetMapping("/frontend/searchTest")
     public String toSearch() {
 
         return "backend/searchTest";
     }
 
     @ResponseBody
-    @GetMapping("/search")
+    @GetMapping("/frontend/search")
     public Map<String, Object> search(@RequestParam("query") String keyword,
                                       @RequestParam(value = "page", defaultValue = "0") Integer page,
                                       @RequestParam(value = "size", defaultValue = "5") Integer size) throws JsonProcessingException {
@@ -77,7 +77,7 @@ public class FrontendIndexController {
         return searchResult;
     }
 
-    @GetMapping("/searchMore")
+    @GetMapping("/frontend/searchMore")
     public String searchMore(@RequestParam("searchQuery") String keyword,
                              @RequestParam(value = "productPage", defaultValue = "0") Integer productPage,
                              @RequestParam(value = "rentalPage", defaultValue = "0") Integer rentalPage,

@@ -190,13 +190,14 @@ public String insert(@Validated(Create.class) ProductOrder productOrder, Binding
         }
         return result;
     }
+
     @ExceptionHandler(value = { ConstraintViolationException.class })
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ModelAndView handleError(HttpServletRequest req, ConstraintViolationException e, Model model) {
         Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
         StringBuilder strBuilder = new StringBuilder();
-        for (ConstraintViolation<?> violation : violations ) {
-            strBuilder.append(violation.getMessage() + "<br>");
+        for (ConstraintViolation<?> violation : violations) {
+            strBuilder.append(violation.getMessage()).append("<br>");
         }
 
         List<ProductOrder> list = productOrderSvc.getAll();
@@ -205,10 +206,8 @@ public String insert(@Validated(Create.class) ProductOrder productOrder, Binding
 
         String message = strBuilder.toString();
 
-        // Return to the "addProductOrderDetail" page
-        return new ModelAndView("backend/productorderdetail/addProductOrder", "errorMessage", "請修正以下錯誤:<br>"+message);
+        return new ModelAndView("backend/productorder/update_productOrder_input", "errorMessage", "請修正以下錯誤:<br>" + message);
     }
-
     @GetMapping("/selectProductOrder")
     public String listAllProductOrder(Model model) {
 

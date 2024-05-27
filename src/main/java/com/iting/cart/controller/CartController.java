@@ -141,6 +141,7 @@ import com.iting.cart.service.CartService;
 
 import com.iting.productorder.entity.ProductOrder;
 import com.iting.productorder.service.ProductOrderService;
+import com.ren.product.entity.Product;
 import com.ren.product.service.impl.ProductServiceImpl;
 import com.ren.productpicture.entity.ProductPicture;
 import com.ren.productpicture.service.impl.ProductPictureServiceImpl;
@@ -193,7 +194,7 @@ public class CartController {
 
 
     @PostMapping("/cart/ProductOrderSuccess")
-    public String ProductOrderSuccess(HttpSession session,Model model) {
+    public String ProductOrderSuccess(HttpSession session, Model model) {
 //        Member myData = (Member) session.getAttribute("loginsuccess");
 //        Integer memNo = myData.getMemNo();
 //        List<ProductOrder> list = productOrderService.findByMember(memNo);
@@ -201,8 +202,9 @@ public class CartController {
         return "frontend/cart/ProductOrderPaySuccess";
 
     }
+
     @GetMapping("/cart/ProductOrderSuccessful")
-    public String ProductOrderSuccessful(HttpSession session,Model model) {
+    public String ProductOrderSuccessful(HttpSession session, Model model) {
         Member myData = (Member) session.getAttribute("loginsuccess");
         Integer memNo = myData.getMemNo();
         List<ProductOrder> list = productOrderService.findByMember(memNo);
@@ -212,42 +214,6 @@ public class CartController {
     }
 
 
-    //
-//    @GetMapping("/cart/addcartsuccess")
-//    public String insert(@Validated(Create.class) CartRedis cartRedis,HttpSession session, Model model) {
-//        // 从会话中获取 memNo 的值
-//        Member member = (Member) session.getAttribute("user");
-//        if (member == null) {
-//            session.setAttribute("location", "/frontend/cart/addcartsuccess");
-//            return "redirect:/login";
-//        }
-//        Integer memNo = member.getMemNo();
-//        cartSvc.updateCart(cartRedis);
-//        List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNo);
-//        model.addAttribute("cartListData", cartListData);
-//        return getCart(memNo, model, "/frontend/cart/Cart");
-//    }
-//    private String getCart(Integer memNo, Model model, String viewName) {
-//        List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNo);
-//
-////         檢查購物車是否為空
-//        if (cartListData.isEmpty()) {
-//            model.addAttribute("cartListData", true);
-//        }
-//        // Calculate the total
-//        int total = 0;
-//        for (CartRedis item : cartRedisList) {
-//            total += item.getSubtotalAmount();
-//        }
-//        int shippingCost = total > 500 ? 0 : 100;
-
-    // Add total to the model
-//        model.addAttribute("total", total);
-//        model.addAttribute("shippingCost", shippingCost);
-//        model.addAttribute("cartListData", cartListData);
-//        model.addAttribute("memNo", memNo);
-//        return viewName;
-//    }
     @GetMapping("/cart/addcartsuccess")
     public String insert(@Validated(Create.class) CartRedis cartRedis, BindingResult result, ModelMap model, HttpSession session) {
         Integer successmemNo;
@@ -265,7 +231,7 @@ public class CartController {
                     cartItem.setMemNo(successmemNo);
                     cartSvc.updateCart(cartItem);
                 }
-                List<CartRedis> newcartListData =  cartSvc.findByCompositeKey(successmemNo);
+                List<CartRedis> newcartListData = cartSvc.findByCompositeKey(successmemNo);
                 session.removeAttribute("oldcartListData");
                 model.addAttribute("cartListData", newcartListData);
                 memNo = session.getAttribute("memNo");
@@ -278,6 +244,19 @@ public class CartController {
                 if (memNo != null) {
                     Integer memNoInt = Integer.valueOf(memNo.toString());
                     List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNoInt);
+                    for (CartRedis cartItem : cartListData) {
+                        Integer cartProductNo = cartItem.getProductNo();
+                        List<ProductPicture> productPictures = productPictureService.getByProductNo(cartProductNo);
+                        if (productPictures != null && !productPictures.isEmpty()) {
+                            ProductPicture firstProductPicture = productPictures.get(0);
+                            byte[] firstPic = firstProductPicture.getProductPic();
+                            Integer productNo = firstProductPicture.getProduct().getProductNo();
+                            String base64Image = Base64.getEncoder().encodeToString(firstPic);
+                            session.setAttribute("productImage" + productNo, base64Image);
+                            model.addAttribute("productImage" + productNo, base64Image);
+                        }
+                    }
+                    session.setAttribute("cartListData", cartListData);
                     model.addAttribute("cartListData", cartListData);
                 }
             }
@@ -300,7 +279,7 @@ public class CartController {
                         model.addAttribute("productImage" + productNo, base64Image);
                     }
                 }
-
+                session.setAttribute("cartListData", cartListData);
                 // 设置购物车信息为模型属性
                 model.addAttribute("cartListData", cartListData);
             }
@@ -308,62 +287,6 @@ public class CartController {
 
         return "frontend/cart/Cart";
     }
-
-
-
-
-
-//    public BindingResult removeFieldError(CartRedis cart, BindingResult result, String removedFieldname) {
-//        List<FieldError> errorsListToKeep = result.getFieldErrors().stream()
-//                .filter(fieldname -> !fieldname.getField().equals(removedFieldname))
-//                .collect(Collectors.toList());
-//        result = new BeanPropertyBindingResult(cart, "cart");
-//        for (FieldError fieldError : errorsListToKeep) {
-//            result.addError(fieldError);
-//        }
-//        return result;
-//    }
-//    @ExceptionHandler(value = { ConstraintViolationException.class })
-//    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-//    public ModelAndView handleError(HttpServletRequest req, ConstraintViolationException e, Model model) {
-//        Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
-//        StringBuilder strBuilder = new StringBuilder();
-//        for (ConstraintViolation<?> violation : violations ) {
-//            strBuilder.append(violation.getMessage() + "<br>");
-//        }
-//        String message = strBuilder.toString();
-//        return new ModelAndView("frontend/cart/addcart", "errorMessage", "請修正以下錯誤:<br>"+message);
-//    }
-////
-//    @PostMapping("/CartfromMemno")
-//    public String Cart (@ModelAttribute("cartListData") List < CartRedis > cartListData) {
-//        if (cartListData == null || cartListData.isEmpty()) {
-//            // 处理空购物车列表的情况，你可以将其重定向到其他页面或者给出错误提示
-//            return "redirect:/emptyCart"; // 重定向到空购物车页面
-//        } else {
-//            return "frontend/cart/Cart"; // 显示购物车页面
-//        }
-//    }
-//
-//    @GetMapping("/emptyCart")
-//    public String showEmptyCartPage () {
-//        return "frontend/cart/EmptyCart"; // 显示空购物车页面
-//    }
-//
-////        @ModelAttribute("cartListData")
-////        protected List<CartRedis> referenceListData_Mbr (Model model, @RequestParam(name = "memNo", required = false) String
-////        memNo){
-////            if (memNo == null || memNo.isEmpty()) {
-////                return Collections.emptyList();
-////            } else {
-////                model.addAttribute("Cart", new CartRedis());
-////                List<CartRedis> cart = cartSvc.findByCompositeKey(Integer.valueOf(memNo));
-////                return cart;
-////            }
-////        }
-//
-//
-
 
     @PostMapping("/cart/coupNoInstantly")
     @ResponseBody
@@ -410,7 +333,7 @@ public class CartController {
         session.setAttribute("memNo", memNo);
         List<CartRedis> cartRedisList = cartSvc.findByCompositeKey(memNo);
         session.removeAttribute("oldcartListData");
-        session.setAttribute("oldcartListData",cartRedisList);
+        session.setAttribute("oldcartListData", cartRedisList);
         System.out.println("即时更新成功");
         return cartRedisList;
     }
@@ -447,31 +370,30 @@ public class CartController {
                 List<CartRedis> oldcartListData = cartSvc.findByCompositeKey(memNo);
                 session.setAttribute("oldcartListData", oldcartListData);
             }
-        }else {
-                member = (Member) session.getAttribute("loginsuccess");
-                memNo = member.getMemNo();
-                cartRedis = new CartRedis(); // 在這裡重新分配 cartRedis
-                cartRedis.setMemNo(memNo);
-                cartRedis.setProductNo(Integer.valueOf(productNo));
-                cartRedis.setProductBuyQty(Integer.valueOf(productBuyQty));
-                cartSvc.updateCart(cartRedis);
+        } else {
+            member = (Member) session.getAttribute("loginsuccess");
+            memNo = member.getMemNo();
+            cartRedis = new CartRedis(); // 在這裡重新分配 cartRedis
+            cartRedis.setMemNo(memNo);
+            cartRedis.setProductNo(Integer.valueOf(productNo));
+            cartRedis.setProductBuyQty(Integer.valueOf(productBuyQty));
+            cartSvc.updateCart(cartRedis);
 
-                productPictures = productPictureService.getByProductNo(Integer.valueOf(productNo));
-                if (productPictures != null && !productPictures.isEmpty()) {
-                    ProductPicture firstProductPicture = productPictures.get(0);
-                    byte[] firstPic = firstProductPicture.getProductPic();
-                    String base64Image = Base64.getEncoder().encodeToString(firstPic);
-                    if (session.getAttribute("productImage" + productNo) == null) {
-                        session.setAttribute("productImage" + productNo, base64Image);
-                    }
-
+            productPictures = productPictureService.getByProductNo(Integer.valueOf(productNo));
+            if (productPictures != null && !productPictures.isEmpty()) {
+                ProductPicture firstProductPicture = productPictures.get(0);
+                byte[] firstPic = firstProductPicture.getProductPic();
+                String base64Image = Base64.getEncoder().encodeToString(firstPic);
+                if (session.getAttribute("productImage" + productNo) == null) {
+                    session.setAttribute("productImage" + productNo, base64Image);
                 }
+
             }
-            response.put("message", "Success");
+        }
+        response.put("message", "Success");
 
         return response;
     }
-
 
     @GetMapping("/cart/minicart")
     @ResponseBody
@@ -479,33 +401,62 @@ public class CartController {
         Map<String, Object> response = new HashMap<>();
         Member member = (Member) session.getAttribute("loginsuccess");
         if (member == null) {
-            // 如果用户未登录，则返回错误信息或者空购物车信息
-            response.put("error", "用户未登录");
-            return response;
-        }
+            Object memNoObj = session.getAttribute("memNo");
+            if (memNoObj != null) {
+                int memNo = (int) memNoObj;
+                List<CartRedis> cartRedisList = cartSvc.findByCompositeKey(memNo);
 
-        Integer memNo = member.getMemNo();
-        List<CartRedis> cartRedisList = cartSvc.findByCompositeKey(memNo);
+                List<Map<String, Object>> cartItems = new ArrayList<>();
+                for (CartRedis cart : cartRedisList) {
+                    Map<String, Object> cartItem = new HashMap<>();
+                    cartItem.put("productName", cart.getProductName());
+                    cartItem.put("productPrice", cart.getProductPrice());
+                    cartItem.put("productBuyQty", cart.getProductBuyQty());
 
-        List<Map<String, Object>> cartItems = new ArrayList<>();
-        for (CartRedis cart : cartRedisList) {
-            Map<String, Object> cartItem = new HashMap<>();
-            cartItem.put("productName", cart.getProductName());
-            cartItem.put("productPrice", cart.getProductPrice());
-            cartItem.put("productBuyQty", cart.getProductBuyQty());
 
-            List<ProductPicture> productPictures = productPictureService.getByProductNo(Integer.valueOf(cart.getProductNo()));
-            if (!productPictures.isEmpty()) {
-                ProductPicture firstProductPicture = productPictures.get(0);
-                byte[] firstPic = firstProductPicture.getProductPic();
-                String base64Image = Base64.getEncoder().encodeToString(firstPic);
-                cartItem.put("firstPic", base64Image);
+                    List<ProductPicture> productPictures = productPictureService.getByProductNo(Integer.valueOf(cart.getProductNo()));
+                    if (!productPictures.isEmpty()) {
+                        ProductPicture firstProductPicture = productPictures.get(0);
+                        byte[] firstPic = firstProductPicture.getProductPic();
+                        String base64Image = Base64.getEncoder().encodeToString(firstPic);
+                        cartItem.put("firstPic", base64Image);
+                    }
+
+                    cartItems.add(cartItem);
+                }
+
+                response.put("cartItems", cartItems);
+                return response;
+            } else {
+                // Handle case where memNo is null
+                // You may want to return an error response or handle it differently
+                return response; // Add this line to fulfill the missing return statement
+            }
+        } else {
+            int memNo = member.getMemNo();
+            List<CartRedis> cartRedisList = cartSvc.findByCompositeKey(memNo);
+
+            List<Map<String, Object>> cartItems = new ArrayList<>();
+            for (CartRedis cart : cartRedisList) {
+                Map<String, Object> cartItem = new HashMap<>();
+                cartItem.put("productName", cart.getProductName());
+                cartItem.put("productPrice", cart.getProductPrice());
+                cartItem.put("productBuyQty", cart.getProductBuyQty());
+
+                List<ProductPicture> productPictures = productPictureService.getByProductNo(Integer.valueOf(cart.getProductNo()));
+                if (!productPictures.isEmpty()) {
+                    ProductPicture firstProductPicture = productPictures.get(0);
+                    byte[] firstPic = firstProductPicture.getProductPic();
+                    String base64Image = Base64.getEncoder().encodeToString(firstPic);
+                    cartItem.put("firstPic", base64Image);
+                }
+
+                cartItems.add(cartItem);
             }
 
-            cartItems.add(cartItem);
+            response.put("cartItems", cartItems);
+            return response;
         }
-
-        response.put("cartItems", cartItems);
-        return response;
     }
+
 }
