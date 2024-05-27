@@ -14,7 +14,7 @@
     <!-- Favicon -->
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
-    <link th:href="@{/frontend/assets/css/style.css}" rel="stylesheet">
+    <th:block th:include="~{frontend/component/plugin/frontendplugin.html :: css}"></th:block>
     <style>
         span.successMsg {
             /* 確保初始狀態為隱藏，以便fadeIn能正常工作 */
@@ -131,26 +131,26 @@
                                     </div>
                                     <div class="shop-sidebar-list collapse show" id="shop_Color">
                                         <ul>
-                                            <li class="custom-checkbox">
-                                                <input class="custom-control-input" id="colorsidebar1" type="checkbox" value="藍色">
+                                            <li class="custom-radio">
+                                                <input class="custom-control-input" id="colorsidebar1" type="radio" name="color" value="藍色">
                                                 <label class="custom-control-label" for="colorsidebar1">
                                                     <span class="text-body">藍色</span>
                                                 </label>
                                             </li>
-                                            <li class="custom-checkbox">
-                                                <input class="custom-control-input" id="colorsidebar2" type="checkbox" value="白色">
+                                            <li class="custom-radio">
+                                                <input class="custom-control-input" id="colorsidebar2" type="radio" name="color" value="白色">
                                                 <label class="custom-control-label" for="colorsidebar2">
                                                     <span class="text-body">白色</span>
                                                 </label>
                                             </li>
-                                            <li class="custom-checkbox">
-                                                <input class="custom-control-input" id="colorsidebar3" type="checkbox" value="黑色">
+                                            <li class="custom-radio">
+                                                <input class="custom-control-input" id="colorsidebar3" type="radio" name="color" value="黑色">
                                                 <label class="custom-control-label" for="colorsidebar3">
                                                     <span class="text-body">黑色</span>
                                                 </label>
                                             </li>
-                                            <li class="custom-checkbox">
-                                                <input class="custom-control-input" id="colorsidebar4" type="checkbox" value="紅色">
+                                            <li class="custom-radio">
+                                                <input class="custom-control-input" id="colorsidebar4" type="radio" name="color" value="紅色">
                                                 <label class="custom-control-label" for="colorsidebar4">
                                                     <span class="text-body">紅色</span>
                                                 </label>
@@ -170,28 +170,28 @@
                                 </div>
                                 <div class="shop-sidebar-list collapse show" id="shop_brand">
                                     <ul>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="brand1" type="checkbox">
+                                        <li class="custom-radio">
+                                            <input class="custom-control-input" id="brand1" type="radio" name="size" value="XS">
                                             <label class="custom-control-label" for="brand1">XS</label>
                                         </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="brand2" type="checkbox">
+                                        <li class="custom-radio">
+                                            <input class="custom-control-input" id="brand2" type="radio" name="size" value="S">
                                             <label class="custom-control-label" for="brand2">S</label>
                                         </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="brand3" type="checkbox">
+                                        <li class="custom-radio">
+                                            <input class="custom-control-input" id="brand3" type="radio" name="size" value="M">
                                             <label class="custom-control-label" for="brand3">M</label>
                                         </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="brand4" type="checkbox">
+                                        <li class="custom-radio">
+                                            <input class="custom-control-input" id="brand4" type="radio" name="size" value="L">
                                             <label class="custom-control-label" for="brand4">L</label>
                                         </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="brand5" type="checkbox">
+                                        <li class="custom-radio">
+                                            <input class="custom-control-input" id="brand5" type="radio" name="size" value="XL">
                                             <label class="custom-control-label" for="brand5">XL</label>
                                         </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="brand6" type="checkbox">
+                                        <li class="custom-radio">
+                                            <input class="custom-control-input" id="brand6" type="radio" name="size" value="2L">
                                             <label class="custom-control-label" for="brand6">2L</label>
                                         </li>
                                     </ul>
@@ -208,17 +208,18 @@
                                 </div>
                                 <div class="shop-sidebar-list collapse show" id="shop_price">
                                     <ul>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="price1" type="checkbox">
+                                        <li class="custom-radio">
+                                            <input class="custom-control-input" id="price1" type="radio" name="price" value="$2000">
                                             <label class="custom-control-label" for="price1">$2000</label>
                                         </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="price2" type="checkbox">
+                                        <li class="custom-radio">
+                                            <input class="custom-control-input" id="price2" type="radio" name="price" value="$4000">
                                             <label class="custom-control-label" for="price2">$4000</label>
                                         </li>
                                     </ul>
                                 </div>
-                            </div><!-- End Brands -->
+                            </div>
+                            <!-- End Brands -->
                         </div><!-- <div class="offcanvas-body flex-column">  -->
                     </div>
                     <!-- End Sidebar -->
@@ -295,20 +296,19 @@
                                         <span class="text-primary fs-4" th:text="'$' + ${rental.rentalCategory.rentalDesPrice}"></span><!-- 押金 -->
                                         <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del><!-- 定價 -->
                                     </div>
-                                    <div>
+                                    <div class="rentalItem">
                                         <a href="" class="btn btn-mode btn_addToCart"><!--  加入購物車(457)  -->
                                             <i class="fi-shopping-cart"></i>
                                         </a>
-                                        <a href="" class="btn btn-primary btn_addToFAV"><!--  加入我的最愛  -->
-                                            <i class="fi-heart"></i>
-                                        </a>
+<!--                                        <div class="addToFAV">-->
+                                            <a href="" class="btn btn-primary addToFAV"><!--  加入我的最愛  -->
+                                                <input type="hidden" name="rentalNo" th:value="${rental.rentalNo}">
+                                                <i class="fi-heart"></i>
+                                            </a>
+<!--                                        </div>-->
                                         <a href="#" class="btn btn-primary btn_addTrack">
                                             <i class="bi bi-bookmark"></i>
                                         </a>
-<!--                                        <a data-bs-toggle="modal" data-bs-target="#px-quick-view" th:href="@{/frontend/rental/rentalQuickview}"-->
-<!--                                           href="javascript:void(0)" class="btn btn-primary">-->
-<!--                                            <i class="fi-eye"></i>&lt;!&ndash;  跳窗顯示該商品畫面 (rentalQuickview.html) &ndash;&gt;-->
-<!--                                        </a>-->
                                         <span class="successMsg" style="color: lightgreen"></span>
                                     </div>
                                 </div>
@@ -366,43 +366,38 @@
 
 <script>
     /*
-     * 選擇對應顏色
+     * 選擇對應關鍵字
      * 使用jQuery抓取點擊事件，前台發送清求。
      * 最後依後台判斷選擇方式並回傳對應的資料。
     */
     $(document).ready(function() {
-        $('input[type="checkbox"]').change(function() {
-            // 收集已選中的顏色值
-            const selectedColors = [];
-            $('input[type="checkbox"]:checked').each(function() {
-                selectedColors.push($(this).val());
-            });
+        $('input[type="radio"]').change(function() {
+            console.log("已點選");
+            // 取得所選的值
+            let color = $('input[name="color"]:checked').val();
+            let size = $('input[name="size"]:checked').val();
+            let price = $('input[name="price"]:checked').val();
+            console.log("已點選" +color);
+            console.log("已點選"+size);
+            console.log("已點選"+price);
 
-            // 發送 AJAX 請求到後端
             $.ajax({
-                url: '/getDisplayColor',
-                type: 'GET',
-                data: { color: selectedColors.join(',') }, // 傳遞選中的顏色值作為參數
-                success: function(data) {
-                    // 更新頁面上的商品列表
-                    updateProductList(data);
+                type: "GET",
+                url: "/findByAllKeyWord",
+                data: {
+                    keyword: '', // 根據keyword
+                    rentalStat: 1, // 根據rentalStat狀態
+                    rentalSize: size, // 根據選擇的size
+                    rentalDesPrice: price // 根據選擇的price
+                },
+                success: function(response) {
+                    $('#rental-list').html(response); // 更新商品列表
                 },
                 error: function(xhr, status, error) {
-                    console.error('Error:', error);
+                    console.error(error);
                 }
             });
         });
-
-        // 更新頁面上的商品列表
-        function updateProductList(rentals) {
-            // 清空原有的商品列表
-            $('#product-list').empty();
-
-            // 循環添加新的商品信息
-            rentals.forEach(function(rental) {
-                $('#product-list').append('<div>' + rental.rentalName + ' - ' + rental.rentalColor + '</div>');
-            });
-        }
     });
 
 
@@ -427,62 +422,95 @@
      * 使用 th:attr 設置data-屬性，在點擊愛心後抓取到自訂的值&當下時間(ISO 8601 )
      * 前端傳遞數據至後端，後台針對時間轉Timestamp型態
     */
-    $(document).on("click", "a.btn_addToFAV", function(e) {
-        e.preventDefault(); // 阻止表單默認提交行為
-
-        // window.location.protocol -> 返回當前頁面使用的協議
-        // window.location.host -> 返回當前頁面的主機名和埠號
-        // const baseUrl -> 將window.location.protocol和window.location.host，用 "//" 連接，取得當前頁面的URL
-        const baseUrl = window.location.protocol + "//" + window.location.host;
-        const rentalNo = $(this).closest("div.rental").find("span.rentalNo").text().trim();
-        const rentalFavTime = new Date().toISOString(); //取得當前時間(ISO 8601型態 ，只能在後端轉型)
-        console.log("抓取編號:" + rentalNo);
-        console.log("抓取當前時間:" + rentalFavTime);
-
-        //打包數據
-        const wishData = {
-            rentalNo: rentalNo,
-            rentalFavTime: rentalFavTime
-        };
-
-        fetch(baseUrl + "/frontend/rentalmyfavorite/addWish", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(wishData) //將包裝的數據轉換成JSON格式並發送
-        }).then(response => response.text())
-            .then(rentalName => {
-                // console.log("2 抓取打包數據:" + JSON.stringify(wishData)); //成功匯出
-                console.log(rentalName + "已加入我的最愛");
-            });
-    });
-
-    /*
-     * 功能：顏色篩選及時更新
-     *
-     *
-    */
     $(document).ready(function() {
-        $('input[type="checkbox"]').change(function() {
-            var selectedColors = [];
-            $('input[type="checkbox"]:checked').each(function() {
-                selectedColors.push($(this).val());
-            });
+        $(".addToFAV").on("click", function(event) {
+
+            event.preventDefault(); // 阻止表單默認提交行為
+
+            // window.location.protocol -> 返回當前頁面使用的協議
+            // window.location.host -> 返回當前頁面的主機名和埠號
+            // const baseUrl -> 將window.location.protocol和window.location.host，用 "//" 連接，取得當前頁面的URL
+            const baseUrl = window.location.protocol + "//" + window.location.host;
+            const row = $(this).closest('.rentalItem'); // 找到最近的 .rentalItem 元素
+            const rentalNo = row.find('input[name="rentalNo"]').val();
+            console.log("抓取編號:" + rentalNo);
+            console.log("抓取row資訊:" + row);
+
+            // 打包數據
+            const data = {
+                rentalNo: rentalNo,
+            };
+
             $.ajax({
                 type: 'POST',
-                url: '/selectColors',
-                contentType: 'application/json',
-                data: JSON.stringify({ selectedColors: selectedColors }),
+                url: baseUrl + "/frontend/rentalmyfavorite/addWish",
+                data: data,
                 success: function(data) {
-                    $('#results').empty();
-                    data.forEach(function(item) {
-                        $('#results').append('<li>' + item + '</li>');
-                    });
+                    console.log("加入成功");
                 }
             });
         });
     });
+
+    // $(document).on("click", "a.btn_addToFAV", function(e) {
+    //     e.preventDefault(); // 阻止表單默認提交行為
+    //
+        // window.location.protocol -> 返回當前頁面使用的協議
+        // window.location.host -> 返回當前頁面的主機名和埠號
+        // const baseUrl -> 將window.location.protocol和window.location.host，用 "//" 連接，取得當前頁面的URL
+    //     const baseUrl = window.location.protocol + "//" + window.location.host;
+    //     const rentalNo = $(this).closest("div.rental").find("span.rentalNo").text().trim();
+    //     const rentalFavTime = new Date().toISOString(); //取得當前時間(ISO 8601型態 ，只能在後端轉型)
+    //     console.log("抓取編號:" + rentalNo);
+    //     console.log("抓取當前時間:" + rentalFavTime);
+    //
+    //     //打包數據
+    //     const wishData = {
+    //         rentalNo: rentalNo,
+    //         rentalFavTime: rentalFavTime
+    //     };
+    //
+    //     fetch(baseUrl + "/frontend/rentalmyfavorite/addWish", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         },
+    //         body: JSON.stringify(wishData) //將包裝的數據轉換成JSON格式並發送
+    //     }).then(response => response.text())
+    //         .then(rentalName => {
+    //             // console.log("2 抓取打包數據:" + JSON.stringify(wishData)); //成功匯出
+    //             console.log(rentalName + "已加入我的最愛");
+    //         });
+    // });
+
+
+
+
+    // /*
+    //  * 功能：顏色篩選及時更新
+    //  *
+    //  *
+    // */
+    // $(document).ready(function() {
+    //     $('input[type="checkbox"]').change(function() {
+    //         var selectedColors = [];
+    //         $('input[type="checkbox"]:checked').each(function() {
+    //             selectedColors.push($(this).val());
+    //         });
+    //         $.ajax({
+    //             type: 'POST',
+    //             url: '/selectColors',
+    //             contentType: 'application/json',
+    //             data: JSON.stringify({ selectedColors: selectedColors }),
+    //             success: function(data) {
+    //                 $('#results').empty();
+    //                 data.forEach(function(item) {
+    //                     $('#results').append('<li>' + item + '</li>');
+    //                 });
+    //             }
+    //         });
+    //     });
+    // });
 
     /*----------------------------右翰寫的方法----------------------------------*/
 

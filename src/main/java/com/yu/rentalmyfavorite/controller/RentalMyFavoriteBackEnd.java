@@ -62,29 +62,29 @@ public class RentalMyFavoriteBackEnd {
     }
 
 
-    //萬用查詢
-    @GetMapping("/search")
-    public String search(@RequestParam(value = "rentalNo", required = false) Integer rentalNo,
-                         @RequestParam(value = "memNo", required = false) Integer memNo,
-                         @RequestParam(value = "rentalFavTime",required = false) Timestamp rentalFavTime,
-                         ModelMap modelMap) {
-
-        Map<String, Object> map = new HashMap<>();
-
-        if (rentalNo != null) {
-            map.put("rentalNo", rentalNo);
-        } else if (memNo != null) {
-            map.put("memNo", memNo);
-        } else if (rentalFavTime != null) {
-            map.put("rentalFavTime", rentalFavTime);
-        }
-
-        List<RentalMyFavorite> rentalMyFAVList = rentalMyFAVService.searchRentalMyFAVs(map);
-        modelMap.addAttribute("rentalMyFAVList", rentalMyFAVList);
-        modelMap.addAttribute("search", "true");
-
-        return "/backend/rentalmyfavorite/selectRentalMyFAV";
-    }
+//    //萬用查詢
+//    @GetMapping("/search")
+//    public String search(@RequestParam(value = "rentalNo", required = false) Integer rentalNo,
+//                         @RequestParam(value = "memNo", required = false) Integer memNo,
+//                         @RequestParam(value = "rentalFavTime",required = false) Timestamp rentalFavTime,
+//                         ModelMap modelMap) {
+//
+//        Map<String, Object> map = new HashMap<>();
+//
+//        if (rentalNo != null) {
+//            map.put("rentalNo", rentalNo);
+//        } else if (memNo != null) {
+//            map.put("memNo", memNo);
+//        } else if (rentalFavTime != null) {
+//            map.put("rentalFavTime", rentalFavTime);
+//        }
+//
+//        List<RentalMyFavorite> rentalMyFAVList = rentalMyFAVService.searchRentalMyFAVs(map);
+//        modelMap.addAttribute("rentalMyFAVList", rentalMyFAVList);
+//        modelMap.addAttribute("search", "true");
+//
+//        return "/backend/rentalmyfavorite/selectRentalMyFAV";
+//    }
 
 
     /**

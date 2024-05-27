@@ -2,6 +2,7 @@ package com.yu.rental.service;
 
 import com.yu.rental.entity.Rental;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -16,21 +17,20 @@ public interface RentalService {
 
     public List<Rental> getOneRental(Map<String, Object> getOneRentalMap);	//單筆查詢(List集合)
 
+    Rental getOneRental(Integer rentalNo);
+
     public Rental findByRentalName(String rentalName);//單筆查詢(rentalName)
 
     List<Rental> findByRentalColor(String rentalColor);  //處理查詢(依租借品的顏色)
 
     public List<Rental> getRentalName(String rentalName); //以rentalName 做模糊查詢
 
+    // 依關鍵字搜尋相關租借品 (如果rentalStat不為5 (下架狀態))
+    Page<Rental> findByAllKeyWord(String keyword, Byte rentalStat, Integer rentalSize, Pageable pageable);
+
     public List<Rental> findAllSortDESC(); //以rentalPrice查詢，金額由大到小
 
     public List<Rental> findAllSort(); //以rentalPrice查詢，金額由小到大
-
-//    public List<Rental> getRentalSize(Integer rentalSize); //以rentalSize查詢
-//
-//    public List<Rental> getRentalColor(String rentalColor); //以rentalColor查詢
-//
-//    public List<Rental> findByStat(Byte rentalStat);//單筆查詢(rentalStat) //以rentalStat查詢租借品狀態
 
     public List<Rental> findByRentalCatNoSortDESC(Integer rentalCatNo); //以rentalPrice查詢，金額由大到小 (依rentalCatNo處理)
 

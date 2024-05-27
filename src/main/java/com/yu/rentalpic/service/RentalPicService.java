@@ -20,13 +20,9 @@ public interface RentalPicService {
     RentalPic addRentalPic(RentalPic rentalPic); //新增
 //    RentalPic addRentalPic(Integer rNo, byte[] rPic); //新增
 
-    RentalPic updateRentalPic(RentalPic rentalPic); //新增
-//    RentalPic updateRentalPic(Integer rNo, byte[] rPic); //修改
-
+    RentalPic updateRentalPic(RentalPic rentalPic); //修改
 
     public void updatePicture(RentalPic rentalPic, byte[] rentalFile); //修改照片
 
-
     List<RentalPic> searchRentalPics(Map<String, Object> map); //複合查詢
-
 }
