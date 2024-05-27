@@ -126,7 +126,7 @@ Wrapper
                                 <div class="shop-sidebar-list collapse show" id="shop_Color">
                                     <ul>
                                         <li class="custom-checkbox checkbox-color">
-                                            <input class="custom-control-input" id="colorsidebar1" type="checkbox" data-filter-type="color" data-filter-value="blue">
+                                            <input class="custom-control-input" id="colorsidebar1" type="checkbox" checked="" data-filter-type="color" data-filter-value="blue">
                                             <label class="custom-control-label" style="color: #1F45FC;" for="colorsidebar1">
                                                 <span class="text-body">藍色</span>
                                             </label>
@@ -334,21 +334,26 @@ Wrapper
                         </div>
                         <!-- End Product Box -->
                         <!-- 頁碼 -->
-                        <!-- 分頁控件 -->
                         <div class="shop-bottom-bar d-flex align-items-center mt-3">
-                            <div th:text="'Showing: ' + ${currentPage * 15 + 1} + ' - ' + (${currentPage + 1} * 15 > ${productPage.totalElements} ? ${productPage.totalElements} : (${currentPage + 1} * 15)) + ' of ' + ${productPage.totalElements}"></div>
+                            <div>Showing: 1 - 12 of 17</div>
                             <div class="ms-auto">
                                 <ul class="pagination">
-                                    <li class="page-item" th:classappend="${productPage.hasPrevious()} ? '' : 'disabled'">
-                                        <a class="page-link" th:href="@{/frontend/product/visitProduct(page=${currentPage - 1}, size=15)}" aria-label="Previous">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Previous">
                                             <span aria-hidden="true">«</span>
                                         </a>
                                     </li>
-                                    <li class="page-item" th:each="i : ${#numbers.sequence(0, productPage.totalPages - 1)}" th:classappend="${i == currentPage} ? 'active' : ''">
-                                        <a class="page-link" th:href="@{/frontend/product/visitProduct(page=${i}, size=15)}" th:text="${i + 1}"></a>
+                                    <li class="page-item active">
+                                        <a class="page-link" href="#">1</a>
                                     </li>
-                                    <li class="page-item" th:classappend="${productPage.hasNext()} ? '' : 'disabled'">
-                                        <a class="page-link" th:href="@{/frontend/product/visitProduct(page=${currentPage + 1}, size=15)}" aria-label="Next">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">2</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#">3</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Next">
                                             <span aria-hidden="true">»</span>
                                         </a>
                                     </li>

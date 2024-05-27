@@ -421,14 +421,14 @@
                                 size: 14,
                                 weight: 'bold'
                             },
-                            usePointStyle: true, // 使用点样式
+                            usePointStyle: true, // 使用點樣式
                             generateLabels: (chart) => {
                                 const labels = Chart.defaults.plugins.legend.labels.generateLabels(chart);
                                 labels.forEach((label, index) => {
                                     if (chart.data.datasets[index].type === 'line') {
-                                        label.pointStyle = 'circle'; // 自定义折线图样式
+                                        label.pointStyle = 'circle'; // 自定義折線圖樣式
                                     } else {
-                                        label.pointStyle = 'rect'; // 柱状图样式
+                                        label.pointStyle = 'rect'; // 柱狀圖樣式
                                     }
                                 });
                                 return labels;
