@@ -22,6 +22,9 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,28 +43,70 @@ public class ProductFrontEndController {
 
     // 前往商品瀏覽頁面
     @GetMapping("/visitProduct-list")
-    public String toVisitProductList(ModelMap model) {
-        model.addAttribute("productDTOList", productSvc.getVisitProduct(productSvc.getAll()));
+    public String toVisitProductList(ModelMap model,
+                                     @RequestParam(defaultValue = "0") int page,
+                                     @RequestParam(defaultValue = "15") int size,
+                                     @RequestParam(defaultValue = "newest") String sortType) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductDTO> productPage = productSvc.getVisitProduct(productSvc.getByProductStat(Byte.valueOf("1")), pageable, sortType);
+
+        List<Boolean> newProductList = new ArrayList<>();
+        // 計算是否為最新上市
+        for (ProductDTO productDTO : productPage.getContent()) {
+            Boolean newProduct = false;
+            // 對時間set排序，以最先推出的時間作依據(由小到大排)
+            if (productDTO.getProductOnShelfSet() != null && !productDTO.getProductOnShelfSet().isEmpty()) {
+                List<Timestamp> list = new ArrayList<>(productDTO.getProductOnShelfSet());
+                list.sort(Comparator.naturalOrder());
+
+                LocalDateTime now = LocalDateTime.now();
+                LocalDateTime dateTime = list.get(0).toLocalDateTime();
+                Long daysDifference = ChronoUnit.DAYS.between(dateTime, now);
+                if (daysDifference < 7) {
+                    newProduct = true;
+                }
+                newProductList.add(newProduct);
+            }
+        }
+
+        model.addAttribute("newProductList", newProductList);
+        model.addAttribute("productPage", productPage);
+        model.addAttribute("productDTOList", productPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productPage.getTotalPages());
         String[] sizes = {"XS", "S", "M", "L", "XL", "2L"};
         model.addAttribute("sizes", sizes);
 
         return "frontend/product/visitProduct-list";
     }
 
-//    @GetMapping("/visitProduct")
-//    public String toVisitProduct(ModelMap model) {
-//        model.addAttribute("productDTOList", productSvc.getVisitProduct(productSvc.getAll()));
-//        String[] sizes = {"XS", "S", "M", "L", "XL", "2L"};
-//        model.addAttribute("sizes", sizes);
-//
-//        return "frontend/product/visitProduct";
-//    }
-
     @GetMapping("/visitProduct")
-    public String toVisitProduct(ModelMap model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "15") int size) {
+    public String toVisitProduct(ModelMap model,
+                                 @RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "15") int size,
+                                 @RequestParam(defaultValue = "newest") String sortType) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<ProductDTO> productPage = productSvc.getVisitProduct(productSvc.getAll(), pageable);
+        Page<ProductDTO> productPage = productSvc.getVisitProduct(productSvc.getByProductStat(Byte.valueOf("1")), pageable, sortType);
+        List<Boolean> newProductList = new ArrayList<>();
+        // 計算是否為最新上市
+        for (ProductDTO productDTO : productPage.getContent()) {
+            Boolean newProduct = false;
+            // 對時間set排序，以最先推出的時間作依據(由小到大排)
+            if (productDTO.getProductOnShelfSet() != null && !productDTO.getProductOnShelfSet().isEmpty()) {
+                List<Timestamp> list = new ArrayList<>(productDTO.getProductOnShelfSet());
+                list.sort(Comparator.naturalOrder());
 
+                LocalDateTime now = LocalDateTime.now();
+                LocalDateTime dateTime = list.get(0).toLocalDateTime();
+                Long daysDifference = ChronoUnit.DAYS.between(dateTime, now);
+                if (daysDifference < 7) {
+                    newProduct = true;
+                }
+                newProductList.add(newProduct);
+            }
+        }
+
+        model.addAttribute("newProductList", newProductList);
         model.addAttribute("productPage", productPage);
         model.addAttribute("productDTOList", productPage.getContent());
         model.addAttribute("currentPage", page);
@@ -72,38 +117,77 @@ public class ProductFrontEndController {
         return "frontend/product/visitProduct";
     }
 
-    @GetMapping("/filterProducts")
-    public String filterProducts(@RequestParam Map<String, String> filters, ModelMap model) {
-        Set<String> keys = filters.keySet();
-        List<List<Product>> middleManipulation = new ArrayList<>();
-        for (String key : keys) {
-            List<Product> list = null;
-            switch (key) {
-                case "color":
-                    list = productSvc.getProductsByColor(filters.get(key));
-                    break;
-                case "size":
-                    list = productSvc.getProductsBySize(Integer.valueOf(filters.get(key)));
-                    break;
-                case "price":
-                    String[] prices = filters.get(key).split("-");
-                    BigDecimal minPrice = new BigDecimal(prices[0]);
-                    BigDecimal maxPrice = new BigDecimal(prices[1]);
-                    list = productSvc.getProductsByPrice(minPrice, maxPrice);
-                    break;
+    @GetMapping("/visitProduct-fragment")
+    public String sortProduct(ModelMap model,
+                              @RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "15") int size,
+                              @RequestParam(defaultValue = "newest") String sortType) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductDTO> productPage = productSvc.getVisitProduct(productSvc.getByProductStat(Byte.valueOf("1")), pageable, sortType);
+        List<Boolean> newProductList = new ArrayList<>();
+        for (ProductDTO productDTO : productPage.getContent()) {
+            Boolean newProduct = false;
+            if (productDTO.getProductOnShelfSet() != null && !productDTO.getProductOnShelfSet().isEmpty()) {
+                List<Timestamp> list = new ArrayList<>(productDTO.getProductOnShelfSet());
+                list.sort(Comparator.naturalOrder());
+
+                LocalDateTime now = LocalDateTime.now();
+                LocalDateTime dateTime = list.get(0).toLocalDateTime();
+                Long daysDifference = ChronoUnit.DAYS.between(dateTime, now);
+                if (daysDifference < 7) {
+                    newProduct = true;
+                }
+                newProductList.add(newProduct);
             }
-            middleManipulation.add(list);
         }
 
-        List<Product> totalList = middleManipulation.stream()
-                .flatMap(List::stream)
-                .collect(Collectors.toList());
-
-        model.addAttribute("productDTOList", productSvc.getVisitProduct(totalList));
+        model.addAttribute("newProductList", newProductList);
+        model.addAttribute("productPage", productPage);
+        model.addAttribute("productDTOList", productPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productPage.getTotalPages());
         String[] sizes = {"XS", "S", "M", "L", "XL", "2L"};
         model.addAttribute("sizes", sizes);
-        return "frontend/product/visitProduct :: product-fragment";
+
+        return "frontend/product/visitProduct :: product-list";
     }
+
+    @GetMapping("/filterProducts")
+    public String filterProducts(ModelMap model,
+                                 @RequestParam Map<String, String> filters,
+                                 @RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "15") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductDTO> productPage = productSvc.getVisitProduct(productSvc.getByProductStat(Byte.valueOf("1")), pageable, filters);
+
+        List<Boolean> newProductList = new ArrayList<>();
+        for (ProductDTO productDTO : productPage.getContent()) {
+            Boolean newProduct = false;
+            if (productDTO.getProductOnShelfSet() != null && !productDTO.getProductOnShelfSet().isEmpty()) {
+                List<Timestamp> list = new ArrayList<>(productDTO.getProductOnShelfSet());
+                list.sort(Comparator.naturalOrder());
+
+                LocalDateTime now = LocalDateTime.now();
+                LocalDateTime dateTime = list.get(0).toLocalDateTime();
+                Long daysDifference = ChronoUnit.DAYS.between(dateTime, now);
+                if (daysDifference < 7) {
+                    newProduct = true;
+                }
+                newProductList.add(newProduct);
+            }
+        }
+
+        model.addAttribute("newProductList", newProductList);
+        model.addAttribute("productPage", productPage);
+        model.addAttribute("productDTOList", productPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productPage.getTotalPages());
+        String[] sizes = {"XS", "S", "M", "L", "XL", "2L"};
+        model.addAttribute("sizes", sizes);
+
+        return "frontend/product/visitProduct :: product-list";
+    }
+
 
     @GetMapping("/oneProduct")
     public String toOneProduct(@RequestParam("productNo") Integer productNo,
