@@ -67,21 +67,23 @@
                     </form>
                 </div>
                 <div class="chat-container" id="chat-page" th:if="${session.member != null}">
-                    <div class="chat-area" style="padding-top: 0;">
-                        <div class="chat-box-header">即時客服</div>
-                        <div class="chat-area" id="chat-messages" style="
+                    <div class="col">
+                        <div class="chat-area" style="padding-top: 0;">
+                            <div class="chat-box-header">即時客服</div>
+                            <div class="chat-area" id="chat-messages" style="
                                 border-left-width: 10px;
                                 margin-left: 10px;
                                 margin-right: 10px;
                                 padding-right: 10px;
                                 border-right-width: 10px;"></div>
-                        <form id="messageForm" name="messageForm">
-                            <div class="message-input" style="margin: 10px;">
-                                <input autocomplete="off" type="text" id="message"
-                                       placeholder="請輸入訊息...">
-                                <button type="button" id="msg_btn"><i class="bi bi-send"></i></button>
-                            </div>
-                        </form>
+                            <form id="messageForm" name="messageForm">
+                                <div class="message-input" style="margin: 10px;">
+                                    <input autocomplete="off" type="text" id="message"
+                                           placeholder="請輸入訊息...">
+                                    <button type="button" id="msg_btn"><i class="bi bi-send"></i></button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
