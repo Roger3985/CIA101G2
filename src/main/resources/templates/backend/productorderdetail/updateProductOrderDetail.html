@@ -32,19 +32,19 @@
                     <div class="mb-3 row">
                         <label for="productOrdNo" class="col-sm-2 col-form-label">商品訂單編號</label>
                         <div class="col-sm-3">
-                            <input type="text" th:field="*{compositeKey.productOrdNo}" class="form-control" name="productOrdNo" id="productOrdNo" >
+                            <input type="text" th:field="*{compositeKey.productOrdNo}" class="form-control" name="productOrdNo" id="productOrdNo" readonly>
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="productNo" class="col-sm-2 col-form-label">商品編號</label>
                         <div class="col-sm-3">
-                            <input type="text" th:field="*{compositeKey.productNo}" class="form-control" name="productNo" id="productNo">
+                            <input type="text" th:field="*{compositeKey.productNo}" class="form-control" name="productNo" id="productNo" readonly>
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="productPrice" class="col-sm-2 col-form-label">商品單價</label>
                         <div class="col-sm-3">
-                            <input type="text" th:field="*{productPrice}" class="form-control" name="productPrice" id="productPrice">
+                            <input type="text" th:field="*{productPrice}" class="form-control" name="productPrice" id="productPrice" readonly>
                             <span th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}" class="error" id="productPrice.errors"></span>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                     <div class="mb-3 row">
                         <label for="productRealPrice" class="col-sm-2 col-form-label">實際商品金額</label>
                         <div class="col-sm-3">
-                            <input type="text" th:field="*{productRealPrice}" class="form-control" name="productRealPrice" id="productRealPrice">
+                            <input type="text" th:field="*{productRealPrice}" class="form-control" name="productRealPrice" id="productRealPrice" readonly>
                             <span th:if="${#fields.hasErrors('productRealPrice')}" th:errors="*{productRealPrice}" class="error" id="productRealPrice.errors"></span>
                         </div>
                     </div>

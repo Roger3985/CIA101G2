@@ -23,7 +23,7 @@
 <!-- 通用插件 -->
 <!--
 ========================
-Wrapper
+    Wrapper
 ========================
 -->
 <div class="wrapper">
@@ -423,62 +423,67 @@ Wrapper
 </div>
 <!--
 ========================
-End Wrapper
+   End Wrapper
 ========================
 -->
 <!-- script start -->
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
 <!-- End script start -->
 <script>
+  // 購物車
+  function testAddToCart(event) {
+    event.preventDefault();
+    var button = event.target.closest('a'); // 找到最接近的<a>元素
+    var row = button.closest('.addToCartBtn'); // 找到最近的包含该按钮的商品项
+    var productNo = row.querySelector('input[name="productNo"]').value;
+    var productBuyQty = row.querySelector('input[name="productBuyQty"]').value;
 
-    function testAddToCart(event) {
-        var button = event.target;
-        var row = button.closest('.productitm');
-        var productNo = row.querySelector('input[name="productNo"]').value;
-        var productBuyQty = row.querySelector('input[name="productBuyQty"]').value;
+    var data = {
+      productNo: productNo,
+      productBuyQty: productBuyQty
+    };
 
-        var data = {
-            productNo: productNo,
-            productBuyQty: productBuyQty
-        };
-
-        $.ajax({
-            type: 'POST',
-            url: "/frontend/cart/addproducttocart",
-            data: data,
-            success: function (data) {
-                console.log("Update successful");
-            }
-        });
-    }
-
-    var addToCartButtons = document.querySelectorAll(".addToCartBtn");
-    addToCartButtons.forEach(function (button) {
-        button.addEventListener("click", testAddToCart);
+    $.ajax({
+      type: 'POST',
+      url: "/frontend/cart/addproducttocart",
+      data: data,
+      success: function(response) {
+        console.log("Update successful");
+      },
+      error: function(error) {
+        console.log("Error:", error);
+      }
     });
+  }
 
-    function testAddToFAV(event) {
-        var button = event.target;
-        var row = button.closest('.productitm');
-        var productNo = row.querySelector('input[name="productNo"]').value;
-        var data = {
-            productNo: productNo,
-        };
+  var addToCartButtons = document.querySelectorAll(".addToCartBtn .btn-primary");
+  addToCartButtons.forEach(function(button) {
+    button.addEventListener("click", testAddToCart);
+  });
 
-        $.ajax({
-            type: 'POST',
-            url: "/frontend/productmyfavorite/addProductTomyFAV",
-            data: data,
-            success: function (data) {
-                console.log("加入成功");
-            }
-        });
-    }
+  function testAddToFAV(event) {
+    event.preventDefault();
+    var button = event.target.closest('a');
+    var row = button.closest('.productitm');
+    var productNo = row.querySelector('input[name="productNo"]').value;
+    var data = {
+      productNo: productNo,
+    };
 
-    var addToFAVBtns = document.querySelectorAll(".addToFAVBtn");
-    addToFAVBtns.forEach(function (button) {
-        button.addEventListener("click", testAddToFAV);
+    $.ajax({
+      type: 'POST',
+      url: "/frontend/productmyfavorite/addProductTomyFAV",
+      data: data,
+      success: function(data) {
+        console.log("加入成功");
+      }
     });
+  }
+
+  var addToFAVBtns = document.querySelectorAll(".addToFAVBtn a");
+  addToFAVBtns.forEach(function(button) {
+    button.addEventListener("click", testAddToFAV);
+  });
 
     window.onload = function() {
         document.querySelectorAll('.filter-checkbox, #minPrice, #maxPrice').forEach(element => {

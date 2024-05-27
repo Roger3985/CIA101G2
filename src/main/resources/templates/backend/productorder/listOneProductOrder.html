@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>單筆查詢</title>
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
@@ -32,7 +32,6 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
-                <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
@@ -65,7 +64,7 @@
                                 <tbody>
                                 <tr>
                                     <td th:text="${productOrder.productOrdNo}"></td>
-                                    <td th:text="${productOrder.member.memNo}+ ' : ' + ${productOrder.member.memName}"></td>
+                                    <td th:text="${productOrder.member.memNo} + ' : ' + ${productOrder.member.memName}"></td>
                                     <td th:text="${productOrder.productByrName}"></td>
                                     <td th:text="${productOrder.productByrPhone}"></td>
                                     <td th:text="${productOrder.productByrEmail}"></td>
@@ -82,9 +81,11 @@
                                         <span th:if="${productOrder.productPayMethod == 2}">現場付款</span>
                                     </td>
                                     <td th:text="${productOrder.productAllPrice}"></td>
-                                    <td th:if="${productorder.coupon != null}">
-                                        <span th:if="${productorder.coupon.coupNo == 1}">未使用優惠券</span>
-                                        <span th:unless="${productorder.coupon.coupNo == 1}" th:text="${productorder.coupon.coupNo}"></span>
+                                    <td>
+                                        <span th:if="${productOrder.coupon != null}">
+                                            <span th:if="${productOrder.coupon.coupNo == 1}">未使用優惠券</span>
+                                            <span th:unless="${productOrder.coupon.coupNo == 1}" th:text="${productOrder.coupon.coupNo}"></span>
+                                        </span>
                                     </td>
                                     <td th:text="${productOrder.productDisc}"></td>
                                     <td th:text="${productOrder.productRealPrice}"></td>
@@ -106,7 +107,6 @@
                                         <span th:if="${productOrder.productStat == 1}">已付款</span>
                                     </td>
                                 </tr>
-                                </th:block>
                                 </tbody>
                             </table>
                         </div>
@@ -139,5 +139,3 @@
 
 </body>
 </html>
-
-

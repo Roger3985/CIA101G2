@@ -292,11 +292,22 @@
                                         <span class="text-primary fs-4" th:text="'$' + ${productPrice}"></span>
                                     </div>
                                     <div>
-                                        <a th:href="@{/frontend/cart/addproducttocart}" class="btn btn-mode">
-                                            <i class="fi-shopping-cart"></i>
+                                        <a  class="btn btn-mode">
+                                            <div class="product-media productitm">
+                                                <div class="addToCartBtn">
+                                                    <i class="fi-shopping-cart"></i>
+                                                    <input type="hidden" name="productNo" th:value="${product.productNo}"> <!-- Product number -->
+                                                    <input type="hidden" name="productBuyQty" th:value="1"> <!-- Quantity -->
+                                                </div>
+                                            </div>
                                         </a>
-                                        <a href="@{/frontend/productmyfavorite/addProductTomyFAV}" class="btn btn-primary">
-                                            <i class="fi-heart"></i>
+                                        <a class="btn btn-primary">
+                                            <div class="product-media productitm">
+                                                <div class="addToFAVBtn">
+                                                    <i class="fi-heart"></i>
+                                                    <input type="hidden" name="productNo" th:value="${product.productNo}"> <!-- Product number -->
+                                                </div>
+                                            </div>
                                         </a>
                                         <a href="#" class="btn btn-primary">
                                             <i class="fi-repeat"></i>
@@ -333,26 +344,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="productitm">
-                        <input type="hidden" name="productNo" value="1"> <!-- 產品編號 -->
-                        <input type="number" name="productBuyQty" value="1"> <!-- 購買數量 -->
-                        <button class="addToCartBtn" type="button"> <!-- 更改類型為button -->
-                            添加到購物車
-                        </button>
-                        <button class="addToFAVBtn" type="button"> <!-- 更改類型為button -->
-                            添加到最愛
-                        </button>
-                    </div>
-                    <div class="productitm">
-                        <input type="hidden" name="productNo" value="7"> <!-- 產品編號 -->
-                        <input type="number" name="productBuyQty" value="3"> <!-- 購買數量 -->
-                        <button class="addToCartBtn" type="button"> <!-- 更改類型為button -->
-                            添加到購物車
-                        </button>
-                        <button class="addToFAVBtn" type="button"> <!-- 更改類型為button -->
-                            添加到最愛
-                        </button>
-                    </div>
+
                     <!-- End Product Box -->
                 </div>
             </div>
