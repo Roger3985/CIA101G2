@@ -45,13 +45,13 @@
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-lg-6 my-2">
-                            <h1 class="m-0 h4 text-center text-lg-start">Register Now</h1>
+                            <h1 class="m-0 h4 text-center text-lg-start">馬上註冊</h1>
                         </div>
                         <div class="col-lg-6 my-2">
                             <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
                                 <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/}"><i
-                                            class="bi bi-home"></i>Home</a></li>
-                                <li class="breadcrumb-item text-nowrap active" aria-current="page">Register</li>
+                                            class="bi bi-home"></i>首頁</a></li>
+                                <li class="breadcrumb-item text-nowrap active" aria-current="page">註冊</li>
                             </ol>
                         </div>
                     </div>
@@ -63,7 +63,7 @@
                         <div class="col-lg-10 col-xxl-6">
                             <div class="card">
                                 <div class="card-header bg-transparent py-3">
-                                    <h3 class="h4 mb-0">Register</h3>
+                                    <h3 class="h4 mb-0">註冊</h3>
                                 </div>
                                 <div class="card-body">
                                     <form class="form" method="post" th:action="@{addMember}" th:object="${member}" enctype="multipart/form-data">
@@ -71,25 +71,26 @@
                                             <div class="col-md-6">
                                                 <div class="form-group mb-3">
                                                     <label for="name_1" class="form-label">
-                                                        Name
+                                                        姓名
                                                         <span class="text-danger">*</span></label>
-                                                    <input type="text" id="name_1" class="form-control" placeholder="Name" th:field="*{memName}"/>
+                                                    <input type="text" id="name_1" class="form-control" placeholder="請輸入姓名" th:field="*{memName}"/>
                                                     <span th:if="${#fields.hasErrors('memName')}" th:errors="*{memName}" class="error" id="memName.errors"></span>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group mb-3">
                                                     <label for="account_1" class="form-label">
-                                                        Account
-                                                        <span class="text-danger">*</span></label>
-                                                    <input type="text" id="account_1" class="form-control" placeholder="Account" th:field="*{memAcc}"/>
+                                                        帳號
+                                                        <span class="text-danger">*</span>
+                                                    </label>
+                                                    <input type="text" id="account_1" class="form-control" placeholder="請輸入帳號" th:field="*{memAcc}"/>
                                                     <span th:if="${#fields.hasErrors('memAcc')}" th:errors="*{memAcc}" class="error" id="memAcc.errors"></span>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group mb-3">
                                                     <label class="form-label col" for="exampleInputPassword_01">
-                                                        Password
+                                                        密碼
                                                         <span class="text-danger">*</span></label>
                                                     <input type="password" class="form-control" id="exampleInputPassword_01" placeholder="*********" th:field="*{memPwd}"/>
                                                     <span th:if="${#fields.hasErrors('memPwd')}" th:errors="*{memPwd}" class="error" id="memPwd.errors"></span>
@@ -98,20 +99,20 @@
                                             <div class="col-md-6">
                                                 <div class="form-group mb-3">
                                                     <label class="form-label col" for="mobile_1">
-                                                        Phone
+                                                        電話
                                                         <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" id="mobile_1" placeholder="ex：0912345678" th:field="*{memMob}"/>
+                                                    <input type="text" class="form-control" id="mobile_1" placeholder="請輸入電話，例如：0912345678" th:field="*{memMob}"/>
                                                     <span th:if="${#fields.hasErrors('memMob')}" th:errors="*{memMob}" class="error" id="memMob.errors"></span>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group mb-3">
-                                                    <label class="form-label" for="gender">Gender <span class="text-danger">*</span></label>
+                                                    <label class="form-label" for="gender">性別 <span class="text-danger">*</span></label>
                                                     <div id="gender" class="form-control">
                                                         <input type="radio" id="male" name="memGender" value="1" th:checked="${member.memGender == 1}"/>
-                                                        <label for="male">Male</label>
+                                                        <label for="male">男性</label>
                                                         <input type="radio" id="female" name="memGender" value="2" th:checked="${member.memGender == 2}"/>
-                                                        <label for="female">Female</label>
+                                                        <label for="female">女性</label>
                                                     </div>
                                                     <span th:if="${#fields.hasErrors('memGender')}" th:errors="*{memGender}" class="error" id="memGender.errors"></span>
                                                 </div>
@@ -119,16 +120,16 @@
                                             <div class="col-md-6">
                                                 <div class="form-group mb-3">
                                                     <label class="form-label col" for="email_1">
-                                                        Email
+                                                        信箱
                                                         <span class="text-danger">*</span></label>
-                                                    <input type="email" class="form-control" id="email_1" placeholder="ex：xxx@gmail.com" th:field="*{memMail}"/>
+                                                    <input type="email" class="form-control" id="email_1" placeholder="請輸入信箱，例如：xxx@gmail.com" th:field="*{memMail}"/>
                                                     <span th:if="${#fields.hasErrors('memMail')}" th:errors="*{memMail}" class="error" id="memMail.errors"></span>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group mb-3">
                                                     <label class="form-label col" for="date_1">
-                                                        Birthday
+                                                        生日
                                                         <span class="text-danger">*</span></label>
                                                     <input type="date" class="form-control" id="date_1" placeholder="請輸入生日" th:field="*{memBd}"/>
                                                     <span th:if="${#fields.hasErrors('memBd')}" th:errors="*{memBd}" class="error" id="memBd.errors"></span>
@@ -146,7 +147,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group mb-3">
                                                     <label class="form-label col" for="country">
-                                                        Address
+                                                        地址
                                                         <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="input-box address">
@@ -178,21 +179,19 @@
                                                 <div id="preview"></div>
                                                 <div class="form-check mb-4"><input class="form-check-input" type="checkbox"
                                                                                     value="" id="form2Example3" checked="checked">
-                                                    <label class="form-check-label" for="form2Example3">By register, I read
-                                                        &amp;
-                                                        accept the terms.</label>
+                                                    <label class="form-check-label" for="form2Example3">我已閱讀並接受條款。</label>
                                                 </div>
                                                 <div class="col">
-                                                    <button type="submit" class="btn btn-primary">Create Account</button>
+                                                    <button type="submit" class="btn btn-primary">創建帳號</button>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group row align-items-center">
                                             <div class="col-12 col-sm text-sm-end mt-3 mt-sm-0">
                                                 <span class="text-muted">
-                                                    Have an account?
+                                                    已經有帳號?
                                                     <a th:href="@{/frontend/member/loginMember}">
-                                                        Login here</a></span></div>
+                                                        點此登入</a></span></div>
                                         </div>
                                     </form>
                                 </div>

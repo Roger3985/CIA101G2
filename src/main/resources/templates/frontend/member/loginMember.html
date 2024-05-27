@@ -38,13 +38,13 @@
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-lg-6 my-2">
-                            <h1 class="m-0 h4 text-center text-lg-start">Login</h1>
+                            <h1 class="m-0 h4 text-center text-lg-start">登入</h1>
                         </div>
                         <div class="col-lg-6 my-2">
                             <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
                                 <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/}"><i
-                                            class="bi bi-home"></i>Home</a></li>
-                                <li class="breadcrumb-item text-nowrap active" aria-current="page">Login</li>
+                                            class="bi bi-home"></i>首頁</a></li>
+                                <li class="breadcrumb-item text-nowrap active" aria-current="page">登入</li>
                             </ol>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                         <div class="col-lg-5 col-xxl-4">
                             <div class="card">
                                 <div class="card-header bg-transparent py-3">
-                                    <h3 class="h4 mb-0">Login</h3>
+                                    <h3 class="h4 mb-0">登入</h3>
                                 </div>
                                 <div class="card-body">
                                     <div th:if="${session.loginsuccess}">已經登入，可以開始購物</div>
@@ -67,7 +67,7 @@
                                         </div>
                                         <div class="form-group mb-3">
                                             <label for="email_1" class="form-label col">
-                                                Account/Email
+                                                帳號 / 信箱
                                                 <span class="text-danger">*</span>
                                             </label>
                                             <input type="text" id="email_1" class="form-control" placeholder="請輸入帳號或信箱" name="identifier">
@@ -75,34 +75,34 @@
                                         <div class="form-group mb-3">
                                             <div class="row align-items-center">
                                                 <label class="form-label col" for="exampleInputPassword01">
-                                                    Password
+                                                    密碼
                                                     <span class="text-danger">*</span>
                                                 </label>
                                                 <span class="col ms-auto small text-end">
-                                                    <a th:href="@{forgetPassword}">Forgot password?</a></span></div>
+                                                    <a th:href="@{forgetPassword}">忘記密碼?</a></span></div>
                                             <input type="password" class="form-control" id="exampleInputPassword01"
                                                 placeholder="*********" name="password">
                                         </div><!-- Checkbox -->
                                         <div class="form-check mb-3">
                                             <input class="form-check-input" name="autoLoginMember" type="checkbox"
                                                 value="1" id="customCheck" checked="checked">
-                                            <label class="form-check-label" for="customCheck">Remember me</label>
+                                            <label class="form-check-label" for="customCheck">記住我</label>
                                         </div>
                                         <div class="form-group text-center">
-                                            <button type="submit" class="btn btn-primary w-100">Log in</button>
+                                            <button type="submit" class="btn btn-primary w-100">登入</button>
                                         </div>
                                     </form>
                                     <div class="text-center pt-4 pb-5" style="" th:unless="${session.loginsuccess}"><span
-                                            class="px-3 bg-body d-inline-block align-top lh-sm">OR</span>
+                                            class="px-3 bg-body d-inline-block align-top lh-sm">或</span>
                                         <div class="border-bottom mt-n3"></div>
                                     </div>
                                     <div class="row g-2" th:unless="${session.loginsuccess}">
                                         <br>
-                                        <div class="col">
-                                            <button class="btn w-100 btn-mode" type="button"><i
-                                                    class="bi bi-github me-2"></i> GitHub
-                                            </button>
-                                        </div>
+<!--                                        <div class="col">-->
+<!--                                            <button class="btn w-100 btn-mode" type="button"><i-->
+<!--                                                    class="bi bi-github me-2"></i> GitHub-->
+<!--                                            </button>-->
+<!--                                        </div>-->
 
                                         <form id="buildAuthUrlForm" th:action="@{/google/buildAuthUrl}"  spellcheck="false">
                                             <div class="col">
@@ -145,7 +145,7 @@
 <!--                                            <p id="refreshTokenForm-output" class="output-json">.</p>-->
 <!--                                        </div>-->
                                     </div>
-                                    <div class="pt-4 text-center"><span class="text-muted">Don't have an account? <a th:href="@{addMemberData}">Signup here</a></span></div>
+                                    <div class="pt-4 text-center"><span class="text-muted">沒有帳號? <a th:href="@{addMemberData}">點此註冊</a></span></div>
                                     <form id="exchangeTokenForm" method="post" th:action="@{/google/exchangeToken}" spellcheck="false">
                                         <div>
                                             <label style="vertical-align: top;"></label>
