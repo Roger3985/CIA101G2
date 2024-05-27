@@ -2,6 +2,7 @@ package com.yu.rental.service;
 
 import com.yu.rental.dao.RentalRepository;
 import com.yu.rental.entity.Rental;
+import com.yu.rentalcategory.dao.RentalCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -50,8 +51,23 @@ public class RentalServiceImpl implements RentalService {
 	//處理查詢(依租借品的顏色)
 	@Override
 	public List<Rental> findByRentalColor(String rentalColor) {
-		return repository.findByRentalColorContaining(rentalColor);
+		return repository.findByRentalColor(rentalColor);
 	}
+
+	//取得KeyWord(rentalColor, rentalSize)
+	@Override
+	public List<Rental> findByKeyWord(String rentalColor, Integer rentalSize) {
+		if (rentalColor != null && rentalSize != null) {
+			return repository.findByColorAndSize(rentalColor, rentalSize);
+		} else if (rentalColor != null) {
+			return repository.findByRentalColor(rentalColor);
+		} else if (rentalSize != null) {
+			return repository.findByRentalSize(rentalSize);
+		} else {
+			return repository.findAll();
+		}
+	}
+
 
 	//關鍵字查詢(依租借品的名稱 "模糊查詢")
 	@Override
@@ -82,13 +98,13 @@ public class RentalServiceImpl implements RentalService {
 	@Override
 	public List<Rental> findByRentalCatNoSort(Integer rentalCatNo) {
 		return repository.findByRentalCatNo_OrderByRentalPriceASC(rentalCatNo);
-    }
+	}
 
 	//金額由大到小 (取得rentalCatNo清單，以價格的降冪後返回)
 	@Override
 	public List<Rental> findByRentalCatNoSortDESC(Integer rentalCatNo) {
 		return repository.findByRentalCatNo_OrderByRentalPriceDESC(rentalCatNo);
-    }
+	}
 
 	//最新上架：以rentalStat排序 (編號越晚的先顯示)
 	@Override

@@ -1,0 +1,51 @@
+<div th:fragment="rental-list">
+    <th:block th:each="rental : ${rentalListData}">
+        <div class="row g-0 mb-4 rental">
+            <div class="col-sm-4 position-relative">
+                <div class="badge-ribbon position-absolute top-0 mt-3">
+                    <span class="badge bg-danger">Sale</span>
+                </div>
+                <a th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
+                    <img class="border img-fluid w-100 rentalShopPic" th:src="@{'/icons/frontend/rental/rentalshop/' + ${rental.rentalNo} + '.jpg'}"
+                         th:width="276" th:height="310" title="" alt="">
+                </a>
+            </div>
+            <div class="col-sm-8 ps-sm-4 pt-3 pt-sm-0" style="transform: translate3d(0px, 20px, 0px);">
+                <div class="rating-star text mb-2 small">
+                    <i class="bi bi-star-fill active"></i>
+                    <i class="bi bi-star-fill active"></i>
+                    <i class="bi bi-star-fill active"></i>
+                    <i class="bi bi-star-fill active"></i>
+                    <i class="bi bi-star"></i>
+                </div>
+                <h5 class="product-title">
+                    <a class="text-reset" th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
+                        <span th:text="${rental.rentalName}"></span>
+                    </a>
+                </h5>
+                <div class="m-0">
+                    <p class="small mb-2">
+                        <span>編號：</span><span class="rentalNo" th:text="${rental.rentalNo}"></span>
+                    </p>
+                </div>
+                <div class="product-price pb-3">
+                    <span class="text-primary fs-4" th:text="'$' + ${rental.rentalCategory.rentalDesPrice}"></span>
+                    <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del>
+                </div>
+                <div class="rentalItem">
+                    <a href="" class="btn btn-mode btn_addToCart">
+                        <i class="fi-shopping-cart"></i>
+                    </a>
+                    <a href="" class="btn btn-primary addToFAV">
+                        <input type="hidden" name="rentalNo" th:value="${rental.rentalNo}">
+                        <i class="fi-heart"></i>
+                    </a>
+                    <a href="#" class="btn btn-primary btn_addTrack">
+                        <i class="bi bi-bookmark"></i>
+                    </a>
+                    <span class="successMsg" style="color: lightgreen"></span>
+                </div>
+            </div>
+        </div>
+    </th:block>
+</div>

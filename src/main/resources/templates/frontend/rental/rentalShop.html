@@ -49,7 +49,7 @@
                     <div class="col-lg-6 my-2">
                         <ol class="breadcrumb m-0 small justify-content-center justify-content-lg-end">
                             <li class="breadcrumb-item">
-                                <a class="text-nowrap text-reset" th:href="@{/frontend/index}">Home</a>
+                                <a class="text-nowrap text-reset" th:href="@{/}">Home</a>
                             </li>
                             <li class="breadcrumb-item text-nowrap active" aria-current="page">租借品</li>
                         </ol>
@@ -66,7 +66,7 @@
                     <div class="col-lg-4 col-xl-3 pe-xl-5 offcanvas-lg offcanvas-start px-0 px-lg-3" tabindex="-1"
                          id="shop_filter" aria-labelledby="shop_filterLabel">
                         <div class="offcanvas-header border-bottom">
-                            <h5 class="offcanvas-title" id="shop_filterLabel">Shop Filter</h5>
+                            <h5 class="offcanvas-title" id="shop_filterLabel">品項篩選</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
                                     data-bs-target="#shop_filter" aria-label="Close"></button>
                         </div>
@@ -84,10 +84,8 @@
                                         <li class="nav-item">
                                             <a th:href="@{/frontend/rental/rentalShop}" class="nav-link active">所有租借品</a>
                                         </li>
-
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link">男士 <span>(25)</span>
-                                            </a>
+                                            <a href="#" class="nav-link">男士</a>
                                             <a data-bs-toggle="collapse" href="#shop_cat_1" role="button"
                                                aria-expanded="false" aria-controls="shop_cat_1" class="s-icon"></a>
                                             <div class="collapse" id="shop_cat_1">
@@ -95,15 +93,11 @@
                                                     <li class="nav-item">
                                                         <a th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=1'}" class="nav-link">西裝</a>
                                                     </li>
-                                                    <li class="nav-item">
-                                                        <a th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=1'}" class="nav-link">襯衫</a>
-                                                    </li>
                                                 </ul>
                                             </div>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link">女士 <span>(40)</span>
-                                            </a>
+                                            <a href="#" class="nav-link">女士</a>
                                             <a data-bs-toggle="collapse" href="#shop_cat_2" role="button"
                                                aria-expanded="false" aria-controls="shop_cat_2" class="s-icon"></a>
                                             <div class="collapse" id="shop_cat_2">
@@ -132,27 +126,33 @@
                                     <div class="shop-sidebar-list collapse show" id="shop_Color">
                                         <ul>
                                             <li class="custom-radio">
-                                                <input class="custom-control-input" id="colorsidebar1" type="radio" name="color" value="藍色">
+                                                <input class="custom-control-input" id="colorsidebar1" type="radio" name="rentalColor" value="黑色">
                                                 <label class="custom-control-label" for="colorsidebar1">
-                                                    <span class="text-body">藍色</span>
+                                                    <span class="text-body">黑色</span>
                                                 </label>
                                             </li>
                                             <li class="custom-radio">
-                                                <input class="custom-control-input" id="colorsidebar2" type="radio" name="color" value="白色">
+                                                <input class="custom-control-input" id="colorsidebar2" type="radio" name="rentalColor" value="白色">
                                                 <label class="custom-control-label" for="colorsidebar2">
                                                     <span class="text-body">白色</span>
                                                 </label>
                                             </li>
                                             <li class="custom-radio">
-                                                <input class="custom-control-input" id="colorsidebar3" type="radio" name="color" value="黑色">
+                                                <input class="custom-control-input" id="colorsidebar3" type="radio" name="rentalColor" value="棕色">
                                                 <label class="custom-control-label" for="colorsidebar3">
-                                                    <span class="text-body">黑色</span>
+                                                    <span class="text-body">棕色</span>
                                                 </label>
                                             </li>
                                             <li class="custom-radio">
-                                                <input class="custom-control-input" id="colorsidebar4" type="radio" name="color" value="紅色">
+                                                <input class="custom-control-input" id="colorsidebar4" type="radio" name="rentalColor" value="紅色">
                                                 <label class="custom-control-label" for="colorsidebar4">
                                                     <span class="text-body">紅色</span>
+                                                </label>
+                                            </li>
+                                            <li class="custom-radio">
+                                                <input class="custom-control-input" id="colorsidebar5" type="radio" name="rentalColor" value="藍色">
+                                                <label class="custom-control-label" for="colorsidebar5">
+                                                    <span class="text-body">藍色</span>
                                                 </label>
                                             </li>
                                         </ul>
@@ -163,58 +163,23 @@
                             <!-- 大小size -->
                             <div class="shop-sidebar-block">
                                 <div class="shop-sidebar-title">
-                                    <a class="h5" data-bs-toggle="collapse" href="#shop_brand" role="button"
-                                       aria-expanded="true" aria-controls="shop_brand">
+                                    <a class="h5" data-bs-toggle="collapse" href="#shop_brand" role="button" aria-expanded="true" aria-controls="shop_brand">
                                         尺寸 <i class="bi bi-chevron-up"></i>
                                     </a>
                                 </div>
                                 <div class="shop-sidebar-list collapse show" id="shop_brand">
                                     <ul>
                                         <li class="custom-radio">
-                                            <input class="custom-control-input" id="brand1" type="radio" name="size" value="XS">
-                                            <label class="custom-control-label" for="brand1">XS</label>
-                                        </li>
-                                        <li class="custom-radio">
-                                            <input class="custom-control-input" id="brand2" type="radio" name="size" value="S">
+                                            <input class="custom-control-input" id="brand2" type="radio" name="rentalSize" value="2">
                                             <label class="custom-control-label" for="brand2">S</label>
                                         </li>
                                         <li class="custom-radio">
-                                            <input class="custom-control-input" id="brand3" type="radio" name="size" value="M">
+                                            <input class="custom-control-input" id="brand3" type="radio" name="rentalSize" value="3">
                                             <label class="custom-control-label" for="brand3">M</label>
                                         </li>
                                         <li class="custom-radio">
-                                            <input class="custom-control-input" id="brand4" type="radio" name="size" value="L">
+                                            <input class="custom-control-input" id="brand4" type="radio" name="rentalSize" value="4">
                                             <label class="custom-control-label" for="brand4">L</label>
-                                        </li>
-                                        <li class="custom-radio">
-                                            <input class="custom-control-input" id="brand5" type="radio" name="size" value="XL">
-                                            <label class="custom-control-label" for="brand5">XL</label>
-                                        </li>
-                                        <li class="custom-radio">
-                                            <input class="custom-control-input" id="brand6" type="radio" name="size" value="2L">
-                                            <label class="custom-control-label" for="brand6">2L</label>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- End Brands -->
-                            <!-- 租借金額 -->
-                            <div class="shop-sidebar-block">
-                                <div class="shop-sidebar-title">
-                                    <a class="h5" data-bs-toggle="collapse" href="#shop_price" role="button"
-                                       aria-expanded="true" aria-controls="shop_price">
-                                        租借金額 <i class="bi bi-chevron-up"></i>
-                                    </a>
-                                </div>
-                                <div class="shop-sidebar-list collapse show" id="shop_price">
-                                    <ul>
-                                        <li class="custom-radio">
-                                            <input class="custom-control-input" id="price1" type="radio" name="price" value="$2000">
-                                            <label class="custom-control-label" for="price1">$2000</label>
-                                        </li>
-                                        <li class="custom-radio">
-                                            <input class="custom-control-input" id="price2" type="radio" name="price" value="$4000">
-                                            <label class="custom-control-label" for="price2">$4000</label>
                                         </li>
                                     </ul>
                                 </div>
@@ -265,84 +230,82 @@
                         </div>
                         <!-- 商品 -->
                         <div id="rental-list">
-                        <th:block th:each="rental : ${rentalListData}">
-                            <div class="row g-0 mb-4 rental">
-                                <div class="col-sm-4 position-relative">
-                                    <div class="badge-ribbon position-absolute top-0 mt-3">
-                                        <span class="badge bg-danger">Sale</span>
+                            <th:block th:each="rental : ${rentalListData}">
+                                <div class="row g-0 mb-4 rental">
+                                    <div class="col-sm-4 position-relative">
+                                        <div class="badge-ribbon position-absolute top-0 mt-3">
+                                            <span class="badge bg-danger">Sale</span>
+                                        </div>
+                                        <a th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}"><!-- 對應品項查詢 -->
+                                            <img class="border img-fluid w-100 rentalShopPic" th:src="@{'/icons/frontend/rental/rentalshop/' + ${rental.rentalNo} + '.jpg'}"
+                                                 th:width="276" th:height="310" title="" alt="">
+                                        </a>
                                     </div>
-                                <a th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}"><!-- 對應品項查詢 -->
-                                    <img class="border img-fluid w-100 rentalShopPic" th:src="@{'/icons/frontend/rental/rentalshop/' + ${rental.rentalNo} + '.jpg'}"
-                                         th:width="276" th:height="310" title="" alt="">
-                                </a>
-                                </div>
-                                <div class="col-sm-8 ps-sm-4 pt-3 pt-sm-0" style="transform: translate3d(0px, 20px, 0px);">
-                                    <div class="rating-star text mb-2 small"><!-- 評價 -->
-                                        <i class="bi bi-star-fill active"></i>
-                                        <i class="bi bi-star-fill active"></i>
-                                        <i class="bi bi-star-fill active"></i>
-                                        <i class="bi bi-star-fill active"></i>
-                                        <i class="bi bi-star"></i>
-                                    </div>
-                                    <h5 class="product-title">
-                                        <a class="text-reset" th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
-                                            <span th:text="${rental.rentalName}"></span></a><!-- 租借品名稱 -->
-                                    </h5>
-                                    <div class="m-0">
-                                        <p class="small mb-2"><span>編號：</span><span class="rentalNo" th:text="${rental.rentalNo}"></span></p><!-- 租借品編號 -->
-                                        <p class="small mb-2"><span th:text="${rental.rentalInfo}"></span></p><!-- 租借品介紹 -->
-                                    </div>
-                                    <div class="product-price pb-3">
-                                        <span class="text-primary fs-4" th:text="'$' + ${rental.rentalCategory.rentalDesPrice}"></span><!-- 押金 -->
-                                        <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del><!-- 定價 -->
-                                    </div>
-                                    <div class="rentalItem">
+                                    <div class="col-sm-8 ps-sm-4 pt-3 pt-sm-0" style="transform: translate3d(0px, 20px, 0px);">
+                                        <div class="rating-star text mb-2 small"><!-- 評價 -->
+                                            <i class="bi bi-star-fill active"></i>
+                                            <i class="bi bi-star-fill active"></i>
+                                            <i class="bi bi-star-fill active"></i>
+                                            <i class="bi bi-star-fill active"></i>
+                                            <i class="bi bi-star"></i>
+                                        </div>
+                                        <h5 class="product-title">
+                                            <a class="text-reset" th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
+                                                <span th:text="${rental.rentalName}"></span></a><!-- 租借品名稱 -->
+                                        </h5>
+                                        <div class="m-0">
+                                            <p class="small mb-2"><span>編號：</span><span class="rentalNo" th:text="${rental.rentalNo}"></span></p><!-- 租借品編號 -->
+                                        </div>
+                                        <div class="product-price pb-3">
+                                            <span class="text-primary fs-4" th:text="'$' + ${rental.rentalCategory.rentalDesPrice}"></span><!-- 押金 -->
+                                            <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del><!-- 定價 -->
+                                        </div>
+                                        <div class="rentalItem" style="transform: translate3d(0px, 20px, 0px);">
                                         <a href="" class="btn btn-mode btn_addToCart"><!--  加入購物車(457)  -->
                                             <i class="fi-shopping-cart"></i>
                                         </a>
-<!--                                        <div class="addToFAV">-->
-                                            <a href="" class="btn btn-primary addToFAV"><!--  加入我的最愛  -->
-                                                <input type="hidden" name="rentalNo" th:value="${rental.rentalNo}">
-                                                <i class="fi-heart"></i>
-                                            </a>
-<!--                                        </div>-->
+                                        <a href="" class="btn btn-primary addToFAV"><!--  加入我的最愛  -->
+                                            <input type="hidden" name="rentalNo" th:value="${rental.rentalNo}">
+                                            <i class="fi-heart"></i>
+                                        </a>
                                         <a href="#" class="btn btn-primary btn_addTrack">
                                             <i class="bi bi-bookmark"></i>
                                         </a>
                                         <span class="successMsg" style="color: lightgreen"></span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </th:block>
+                            </th:block>
                         </div>
                         <!-- 商品  結束 -->
                         <!-- 分頁區  -->
-                        <div class="shop-bottom-bar d-flex align-items-center mt-3">
-                            <div>Showing: 1 - 12 of 17</div>
-                            <div class="ms-auto">
-                                <ul class="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item active">
-                                        <a class="page-link" href="#">1</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">2</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">3</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div><!-- 分頁區  結束  -->
+                        <!--                        <div class="shop-bottom-bar d-flex align-items-center mt-3">-->
+                        <!--                            <div>Showing: 1 - 12 of 17</div>-->
+                        <!--                            <div class="ms-auto">-->
+                        <!--                                <ul class="pagination">-->
+                        <!--                                    <li class="page-item">-->
+                        <!--                                        <a class="page-link" href="#" aria-label="Previous">-->
+                        <!--                                            <span aria-hidden="true">&laquo;</span>-->
+                        <!--                                        </a>-->
+                        <!--                                    </li>-->
+                        <!--                                    <li class="page-item active">-->
+                        <!--                                        <a class="page-link" href="#">1</a>-->
+                        <!--                                    </li>-->
+                        <!--                                    <li class="page-item">-->
+                        <!--                                        <a class="page-link" href="#">2</a>-->
+                        <!--                                    </li>-->
+                        <!--                                    <li class="page-item">-->
+                        <!--                                        <a class="page-link" href="#">3</a>-->
+                        <!--                                    </li>-->
+                        <!--                                    <li class="page-item">-->
+                        <!--                                        <a class="page-link" href="#" aria-label="Next">-->
+                        <!--                                            <span aria-hidden="true">&raquo;</span>-->
+                        <!--                                        </a>-->
+                        <!--                                    </li>-->
+                        <!--                                </ul>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <!-- 分頁區  結束  -->
                     </div><!--   <div class="col-lg-8 col-xl-9">-->
                     <!-- 商品列表結束 -->
                 </div>
@@ -365,33 +328,28 @@
 <!-- End script start -->
 
 <script>
+    /*----------------------------曉妮寫的方法 (開始) --------------------------*/
     /*
      * 選擇對應關鍵字
-     * 使用jQuery抓取點擊事件，前台發送清求。
-     * 最後依後台判斷選擇方式並回傳對應的資料。
     */
     $(document).ready(function() {
         $('input[type="radio"]').change(function() {
             console.log("已點選");
             // 取得所選的值
-            let color = $('input[name="color"]:checked').val();
-            let size = $('input[name="size"]:checked').val();
-            let price = $('input[name="price"]:checked').val();
-            console.log("已點選" +color);
-            console.log("已點選"+size);
-            console.log("已點選"+price);
+            const rentalColor = $('input[name="rentalColor"]:checked').val();
+            const rentalSize = $('input[name="rentalSize"]:checked').val();
+            console.log("已點選" + rentalColor);
+            console.log("已點選"+ rentalSize);
 
             $.ajax({
                 type: "GET",
-                url: "/findByAllKeyWord",
+                url: "/frontend/findByKeyWord",
                 data: {
-                    keyword: '', // 根據keyword
-                    rentalStat: 1, // 根據rentalStat狀態
-                    rentalSize: size, // 根據選擇的size
-                    rentalDesPrice: price // 根據選擇的price
+                    rentalColor: rentalColor,
+                    rentalSize: rentalSize ? parseInt(rentalSize) : null
                 },
                 success: function(response) {
-                    $('#rental-list').html(response); // 更新商品列表
+                    $('#rental-list').html(response); //返回替換內容
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
@@ -403,8 +361,6 @@
 
     /*
      * 選擇排序方式
-     * 使用jQuery抓取點擊事件，前台發送清求。
-     * 最後依後台判斷選擇方式並回傳對應的資料。
     */
     $(document).ready(function() {
         $('.sort-item').click(function(event) {
@@ -419,11 +375,9 @@
 
     /*
      * 功能：點選加入我的最愛
-     * 使用 th:attr 設置data-屬性，在點擊愛心後抓取到自訂的值&當下時間(ISO 8601 )
-     * 前端傳遞數據至後端，後台針對時間轉Timestamp型態
     */
     $(document).ready(function() {
-        $(".addToFAV").on("click", function(event) {
+        $(".addToFAV").click(function(event) {
 
             event.preventDefault(); // 阻止表單默認提交行為
 
@@ -431,10 +385,10 @@
             // window.location.host -> 返回當前頁面的主機名和埠號
             // const baseUrl -> 將window.location.protocol和window.location.host，用 "//" 連接，取得當前頁面的URL
             const baseUrl = window.location.protocol + "//" + window.location.host;
-            const row = $(this).closest('.rentalItem'); // 找到最近的 .rentalItem 元素
-            const rentalNo = row.find('input[name="rentalNo"]').val();
+            const rentalItem = $(this).closest('.rentalItem'); // 找到最近的 .rentalItem 元素
+            const rentalNo = rentalItem.find('input[name="rentalNo"]').val();
             console.log("抓取編號:" + rentalNo);
-            console.log("抓取row資訊:" + row);
+            console.log("抓取rentalItem資訊:" + rentalItem);
 
             // 打包數據
             const data = {
@@ -451,66 +405,7 @@
             });
         });
     });
-
-    // $(document).on("click", "a.btn_addToFAV", function(e) {
-    //     e.preventDefault(); // 阻止表單默認提交行為
-    //
-        // window.location.protocol -> 返回當前頁面使用的協議
-        // window.location.host -> 返回當前頁面的主機名和埠號
-        // const baseUrl -> 將window.location.protocol和window.location.host，用 "//" 連接，取得當前頁面的URL
-    //     const baseUrl = window.location.protocol + "//" + window.location.host;
-    //     const rentalNo = $(this).closest("div.rental").find("span.rentalNo").text().trim();
-    //     const rentalFavTime = new Date().toISOString(); //取得當前時間(ISO 8601型態 ，只能在後端轉型)
-    //     console.log("抓取編號:" + rentalNo);
-    //     console.log("抓取當前時間:" + rentalFavTime);
-    //
-    //     //打包數據
-    //     const wishData = {
-    //         rentalNo: rentalNo,
-    //         rentalFavTime: rentalFavTime
-    //     };
-    //
-    //     fetch(baseUrl + "/frontend/rentalmyfavorite/addWish", {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         },
-    //         body: JSON.stringify(wishData) //將包裝的數據轉換成JSON格式並發送
-    //     }).then(response => response.text())
-    //         .then(rentalName => {
-    //             // console.log("2 抓取打包數據:" + JSON.stringify(wishData)); //成功匯出
-    //             console.log(rentalName + "已加入我的最愛");
-    //         });
-    // });
-
-
-
-
-    // /*
-    //  * 功能：顏色篩選及時更新
-    //  *
-    //  *
-    // */
-    // $(document).ready(function() {
-    //     $('input[type="checkbox"]').change(function() {
-    //         var selectedColors = [];
-    //         $('input[type="checkbox"]:checked').each(function() {
-    //             selectedColors.push($(this).val());
-    //         });
-    //         $.ajax({
-    //             type: 'POST',
-    //             url: '/selectColors',
-    //             contentType: 'application/json',
-    //             data: JSON.stringify({ selectedColors: selectedColors }),
-    //             success: function(data) {
-    //                 $('#results').empty();
-    //                 data.forEach(function(item) {
-    //                     $('#results').append('<li>' + item + '</li>');
-    //                 });
-    //             }
-    //         });
-    //     });
-    // });
+    /*----------------------------曉妮寫的方法 (結束) --------------------------*/
 
     /*----------------------------右翰寫的方法----------------------------------*/
 

@@ -58,12 +58,9 @@
                                         <td th:text="${rental.rentalName}"></td>
                                         <td th:text="${rental.rentalPrice}"></td>
                                         <td>
-                                            <span th:if="${rental.rentalSize == 0}" th:text="XS"></span>
                                             <span th:if="${rental.rentalSize == 1}" th:text="S"></span>
                                             <span th:if="${rental.rentalSize == 2}" th:text="M"></span>
                                             <span th:if="${rental.rentalSize == 3}" th:text="L"></span>
-                                            <span th:if="${rental.rentalSize == 4}" th:text="XL"></span>
-                                            <span th:if="${rental.rentalSize == 5}" th:text="2L"></span>
                                         </td>
                                         <td th:text="${rental.rentalColor}"></td>
                                         <td th:text="${rental.rentalInfo}"></td>

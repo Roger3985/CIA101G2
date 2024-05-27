@@ -1,6 +1,5 @@
 package com.yu.rentalmyfavorite.dao;
 
-
 import com.yu.rentalmyfavorite.dto.AddToWishList;
 import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,12 +26,6 @@ public interface RentalMyFavoriteRepository extends JpaRepository<RentalMyFavori
 
     @Transactional
     RentalMyFavorite findByRental_RentalNoAndMember_MemNo(Integer rentalNo,Integer memNo); //複合主鍵查詢
-
-    @Transactional
-    List<RentalMyFavorite> findByRentalRentalNoAndMemberMemNo(Integer rentalNo,Integer memNo); //複合主鍵查詢
-
-    @Transactional
-    List<RentalMyFavorite> findByRentalFavTime(Timestamp rentalFavTime); //rentalFavTime查詢
 
     @Transactional
     @Query(value = "SELECT * FROM RentalMyFavorite WHERE rentalNo = ?1", nativeQuery = true)

@@ -23,6 +23,9 @@ public interface RentalService {
 
     List<Rental> findByRentalColor(String rentalColor);  //處理查詢(依租借品的顏色)
 
+    public List<Rental> findByKeyWord(String rentalColor, Integer rentalSize);// 依關鍵字搜尋
+
+
     public List<Rental> getRentalName(String rentalName); //以rentalName 做模糊查詢
 
     // 依關鍵字搜尋相關租借品 (如果rentalStat不為5 (下架狀態))

@@ -18871,6 +18871,11 @@ fieldset:disabled .btn {
     height: 290px;
 }
 
+.rentalIndex {
+    width: 402px;
+    height: 402px;
+}
+
 .w-auto {
     width: auto !important
 }

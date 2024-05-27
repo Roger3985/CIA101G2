@@ -51,7 +51,7 @@
                     <div class="col-lg-6 my-2">
                         <ol class="breadcrumb m-0 small justify-content-center justify-content-lg-end">
                             <li class="breadcrumb-item">
-                                <a class="text-nowrap text-reset" th:href="@{/frontend/index}">Home</a>
+                                <a class="text-nowrap text-reset" th:href="@{/}">Home</a>
                             </li>
                             <li class="breadcrumb-item text-nowrap active" aria-current="page">租借品</li>
                         </ol>
@@ -68,7 +68,7 @@
                     <div class="col-lg-4 col-xl-3 pe-xl-5 offcanvas-lg offcanvas-start px-0 px-lg-3" tabindex="-1"
                          id="shop_filter" aria-labelledby="shop_filterLabel">
                         <div class="offcanvas-header border-bottom">
-                            <h5 class="offcanvas-title" id="shop_filterLabel">Shop Filter</h5>
+                            <h5 class="offcanvas-title" id="shop_filterLabel">品項篩選</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
                                     data-bs-target="#shop_filter" aria-label="Close"></button>
                         </div>
@@ -88,33 +88,28 @@
                                         </li>
 
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link">男士 <span>(25)</span>
-                                            </a>
+                                            <a href="#" class="nav-link">男士</a>
                                             <a data-bs-toggle="collapse" href="#shop_cat_1" role="button"
                                                aria-expanded="false" aria-controls="shop_cat_1" class="s-icon"></a>
                                             <div class="collapse" id="shop_cat_1">
                                                 <ul class="nav nav-pills flex-column nav-hierarchy">
                                                     <li class="nav-item">
-                                                        <a th:href="@{'/frontend/rentalcategory/showOneRentalCatGrid?rentalCatNo=1'}" class="nav-link">西裝</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a th:href="@{'/frontend/rentalcategory/showOneRentalCatGrid?rentalCatNo=1'}" class="nav-link">襯衫</a>
+                                                        <a th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=1'}" class="nav-link">西裝</a>
                                                     </li>
                                                 </ul>
                                             </div>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link">女士 <span>(40)</span>
-                                            </a>
+                                            <a href="#" class="nav-link">女士</a>
                                             <a data-bs-toggle="collapse" href="#shop_cat_2" role="button"
                                                aria-expanded="false" aria-controls="shop_cat_2" class="s-icon"></a>
                                             <div class="collapse" id="shop_cat_2">
                                                 <ul class="nav nav-pills flex-column nav-hierarchy">
                                                     <li class="nav-item">
-                                                        <a th:href="@{'/frontend/rentalcategory/showOneRentalCatGrid?rentalCatNo=2'}" class="nav-link">婚紗</a>
+                                                        <a th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=2'}" class="nav-link">婚紗</a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a th:href="@{'/frontend/rentalcategory/showOneRentalCatGrid?rentalCatNo=3'}" class="nav-link">禮服</a>
+                                                        <a th:href="@{'/frontend/rentalcategory/showOneRentalCat?rentalCatNo=3'}" class="nav-link">禮服</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -133,28 +128,34 @@
                                     </div>
                                     <div class="shop-sidebar-list collapse show" id="shop_Color">
                                         <ul>
-                                            <li class="custom-checkbox">
-                                                <input class="custom-control-input" id="colorsidebar1" type="checkbox" value="藍色">
+                                            <li class="custom-radio">
+                                                <input class="custom-control-input" id="colorsidebar1" type="radio" name="rentalColor" value="黑色">
                                                 <label class="custom-control-label" for="colorsidebar1">
-                                                    <span class="text-body">藍色</span>
+                                                    <span class="text-body">黑色</span>
                                                 </label>
                                             </li>
-                                            <li class="custom-checkbox">
-                                                <input class="custom-control-input" id="colorsidebar2" type="checkbox" value="白色">
+                                            <li class="custom-radio">
+                                                <input class="custom-control-input" id="colorsidebar2" type="radio" name="rentalColor" value="白色">
                                                 <label class="custom-control-label" for="colorsidebar2">
                                                     <span class="text-body">白色</span>
                                                 </label>
                                             </li>
-                                            <li class="custom-checkbox">
-                                                <input class="custom-control-input" id="colorsidebar3" type="checkbox" value="黑色">
+                                            <li class="custom-radio">
+                                                <input class="custom-control-input" id="colorsidebar3" type="radio" name="rentalColor" value="棕色">
                                                 <label class="custom-control-label" for="colorsidebar3">
-                                                    <span class="text-body">黑色</span>
+                                                    <span class="text-body">棕色</span>
                                                 </label>
                                             </li>
-                                            <li class="custom-checkbox">
-                                                <input class="custom-control-input" id="colorsidebar4" type="checkbox" value="紅色">
+                                            <li class="custom-radio">
+                                                <input class="custom-control-input" id="colorsidebar4" type="radio" name="rentalColor" value="紅色">
                                                 <label class="custom-control-label" for="colorsidebar4">
                                                     <span class="text-body">紅色</span>
+                                                </label>
+                                            </li>
+                                            <li class="custom-radio">
+                                                <input class="custom-control-input" id="colorsidebar5" type="radio" name="rentalColor" value="藍色">
+                                                <label class="custom-control-label" for="colorsidebar5">
+                                                    <span class="text-body">藍色</span>
                                                 </label>
                                             </li>
                                         </ul>
@@ -165,62 +166,28 @@
                             <!-- 大小size -->
                             <div class="shop-sidebar-block">
                                 <div class="shop-sidebar-title">
-                                    <a class="h5" data-bs-toggle="collapse" href="#shop_brand" role="button"
-                                       aria-expanded="true" aria-controls="shop_brand">
+                                    <a class="h5" data-bs-toggle="collapse" href="#shop_brand" role="button" aria-expanded="true" aria-controls="shop_brand">
                                         尺寸 <i class="bi bi-chevron-up"></i>
                                     </a>
                                 </div>
                                 <div class="shop-sidebar-list collapse show" id="shop_brand">
                                     <ul>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="brand1" type="checkbox">
-                                            <label class="custom-control-label" for="brand1">XS</label>
-                                        </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="brand2" type="checkbox">
+                                        <li class="custom-radio">
+                                            <input class="custom-control-input" id="brand2" type="radio" name="rentalSize" value="2">
                                             <label class="custom-control-label" for="brand2">S</label>
                                         </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="brand3" type="checkbox">
+                                        <li class="custom-radio">
+                                            <input class="custom-control-input" id="brand3" type="radio" name="rentalSize" value="3">
                                             <label class="custom-control-label" for="brand3">M</label>
                                         </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="brand4" type="checkbox">
+                                        <li class="custom-radio">
+                                            <input class="custom-control-input" id="brand4" type="radio" name="rentalSize" value="4">
                                             <label class="custom-control-label" for="brand4">L</label>
-                                        </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="brand5" type="checkbox">
-                                            <label class="custom-control-label" for="brand5">XL</label>
-                                        </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="brand6" type="checkbox">
-                                            <label class="custom-control-label" for="brand6">2L</label>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                             <!-- End Brands -->
-                            <!-- 租借金額 -->
-                            <div class="shop-sidebar-block">
-                                <div class="shop-sidebar-title">
-                                    <a class="h5" data-bs-toggle="collapse" href="#shop_price" role="button"
-                                       aria-expanded="true" aria-controls="shop_price">
-                                        租借金額 <i class="bi bi-chevron-up"></i>
-                                    </a>
-                                </div>
-                                <div class="shop-sidebar-list collapse show" id="shop_price">
-                                    <ul>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="price1" type="checkbox">
-                                            <label class="custom-control-label" for="price1">$2000</label>
-                                        </li>
-                                        <li class="custom-checkbox">
-                                            <input class="custom-control-input" id="price2" type="checkbox">
-                                            <label class="custom-control-label" for="price2">$4000</label>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div><!-- End Brands -->
                         </div><!-- <div class="offcanvas-body flex-column">  -->
                     </div>
                     <!-- End Sidebar -->
@@ -235,10 +202,10 @@
                                     <i class="fs-4 lh-1 bi bi-justify-left"></i>
                                 </button>
                                 <!-- 手機模式 結束 Mobile Toggle -->
-                                <a class="btn btn-white btn-sm" th:href="@{/frontend/rental/rentalShopGrid}">
+                                <a class="btn btn-white btn-sm active" th:href="@{/frontend/rental/rentalShopGrid}">
                                     <i class="bi bi-grid"></i>
                                 </a>
-                                <a class="btn btn-white btn-sm active" th:href="@{/frontend/rental/rentalShop}">
+                                <a class="btn btn-white btn-sm" th:href="@{/frontend/rental/rentalShop}">
                                     <i class="bi bi-view-stacked"></i>
                                 </a>
                             </div>
@@ -264,18 +231,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row g-3">
-                            <th:block th:each="rental : ${rentalListData}"><!-- 商品開始 -->
-                                <div class="col-sm-6 col-lg-4 rental">
-                                    <span class="rentalNo" th:text="${rental.getRentalNo()}" style="display: none"></span>
-                                    <div class="product-card-1 rentalShopGrid">
-                                        <div class="product-card-image">
-                                            <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                            <!--  操作 (開始)  -->
-                                            <div class="product-action">
-                                                <a href="" class="btn btn-primary btn_addToFAV"><!--  加入我的最愛  -->
-                                                    <i class="fi-heart"></i>
-                                                </a>
+                        <div id="rental-grid">
+                            <div class="row g-3" >
+                                <th:block th:each="rental : ${rentalListData}"><!-- 商品開始 -->
+                                    <div class="col-sm-6 col-lg-4 rental">
+                                        <span class="rentalNo" th:text="${rental.getRentalNo()}" style="display: none"></span>
+                                        <div class="product-card-1 rentalShopGrid">
+                                            <div class="product-card-image">
+                                                <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
+                                                <!--  操作 (開始)  -->
+                                                <div class="product-action">
+                                                    <a href="" class="btn btn-primary btn_addToFAV"><!--  加入我的最愛  -->
+                                                        <i class="fi-heart"></i>
+                                                    </a>
                                                 <a href="#" class="btn btn-primary btn_addTrack"><!--  加入追蹤  -->
                                                     <i class="bi bi-bookmark"></i>
                                                 </a>
@@ -284,9 +252,9 @@
                                             <!--  操作 (結束)  -->
                                             <div class="product-media">
                                                 <a th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
-                                                 <img class="img-fluid rentalPicSmallGrid"
-                                                      th:src="@{'/icons/frontend/rental/rentalshop/' + ${rental.rentalNo} + '.jpg'}"
-                                                      title="" alt="">
+                                                    <img class="img-fluid rentalPicSmallGrid"
+                                                         th:src="@{'/icons/frontend/rental/rentalshop/' + ${rental.rentalNo} + '.jpg'}"
+                                                         title="" alt="">
                                                 </a>
                                                 <div class="product-cart-btn">
                                                     <a href="" class="btn btn-primary btn-sm w-100 btn_addToCart">
@@ -294,32 +262,32 @@
 <!--                                                    <span class="successMsg" style="color: lightgreen"></span>-->
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="product-card-info">
-                                            <h6 class="product-title">
-                                                <a th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
-                                                <span th:text="${rental.rentalName}"></span></a><br>
-                                                <div class="rating-star text">
-                                                    <i class="bi bi-star-fill active"></i>
-                                                    <i class="bi bi-star-fill active"></i>
-                                                    <i class="bi bi-star-fill active"></i>
-                                                    <i class="bi bi-star-fill active"></i>
-                                                    <i class="bi bi-star"></i>
-                                                </div>
-                                            </h6>
-                                            <h6 class="product-price">
-                                                <span class="text-primary fs-4" th:text="'$' + ${rental.rentalCategory.rentalDesPrice}"></span><!-- 押金 -->
-                                                <del class="fs-sm text-muted">
-                                                    <small><span th:text="'$' + ${rental.rentalPrice}"></span></small><!-- 定價 -->
-                                                </del>
-                                                <div class="successMsg" style="color: lightgreen"></div>
-                                            </h6>
+                                            </div>
+                                            <div class="product-card-info">
+                                                <h6 class="product-title">
+                                                    <a th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
+                                                        <span th:text="${rental.rentalName}"></span></a><br>
+                                                    <div class="rating-star text">
+                                                        <i class="bi bi-star-fill active"></i>
+                                                        <i class="bi bi-star-fill active"></i>
+                                                        <i class="bi bi-star-fill active"></i>
+                                                        <i class="bi bi-star-fill active"></i>
+                                                        <i class="bi bi-star"></i>
+                                                    </div>
+                                                </h6>
+                                                <h6 class="product-price">
+                                                    <span class="text-primary fs-4" th:text="'$' + ${rental.rentalCategory.rentalDesPrice}"></span><!-- 押金 -->
+                                                    <del class="fs-sm text-muted">
+                                                        <small><span th:text="'$' + ${rental.rentalPrice}"></span></small><!-- 定價 -->
+                                                    </del>
+                                                    <div class="successMsg" style="color: lightgreen"></div>
+                                                </h6>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-
-                            </th:block><!-- 商品結束 -->
-                        </div> <!--  結束 <div class="row g-3">   -->
+                                </th:block><!-- 商品結束 -->
+                            </div><!--  結束 <div class="row g-3">   -->
+                        </div>
                         <!-- 頁籤 -->
                         <div class="shop-bottom-bar d-flex align-items-center mt-3">
                             <div>Showing: 1 - 12 of 17</div>
@@ -356,58 +324,46 @@
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
 <!-- End script start -->
 <script>
+    /*----------------------------曉妮寫的方法 (開始) --------------------------*/
     /*
-     * 選擇對應顏色
-     * 使用jQuery抓取點擊事件，前台發送清求。
-     * 最後依後台判斷選擇方式並回傳對應的資料。
+     * 選擇對應關鍵字
     */
     $(document).ready(function() {
-        $('input[type="checkbox"]').change(function() {
-            // 收集已選中的顏色值
-            const selectedColors = [];
-            $('input[type="checkbox"]:checked').each(function() {
-                selectedColors.push($(this).val());
-            });
+        $('input[type="radio"]').change(function() {
+            console.log("已點選");
+            // 取得所選的值
+            const rentalColor = $('input[name="rentalColor"]:checked').val();
+            const rentalSize = $('input[name="rentalSize"]:checked').val();
+            console.log("已點選" + rentalColor);
+            console.log("已點選"+ rentalSize);
 
-            // 發送 AJAX 請求到後端
             $.ajax({
-                url: '/getDisplayColor',
-                type: 'GET',
-                data: { color: selectedColors.join(',') }, // 傳遞選中的顏色值作為參數
-                success: function(data) {
-                    // 更新頁面上的商品列表
-                    updateProductList(data);
+                type: "GET",
+                url: "/frontend/findByKeyWordToGrid",
+                data: {
+                    rentalColor: rentalColor,
+                    rentalSize: rentalSize ? parseInt(rentalSize) : null
+                },
+                success: function(response) {
+                    $('#rental-grid').html(response); //返回替換內容
                 },
                 error: function(xhr, status, error) {
-                    console.error('Error:', error);
+                    console.error(error);
                 }
             });
         });
-
-        // 更新頁面上的商品列表
-        function updateProductList(rentals) {
-            // 清空原有的商品列表
-            $('#product-list').empty();
-
-            // 循環添加新的商品信息
-            rentals.forEach(function(rental) {
-                $('#product-list').append('<div>' + rental.rentalName + ' - ' + rental.rentalColor + '</div>');
-            });
-        }
     });
 
 
     /*
      * 選擇排序方式
-     * 使用jQuery抓取點擊事件，前台發送清求。
-     * 最後依後台判斷選擇方式並回傳對應的資料。
     */
     $(document).ready(function() {
         $('.sort-item').click(function(event) {
             event.preventDefault();
             let sortType = $(this).data('sort');
 
-            let url = "/frontend/rental/rentalShopGrid/" + sortType;
+            let url = "/frontend/rental/rentalShop/" + sortType;
 
             window.location.href = url;  //重定向到指定頁面
         });
@@ -415,65 +371,37 @@
 
     /*
      * 功能：點選加入我的最愛
-     * 使用 th:attr 設置data-屬性，在點擊愛心後抓取到自訂的值&當下時間(ISO 8601 )
-     * 前端傳遞數據至後端，後台針對時間轉Timestamp型態
-    */
-    $(document).on("click", "a.btn_addToFAV", function(e) {
-        e.preventDefault(); // 阻止表單默認提交行為
-
-        // window.location.protocol -> 返回當前頁面使用的協議
-        // window.location.host -> 返回當前頁面的主機名和埠號
-        // const baseUrl -> 將window.location.protocol和window.location.host，用 "//" 連接，取得當前頁面的URL
-        const baseUrl = window.location.protocol + "//" + window.location.host;
-        const rentalNo = $(this).closest("div.rental").find("span.rentalNo").text().trim();
-        const rentalFavTime = new Date().toISOString(); //取得當前時間(ISO 8601型態 ，只能在後端轉型)
-        console.log("抓取編號:" + rentalNo);
-        console.log("抓取當前時間:" + rentalFavTime);
-
-        //打包數據
-        const wishData = {
-            rentalNo: rentalNo,
-            rentalFavTime: rentalFavTime
-        };
-
-        fetch(baseUrl + "/frontend/rentalmyfavorite/addWish", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(wishData) //將包裝的數據轉換成JSON格式並發送
-        }).then(response => response.text())
-            .then(rentalName => {
-                // console.log("2 抓取打包數據:" + JSON.stringify(wishData)); //成功匯出
-                console.log(rentalName + "已加入我的最愛");
-            });
-    });
-
-    /*
-     * 功能：顏色篩選及時更新
-     *
-     *
     */
     $(document).ready(function() {
-        $('input[type="checkbox"]').change(function() {
-            var selectedColors = [];
-            $('input[type="checkbox"]:checked').each(function() {
-                selectedColors.push($(this).val());
-            });
+        $(".addToFAV").click(function(event) {
+
+            event.preventDefault(); // 阻止表單默認提交行為
+
+            // window.location.protocol -> 返回當前頁面使用的協議
+            // window.location.host -> 返回當前頁面的主機名和埠號
+            // const baseUrl -> 將window.location.protocol和window.location.host，用 "//" 連接，取得當前頁面的URL
+            const baseUrl = window.location.protocol + "//" + window.location.host;
+            const rentalItem = $(this).closest('.rentalItem'); // 找到最近的 .rentalItem 元素
+            const rentalNo = rentalItem.find('input[name="rentalNo"]').val();
+            console.log("抓取編號:" + rentalNo);
+            console.log("抓取rentalItem資訊:" + rentalItem);
+
+            // 打包數據
+            const data = {
+                rentalNo: rentalNo,
+            };
+
             $.ajax({
                 type: 'POST',
-                url: '/selectColors',
-                contentType: 'application/json',
-                data: JSON.stringify({ selectedColors: selectedColors }),
+                url: baseUrl + "/frontend/rentalmyfavorite/addWish",
+                data: data,
                 success: function(data) {
-                    $('#results').empty();
-                    data.forEach(function(item) {
-                        $('#results').append('<li>' + item + '</li>');
-                    });
+                    console.log("加入成功");
                 }
             });
         });
     });
+    /*----------------------------曉妮寫的方法 (結束) --------------------------*/
 
     /*----------------------------右翰寫的方法----------------------------------*/
 

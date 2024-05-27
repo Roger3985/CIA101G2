@@ -1,6 +1,5 @@
 package com.yu.rentalmyfavorite.service;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -20,36 +19,14 @@ public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
 
     @Autowired //自動裝配
     private RentalMyFavoriteRepository repository;
-    @Autowired
-    private RentalRepository rentalRepository;
-    @Autowired
-    private MemberRepository memRepository;
-
 
     //redis使用
     @Autowired
     @Qualifier("rentalWish")
     private RedisTemplate<String, Map<String, String>> rentalWishRedisTemplate;
 
-    //----------------------------------------------------------------------------------------------------------------------
-    //主要為redis使用：
-
-//    // 從 Redis 取得最愛清單 (依據key值搜索)
-//    @Override
-//    public List<Map<String, String>> getWishFromRedis(String memNo) {
-//
-//        Set<String> keys = rentalWishRedisTemplate.keys("member:" + memNo + ":myFAVItem:*");
-//        List<Map<String, String>> resultList = new ArrayList<>();
-//        if (keys != null) {
-//            for (String key : keys) {
-//                Map<Object, Object> result = rentalWishRedisTemplate.opsForHash().entries(key);
-//                Map<String, String> resultMap = new HashMap<>();
-//                result.forEach((k, v) -> resultMap.put(k.toString(), v.toString()));
-//                resultList.add(resultMap);
-//            }
-//        }
-//        return resultList;
-//    }
+//----------------------------------------------------------------------------------------------------------------------
+//主要為redis使用：
 
     // 刪除 Redis 中的最愛清單
     @Override
@@ -64,12 +41,12 @@ public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
     public void addRentalFav(AddToWishList addToWishList) {
 
         try {
-            String memNo = addToWishList.getMemNo().toString();
-            String rentalNo = addToWishList.getRentalNo().toString();
-            String key = "member:" + memNo + ":myFAVItem:" + rentalNo; // 顯示分層
+            Integer memNo = addToWishList.getMemNo();  //須放入當分層的值
+            Integer rentalNo = addToWishList.getRentalNo();  //須放入當分層的值
+            String key = "member:" + memNo + ":myFAVItem:" + rentalNo; // 顯示分層(會員編號 : 1 : myFAVItem : 商品編號)
 
             Map<String, String> fields = new HashMap<>();
-            fields.put("rentalNo", rentalNo);
+            fields.put("rentalNo", addToWishList.getRentalNo().toString());  //此處rentalNo的來源 (addToWishList.getRentalNo().toString();)
             fields.put("rentalFavTime", getCurrentDateTime());
 
             rentalWishRedisTemplate.opsForHash().putAll(key, fields);// 將我的最愛清單存入
@@ -81,35 +58,7 @@ public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
-//    // 加入最愛清單到 Redis
-//    @Override
-//    public void addWish(String memNo, Map<String, String> wishDetails) {
-//        rentalWishRedisTemplate.opsForHash().putAll("member : " + memNo.toString()
-//                          + ": myFAVItem : " + wishDetails.get("rentalNo"), wishDetails);
-//    }
 
-
-//    //查詢(memNo)
-//    @Override
-//    public List<AddToWishList> getWishFromRedis(Integer memNo) {
-//        // 初始化ArrayList，存取所有的 AddToWishList 對象
-//        List<AddToWishList> addToWishData = new ArrayList<>();
-//
-//        // 取得收藏的所有品項 (從 Redis 中獲取與該會員編號相關的所有收藏)
-//        Set<String> keys = rentalWishRedisTemplate.keys(memNo.toString() + ":*");
-//        if (keys != null) {
-//            for (String key : keys) {
-//                Map<Object, Object> hashEntries = rentalWishRedisTemplate.opsForHash().entries(key);
-//                AddToWishList wishItem = new AddToWishList();
-//                wishItem.setMemNo(Integer.valueOf(memNo));
-//                wishItem.setRentalNo(Integer.valueOf(hashEntries.get("rentalNo").toString()));
-//                wishItem.setRentalFavTime(hashEntries.get("rentalFavTime").toString());
-//                addToWishData.add(wishItem);
-//            }
-//        }
-//        return addToWishData;
-//    }
-//}
     //查詢(memNo)
     @Override
     public List<AddToWishList> getWishFromRedis(Integer memNo) {
@@ -117,20 +66,15 @@ public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
         List<AddToWishList> addToWishData = new ArrayList<>();
 
         try {
+            String favoriteKey = "member:" + memNo;
             // 取得收藏的所有品項 (從 Redis 中獲取與該會員編號相關的所有收藏)
-            Set<String> favorites = rentalWishRedisTemplate.keys(memNo.toString() + ":*");
-
-            // null 檢查
-            if (favorites == null) {
-                System.err.println("No favorites found for memNo: " + memNo);
-                return addToWishData; // 回傳空的列表
-            }
+            Set<String> favorites = rentalWishRedisTemplate.keys(favoriteKey + ":*");
 
             // 遍歷內容，對應 key.value
             for (String key : favorites) {
+
                 //從 Redis 中取得儲存在Hash結構中的資料
-                Map<Object, Object> favoriteData = rentalWishRedisTemplate.opsForHash().entries(memNo.toString() + ":" + key.toString());
-//                Map<Object, Object> favoriteData = rentalWishRedisTemplate.opsForHash().entries(key);
+                Map<Object, Object> favoriteData = rentalWishRedisTemplate.opsForHash().entries(key);
 
                 // 創建 AddToWishList 對象，設置相關屬性
                 AddToWishList item = new AddToWishList();
@@ -138,21 +82,23 @@ public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
 
                 // 設置 rentalNo 屬性 (檢查 favoriteData 是否包含 rentalNo 鍵，並確認值為字串形式後，再轉換為 Integer 並設置到 item 對象中)
                 if (favoriteData.containsKey("rentalNo")) {
-                    Object rentalNoObj = favoriteData.get("rentalNo");
-                    if (rentalNoObj instanceof String) {
-                        Integer rentalNo = Integer.parseInt((String) rentalNoObj);
-                        item.setRentalNo(rentalNo);
-                    }
+                    Integer rentalNo = Integer.parseInt((String) favoriteData.get("rentalNo"));
+                    item.setRentalNo(rentalNo);
+                }
+
+                // 設置加入時間
+                if (favoriteData.containsKey("rentalFavTime")) {
+                    item.setRentalFavTime((String) favoriteData.get("rentalFavTime"));
                 }
                 addToWishData.add(item); // 將處理好的資料放入列表
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("錯誤訊息: " + e.getMessage());
         }
         return addToWishData; // 回傳列表
     }
 
+    //----------------------------------------------------------------------------------------------------------------------
     //單筆查詢(rentalNo)
     @Override
     public RentalMyFavorite findByRentalNo(Integer rentalNo) {
@@ -163,18 +109,6 @@ public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
     @Override
     public RentalMyFavorite findByRentalNoAndMemNo(Integer rentalNo, Integer memNo) {
         return repository.findByRental_RentalNoAndMember_MemNo(rentalNo, memNo);
-    }
-
-    //複合主鍵查詢
-    @Override
-    public List<RentalMyFavorite> findByRental_RentalNoAndMember_MemNo(Integer rentalNo, Integer memNo) {
-        return repository.findByRentalRentalNoAndMemberMemNo(rentalNo, memNo);
-    }
-
-    //單筆查詢(rentalFavTime)
-    @Override
-    public List<RentalMyFavorite> findByRentalFavTime(Timestamp rentalFavTime) {
-        return repository.findByRentalFavTime(rentalFavTime);
     }
 
     //全部查詢(RentalMyFavorite)
