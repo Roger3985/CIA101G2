@@ -54,7 +54,7 @@
                     <div class="col-lg-6 my-2">
                         <ol
                                 class="breadcrumb breadcrumb-light m-0 small justify-content-center justify-content-lg-end">
-                            <li class="breadcrumb-item"><a class="text-nowrap" href="#">首頁</a></li>
+                            <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/frontend/rental/rentalShop}">租借品首頁</a></li>
                             <li class="breadcrumb-item text-nowrap active" aria-current="page">追蹤清單</li>
                         </ol>
                     </div>
@@ -287,24 +287,35 @@
                 // span.rentalNo
                 let rentalNo = $this.closest("div").find("input.rentalNo").val();
 
-                if (confirm("確定刪除追蹤?")) {
+                swal({
+                    title: "確定取消追蹤?",
+                    text: "",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                }).then((willDelete) => {
 
-                    fetch(baseUrl + apiPath + "/deleteTrack?rentalNo=" + rentalNo, {
-                        method : "DELETE"
-                    }).then(function (response) {
-                        return response.text();
-                    }).then(function (data) {
-                        if (data === "/frontend/member/loginMember") {
-                            window.location.href = data;
-                        }
-                        if (data === "ok") {
-                            alert("刪除成功");
-                            // 在這刪除該筆追蹤
-                            $this.closest("div.rentalmytrack").remove();
-                        }
-                    });
+                    if (willDelete) {
 
-                }
+                        fetch(baseUrl + apiPath + "/deleteTrack?rentalNo=" + rentalNo, {
+                            method : "DELETE"
+                        }).then(function (response) {
+                            return response.text();
+                        }).then(function (data) {
+                            if (data === "/frontend/member/loginMember") {
+                                window.location.href = data;
+                            }
+                            if (data === "ok") {
+                                swal("已取消追蹤", "", "success");
+                                // 在這刪除該筆追蹤
+                                $this.closest("div.rentalmytrack").remove();
+                            }
+                        });
+
+                    }
+
+                });
+
 
             }); // 刪除追蹤 結束
 

@@ -52,8 +52,8 @@
                     </div>
                     <div class="col-lg-6 my-2">
                         <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
-                            <li class="breadcrumb-item"><a class="text-nowrap" href="#"><i
-                                    class="bi bi-home"></i>首頁</a></li>
+                            <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/frontend/rentalorder/rentalCart}"><i
+                                    class="bi bi-home"></i>購物車</a></li>
                             <li class="breadcrumb-item text-nowrap active" aria-current="page">付款頁面</li>
                         </ol>
                     </div>
@@ -68,7 +68,7 @@
                         <div class="bg-body border border-bottom-0 shadow-lg">
                             <div class="d-flex p-3 align-items-center">
                                 <!--                                <div class="avatar avatar-lg rounded-circle">-->
-                                <!--                                    <img src="../../assets/img/avatar/avatar-2.jpg" title="" alt="">-->
+                                <!--                                    <img src="../../assets/img/avatar/avatar-home-banner-1.jpg" title="" alt="">-->
                                 <!--                                </div>-->
                                 <div class="col ps-3">
                                     <h6 class="m-0">購物車明細</h6>
@@ -395,38 +395,25 @@
         $(document).on("click", "button.linePay", function () {
 
             if (items.length === 0) {
-                alert("好像沒有商品可以結帳喔!再去逛逛吧!");
+                swal("好像沒有商品可以結帳喔!再去逛逛吧!", "", "warning");
                 return;
             }
             let rentalDate = $("input[name='rentalDateNormal']").val();
             let rentalTakeMethod = $("select[name='rentalTakeMethod']").val();
             let rentalPayMethod = $("select[name='rentalPayMethod']").val();
             if (rentalTakeMethod === "2" && rentalPayMethod === "2") {
-                alert("溫馨提醒 : 宅配方式只接受線上付款喔");
+                swal("溫馨提醒", "宅配方式只接受線上付款喔", "warning");
                 return;
             }
             if (rentalDate === "") {
-                alert("請輸入日期!");
+                swal("溫馨提醒", "請輸入日期喔!", "warning");
                 return;
             }
             if (rentalTakeMethod === "2") {
-                alert("溫馨提醒 : 目前Line Pay只支援現場取貨方式喔");
+                swal("溫馨提醒", "目前Line Pay只支援現場取貨方式喔", "warning");
                 return;
             }
 
-            // $("input[name='rentalByrName']").val($("h6#byrname").text());
-            // $("input[name='rentalByrPhone']").val($("h6#byrphone").text());
-            // $("input[name='rentalByrEmail']").val($("h6#byremail").text());
-            // $("input[name='rentalRcvName']").val($("h6#rcvname").text());
-            // $("input[name='rentalRcvPhone']").val($("h6#rcvphone").text());
-            // $("input[name='rentalTakeMethod']").val(rentalTakeMethod);
-            // $("input[name='rentalAddr']").val($("h6#rentalAddr").text());
-            // $("input[name='rentalPayMethod']").val(rentalPayMethod);
-            // $("input[name='rentalDate']").val(rentalDate);
-            // $("input[name='rentSet']").val($("select[name='rentSet']").val());
-            // $("input[name='rentalAllPrice']").val($("span.rentalAllPrice").text());
-            // $("input[name='rentalAllDepPrice']").val($("span.rentalAllDepPrice").text());
-            // $("input[name='buyItems']").val(JSON.stringify(items));
             var jsonData = {
                 rentalByrName: $("h6#byrname").text(),
                 rentalByrPhone: $("h6#byrphone").text(),
@@ -458,26 +445,37 @@
                 "rentalNos" : rentalNos
             };
 
-            if (confirm("確定要刪除?")) {
+            swal({
+                title: "確定刪除?",
+                text: "",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true
+            }).then((willDelete) => {
 
-                fetch(baseUrl + apiPath + "deleteFromCart", {
-                    method : "POST",
-                    headers : {
-                        "Content-Type" : "application/json"
-                    },
-                    body : JSON.stringify(data)
-                }).then(function (response) {
-                    return response.text();
-                }).then(function (data) {
-                    if (data === "ok") {
-                        alert("刪除成功");
-                        getAll();
-                    } else {
-                        window.location.href = data;
-                    }
-                });
+                if (willDelete) {
 
-            }
+                    fetch(baseUrl + apiPath + "deleteFromCart", {
+                        method : "POST",
+                        headers : {
+                            "Content-Type" : "application/json"
+                        },
+                        body : JSON.stringify(data)
+                    }).then(function (response) {
+                        return response.text();
+                    }).then(function (data) {
+                        if (data === "ok") {
+                            swal("刪除成功", "", "success");
+                            getAll();
+                        } else {
+                            window.location.href = data;
+                        }
+                    });
+
+                }
+
+            });
+
 
         }); // 從明細刪除商品 結束
 
@@ -563,7 +561,7 @@
         $(document).on("click", "button.createOrder", function () {
 
             if (items.length === 0) {
-                alert("好像沒有商品可以結帳喔!再去逛逛吧!");
+                swal("溫馨提醒", "好像沒有商品可以結帳喔!再去逛逛吧!", "warning");
                 return;
             }
             // console.log("第一道檢查完時 : " + rentalAllDepPrice);
@@ -574,11 +572,11 @@
             let reqUrl = "createOrder";
 
             if (rentalTakeMethod === "2" && rentalPayMethod === "2") {
-                alert("溫馨提醒 : 宅配方式只接受線上付款喔");
+                swal("溫馨提醒", "宅配方式只接受線上付款喔!", "warning");
                 return;
             }
             if (rentalDate === "") {
-                alert("請輸入日期!");
+                swal("溫馨提醒", "請輸入日期喔!", "warning");
                 return;
             }
 

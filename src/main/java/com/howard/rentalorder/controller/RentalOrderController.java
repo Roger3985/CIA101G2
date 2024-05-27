@@ -9,18 +9,13 @@ import com.howard.rentalorder.service.impl.RentalCartServiceImpl;
 import com.howard.rentalorder.service.impl.RentalOrderServiceImpl;
 import com.howard.rentalorder.service.impl.RentalOrderShippingService;
 import com.howard.rentalorderdetails.service.impl.RentalOrderDetailsServiceImpl;
-import com.howard.util.HmacSignature;
 import com.roger.member.entity.Member;
 import com.roger.member.repository.MemberRepository;
+import com.roger.member.service.MemberService;
+import com.roger.notice.entity.Notice;
+import com.roger.notice.service.NoticeService;
 import com.yu.rental.dao.RentalRepository;
 import com.yu.rental.entity.Rental;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,13 +25,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.*;
-
-import static com.howard.util.HmacSignature.generateSignature;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/backend/rentalorder")
@@ -44,8 +38,6 @@ import static com.howard.util.HmacSignature.generateSignature;
 public class RentalOrderController {
 
     /*--------------------------所有方法共用-------------------------------*/
-
-
 
     @Autowired
     private LogisticsStateService logisticsStateService;
@@ -58,6 +50,12 @@ public class RentalOrderController {
 
     @Autowired
     private RentalCartServiceImpl cartService;
+
+    @Autowired
+    MemberService memberService;
+
+    @Autowired
+    NoticeService noticeService;
 
     @Autowired
     private RentalRepository rentalRepository;
@@ -404,7 +402,6 @@ public class RentalOrderController {
 
         Map<String, String> map = new HashMap<>();
         map.put("rentalNo", String.valueOf(rental.getRentalNo()));
-//        System.out.println("有進來這方法喔，取到的rentalNo = " + rental.getRentalNo());
         map.put("rentalCatNo", String.valueOf(rental.getRentalCategory().getRentalCatNo()));
         map.put("rentalName", rental.getRentalName());
         map.put("rentalPrice", String.valueOf(rental.getRentalPrice()));
@@ -445,11 +442,8 @@ public class RentalOrderController {
     // 出貨
     @PostMapping("/createShippingOrder")
     public ResponseEntity<?> createShippingOrder(@RequestParam Integer rentalOrdNo) {
-        System.out.println("有進來controller方法" + rentalOrdNo);
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("rentalOrdNo", rentalOrdNo);
-        RentalOrder order = service.getByAttributes(map).get(0);
+        RentalOrder order = service.findOrderByOrdNo(rentalOrdNo);
         order.setrentalOrdStat((byte) 20);
         String formHTML = shippingService.shipping(rentalOrdNo);
         return ResponseEntity.status(HttpStatus.OK).body(formHTML);
@@ -481,13 +475,12 @@ public class RentalOrderController {
 
     /*----------------------------有關刷退押金的方法----------------------------------*/
 
-    // 刷退
+    // 綠界刷退
     @PostMapping("/depRefund")
     public ResponseEntity<?> depRefund(@RequestBody Integer rentalOrdNo) {
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("rentalOrdNo", rentalOrdNo);
-        Map<String, String> refundInfos = service.refund(service.getByAttributes(map).get(0));
+        Map<String, String> refundInfos = service.refund(service.findOrderByOrdNo(rentalOrdNo));
+        addMemberMessage(refundInfos, rentalOrdNo);
         return ResponseEntity.status(HttpStatus.OK).body(refundInfos);
 
     }
@@ -498,10 +491,21 @@ public class RentalOrderController {
     @PostMapping("/depRefundForLinePay")
     public ResponseEntity<?> depRefundForLinePay(@RequestBody Integer rentalOrdNo) {
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("rentalOrdNo", rentalOrdNo);
-        Map<String, String> refundInfos = service.refundForLinePay(service.getByAttributes(map).get(0));
+        Map<String, String> refundInfos = service.refundForLinePay(service.findOrderByOrdNo(rentalOrdNo));
+        addMemberMessage(refundInfos, rentalOrdNo);
         return ResponseEntity.status(HttpStatus.OK).body(refundInfos);
+
+    }
+
+    public void addMemberMessage(Map<String, String> refundInfos, Integer rentalOrdNo) {
+
+        Notice newNotice = new Notice();
+        Integer memNo = service.findOrderByOrdNo(rentalOrdNo).getMember().getMemNo();
+        newNotice.setMember(memberService.findByNo(memNo));
+        newNotice.setNotContent("訂單號碼" + rentalOrdNo + "押金已完成刷退囉! 刷退押金比例為 " + refundInfos.get("refundPercent") + "%");
+        newNotice.setNotTime(new Timestamp(System.currentTimeMillis()));
+        newNotice.setNotStat((byte) 0);
+        noticeService.addNotice(newNotice);
 
     }
 
