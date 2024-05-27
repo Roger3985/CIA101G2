@@ -256,6 +256,7 @@ public class CartController {
                             model.addAttribute("productImage" + productNo, base64Image);
                         }
                     }
+                    session.setAttribute("cartListData", cartListData);
                     model.addAttribute("cartListData", cartListData);
                 }
             }
@@ -278,7 +279,7 @@ public class CartController {
                         model.addAttribute("productImage" + productNo, base64Image);
                     }
                 }
-
+                session.setAttribute("cartListData", cartListData);
                 // 设置购物车信息为模型属性
                 model.addAttribute("cartListData", cartListData);
             }
