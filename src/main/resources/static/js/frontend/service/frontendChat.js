@@ -88,6 +88,7 @@ function connect() {
                 var showMsg = historyData.message;
                 var showMsgTime = historyData.timestamp;
                 const messageContainer = document.createElement('div');
+                messageContainer.classList.add('message');
                 const messageTime = document.createElement('div');
                 if (historyData.sender === userName) {
                     messageContainer.classList.add("sender");
@@ -96,7 +97,9 @@ function connect() {
                     messageContainer.classList.add("receiver");
                     messageTime.classList.add("receiverTime");
                 }
-                messageContainer.innerHTML = showMsg;
+                const message_block = document.createElement('p');
+                message_block.innerHTML = showMsg;
+                messageContainer.appendChild(message_block);
                 messageTime.innerHTML = showMsgTime;
                 chatArea.appendChild(messageContainer);
                 chatArea.appendChild(messageTime);
@@ -106,6 +109,7 @@ function connect() {
         if (pkType == "chatMsgB") {
             console.log("我收到後端的資料了" + message);
             const messageContainer = document.createElement('div');
+            messageContainer.classList.add('message');
             const messageTime = document.createElement('div');
             if (message.sender === userName) {
                 messageContainer.classList.add("sender")
@@ -114,10 +118,13 @@ function connect() {
                 messageContainer.classList.add("receiver");
                 messageTime.classList.add("receiverTime");
             }
-            messageContainer.innerHTML = message;
+            const message_block = document.createElement('p');
+            message_block.innerHTML = message;
+            messageContainer.appendChild(message_block);
             messageTime.innerHTML = msgTime;
             chatArea.appendChild(messageContainer);
             chatArea.appendChild(messageTime);
+            chatArea.scrollTop = chatArea.scrollHeight;
         }
     }
 }
@@ -147,8 +154,11 @@ el_msg_btn.addEventListener("click", function () {
         alert("請輸入訊息");
     } else {
         const messageContainer = document.createElement('div');
+        messageContainer.classList.add('message')
         messageContainer.classList.add("sender")
-        messageContainer.innerHTML = messageContent;
+        const message_block = document.createElement('p');
+        message_block.innerHTML = messageContent;
+        messageContainer.appendChild(message_block);
         const messageTime = document.createElement('div');
         messageTime.classList.add("senderTime");
         messageTime.innerHTML = nowStr;
@@ -157,7 +167,10 @@ el_msg_btn.addEventListener("click", function () {
         chatArea.appendChild(messageTime);
         messageInput.value = '';
         var jsonobj = {
-            type: "chatMsgB", sender: `${userName}`, receiver: "host", message: messageContent,
+            type: "chatMsgB",
+            sender: `${userName}`,
+            receiver: "host",
+            message: messageContent,
             timestamp: nowStr
         }
         webSocket.send(JSON.stringify(jsonobj));

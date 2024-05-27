@@ -67,30 +67,14 @@ function connect() {
             connectedUsersList.innerHTML = '';
             for (let i = 0; i < memlist.length; i++) {
                 console.log(memlist[i]);
-                const listItem = document.createElement('li');
-                listItem.classList.add('user-item');
-                listItem.id = memlist[i];
-
-                const userImage = document.createElement('img');
-                userImage.classList.add('chat_img');
-                userImage.src = '/images/user_icon.png';
-                userImage.alt = memlist[i];
-
-                const usernameSpan = document.createElement('span');
-                usernameSpan.textContent = memlist[i];
-
-                listItem.appendChild(userImage);
-                listItem.appendChild(usernameSpan);
-
-
-                connectedUsersList.appendChild(listItem);
-
-                listItem.addEventListener("click", function (e) {
-
+                const memListContainer = document.createElement('li');
+                memListContainer.innerHTML = memlist[i];
+                connectedUsersList.appendChild(memListContainer);
+                memListContainer.addEventListener("click", function (e) {
                     alert("hi" + memlist[i]);
                     memName = memlist[i];
                     let userReplying_el = document.querySelector(".username-replying");
-                    userReplying_el.innerHTML = '正在回覆... '+memName;
+                    userReplying_el.innerHTML = memName;
                     chatArea.innerHTML = '';
                     // // 清除未讀訊息的數量
                     unreadMessage[memName] = 0;
@@ -136,7 +120,6 @@ function connect() {
                 messageContainer.appendChild(message_block);
                 chatArea.appendChild(messageContainer);
                 chatArea.appendChild(messageTime);
-                chatArea.scrollTop = chatArea.scrollHeight;
             } else {
                 // 如果不是當前聊天的會員，傳送訊息過來，則在該會員旁邊顯示未讀訊息
 

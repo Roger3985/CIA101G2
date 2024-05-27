@@ -2,7 +2,6 @@ package com.yu.rental.service;
 
 import com.yu.rental.dao.RentalRepository;
 import com.yu.rental.entity.Rental;
-import com.yu.rentalpic.dao.RentalPicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,7 +10,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -32,23 +30,28 @@ public class RentalServiceImpl implements RentalService {
 		return repository.findByRentalCategoryRentalCatNo(rentalCatNo);
 	}
 
+	//全部查詢(Rental)
+	@Override
+	public List<Rental> findAll() {
+		return repository.findAll();
+	}
+
+	@Override
+	public Rental getOneRental(Integer rentalNo) {
+		return repository.findById(rentalNo).orElse(null);
+	}
+
 	//單筆查詢(String rentalName)
 	@Override
 	public Rental findByRentalName(String rentalName) {
-		return repository.findByRentalName(rentalName); }
+		return repository.findByRentalName(rentalName);
+	}
 
-//	//處理查詢(依租借品的尺寸)
-//	@Override
-//	public List<Rental> getRentalSize(Integer rentalSize) {
-//		return repository.findQueryByRentalSize(rentalSize);
-//	}
-//
 	//處理查詢(依租借品的顏色)
 	@Override
 	public List<Rental> findByRentalColor(String rentalColor) {
 		return repository.findByRentalColorContaining(rentalColor);
 	}
-
 
 	//關鍵字查詢(依租借品的名稱 "模糊查詢")
 	@Override
@@ -56,10 +59,10 @@ public class RentalServiceImpl implements RentalService {
 		return repository.findQueryByRentalName(rentalName);
 	}
 
-	//全部查詢(Rental)
+	// 依關鍵字搜尋相關租借品 (如果rentalStat不為5 (下架狀態))
 	@Override
-	public List<Rental> findAll() {
-		return repository.findAll();
+	public Page<Rental> findByAllKeyWord(String keyword, Byte rentalStat, Integer rentalSize, Pageable pageable) {
+		return repository.findByKeyword_Status_SizeAndPrice(keyword, rentalStat, rentalSize, pageable);
 	}
 
 
@@ -75,19 +78,19 @@ public class RentalServiceImpl implements RentalService {
 		return repository.findAll(Sort.by("rentalPrice").ascending());
 	}
 
-	//金額由小到大 (取得租借清單，以價格的升冪後返回)
+	//金額由小到大 (取得rentalCatNo清單，以價格的升冪後返回)
 	@Override
 	public List<Rental> findByRentalCatNoSort(Integer rentalCatNo) {
 		return repository.findByRentalCatNo_OrderByRentalPriceASC(rentalCatNo);
     }
 
-	//金額由大到小 (取得租借清單，以價格的降冪後返回)
+	//金額由大到小 (取得rentalCatNo清單，以價格的降冪後返回)
 	@Override
 	public List<Rental> findByRentalCatNoSortDESC(Integer rentalCatNo) {
 		return repository.findByRentalCatNo_OrderByRentalPriceDESC(rentalCatNo);
     }
 
-	//以rentalStat排序 (編號越晚的先顯示)
+	//最新上架：以rentalStat排序 (編號越晚的先顯示)
 	@Override
 	public List<Rental> findByRentalStatDESC(Byte rentalStat){
 		return repository.findByRentalStatDESC(rentalStat);
