@@ -154,6 +154,23 @@
             <button id="customAlertCloseBtn" class="custom-alert-close-btn">&times;</button>
         </div>
     </div>
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">確認刪除</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    確定要移除這個商品嗎？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btn btn-secondary"data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">刪除</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <form th:action="@{/frontend/productorder/insertOrder}" method="post" th:object="${cartListData}" onsubmit="return validateForm()">
         <div class="container">
             <table class="table product-table">
@@ -271,12 +288,12 @@
 
     function updateTotal(input) {
         var quantity = parseInt(input.value);
-        var priceElement = input.closest('.productitm').querySelector('#productPrice');
-        var totalPriceElement = input.closest('.productitm').querySelector('#productAllPrice');
-        var price = parseFloat(priceElement.textContent.replace('$', '')); // 獲取商品單價並轉換為浮點數
+        var priceElement = input.closest('.productitm').querySelector('.price');
+        var totalPriceElement = input.closest('.productitm').querySelector('.productAllPrice');
+        var price = parseFloat(priceElement.textContent); // 獲取商品單價並轉換為浮點數
         var total = price * quantity; // 計算總價
-        totalPriceElement.textContent = '$' + total;
-        updateAllPrice()
+        totalPriceElement.textContent = '$' + total.toFixed(2); // 設置總價並保留兩位小數
+        updateAllPrice(); // 更新整體總價
     }
 
     window.onload = function () {
@@ -284,7 +301,7 @@
     };
 
     function updateAllPrice() {
-        var allPriceElements = document.querySelectorAll('#productAllPrice');
+        var allPriceElements = document.querySelectorAll('.productAllPrice');
         var totalPrice = 0;
         // 遍歷每個商品的總價元素，並累加到總價中
         allPriceElements.forEach(function (element) {
@@ -293,7 +310,7 @@
         });
         // 更新顯示總價的元素
         var totalPriceElement = document.getElementById('allprice');
-        totalPriceElement.textContent = '$' + totalPrice;
+        totalPriceElement.textContent = '$' + totalPrice.toFixed(2); // 設置總價並保留兩位小數
     }
 
     function updateBackendQuantity(input) {
@@ -313,7 +330,7 @@
             },
             success: function (data) {
                 console.log("更新成功");
-                updateTotalPrice(); // 更新總價
+                updateAllPrice(); // 更新總價
             },
             error: function () {
                 console.error('更新失敗');
@@ -322,9 +339,14 @@
     }
 
     function confirmDelete(button) {
-        if (confirm("確定要移除這個商品嗎？")) {
+        var confirmButton = document.getElementById('confirmDeleteButton');
+        confirmButton.onclick = function() {
             deleteProduct(button);
-        }
+        };
+        var myModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'), {
+            keyboard: false
+        });
+        myModal.show();
     }
 
     function deleteProduct(button) {
@@ -344,42 +366,66 @@
                 row.remove(); // 刪除對應行
                 console.log("刪除成功");
                 updateAllPrice(); // 更新總價
-                location.reload(); // 重新載入頁面
+
+                // Hide the confirmation modal
+                var modalElement = document.getElementById('confirmDeleteModal');
+                modalElement.style.display = "none";
+                document.body.classList.remove('modal-open');
+                document.querySelector('.modal-backdrop').remove();
             },
             error: function () {
                 console.error('刪除失敗');
             }
         });
     }
+
     function customAlert(message) {
-        // 设置弹窗消息
+        // 設置彈窗消息
         document.getElementById("customAlertMessage").innerHTML = message;
-        // 显示弹窗
+        // 顯示彈窗
         document.getElementById("customAlert").style.display = "block";
     }
 
-    // 关闭自定义弹窗
+    // 關閉自定義彈窗
     document.getElementById("customAlertCloseBtn").addEventListener("click", function () {
         document.getElementById("customAlert").style.display = "none";
     });
 
-    // 检查是否有商品
+    // 取消按鈕的事件監聽器
+    document.getElementById("btn btn-secondary").addEventListener("click", function () {
+        var modalElement = document.getElementById('confirmDeleteModal');
+        modalElement.style.display = "none";
+        document.body.classList.remove('modal-open');
+        document.querySelector('.modal-backdrop').remove();
+    });
+
+    // 確認刪除按鈕的事件監聽器
+    document.getElementById("confirmDeleteButton").addEventListener("click", function () {
+        var modalElement = document.getElementById('confirmDeleteModal');
+        modalElement.style.display = "none";
+        document.body.classList.remove('modal-open');
+        document.querySelector('.modal-backdrop').remove();
+    });
+
+    // 檢查是否有商品
     function checkCartNotEmpty() {
-        var cartItems = /*[[ ${cartListData} ]]*/ []; // 从Thymeleaf中获取购物车数据
+        var cartItems = /*[[ ${cartListData} ]]*/ []; // 從Thymeleaf中獲取購物車數據
         if (cartItems.length === 0) {
-            // 购物车为空时触发警告
+            // 購物車為空時觸發警告
             var alertMessage = "您的購物車為空，請先添加商品！";
-            // 显示自定义弹窗
+            // 顯示自定義彈窗
             customAlert(alertMessage);
-            return false; // 返回 false 阻止表单提交
+            return false; // 返回 false 阻止表單提交
         }
-        return true; // 返回 true 表示可以提交表单
+        return true; // 返回 true 表示可以提交表單
     }
 
-    // 表单提交前的验证
+    // 表單提交前的驗證
     function validateForm() {
-        return checkCartNotEmpty(); // 调用检查购物车是否为空的函数
+        return checkCartNotEmpty(); // 調用檢查購物車是否為空的函數
     }
+
+
 </script>
 
 </body>

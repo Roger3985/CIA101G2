@@ -503,11 +503,9 @@ public class MemberControllerFrontEnd {
         }
 
         if (session.getAttribute("location") != null) {
-            List< CartRedis > cartListData = (List< CartRedis >) session.getAttribute("cartListData");
-            modelMap.addAttribute("cartListData", cartListData);
-            // 回到視圖目標為 `/frontend/cart/Cart`
+            // 重導
             session.removeAttribute("location");
-            return "/frontend/cart/Cart";
+            return "redirect:/frontend/cart/addcartsuccess";
         } else if (session.getAttribute("location2") != null) {
             session.removeAttribute("location2");
             return "redirect:/frontend/service/frontendServiceChat";
