@@ -127,36 +127,6 @@ public class ProductServiceImpl implements ProductService_interface {
     }
 
     /**
-     * 評分前10名的商品
-     *
-     * @return 返回前10名的清單
-     */
-    @Override
-    public List<Product> getTopScore() {
-        return productRepository.findTop10ByOrderByProductComScoreDesc();
-    }
-
-    /**
-     * 最多人評價前10名
-     *
-     * @return 返回前10名的清單
-     */
-    @Override
-    public List<Product> getTopPopular() {
-        return productRepository.findTop10ByOrderByProductComPeopleDesc();
-    }
-
-    /**
-     * 售出最多前10名
-     *
-     * @return 返回前10名的清單
-     */
-    @Override
-    public List<Product> getTopSalQty() {
-        return productRepository.findTop10ByOrderByProductSalQtyDesc();
-    }
-
-    /**
      * 最新上架時間前10名
      *
      * @return 返回前10名的清單
@@ -184,7 +154,7 @@ public class ProductServiceImpl implements ProductService_interface {
      */
     @Override
     public List<Product> getComposite(Product product) {
-        return productRepository.findByAttributes(product.getProductNo(), product.getProductCategory().getProductCatNo(), product.getProductName(), product.getProductInfo(), product.getProductSize(), product.getProductColor(), product.getProductPrice(), product.getProductStat(), product.getProductSalQty(), product.getProductComPeople(), product.getProductComScore(), product.getProductOnShelf(), product.getProductOffShelf());
+        return productRepository.findByAttributes(product.getProductNo(), product.getProductCategory().getProductCatNo(), product.getProductName(), product.getProductInfo(), product.getProductSize(), product.getProductColor(), product.getProductPrice(), product.getProductStat(), product.getProductOnShelf(), product.getProductOffShelf());
     }
 
     @Override
