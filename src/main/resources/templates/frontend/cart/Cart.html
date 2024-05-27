@@ -188,15 +188,17 @@
                             <span th:if="${cart.productSize == 5}">2L</span>
                         </td>
                         <td class="price" th:id="productPrice" name="productPrice" th:text="${cart.productPrice}"></td>
-                        <td>
-                            <div class="cart-qty-01">
-                                <button type="button" class="inc qty-btn" onclick="updateQuantity(this, -1)">
-                                    <i class="bi bi-caret-down-fill"></i>
-                                </button>
-                                <input class="cart-qty-input form-control" type="text" name="productBuyQty" th:value="${cart.productBuyQty}" onchange="updateBackendQuantity(this)">
-                                <button type="button" class="dec qty-btn" onclick="updateQuantity(this, 1)">
-                                    <i class="bi bi-caret-up-fill"></i>
-                                </button>
+                        <td style="text-align: center;">
+                            <div style="display: flex; justify-content: center; align-items: center;">
+                                <div class="cart-qty-01">
+                                    <button type="button" class="inc qty-btn" onclick="updateQuantity(this, -1)">
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </button>
+                                    <input class="cart-qty-input form-control" type="text" name="productBuyQty" th:value="${cart.productBuyQty}" onchange="updateBackendQuantity(this)">
+                                    <button type="button" class="dec qty-btn" onclick="updateQuantity(this, 1)">
+                                        <i class="bi bi-caret-up-fill"></i>
+                                    </button>
+                                </div>
                             </div>
                         </td>
                         <td th:id="productAllPrice" name="productAllPrice" th:text="'$' + ${cart.productBuyQty * cart.productPrice}" th:onchange="updatePrice()"></td>
