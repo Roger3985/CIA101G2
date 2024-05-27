@@ -236,7 +236,7 @@ body.chatbody  {
 }
 
 .message-input button {
-    padding: 8px 10px;
+    padding: 6px 16px;
     border: none;
     background-color: #e63946;
     color: #fff;

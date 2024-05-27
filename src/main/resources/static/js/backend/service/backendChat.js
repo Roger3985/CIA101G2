@@ -139,27 +139,27 @@ function connect() {
                 chatArea.scrollTop = chatArea.scrollHeight;
             } else {
                 // 如果不是當前聊天的會員，傳送訊息過來，則在該會員旁邊顯示未讀訊息
-
-                let unreadMsgCount = unreadMessage[jsonObj.sender]++;
-                const showUnreadMsgCount = document.createElement('span');
-                showUnreadMsgCount.innerHTML = unreadMsgCount;
-                memListContainer.appendChild(showUnreadMsgCount);
+                //
+                // let unreadMsgCount = unreadMessage[jsonObj.sender]++;
+                // const showUnreadMsgCount = document.createElement('span');
+                // showUnreadMsgCount.innerHTML = unreadMsgCount;
+                // memListContainer.appendChild(showUnreadMsgCount);
             }
 
         }
     }
 }
 
-function updateUnreadMessagesDisplay(element, memName) {
-    if (unreadMessages[memName] > 0) {
-        element.innerHTML = `${memName} (${unreadMessages[memName]})`;
-        // const showUnreadMsgCount = document.createElement('span');
-        // showUnreadMsgCount.innerHTML = unreadMsgCount;
-        // memListContainer.appendChild(showUnreadMsgCount);
-    } else {
-        element.innerHTML = memName;
-    }
-}
+// function updateUnreadMessagesDisplay(element, memName) {
+//     if (unreadMessages[memName] > 0) {
+//         element.innerHTML = `${memName} (${unreadMessages[memName]})`;
+//         // const showUnreadMsgCount = document.createElement('span');
+//         // showUnreadMsgCount.innerHTML = unreadMsgCount;
+//         // memListContainer.appendChild(showUnreadMsgCount);
+//     } else {
+//         element.innerHTML = memName;
+//     }
+// }
 
 
 messageInput.addEventListener("keyup", function (e) {
