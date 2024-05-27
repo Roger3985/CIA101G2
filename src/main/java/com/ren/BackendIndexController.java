@@ -1,8 +1,10 @@
 package com.ren;
 
+import com.iting.productorderdetail.entity.ProductOrderDetail;
 import com.ren.administrator.entity.Administrator;
 import com.ren.administrator.dto.LoginState;
 import com.ren.administrator.service.impl.AdministratorServiceImpl;
+import com.ren.product.dto.ProductDTO;
 import com.ren.product.entity.Product;
 import com.ren.product.service.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,7 @@ import java.net.UnknownHostException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -59,11 +62,21 @@ public class BackendIndexController {
     @Autowired
     private ProductServiceImpl productSvc;
 
-    @ModelAttribute("productTop10SalQty")
-    public List<Product> productList() {
-
-        return productSvc.getTopSalQty();
-    }
+//    @ModelAttribute("productTop10SalQty")
+//    public List<Product> productList() {
+//        List<ProductDTO> productDTOList = productSvc.getAllFromRedis();
+//        List<>
+//        for (var productDTO : productDTOList) {
+//            List<Product> productList = productDTO.getProductList();
+//            for (var product : productList) {
+//                Set<ProductOrderDetail> productOrderDetailSet = product.getProductOrderDetails();
+//                for (productOrderDetail : productOrderDetailSet) {
+//                    productOrderDetailSet.getClass().get
+//                }
+//            }
+//        }
+//        return productSvc.getTopSalQty();
+//    }
 
     /**
      * 前往首頁

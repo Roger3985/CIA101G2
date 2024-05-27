@@ -48,7 +48,8 @@ public class ProductFrontEndController {
                                      @RequestParam(defaultValue = "15") int size,
                                      @RequestParam(defaultValue = "newest") String sortType) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<ProductDTO> productPage = productSvc.getVisitProduct(productSvc.getByProductStat(Byte.valueOf("1")), pageable, sortType);
+        // Page<ProductDTO> productPage = productSvc.getVisitProduct(productSvc.getByProductStat(Byte.valueOf("1")), pageable, sortType);
+        Page<ProductDTO> productPage = productSvc.getVisitProductFromRedis(pageable, sortType);
 
         List<Boolean> newProductList = new ArrayList<>();
         // 計算是否為最新上市
@@ -86,7 +87,8 @@ public class ProductFrontEndController {
                                  @RequestParam(defaultValue = "15") int size,
                                  @RequestParam(defaultValue = "newest") String sortType) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<ProductDTO> productPage = productSvc.getVisitProduct(productSvc.getByProductStat(Byte.valueOf("1")), pageable, sortType);
+        // Page<ProductDTO> productPage = productSvc.getVisitProduct(productSvc.getByProductStat(Byte.valueOf("1")), pageable, sortType);
+        Page<ProductDTO> productPage = productSvc.getVisitProductFromRedis(pageable, sortType);
         List<Boolean> newProductList = new ArrayList<>();
         // 計算是否為最新上市
         for (ProductDTO productDTO : productPage.getContent()) {
@@ -123,7 +125,8 @@ public class ProductFrontEndController {
                               @RequestParam(defaultValue = "15") int size,
                               @RequestParam(defaultValue = "newest") String sortType) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<ProductDTO> productPage = productSvc.getVisitProduct(productSvc.getByProductStat(Byte.valueOf("1")), pageable, sortType);
+        // Page<ProductDTO> productPage = productSvc.getVisitProduct(productSvc.getByProductStat(Byte.valueOf("1")), pageable, sortType);
+        Page<ProductDTO> productPage = productSvc.getVisitProductFromRedis(pageable, sortType);
         List<Boolean> newProductList = new ArrayList<>();
         for (ProductDTO productDTO : productPage.getContent()) {
             Boolean newProduct = false;
@@ -158,7 +161,9 @@ public class ProductFrontEndController {
                                  @RequestParam(defaultValue = "0") int page,
                                  @RequestParam(defaultValue = "15") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<ProductDTO> productPage = productSvc.getVisitProduct(productSvc.getByProductStat(Byte.valueOf("1")), pageable, filters);
+        // Page<ProductDTO> productPage = productSvc.getVisitProduct(productSvc.getByProductStat(Byte.valueOf("1")), pageable, filters);
+
+        Page<ProductDTO> productPage = productSvc.getVisitProductFromRedis(pageable, filters);
 
         List<Boolean> newProductList = new ArrayList<>();
         for (ProductDTO productDTO : productPage.getContent()) {

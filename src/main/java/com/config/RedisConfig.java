@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.iting.cart.entity.CartRedis;
 import com.ren.administrator.dto.LoginState;
 import com.ren.monitor.dto.Monitor;
+import com.ren.product.dto.ProductDTO;
 import com.roger.member.dto.LoginStateMember;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -44,6 +45,19 @@ public class RedisConfig {
     public RedisTemplate<Integer, LoginState> admIntLoginRedisTemplate(
             @Qualifier("admDataBase") RedisConnectionFactory connectionFactory) {
         RedisTemplate<Integer, LoginState> redisTemplate = new RedisTemplate<>();
+        // 設置連線
+        redisTemplate.setConnectionFactory(connectionFactory);
+        // 設置Serializer
+        redisTemplate.setKeySerializer(new GenericToStringSerializer<>(Integer.class));
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        return redisTemplate;
+    }
+
+    @Bean("proIntDTO")
+    public RedisTemplate<Integer, ProductDTO> proIntDTORedisTemplate(
+            @Qualifier("proDataBase") RedisConnectionFactory connectionFactory) {
+        RedisTemplate<Integer, ProductDTO> redisTemplate = new RedisTemplate<>();
         // 設置連線
         redisTemplate.setConnectionFactory(connectionFactory);
         // 設置Serializer
@@ -109,6 +123,19 @@ public class RedisConfig {
     public RedisTemplate<String, ChatMessage> chatMemStrMsgRedisTemplate(
             @Qualifier("chatMemDataBase") RedisConnectionFactory connectionFactory) {
         RedisTemplate<String, ChatMessage> redisTemplate = new RedisTemplate<>();
+        // 設置連線
+        redisTemplate.setConnectionFactory(connectionFactory);
+        // 設置Serializer
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        return redisTemplate;
+    }
+
+    @Bean("proStrDTO")
+    public RedisTemplate<String, ProductDTO> proStrDTORedisTemplate(
+            @Qualifier("proDataBase") RedisConnectionFactory connectionFactory) {
+        RedisTemplate<String, ProductDTO> redisTemplate = new RedisTemplate<>();
         // 設置連線
         redisTemplate.setConnectionFactory(connectionFactory);
         // 設置Serializer

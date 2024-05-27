@@ -75,7 +75,6 @@ public class Product {
     @JsonBackReference
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<ProductReview> productReviews;
-
     public Product() {
     }
 

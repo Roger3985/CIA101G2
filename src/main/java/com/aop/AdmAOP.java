@@ -1,9 +1,6 @@
 package com.aop;
 
-import com.aop.annotation.Boss;
-import com.aop.annotation.FullTime;
-import com.aop.annotation.Manager;
-import com.aop.annotation.Employee;
+import com.aop.annotation.*;
 import com.ren.administrator.dto.LoginState;
 import com.ren.monitor.dto.Monitor;
 import org.aspectj.lang.JoinPoint;
@@ -174,6 +171,35 @@ public class AdmAOP {
 
         rabbitTemplate.convertAndSend("adminHeadersExchange", "", monitor, message -> {
             message.getMessageProperties().setHeader("title", boss.title());
+            return message;
+        });
+    }
+
+    @AfterReturning(value = "@annotation(job)")
+    public void fullTime(JoinPoint joinPoint, Job job) {
+        Integer admNo = null;
+        Monitor monitor = null;
+        String currentTime = null;
+        LoginState loginState = null;
+        // 獲取當前HTTP請求的Session
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes != null) {
+            HttpSession session = attributes.getRequest().getSession(false);
+            if (session != null) {
+                // 從Session中獲取loginState對象
+                loginState = (LoginState) session.getAttribute("loginState");
+                if (loginState != null) {
+                    // 獲取當前時間
+                    admNo = loginState.getAdmNo();
+                    currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+                    String messageId = "message:" + UUID.randomUUID().toString();
+                    monitor = new Monitor(messageId, loginState.getAdmNo(), loginState.getAdmName(), loginState.getTitleNo(), job.detail(), currentTime, false);
+                }
+            }
+        }
+
+        rabbitTemplate.convertAndSend("adminHeadersExchange", "", monitor, message -> {
+            message.getMessageProperties().setHeader("type", job.type());
             return message;
         });
     }

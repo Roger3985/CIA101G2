@@ -1,6 +1,7 @@
 package com.listener;
 
 import com.ren.administrator.dto.LoginState;
+import com.ren.product.service.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -23,6 +24,10 @@ public class InitializerListener implements ServletContextListener {
     @Qualifier("admStrLogin")
     private RedisTemplate<String, LoginState> admRedisTemplate;
 
+    @Autowired
+    private ProductServiceImpl productSvc;
+
+
     /**
      * 當ServletContext啟動時，執行以下功能同步應用程式資料:
      * 1.同步在線人數(當應用程式因某些原因重啟時不會遺失資料)
@@ -42,7 +47,7 @@ public class InitializerListener implements ServletContextListener {
         // 統計放入Redis資料庫內的登入狀態數量(登入人數)，存入ServletContext
         AtomicInteger onlineAdms = new AtomicInteger(admRedisTemplate.keys("*").size());
         context.setAttribute("onlineAdms", onlineAdms);
-
+        productSvc.redisDataStored();
     }
 
     /**

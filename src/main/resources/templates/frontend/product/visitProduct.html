@@ -313,7 +313,7 @@
                                                 <div class="addToFAVBtn">
                                                     <a class="btn btn-outline-primary">
                                                         <input type="hidden" name="productNo"
-                                                               th:value="${productDTO.productList.get(0).productNo}">
+                                                               th:value="${productDTO.productNoList.get(0)}">
                                                         <i class="fi-heart"></i>
                                                     </a>
                                                 </div>
@@ -326,14 +326,14 @@
                                                 </a>
                                             </div>
                                             <div class="product-media productitm">
-                                                <a th:href="@{/frontend/product/Product(productNo=${productDTO.productList.get(0).productNo})}">
+                                                <a th:href="@{/frontend/product/Product(productNo=${productDTO.productNoList.get(0)})}">
                                                     <img class="img-fluid" th:src="@{/frontend/productPic/}"
                                                          title=""
                                                          alt="">
                                                 </a>
                                                 <div class="product-cart-btn addToCartBtn">
                                                     <input type="hidden" name="productNo"
-                                                           th:value="${productDTO.productList.get(0).productNo}">
+                                                           th:value="${productDTO.productNoList.get(0)}">
                                                     <!-- Product number -->
                                                     <input type="hidden" name="productBuyQty" th:value="1">
                                                     <!-- Quantity -->
@@ -353,7 +353,7 @@
                                                 </th:block>
                                             </div>
                                             <h6 class="product-title">
-                                                <a th:href="@{/frontend/product/oneProduct(productNo=${productDTO.productList.get(0).productNo})}"
+                                                <a th:href="@{/frontend/product/oneProduct(productNo=${productDTO.productNoList.get(0)})}"
                                                    th:text="${productDTO.productName}"></a>
                                             </h6>
                                             <div class="product-price"
