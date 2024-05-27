@@ -255,7 +255,7 @@
                                     <p><br><small></small></p>
                                 </div>
                                 <!--  -->
-                                <div class="timeline-step" th:if="${rentalOrder.getrentalTakeMethod() == 1 && rentalOrder.getrentalOrdStat() == 30}">
+                                <div class="timeline-step" th:if="${rentalOrder.getrentalTakeMethod() == 1 && (rentalOrder.getrentalOrdStat() == 30 || rentalOrder.getrentalOrdStat() == 40 || rentalOrder.getrentalOrdStat() == 35 || rentalOrder.getrentalOrdStat() == 45 || rentalOrder.getrentalOrdStat() == 50)}">
                                     <div class="outer-circle c2">
                                         <div class="inner-circle">
                                             <i class="bi bi-box"></i>
@@ -265,7 +265,7 @@
                                     <p>等待取貨中<br><small></small></p>
                                 </div>
 
-                                <div class="timeline-step express" th:if="${rentalOrder.getrentalTakeMethod() == 2 && (rentalOrder.getrentalOrdStat() == 20 || rentalOrder.getrentalOrdStat() == 10)}">
+                                <div class="timeline-step express" th:if="${rentalOrder.getrentalTakeMethod() == 2 && (rentalOrder.getrentalOrdStat() == 20 || rentalOrder.getrentalOrdStat() == 10 || rentalOrder.getrentalOrdStat() == 40)}">
                                     <div class="outer-circle c2">
                                         <div class="inner-circle">
                                             <i class="bi bi-truck"></i>
