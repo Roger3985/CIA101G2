@@ -20,132 +20,132 @@
 <!-- 通用插件 -->
 <th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block>
 <!-- 通用插件 -->
-    <!--
-    ========================
-        Wrapper
-    ========================
-    -->
-    <div class="wrapper">
-        <!-- header height -->
-        <div class="header-height-bar" style="min-height: 104.865px;"></div>
-        <!-- Header -->
-        <header th:replace="frontend/component/header :: header"></header>
-        <!-- End Header -->
-        <!-- Main -->
-        <main>
-            <!-- Breadcrumb -->
-            <div class="py-3 bg-gray-100">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-lg-6 my-2">
-                            <h1 class="m-0 h4 text-center text-lg-start">Login</h1>
-                        </div>
-                        <div class="col-lg-6 my-2">
-                            <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
-                                <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/}"><i
-                                            class="bi bi-home"></i>Home</a></li>
-                                <li class="breadcrumb-item text-nowrap active" aria-current="page">Login</li>
-                            </ol>
-                        </div>
+<!--
+========================
+    Wrapper
+========================
+-->
+<div class="wrapper">
+    <!-- header height -->
+    <div class="header-height-bar" style="min-height: 104.865px;"></div>
+    <!-- Header -->
+    <header th:replace="frontend/component/header :: header"></header>
+    <!-- End Header -->
+    <!-- Main -->
+    <main>
+        <!-- Breadcrumb -->
+        <div class="py-3 bg-gray-100">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 my-2">
+                        <h1 class="m-0 h4 text-center text-lg-start">登入</h1>
+                    </div>
+                    <div class="col-lg-6 my-2">
+                        <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
+                            <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/}"><i
+                                    class="bi bi-home"></i>首頁</a></li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page">登入</li>
+                        </ol>
                     </div>
                 </div>
-            </div><!-- End Breadcrumb --><!-- login page -->
-            <div class="section">
-                <div class="container">
-                    <div class="justify-content-center row">
-                        <div class="col-lg-5 col-xxl-4">
-                            <div class="card">
-                                <div class="card-header bg-transparent py-3">
-                                    <h3 class="h4 mb-0">Login</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div th:if="${session.loginsuccess}">已經登入，可以開始購物</div>
-                                    <form method="post" th:action="@{loginPage}" th:unless="${session.loginsuccess}">
-                                        <div style="text-align: center;">
-                                            <span th:text="*{message}" style="color: red;" class="error" id="message.errors"></span>
-                                            <span th:text="*{noFun}" style="color: red;" class="error" id="noFun.errors"></span>
-                                        </div>
-                                        <div class="form-group mb-3">
-                                            <label for="email_1" class="form-label col">
-                                                Account/Email
+            </div>
+        </div><!-- End Breadcrumb --><!-- login page -->
+        <div class="section">
+            <div class="container">
+                <div class="justify-content-center row">
+                    <div class="col-lg-5 col-xxl-4">
+                        <div class="card">
+                            <div class="card-header bg-transparent py-3">
+                                <h3 class="h4 mb-0">登入</h3>
+                            </div>
+                            <div class="card-body">
+                                <div th:if="${session.loginsuccess}">已經登入，可以開始購物</div>
+                                <form method="post" th:action="@{loginPage}" th:unless="${session.loginsuccess}">
+                                    <div style="text-align: center;">
+                                        <span th:text="*{message}" style="color: red;" class="error" id="message.errors"></span>
+                                        <span th:text="*{noFun}" style="color: red;" class="error" id="noFun.errors"></span>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="email_1" class="form-label col">
+                                            帳號 / 信箱
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" id="email_1" class="form-control" placeholder="請輸入帳號或信箱" name="identifier">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <div class="row align-items-center">
+                                            <label class="form-label col" for="exampleInputPassword01">
+                                                密碼
                                                 <span class="text-danger">*</span>
                                             </label>
-                                            <input type="text" id="email_1" class="form-control" placeholder="請輸入帳號或信箱" name="identifier">
-                                        </div>
-                                        <div class="form-group mb-3">
-                                            <div class="row align-items-center">
-                                                <label class="form-label col" for="exampleInputPassword01">
-                                                    Password
-                                                    <span class="text-danger">*</span>
-                                                </label>
-                                                <span class="col ms-auto small text-end">
-                                                    <a th:href="@{forgetPassword}">Forgot password?</a></span></div>
-                                            <input type="password" class="form-control" id="exampleInputPassword01"
-                                                placeholder="*********" name="password">
-                                        </div><!-- Checkbox -->
-                                        <div class="form-check mb-3">
-                                            <input class="form-check-input" name="autoLoginMember" type="checkbox"
-                                                value="1" id="customCheck" checked="checked">
-                                            <label class="form-check-label" for="customCheck">Remember me</label>
-                                        </div>
-                                        <div class="form-group text-center">
-                                            <button type="submit" class="btn btn-primary w-100">Log in</button>
-                                        </div>
-                                    </form>
-                                    <div class="text-center pt-4 pb-5" style="" th:unless="${session.loginsuccess}"><span
-                                            class="px-3 bg-body d-inline-block align-top lh-sm">OR</span>
-                                        <div class="border-bottom mt-n3"></div>
+                                            <span class="col ms-auto small text-end">
+                                                    <a th:href="@{forgetPassword}">忘記密碼?</a></span></div>
+                                        <input type="password" class="form-control" id="exampleInputPassword01"
+                                               placeholder="*********" name="password">
+                                    </div><!-- Checkbox -->
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" name="autoLoginMember" type="checkbox"
+                                               value="1" id="customCheck" checked="checked">
+                                        <label class="form-check-label" for="customCheck">記住我</label>
                                     </div>
-                                    <div class="row g-2" th:unless="${session.loginsuccess}">
-                                        <br>
+                                    <div class="form-group text-center">
+                                        <button type="submit" class="btn btn-primary w-100">登入</button>
+                                    </div>
+                                </form>
+                                <div class="text-center pt-4 pb-5" style="" th:unless="${session.loginsuccess}"><span
+                                        class="px-3 bg-body d-inline-block align-top lh-sm">或</span>
+                                    <div class="border-bottom mt-n3"></div>
+                                </div>
+                                <div class="row g-2" th:unless="${session.loginsuccess}">
+                                    <br>
+                                    <!--                                        <div class="col">-->
+                                    <!--                                            <button class="btn w-100 btn-mode" type="button"><i-->
+                                    <!--                                                    class="bi bi-github me-2"></i> GitHub-->
+                                    <!--                                            </button>-->
+                                    <!--                                        </div>-->
+
+                                    <form id="buildAuthUrlForm" th:action="@{/google/buildAuthUrl}"  spellcheck="false">
                                         <div class="col">
-                                            <button class="btn w-100 btn-mode" type="button"><i
-                                                    class="bi bi-github me-2"></i> GitHub
+                                            <button class="btn w-100 btn-mode" type="submit" ><i
+                                                    class="bi bi-google me-2"></i> Google
                                             </button>
                                         </div>
-
-                                        <form id="buildAuthUrlForm" th:action="@{/google/buildAuthUrl}"  spellcheck="false">
-                                            <div class="col">
-                                                <button class="btn w-100 btn-mode" type="submit" ><i
-                                                        class="bi bi-google me-2"></i> Google
-                                                </button>
-                                            </div>
-                                        </form>
-<!--                                        <h3>使用 access_token 請求，取得使用者在 Google 中的數據</h3>-->
-                                        <div class="api-form">
-                                            <form id="getGoogleUserForm" th:action="@{/google/getGoogleUser}" spellcheck="false" name="accessToken">
-                                                <p style="font-weight: 700">
-                                                <div>
-                                                    <label style="vertical-align: top;"></label>
-                                                    <textarea id="getGoogleUserForm-accessToken" rows="6" cols="60" type="text"></textarea>
-                                                </div>
-                                                <button type="submit" id="getUserForm"></button>
-                                            </form>
+                                    </form>
+                                    <!--                                        <h3>使用 access_token 請求，取得使用者在 Google 中的數據</h3>-->
+                                    <div class="api-form">
+                                        <form id="getGoogleUserForm" th:action="@{/google/getGoogleUser}" spellcheck="false" name="accessToken">
+                                            <p style="font-weight: 700">
                                             <div>
-<!--                                                <p>返回結果：</p>-->
-                                                <p id="getGoogleUserForm-outputStatus"></p>
-                                                <p id="getGoogleUserForm-output" class="output-json">.</p>
+                                                <label style="vertical-align: top;"></label>
+                                                <textarea id="getGoogleUserForm-accessToken" rows="6" cols="60" type="text"></textarea>
                                             </div>
-<!--                                        </div>-->
-<!--                                        <h3>由「後端程式」使用 refresh_token，去和 Google 換發一個新的 access_token</h3>-->
-<!--                                        <p>PS: 一般來說會將 refresh_token 儲存在後端的資料庫裡面，由後端直接去和 Google 溝通，不需要前端介入</p>-->
-<!--                                        <br/>-->
-<!--                                        <form id="refreshTokenForm" action="#" spellcheck="false">-->
-<!--                                            <div>-->
-<!--                                                <label style="vertical-align: top;">refresh_token 的值：</label>-->
-<!--                                                <textarea id="refreshToken" name="refreshToken" rows="6" cols="60" type="text"></textarea>-->
-<!--                                            </div>-->
-<!--                                            <div>-->
-<!--                                                <button type="submit">提交</button>-->
-<!--                                            </div>-->
-<!--                                        </form>-->
-<!--                                        <div>-->
-<!--                                            <p>返回結果：</p>-->
-<!--                                            <p id="refreshTokenForm-outputStatus"></p>-->
-<!--                                            <p id="refreshTokenForm-output" class="output-json">.</p>-->
-<!--                                        </div>-->
+                                            <button type="submit" id="getUserForm"></button>
+                                        </form>
+                                        <div>
+                                            <!--                                                <p>返回結果：</p>-->
+                                            <p id="getGoogleUserForm-outputStatus"></p>
+                                            <p id="getGoogleUserForm-output" class="output-json">.</p>
+                                        </div>
+                                        <!--                                        </div>-->
+                                        <!--                                        <h3>由「後端程式」使用 refresh_token，去和 Google 換發一個新的 access_token</h3>-->
+                                        <!--                                        <p>PS: 一般來說會將 refresh_token 儲存在後端的資料庫裡面，由後端直接去和 Google 溝通，不需要前端介入</p>-->
+                                        <!--                                        <br/>-->
+                                        <!--                                        <form id="refreshTokenForm" action="#" spellcheck="false">-->
+                                        <!--                                            <div>-->
+                                        <!--                                                <label style="vertical-align: top;">refresh_token 的值：</label>-->
+                                        <!--                                                <textarea id="refreshToken" name="refreshToken" rows="6" cols="60" type="text"></textarea>-->
+                                        <!--                                            </div>-->
+                                        <!--                                            <div>-->
+                                        <!--                                                <button type="submit">提交</button>-->
+                                        <!--                                            </div>-->
+                                        <!--                                        </form>-->
+                                        <!--                                        <div>-->
+                                        <!--                                            <p>返回結果：</p>-->
+                                        <!--                                            <p id="refreshTokenForm-outputStatus"></p>-->
+                                        <!--                                            <p id="refreshTokenForm-output" class="output-json">.</p>-->
+                                        <!--                                        </div>-->
                                     </div>
-                                    <div class="pt-4 text-center"><span class="text-muted">Don't have an account? <a th:href="@{addMemberData}">Signup here</a></span></div>
+                                    <div class="pt-4 text-center"><span class="text-muted">沒有帳號? <a th:href="@{addMemberData}">點此註冊</a></span></div>
                                     <form id="exchangeTokenForm" method="post" th:action="@{/google/exchangeToken}" spellcheck="false">
                                         <div>
                                             <label style="vertical-align: top;"></label>
@@ -166,25 +166,47 @@
                     </div>
                 </div>
             </div><!-- end login -->
-        </main><!-- End Main --><!-- Footer -->
-        <!-- Footer -->
-        <footer th:replace="frontend/component/footer :: footer"></footer>
-        <!-- End Footer -->
+    </main><!-- End Main --><!-- Footer -->
+    <!-- Footer -->
+    <footer th:replace="frontend/component/footer :: footer"></footer>
+    <!-- End Footer -->
 
-        <div th:replace="frontend/component/modalmsg :: modalmsg"></div>
-    </div>
-    <!--
-    ========================
-       End Wrapper
-    ========================
-    -->
-    <!-- script start -->
-    <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
-    <!-- End script start -->
-    <script th:src="@{/js/frontend/component/modalmsg.js}"></script>
+    <div th:replace="frontend/component/modalmsg :: modalmsg"></div>
+</div>
+<!--
+========================
+   End Wrapper
+========================
+-->
+<!-- script start -->
+<th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
+<!-- End script start -->
+<!--    <script th:src="@{/js/frontend/component/modalmsg.js}"></script>-->
 
-    <!-- jQuery code -->
+<!-- jQuery code -->
 </body>
+<script>
+    document.getElementById('avatarInput').addEventListener('change', function() {
+        var preview = document.getElementById('preview');
+        var file = this.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function() {
+            var img = new Image();
+            img.src = reader.result;
+            img.style.maxWidth = '100%';
+            img.style.maxHeight = '100%';
+            preview.innerHTML = '';
+            preview.appendChild(img);
+        }
+
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = 'No image selected';
+        }
+    });
+</script>
 <script>
     document.getElementById("buildAuthUrlForm").addEventListener("submit", (event) => {
         event.preventDefault();
@@ -331,61 +353,9 @@
         // 自動提交表單
         document.getElementById("content").click();
 
-        alert("第三方登入成功")
+        // 彈出成功消息
+        alert("建立第三方連結成功");
     }
-
-    // // 添加表單提交事件監聽器
-    // document.getElementById("exchangeTokenForm").addEventListener("submit", (event) => {
-    //     event.preventDefault(); // 防止表單自動提交
-    //
-    //     // 獲取表單中的值
-    //     var codeValue = document.getElementById("code").value;
-    //
-    //     // 指定 http method、url
-    //     const http = new XMLHttpRequest();
-    //     const method = "POST";
-    //     const url = "http://localhost:8080/google/exchangeToken";
-    //     http.open(method, url);
-    //
-    //     // 添加 request body 中的參數
-    //     var data = {
-    //         "code": codeValue
-    //     }
-    //
-    //     // 發出 http request 請求
-    //     http.setRequestHeader("Content-Type", "application/json");
-    //     http.send(JSON.stringify(data));
-    //
-    //     // 處理 http request 的回調函數
-    //     http.onreadystatechange = (e) => {
-    //         var outputStatus = document.getElementById("exchangeTokenForm-outputStatus");
-    //         var output = document.getElementById("exchangeTokenForm-output");
-    //         showOutput(http, outputStatus, output);
-    //     }
-    // });
-    //
-    // // 函數：顯示 http request 的回應結果
-    // function showOutput(http, outputStatus, output) {
-    //     outputStatus.style.backgroundColor = "#D0D0D0";
-    //     outputStatus.innerHTML = http.status;
-    //
-    //     output.style.backgroundColor = "#D0D0D0";
-    //     try {
-    //         output.innerHTML = JSON.stringify(JSON.parse(http.responseText), null, 4);
-    //     } catch (e) {
-    //         output.innerHTML = http.responseText;
-    //     }
-    // }
-
-    // document.addEventListener("DOMContentLoaded", function() {
-    //     const codeInput = document.getElementById("code").value; // 獲取輸入框的值
-    //
-    //     if (codeInput && document.getElementById("exchangeTokenForm")) {
-    //         console.log("輸入框有值，自動提交表單");
-    //         document.getElementById("exchangeTokenForm").submit(); // 自動提交表單
-    //     }
-    // });
-
 </script>
 <script>
     // 獲取包含 JSON 資料的元素
@@ -405,10 +375,21 @@
 
     // 提交表單
     document.getElementById("getUserForm").click();
-</script>
-<script>
-    // 前端處理重定向
-    // window.location.href = .headers.get('Location');
+
+
+    // 發送 AJAX 請求到購物主頁
+    const http = new XMLHttpRequest();
+    const method = "GET";
+    const url = "/frontend/member/memberData"; // 個人主頁的 URL
+    http.open(method, url);
+    http.send();
+
+    http.onreadystatechange = (e) => {
+        // 如果請求成功，跳轉到個人主頁
+        if (http.readyState === 4 && http.status === 200) {
+            window.location.href = url;
+        }
+    };
 </script>
 
 <style>

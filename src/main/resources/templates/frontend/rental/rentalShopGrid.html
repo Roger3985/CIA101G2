@@ -266,7 +266,8 @@
                         </div>
                         <div class="row g-3">
                             <th:block th:each="rental : ${rentalListData}"><!-- 商品開始 -->
-                                <div class="col-sm-6 col-lg-4">
+                                <div class="col-sm-6 col-lg-4 rental">
+                                    <span class="rentalNo" th:text="${rental.getRentalNo()}" style="display: none"></span>
                                     <div class="product-card-1 rentalShopGrid">
                                         <div class="product-card-image">
                                             <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
@@ -278,7 +279,7 @@
                                                 <a href="#" class="btn btn-primary btn_addTrack"><!--  加入追蹤  -->
                                                     <i class="bi bi-bookmark"></i>
                                                 </a>
-                                                <span class="successMsg" style="color: lightgreen"></span>
+<!--                                                <span class="successMsg" style="color: lightgreen"></span>-->
                                             </div>
                                             <!--  操作 (結束)  -->
                                             <div class="product-media">
@@ -288,9 +289,9 @@
                                                       title="" alt="">
                                                 </a>
                                                 <div class="product-cart-btn">
-                                                    <a href="#" class="btn btn-primary btn-sm w-100">
+                                                    <a href="" class="btn btn-primary btn-sm w-100 btn_addToCart">
                                                         <i class="fi-shopping-cart"></i>加入購物車</a>
-                                                    <span class="successMsg" style="color: lightgreen"></span>
+<!--                                                    <span class="successMsg" style="color: lightgreen"></span>-->
                                                 </div>
                                             </div>
                                         </div>
@@ -311,10 +312,12 @@
                                                 <del class="fs-sm text-muted">
                                                     <small><span th:text="'$' + ${rental.rentalPrice}"></span></small><!-- 定價 -->
                                                 </del>
+                                                <div class="successMsg" style="color: lightgreen"></div>
                                             </h6>
                                         </div>
                                     </div>
                                 </div>
+
                             </th:block><!-- 商品結束 -->
                         </div> <!--  結束 <div class="row g-3">   -->
                         <!-- 頁籤 -->
@@ -597,6 +600,7 @@
             let $this = $(this);
             // span.rentalNo
             let rentalNo = $this.closest("div.rental").find("span.rentalNo").text().trim();
+
             let data = {
                 "rentalNo" : rentalNo
             };
@@ -613,7 +617,7 @@
                 if (rentalName === "/frontend/member/loginMember") {
                     window.location.href = rentalName;
                 }
-                $this.closest("div.rental").find("span.successMsg").text("已將" + rentalName + "加入購物車!").fadeIn(0).delay(500).fadeOut(500);
+                $this.closest("div.rental").find("div.successMsg").text("已將" + rentalName + "加入購物車!").fadeIn(0).delay(500).fadeOut(500);
             })
 
         }); // 加入購物車方法結束
@@ -640,7 +644,7 @@
                     if (rentalName === "/frontend/member/loginMember") {
                         window.location.href = rentalName;
                     }
-                    $this.closest("div.rental").find("span.successMsg").text("已加入追蹤!").fadeIn(0).delay(500).fadeOut(500);
+                    $this.closest("div.rental").find("div.successMsg").text("已加入追蹤!").fadeIn(0).delay(500).fadeOut(500);
                 });
 
 

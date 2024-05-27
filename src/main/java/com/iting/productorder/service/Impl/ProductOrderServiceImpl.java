@@ -183,9 +183,10 @@ public class ProductOrderServiceImpl implements ProductOrderService {
             //訂單全部總金額
             obj.setTradeDesc("test Description");
             obj.setItemName(itemNames);
-            obj.setReturnURL("http://211.23.128.214:5000");
             //		obj.setOrderResultURL("http://127.0.0.1:5502");
             //		obj.setOrderResultURL("https://www.google.com.tw/");
+            obj.setReturnURL("https://adf4-2001-b400-e389-697b-a1af-a7e7-7925-d3ce.ngrok-free.app/backend/rentalorder/receiveTradeInfos");
+            obj.setNeedExtraPaidInfo("N");
             obj.setOrderResultURL("http://localhost:8080/frontend/cart/ProductOrderSuccess");  //付款完跳轉的頁面
             obj.setNeedExtraPaidInfo("N");
             String form = all.aioCheckOut(obj, null);

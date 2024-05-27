@@ -118,7 +118,7 @@
             font-size: 12px;
         }
 
-        .messages {
+        .robotmessages {
             padding: 10px;
             margin: 0;
             list-style: none;
@@ -147,7 +147,7 @@
                 position: relative;
                 clear: both;
                 display: inline-block;
-                padding: 14px;
+                padding: 10px;
                 margin: 0 0 20px 0;
                 border-radius: 10px;
                 background-color: #e3e6eb;
@@ -168,7 +168,7 @@
                     -moz-animation: show-chat-odd 0.15s 1 ease-in;
                     -webkit-animation: show-chat-odd 0.15s 1 ease-in;
                     float: right;
-                    margin-right: 45px;
+                    margin-right: 10px;
                     color: #000;
 
                     span {
@@ -193,7 +193,7 @@
                     -moz-animation: show-chat-even 0.15s 1 ease-in;
                     -webkit-animation: show-chat-even 0.15s 1 ease-in;
                     float: left;
-                    margin-left: 45px;
+                    margin-left: 10px;
                     color: #000;
 
                     span {
@@ -320,10 +320,10 @@
             }
 
             #sendMessage {
-                background-color: #fff;
+                background-color: #005a3c;
                 margin-left: auto;
                 width: 65px;
-                color: #000;
+                color: #fff;
                 font-weight: bold;
                 border-left: 2px solid #f7f9fb;
                 border-radius: 0 0 20px 0;

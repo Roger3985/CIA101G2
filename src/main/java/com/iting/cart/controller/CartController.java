@@ -141,6 +141,7 @@ import com.iting.cart.service.CartService;
 
 import com.iting.productorder.entity.ProductOrder;
 import com.iting.productorder.service.ProductOrderService;
+import com.ren.product.entity.Product;
 import com.ren.product.service.impl.ProductServiceImpl;
 import com.ren.productpicture.entity.ProductPicture;
 import com.ren.productpicture.service.impl.ProductPictureServiceImpl;
@@ -193,7 +194,7 @@ public class CartController {
 
 
     @PostMapping("/cart/ProductOrderSuccess")
-    public String ProductOrderSuccess(HttpSession session,Model model) {
+    public String ProductOrderSuccess(HttpSession session, Model model) {
 //        Member myData = (Member) session.getAttribute("loginsuccess");
 //        Integer memNo = myData.getMemNo();
 //        List<ProductOrder> list = productOrderService.findByMember(memNo);
@@ -201,8 +202,9 @@ public class CartController {
         return "frontend/cart/ProductOrderPaySuccess";
 
     }
+
     @GetMapping("/cart/ProductOrderSuccessful")
-    public String ProductOrderSuccessful(HttpSession session,Model model) {
+    public String ProductOrderSuccessful(HttpSession session, Model model) {
         Member myData = (Member) session.getAttribute("loginsuccess");
         Integer memNo = myData.getMemNo();
         List<ProductOrder> list = productOrderService.findByMember(memNo);
@@ -265,7 +267,7 @@ public class CartController {
                     cartItem.setMemNo(successmemNo);
                     cartSvc.updateCart(cartItem);
                 }
-                List<CartRedis> newcartListData =  cartSvc.findByCompositeKey(successmemNo);
+                List<CartRedis> newcartListData = cartSvc.findByCompositeKey(successmemNo);
                 session.removeAttribute("oldcartListData");
                 model.addAttribute("cartListData", newcartListData);
                 memNo = session.getAttribute("memNo");
@@ -278,6 +280,18 @@ public class CartController {
                 if (memNo != null) {
                     Integer memNoInt = Integer.valueOf(memNo.toString());
                     List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNoInt);
+                    for (CartRedis cartItem : cartListData) {
+                        Integer cartProductNo = cartItem.getProductNo();
+                        List<ProductPicture> productPictures = productPictureService.getByProductNo(cartProductNo);
+                        if (productPictures != null && !productPictures.isEmpty()) {
+                            ProductPicture firstProductPicture = productPictures.get(0);
+                            byte[] firstPic = firstProductPicture.getProductPic();
+                            Integer productNo = firstProductPicture.getProduct().getProductNo();
+                            String base64Image = Base64.getEncoder().encodeToString(firstPic);
+                            session.setAttribute("productImage" + productNo, base64Image);
+                            model.addAttribute("productImage" + productNo, base64Image);
+                        }
+                    }
                     model.addAttribute("cartListData", cartListData);
                 }
             }
@@ -308,9 +322,6 @@ public class CartController {
 
         return "frontend/cart/Cart";
     }
-
-
-
 
 
 //    public BindingResult removeFieldError(CartRedis cart, BindingResult result, String removedFieldname) {
@@ -410,7 +421,7 @@ public class CartController {
         session.setAttribute("memNo", memNo);
         List<CartRedis> cartRedisList = cartSvc.findByCompositeKey(memNo);
         session.removeAttribute("oldcartListData");
-        session.setAttribute("oldcartListData",cartRedisList);
+        session.setAttribute("oldcartListData", cartRedisList);
         System.out.println("即时更新成功");
         return cartRedisList;
     }
@@ -447,31 +458,30 @@ public class CartController {
                 List<CartRedis> oldcartListData = cartSvc.findByCompositeKey(memNo);
                 session.setAttribute("oldcartListData", oldcartListData);
             }
-        }else {
-                member = (Member) session.getAttribute("loginsuccess");
-                memNo = member.getMemNo();
-                cartRedis = new CartRedis(); // 在這裡重新分配 cartRedis
-                cartRedis.setMemNo(memNo);
-                cartRedis.setProductNo(Integer.valueOf(productNo));
-                cartRedis.setProductBuyQty(Integer.valueOf(productBuyQty));
-                cartSvc.updateCart(cartRedis);
+        } else {
+            member = (Member) session.getAttribute("loginsuccess");
+            memNo = member.getMemNo();
+            cartRedis = new CartRedis(); // 在這裡重新分配 cartRedis
+            cartRedis.setMemNo(memNo);
+            cartRedis.setProductNo(Integer.valueOf(productNo));
+            cartRedis.setProductBuyQty(Integer.valueOf(productBuyQty));
+            cartSvc.updateCart(cartRedis);
 
-                productPictures = productPictureService.getByProductNo(Integer.valueOf(productNo));
-                if (productPictures != null && !productPictures.isEmpty()) {
-                    ProductPicture firstProductPicture = productPictures.get(0);
-                    byte[] firstPic = firstProductPicture.getProductPic();
-                    String base64Image = Base64.getEncoder().encodeToString(firstPic);
-                    if (session.getAttribute("productImage" + productNo) == null) {
-                        session.setAttribute("productImage" + productNo, base64Image);
-                    }
-
+            productPictures = productPictureService.getByProductNo(Integer.valueOf(productNo));
+            if (productPictures != null && !productPictures.isEmpty()) {
+                ProductPicture firstProductPicture = productPictures.get(0);
+                byte[] firstPic = firstProductPicture.getProductPic();
+                String base64Image = Base64.getEncoder().encodeToString(firstPic);
+                if (session.getAttribute("productImage" + productNo) == null) {
+                    session.setAttribute("productImage" + productNo, base64Image);
                 }
+
             }
-            response.put("message", "Success");
+        }
+        response.put("message", "Success");
 
         return response;
     }
-
 
     @GetMapping("/cart/minicart")
     @ResponseBody
@@ -479,33 +489,62 @@ public class CartController {
         Map<String, Object> response = new HashMap<>();
         Member member = (Member) session.getAttribute("loginsuccess");
         if (member == null) {
-            // 如果用户未登录，则返回错误信息或者空购物车信息
-            response.put("error", "用户未登录");
-            return response;
-        }
+            Object memNoObj = session.getAttribute("memNo");
+            if (memNoObj != null) {
+                int memNo = (int) memNoObj;
+                List<CartRedis> cartRedisList = cartSvc.findByCompositeKey(memNo);
 
-        Integer memNo = member.getMemNo();
-        List<CartRedis> cartRedisList = cartSvc.findByCompositeKey(memNo);
+                List<Map<String, Object>> cartItems = new ArrayList<>();
+                for (CartRedis cart : cartRedisList) {
+                    Map<String, Object> cartItem = new HashMap<>();
+                    cartItem.put("productName", cart.getProductName());
+                    cartItem.put("productPrice", cart.getProductPrice());
+                    cartItem.put("productBuyQty", cart.getProductBuyQty());
 
-        List<Map<String, Object>> cartItems = new ArrayList<>();
-        for (CartRedis cart : cartRedisList) {
-            Map<String, Object> cartItem = new HashMap<>();
-            cartItem.put("productName", cart.getProductName());
-            cartItem.put("productPrice", cart.getProductPrice());
-            cartItem.put("productBuyQty", cart.getProductBuyQty());
 
-            List<ProductPicture> productPictures = productPictureService.getByProductNo(Integer.valueOf(cart.getProductNo()));
-            if (!productPictures.isEmpty()) {
-                ProductPicture firstProductPicture = productPictures.get(0);
-                byte[] firstPic = firstProductPicture.getProductPic();
-                String base64Image = Base64.getEncoder().encodeToString(firstPic);
-                cartItem.put("firstPic", base64Image);
+                    List<ProductPicture> productPictures = productPictureService.getByProductNo(Integer.valueOf(cart.getProductNo()));
+                    if (!productPictures.isEmpty()) {
+                        ProductPicture firstProductPicture = productPictures.get(0);
+                        byte[] firstPic = firstProductPicture.getProductPic();
+                        String base64Image = Base64.getEncoder().encodeToString(firstPic);
+                        cartItem.put("firstPic", base64Image);
+                    }
+
+                    cartItems.add(cartItem);
+                }
+
+                response.put("cartItems", cartItems);
+                return response;
+            } else {
+                // Handle case where memNo is null
+                // You may want to return an error response or handle it differently
+                return response; // Add this line to fulfill the missing return statement
+            }
+        } else {
+            int memNo = member.getMemNo();
+            List<CartRedis> cartRedisList = cartSvc.findByCompositeKey(memNo);
+
+            List<Map<String, Object>> cartItems = new ArrayList<>();
+            for (CartRedis cart : cartRedisList) {
+                Map<String, Object> cartItem = new HashMap<>();
+                cartItem.put("productName", cart.getProductName());
+                cartItem.put("productPrice", cart.getProductPrice());
+                cartItem.put("productBuyQty", cart.getProductBuyQty());
+
+                List<ProductPicture> productPictures = productPictureService.getByProductNo(Integer.valueOf(cart.getProductNo()));
+                if (!productPictures.isEmpty()) {
+                    ProductPicture firstProductPicture = productPictures.get(0);
+                    byte[] firstPic = firstProductPicture.getProductPic();
+                    String base64Image = Base64.getEncoder().encodeToString(firstPic);
+                    cartItem.put("firstPic", base64Image);
+                }
+
+                cartItems.add(cartItem);
             }
 
-            cartItems.add(cartItem);
+            response.put("cartItems", cartItems);
+            return response;
         }
-
-        response.put("cartItems", cartItems);
-        return response;
     }
+
 }

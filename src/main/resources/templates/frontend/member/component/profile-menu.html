@@ -40,14 +40,14 @@
             </form>
         </div>
         <div class="bg-gray-200 p-3 border-bottom border-top">
-            <h6 class="m-0">Dashboard</h6>
+            <h6 class="m-0">個人清單</h6>
         </div>
         <ul class="list-unstyled mb-0 theme-link">
             <li class="border-bottom mb-0">
                 <a class="nav-link-style d-flex align-items-center p-3"
                    th:href="@{/frontend/productorder/CartEnd}">
                     <i class="bi bi-bag me-2"></i> 商品訂單
-                <div class="ms-auto badge-pill badge bg-secondary">5</div>
+<!--                <div class="ms-auto badge-pill badge bg-secondary">5</div>-->
                 </a>
             </li>
             <li class="border-bottom mb-0">
@@ -60,7 +60,7 @@
             <li class="border-bottom mb-0">
                 <a class="nav-link-style d-flex align-items-center p-3"
                     th:href="@{/frontend/productmyfavorite/myProductFAV}"><i class="fi-heart me-2"></i>我的最愛(商品)
-                    <div class="ms-auto badge-pill badge bg-secondary">5</div>
+<!--                    <div class="ms-auto badge-pill badge bg-secondary">5</div>-->
                 </a>
             </li>
             <li class="border-bottom mb-0">
@@ -76,7 +76,7 @@
             </a></li>
             <li class="border-bottom mb-0">
                 <a class="nav-link-style d-flex align-items-center p-3"
-                   th:href="@{/frontend/notice/memberNoticeData}"><i class="bi bi-bell me-2"></i>Notices
+                   th:href="@{/frontend/notice/memberNoticeData}"><i class="bi bi-bell me-2"></i>訊息通知
                     <div class="ms-auto badge-pill badge bg-secondary" th:text="${session.unreadNoticeCount}"></div>
                 </a></li>
             <!--            <li class="border-bottom mb-0">-->
@@ -96,32 +96,32 @@
             <!--            </li>-->
         </ul>
         <div class="bg-gray-200 p-3 border-bottom">
-            <h6 class="m-0">Account settings</h6>
+            <h6 class="m-0">帳號設定</h6>
         </div>
         <ul class="list-unstyled mb-0 theme-link">
             <li class="border-bottom mb-0"><a
                     class="nav-link-style d-flex align-items-center active p-3"
-                    th:href="@{/frontend/member/memberData}"><i class="fi-user me-2"></i>Profile info</a>
+                    th:href="@{/frontend/member/memberData}"><i class="fi-user me-2"></i>個人資訊</a>
             </li>
             <li class="border-bottom mb-0"><a
                     class="nav-link-style d-flex align-items-center active p-3"
-                    th:href="@{/frontend/member/updateData}"><i class="fi-user me-2"></i>Update Profile info</a>
+                    th:href="@{/frontend/member/updateData}"><i class="fi-user me-2"></i>更新個人資訊</a>
             </li>
             <li class="border-bottom mb-0"><a
                     class="nav-link-style d-flex align-items-center p-3"
-                    th:href="@{/frontend/member/newPassword}"><i class="bi bi-key me-2"></i></i>Password</a>
+                    th:href="@{/frontend/member/newPassword}"><i class="bi bi-key me-2"></i></i>密碼</a>
             </li>
             <li class="border-bottom mb-0"><a
                     class="nav-link-style d-flex align-items-center p-3"
-                    th:href="@{/frontend/member/newMemberAddress}"><i class="bi bi-map-fill me-2"></i>Addresses</a>
+                    th:href="@{/frontend/member/newMemberAddress}"><i class="bi bi-map-fill me-2"></i>地址</a>
             </li>
             <li class="border-bottom mb-0"><a
                     class="nav-link-style d-flex align-items-center p-3"
                     th:href="@{/frontend/member/newMemberCreditCard}"><i
-                    class="bi bi-credit-card me-2"></i>Payment</a></li>
+                    class="bi bi-credit-card me-2"></i>信用卡</a></li>
             <li class="border-bottom mb-0"><a
                     class="nav-link-style d-flex align-items-center p-3" th:href="@{/frontend/member/logoutMember}"><i
-                    class="bi bi-box-arrow-left me-2"></i>Logout</a>
+                    class="bi bi-box-arrow-left me-2"></i>登出</a>
             </li>
         </ul>
     </div>

@@ -3,35 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/backend/service/backendChat.css}">
-    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <title>後台即時客服</title>
-
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/backend/service/backendChat.css}">
 </head>
-<body id="page-top" onload="connect();">
-<h2>後台即時客服系統</h2>
 
-<div class="chat-container" id="chat-page">
-    <div class="users-list">
-        <div class="users-list-container">
-            <h2>Online Users</h2>
-            <ul id="connectedUsers">
-            </ul>
-        </div>
-    </div>
+<body onload="connect();">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="backend/component/sidebar :: sidebar"></ul>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="backend/component/nav :: nav"></nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
 
-    <div class="chat-area">
-        <div class="username-replying"></div>
-        <div class="chat-area" id="chat-messages"></div>
+                <div class="chat-container" id="chat-page">
+                    <div class="users-list">
+                        <div class="users-list-container">
+                            <h2>在線會員</h2>
+                            <ul id="connectedUsers">
+                            </ul>
+                        </div>
+                    </div>
 
-        <form id="messageForm" name="messageForm">
-            <div class="message-input">
-                <input autocomplete="off" type="text" id="message" placeholder="Type your message...">
-                <button type="button" id="msg_btn">Send</button>
+                    <div class="chat-area">
+                        <div class="username-replying"></div>
+                        <div class="chat-area" id="chat-messages"></div>
+
+                        <form id="messageForm" name="messageForm">
+                            <div class="message-input">
+                                <input autocomplete="off" type="text" id="message" placeholder="請輸入訊息...">
+                                <button type="button" id="msg_btn">送出</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </form>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="backend/component/bottom :: bottom"></footer>
+        <!-- End of Footer -->
     </div>
+    <!--     End of Content Wrapper -->
 </div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>

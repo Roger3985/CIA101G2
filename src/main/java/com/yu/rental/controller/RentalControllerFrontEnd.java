@@ -1,15 +1,21 @@
 package com.yu.rental.controller;
 
+import com.roger.columnarticle.entity.ColumnArticle;
 import com.yu.rental.entity.Rental;
 import com.yu.rental.service.RentalServiceImpl;
 import com.yu.rentalcategory.entity.RentalCategory;
 import com.yu.rentalcategory.service.RentalCategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -31,17 +37,6 @@ public class RentalControllerFrontEnd {
     @Autowired
     private RentalCategoryServiceImpl rentalCategoryService;
 
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-    // 測試區 //
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////
     //顯示前台首頁
     @GetMapping("/frontend/index")
     public String index() {
@@ -83,22 +78,6 @@ public class RentalControllerFrontEnd {
     public String skipInstructions() {
         return "/frontend/rental/skipInstructions";
     }
-
-//    //顯示單筆租借品 (快速查看)
-//    @GetMapping("/rental/rentalQuickview")
-//    public String rentalQuickview(@RequestParam(value = "rentalNo") Integer rentalNo, ModelMap model) {
-//        //建立返回數據的對象
-//        Rental rental = rentalService.findByNo(rentalNo);
-//        model.addAttribute("rentalCategory", new RentalCategory());
-//        List<RentalCategory> rentalCatListData = rentalCategoryService.findAll();
-//        model.addAttribute("rentalCatListData",rentalCatListData); //所有租借品類別資訊
-//        if (rental == null) {
-//            model.addAttribute("errors", "errors");
-//            return "/frontend/rental/rentalShop";
-//        }
-//        model.addAttribute("rental", rental);
-//        return "/frontend/rental/rentalQuickview";
-//    }
 
 
     //顯示單筆租借品頁面 (需求為查看商品頁面，故使用Get請求)
@@ -177,6 +156,26 @@ public class RentalControllerFrontEnd {
         }
         return "/frontend/rental/rentalShopGrid"; // 查詢完成後轉交
     }
+
+
+    // 依關鍵字搜尋相關租借品 (如果rentalStat不為5 (下架狀態))
+    @GetMapping("/findByAllKeyWord")
+    public String findByAllKeyWord(@RequestParam("keyword") String keyword,
+                                   @RequestParam("rentalStat") Byte rentalStat,
+                                   @RequestParam("rentalSize") Integer rentalSize,
+                                   @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                   @RequestParam(value = "size", defaultValue = "5") Integer size, ModelMap model) {
+
+        page = Math.max(page, 0);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Rental> results = rentalService.findByAllKeyWord(keyword, rentalStat, rentalSize, pageable);
+
+        System.out.println("搜尋結果: " + results);
+
+        model.addAttribute("rentalListData", results); //顯示對應的搜尋結果
+        return "/frontend/rental/rentalShop";
+    }
+
 
 
 

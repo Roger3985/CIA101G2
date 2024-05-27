@@ -38,13 +38,13 @@
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-lg-6 my-2">
-                            <h1 class="m-0 h4 text-center text-lg-start">Profile</h1>
+                            <h1 class="m-0 h4 text-center text-lg-start">個人資訊</h1>
                         </div>
                         <div class="col-lg-6 my-2">
                             <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
                                 <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/}"><i
-                                            class="bi bi-home"></i>Home</a></li>
-                                <li class="breadcrumb-item text-nowrap active" aria-current="page">Profile</li>
+                                            class="bi bi-home"></i>首頁</a></li>
+                                <li class="breadcrumb-item text-nowrap active" aria-current="page">個人資訊</li>
                             </ol>
                         </div>
                     </div>
@@ -57,14 +57,14 @@
                         <div class="col-lg-8 col-xxl-9">
                             <div class="card">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0">Change your Mobile</h5>
+                                    <h5 class="m-0">修改會員電話</h5>
                                 </div>
                                 <div class="card-body p-4">
                                     <form th:action="@{changeMemberMobile}" method="post" enctype="multipart/form-data">
                                         <div class="row">
                                             <div class="col-sm-12 mb-3">
                                                 <div class="form-group"><label for="oldMemberMobile" class="form-label">
-                                                    Old Member Mobile
+                                                    舊的會員電話
                                                     <span class="text-danger">*</span>
                                                 </label>
                                                     <input type="text" id="oldMemberMobile" name="oldMemberMobile" placeholder="請輸入舊會員電話" class="form-control" th:value="${oldMemberMobile}">
@@ -75,7 +75,7 @@
                                             <div class="col-sm-12 mb-3">
                                                 <div class="form-group">
                                                     <label for="newMemberMobile" class="form-label">
-                                                        New Member Mobile
+                                                        新的會員電話
                                                         <span class="text-danger">*</span>
                                                     </label>
                                                     <input type="text" id="newMemberMobile" name="newMemberMobile" placeholder="請輸入新的會員電話" class="form-control">
@@ -85,7 +85,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-12 pt-2">
-                                                <button class="btn btn-primary">Change Member Mobile</button>
+                                                <button class="btn btn-primary">修改會員電話</button>
                                             </div>
                                         </div>
                                     </form>

@@ -1,5 +1,7 @@
 package com.iting.productmyfavorite.controller;
 
+import com.chihyun.mycoupon.entity.MyCoupon;
+import com.chihyun.mycoupon.model.MyCouponService;
 import com.iting.cart.entity.CartRedis;
 import com.iting.productmyfavorite.entity.ProductMyFavorite;
 import com.iting.productmyfavorite.entity.ProductMyFavoriteRedis;
@@ -25,6 +27,10 @@ import java.util.*;
 @Controller
 @RequestMapping("/frontend/productmyfavorite")
 public class ProductMyFavoriteFrontController {
+
+    @Autowired
+    MyCouponService myCouponSvc;
+
     @Autowired
     ProductServiceImpl productServiceImpl;
 @Autowired
@@ -56,6 +62,17 @@ public class ProductMyFavoriteFrontController {
                 model.addAttribute("productImage"+productNo, base64Image);
             }
         }
+
+        List<MyCoupon> list = myCouponSvc.getAllMyCouponMem(myData.getMemNo());
+        System.out.println(list);
+        List<MyCoupon> showMyCoupon = new ArrayList<>();
+        for (MyCoupon mycoupons : list) {
+            if (mycoupons.getCoupUsedStat() == 0) {
+                showMyCoupon.add(mycoupons);
+            }
+        }
+        int myCouponQTY = showMyCoupon.size();
+        model.addAttribute("myCouponQTY", myCouponQTY);
 
         model.addAttribute("myData",myData);
         model.addAttribute("productMyFavoriteRedisList", productMyFavoriteRedisList);

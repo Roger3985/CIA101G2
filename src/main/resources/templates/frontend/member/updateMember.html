@@ -38,13 +38,13 @@
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-lg-6 my-2">
-                            <h1 class="m-0 h4 text-center text-lg-start">Profile</h1>
+                            <h1 class="m-0 h4 text-center text-lg-start">更新個人資訊</h1>
                         </div>
                         <div class="col-lg-6 my-2">
                             <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
                                 <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/}"><i
-                                            class="bi bi-home"></i>Home</a></li>
-                                <li class="breadcrumb-item text-nowrap active" aria-current="page">Profile</li>
+                                            class="bi bi-home"></i>首頁</a></li>
+                                <li class="breadcrumb-item text-nowrap active" aria-current="page">更新個人資訊</li>
                             </ol>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                         <div class="col-lg-8 col-xxl-9">
                             <div class="card mb-5">
                                 <div class="card-header py-3">
-                                    <h5 class="m-0">Profile Update</h5>
+                                    <h5 class="m-0">更新個人資訊</h5>
                                 </div>
                                 <div class="card-body">
 <!--                                    <form method="post" th:action="@{newPicture}" enctype="multipart/form-data" onsubmit="return handleAvatarUpload(event)" class="row g-3 align-items-center">-->
@@ -75,14 +75,14 @@
                                         <input type="text" th:field="*{memNo}" style="display: none">
                                         <div class="row">
                                             <div class="col-sm-6 mb-3"><label class="form-label">
-                                                Name
+                                                姓名
                                                 <span class="text-danger">*</span>
                                             </label>
                                                 <input type="text" class="form-control" th:field="*{memName}" placeholder="請輸入姓名" style="color: black;">
                                                 <span th:if="${#fields.hasErrors('memName')}" th:errors="*{memName}" class="error" style="color: red;"></span>
                                             </div>
                                             <div class="col-sm-6 mb-3"><label class="form-label">
-                                                Account
+                                                帳號
                                                 <span class="text-danger">*</span>
                                             </label>
                                                 <input type="text" class="form-control" th:field="*{memAcc}" placeholder="請輸入帳號" style="color: black;">
@@ -90,14 +90,14 @@
                                                 <span th:text="${duplicateAccount}" class="error" id="duplicateAccount.error" style="color: red;"></span>
                                             </div>
                                             <div class="col-sm-6 mb-3"><label class="form-label">
-                                                Password (無法在此修改，請到單獨頁面修改)
+                                                密碼 (無法在此修改，請到單獨頁面修改)
                                                 <span class="text-danger">*</span>
                                             </label>
                                                 <input type="password" class="form-control" name="memPwd" placeholder="*************" readonly style="color: black;">
                                                 <span  th:if="${#fields.hasErrors('memPwd')}" th:errors="*{memPwd}" class="error" id="memPwd.errors" style="color: red;"></span>
                                             </div>
                                             <div class="col-sm-6 mb-3"><label class="form-label">
-                                                Phone
+                                                電話
                                                 <span class="text-danger">*</span>
                                             </label>
                                                 <input type="text" class="form-control" th:field= "*{memMob}" placeholder="請輸入電話" style="color: black;">
@@ -107,7 +107,7 @@
                                             <div class="col-sm-6 mb-3">
                                                 <div class="form-group">
                                                     <label class="form-label">
-                                                        Gender
+                                                        性別
                                                         <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="gender-option">
@@ -122,7 +122,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-sm-6 mb-3"><label class="form-label">
-                                                Email
+                                                信箱
                                                 <span class="text-danger">*</span>
                                             </label>
                                                 <input type="email" class="form-control" th:field="*{memMail}" placeholder="請輸入信箱" style="color: black;">
@@ -130,14 +130,14 @@
                                                 <span th:text="${duplicateMail}" class="error" id="duplicateMail.error" style="color: red;"></span>
                                             </div>
                                             <div class="col-sm-6 mb-3"><label class="form-label">
-                                                Birthday
+                                                生日
                                                 <span class="text-danger">*</span>
                                             </label>
                                                 <input type="date" class="form-control" th:field="*{memBd}" style="color: black;">
                                                 <span th:if="${#fields.hasErrors('memBd')}" th:errors="*{memBd}" class="error" style="color: red;"></span>
                                             </div>
                                             <div class="col-sm-6 mb-3"><label class="form-label">
-                                                Address
+                                                地址
                                                 <span class="text-danger">*</span>
                                             </label>
 <!--                                                <div class="column">-->
@@ -156,7 +156,7 @@
                                                 <span th:if="${#fields.hasErrors('memAdd')}" th:errors="*{memAdd}" class="error" style="color: red;"></span>
                                             </div>
                                             <div class="col-sm-6 mb-3"><label class="form-label">
-                                                Credit card
+                                                信用卡
                                                 <span class="text-black">*</span>
                                             </label>
                                                 <input type="text" class="form-control" th:field="*{memCard}" placeholder="請輸入信用卡號 (可選填)" style="color: black;">

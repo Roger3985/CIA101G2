@@ -51,7 +51,7 @@
                         </li>
                         <li class="nav-item"><a href="#" class="nav-link text-white" data-bs-toggle="modal"
                                                 data-bs-target="#topbarlogin" th:unless="${session.loginsuccess}"><i
-                                class="fi-user me-2"></i>Login</a></li>
+                                class="fi-user me-2"></i>登入</a></li>
                         <!--                        <li class="nav-item"><a th:href="@{frontend/member/loginpopup.html}" class="nav-link text-white" data-bs-toggle="modal"-->
                         <!--                                                data-bs-target="#topbarlogin"><i class="fi-user me-2"></i>Login</a></li>-->
                     </ul><!-- Top social -->
@@ -103,8 +103,8 @@
                     <li class="dropdown nav-item"><a href="#" class="nav-link">專欄文章</a> <label
                             class="px-dropdown-toggle mob-menu"></label>
                         <ul class="dropdown-menu left shadow-lg">
-                            <li><a class="dropdown-item" th:href="@{/frontend/columnarticle/listAllColumnArticle}">Articles</a></li>
-                            <li><a class="dropdown-item" th:if="${session.loginsuccess}" th:unless="${session.onePublishedArticles == null}" th:href="@{/frontend/columnarticle/oneColumnArticle(artNo=${session.onePublishedArticles})}">Article Single</a></li>
+                            <li><a class="dropdown-item" th:href="@{/frontend/columnarticle/listAllColumnArticle}">全部專欄文章</a></li>
+                            <li><a class="dropdown-item" th:if="${session.loginsuccess}" th:unless="${session.onePublishedArticles == null}" th:href="@{/frontend/columnarticle/oneColumnArticle(artNo=${session.onePublishedArticles})}">推薦的專欄文章</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -120,16 +120,16 @@
                     class="fi-user"></i></a>
                 <div class="dropdown-menu dropdown-menu-end mt-2 shadow" aria-labelledby="dropdown_myaccount">
                     <div class="d-flex flex-column align-items-center">
-                        <a class="dropdown-item" th:href="@{/frontend/member/loginMember}" th:unless="${session.loginsuccess}">Login</a>
-                        <a class="dropdown-item" th:href="@{/frontend/member/addMemberData}" th:unless="${session.loginsuccess}">Register</a>
+                        <a class="dropdown-item" th:href="@{/frontend/member/loginMember}" th:unless="${session.loginsuccess}">登入</a>
+                        <a class="dropdown-item" th:href="@{/frontend/member/addMemberData}" th:unless="${session.loginsuccess}">註冊</a>
                         <img th:src="@{/frontend/member/picture(memno=${session.loginsuccess.getMemNo()})}"
                              id="memberAvatar"
                              style="width: 80px; height: 80px; border: 1px solid #ccc;"
                              alt="會員大頭貼"
                              th:if="${session.loginsuccess}">
                         <a class="dropdown-item" th:href="@{/frontend/rentalmytrack/toRentalMyTrack}" th:if="${session.loginsuccess}">追蹤清單</a>
-                        <a class="dropdown-item" th:href="@{/frontend/member/memberData}" th:if="${session.loginsuccess}">My account</a>
-                        <a class="dropdown-item" th:href="@{/frontend/member/logoutMember}" th:if="${session.loginsuccess}">Logout</a>
+                        <a class="dropdown-item" th:href="@{/frontend/member/memberData}" th:if="${session.loginsuccess}">個人資訊</a>
+                        <a class="dropdown-item" th:href="@{/frontend/member/logoutMember}" th:if="${session.loginsuccess}">登出</a>
                     </div>
                 </div>
             </div>
@@ -181,9 +181,14 @@
                 </div>
             </div>
             <!-- Cart -->
-            <div class="nav-item"><a class="nav-link" data-bs-toggle="offcanvas" href="#modalMiniCart" role="button"
-                                     aria-controls="modalMiniCart"><span class="" data-cart-items="8"><i
-                    class="fi-shopping-cart"></i></span></a></div><!-- Mobile Toggle -->
+            <div class="nav-item">
+                <a class="nav-link" data-bs-toggle="offcanvas" href="#modalMiniCart" role="button" aria-controls="modalMiniCart" onclick="updateMiniCart()">
+<!--                    <span class="" data-cart-items="8">-->
+                        <i class="fi-shopping-cart"></i>
+<!--                    </span>-->
+                </a>
+            </div>
+            <!-- Mobile Toggle -->
             <button
                     class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -192,5 +197,91 @@
         </div>
         </div>
     </nav>
+    <style>
+        .product-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .product-item:last-child {
+            border-bottom: none;
+        }
+
+        .product-image img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .product-details {
+            flex-grow: 1;
+        }
+
+        .product-name {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .product-price, .product-quantity {
+            font-size: 12px;
+            color: #555;
+        }
+    </style>
+    <script>
+        function updateMiniCart() {
+            $.ajax({
+                type: 'GET',
+                url: "/frontend/cart/minicart",
+                success: function(response) {
+                    var productListContainer = document.getElementById("productListContainer");
+                    productListContainer.innerHTML = ''; // 清空之前的内容
+
+                    if (response.error) {
+                        // 处理用户未登录的情况
+                        console.log(response.error);
+                        return;
+                    }
+
+                    var cartItems = response.cartItems; // 直接获取 cartItems 数组
+
+                    cartItems.forEach(function(item) {
+                        var productItem = document.createElement("div");
+                        productItem.classList.add("product-item");
+                        productItem.innerHTML = `
+                    <div class="product-image">
+                        <img src="data:image/jpeg;base64,${item.firstPic}" alt="${item.productName}">
+                    </div>
+                    <div class="product-details">
+                        <div class="product-name">${item.productName}</div>
+                        <div class="product-price">價格: ${item.productPrice}</div>
+                        <div class="product-quantity">數量: ${item.productBuyQty}</div>
+                    </div>
+                `;
+                        productListContainer.appendChild(productItem);
+                    });
+
+                    // 计算总金额
+                    var totalPrice = 0;
+                    cartItems.forEach(function(item) {
+                        var productPrice = parseFloat(item.productPrice);
+                        var productQty = parseInt(item.productBuyQty);
+                        totalPrice += productPrice * productQty;
+                    });
+
+                    // 显示总金额
+                    document.getElementById('AllPrice').textContent = '總金額: ' + totalPrice; // 假设价格是小数，保留两位小数
+                },
+                error: function(error) {
+                    console.log("Error:", error);
+                }
+            });
+        }
+
+    </script>
 </header>
 <!-- End Header -->

@@ -96,7 +96,10 @@
                                             <form>
                                                 <input type="hidden" th:value="${order.getMember().getMemNo()}">
                                                 <input type="hidden" class="rentalOrdNo" th:value="${order.getrentalOrdNo()}">
-                                                <button class="depRefund" type="button" th:disabled="${order.getrentalOrdStat() != 50 || order.getrentalPayMethod() == 2}">退押金</button>
+                                                <div th:switch="${order.getrentalPayMethod()}">
+                                                    <button th:case="1" class="depRefund" type="button" th:disabled="${order.getrentalOrdStat() != 50 || order.getrentalPayMethod() == 2}">退押金</button>
+                                                    <button th:case="3" class="depRefundForLinePay" type="button" th:disabled="${order.getrentalOrdStat() != 50 || order.getrentalPayMethod() == 2}">LinePay退押</button>
+                                                </div>
                                             </form>
                                         </td>
 
@@ -254,6 +257,31 @@
         });
 
         // 刷退
+        $(document).on("click", "button.depRefundForLinePay", function (e) {
+            let refundBtn = $(e.target);
+            let rentalOrdNo = refundBtn.closest("form").find("input.rentalOrdNo").val();
+            console.log(rentalOrdNo);
+
+            fetch(baseUrl + apiPath + "depRefundForLinePay", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(rentalOrdNo)
+            }).then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    let refundInfo = `
+                        <p>結果代碼(returnCode) : ${data.returnCode}</p>
+                        <p>交易回應訊息(returnMessage)(0000 = 成功) : ${data.returnMessage}</p>
+                        <p>刷退押金比例 : ${data.refundPercent} %</p>
+                    `;
+                    $("#refundInfo").html(refundInfo);
+                    $('#refundModal').modal('show');
+                }).catch(error => console.error('Error:', error));
+        });
+
+        // LinePay刷退
         $(document).on("click", "button.depRefund", function (e) {
             let refundBtn = $(e.target);
             let rentalOrdNo = refundBtn.closest("form").find("input.rentalOrdNo").val();
