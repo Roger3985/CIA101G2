@@ -501,13 +501,6 @@ public class MemberControllerFrontEnd {
             System.out.println("自動登入信息已存入");
         }
 
-        if (session.getAttribute("location") != null) {
-            Cart cartList = (Cart) session.getAttribute("cartList");
-            modelMap.addAttribute("cartList");
-            // 回到視圖目標為 `/frontend/cart/Cart`
-            return "/frontend/cart/Cart";
-        }
-
         // 重定向到原始請求的 URI
         try {
             response.sendRedirect(projectUri + uri);
