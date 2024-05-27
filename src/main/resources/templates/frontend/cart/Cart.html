@@ -173,7 +173,7 @@
                 <th:block th:each="cart : ${cartListData}">
                     <tr class="productitm">
                         <td>
-                            <a th:href="@{/frontend/product/Product(product=${cart.productNo})}">
+                            <a th:href="@{/frontend/product/oneProduct(productNo=${cart.productNo})}">
                                 <img th:src="'data:image/png;base64,' + ${session['productImage' + cart.productNo]}" alt="Product Picture"/>
                             </a>
                         </td>

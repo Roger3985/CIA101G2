@@ -214,42 +214,6 @@ public class CartController {
     }
 
 
-    //
-//    @GetMapping("/cart/addcartsuccess")
-//    public String insert(@Validated(Create.class) CartRedis cartRedis,HttpSession session, Model model) {
-//        // 从会话中获取 memNo 的值
-//        Member member = (Member) session.getAttribute("user");
-//        if (member == null) {
-//            session.setAttribute("location", "/frontend/cart/addcartsuccess");
-//            return "redirect:/login";
-//        }
-//        Integer memNo = member.getMemNo();
-//        cartSvc.updateCart(cartRedis);
-//        List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNo);
-//        model.addAttribute("cartListData", cartListData);
-//        return getCart(memNo, model, "/frontend/cart/Cart");
-//    }
-//    private String getCart(Integer memNo, Model model, String viewName) {
-//        List<CartRedis> cartListData = cartSvc.findByCompositeKey(memNo);
-//
-////         檢查購物車是否為空
-//        if (cartListData.isEmpty()) {
-//            model.addAttribute("cartListData", true);
-//        }
-//        // Calculate the total
-//        int total = 0;
-//        for (CartRedis item : cartRedisList) {
-//            total += item.getSubtotalAmount();
-//        }
-//        int shippingCost = total > 500 ? 0 : 100;
-
-    // Add total to the model
-//        model.addAttribute("total", total);
-//        model.addAttribute("shippingCost", shippingCost);
-//        model.addAttribute("cartListData", cartListData);
-//        model.addAttribute("memNo", memNo);
-//        return viewName;
-//    }
     @GetMapping("/cart/addcartsuccess")
     public String insert(@Validated(Create.class) CartRedis cartRedis, BindingResult result, ModelMap model, HttpSession session) {
         Integer successmemNo;
@@ -292,6 +256,7 @@ public class CartController {
                             model.addAttribute("productImage" + productNo, base64Image);
                         }
                     }
+                    session.setAttribute("cartListData", cartListData);
                     model.addAttribute("cartListData", cartListData);
                 }
             }
@@ -314,7 +279,7 @@ public class CartController {
                         model.addAttribute("productImage" + productNo, base64Image);
                     }
                 }
-
+                session.setAttribute("cartListData", cartListData);
                 // 设置购物车信息为模型属性
                 model.addAttribute("cartListData", cartListData);
             }
@@ -322,59 +287,6 @@ public class CartController {
 
         return "frontend/cart/Cart";
     }
-
-
-//    public BindingResult removeFieldError(CartRedis cart, BindingResult result, String removedFieldname) {
-//        List<FieldError> errorsListToKeep = result.getFieldErrors().stream()
-//                .filter(fieldname -> !fieldname.getField().equals(removedFieldname))
-//                .collect(Collectors.toList());
-//        result = new BeanPropertyBindingResult(cart, "cart");
-//        for (FieldError fieldError : errorsListToKeep) {
-//            result.addError(fieldError);
-//        }
-//        return result;
-//    }
-//    @ExceptionHandler(value = { ConstraintViolationException.class })
-//    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-//    public ModelAndView handleError(HttpServletRequest req, ConstraintViolationException e, Model model) {
-//        Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
-//        StringBuilder strBuilder = new StringBuilder();
-//        for (ConstraintViolation<?> violation : violations ) {
-//            strBuilder.append(violation.getMessage() + "<br>");
-//        }
-//        String message = strBuilder.toString();
-//        return new ModelAndView("frontend/cart/addcart", "errorMessage", "請修正以下錯誤:<br>"+message);
-//    }
-////
-//    @PostMapping("/CartfromMemno")
-//    public String Cart (@ModelAttribute("cartListData") List < CartRedis > cartListData) {
-//        if (cartListData == null || cartListData.isEmpty()) {
-//            // 处理空购物车列表的情况，你可以将其重定向到其他页面或者给出错误提示
-//            return "redirect:/emptyCart"; // 重定向到空购物车页面
-//        } else {
-//            return "frontend/cart/Cart"; // 显示购物车页面
-//        }
-//    }
-//
-//    @GetMapping("/emptyCart")
-//    public String showEmptyCartPage () {
-//        return "frontend/cart/EmptyCart"; // 显示空购物车页面
-//    }
-//
-////        @ModelAttribute("cartListData")
-////        protected List<CartRedis> referenceListData_Mbr (Model model, @RequestParam(name = "memNo", required = false) String
-////        memNo){
-////            if (memNo == null || memNo.isEmpty()) {
-////                return Collections.emptyList();
-////            } else {
-////                model.addAttribute("Cart", new CartRedis());
-////                List<CartRedis> cart = cartSvc.findByCompositeKey(Integer.valueOf(memNo));
-////                return cart;
-////            }
-////        }
-//
-//
-
 
     @PostMapping("/cart/coupNoInstantly")
     @ResponseBody
