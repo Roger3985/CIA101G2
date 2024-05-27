@@ -984,7 +984,7 @@
 						</div>
 					</div>
 					<!-- 在網頁中添加一個空的 div 來顯示 toast -->
-					<div id="toastContainer" aria-live="polite" aria-atomic="true" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+					<div id="toastContainer" aria-live="polite" aria-atomic="true" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;" th:if="${session.loginsuccess == null}">
 						<style>
 							.toast {
 								width: 300px;
