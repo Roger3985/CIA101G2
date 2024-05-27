@@ -61,6 +61,7 @@ public class BackendIndexController {
 
     @ModelAttribute("productTop10SalQty")
     public List<Product> productList() {
+
         return productSvc.getTopSalQty();
     }
 

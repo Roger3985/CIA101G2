@@ -67,27 +67,6 @@ public interface ProductService_interface {
 	List<Product> getByProductStat(Byte productStat);
 
 	/**
-	 * 獲得評價最高的商品清單
-	 *
-	 * @return 評價最高的商品清單
-	 */
-	List<Product> getTopScore();
-
-	/**
-	 * 獲得最多人評價的商品清單
-	 *
-	 * @return 最多人評價的商品清單
-	 */
-	List<Product> getTopPopular();
-
-	/**
-	 * 獲得最多銷售數量的商品清單
-	 *
-	 * @return 最多銷售數量的商品清單
-	 */
-	List<Product> getTopSalQty();
-
-	/**
 	 * 獲得最新上架的商品清單
 	 *
 	 * @return 最新上架的商品清單
