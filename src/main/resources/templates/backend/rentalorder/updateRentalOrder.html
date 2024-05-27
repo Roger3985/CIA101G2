@@ -74,7 +74,7 @@
                     <input type="text" name="rentalBackDate" th:value="${rentalBackDate}" readonly>
                     <br>
                     <label>實際歸還日期</label>
-                    <input type="text" name="rentalRealBackDate" th:value="${rentalRealBackDate}" readonly>
+                    <input type="datetime-local" name="rentalRealBackDate" th:value="${rentalRealBackDate}">
                     <br>
                     <label>付款狀態</label>
                     <select name="rentalPayStat">
@@ -92,6 +92,7 @@
                         <option th:value="40" th:text="訂單成立" th:selected="${rentalOrdStat == 40}"></option>
                         <option th:value="45" th:text="已歸還" th:selected="${rentalOrdStat == 45}"></option>
                         <option th:value="50" th:text="訂單完成" th:selected="${rentalOrdStat == 50}"></option>
+                        <option th:value="80" th:text="申請取消" th:selected="${rentalOrdStat == 80}"></option>
                     </select>
                     <br>
                     <label>歸還狀態</label>

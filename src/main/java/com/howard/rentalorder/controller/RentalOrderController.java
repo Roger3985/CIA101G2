@@ -1,5 +1,6 @@
 package com.howard.rentalorder.controller;
 
+import com.howard.rentalorder.dto.CancelRentalOrder;
 import com.howard.rentalorder.dto.DeleteCantRent;
 import com.howard.rentalorder.dto.RentalOrderRequest;
 import com.howard.rentalorder.dto.SetToCart;
@@ -236,6 +237,7 @@ public class RentalOrderController {
     public String updateOrder(@RequestParam Integer rentalOrdNo,
                               @RequestParam(required = false) Byte rentalPayStat,
                               @RequestParam(required = false) Byte rentalOrdStat,
+                              @RequestParam(required = false) Timestamp rentalRealBackDate,
                               @RequestParam(required = false) Byte rtnStat,
                               @RequestParam(required = false) String rtnRemark,
                               @RequestParam(required = false) BigDecimal rtnCompensation, ModelMap model) {
@@ -253,6 +255,9 @@ public class RentalOrderController {
             if (rentalOrdStat == (byte) 50) {
 
             }
+        }
+        if (rentalRealBackDate != null) {
+            map.put("rentalRealBackDate", rentalRealBackDate);
         }
         if (rtnStat != null) {
             map.put("rtnStat", rtnStat);
@@ -365,6 +370,66 @@ public class RentalOrderController {
         model.addAttribute("getOnAny", "true");
         return "/backend/rentalorder/selectRentalOrder";
 
+    }
+
+    // 取消訂單
+    @PostMapping("/makeADecision")
+    public ResponseEntity<?> makeADecision(@RequestBody CancelRentalOrder cro) {
+
+        RentalOrder order = service.findOrderByOrdNo(cro.getRentalOrdNo());
+        if (cro.getYesOrNo() == 1) { // 同意 取消訂單
+
+
+            if (order.getrentalPayStat() == (byte) 1) { // 如果已付款，則刷退
+                System.out.println("======================================" + order.getrentalPayMethod());
+                switch ((int) order.getrentalPayMethod()) {
+
+                    case 1 : // 用 綠界 付款
+                        Map<String, String> refundInfos = service.cancel(order);
+                        updateStat((byte) 0, cro.getRentalOrdNo());
+                        addMemberMessage(refundInfos, "已經取消，退款比例為 ", cro.getRentalOrdNo());
+                        return ResponseEntity.status(HttpStatus.OK).body(refundInfos.get("refundPercent"));
+
+                    case 3 : // 用 LinePay 付款
+                        Map<String, String> refundInfosForLinePay = service.cancelForLinePay(order);
+                        updateStat((byte) 0, cro.getRentalOrdNo());
+                        addMemberMessage(refundInfosForLinePay, "已經取消，退款比例為 ", cro.getRentalOrdNo());
+                        return ResponseEntity.status(HttpStatus.OK).body(refundInfosForLinePay.get("refundPercent"));
+
+                }
+
+            } else { // 還沒付款(只可能是店取，因為宅配要先付款)
+                updateStat((byte) 0, cro.getRentalOrdNo());
+                addMemberMessageForNotPayYet("已經取消", cro.getRentalOrdNo());
+                return ResponseEntity.status(HttpStatus.OK).body("100");
+            }
+
+        } else { // 不同意 取消訂單
+
+            switch (order.getrentalTakeMethod()) {
+
+                case 2 : // 宅配，本來是揀貨中
+                    updateStat((byte) 10, cro.getRentalOrdNo());
+                    addMemberMessageForNotPayYet("的取消訂單申請已被拒絕", cro.getRentalOrdNo());
+                    return ResponseEntity.status(HttpStatus.OK).body("100");
+
+                case 1 : // 店取，本來是等待取貨
+                    updateStat((byte) 30, cro.getRentalOrdNo());
+                    addMemberMessageForNotPayYet("的取消訂單申請已被拒絕", cro.getRentalOrdNo());
+                    return ResponseEntity.status(HttpStatus.OK).body("100");
+
+            }
+
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("nonono");
+
+    }
+
+    public void updateStat(Byte stat, Integer rentalOrdNo) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("rentalOrdNo", rentalOrdNo);
+        map.put("rentalOrdStat", stat);
+        service.update(map);
     }
 
     /*---------------------------處理CRUD請求的方法---------------------------------*/
@@ -480,7 +545,7 @@ public class RentalOrderController {
     public ResponseEntity<?> depRefund(@RequestBody Integer rentalOrdNo) {
 
         Map<String, String> refundInfos = service.refund(service.findOrderByOrdNo(rentalOrdNo));
-        addMemberMessage(refundInfos, rentalOrdNo);
+        addMemberMessage(refundInfos, "押金已完成刷退囉! 刷退押金比例為 ", rentalOrdNo);
         return ResponseEntity.status(HttpStatus.OK).body(refundInfos);
 
     }
@@ -492,17 +557,29 @@ public class RentalOrderController {
     public ResponseEntity<?> depRefundForLinePay(@RequestBody Integer rentalOrdNo) {
 
         Map<String, String> refundInfos = service.refundForLinePay(service.findOrderByOrdNo(rentalOrdNo));
-        addMemberMessage(refundInfos, rentalOrdNo);
+        addMemberMessage(refundInfos, "押金已完成刷退囉! 刷退押金比例為 ", rentalOrdNo);
         return ResponseEntity.status(HttpStatus.OK).body(refundInfos);
 
     }
 
-    public void addMemberMessage(Map<String, String> refundInfos, Integer rentalOrdNo) {
+    public void addMemberMessage(Map<String, String> refundInfos, String message, Integer rentalOrdNo) {
 
         Notice newNotice = new Notice();
         Integer memNo = service.findOrderByOrdNo(rentalOrdNo).getMember().getMemNo();
         newNotice.setMember(memberService.findByNo(memNo));
-        newNotice.setNotContent("訂單號碼" + rentalOrdNo + "押金已完成刷退囉! 刷退押金比例為 " + refundInfos.get("refundPercent") + "%");
+        newNotice.setNotContent("訂單號碼" + rentalOrdNo + message + refundInfos.get("refundPercent") + "%");
+        newNotice.setNotTime(new Timestamp(System.currentTimeMillis()));
+        newNotice.setNotStat((byte) 0);
+        noticeService.addNotice(newNotice);
+
+    }
+
+    public void addMemberMessageForNotPayYet(String message, Integer rentalOrdNo) {
+
+        Notice newNotice = new Notice();
+        Integer memNo = service.findOrderByOrdNo(rentalOrdNo).getMember().getMemNo();
+        newNotice.setMember(memberService.findByNo(memNo));
+        newNotice.setNotContent("訂單號碼" + rentalOrdNo + message);
         newNotice.setNotTime(new Timestamp(System.currentTimeMillis()));
         newNotice.setNotStat((byte) 0);
         noticeService.addNotice(newNotice);

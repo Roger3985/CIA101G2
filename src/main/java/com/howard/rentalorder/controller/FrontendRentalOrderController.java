@@ -2,6 +2,7 @@ package com.howard.rentalorder.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.howard.rentalorder.dto.CancelRentalOrder;
 import com.howard.rentalorder.dto.DeleteCantRent;
 import com.howard.rentalorder.dto.RentalOrderRequest;
 import com.howard.rentalorder.dto.SetToCart;
@@ -293,15 +294,17 @@ public class FrontendRentalOrderController {
 
     // 取消訂單
     @PostMapping("/tryCancelOrder")
-    public ResponseEntity<?> tryCancelOrder(@RequestBody Integer rentalNo, HttpSession session) {
+    public ResponseEntity<?> tryCancelOrder(@RequestBody Integer rentalOrdNo, HttpSession session,
+                                            HttpServletRequest sReq) {
 
         Member member = (Member) session.getAttribute("loginsuccess");
         if (member == null) {
             return ResponseEntity.status(HttpStatus.OK).body(toLogin);
         }
-
-
-
+        Map<String, Object> map = new HashMap<>();
+        map.put("rentalOrdNo", rentalOrdNo);
+        map.put("rentalOrdStat", (byte) 80);
+        service.update(map);
         return ResponseEntity.status(HttpStatus.OK).body("ok");
 
     }

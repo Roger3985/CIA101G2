@@ -13,9 +13,9 @@
                         type="button" role="tab" aria-controls="products" aria-selected="true">一般商品
                 </button>
             </li>
-            <li class="nav-item rentalCartItems" role="presentation">
-                <button class="nav-link" id="rental-tab" data-bs-toggle="tab" data-bs-target="#rental" type="button" role="tab" aria-controls="rental" aria-selected="false">租借商品</button>
-            </li>
+<!--            <li class="nav-item rentalCartItems" role="presentation">-->
+<!--                <button class="nav-link" id="rental-tab" data-bs-toggle="tab" data-bs-target="#rental" type="button" role="tab" aria-controls="rental" aria-selected="false" onclick="updateRentalMiniCart()">租借商品</button>-->
+<!--            </li>-->
         </ul>
         <div class="tab-content" id="miniCartTabContent">
             <!-- 一般商品 -->
@@ -33,17 +33,31 @@
                 </div>
             </div>
             <!-- 租借商品 -->
-            <div class="tab-pane fade" id="rental" role="tabpanel" aria-labelledby="rental-tab" th:each="rental : ${rentalListData}">
+            <div class="tab-pane fade" id="rental" role="tabpanel" aria-labelledby="rental-tab">
 
                 <!-- 購物車物件 1 -->
                 <div id="rentalListContainer">
                     <!-- 商品將顯示在這裡 -->
+<!--                    <div th:each="${}">-->
+
+                        <div class="rental-item">
+                            <div class="rental-image">
+                                <img src="/path/to/images/${item.rentalNo}.jpg" alt="商品圖片">
+                            </div>
+                            <div class="rental-details">
+                                <div class="rental-name"></div>
+                                <div class="rental-price">價格: </div>
+                                <div class="rental-quantity">數量: </div>
+                            </div>
+                        </div>
+
+<!--                    </div>-->
                 </div>
                 <!-- 這裡可以放更多購物車物件 -->
                 <div class="offcanvas-footer border-top p-3">
 
                     <div class="row g-0 pt-2 mt-2 border-top fw-bold text-mode">
-                        <div class="col-8"><span id="rentalAllPrice" class="text-mode">合計</span></div>
+                        <div class="col-8"><span id="rentalAllPriceForMiniCart" class="text-mode">合計(租金+押金)</span></div>
                         <div class="col-4 text-end"><span class="ml-auto totalPrice"></span></div>
                     </div>
 

@@ -255,7 +255,7 @@
                                     <p><br><small></small></p>
                                 </div>
                                 <!--  -->
-                                <div class="timeline-step" th:if="${rentalOrder.getrentalTakeMethod() == 1}">
+                                <div class="timeline-step" th:if="${rentalOrder.getrentalTakeMethod() == 1 && rentalOrder.getrentalOrdStat() == 30}">
                                     <div class="outer-circle c2">
                                         <div class="inner-circle">
                                             <i class="bi bi-box"></i>
@@ -265,7 +265,7 @@
                                     <p>等待取貨中<br><small></small></p>
                                 </div>
 
-                                <div class="timeline-step express" th:if="${rentalOrder.getrentalTakeMethod() == 2}">
+                                <div class="timeline-step express" th:if="${rentalOrder.getrentalTakeMethod() == 2 && (rentalOrder.getrentalOrdStat() == 20 || rentalOrder.getrentalOrdStat() == 10)}">
                                     <div class="outer-circle c2">
                                         <div class="inner-circle">
                                             <i class="bi bi-truck"></i>
@@ -273,6 +273,26 @@
                                     </div>
                                     <br>
                                     <p>商品配送中<br><small></small></p>
+                                </div>
+
+                                <div class="timeline-step express" th:if="${rentalOrder.getrentalOrdStat() == 80}">
+                                    <div class="outer-circle c2">
+                                        <div class="inner-circle">
+                                            <i class="bi bi-exclamation-lg" style="color: orange"></i>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <p>訂單申請取消<br><small></small></p>
+                                </div>
+
+                                <div class="timeline-step express" th:if="${rentalOrder.getrentalOrdStat() == 0}">
+                                    <div class="outer-circle c2">
+                                        <div class="inner-circle">
+                                            <i class="bi bi-x-lg" style="color: red"></i>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <p>訂單已取消<br><small></small></p>
                                 </div>
 
                                 <div class="timeline-step">
@@ -403,8 +423,8 @@
                             </div>
 
                             <div class="button-container" style="display: inline-block; margin-left: 300px">
-                                <button th:if="${rentalOrder.getrentalOrdStat() == 10 || rentalOrder.getrentalTakeMethod() == 1}" class="btn-get-started btn btn-primary flex-shrink-0 btn_tryCancelOrder">
-                                    申請取消訂單
+                                <button th:if="${(rentalOrder.getrentalTakeMethod() == 2 && rentalOrder.getrentalOrdStat() == 10) || (rentalOrder.getrentalTakeMethod() == 1 && rentalOrder.getrentalOrdStat() == 30)}" class="btn-get-started btn btn-primary flex-shrink-0 btn_tryCancelOrder">
+                                    申請取消訂單 <!-- 只有選宅配而還在揀貨中、選店取而還是等待取貨中，2種情況會顯示 -->
                                 </button>
                                 <button class="btn-get-started btn btn-primary flex-shrink-0 btn_addToCart">
                                     <strong th:if="${rentalOrder.getrentalOrdStat() == 50}">再租一次</strong>
@@ -418,6 +438,7 @@
                                     <table class="table table-bordered">
                                         <thead>
                                         <tr>
+                                            <th>商品圖片</th>
                                             <th>商品名稱</th>
                                             <th>數量</th>
                                             <th>租金</th>
@@ -428,6 +449,7 @@
                                         <th:block th:each="detail : ${rentalOrder.getRentalOrderDetailses()}">
 <!--                                            <tr class="detail" id="5011"></tr>-->
                                             <tr class="detail" th:id="${detail.getRental().getRentalNo()}">
+                                                <td><img style="width: 30px" th:src="'/icons/frontend/rental/rentalshop/' + ${detail.getRental().getRentalNo()} + '.jpg'"></td>
                                                 <td th:text="${detail.getRental().getRentalName()}"></td>
                                                 <td>1</td>
                                                 <td th:text="${detail.getRentalPrice()}"></td>
@@ -543,6 +565,34 @@
             c5.find("i").css("color", "gray");
             break;
 
+        case "80" : // 申請取消訂單
+            c2.css("border", "4px solid orange");
+            c3.css("border", "4px solid gray");
+            c3.find("i").css("color", "gray");
+            c4.css("border", "4px solid gray");
+            c4.find("i").css("color", "gray");
+            c5.css("border", "4px solid gray");
+            c5.find("i").css("color", "gray");
+
+            c2toc3.css("color", "gray");
+            c3toc4.css("color", "gray");
+            c4toc5.css("color", "gray");
+            break;
+
+        case "0" : // 申請取消訂單
+            c2.css("border", "4px solid red");
+            c3.css("border", "4px solid gray");
+            c3.find("i").css("color", "gray");
+            c4.css("border", "4px solid gray");
+            c4.find("i").css("color", "gray");
+            c5.css("border", "4px solid gray");
+            c5.find("i").css("color", "gray");
+
+            c2toc3.css("color", "gray");
+            c3toc4.css("color", "gray");
+            c4toc5.css("color", "gray");
+            break;
+
     }
 
     // 再租一次
@@ -608,12 +658,41 @@
 
             });
 
-        // 取消訂單
-        // $(document).on("click",  "button.btn_tryCancelOrder", function () {
-        //
-        //
-        //
-        // });
+        // 申請取消訂單
+        $(document).on("click",  "button.btn_tryCancelOrder", function (e) {
+
+            let target = $(e.target);
+            swal({
+                title: "確定嗎?很可惜喔!",
+                text: "",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true
+            }).then((wantCancel) => {
+
+                if (wantCancel) {
+
+                    let rentalOrdNo = $("h4.rentalOrdNoForUpdate").attr("id");
+                    fetch(baseUrl + apiPath + "tryCancelOrder", {
+                        method : "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(rentalOrdNo)
+                    }).then(response => response.text())
+                      .then(result => {
+                        if (result === "ok") {
+                            swal("已申請取消訂單", "", "success");
+                            target.remove();
+                        }
+                    });
+
+                }
+
+            });
+
+
+        }); // 申請取消訂單結束
 
 
 

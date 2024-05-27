@@ -231,6 +231,40 @@
             font-size: 12px;
             color: #555;
         }
+        /*---------------rental---------------*/
+        .rental-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .rental-item:last-child {
+            border-bottom: none;
+        }
+
+        .rental-image img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .rental-details {
+            flex-grow: 1;
+        }
+
+        .rental-name {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .rental-price, .rental-quantity {
+            font-size: 12px;
+            color: #555;
+        }
     </style>
     <script>
         import data from "../../../static/frontend/assets/vendor/bootstrap/js/src/dom/data";
@@ -283,26 +317,47 @@
                 }
             });
         }
+        /*------------------------------rental------------------------------*/
 
-        function updateRentalMiniCart() {
+        // $(function () {
+        //
+        //     function updateRentalMiniCart() {
+        //         let baseUrl = window.location.protocol + "//" + window.location.host;
+        //         let apiPath = "/frontend/rentalorder/getFromCart";
+        //
+        //         fetch(baseUrl + apiPath)
+        //             .then(response => response.json())
+        //             .then(data => {
+        //                 let rentalContainer = $("#rentalListContainer");
+        //                 rentalContainer.empty();
+        //
+        //                 let rentalTotalPrice = 0;
+        //                 data.forEach(item => {
+        //                     let rentalItemHtml = `
+        //                     <div class="rental-item">
+        //                         <div class="rental-image">
+        //                             <img src="/path/to/images/${item.rentalNo}.jpg" alt="商品圖片">
+        //                         </div>
+        //                         <div class="rental-details">
+        //                             <div class="rental-name">${item.rentalName}</div>
+        //                             <div class="rental-price">租金: ${item.rentalPrice}</div>
+        //                             <div class="rental-price">押金: ${item.rentalDesPrice}</div>
+        //                             <div class="rental-quantity">数量: 1</div>
+        //                         </div>
+        //                     </div>`;
+        //                     rentalContainer.append(rentalItemHtml);
+        //                     rentalTotalPrice += (item.rentalPrice + item.rentalDesPrice);
+        //                 });
+        //
+        //                 $("#rentalAllPriceForMiniCart").text(`合計(租金+押金): ${rentalTotalPrice}`);
+        //             });
+        //
+        //     }
+        //     updateRentalMiniCart();
+        //
+        // });
 
-            let baseUrl = window.location.protocol + "//" + window.location.host;
-            let apiPath = "frontend/rentalorder/"
 
-            fetch(baseUrl + apiPath + "getFromCart").then(response => response.json()).then(data => {
-
-                let rentalContainer = $("div#rentalListContainer");
-                rentalContainer.innerHTML = ""; // 清空之前的内容
-
-                Object.entries(data).forEach(([key, item]) => {
-
-
-
-                });
-
-            });
-
-        }
 
     </script>
 </header>
