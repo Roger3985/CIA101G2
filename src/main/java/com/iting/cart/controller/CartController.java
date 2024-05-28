@@ -219,13 +219,13 @@ public class CartController {
         Integer successmemNo;
         Member member;
         Object memNo;
+
         memNo = session.getAttribute("memNo");
         Integer memNoInt2 = Integer.valueOf(memNo.toString());
         List<CartRedis> cartListData1 = cartSvc.findByCompositeKey(memNoInt2);
         model.addAttribute("cartListData", cartListData1);
         // 检查会话中是否存在购物车信息
         List<CartRedis> oldcartListData = (List<CartRedis>) session.getAttribute("oldcartListData");
-
 
         if (oldcartListData != null && !oldcartListData.isEmpty()) {
             member = (Member) session.getAttribute("loginsuccess");
@@ -245,9 +245,9 @@ public class CartController {
 
                     Integer memNoInt = Integer.valueOf(memNo.toString());
                     cartSvc.deleteBymemNo(memNoInt);
-                    session.removeAttribute("memNo");
                 }
-            } else {
+            }
+            else {
                 memNo = session.getAttribute("memNo");
                 if (memNo != null) {
                     Integer memNoInt = Integer.valueOf(memNo.toString());
