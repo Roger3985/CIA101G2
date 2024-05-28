@@ -14,6 +14,18 @@
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
     <th:block th:include="~{frontend/component/plugin/frontendplugin.html :: css}"></th:block>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .rentalInfo{
+            font-size: 17px;
+        }
+        .mb-5{
+            font-size: 17px;
+        }
+        #pd_description{
+            width: 1500px;
+        }
+    </style>
 </head>
 
 <body>
@@ -42,7 +54,7 @@
                     </div>
                     <div class="col-lg-6 my-2">
                         <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
-                            <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{index}"><i
+                            <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/}"><i
                                     class="bi bi-home"></i>Home</a></li>
                             <li class="breadcrumb-item text-nowrap active" aria-current="page">租借品專區</li>
                         </ol>
@@ -63,7 +75,7 @@
                                     <div class="pd-gallery-slide" style="display: flex; justify-content: center; align-items: center;">
                                         <!-- 全螢幕大圖  -->
                                         <a class="gallery-link" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '00.jpg'}">
-<!--                                            <i class="bi bi-arrows-fullscreen"></i>-->
+                                            <!--                                            <i class="bi bi-arrows-fullscreen"></i>-->
                                         </a>
                                         <!-- 一般顯示  -->
                                         <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '00.jpg'}"
@@ -74,7 +86,7 @@
                                      style="width: 600px; opacity: 1; transform: translate3d(0px, 0px, 0px);">
                                     <div class="pd-gallery-slide" style="display: flex; justify-content: center; align-items: center;">
                                         <a class="gallery-link" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '01.jpg'}">
-<!--                                            <i class="bi bi-arrows-fullscreen"></i>-->
+                                            <!--                                            <i class="bi bi-arrows-fullscreen"></i>-->
                                         </a>
                                         <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '01.jpg'}"
                                              width="356" height="356" class="img-fluid rentalPicChange" title="" alt="">
@@ -84,7 +96,7 @@
                                      style="width: 516px; opacity: 0; transform: translate3d(-1032px, 0px, 0px);">
                                     <div class="pd-gallery-slide" style="display: flex; justify-content: center; align-items: center;">
                                         <a class="gallery-link" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '02.jpg'}">
-<!--                                            <i class="bi bi-arrows-fullscreen"></i>-->
+                                            <!--                                            <i class="bi bi-arrows-fullscreen"></i>-->
                                         </a>
                                         <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '02.jpg'}"
                                              width="356" height="356" class="img-fluid rentalPicChange" title="" alt="">
@@ -94,22 +106,12 @@
                                      style="width: 516px; opacity: 0; transform: translate3d(-1548px, 0px, 0px);">
                                     <div class="pd-gallery-slide" style="display: flex; justify-content: center; align-items: center;">
                                         <a class="gallery-link" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '00.jpg'}">
-<!--                                            <i class="bi bi-arrows-fullscreen"></i>-->
+                                            <!--                                            <i class="bi bi-arrows-fullscreen"></i>-->
                                         </a>
                                         <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '00.jpg'}"
                                              width="356" height="356" class="img-fluid rentalPicChange" title="" alt="">
                                     </div>
                                 </div>
-<!--                                <div class="swiper-slide" role="group" aria-label="5 / 6"-->
-<!--                                     style="width: 516px; opacity: 0; transform: translate3d(-2064px, 0px, 0px);">-->
-<!--                                    <div class="pd-gallery-slide" style="display: flex; justify-content: center; align-items: center;">-->
-<!--                                        <a class="gallery-link" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '04.jpg'}"-->
-<!--                                           width="356" height="356">-->
-<!--                                            <i class="bi bi-arrows-fullscreen"></i></a>-->
-<!--                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '04.jpg'}"-->
-<!--                                             width="356" height="356" class="img-fluid rentalPicChange" title="" alt="">-->
-<!--                                    </div>-->
-<!--                                </div>-->
                                 <div class="swiper-slide" role="group" aria-label="6 / 6"
                                      style="width: 516px; opacity: 0; transform: translate3d(-2580px, 0px, 0px);">
                                 </div>
@@ -152,13 +154,6 @@
                                              th:width="63.2" th:height="63.2" class="img-fluid" title="" alt="">
                                     </div>
                                 </div>
-<!--                                <div class="swiper-slide swiper-slide-visible" role="group" aria-label="5 / 6"-->
-<!--                                     style="width: 95.2px; margin-right: 10px;">-->
-<!--                                    <div class="pd-gallery-slide-thumb rentalPicSmall">-->
-<!--                                        <img th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '04.jpg'}"-->
-<!--                                             th:width="63.2" th:height="63.2" class="img-fluid" title="" alt="">-->
-<!--                                    </div>-->
-<!--                                </div>-->
                             </div>
                             <div class="swiper-arrow-style-03 swiper-next swiper-next-pd-details_thumb" tabindex="0"
                                  role="button" aria-label="Next slide"
@@ -188,22 +183,16 @@
                                 <i class="bi bi-star-fill active"></i>
                                 <i class="bi bi-star"></i>
                                 <small>(4 Reviews)</small></div>
-<!--                            <div class="product-description">-->
-<!--                                <p><span th:text="${rental.rentalInfo}"></span></p>-->
-<!--                            </div>-->
                             <!--  大小篩選   -->
                             <div class="product-attribute">
-<!--                                <label class="fs-6 text-mode pb-2 fw-500">Size</label>-->
+                                <!--                                <label class="fs-6 text-mode pb-2 fw-500">Size</label>-->
                                 <div class="nav-thumbs nav mb-3">
                                     <div class="form-check radio-text form-check-inline me-2"><b>Size：</b>
                                         <input class="form-check-input" type="radio" name="size_d3" id="xs_2" checked="">
                                         <label class="radio-text-label" for="xs_2" th:switch="${rental.rentalSize}">
-                                                <span th:case="0">XS</span>
-                                                <span th:case="1">S</span>
-                                                <span th:case="2">M</span>
-                                                <span th:case="3">L</span>
-                                                <span th:case="4">XL</span>
-                                                <span th:case="5">2L</span>
+                                            <span th:case="1">S</span>
+                                            <span th:case="2">M</span>
+                                            <span th:case="3">L</span>
                                         </label>
                                     </div>
                                 </div>
@@ -212,35 +201,23 @@
                                     <span th:text="${rental.rentalColor}"></span>
                                 </label>
                             </div>
-
-<!--                            &lt;!&ndash;     排成器顯示區域開始   &ndash;&gt;-->
-<!--                            <div class="count-down count-down-02 mb-3" data-countdown="January 01, 2024 15:00:00">-->
-<!--                                <div class="days"><span class="count">00</span><span class="title">Day</span></div>-->
-<!--                                <div class="hours"><span class="count">00</span><span class="title">Hour</span>-->
-<!--                                </div>-->
-<!--                                <div class="minutes"><span class="count">00</span><span class="title">Minute</span>-->
-<!--                                </div>-->
-<!--                                <div class="seconds"><span class="count">00</span><span class="title">Second</span>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            &lt;!&ndash;     排成器顯示區域結束   &ndash;&gt;-->
-
                             <div class="product-price fs-3 fw-500 mb-2">
                                 <del class="text-muted fs-6">NT$ <span th:text="'$' + ${rental.rentalPrice}"></span></del><!--  原本定價  -->
                                 <span class="text-primary" th:text="'NT$ ' + ${rental.rentalCategory.rentalDesPrice}"></span><!--  目前租借價  -->
                             </div>
                             <div class="product-detail-actions d-flex flex-wrap pt-3">
-<!--                                <div class="cart-qty me-3 mb-3">-->
-<!--                                    <div class="dec qty-btn qty_btn">-</div>-->
-<!--                                    <input class="cart-qty-input form-control" type="text" name="qtybutton"-->
-<!--                                           th:text="${rentalCategory.rentalStockQty}" th:value="1">-->
-<!--                                    <div class="inc qty-btn qty_btn">+</div>-->
-<!--                                </div>-->
                                 <div class="cart-button mb-3 d-flex">
-                                    <button class="btn btn-mode me-3"><i class="fi-shopping-cart"></i> 加入購物車
+                                    <button class="btn btn-mode me-3 btn_addToCart">
+                                        <i class="fi-shopping-cart"></i> 加入購物車
                                     </button>
-                                    <button class="btn btn-outline-mode me-3"><i class="fi-heart"></i></button><!--  加入我的最愛  -->
-                                    <button class="btn btn-outline-mode">追蹤</button><!--  加入我的追蹤 -->
+                                    <button class="btn btn-outline-mode me-3 addToFAV">
+                                        <input type="hidden" name="rentalNo" th:value="${rental.rentalNo}">
+                                        <i class="fi-heart"></i>
+                                    </button><!--  加入我的最愛  -->
+                                    <button class="btn btn-outline-mode">
+                                        <i class="bi bi-bookmark"></i>
+                                    </button><!--  加入我的追蹤 -->
+                                    <span class="successMsg" style="color: lightgreen"></span>
                                 </div>
                             </div>
                             <div class="product-info-buttons nav pt-4">
@@ -248,21 +225,18 @@
                                     <i class="bi bi-scissors"></i>尺寸表</a>
                                 <a href="#" class="" data-bs-toggle="modal"
                                    data-bs-target="#px_rentalInstruction_modal"><i class="bi bi-truck me-2"></i>租借須知</a>
-
-                                <a href="#" class="ms-auto" data-bs-toggle="modal" data-bs-target="#px_ask_modal">
+                                <a th:href="@{'/frontend/service/frontendServiceChat'}" class="ms-auto">
                                     <i class="bi bi-envelope ms-auto"></i>我有疑問   <!-- 轉交客服網頁 -->
                                 </a>
                             </div>
                             <div class="pt-3 border-top mt-3 small">
                                 <p class="theme-link m-0"><label class="m-0 text-mode">分享:</label> <a
-                                        class="icon icon-sm icon-secondary me-2" href="#"><i
+                                        class="icon icon-sm icon-secondary me-2" href="https://zh-tw.facebook.com/"><i
                                         class="bi bi-facebook"></i>
-                                </a><a class="icon icon-sm icon-secondary me-2" href="#"><i
+                                </a><a class="icon icon-sm icon-secondary me-2" href="https://x.com/?lang=zh-Hant"><i
                                         class="bi bi-twitter"></i>
-                                </a><a class="icon icon-sm icon-secondary me-2" href="#"><i
-                                        class="bi bi-instagram"></i>
-                                </a><a class="icon icon-sm icon-secondary me-2" href="#"><i
-                                        class="bi bi-linkedin"></i></a>
+                                </a><a class="icon icon-sm icon-secondary me-2" href="https://www.instagram.com/"><i
+                                        class="bi bi-instagram"></i></a>
                                 </p>
                             </div>
                             <div class="pt-4">
@@ -278,9 +252,9 @@
             <div class="container">
                 <div class="product-tabs">
                     <ul class="nav product-nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation"><a href="#" class="nav-link active"
-                                                                    id="pd_description_tab" data-bs-toggle="tab" data-bs-target="#pd_description"
-                                                                    role="tab" aria-controls="pd_description" aria-selected="true">詳細介紹</a>
+                        <li class="nav-item" role="presentation">
+                            <a href="#" class="nav-link active" id="pd_description_tab" data-bs-toggle="tab" data-bs-target="#pd_description"
+                               role="tab" aria-controls="pd_description" aria-selected="true">詳細介紹</a>
                         </li>
                         <li class="nav-item" role="presentation">
                             <a href="#" class="nav-link" id="pd_information_tab" data-bs-toggle="tab" data-bs-target="#px_information"
@@ -294,83 +268,40 @@
                             </a>
                         </li>
                     </ul>
-
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="pd_description" role="tabpanel"
                              aria-labelledby="pd_description_tab">
                             <div class="row">
-                                <div class="col-lg-7 pe-lg-10">
-                                    <h5>詳細介紹</h5>
-                                    <p>介紹填寫第一</p>
-                                    <p>介紹填寫第二</p>
-                                    <h5 class="pt-3">
-                                        Sample Unordered List</h5>
+                                <div class="col-lg-7 pe-lg-10" style="transform: translate3d(150px, 0px, 0px);">
+                                    <br><h3><i class="fa-solid fa-wand-magic-sparkles"></i>&nbsp;&nbsp;&nbsp;&nbsp;服飾詳細介紹</h3><br>
+                                    <p class="rentalInfo">&nbsp;&nbsp;&nbsp;&nbsp;<span th:text="${rental.rentalInfo}"></span></p><br>
+                                    <div>
+                                        <img th:src="@{'/icons/frontend/rental/rentalShop/x.jpg'}"
+                                             th:width="700" th:height="700" class="img-fluid" title="" alt=""
+                                             style="transform: translate3d(50px, 0px, 0px);">
+                                    </div><br>
+                                    <h3 class="pt-3"><i class="fa-solid fa-wand-magic-sparkles"></i>&nbsp;&nbsp;&nbsp;&nbsp;挑選服裝的注意事項</h3><br>
                                     <ul class="mb-5">
-                                        <li>例1</li>
-                                        <li>例2</li>
-                                        <li>例3</li>
-                                        <li>例4</li>
+                                        <li>
+                                            <strong><h5 style="color: rebeccapurple">合身度</h5></strong>
+                                            <span>選擇合身的服裝是展現最佳形象的關鍵。無論是婚紗、西裝還是禮服，都應該根據您的身材進行調整。過於寬鬆或過於緊身的服裝都會影響整體效果。建議在購買或租借前，進行專業的量身定制，確保服裝能完美貼合您的身形，突顯您的優點。</span>
+                                        </li><br>
+                                        <li>
+                                            <strong><h5 style="color: rebeccapurple">場合與風格搭配</h5></strong>
+                                            <span>禮服的選擇同樣需要考慮活動的性質和氛圍，以確保您的服裝既得體又引人注目。</span>
+                                        </li><br>
+                                        <li>
+                                            <strong><h5 style="color: rebeccapurple">舒適度與自信心</h5></strong>
+                                            <span>正式服裝不僅需要看起來好看，穿著時的舒適度也至關重要。最重要的是，穿上這些精心挑選的服裝後，要自信地展現自己，這樣才能真正光彩奪目。</span>
+                                        </li><br>
+                                        <li>
+                                            <strong><h5 style="color: rebeccapurple">配件搭配</h5></strong>
+                                            <span>合理搭配配件可以為您的整體造型增色不少。婚紗可以搭配合適的頭紗、手套和首飾，營造出夢幻的婚禮氛圍。西裝則可以選擇適合的皮鞋、腰帶和手錶，增加紳士感。禮服則可以搭配優雅的高跟鞋、手包和精緻的首飾，增添華麗感。</span>
+                                        </li>
                                     </ul>
-                                    <blockquote
-                                            class="bg-gray-100 p-3 lead fw-400 mt-5 text-mode border-start border-primary border-5">
-                                        <ul class="mb-5">
-                                            <li>例1</li>
-                                            <li>例2</li>
-                                            <li>例3</li>
-                                            <li>例4</li>
-                                        </ul>
-                                    </blockquote>
                                 </div>
-                                <!--  4塊格子顯示區  -->
-                                <div class="col-lg-5">
-                                    <div class="pb-3"><img src="../../assets/img/fashion/product-6.jpg"
-                                                           class="img-fluid" title="" alt=""></div>
-                                    <div class="row g-3">
-                                        <div class="col-sm-6">
-                                            <div class="d-flex border p-3">
-                                                <div class="fs-1 text-primary"><i class="bi bi-truck"></i></div>
-                                                <div class="col ps-3">
-                                                    <h6 class="mb-1">Free shipping</h6>
-                                                    <p class="m-0">Lorem ipsum dolor sit amet</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="d-flex border p-3">
-                                                <div class="fs-1 text-primary"><i class="bi bi-headphones"></i>
-                                                </div>
-                                                <div class="col ps-3">
-                                                    <h6 class="mb-1">Contact us 24/7</h6>
-                                                    <p class="m-0">Lorem ipsum dolor sit amet</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="d-flex border p-3">
-                                                <div class="fs-1 text-primary"><i
-                                                        class="bi bi-box-arrow-in-left"></i>
-                                                </div>
-                                                <div class="col ps-3">
-                                                    <h6 class="mb-1">30 Days Return</h6>
-                                                    <p class="m-0">Lorem ipsum dolor sit amet</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="d-flex border p-3">
-                                                <div class="fs-1 text-primary"><i class="bi bi-shield-lock"></i>
-                                                </div>
-                                                <div class="col ps-3">
-                                                    <h6 class="mb-1">100% Secure Payment</h6>
-                                                    <p class="m-0">Lorem ipsum dolor sit amet</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div><!--  4塊格子顯示區  結束 -->
                             </div>
                         </div>
-
                         <!--     資訊(可放size範圍圖) 的內容     -->
                         <div class="tab-pane fade" id="px_information" role="tabpanel"
                              aria-labelledby="pd_information_tab">
@@ -399,10 +330,10 @@
                                             <h5 class="m-0">回饋分享</h5>
                                             <div class="rating-star small"><i
                                                     class="bi small bi-star-fill active"></i>
-                                                <i class="bi small bi-star-fill active"></i> <i
-                                                        class="bi small bi-star-fill active"></i> <i
-                                                        class="bi small bi-star-fill active"></i> <i
-                                                        class="bi small bi-star"></i> <span>4.85/5 </span>
+                                                <i class="bi small bi-star-fill active"></i>
+                                                <i class="bi small bi-star-fill active"></i>
+                                                <i class="bi small bi-star-fill active"></i>
+                                                <i class="bi small bi-star"></i> <span>4.85/5 </span>
                                             </div>
                                         </div>
                                     </div>
@@ -527,146 +458,41 @@
                           &quot;slidesPerView&quot;: 4
                         }
                       }
-                }">
+                    }">
                         <div class="swiper-wrapper" id="swiper-wrapper-2115cc710a550d4eb" aria-live="off"
                              style="transform: translate3d(-900px, 0px, 0px); transition-duration: 0ms;">
-                            <div class="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-next"
-                                 role="group" aria-label="4 / 6" data-swiper-slide-index="3"
-                                 style="width: 156px; margin-right: 24px;">
-                                <div class="product-card-1">
-                                    <div class="product-card-image">
-                                        <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                        <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-heart"></i> </a><a href="#"
-                                                                             class="btn btn-outline-primary"><i class="fi-repeat"></i> </a><a
-                                                data-bs-toggle="modal" data-bs-target="#px-quick-view"
-                                                href="javascript:void(0)" class="btn btn-outline-primary"><i
-                                                class="fi-eye"></i></a></div>
-                                        <div class="product-media"><a href="#"><img class="img-fluid"
-                                                                                    src="../../assets/img/fashion/product04.jpg" title=""
-                                                                                    alt=""></a>
-                                            <div class="product-cart-btn"><a href="#"
-                                                                             class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
-                                        </div>
-                                    </div>
-                                    <div class="product-card-info">
-                                        <div class="product-meta small"><a href="#">Clothing</a>, <a
-                                                href="#">Men</a>
-                                        </div>
-                                        <div class="rating-star text"><i class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i class="bi bi-star"></i></div>
-                                        <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                        <div class="product-price"><span
-                                                class="text-primary">$28.<small>50</small></span>
-                                            <del class="fs-sm text-muted">$38.<small>50</small></del>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide swiper-slide-duplicate" role="group" aria-label="5 / 6"
-                                 data-swiper-slide-index="4" style="width: 156px; margin-right: 24px;">
-                                <div class="product-card-1">
-                                    <div class="product-card-image">
-                                        <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                        <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-heart"></i> </a><a href="#"
-                                                                             class="btn btn-outline-primary"><i class="fi-repeat"></i> </a><a
-                                                data-bs-toggle="modal" data-bs-target="#px-quick-view"
-                                                href="javascript:void(0)" class="btn btn-outline-primary"><i
-                                                class="fi-eye"></i></a></div>
-                                        <div class="product-media"><a href="#"><img class="img-fluid"
-                                                                                    src="../../assets/img/fashion/product-5.jpg" title=""
-                                                                                    alt=""></a>
-                                            <div class="product-cart-btn"><a href="#"
-                                                                             class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
-                                        </div>
-                                    </div>
-                                    <div class="product-card-info">
-                                        <div class="product-meta small"><a href="#">Clothing</a>, <a
-                                                href="#">Men</a>
-                                        </div>
-                                        <div class="rating-star text"><i class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i class="bi bi-star"></i></div>
-                                        <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                        <div class="product-price"><span
-                                                class="text-primary">$28.<small>50</small></span>
-                                            <del class="fs-sm text-muted">$38.<small>50</small></del>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide swiper-slide-duplicate" role="group" aria-label="6 / 6"
-                                 data-swiper-slide-index="5" style="width: 156px; margin-right: 24px;">
-                                <div class="product-card-1">
-                                    <div class="product-card-image">
-                                        <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                        <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-heart"></i> </a><a href="#"
-                                                                             class="btn btn-outline-primary"><i class="fi-repeat"></i> </a><a
-                                                data-bs-toggle="modal" data-bs-target="#px-quick-view"
-                                                href="javascript:void(0)" class="btn btn-outline-primary"><i
-                                                class="fi-eye"></i></a></div>
-                                        <div class="product-media"><a href="#"><img class="img-fluid"
-                                                                                    src="../../assets/img/fashion/product-6.jpg" title=""
-                                                                                    alt=""></a>
-                                            <div class="product-cart-btn"><a href="#"
-                                                                             class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
-                                        </div>
-                                    </div>
-                                    <div class="product-card-info">
-                                        <div class="product-meta small"><a href="#">Clothing</a>, <a
-                                                href="#">Men</a>
-                                        </div>
-                                        <div class="rating-star text"><i class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i class="bi bi-star"></i></div>
-                                        <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                        <div class="product-price"><span
-                                                class="text-primary">$28.<small>50</small></span>
-                                            <del class="fs-sm text-muted">$38.<small>50</small></del>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="swiper-slide" role="group" aria-label="1 / 6" data-swiper-slide-index="0"
                                  style="width: 156px; margin-right: 24px;">
                                 <div class="product-card-1">
                                     <div class="product-card-image">
-                                        <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                        <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-heart"></i> </a><a href="#"
-                                                                             class="btn btn-outline-primary"><i class="fi-repeat"></i> </a><a
-                                                data-bs-toggle="modal" data-bs-target="#px-quick-view"
-                                                href="javascript:void(0)" class="btn btn-outline-primary"><i
-                                                class="fi-eye"></i></a></div>
-                                        <div class="product-media"><a href="#"><img class="img-fluid"
-                                                                                    src="../../assets/img/fashion/product-1.jpg" title=""
-                                                                                    alt=""></a>
-                                            <div class="product-cart-btn"><a href="#"
-                                                                             class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
+                                        <div class="product-media rentalOne">
+                                            <a th:href="@{'/frontend/rental/showOneRental?rentalNo=5001'}">
+                                                <img class="img-fluid" th:src="@{'/icons/frontend/rental/rentalshop/5001.jpg'}"
+                                                     th:width="200" th:height="300" title="" alt="">
+                                            </a>
+                                            <div class="product-cart-btn">
+                                                <a th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}"
+                                                   class="btn btn-primary btn-sm w-100">
+                                                    <i class="fi-eye"></i> 點擊查看詳情
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="product-card-info">
-                                        <div class="product-meta small"><a href="#">Clothing</a>, <a
-                                                href="#">Men</a>
+                                        <div class="rating-star text">
+                                            <i class="bi bi-star-fill active"></i>
+                                            <i class="bi bi-star-fill active"></i>
+                                            <i class="bi bi-star-fill active"></i>
+                                            <i class="bi bi-star-fill active"></i>
+                                            <i class="bi bi-star"></i>
                                         </div>
-                                        <div class="rating-star text"><i class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i class="bi bi-star"></i></div>
-                                        <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                        <div class="product-price"><span
-                                                class="text-primary">$28.<small>50</small></span>
-                                            <del class="fs-sm text-muted">$38.<small>50</small></del>
+                                        <h6 class="product-title">
+                                            <a class="text-reset" th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
+                                                <span th:text="${rental.rentalName}"></span></a>
+                                        </h6>
+                                        <div class="product-price">
+                                            <span class="text-primary" th:text="'$' + ${rental.rentalCategory.rentalDesPrice}"></span>
+                                            <del class="fs-sm text-muted" th:text="'$' + ${rental.rentalPrice}"></del>
                                         </div>
                                     </div>
                                 </div>
@@ -675,33 +501,33 @@
                                  data-swiper-slide-index="1" style="width: 156px; margin-right: 24px;">
                                 <div class="product-card-1">
                                     <div class="product-card-image">
-                                        <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                        <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-heart"></i> </a><a href="#"
-                                                                             class="btn btn-outline-primary"><i class="fi-repeat"></i> </a><a
-                                                data-bs-toggle="modal" data-bs-target="#px-quick-view"
-                                                href="javascript:void(0)" class="btn btn-outline-primary"><i
-                                                class="fi-eye"></i></a></div>
-                                        <div class="product-media"><a href="#"><img class="img-fluid"
-                                                                                    src="../../assets/img/fashion/product02.jpg" title=""
-                                                                                    alt=""></a>
-                                            <div class="product-cart-btn"><a href="#"
-                                                                             class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
+                                        <div class="product-media">
+                                            <a th:href="@{'/frontend/rental/showOneRental?rentalNo=5011'}">
+                                                <img class="img-fluid" th:src="@{'/icons/frontend/rental/rentalshop/5011.jpg'}"
+                                                     th:width="200" th:height="300" title="" alt="">
+                                            </a>
+                                            <div class="product-cart-btn">
+                                                <a th:href="@{'/frontend/rental/showOneRental?rentalNo=5011'}"
+                                                   class="btn btn-primary btn-sm w-100">
+                                                    <i class="fi-eye"></i> 點擊查看詳情</a>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="product-card-info">
-                                        <div class="product-meta small"><a href="#">Clothing</a>, <a
-                                                href="#">Men</a>
+                                        <div class="rating-star text">
+                                            <i class="bi bi-star-fill active"></i>
+                                            <i class="bi bi-star-fill active"></i>
+                                            <i class="bi bi-star-fill active"></i>
+                                            <i class="bi bi-star-fill active"></i>
+                                            <i class="bi bi-star"></i>
                                         </div>
-                                        <div class="rating-star text"><i class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i class="bi bi-star"></i></div>
-                                        <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                        <div class="product-price"><span
-                                                class="text-primary">$28.<small>50</small></span>
-                                            <del class="fs-sm text-muted">$38.<small>50</small></del>
+                                        <h6 class="product-title">
+                                            <a class="text-reset" th:href="@{'/frontend/rental/showOneRental?rentalNo=5011'}">
+                                                <span>雙排扣格紋成套西裝</span></a>
+                                        </h6>
+                                        <div class="product-price">
+                                            <span class="text-primary">NT$ $4000</span>
+                                            <del class="fs-sm text-muted">NT$ $12500</del>
                                         </div>
                                     </div>
                                 </div>
@@ -710,273 +536,60 @@
                                  data-swiper-slide-index="2" style="width: 156px; margin-right: 24px;">
                                 <div class="product-card-1">
                                     <div class="product-card-image">
-                                        <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                        <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-heart"></i> </a><a href="#"
-                                                                             class="btn btn-outline-primary"><i class="fi-repeat"></i> </a><a
-                                                data-bs-toggle="modal" data-bs-target="#px-quick-view"
-                                                href="javascript:void(0)" class="btn btn-outline-primary"><i
-                                                class="fi-eye"></i></a></div>
-                                        <div class="product-media"><a href="#"><img class="img-fluid"
-                                                                                    src="../../assets/img/fashion/product03.jpg" title=""
-                                                                                    alt=""></a>
-                                            <div class="product-cart-btn"><a href="#"
-                                                                             class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
+
+                                        <div class="product-media">
+                                            <a th:href="@{'/frontend/rental/showOneRental?rentalNo=5038'}">
+                                                <img class="img-fluid" th:src="@{'/icons/frontend/rental/rentalshop/5038.jpg'}"
+                                                     th:width="200" th:height="300" title="" alt="">
+                                            </a>
+                                            <div class="product-cart-btn">
+                                                <a th:href="@{'/frontend/rental/showOneRental?rentalNo=5038'}"
+                                                   class="btn btn-primary btn-sm w-100">
+                                                    <i class="fi-eye"></i> 點擊查看詳情</a>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="product-card-info">
-                                        <div class="product-meta small"><a href="#">Clothing</a>, <a
-                                                href="#">Men</a>
+                                        <div class="rating-star text">
+                                            <i class="bi bi-star-fill active"></i>
+                                            <i class="bi bi-star-fill active"></i>
+                                            <i class="bi bi-star-fill active"></i>
+                                            <i class="bi bi-star-fill active"></i>
+                                            <i class="bi bi-star"></i>
                                         </div>
-                                        <div class="rating-star text"><i class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i class="bi bi-star"></i></div>
-                                        <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                        <div class="product-price"><span
-                                                class="text-primary">$28.<small>50</small></span>
-                                            <del class="fs-sm text-muted">$38.<small>50</small></del>
+                                        <h6 class="product-title">
+                                            <a class="text-reset" th:href="@{'/frontend/rental/showOneRental?rentalNo=5038'}">
+                                                <span>時尚復古斜領緊身晚禮服</span></a>
+                                        </h6>
+                                        <div class="product-price">
+                                            <span class="text-primary">NT$ $2000</span>
+                                            <del class="fs-sm text-muted">NT$ $12000</del>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="swiper-slide swiper-slide-next" role="group" aria-label="4 / 6"
-                                 data-swiper-slide-index="3" style="width: 156px; margin-right: 24px;">
-                                <div class="product-card-1">
-                                    <div class="product-card-image">
-                                        <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                        <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-heart"></i> </a><a href="#"
-                                                                             class="btn btn-outline-primary"><i class="fi-repeat"></i> </a><a
-                                                data-bs-toggle="modal" data-bs-target="#px-quick-view"
-                                                href="javascript:void(0)" class="btn btn-outline-primary"><i
-                                                class="fi-eye"></i></a></div>
-                                        <div class="product-media"><a href="#"><img class="img-fluid"
-                                                                                    src="../../assets/img/fashion/product04.jpg" title=""
-                                                                                    alt=""></a>
-                                            <div class="product-cart-btn"><a href="#"
-                                                                             class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
-                                        </div>
-                                    </div>
-                                    <div class="product-card-info">
-                                        <div class="product-meta small"><a href="#">Clothing</a>, <a
-                                                href="#">Men</a>
-                                        </div>
-                                        <div class="rating-star text"><i class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i class="bi bi-star"></i></div>
-                                        <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                        <div class="product-price"><span
-                                                class="text-primary">$28.<small>50</small></span>
-                                            <del class="fs-sm text-muted">$38.<small>50</small></del>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="swiper-pagination mt-4 d-lg-none position-relative swiper-pagination-clickable
+                                    swiper-pagination-bullets swiper-pagination-horizontal">
+                                <span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 1"></span>
+                                <span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 2"></span>
+                                <span class="swiper-pagination-bullet swiper-pagination-bullet-active" tabindex="0"
+                                      role="button" aria-label="Go to slide 3" aria-current="true"></span>
+                                <span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 4"></span>
+                                <span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 5"></span>
+                                <span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 6"></span>
                             </div>
-                            <div class="swiper-slide" role="group" aria-label="5 / 6" data-swiper-slide-index="4"
-                                 style="width: 156px; margin-right: 24px;">
-                                <div class="product-card-1">
-                                    <div class="product-card-image">
-                                        <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                        <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-heart"></i> </a><a href="#"
-                                                                             class="btn btn-outline-primary"><i class="fi-repeat"></i> </a><a
-                                                data-bs-toggle="modal" data-bs-target="#px-quick-view"
-                                                href="javascript:void(0)" class="btn btn-outline-primary"><i
-                                                class="fi-eye"></i></a></div>
-                                        <div class="product-media"><a href="#"><img class="img-fluid"
-                                                                                    src="../../assets/img/fashion/product-5.jpg" title=""
-                                                                                    alt=""></a>
-                                            <div class="product-cart-btn"><a href="#"
-                                                                             class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
-                                        </div>
-                                    </div>
-                                    <div class="product-card-info">
-                                        <div class="product-meta small"><a href="#">Clothing</a>, <a
-                                                href="#">Men</a>
-                                        </div>
-                                        <div class="rating-star text"><i class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i class="bi bi-star"></i></div>
-                                        <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                        <div class="product-price"><span
-                                                class="text-primary">$28.<small>50</small></span>
-                                            <del class="fs-sm text-muted">$38.<small>50</small></del>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide" role="group" aria-label="6 / 6" data-swiper-slide-index="5"
-                                 style="width: 156px; margin-right: 24px;">
-                                <div class="product-card-1">
-                                    <div class="product-card-image">
-                                        <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                        <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-heart"></i> </a><a href="#"
-                                                                             class="btn btn-outline-primary"><i class="fi-repeat"></i> </a><a
-                                                data-bs-toggle="modal" data-bs-target="#px-quick-view"
-                                                href="javascript:void(0)" class="btn btn-outline-primary"><i
-                                                class="fi-eye"></i></a></div>
-                                        <div class="product-media"><a href="#"><img class="img-fluid"
-                                                                                    src="../../assets/img/fashion/product-6.jpg" title=""
-                                                                                    alt=""></a>
-                                            <div class="product-cart-btn"><a href="#"
-                                                                             class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
-                                        </div>
-                                    </div>
-                                    <div class="product-card-info">
-                                        <div class="product-meta small"><a href="#">Clothing</a>, <a
-                                                href="#">Men</a>
-                                        </div>
-                                        <div class="rating-star text"><i class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i class="bi bi-star"></i></div>
-                                        <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                        <div class="product-price"><span
-                                                class="text-primary">$28.<small>50</small></span>
-                                            <del class="fs-sm text-muted">$38.<small>50</small></del>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide swiper-slide-duplicate" role="group" aria-label="1 / 6"
-                                 data-swiper-slide-index="0" style="width: 156px; margin-right: 24px;">
-                                <div class="product-card-1">
-                                    <div class="product-card-image">
-                                        <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                        <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-heart"></i> </a><a href="#"
-                                                                             class="btn btn-outline-primary"><i class="fi-repeat"></i> </a><a
-                                                data-bs-toggle="modal" data-bs-target="#px-quick-view"
-                                                href="javascript:void(0)" class="btn btn-outline-primary"><i
-                                                class="fi-eye"></i></a></div>
-                                        <div class="product-media"><a href="#"><img class="img-fluid"
-                                                                                    src="../../assets/img/fashion/product-1.jpg" title=""
-                                                                                    alt=""></a>
-                                            <div class="product-cart-btn"><a href="#"
-                                                                             class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
-                                        </div>
-                                    </div>
-                                    <div class="product-card-info">
-                                        <div class="product-meta small"><a href="#">Clothing</a>, <a
-                                                href="#">Men</a>
-                                        </div>
-                                        <div class="rating-star text"><i class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i class="bi bi-star"></i></div>
-                                        <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                        <div class="product-price"><span
-                                                class="text-primary">$28.<small>50</small></span>
-                                            <del class="fs-sm text-muted">$38.<small>50</small></del>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-prev"
-                                 role="group" aria-label="2 / 6" data-swiper-slide-index="1"
-                                 style="width: 156px; margin-right: 24px;">
-                                <div class="product-card-1">
-                                    <div class="product-card-image">
-                                        <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                        <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-heart"></i> </a><a href="#"
-                                                                             class="btn btn-outline-primary"><i class="fi-repeat"></i> </a><a
-                                                data-bs-toggle="modal" data-bs-target="#px-quick-view"
-                                                href="javascript:void(0)" class="btn btn-outline-primary"><i
-                                                class="fi-eye"></i></a></div>
-                                        <div class="product-media"><a href="#"><img class="img-fluid"
-                                                                                    src="../../assets/img/fashion/product02.jpg" title=""
-                                                                                    alt=""></a>
-                                            <div class="product-cart-btn"><a href="#"
-                                                                             class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
-                                        </div>
-                                    </div>
-                                    <div class="product-card-info">
-                                        <div class="product-meta small"><a href="#">Clothing</a>, <a
-                                                href="#">Men</a>
-                                        </div>
-                                        <div class="rating-star text"><i class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i class="bi bi-star"></i></div>
-                                        <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                        <div class="product-price"><span
-                                                class="text-primary">$28.<small>50</small></span>
-                                            <del class="fs-sm text-muted">$38.<small>50</small></del>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-active"
-                                 role="group" aria-label="3 / 6" data-swiper-slide-index="2"
-                                 style="width: 156px; margin-right: 24px;">
-                                <div class="product-card-1">
-                                    <div class="product-card-image">
-                                        <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                        <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-heart"></i> </a><a href="#"
-                                                                             class="btn btn-outline-primary"><i class="fi-repeat"></i> </a><a
-                                                data-bs-toggle="modal" data-bs-target="#px-quick-view"
-                                                href="javascript:void(0)" class="btn btn-outline-primary"><i
-                                                class="fi-eye"></i></a></div>
-                                        <div class="product-media"><a href="#"><img class="img-fluid"
-                                                                                    src="../../assets/img/fashion/product03.jpg" title=""
-                                                                                    alt=""></a>
-                                            <div class="product-cart-btn"><a href="#"
-                                                                             class="btn btn-primary btn-sm w-100"><i
-                                                    class="fi-shopping-cart"></i> 加入購物車</a></div>
-                                        </div>
-                                    </div>
-                                    <div class="product-card-info">
-                                        <div class="product-meta small"><a href="#">Clothing</a>, <a
-                                                href="#">Men</a>
-                                        </div>
-                                        <div class="rating-star text"><i class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i
-                                                class="bi bi-star-fill active"></i> <i class="bi bi-star"></i></div>
-                                        <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                        <div class="product-price"><span
-                                                class="text-primary">$28.<small>50</small></span>
-                                            <del class="fs-sm text-muted">$38.<small>50</small></del>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
                         </div>
-                        <div
-                                class="swiper-pagination mt-4 d-lg-none position-relative swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal">
-                                <span class="swiper-pagination-bullet" tabindex="0" role="button"
-                                      aria-label="Go to slide 1"></span><span class="swiper-pagination-bullet"
-                                                                              tabindex="0" role="button" aria-label="Go to slide 2"></span><span
-                                class="swiper-pagination-bullet swiper-pagination-bullet-active" tabindex="0"
-                                role="button" aria-label="Go to slide 3" aria-current="true"></span><span
-                                class="swiper-pagination-bullet" tabindex="0" role="button"
-                                aria-label="Go to slide 4"></span><span class="swiper-pagination-bullet"
-                                                                        tabindex="0" role="button" aria-label="Go to slide 5"></span><span
-                                class="swiper-pagination-bullet" tabindex="0" role="button"
-                                aria-label="Go to slide 6"></span>
+                        <div class="swiper-arrow-style-02 swiper-next swiper-next-02" tabindex="0" role="button"
+                             aria-label="Next slide" aria-controls="swiper-wrapper-2115cc710a550d4eb">
+                            <i class="bi bi-chevron-right"></i>
                         </div>
-                        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+                        <div class="swiper-arrow-style-02 swiper-prev swiper-prev-02" tabindex="0" role="button"
+                             aria-label="Previous slide" aria-controls="swiper-wrapper-2115cc710a550d4eb">
+                            <i class="bi bi-chevron-left"></i>
+                        </div>
                     </div>
-                    <div class="swiper-arrow-style-02 swiper-next swiper-next-02" tabindex="0" role="button"
-                         aria-label="Next slide" aria-controls="swiper-wrapper-2115cc710a550d4eb"><i
-                            class="bi bi-chevron-right"></i></div>
-                    <div class="swiper-arrow-style-02 swiper-prev swiper-prev-02" tabindex="0" role="button"
-                         aria-label="Previous slide" aria-controls="swiper-wrapper-2115cc710a550d4eb"><i
-                            class="bi bi-chevron-left"></i></div>
                 </div>
-            </div>
         </section>
         <!-- 最下方輪播圖  (結束)-->
     </main>
@@ -993,29 +606,223 @@
 <!-- script start -->
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
 
-<!--<script>-->
-<!--    document.addEventListener("DOMContentLoaded", function() {-->
-<!--        var images = document.querySelectorAll(".img-fluid");-->
-<!--        var currentIndex = 0;-->
+<script>
+    /*----------------------------曉妮寫的方法 (開始) --------------------------*/
+    /*
+     * 功能：點選加入我的最愛
+    */
+    $(document).ready(function() {
+        $(".addToFAV").click(function(event) {
 
-<!--        // 隱藏除了第一張圖片之外的所有圖片-->
-<!--        for (var i = 1; i < images.length; i++) {-->
-<!--        images[i].style.display = "none";-->
-<!--    }-->
+            event.preventDefault(); // 阻止表單默認提交行為
 
-<!--    // 啟動輪播-->
-<!--    setInterval(function() {-->
-<!--        // 隱藏當前圖片-->
-<!--        images[currentIndex].style.display = "none";-->
+            // window.location.protocol -> 返回當前頁面使用的協議
+            // window.location.host -> 返回當前頁面的主機名和埠號
+            // const baseUrl -> 將window.location.protocol和window.location.host，用 "//" 連接，取得當前頁面的URL
+            const baseUrl = window.location.protocol + "//" + window.location.host;
+            const rentalItem = $(this).closest('.rentalItem'); // 找到最近的 .rentalItem 元素
+            const rentalNo = rentalItem.find('input[name="rentalNo"]').val();
+            console.log("抓取編號:" + rentalNo);
+            console.log("抓取rentalItem資訊:" + rentalItem);
 
-<!--        // 更新索引，循環播放-->
-<!--        currentIndex = (currentIndex + 1) % images.length;-->
+            // 打包數據
+            const data = {
+                rentalNo: rentalNo,
+            };
 
-<!--        // 顯示新的圖片-->
-<!--        images[currentIndex].style.display = "block";-->
-<!--    }, 3000); // 每 3 秒切換一次圖片-->
-<!--    });-->
-<!--</script>-->
+            $.ajax({
+                type: 'POST',
+                url: baseUrl + "/frontend/rentalmyfavorite/addWish",
+                data: data,
+                success: function(data) {
+                    console.log("加入成功");
+                }
+            });
+        });
+    });
+    /*----------------------------曉妮寫的方法 (結束) --------------------------*/
+
+    /*----------------------------右翰寫的方法----------------------------------*/
+
+    $(function () {
+
+        let baseUrl = window.location.protocol + "//" + window.location.host;
+        let rentalAllPrice = 0;
+        let rentalAllDepPrice = 0;
+
+        function getAll() {
+
+            // items.length = 0;
+            rentalAllPrice = 0;
+            rentalAllDepPrice = 0;
+            let apiPath = "/frontend/rentalorder/";
+
+            fetch(baseUrl + apiPath + "getFromCart")
+                .then(function (response) {
+                    return response.json();
+                }).then(function (data) {
+                if (data === "/frontend/member/loginMember") {
+                    window.location.href = data;
+                }
+                let itemContainer = $("ul.list-unstyled");
+                // console.log(itemContainer);
+                // 每次更新前清空，放購物車資訊的 ul
+                itemContainer.empty();
+
+                let totalItems = Object.keys(data).length; // 計算購物車商品數量
+                $("span[data-cart-items]").attr("data-cart-items", totalItems); // 更新購物車商品數量圖示
+
+                /*
+                 * 遍歷陣列裡每個元素，每個元素都是一對 key, item，以下舉例 :
+                 * [陣列1, 陣列2]
+                 * 陣列1 => ["member : 1 : cartItem : 5011", {rentalCatNo : "5", rentalColor : "深卡其色"...}]
+                */
+                Object.entries(data).forEach(([key, item]) => {
+
+                    // if (item.rentalStat === "0") {
+                    //     items.push(item.rentalNo);
+                    // }
+
+                    // 拼接首頁購物車區塊小明細
+                    if (item.rentalStat === "0") {
+
+                        let cartItem = $("<li>", {
+                            "class" : "py-2"
+                        }).appendTo(itemContainer);
+                        let firstDiv = $("<div>", {
+                            "class" : "row align-items-center"
+                        }).appendTo(cartItem);
+                        let aDiv = $("<div>", {
+                            "class" : "col-4"
+                        }).appendTo(firstDiv);
+                        let aForItemImage = $("<a>", {
+                            "href" : "#"
+                        }).appendTo(aDiv);
+                        let itemImage = $("<img>", {
+                            "class" : "img-fluid border",
+                            "th:src" : "@{/frontend/assets/img/fashion/product-x-1.jpg}",
+                            "alt" : "..."
+                        }).appendTo(aForItemImage);
+                        let divForInfo = $("<div>", {
+                            "class" : "col-8"
+                        }).appendTo(firstDiv);
+
+
+                        /*
+                         <ul class="list-unstyled m-0 p-0">
+                            <li class="py-2">
+                                <div class="row align-items-center">
+                                    <div class="col-4"> adiv
+                                        <!-- Image -->
+                                        <a href="#"> aForItemImage
+                                            <img class="img-fluid border" th:src="@{/frontend/assets/img/fashion/product-x-1.jpg}" alt="...">
+                                        </a>
+                                    </div>
+                                    <div class="col-8"> divForInfo
+                                        <!-- Title -->
+                                        <p class="mb-2">
+                                            <a class="text-mode fw-500" href="#">這裡是品名</a>
+                                            <span class="m-0 text-muted w-100 d-block">這裡是價格</span>
+                                        </p>
+                                        <!--Footer -->
+                                        <div class="d-flex align-items-center">
+                                            <!-- Remove -->
+                                            <a class="small text-mode ms-auto" href="#!">
+                                                <i class="bi bi-x"></i> Remove
+                                            </a>
+                                        </div>
+                                    </div> // div col-8 結束
+                                </div>
+                            </li>
+                         */
+
+                        rentalAllPrice += parseFloat(item.rentalPrice);
+                        rentalAllDepPrice += parseFloat(item.rentalDesPrice);
+
+                    }
+
+                });
+
+                // console.log(items);
+                $("span.rentalAllPrice").text(rentalAllPrice);
+                $("span.rentalAllDepPrice").text(rentalAllDepPrice);
+                $("span.totalPrice").text( (rentalAllPrice + rentalAllDepPrice) );
+
+            });
+
+        } // getAll()結束
+        // 進來頁面就先取一次
+        getAll();
+
+        // 加入購物車 339
+        $(document).on("click", "a.btn_addToCart", function (e) {
+
+            e.preventDefault();
+            /*
+             * 拼接動態前置路徑 (為適應上雲時路徑變化)
+             * window.location.protocol = 當前頁面所使用之通訊協定 (ex : http: 、 https:)
+             * window.location.host = 當前頁面主機名和連接阜號 (ex : localhost:8080)
+            */
+            let apiPath = "/frontend/rentalorder/setToCart";
+            let $this = $(this);
+            // span.rentalNo
+            let rentalNo = $this.closest("div.rental").find("span.rentalNo").text().trim();
+            let data = {
+                "rentalNo" : rentalNo
+            };
+
+            fetch(baseUrl + apiPath, {
+                method : "POST",
+                headers : {
+                    "Content-Type" : "application/json"
+                },
+                body : JSON.stringify(data)
+            }).then(function (response) {
+                return response.text();
+            }).then(function (rentalName) {
+                if (rentalName === "/frontend/member/loginMember") {
+                    window.location.href = rentalName;
+                }
+                $this.closest("div.rental").find("span.successMsg").text("已將" + rentalName + "加入購物車!").fadeIn(0).delay(500).fadeOut(500);
+            })
+
+        }); // 加入購物車方法結束
+
+        // 加入追蹤
+        $(document).on("click", "a.btn_addTrack", function (e) {
+
+            e.preventDefault();
+            let $this = $(this);
+            let apiPath = "/frontend/rentalmytrack/addTrack";
+            let rentalNo = $this.closest("div.rental").find("span.rentalNo").text().trim();
+            let data = {
+                rentalNo : rentalNo
+            };
+
+            fetch(baseUrl + apiPath, {
+                method : "POST",
+                headers : {
+                    "Content-Type" : "application/json"
+                },
+                body : JSON.stringify(data)
+            }).then(response => response.text())
+                .then(rentalName => {
+                    if (rentalName === "/frontend/member/loginMember") {
+                        window.location.href = rentalName;
+                    }
+                    $this.closest("div.rental").find("span.successMsg").text("已加入追蹤!").fadeIn(0).delay(500).fadeOut(500);
+                });
+
+
+
+        })
+
+
+    }); // DOMContentLoaded 結束
+
+    /*----------------------------右翰寫的方法----------------------------------*/
+
+</script>
 <!-- End script start -->
 </body>
 

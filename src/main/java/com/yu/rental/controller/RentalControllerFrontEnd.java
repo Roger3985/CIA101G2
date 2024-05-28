@@ -1,6 +1,5 @@
 package com.yu.rental.controller;
 
-import com.roger.columnarticle.entity.ColumnArticle;
 import com.yu.rental.entity.Rental;
 import com.yu.rental.service.RentalServiceImpl;
 import com.yu.rentalcategory.entity.RentalCategory;
@@ -9,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
-import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -158,89 +157,63 @@ public class RentalControllerFrontEnd {
     }
 
 
-    // 依關鍵字搜尋相關租借品 (如果rentalStat不為5 (下架狀態))
-    @GetMapping("/findByAllKeyWord")
-    public String findByAllKeyWord(@RequestParam("keyword") String keyword,
-                                   @RequestParam("rentalStat") Byte rentalStat,
-                                   @RequestParam("rentalSize") Integer rentalSize,
-                                   @RequestParam(value = "page", defaultValue = "0") Integer page,
-                                   @RequestParam(value = "size", defaultValue = "5") Integer size, ModelMap model) {
-
-        page = Math.max(page, 0);
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Rental> results = rentalService.findByAllKeyWord(keyword, rentalStat, rentalSize, pageable);
-
-        System.out.println("搜尋結果: " + results);
-
-        model.addAttribute("rentalListData", results); //顯示對應的搜尋結果
-        return "/frontend/rental/rentalShop";
-    }
-
-
-
-
     //處理查詢(依租借品的顏色)
-    @GetMapping("/getDisplayColor")
-    @ResponseBody
-    public List<Rental> getDisplayColor(@RequestParam(value = "color", required = false)
-                                        String rentalColor, ModelMap model) {
-
-        //判斷是否選擇顏色
-        if (rentalColor == null || rentalColor.isEmpty()) {
-            return rentalService.findAll(); // 如果沒有指定顏色，則返回所有商品
-        } else {
-            return rentalService.findByRentalColor(rentalColor); // 找出符合相關顏色的，放入list
-        }
-
-
-//        List<Rental> colorList = rentalService.findByRentalColor(rentalColor); //找出符合相關顏色的，放入list
-//        model.addAttribute("colorList", colorList);
-//        model.addAttribute("rentalCategory", new RentalCategory());
-//        List<RentalCategory> rentalCatListData = rentalCategoryService.findAll();
-//        model.addAttribute("rentalCatListData",rentalCatListData);
-//
-//        if (rentalColor == null) {
-//            model.addAttribute("errors", "errors");
-//            return "/frontend/rental/select_page";
-//        }
-//        model.addAttribute("rentalColor", rentalColor);
-//        return "/frontend/rental/listOneRental"; // 查詢完成後轉交listOneRental.html
+    @GetMapping("/findByColor")
+    public ResponseEntity<List<Rental>> findByColor(@RequestParam String rentalColor) {
+        List<Rental> rentals = rentalService.findByRentalColor(rentalColor);
+        return new ResponseEntity<>(rentals, HttpStatus.OK);
     }
 
 
-//    //處理查詢(依租借品的尺寸)
-//    @PostMapping("/getDisplayRentalSize")
-//    public String getDisplayRentalSize(@RequestParam("rentalSize") String rentalSize, ModelMap model) {
-//
-//        List<Rental> sizeList = rentalService.getRentalSize(Integer.valueOf(rentalSize));
-//        model.addAttribute("sizeList", sizeList);
-//        model.addAttribute("rentalCategory", new RentalCategory());
-//        List<RentalCategory> rentalCatListData = rentalCategoryService.findAll();
-//        model.addAttribute("rentalCatListData",rentalCatListData);
-//
-//        if (rentalSize == null) {
-//            model.addAttribute("errors", "errors");
-//            return "/frontend/rental/select_page";
-//        }
-//        model.addAttribute("rentalSize", rentalSize);
-//        return "/frontend/rental/listOneRental"; // 查詢完成後轉交listOneRental.html
-//    }
+    //處理查詢KeyWord(rentalColor, rentalSize)
+    @GetMapping("/findByKeyWord")
+    public String findByKeyWord(@RequestParam(value = "rentalColor", required = false) String rentalColor,
+                                @RequestParam(value = "rentalSize", required = false) Integer rentalSize,
+                                ModelMap model) {
+
+        List<Rental> rentals = rentalService.findByKeyWord(rentalColor, rentalSize);
+        model.addAttribute("rentalListData", rentals);
+
+        System.out.println("這是你目前的選項：" + rentalColor);
+        System.out.println("這是你目前的選項：" + rentalSize);
+
+        return "frontend/rental/fragments/rentalList :: rental-list";
+    }
+
+    //處理查詢KeyWord(rentalColor, rentalSize)
+    @GetMapping("/findByKeyWordToGrid")
+    public String findByKeyWordToGrid(@RequestParam(value = "rentalColor", required = false) String rentalColor,
+                                      @RequestParam(value = "rentalSize", required = false) Integer rentalSize,
+                                      ModelMap model) {
+
+        List<Rental> rentals = rentalService.findByKeyWord(rentalColor, rentalSize);
+        model.addAttribute("rentalListData", rentals);
+
+        System.out.println("這是你目前的選項：" + rentalColor);
+        System.out.println("這是你目前的選項：" + rentalSize);
+
+        return "frontend/rental/fragments/rentalGrid :: rental-grid";
+    }
 
 
-    //關鍵字查詢(依租借品的名稱 "模糊查詢")
-//    @PostMapping("/getQueryRentalName")
-//    public String getQueryRentalName(@RequestParam("rentalName") String rentalName, ModelMap model) {
+    //    // 依關鍵字搜尋相關租借品 (如果rentalStat不為5 (下架狀態))
+//    @GetMapping("/findByAllKeyWord")
+//    public String findByAllKeyWord(@RequestParam("keyword") String keyword,
+//                                   @RequestParam("rentalStat") Byte rentalStat,
+//                                   @RequestParam("rentalSize") Integer rentalSize,
+//                                   @RequestParam(value = "page", defaultValue = "0") Integer page,
+//                                   @RequestParam(value = "size", defaultValue = "5") Integer size, ModelMap model) {
 //
-//        List<Rental> nameList = rentalService.getRentalName(rentalName);
-//        model.addAttribute("nameList", nameList);
+//        page = Math.max(page, 0);
+//        Pageable pageable = PageRequest.of(page, size);
+//        Page<Rental> results = rentalService.findByAllKeyWord(keyword, rentalStat, rentalSize, pageable);
 //
-//        if (rentalName == null) {
-//            model.addAttribute("errors", "errors");
-//            return "/frontend/rental/select_page";
-//        }
-//        model.addAttribute("rentalName", rentalName);
-//        return "/frontend/rental/listOneRental"; // 查詢完成後轉交listOneRental.html
+//        System.out.println("搜尋結果: " + results);
+//
+//        model.addAttribute("rentalListData", results); //顯示對應的搜尋結果
+//        return "/frontend/rental/rentalShop";
 //    }
+
 
 //    //處理複合查詢
 //    @PostMapping("/search")
@@ -288,17 +261,6 @@ public class RentalControllerFrontEnd {
 //    }
 
 
-
-
-//排序方法：最新上架 (顯示近期上架，可依據已上架產品+租借品狀態為上架中作為排序依據)
-//處理單個類別查詢(依租借品的類別編號)  --------> 租借品類別去實作給前端網頁
-
-
-
-
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * 因 @ModelAttribute寫在方法上，故將此類別中的@GetMapping Method先加入model.addAttribute("...List",...Service.getAll());
      * referenceListData()：回傳一個包含參考資料的列表或映射，透過View渲染到使用者介面上。

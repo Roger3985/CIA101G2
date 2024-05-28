@@ -50,7 +50,7 @@
                   <tr>
                     <td th:text="${rentalMyFavorite.rental.rentalNo} + '-[' + ${rentalMyFavorite.rental.rentalName} + ']'"></td>
                     <td th:text="${rentalMyFavorite.member.memNo} + '-[' + ${rentalMyFavorite.member.memName} + ']'"></td>
-                    <td th:text="${rentalMyFavorite.rentalFavTime}"></td>
+                    <td th:text="${#dates.format(rentalMyFavorite.rentalFavTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                   </tr>
                 </th:block>
                 </tbody>

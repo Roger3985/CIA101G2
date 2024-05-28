@@ -14,7 +14,7 @@ public class RentalMyFavorite implements java.io.Serializable {
     // 直接宣告複合識別類別的屬性 (rentalNo與memNo是複合主鍵)
     @EmbeddedId   //加上@EmbeddedId 標註，必須override此類別的hashcode()、equals()
     private CompositeRentalMyFavorite compositeRentalMyFavorite;
-    
+
     @Column(name = "rentalfavtime")
     private Timestamp rentalFavTime;
 

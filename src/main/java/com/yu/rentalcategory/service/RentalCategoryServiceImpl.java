@@ -25,10 +25,7 @@ public class RentalCategoryServiceImpl implements RentalCategoryService {
     @Autowired
     private RentalRepository rentalRepository;
 
-    /**
-     * PersistenceContext注解用于注入一个EntityManager对象，
-     * 使得我们可以在RentalService类中使用这个entityManager对象执行持久化操作，例如保存、更新、删除实体对象，以及执行JPQL查询等。
-     */
+
     @PersistenceContext
     private EntityManager entityManager;
 

@@ -1,41 +1,25 @@
 package com.yu.rentalmyfavorite.service;
 
-
 import com.yu.rentalmyfavorite.dto.AddToWishList;
 import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
-
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.Map;
 
 public interface RentalMyFavoriteService {
 //----------------------------------------------------------------------------------------------------------------------
 //主要由redis使用
 
-//    List<Map<String, String>> getWishFromRedis(String memNo);
+    void addRentalFav(AddToWishList addToWishList);
 
     void deleteWish(Integer memNo, Integer rentalNo);
 
-//    void addWish(String memNo, Map<String, String> wishDetails);
-
     List<AddToWishList> getWishFromRedis(Integer memNo);
 
-//----------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------
     RentalMyFavorite findByRentalNo(Integer rentalNo); //單筆查詢(rentalNo)
 
     RentalMyFavorite findByRentalNoAndMemNo(Integer rentalNo, Integer memNo);  //複合主鍵查詢
 
-    List<RentalMyFavorite> findByRental_RentalNoAndMember_MemNo(Integer rentalNo, Integer memNo);  //複合主鍵查詢
-
     List<RentalMyFavorite> findAll();  //全部查詢(RentalMyFavorite)
-
-    List<RentalMyFavorite> findByRentalFavTime(Timestamp rentalFavTime); //單筆查詢(rentalFavTime)
-
-//----------------------------------------------------------------------------------------------------------------------
-//主要為後端使用：增查改
-
-    void addRentalFav(AddToWishList addToWishList); //新增
-
 
     List<RentalMyFavorite> findByCompositeKey(Integer rentalNo);
 

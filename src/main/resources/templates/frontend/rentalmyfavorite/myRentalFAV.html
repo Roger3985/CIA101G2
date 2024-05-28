@@ -20,7 +20,10 @@
         }
         .fw-600{
             text-align:center;
-            /*line-height: 200px;!*與包著的區塊設定同高度即可*!*/
+        }
+        #dataTable{
+            text-align:center;
+            vertical-align: middle;
         }
     </style>
 </head>
@@ -47,13 +50,13 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6 my-2">
-                        <h1 class="m-0 h4 text-center text-lg-start">我的最愛</h1>
+                        <h1 class="m-0 h4 text-center text-lg-start">我的最愛清單 (租借品)</h1>
                     </div>
                     <div class="col-lg-6 my-2">
                         <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
-                            <li class="breadcrumb-item"><a class="text-nowrap" href="#"><i
+                            <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/}"><i
                                     class="bi bi-home"></i>Home</a></li>
-                            <li class="breadcrumb-item text-nowrap active" aria-current="page">My Account</li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page">我的最愛清單 (租借品)</li>
                         </ol>
                     </div>
                 </div>
@@ -72,7 +75,7 @@
                                     <th class="fw-600">照片</th>
                                     <th class="fw-600">名稱</th>
                                     <th class="fw-600">尺寸</th>
-                                    <th class="fw-600">租金</th>
+                                    <th class="fw-600">定價</th>
                                     <th class="fw-600">操作</th>
                                 </tr>
                                 </thead>
@@ -86,9 +89,19 @@
                                         <!-- 租借品名稱 -->
                                         <td class="p-3" th:text="${session['rentalName' + rentalMyFavorite.rentalNo]}"></td>
                                         <!-- 尺寸 -->
-                                        <td class="p-3" th:text="${session['rentalSize' + rentalMyFavorite.rentalNo]}"></td>
+                                        <td class="p-3">
+                                            <span th:if="${session['rentalSize' + rentalMyFavorite.rentalNo] == 0}" th:text="XS"></span>
+                                            <span th:if="${session['rentalSize' + rentalMyFavorite.rentalNo] == 1}" th:text="S"></span>
+                                            <span th:if="${session['rentalSize' + rentalMyFavorite.rentalNo] == 2}" th:text="M"></span>
+                                            <span th:if="${session['rentalSize' + rentalMyFavorite.rentalNo] == 3}" th:text="L"></span>
+                                            <span th:if="${session['rentalSize' + rentalMyFavorite.rentalNo] == 4}" th:text="XL"></span>
+                                            <span th:if="${session['rentalSize' + rentalMyFavorite.rentalNo] == 5}" th:text="2L"></span>
+                                        </td>
                                         <!-- 押金 -->
-                                        <td class="p-3" th:text="${session['rentalDesPrice' + rentalMyFavorite.rentalNo]}"></td>
+                                        <td class="p-3">
+                                            <span>$</span>
+                                            <span th:text="${session['rentalPrice' + rentalMyFavorite.rentalNo]}"></span>
+                                        </td>
                                         <!-- 操作 -->
                                         <td class="p-3">
                                             <input type="hidden" id="rentalNo" name="rentalNo" th:value="${rentalMyFavorite.rentalNo}"/>
@@ -123,25 +136,28 @@
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
 <script>
     function deleteRental(button) {
+
         const row = button.parentNode.parentNode; // 取得要刪除的元素
         const rentalNo = row.querySelector('input[name="rentalNo"]').value;
         const memNo = row.querySelector('input[name="memNo"]').value;
 
-        $.ajax({
-            type: 'POST',
-            url: '/frontend/rentalmyfavorite/delete',
-            data: {
-                rentalNo: rentalNo,
-                memNo: memNo
-            },
-            success: function (data) {
-                row.remove();
-                console.log("成功");
-            },
-            error: function () {
-                console.error('失敗');
-            }
-        });
+        if (confirm("確定移除願望清單?")) {
+            $.ajax({
+                type: 'POST',
+                url: '/frontend/rentalmyfavorite/delete',
+                data: {
+                    rentalNo: rentalNo,
+                    memNo: memNo
+                },
+                success: function (data) {
+                    row.remove();
+                    console.log("成功");
+                },
+                error: function () {
+                    console.error('失敗');
+                }
+            });
+        }
     }
 </script>
 <!-- End script start -->
