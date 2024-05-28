@@ -239,6 +239,12 @@ public class CouponController {
         return couponSvc.getUniqueDiscounts(coupons);
     }
 
+    @ModelAttribute("UniqueCondList")
+    protected List<String> getUniqueCon(){
+        List<Coupon> coupons = couponSvc.getAll();
+        return couponSvc.getUniqueCond(coupons);
+    }
+
 
     /*
      * 【 第二種作法 】 Method used to populate the Map Data in view. 如 :

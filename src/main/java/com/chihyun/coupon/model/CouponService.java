@@ -68,4 +68,11 @@ public class CouponService {
                 .collect(Collectors.toList()); // 收集为列表
     }
 
+    public List<String> getUniqueCond(List<Coupon> coupons){
+        return coupons.stream()
+                .map(Coupon::getCoupCond)
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
 }
