@@ -1,6 +1,7 @@
 package com.ren;
 
 import com.iting.productorderdetail.entity.ProductOrderDetail;
+import com.iting.productorderdetail.service.impl.ProductOrderDetailServiceImpl;
 import com.ren.administrator.entity.Administrator;
 import com.ren.administrator.dto.LoginState;
 import com.ren.administrator.service.impl.AdministratorServiceImpl;
@@ -30,9 +31,7 @@ import javax.validation.Valid;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.Duration;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -62,21 +61,22 @@ public class BackendIndexController {
     @Autowired
     private ProductServiceImpl productSvc;
 
-//    @ModelAttribute("productTop10SalQty")
-//    public List<Product> productList() {
-//        List<ProductDTO> productDTOList = productSvc.getAllFromRedis();
-//        List<>
-//        for (var productDTO : productDTOList) {
-//            List<Product> productList = productDTO.getProductList();
-//            for (var product : productList) {
-//                Set<ProductOrderDetail> productOrderDetailSet = product.getProductOrderDetails();
-//                for (productOrderDetail : productOrderDetailSet) {
-//                    productOrderDetailSet.getClass().get
-//                }
-//            }
-//        }
-//        return productSvc.getTopSalQty();
-//    }
+    @Autowired
+    private ProductOrderDetailServiceImpl productOrderDetailSvc;
+
+    @ModelAttribute("productSalMap")
+    public Map<String, Integer> productList() {
+        List<ProductOrderDetail> productOrderDetailList = productOrderDetailSvc.getAll();
+        Map<String, Integer> productSalMap = new HashMap<>();
+        for (var productOrderDetail : productOrderDetailList) {
+            Integer productCatNo = productOrderDetail.getProduct().getProductCategory().getProductCatNo();
+            String productName = productOrderDetail.getProduct().getProductName();
+            String key = productCatNo + " : " + productName;
+            Integer quantity = productOrderDetail.getProductOrdQty();
+            productSalMap.compute(key, (k, v) -> (v == null) ? quantity : v + quantity);
+        }
+        return productSalMap;
+    }
 
     /**
      * 前往首頁
@@ -87,6 +87,7 @@ public class BackendIndexController {
     @GetMapping("/index")
     public String toBackendIndex() {
         System.out.println("首頁我來囉!");
+
         return "backend/index";
     }
 

@@ -332,20 +332,48 @@ public class ProductFrontEndController {
                                ModelMap model) {
         ProductDTO productDTO = productSvc.getOneProductDTO(productNo);
         List<ProductPicture> productPictures = productPictureSvc.getByProductNo(productNo);
-//        var picNoList = new ArrayList<Integer>();
+        var picNoList = new ArrayList<Integer>();
         Integer totalPictures = 0;
+
         for (var productPicture : productPictures) {
-//            picNoList.add(productPicture.getProductPicNo());
+            picNoList.add(productPicture.getProductPicNo());
             totalPictures++;
+        }
+
+        Pageable pageable = PageRequest.of(0, 10);
+        String sortType = "newest";
+        Page<ProductDTO> productPage = productSvc.getVisitProductFromRedis(pageable, sortType);
+
+        List<Boolean> newProductList = new ArrayList<>();
+        for (ProductDTO prodDTO : productPage.getContent()) {
+            Boolean newProduct = false;
+            if (prodDTO.getProductOnShelfSet() != null && !prodDTO.getProductOnShelfSet().isEmpty()) {
+                List<Timestamp> list = new ArrayList<>(prodDTO.getProductOnShelfSet());
+                list.sort(Comparator.naturalOrder());
+
+                LocalDateTime now = LocalDateTime.now();
+                LocalDateTime dateTime = list.get(0).toLocalDateTime();
+                Long daysDifference = ChronoUnit.DAYS.between(dateTime, now);
+                if (daysDifference < 7) {
+                    newProduct = true;
+                }
+                newProductList.add(newProduct);
+            }
+        }
+        if (picNoList.isEmpty()) {
+            picNoList.add(1);
         }
 
 //        model.addAttribute("product", product);
 //        model.addAttribute("productReviewList", list);
 //        model.addAttribute("totalReviews", totalReviews);
 //        model.addAttribute("productScore", productScore);
-//        model.addAttribute("picNoList", picNoList);
+        model.addAttribute("picNoList", picNoList);
+        model.addAttribute("newProductList", newProductList);
         model.addAttribute("totalPictures", totalPictures);
         model.addAttribute("productDTO", productDTO);
+        model.addAttribute("productDTOList", productPage.getContent());
+
         return "frontend/product/oneProduct";
     }
 
