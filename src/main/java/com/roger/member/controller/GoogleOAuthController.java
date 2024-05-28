@@ -186,6 +186,7 @@ public class GoogleOAuthController {
         member = memberService.findByMail(email);
 
         if (member == null) {
+            System.out.println("我有進來");
             Random random = new Random();
             int randomNumber = random.nextInt(10);
             Member newMember = new Member();
