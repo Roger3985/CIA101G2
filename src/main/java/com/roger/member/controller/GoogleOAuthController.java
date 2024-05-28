@@ -186,6 +186,7 @@ public class GoogleOAuthController {
         member = memberService.findByMail(email);
 
         if (member == null) {
+            System.out.println("我有進來");
             Random random = new Random();
             int randomNumber = random.nextInt(10);
             Member newMember = new Member();
@@ -252,7 +253,7 @@ public class GoogleOAuthController {
             modelMap.addAttribute("columnArticles", columnArticles);
 
             // 設置重定向目標為 `/frontend/cart/addcartsuccess`
-            session.setAttribute("location", "/frontend/cart/addcartsuccess");
+//            session.setAttribute("location", "/frontend/cart/addcartsuccess");
 
         } else {
             // 將提供的第三方: 1(Google) 設置進去資料庫
@@ -299,7 +300,7 @@ public class GoogleOAuthController {
             session.setAttribute("unreadNoticeCount", unreadNoticeCount);
 
             // 設置重定向目標為 `/frontend/cart/addcartsuccess`
-            session.setAttribute("location", "/frontend/cart/addcartsuccess");
+//            session.setAttribute("location", "/frontend/cart/addcartsuccess");
         }
         return result;
     }
