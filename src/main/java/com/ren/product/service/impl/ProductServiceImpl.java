@@ -1,5 +1,6 @@
 package com.ren.product.service.impl;
 
+import com.aop.annotation.UpdateRedisDB;
 import com.ren.product.dto.ProductDTO;
 import com.ren.product.entity.Product;
 import com.ren.product.dao.ProductRepository;
@@ -55,6 +56,7 @@ public class ProductServiceImpl implements ProductService_interface {
      * @param product 前端輸入商品資訊
      * @return 返回更新後Entity
      */
+    @UpdateRedisDB(message = "updateRedis")
     @Override
     public Product addProduct(Product product) {
         return productRepository.save(product);
@@ -66,6 +68,7 @@ public class ProductServiceImpl implements ProductService_interface {
      * @param list 商品清單
      * @return 返回新增後清單
      */
+    @UpdateRedisDB(message = "updateRedis")
     @Override
     public List<Product> addProductList(List<Product> list) {
         return productRepository.saveAll(list);
@@ -414,9 +417,9 @@ public class ProductServiceImpl implements ProductService_interface {
             productDTO.setProductScorePeople(productScorePeople);
             productDTO.setProductScore(productScore);
             productDTO.setProductNoList(productNoList);
-            if (productPicNoList.isEmpty()) {
-                productPicNoList.add(1);
-            }
+//            if (productPicNoList.isEmpty()) {
+//                productPicNoList.add(1);
+//            }
             productDTO.setProductPicNoList(productPicNoList);
             productDTO.setProductPriceSet(productPriceSet);
             productDTO.setProductSizeSet(productSizeSet);
@@ -775,7 +778,7 @@ public class ProductServiceImpl implements ProductService_interface {
             productDTO.setProductName(productName);
             productDTO.setProductCatName(product.getProductCategory().getProductCatName());
             List<Product> list = getVisitProducts(productCatNo, productName);
-            List<Integer> productNoList = new ArrayList<>();
+            var productNoList = new ArrayList<Integer>();
             HashSet<BigDecimal> productPriceSet = new HashSet<>();
             HashSet<Integer> productSizeSet = new HashSet<>();
             HashSet<String> productColorSet = new HashSet<>();
@@ -810,7 +813,7 @@ public class ProductServiceImpl implements ProductService_interface {
             }
             productDTO.setProductScorePeople(productScorePeople);
             productDTO.setProductScore(productScore);
-            productDTO.setProductNoList((ArrayList<Integer>) productNoList);
+            productDTO.setProductNoList(productNoList);
             productDTO.setProductPriceSet(productPriceSet);
             productDTO.setProductSizeSet(productSizeSet);
             productDTO.setProductColorSet(productColorSet);
