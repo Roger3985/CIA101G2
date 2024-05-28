@@ -32,6 +32,7 @@ public interface Constants {
     String TITLE_FULLTIME = "2";
     String TITLE_MANAGER = "3";
     String TITLE_BOSS = "4";
+    String ON_SHELF = "1";
 
 
     /**

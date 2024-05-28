@@ -39,7 +39,7 @@
                         <div th:if="${productResults.size() > 0}">
                             <h3>商品</h3>
                             <div th:each="product : ${productResults}">
-                                <a th:href="@{/frontend/product/Product(productNo=${product.productNo})}" class="d-block mb-2">
+                                <a th:href="@{/frontend/product/oneProduct(productNo=${product.productNo})}" class="d-block mb-2">
                                     <h4 th:text="${product.productName}">Product Name</h4>
                                     <p th:text="${product.productInfo}">Product Info</p>
                                 </a>

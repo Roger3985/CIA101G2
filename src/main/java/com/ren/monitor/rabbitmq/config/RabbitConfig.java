@@ -1,5 +1,6 @@
 package com.ren.monitor.rabbitmq.config;
 
+import com.rabbitmq.client.AMQP;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -30,6 +31,16 @@ public class RabbitConfig {
     @Bean
     public HeadersExchange headersExchange() {
         return new HeadersExchange("adminHeadersExchange");
+    }
+
+    /**
+     * 用來同步Redis資料庫用的交換器
+     *
+     * @return 返回Topic交換器
+     */
+    @Bean
+    public TopicExchange topicExchange() {
+        return new TopicExchange("dataBaseSync");
     }
 
     /**
@@ -70,6 +81,21 @@ public class RabbitConfig {
     @Bean("queue_Boss")
     public Queue queueBoss() {
         return new Queue("queue_Boss", true);
+    }
+
+    /**
+     * 執行資料庫更新指令
+     *
+     * @return 執行Redis資料庫更新的佇列
+     */
+    @Bean("queue_Redis")
+    public Queue queueRedis() {
+        return new Queue("queue_Redis", true);
+    }
+
+    @Bean("queue_Job")
+    public Queue queueJob() {
+        return new Queue("queue_Job", true);
     }
 
     /**
@@ -141,5 +167,15 @@ public class RabbitConfig {
     @Bean
     public Binding bindingBoss4(@Qualifier("queue_Boss") Queue queue, HeadersExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).where("title").matches("boss");
+    }
+
+    @Bean
+    public Binding bindingRedisQueue(@Qualifier("queue_Redis") Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with("updateRedis");
+    }
+
+    @Bean
+    public Binding bindingJobQueue(@Qualifier("queue_Job") Queue queue, HeadersExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).where("type").matches("job");
     }
 }

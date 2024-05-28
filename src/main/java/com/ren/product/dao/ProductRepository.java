@@ -125,30 +125,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findByProductStat(Byte productStat);
 
     /**
-     * 評分前10名的商品
-     *
-     * @return 返回前10名的清單
-     */
-    @Transactional
-    List<Product> findTop10ByOrderByProductComScoreDesc();
-
-    /**
-     * 最多人評價前10名
-     *
-     * @return 返回前10名的清單
-     */
-    @Transactional
-    List<Product> findTop10ByOrderByProductComPeopleDesc();
-
-    /**
-     * 售出最多前10名
-     *
-     * @return 返回前10名的清單
-     */
-    @Transactional
-    List<Product> findTop10ByOrderByProductSalQtyDesc();
-
-    /**
      * 最新上架時間前10名
      *
      * @return 返回前10名的清單
@@ -176,9 +152,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
      * @param productColor 商品顏色
      * @param productPrice 商品單價
      * @param productStat 商品狀態
-     * @param productSalQty 商品售出數量
-     * @param productComPeople 商品評價人數
-     * @param productComScore 商品評價
      * @param productOnShelf 商品上架時間
      * @param productOffShelf 商品下架時間
      * @return 返回符合查詢資格的清單
@@ -193,9 +166,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "(:productColor IS NULL OR p.productColor = :productColor) AND " +
             "(:productPrice IS NULL OR p.productPrice = :productPrice) AND " +
             "(:productStat IS NULL OR p.productStat = :productStat) AND " +
-            "(:productSalQty IS NULL OR p.productSalQty = :productSalQty) AND " +
-            "(:productComPeople IS NULL OR p.productComPeople = :productComPeople) AND " +
-            "(:productComScore IS NULL OR p.productComScore = :productComScore) AND " +
             "(:productOnShelf IS NULL OR p.productOnShelf = :productOnShelf) AND " +
             "(:productOffShelf IS NULL OR p.productOffShelf = :productOffShelf)")
     List<Product> findByAttributes(
@@ -207,9 +177,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             @Param("productColor") String productColor,
             @Param("productPrice") BigDecimal productPrice,
             @Param("productStat") Byte productStat,
-            @Param("productSalQty") Integer productSalQty,
-            @Param("productComPeople") Integer productComPeople,
-            @Param("productComScore") BigDecimal productComScore,
             @Param("productOnShelf") Timestamp productOnShelf,
             @Param("productOffShelf") Timestamp productOffShelf
     );

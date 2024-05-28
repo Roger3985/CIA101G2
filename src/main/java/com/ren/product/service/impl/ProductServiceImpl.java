@@ -6,13 +6,17 @@ import com.ren.product.dao.ProductRepository;
 import com.ren.product.service.ProductService_interface;
 import com.ren.productcategory.dao.ProductCategoryRepository;
 import com.ren.productcategory.service.impl.ProductCategoryServiceImpl;
+import com.ren.productpicture.entity.ProductPicture;
+import com.ren.productpicture.service.impl.ProductPictureServiceImpl;
 import com.ren.productreview.entity.ProductReview;
 import com.ren.productreview.service.impl.ProductReviewServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Entity;
@@ -38,6 +42,12 @@ public class ProductServiceImpl implements ProductService_interface {
 
     @Autowired
     private ProductReviewServiceImpl productReviewSvc;
+
+    @Autowired
+    @Qualifier("proStrDTO")
+    private RedisTemplate<String, ProductDTO> proDTORedisTemplate;
+    @Autowired
+    private ProductPictureServiceImpl productPictureSvc;
 
     /**
      * 新增單項商品
@@ -127,36 +137,6 @@ public class ProductServiceImpl implements ProductService_interface {
     }
 
     /**
-     * 評分前10名的商品
-     *
-     * @return 返回前10名的清單
-     */
-    @Override
-    public List<Product> getTopScore() {
-        return productRepository.findTop10ByOrderByProductComScoreDesc();
-    }
-
-    /**
-     * 最多人評價前10名
-     *
-     * @return 返回前10名的清單
-     */
-    @Override
-    public List<Product> getTopPopular() {
-        return productRepository.findTop10ByOrderByProductComPeopleDesc();
-    }
-
-    /**
-     * 售出最多前10名
-     *
-     * @return 返回前10名的清單
-     */
-    @Override
-    public List<Product> getTopSalQty() {
-        return productRepository.findTop10ByOrderByProductSalQtyDesc();
-    }
-
-    /**
      * 最新上架時間前10名
      *
      * @return 返回前10名的清單
@@ -184,7 +164,7 @@ public class ProductServiceImpl implements ProductService_interface {
      */
     @Override
     public List<Product> getComposite(Product product) {
-        return productRepository.findByAttributes(product.getProductNo(), product.getProductCategory().getProductCatNo(), product.getProductName(), product.getProductInfo(), product.getProductSize(), product.getProductColor(), product.getProductPrice(), product.getProductStat(), product.getProductSalQty(), product.getProductComPeople(), product.getProductComScore(), product.getProductOnShelf(), product.getProductOffShelf());
+        return productRepository.findByAttributes(product.getProductNo(), product.getProductCategory().getProductCatNo(), product.getProductName(), product.getProductInfo(), product.getProductSize(), product.getProductColor(), product.getProductPrice(), product.getProductStat(), product.getProductOnShelf(), product.getProductOffShelf());
     }
 
     @Override
@@ -211,8 +191,8 @@ public class ProductServiceImpl implements ProductService_interface {
      * 全文搜索
      *
      * @param keyword 關鍵字
-     * @param page 指定為第幾頁
-     * @param size 指定分頁要呈現多少筆資料
+     * @param page    指定為第幾頁
+     * @param size    指定分頁要呈現多少筆資料
      * @return 返回分頁搜尋結果
      */
     @Override
@@ -368,6 +348,85 @@ public class ProductServiceImpl implements ProductService_interface {
         productRepository.deleteProductsByProductCategory_ProductCatName(productCatName);
     }
 
+    public void redisDataStored() {
+        var productUniqueKeySet = new HashSet<String>();
+        List<Product> productList = getByProductStat(Byte.valueOf(ON_SHELF));
+        // 以商品類別編號-商品名稱作為uniqueKey
+        for (Product product : productList) {
+            productUniqueKeySet.add(product.getProductCategory().getProductCatNo() + "-" + product.getProductName());
+        }
+
+        for (var key : productUniqueKeySet) {
+            ProductDTO productDTO = new ProductDTO();
+            String[] parts = key.split("-");
+            Integer productCatNo = Integer.valueOf(parts[0]);
+            String productName = parts[1];
+            List<Product> list = getVisitProducts(productCatNo, productName);
+            productDTO.setProductID(key);
+            productDTO.setProductCatNo(productCatNo);
+            String productCatName = productCategorySvc.getOneProductCategory(productCatNo).getProductCatName();
+            productDTO.setProductCatName(productCatName);
+            productDTO.setProductName(productName);
+            var productNoList = new ArrayList<Integer>();
+            var productPicNoList = new ArrayList<Integer>();
+            HashSet<BigDecimal> productPriceSet = new HashSet<>();
+            HashSet<Integer> productSizeSet = new HashSet<>();
+            HashSet<String> productColorSet = new HashSet<>();
+            HashSet<Timestamp> productOnShelfSet = new HashSet<>();
+            Integer productTotalScore = 0;
+            Integer productScorePeople = 0;
+            Double productScore = 0.0;
+            for (Product product : list) {
+                Integer productNo = product.getProductNo();
+                productNoList.add(productNo);
+                productPriceSet.add(product.getProductPrice());
+
+                if (product.getProductSize() != null) {
+                    productSizeSet.add(product.getProductSize());
+                }
+
+                if (product.getProductColor() != null) {
+                    productColorSet.add(product.getProductColor());
+                }
+
+                if (product.getProductOnShelf() != null) {
+                    productOnShelfSet.add(product.getProductOnShelf());
+                }
+
+                List<ProductReview> productReviews = productReviewSvc.getByProductNo(product.getProductNo());
+
+                for (ProductReview productReview : productReviews) {
+                    productTotalScore += productReview.getProductScore();
+                    productScorePeople++;
+                }
+
+                List<ProductPicture> productPictures = productPictureSvc.getByProductNo(productNo);
+                for (var productPicture : productPictures) {
+                    productPicNoList.add(productPicture.getProductPicNo());
+                }
+            }
+
+            if (productScorePeople != 0) {
+                productScore = (double) productTotalScore / productScorePeople;
+                productScore = Math.round(productScore * 10.0) / 10.0;
+            }
+
+            productDTO.setProductScorePeople(productScorePeople);
+            productDTO.setProductScore(productScore);
+            productDTO.setProductNoList(productNoList);
+            if (productPicNoList.isEmpty()) {
+                productPicNoList.add(1);
+            }
+            productDTO.setProductPicNoList(productPicNoList);
+            productDTO.setProductPriceSet(productPriceSet);
+            productDTO.setProductSizeSet(productSizeSet);
+            productDTO.setProductColorSet(productColorSet);
+            productDTO.setProductOnShelfSet(productOnShelfSet);
+
+            proDTORedisTemplate.opsForValue().set(key, productDTO);
+        }
+    }
+
     public List<ProductDTO> getVisitProduct(List<Product> productList) {
         var productUniqueKeySet = new HashSet<String>();
 
@@ -388,7 +447,7 @@ public class ProductServiceImpl implements ProductService_interface {
             String productCatName = productCategorySvc.getOneProductCategory(productCatNo).getProductCatName();
             productDTO.setProductCatName(productCatName);
             productDTO.setProductName(productName);
-            productDTO.setProductList(list);
+            List<Integer> productNoList = new ArrayList<>();
             HashSet<BigDecimal> productPriceSet = new HashSet<>();
             HashSet<Integer> productSizeSet = new HashSet<>();
             HashSet<String> productColorSet = new HashSet<>();
@@ -397,7 +456,7 @@ public class ProductServiceImpl implements ProductService_interface {
             Integer productScorePeople = 0;
             Double productScore = 0.0;
             for (Product product : list) {
-                System.out.println("productNo: " + product.getProductNo());
+                productNoList.add(product.getProductNo());
                 productPriceSet.add(product.getProductPrice());
                 if (product.getProductSize() != null) {
                     productSizeSet.add(product.getProductSize());
@@ -413,7 +472,7 @@ public class ProductServiceImpl implements ProductService_interface {
                 List<ProductReview> productReviews = productReviewSvc.getByProductNo(product.getProductNo());
                 for (ProductReview productReview : productReviews) {
                     productTotalScore += productReview.getProductScore();
-                    productScorePeople ++;
+                    productScorePeople++;
                 }
 
             }
@@ -459,7 +518,7 @@ public class ProductServiceImpl implements ProductService_interface {
                 String productCatName = productCategorySvc.getOneProductCategory(productCatNo).getProductCatName();
                 productDTO.setProductCatName(productCatName);
                 productDTO.setProductName(productName);
-                productDTO.setProductList(list);
+                List<Integer> productNoList = new ArrayList<>();
                 HashSet<BigDecimal> productPriceSet = new HashSet<>();
                 HashSet<Integer> productSizeSet = new HashSet<>();
                 HashSet<String> productColorSet = new HashSet<>();
@@ -468,7 +527,7 @@ public class ProductServiceImpl implements ProductService_interface {
                 Integer productScorePeople = 0;
                 Double productScore = 0.0;
                 for (Product product : list) {
-                    System.out.println("productNo: " + product.getProductNo());
+                    productNoList.add(product.getProductNo());
                     productPriceSet.add(product.getProductPrice());
                     if (product.getProductSize() != null) {
                         productSizeSet.add(product.getProductSize());
@@ -496,6 +555,7 @@ public class ProductServiceImpl implements ProductService_interface {
 
                 productDTO.setProductScorePeople(productScorePeople);
                 productDTO.setProductScore(productScore);
+                productDTO.setProductNoList((ArrayList<Integer>) productNoList);
                 productDTO.setProductPriceSet(productPriceSet);
                 productDTO.setProductSizeSet(productSizeSet);
                 productDTO.setProductColorSet(productColorSet);
@@ -527,7 +587,7 @@ public class ProductServiceImpl implements ProductService_interface {
             String productCatName = productCategorySvc.getOneProductCategory(productCatNo).getProductCatName();
             productDTO.setProductCatName(productCatName);
             productDTO.setProductName(productName);
-            productDTO.setProductList(list);
+            List<Integer> productNoList = new ArrayList<>();
             HashSet<BigDecimal> productPriceSet = new HashSet<>();
             HashSet<Integer> productSizeSet = new HashSet<>();
             HashSet<String> productColorSet = new HashSet<>();
@@ -536,6 +596,7 @@ public class ProductServiceImpl implements ProductService_interface {
             Integer productScorePeople = 0;
             Double productScore = 0.0;
             for (Product product : list) {
+                productNoList.add(product.getProductNo());
                 productPriceSet.add(product.getProductPrice());
                 if (product.getProductSize() != null) {
                     productSizeSet.add(product.getProductSize());
@@ -558,6 +619,7 @@ public class ProductServiceImpl implements ProductService_interface {
             }
             productDTO.setProductScorePeople(productScorePeople);
             productDTO.setProductScore(productScore);
+            productDTO.setProductNoList((ArrayList<Integer>) productNoList);
             productDTO.setProductPriceSet(productPriceSet);
             productDTO.setProductSizeSet(productSizeSet);
             productDTO.setProductColorSet(productColorSet);
@@ -617,7 +679,7 @@ public class ProductServiceImpl implements ProductService_interface {
             String productCatName = productCategorySvc.getOneProductCategory(productCatNo).getProductCatName();
             productDTO.setProductCatName(productCatName);
             productDTO.setProductName(productName);
-            productDTO.setProductList(list);
+            List<Integer> productNoList = new ArrayList<>();
             HashSet<BigDecimal> productPriceSet = new HashSet<>();
             HashSet<Integer> productSizeSet = new HashSet<>();
             HashSet<String> productColorSet = new HashSet<>();
@@ -626,6 +688,7 @@ public class ProductServiceImpl implements ProductService_interface {
             Integer productScorePeople = 0;
             Double productScore = 0.0;
             for (Product product : list) {
+                productNoList.add(product.getProductNo());
                 productPriceSet.add(product.getProductPrice());
                 if (product.getProductSize() != null) {
                     productSizeSet.add(product.getProductSize());
@@ -648,6 +711,7 @@ public class ProductServiceImpl implements ProductService_interface {
             }
             productDTO.setProductScorePeople(productScorePeople);
             productDTO.setProductScore(productScore);
+            productDTO.setProductNoList((ArrayList<Integer>) productNoList);
             productDTO.setProductPriceSet(productPriceSet);
             productDTO.setProductSizeSet(productSizeSet);
             productDTO.setProductColorSet(productColorSet);
@@ -655,9 +719,8 @@ public class ProductServiceImpl implements ProductService_interface {
             productDTOList.add(productDTO);
         }
 
-        // 前端点击过滤条件
         if (filters != null) {
-            // 根据颜色过滤
+
             if (filters.containsKey("color")) {
                 String[] colors = filters.get("color").split(",");
                 productDTOList = productDTOList.stream()
@@ -665,7 +728,6 @@ public class ProductServiceImpl implements ProductService_interface {
                         .collect(Collectors.toList());
             }
 
-            // 根据尺寸过滤
             if (filters.containsKey("size")) {
                 String[] sizes = filters.get("size").split(",");
                 List<Integer> sizeList = Arrays.stream(sizes).map(Integer::valueOf).collect(Collectors.toList());
@@ -674,7 +736,6 @@ public class ProductServiceImpl implements ProductService_interface {
                         .collect(Collectors.toList());
             }
 
-            // 根据价格范围过滤
             if (filters.containsKey("priceRange")) {
                 String[] priceRanges = filters.get("priceRange").split(",");
                 productDTOList = productDTOList.stream()
@@ -714,7 +775,7 @@ public class ProductServiceImpl implements ProductService_interface {
             productDTO.setProductName(productName);
             productDTO.setProductCatName(product.getProductCategory().getProductCatName());
             List<Product> list = getVisitProducts(productCatNo, productName);
-            productDTO.setProductList(list);
+            List<Integer> productNoList = new ArrayList<>();
             HashSet<BigDecimal> productPriceSet = new HashSet<>();
             HashSet<Integer> productSizeSet = new HashSet<>();
             HashSet<String> productColorSet = new HashSet<>();
@@ -723,7 +784,7 @@ public class ProductServiceImpl implements ProductService_interface {
             Integer productScorePeople = 0;
             Double productScore = 0.0;
             for (Product pro : list) {
-                System.out.println("productNo: " + pro.getProductNo());
+                productNoList.add(pro.getProductNo());
                 productPriceSet.add(pro.getProductPrice());
                 if (pro.getProductSize() != null) {
                     productSizeSet.add(pro.getProductSize());
@@ -739,7 +800,7 @@ public class ProductServiceImpl implements ProductService_interface {
                 List<ProductReview> productReviews = productReviewSvc.getByProductNo(pro.getProductNo());
                 for (ProductReview productReview : productReviews) {
                     productTotalScore += productReview.getProductScore();
-                    productScorePeople ++;
+                    productScorePeople++;
                 }
 
             }
@@ -749,12 +810,143 @@ public class ProductServiceImpl implements ProductService_interface {
             }
             productDTO.setProductScorePeople(productScorePeople);
             productDTO.setProductScore(productScore);
+            productDTO.setProductNoList((ArrayList<Integer>) productNoList);
             productDTO.setProductPriceSet(productPriceSet);
             productDTO.setProductSizeSet(productSizeSet);
             productDTO.setProductColorSet(productColorSet);
             productDTO.setProductOnShelfSet(productOnShelfSet);
         }
         return productDTO;
+    }
+
+    public ProductDTO getOneDTOFromRedis(Integer productNo) {
+        Product product = getOneProduct(productNo);
+        Integer productCatNo = product.getProductCategory().getProductCatNo();
+        String productName = product.getProductName();
+        return proDTORedisTemplate.opsForValue().get(productCatNo + "-" + productName);
+    }
+
+    public List<ProductDTO> getAllFromRedis() {
+        Set<String> keys = proDTORedisTemplate.keys("*");
+        if (keys != null && !keys.isEmpty()) {
+            try {
+                return proDTORedisTemplate.opsForValue().multiGet(keys);
+            } catch (Exception e) {
+                // 添加日志记录以捕捉反序列化时的错误
+                System.err.println("Error deserializing ProductDTO from Redis: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        // 如果沒資料就重新抓一次
+        List<ProductDTO> list = getVisitProduct(getAll());
+        redisDataStored();
+        return list;
+    }
+
+    public Page<ProductDTO> getVisitProductFromRedis(Pageable pageable, String sortType) {
+
+        List<ProductDTO> productDTOList = getAllFromRedis();
+
+        // 根據 sortType 排序
+        switch (sortType) {
+            case "newest":
+                productDTOList.sort(Comparator.comparing(
+                        p -> p.getProductOnShelfSet().stream().findFirst().orElse(null),
+                        Comparator.nullsLast(Comparator.reverseOrder())));
+                break;
+            case "rating":
+                productDTOList.sort(Comparator.comparing(ProductDTO::getProductScore, Comparator.nullsLast(Comparator.reverseOrder())));
+                break;
+            case "priceLowToHigh":
+                productDTOList.sort(Comparator.comparing(
+                        p -> p.getProductPriceSet().stream().findFirst().orElse(null),
+                        Comparator.nullsLast(Comparator.naturalOrder())));
+                break;
+            case "priceHighToLow":
+                productDTOList.sort(Comparator.comparing(
+                        p -> p.getProductPriceSet().stream().findFirst().orElse(null),
+                        Comparator.nullsLast(Comparator.reverseOrder())));
+                break;
+            default:
+                break;
+        }
+
+        int totalSize = productDTOList.size();
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), totalSize);
+
+        List<ProductDTO> pagedProductDTOList = productDTOList.subList(start, end);
+
+        return new PageImpl<>(pagedProductDTOList, pageable, totalSize);
+    }
+
+    public Page<ProductDTO> getVisitProductFromRedis(Pageable pageable, Map<String, String> filters) {
+        List<ProductDTO> productDTOList = getAllFromRedis();
+
+        if (filters != null) {
+            if (filters.containsKey("color")) {
+                String[] colors = filters.get("color").split(",");
+                Set<String> colorSet = new HashSet<>(Arrays.asList(colors));
+
+                productDTOList = productDTOList.stream()
+                        .filter(productDTO -> productDTO.getProductColorSet().containsAll(colorSet))
+                        .collect(Collectors.toList());
+
+                for (var productDTO : productDTOList) {
+                    System.out.println(productDTO.getProductID());
+                    Set<String> set = productDTO.getProductColorSet();
+                    for (var color : set) {
+                        System.out.println(color);
+                    }
+                }
+            }
+
+            if (filters.containsKey("size")) {
+                String[] sizes = filters.get("size").split(",");
+                List<Integer> sizeList = Arrays.stream(sizes).map(Integer::valueOf).collect(Collectors.toList());
+
+                productDTOList = productDTOList.stream()
+                        .filter(productDTO -> productDTO.getProductSizeSet().containsAll(sizeList))
+                        .collect(Collectors.toList());
+            }
+
+            if (filters.containsKey("priceRange")) {
+                String[] priceRanges = filters.get("priceRange").split(",");
+
+                productDTOList = productDTOList.stream()
+                        .filter(productDTO -> {
+                            for (String range : priceRanges) {
+                                try {
+                                    String[] prices = range.split("-");
+                                    BigDecimal minPrice = new BigDecimal(prices[0]);
+                                    BigDecimal maxPrice = prices.length > 1 ? new BigDecimal(prices[1]) : BigDecimal.valueOf(Double.MAX_VALUE);
+
+                                    if (productDTO.getProductPriceSet().stream().anyMatch(price -> price.compareTo(minPrice) >= 0 && price.compareTo(maxPrice) <= 0)) {
+                                        return true;
+                                    }
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Invalid price range: " + range);
+                                }
+                            }
+                            return false;
+                        })
+                        .collect(Collectors.toList());
+            }
+        }
+        int totalSize = productDTOList.size();
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), totalSize);
+
+        System.out.println("Total size: " + totalSize);
+        System.out.println("Start index: " + start);
+        System.out.println("End index: " + end);
+        System.out.println("Pageable page size: " + pageable.getPageSize());
+
+        List<ProductDTO> pagedProductDTOList = productDTOList.subList(start, end);
+
+        System.out.println("Paged list size: " + pagedProductDTOList.size());
+
+        return new PageImpl<>(pagedProductDTOList, pageable, totalSize);
     }
 
 

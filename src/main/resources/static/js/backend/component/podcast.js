@@ -83,6 +83,19 @@ function subscribeToUserQueue() {
 
 // 根據用戶職位訂閱相關佇列
 function subscribeToTopic() {
+
+    // 訂閱通用的 job 佇列
+    var jobTopic = '/topic/job';
+    stompClient.subscribe(jobTopic, function (message) {
+        var messageObject = JSON.parse(message.body);
+        if (messageObject.admNo === currentUserAdmNo) {
+            console.log('收到與自己相關的消息: ' + message.body);
+            showMessage(messageObject, true); // 新消息，newMessage 設置為 true
+        } else {
+            console.log('過濾掉不相關的消息');
+        }
+    });
+
     fetch('/backend/getUserTitle')
         .then(response => {
             if (!response.ok) {
@@ -149,6 +162,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     });
 });
+
 
 // 監聽小鈴鐺圖示的點擊事件
 document.getElementById('alertsDropdown').addEventListener('click', function (event) {

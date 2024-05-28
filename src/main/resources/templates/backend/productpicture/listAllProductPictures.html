@@ -14,25 +14,6 @@
             max-height: 100px; /* 根據你的需要調整高度 */
             object-fit: cover; /* 確保圖片按比例縮放 */
         }
-        .preview-img {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            margin: 10px;
-            border: 1px solid #ddd;
-            padding: 5px;
-            border-radius: 5px;
-        }
-        .preview-container {
-            display: flex;
-            flex-wrap: wrap;
-        }
-        .progress-container {
-            position: relative;
-        }
-        .progress-container .progress-bar {
-            display: none;
-        }
     </style>
 </head>
 <body id="page-top">
@@ -56,7 +37,6 @@
                                 <tr>
                                     <th>商品照片編號</th>
                                     <th>商品編號</th>
-                                    <th>商品圖片</th>
                                     <th>圖片格式</th>
                                     <th>修改</th>
                                 </tr>
@@ -68,12 +48,11 @@
                                         <td th:text="${productPicture.product.productNo + ' : ' + productPicture.product.productName}"></td>
                                         <td>
                                             <div class="progress-container">
-                                                <div th:attr="id='progress-bar-' + ${productPicture.productPicNo}" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                                <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
                                             </div>
-                                            <img th:if="${productPicture.productPic != null}" th:attr="id='img-' + ${productPicture.productPicNo}" th:src="@{/backend/productpicture/DBPhotoReader(productPicNo=${productPicture.productPicNo})}" alt="Profile Picture" style="display:none;">
-                                            <button th:if="${productPicture.productPic == null}" class="btn btn-primary upload-btn" th:attr="data-product-no=${productPicture.product.productNo}, data-product-pic-no=${productPicture.productPicNo}">
-                                                <i class="far fa-edit"></i> 上傳圖片
-                                            </button>
+                                        </td>
+                                        <td>
+                                            <img th:src="@{/backend/productpicture/DBPhotoReader} + '?productPicNo=' + ${productPicture.productPicNo}" alt="Profile Picture">
                                         </td>
                                         <td th:text="${productPicture.mimeType}"></td>
                                         <td>
@@ -94,25 +73,19 @@
             </div>
         </div>
         <footer th:replace="backend/component/bottom :: bottom"></footer>
-        <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+        <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="uploadModalLabel">上傳圖片</h5>
+                        <h5 class="modal-title" id="alertModalLabel">提示</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <form id="uploadForm">
-                            <div class="form-group">
-                                <label for="images">選擇圖片</label>
-                                <input type="hidden" id="productNo" name="productNo">
-                                <input type="file" id="images" name="productPic" multiple accept="image/*" class="form-control">
-                            </div>
-                            <div id="preview-container" class="row preview-container"></div>
-                            <button type="button" id="uploadButton" class="btn btn-primary mt-3">上傳</button>
-                        </form>
+                    <div class="modal-body" id="alertModalBody">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="confirmButton">確定</button>
                     </div>
                 </div>
             </div>
@@ -122,12 +95,21 @@
 <a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
 <div th:replace="backend/component/logout :: logout"></div>
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
-
+<!--<script th:src="@{/backend/vendor/datatables/jquery.dataTables.min.js}"></script>-->
+<!--<script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>-->
+<!--<script th:src="@{/backend/js/demo/datatables-demo.js}"></script>-->
 <script>
     var stompClient = null;
     var currentUserAdmNo = null;
-    var currentProductNo = null;
-    var currentProductPicNo = null;
+
+    // function connect() {
+    //     var socket = new SockJS('/admin');
+    //     stompClient = Stomp.over(socket);
+    //     stompClient.connect({}, function (frame) {
+    //         console.log('已連接: ' + frame);
+    //         subscribeToUserQueue();
+    //     });
+    // }
 
     function connect() {
         var socket = new SockJS('/admin');
@@ -135,6 +117,12 @@
         stompClient.connect({}, function (frame) {
             console.log('已連接: ' + frame);
             subscribeToUserQueue();
+
+            // 訂閱進度更新
+            stompClient.subscribe('/topic/progress', function (message) {
+                var progress = JSON.parse(message.body);
+                updateProgress(progress);
+            });
         });
     }
 
@@ -157,129 +145,31 @@
         });
     }
 
-    function updateProgress(message) {
-        var progressBar = document.getElementById('progress-bar-' + message.productPicNo);
-        progressBar.style.width = message.progress + '%';
-        progressBar.setAttribute('aria-valuenow', message.progress);
-        progressBar.textContent = message.progress + '%';
+    // function updateProgress(message) {
+    //     var progressBar = document.getElementById('progress-bar');
+    //     var progress = message.progress;
+    //     progressBar.style.width = progress + '%';
+    //     progressBar.setAttribute('aria-valuenow', progress);
+    //     progressBar.textContent = progress + '%';
+    //
+    //     if (progress === 100) {
+    //         alert('上傳完成');
+    //     }
+    // }
 
-        if (message.progress === 100) {
+    function updateProgress(progress) {
+        var progressBar = document.getElementById('progress-bar');
+        progressBar.style.width = progress + '%';
+        progressBar.setAttribute('aria-valuenow', progress);
+        progressBar.textContent = progress + '%';
+
+        if (progress === 100) {
             alert('上傳完成');
-            showImage(message.productPicNo);
         }
-    }
-
-    function showImage(productPicNo) {
-        var progressBar = document.getElementById('progress-bar-' + productPicNo);
-        progressBar.style.display = 'none';
-
-        var img = document.getElementById('img-' + productPicNo);
-        img.style.display = 'block';
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        const imagesInput = document.getElementById("images");
-        const previewContainer = document.getElementById("preview-container");
-        const uploadButton = document.getElementById("uploadButton");
-        const productNoField = document.getElementById("productNo");
-        let currentProductNo = null;
-
-        document.querySelectorAll('.upload-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const productNoString = button.getAttribute('data-product-no');
-                currentProductNo = parseInt(productNoString, 10); // 確保這是整數
-                if (isNaN(currentProductNo)) {
-                    console.error("無效的商品編號: ", productNoString);
-                    alert("無效的商品編號，請重試。");
-                    return;
-                }
-                productNoField.value = currentProductNo;
-                console.log("Current productNo: " + currentProductNo); // 調試日誌
-                $('#uploadModal').modal('show');
-            });
-        });
-
-        imagesInput.addEventListener("change", function() {
-            // 清空先前的預覽圖片
-            previewContainer.innerHTML = "";
-            const files = imagesInput.files;
-
-            if (files) {
-                Array.from(files).forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const img = document.createElement("img");
-                        img.src = e.target.result;
-                        img.classList.add("preview-img");
-                        previewContainer.appendChild(img);
-                    };
-                    reader.readAsDataURL(file);
-                });
-            }
-        });
-
-        uploadButton.addEventListener("click", function() {
-            const files = imagesInput.files;
-
-            if (files.length === 0) {
-                alert("請選擇圖片");
-                return;
-            }
-
-            Array.from(files).forEach(file => {
-                uploadFileInChunks(file, currentProductNo);
-            });
-        });
-
-        function uploadFileInChunks(file, productNo) {
-            const chunkSize = 1024 * 1024; // 1MB
-            const totalChunks = Math.ceil(file.size / chunkSize);
-            let chunkNumber = 0;
-
-            function uploadNextChunk() {
-                const start = chunkNumber * chunkSize;
-                const end = Math.min(start + chunkSize, file.size);
-                const chunk = file.slice(start, end);
-
-                const formData = new FormData();
-                formData.append("productNo", productNo); // 以整數形式傳送
-                formData.append("productPic", chunk);
-                formData.append("chunkNumber", chunkNumber + 1);
-                formData.append("totalChunks", totalChunks);
-
-                fetch('/backend/productpicture/uploadChunk', {
-                    method: 'POST',
-                    body: formData
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            return response.text().then(text => { throw new Error(text) });
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.success) {
-                            chunkNumber++;
-                            if (chunkNumber < totalChunks) {
-                                uploadNextChunk();
-                            } else {
-                                console.log('文件上傳完成');
-                                $('#uploadModal').modal('hide');
-                                showImage(productNo);
-                            }
-                        } else {
-                            console.error('塊上傳失敗:', data.message);
-                            alert('塊上傳失敗: ' + data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('上傳塊時發生錯誤:', error);
-                        alert('上傳塊時發生錯誤: ' + error);
-                    });
-            }
-
-            uploadNextChunk();
-        }
+        fetchCurrentUser();
     });
 </script>
 </body>

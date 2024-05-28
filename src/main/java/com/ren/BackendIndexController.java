@@ -1,8 +1,11 @@
 package com.ren;
 
+import com.iting.productorderdetail.entity.ProductOrderDetail;
+import com.iting.productorderdetail.service.impl.ProductOrderDetailServiceImpl;
 import com.ren.administrator.entity.Administrator;
 import com.ren.administrator.dto.LoginState;
 import com.ren.administrator.service.impl.AdministratorServiceImpl;
+import com.ren.product.dto.ProductDTO;
 import com.ren.product.entity.Product;
 import com.ren.product.service.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +31,7 @@ import javax.validation.Valid;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.Duration;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -59,9 +61,21 @@ public class BackendIndexController {
     @Autowired
     private ProductServiceImpl productSvc;
 
-    @ModelAttribute("productTop10SalQty")
-    public List<Product> productList() {
-        return productSvc.getTopSalQty();
+    @Autowired
+    private ProductOrderDetailServiceImpl productOrderDetailSvc;
+
+    @ModelAttribute("productSalMap")
+    public Map<String, Integer> productList() {
+        List<ProductOrderDetail> productOrderDetailList = productOrderDetailSvc.getAll();
+        Map<String, Integer> productSalMap = new HashMap<>();
+        for (var productOrderDetail : productOrderDetailList) {
+            Integer productCatNo = productOrderDetail.getProduct().getProductCategory().getProductCatNo();
+            String productName = productOrderDetail.getProduct().getProductName();
+            String key = productCatNo + " : " + productName;
+            Integer quantity = productOrderDetail.getProductOrdQty();
+            productSalMap.compute(key, (k, v) -> (v == null) ? quantity : v + quantity);
+        }
+        return productSalMap;
     }
 
     /**
@@ -73,6 +87,7 @@ public class BackendIndexController {
     @GetMapping("/index")
     public String toBackendIndex() {
         System.out.println("首頁我來囉!");
+
         return "backend/index";
     }
 

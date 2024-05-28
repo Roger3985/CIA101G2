@@ -3,6 +3,7 @@ package com.ren.monitor.rabbitmq.listener;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ren.product.service.impl.ProductServiceImpl;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -20,6 +21,9 @@ public class RabbitMQListener {
      */
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
+
+    @Autowired
+    private ProductServiceImpl productSvc;
 
     /**
      * 用於監聽打工仔的隊列，當消息被放入時會執行監聽器內的方法
@@ -61,11 +65,23 @@ public class RabbitMQListener {
         messagingTemplate.convertAndSend("/topic/boss", message);
     }
 
+    @RabbitListener(queues = "queue_Job")
+    public void listenJob(String message) {
+        System.out.println("job執行~");
+        messagingTemplate.convertAndSend("/topic/job", message);
+    }
+
     @RabbitListener(queues = "#{rabbitService.queueNames}")
     public void listenDynamicQueue(String message) throws JsonProcessingException {
         System.out.println("在自定義佇列傳送消息~");
         JsonNode messageObject = new ObjectMapper().readTree(message);
         String userAdmNo = messageObject.get("userAdmNo").asText();
         messagingTemplate.convertAndSend("/queue/user-" + userAdmNo, message);
+    }
+
+    @RabbitListener(queues = "queue_Redis")
+    public void listenDataBase(String message) throws JsonProcessingException {
+        productSvc.redisDataStored();
+        System.out.println("Redis已完成同步更新");
     }
 }

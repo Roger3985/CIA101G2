@@ -365,15 +365,45 @@
     };
 
     document.addEventListener('DOMContentLoaded', function () {
-        // 在這裡解析Thymeleaf傳遞的資料
-        var productTop10SalQty = /*[[${productTop10SalQty}]]*/ [];
+        // 解析Thymeleaf傳遞的資料
+        var productSalMap = /*[[${productSalMap}]]*/ {};
 
-        productTop10SalQty.sort((a, b) => a.productNo - b.productNo);
+        var labels = Object.keys(productSalMap);
+        var data = Object.values(productSalMap);
 
-        // 處理productList資料，假設每個product包含 productNo 和 productSalQty 屬性
-        var labels = productTop10SalQty.map(product => (product.productNo + ' : ' + product.productName));
-        var data = productTop10SalQty.map(product => product.productSalQty);
+        // 排序選項的事件監聽器
+        document.getElementById('sortOptions').addEventListener('change', function (event) {
+            const sortOrder = event.target.value;
 
+            let sortedLabels = [...labels];
+            let sortedData = [...data];
+
+            if (sortOrder === 'ascending') {
+                const sorted = sortedLabels.map((label, index) => ({ label, value: sortedData[index] }))
+                    .sort((a, b) => a.value - b.value);
+                sortedLabels = sorted.map(item => item.label);
+                sortedData = sorted.map(item => item.value);
+            } else if (sortOrder === 'descending') {
+                const sorted = sortedLabels.map((label, index) => ({ label, value: sortedData[index] }))
+                    .sort((a, b) => b.value - a.value);
+                sortedLabels = sorted.map(item => item.label);
+                sortedData = sorted.map(item => item.value);
+            } else {
+                // 默認順序
+                const sorted = labels.map((label, index) => ({ label, value: data[index] }))
+                    .sort((a, b) => a.label.localeCompare(b.label));
+                sortedLabels = sorted.map(item => item.label);
+                sortedData = sorted.map(item => item.value);
+            }
+
+            marketOverviewChart.data.labels = sortedLabels;
+            marketOverviewChart.data.datasets[0].data = sortedData;
+            marketOverviewChart.data.datasets[1].data = sortedData;
+
+            marketOverviewChart.update();
+        });
+
+        // 初始化圖表
         const marketOverviewChartElement = document.getElementById('marketOverviewChart');
         const marketOverviewChartConfig = {
             type: 'bar', // 設置主圖表類型為 bar
@@ -465,35 +495,6 @@
         };
 
         const marketOverviewChart = new Chart(marketOverviewChartElement, marketOverviewChartConfig);
-
-        // 排序選項的事件監聽器
-        document.getElementById('sortOptions').addEventListener('change', function (event) {
-            const sortOrder = event.target.value;
-
-            let sortedLabels = [...labels];
-            let sortedData = [...data];
-
-            if (sortOrder === 'ascending') {
-                const sorted = productTop10SalQty.sort((a, b) => a.productSalQty - b.productSalQty);
-                sortedLabels = sorted.map(product => '商品編號 ' + product.productNo);
-                sortedData = sorted.map(product => product.productSalQty);
-            } else if (sortOrder === 'descending') {
-                const sorted = productTop10SalQty.sort((a, b) => b.productSalQty - a.productSalQty);
-                sortedLabels = sorted.map(product => '商品編號 ' + product.productNo);
-                sortedData = sorted.map(product => product.productSalQty);
-            } else {
-                // 默認順序
-                const sorted = productTop10SalQty.sort((a, b) => a.productNo - b.productNo);
-                sortedLabels = sorted.map(product => '商品編號 ' + product.productNo);
-                sortedData = sorted.map(product => product.productSalQty);
-            }
-
-            marketOverviewChart.data.labels = sortedLabels;
-            marketOverviewChart.data.datasets[0].data = sortedData;
-            marketOverviewChart.data.datasets[1].data = sortedData;
-
-            marketOverviewChart.update();
-        });
 
         document.getElementById('sortOptions').value = 'default';
         document.getElementById('sortOptions').dispatchEvent(new Event('change'));

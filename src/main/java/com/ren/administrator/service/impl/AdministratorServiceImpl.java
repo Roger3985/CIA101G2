@@ -2,6 +2,7 @@ package com.ren.administrator.service.impl;
 
 import com.aop.annotation.Boss;
 import com.aop.annotation.Employee;
+import com.aop.annotation.Job;
 import com.aop.annotation.Manager;
 import com.ren.administrator.entity.Administrator;
 import com.ren.administrator.service.AdministratorService_interface;
@@ -121,6 +122,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
      *
      * @return 返回所有管理員資料
      */
+    @Job(type = "job", detail = "已獲得管理員資料")
     @Override
     public List<Administrator> getAll() {
         return administratorRepository.findAll();
