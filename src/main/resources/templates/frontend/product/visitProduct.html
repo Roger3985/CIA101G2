@@ -527,7 +527,12 @@
       data: data,
       success: function(data) {
         console.log("加入成功");
-      }
+          showCustomAlert(row, "加入我的最愛成功");
+      },
+        error: function(error) {
+            console.log("Error:", error);
+            showCustomAlert(row, "加入我的最愛失敗");
+        }
     });
   }
 

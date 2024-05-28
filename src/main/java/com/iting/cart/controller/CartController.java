@@ -220,10 +220,12 @@ public class CartController {
         Member member;
         Object memNo;
 
-        memNo = session.getAttribute("memNo");
+      if( session.getAttribute("memNo")!=null){
+          memNo = session.getAttribute("memNo");
+
         Integer memNoInt2 = Integer.valueOf(memNo.toString());
         List<CartRedis> cartListData1 = cartSvc.findByCompositeKey(memNoInt2);
-        model.addAttribute("cartListData", cartListData1);
+        model.addAttribute("cartListData", cartListData1);}
         // 检查会话中是否存在购物车信息
         List<CartRedis> oldcartListData = (List<CartRedis>) session.getAttribute("oldcartListData");
 
@@ -245,6 +247,7 @@ public class CartController {
 
                     Integer memNoInt = Integer.valueOf(memNo.toString());
                     cartSvc.deleteBymemNo(memNoInt);
+                    session.removeAttribute("memNo");
                 }
             }
             else {

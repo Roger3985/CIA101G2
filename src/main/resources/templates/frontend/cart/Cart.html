@@ -343,43 +343,15 @@
                 row.remove(); // 刪除對應行
                 console.log("刪除成功");
                 updateAllPrice(); // 更新總價
+                location.reload();
             },
             error: function () {
                 console.error('刪除失敗');
             }
         });
+
     }
 
-    function confirmDelete(button) {
-        if (confirm("確定要移除這個商品嗎？")) {
-            deleteProduct(button);
-        }
-    }
-
-    function deleteProduct(button) {
-        var row = button.closest('.productitm');
-        var productNo = row.querySelector('input[name="productNo"]').value;
-        var memNo = row.querySelector('input[name="memNo"]').value;
-
-        // 發送 AJAX 請求刪除商品
-        $.ajax({
-            type: 'POST',
-            url: '/frontend/cart/deleteInstantly',
-            data: {
-                productNo: productNo,
-                memNo: memNo
-            },
-            success: function (data) {
-                row.remove(); // 刪除對應行
-                console.log("刪除成功");
-                updateAllPrice(); // 更新總價
-                location.reload(); // 重新載入頁面
-            },
-            error: function () {
-                console.error('刪除失敗');
-            }
-        });
-    }
     function customAlert(message) {
         // 设置弹窗消息
         document.getElementById("customAlertMessage").innerHTML = message;

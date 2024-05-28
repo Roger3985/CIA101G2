@@ -3,16 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>單筆查詢</title>
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
     <style>
-        *{
+        * {
             font-size: 12px; /* 調整字體大小 */
         }
         .error {
             font-size: 12px; /* 調整字體大小 */
+        }
+        .btn-blue {
+            font-size: 14px; /* 調整字體大小 */
+            color: #ffffff; /* 白色字體 */
+            background-color: #007bff; /* 按鈕背景藍色 */
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-blue:hover {
+            background-color: #0056b3; /* 深藍色，滑鼠懸停效果 */
         }
     </style>
 </head>
@@ -61,17 +73,16 @@
                                     <td th:text="${productOrderDetail.productRealPrice}"></td>
                                     <td th:text="${productOrderDetail.productComContent}"></td>
                                     <td th:text="${productOrderDetail.productScore}"></td>
-
                                 </tr>
-
-                               </tbody>
+                                </tbody>
                             </table>
                             <form method="post" th:action="@{/backend/productorderdetail/getOne_For_Update}" style="margin-bottom: 0px;">
                                 <div>
                                     <input type="hidden" name="productOrdNo" th:value="${productOrderDetail.compositeKey.productOrdNo}">
                                     <input type="hidden" name="productNo" th:value="${productOrderDetail.compositeKey.productNo}">
                                     <div>
-                                        <button type="submit" id="submit"> 修改 </button></div>
+                                        <button type="submit" id="submit" class="btn-blue">修改</button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -81,7 +92,6 @@
             <!-- /.container-fluid -->
         </div>
         <!-- End of Main Content -->
-
         <!-- Footer -->
         <footer th:replace="backend/component/bottom :: bottom"></footer>
         <!-- End of Footer -->
@@ -104,5 +114,3 @@
 
 </body>
 </html>
-
-
