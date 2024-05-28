@@ -18,6 +18,12 @@ function openElement() {
     element.off('click', openElement);
     element.find('.header button').click(closeElement);
     element.find('#sendMessage').click(sendNewMessage);
+    const messageContainer = document.createElement('li');
+    const botMsg = document.createElement('span');
+    botMsg.innerHTML = "您好，歡迎在此提出問題，我會盡力回答您的!";
+    messageContainer.classList.add('self');
+    messageContainer.appendChild(botMsg);
+    chatBlock.appendChild(messageContainer);
     robotmessages.scrollTop(robotmessages.prop("scrollHeight"));
 }
 
