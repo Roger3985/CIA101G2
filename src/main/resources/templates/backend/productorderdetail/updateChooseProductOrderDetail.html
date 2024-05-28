@@ -1,13 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:insert="~{backend/component/plugin/backendplugin.html :: css}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>後台商品訂單明細</title>
     <!-- Custom styles for this page -->
-    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
+    <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
+    <style>
+        * {
+            font-size: 12px; /* 調整字體大小 */
+        }
 
+        .error {
+            font-size: 12px; /* 調整字體大小 */
+        }
+
+        .query-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .query-section label {
+            font-weight: bold;
+        }
+
+        .btn-blue {
+            font-size: 14px; /* 調整字體大小 */
+            color: #ffffff; /* 白色字體 */
+            background-color: #007bff; /* 按鈕背景藍色 */
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-blue:hover {
+            background-color: #0056b3; /* 深藍色，滑鼠懸停效果 */
+        }
+
+        .table-container {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body id="page-top">
 <!-- Page Wrapper -->
@@ -28,50 +65,62 @@
                 <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
                 <div>
                     <h2>商品訂單明細</h2>
-
-                    <div>
+                    <div class="query-section">
                         <form method="get" th:action="@{getSome}">
                             <div class="mb-3 row">
-                                <label for="productOrdNo" class="col-sm-2 col-form-label">訂單編號查詢</label>
-                                <div class="col-sm-3">
-                                    <select size="1" name="productOrdNo" id="productOrdNo"  >
-                                        <option th:each="detail : ${ListData}" th:value="${detail.compositeKey.productOrdNo}" th:text="${detail.compositeKey.productOrdNo} "></option>
+                                <label for="productOrdNo" class="col-form-label">訂單編號查詢</label>
+                                <div>
+                                    <select size="1" name="productOrdNo" id="productOrdNo" class="form-control">
+                                        <option th:each="detail : ${ListData}"
+                                                th:value="${detail.compositeKey.productOrdNo}"
+                                                th:text="${detail.compositeKey.productOrdNo}"></option>
                                     </select>
                                 </div>
+                                <button type="submit" class="btn-blue" style="     font-size: 14px; /* 調整字體大小 */
+            color: #ffffff; /* 白色字體 */
+            background-color: #007bff; /* 按鈕背景藍色 */
+            border: none;
+            padding: 2px 6px;
+            border-radius: 5px;
+            cursor: pointer;">送出查詢
+                                </button>
                             </div>
-                            <button type="submit">送出查詢</button>
                         </form>
-                    </div>
-                    <br>
-                    <div>
                         <form method="get" th:action="@{getSome}">
                             <div class="mb-3 row">
-                                <label for="productOrdNo" class="col-sm-2 col-form-label">商品編號查詢</label>
-                                <div class="col-sm-3">
-                                    <select size="1" name="productNo" id="productNo"  >
-                                        <option th:each="detail : ${ListData2}" th:value="${detail.compositeKey.productNo}" th:text="${detail.compositeKey.productNo} "></option>
+                                <label for="productNo" class="col-form-label">商品編號查詢</label>
+                                <div>
+                                    <select size="1" name="productNo" id="productNo" class="form-control">
+                                        <option th:each="detail : ${ListData2}"
+                                                th:value="${detail.compositeKey.productNo}"
+                                                th:text="${detail.compositeKey.productNo}"></option>
                                     </select>
                                 </div>
+                                <button type="submit" class="btn-blue" style="     font-size: 14px; /* 調整字體大小 */
+            color: #ffffff; /* 白色字體 */
+            background-color: #007bff; /* 按鈕背景藍色 */
+            border: none;
+            padding: 2px 6px;
+            border-radius: 5px;
+            cursor: pointer;">送出查詢
+                                </button>
                             </div>
-                            <button type="submit">送出查詢</button>
                         </form>
                     </div>
                 </div>
-
-
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <div th:if="${getSome}">
-                            <div th:insert="~{backend/productorderdetail/productorderdetail :: listSomeDetail}"></div>
-                        </div>
-                    </table>
+                <div class="table-container">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <div th:if="${getSome}">
+                                <div th:insert="~{backend/productorderdetail/productorderdetail :: listSomeDetail}"></div>
+                            </div>
+                        </table>
+                    </div>
                 </div>
-
             </div>
             <!-- /.container-fluid -->
         </div>
         <!-- End of Main Content -->
-
         <!-- Footer -->
         <footer th:replace="backend/component/bottom :: bottom"></footer>
         <!-- End of Footer -->
@@ -79,18 +128,15 @@
     <!-- End of Content Wrapper -->
 </div>
 <!-- End of Page Wrapper -->
-
 <!-- Scroll to Top Button-->
 <a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
 <!-- Logout Modal-->
 <div th:replace="backend/component/logout :: logout"></div>
-
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
 <!-- Page level plugins -->
 <script th:src="@{/backend/vendor/datatables/jquery.dataTables.min.js}"></script>
 <script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 <!-- Page level custom scripts -->
 <script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
-
 </body>
 </html>

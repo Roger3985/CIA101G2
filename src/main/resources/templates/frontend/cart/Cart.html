@@ -154,6 +154,7 @@
             <button id="customAlertCloseBtn" class="custom-alert-close-btn">&times;</button>
         </div>
     </div>
+
     <form th:action="@{/frontend/productorder/insertOrder}" method="post" th:object="${cartListData}" onsubmit="return validateForm()">
         <div class="container">
             <table class="table product-table">
@@ -177,9 +178,9 @@
                                 <img th:src="'data:image/png;base64,' + ${session['productImage' + cart.productNo]}" alt="Product Picture"/>
                             </a>
                         </td>
-                        <td th:id="productName" th:text="${cart.productName}"></td>
-                        <td th:id="productColor" th:text="${cart.productColor}"></td>
-                        <td id="productSize">
+                        <td th:text="${cart.productName}"></td>
+                        <td th:text="${cart.productColor}"></td>
+                        <td>
                             <span th:if="${cart.productSize == 0}">XS</span>
                             <span th:if="${cart.productSize == 1}">S</span>
                             <span th:if="${cart.productSize == 2}">M</span>
@@ -187,7 +188,7 @@
                             <span th:if="${cart.productSize == 4}">XL</span>
                             <span th:if="${cart.productSize == 5}">2L</span>
                         </td>
-                        <td class="price" th:id="productPrice" name="productPrice" th:text="${cart.productPrice}"></td>
+                        <td class="price" th:text="${cart.productPrice}"></td>
                         <td style="text-align: center;">
                             <div style="display: flex; justify-content: center; align-items: center;">
                                 <div class="cart-qty-01">
@@ -201,17 +202,18 @@
                                 </div>
                             </div>
                         </td>
-                        <td th:id="productAllPrice" name="productAllPrice" th:text="'$' + ${cart.productBuyQty * cart.productPrice}" th:onchange="updatePrice()"></td>
+                        <td class="total-price" th:text="'$' + ${cart.productBuyQty * cart.productPrice}"></td>
                         <td>
                             <input type="hidden" name="productNo" th:value="${cart.productNo}"/>
                             <input type="hidden" name="memNo" th:value="${cart.memNo}"/>
-                            <button class="remove-btn" type="button" onclick="confirmDelete(this)">
+                            <button class="remove-btn" type="button" onclick="deleteProduct(this)">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </td>
                     </tr>
                 </th:block>
                 </tbody>
+
             </table>
 
             <div class="card">
@@ -257,8 +259,11 @@
 <!-- Contact Javascript File -->
 <script th:src="@{/frontend/mail/jqBootstrapValidation.min.js}"></script>
 <script th:src="@{/frontend/mail/contact.js}"></script>
+
 <!-- Template Javascript -->
+
 <script th:inline="javascript">
+
     function updateQuantity(button, change) {
         var input = button.parentNode.querySelector('.cart-qty-input');
         var newValue = parseInt(input.value) + change;
@@ -271,20 +276,16 @@
 
     function updateTotal(input) {
         var quantity = parseInt(input.value);
-        var priceElement = input.closest('.productitm').querySelector('#productPrice');
-        var totalPriceElement = input.closest('.productitm').querySelector('#productAllPrice');
-        var price = parseFloat(priceElement.textContent.replace('$', '')); // 獲取商品單價並轉換為浮點數
+        var priceElement = input.closest('.productitm').querySelector('.price');
+        var totalPriceElement = input.closest('.productitm').querySelector('.total-price');
+        var price = parseFloat(priceElement.textContent); // 獲取商品單價並轉換為浮點數
         var total = price * quantity; // 計算總價
         totalPriceElement.textContent = '$' + total;
-        updateAllPrice()
+        updateAllPrice();
     }
 
-    window.onload = function () {
-        updateAllPrice();
-    };
-
     function updateAllPrice() {
-        var allPriceElements = document.querySelectorAll('#productAllPrice');
+        var allPriceElements = document.querySelectorAll('.total-price');
         var totalPrice = 0;
         // 遍歷每個商品的總價元素，並累加到總價中
         allPriceElements.forEach(function (element) {
@@ -295,6 +296,10 @@
         var totalPriceElement = document.getElementById('allprice');
         totalPriceElement.textContent = '$' + totalPrice;
     }
+
+    window.onload = function () {
+        updateAllPrice();
+    };
 
     function updateBackendQuantity(input) {
         var row = input.closest('.productitm');
@@ -313,18 +318,12 @@
             },
             success: function (data) {
                 console.log("更新成功");
-                updateTotalPrice(); // 更新總價
+                updateAllPrice(); // 更新總價
             },
             error: function () {
                 console.error('更新失敗');
             }
         });
-    }
-
-    function confirmDelete(button) {
-        if (confirm("確定要移除這個商品嗎？")) {
-            deleteProduct(button);
-        }
     }
 
     function deleteProduct(button) {
@@ -344,13 +343,15 @@
                 row.remove(); // 刪除對應行
                 console.log("刪除成功");
                 updateAllPrice(); // 更新總價
-                location.reload(); // 重新載入頁面
+                location.reload();
             },
             error: function () {
                 console.error('刪除失敗');
             }
         });
+
     }
+
     function customAlert(message) {
         // 设置弹窗消息
         document.getElementById("customAlertMessage").innerHTML = message;
@@ -380,6 +381,7 @@
     function validateForm() {
         return checkCartNotEmpty(); // 调用检查购物车是否为空的函数
     }
+
 </script>
 
 </body>

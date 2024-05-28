@@ -217,20 +217,27 @@
                             <div class="product-detail-actions d-flex flex-wrap pt-3">
                                 <div class="cart-qty me-3 mb-3">
                                     <div class="dec qty-btn qty_btn">-</div>
-                                    <input class="cart-qty-input form-control" type="text" name="qtybutton" value="1">
+                                    <input class="cart-qty-input form-control" type="text" name="productBuyQty" th:value="1">
                                     <div class="inc qty-btn qty_btn">+</div>
                                 </div>
                                 <div class="cart-button mb-3 d-flex">
-                                    <button class="btn btn-mode me-3">
-                                        <i class="fi-shopping-cart"></i>
-                                        加入購物車
-                                    </button>
-                                    <button class="btn btn-outline-mode me-3">
-                                        <i class="fi-heart"></i>
-                                    </button>
-                                    <button class="btn btn-outline-mode">
-                                        <i class="fi-repeat"></i>
-                                    </button>
+                                    <div class="product-media productitm">
+                                    <div class="product-cart-btn addToCartBtn">
+                                        <input type="hidden" name="productNo"
+                                               th:value="${productDTO.productList.get(0).productNo}">
+                                        <input type="hidden" name="productBuyQty" th:value="1">
+                                        <button class="btn btn-mode me-3"><i class="fi-shopping-cart"></i> Add to cart
+                                        </button>
+                                    </div>
+                                    </div>
+                                    <div class="product-action productitm">
+                                        <div class="addToFAVBtn">
+                                                <input type="hidden" name="productNo"
+                                                       th:value="${productDTO.productList.get(0).productNo}">
+                                                <button class="btn btn-outline-mode me-3"><i class="fi-heart"></i></button>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-outline-mode"><i class="fi-repeat"></i></button>
                                 </div>
                             </div>
                             <div class="product-info-buttons nav pt-4">
@@ -755,6 +762,60 @@
         });
     });
 
+</script>
+<script>
+    function testAddToCart(event) {
+        event.preventDefault();
+        var button = event.target; // 直接获取点击的按钮元素
+        var row = button.closest('.addToCartBtn'); // 找到包含该按钮的商品项
+        var productNo = row.querySelector('input[name="productNo"]').value;
+        var productBuyQty = row.querySelector('input[name="productBuyQty"]').value;
+
+        var data = {
+            productNo: productNo,
+            productBuyQty: productBuyQty
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "/frontend/cart/addproducttocart",
+            data: data,
+            success: function(response) {
+                console.log("Update successful");
+            },
+            error: function(error) {
+                console.log("Error:", error);
+            }
+        });
+    }
+
+    var addToCartButtons = document.querySelectorAll(".addToCartBtn button"); // 更新选择器
+    addToCartButtons.forEach(function(button) {
+        button.addEventListener("click", testAddToCart);
+    });
+    function testAddToFAV(event) {
+        event.preventDefault();
+        var button = event.target;
+        var row = button.closest('.productitm');
+        var productNo = row.querySelector('input[name="productNo"]').value;
+        var data = {
+            productNo: productNo,
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "/frontend/productmyfavorite/addProductTomyFAV",
+            data: data,
+            success: function(data) {
+                console.log("加入成功");
+            }
+        });
+    }
+
+    var addToFAVBtns = document.querySelectorAll(".addToFAVBtn button"); // 修正选择器
+    addToFAVBtns.forEach(function(button) {
+        button.addEventListener("click", testAddToFAV);
+    });
 </script>
 
 </body>

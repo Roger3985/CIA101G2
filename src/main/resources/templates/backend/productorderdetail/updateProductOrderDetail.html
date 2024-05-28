@@ -9,6 +9,30 @@
         .error {
             font-size: 12px; /* 調整字體大小 */
         }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            font-weight: bold;
+        }
+        .btn-blue {
+            font-size: 14px; /* 調整字體大小 */
+            color: #ffffff; /* 白色字體 */
+            background-color: #007bff; /* 按鈕背景藍色 */
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-blue:hover {
+            background-color: #0056b3; /* 深藍色，滑鼠懸停效果 */
+        }
+        .container-fluid {
+            padding: 20px;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body id="page-top">
@@ -29,71 +53,77 @@
                 <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
                 <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
                 <form method="post" th:action="@{update}" th:object="${productOrderDetail}">
-                    <div class="mb-3 row">
-                        <label for="productOrdNo" class="col-sm-2 col-form-label">商品訂單編號</label>
-                        <div class="col-sm-3">
-                            <input type="text" th:field="*{compositeKey.productOrdNo}" class="form-control" name="productOrdNo" id="productOrdNo" readonly>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">訂單資料修改</h6>
                         </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="productNo" class="col-sm-2 col-form-label">商品編號</label>
-                        <div class="col-sm-3">
-                            <input type="text" th:field="*{compositeKey.productNo}" class="form-control" name="productNo" id="productNo" readonly>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="productOrdNo" class="col-sm-2 col-form-label">商品訂單編號</label>
+                                <div class="col-sm-3">
+                                    <input type="text" th:field="*{compositeKey.productOrdNo}" class="form-control" name="productOrdNo" id="productOrdNo" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="productNo" class="col-sm-2 col-form-label">商品編號</label>
+                                <div class="col-sm-3">
+                                    <input type="text" th:field="*{compositeKey.productNo}" class="form-control" name="productNo" id="productNo" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="productPrice" class="col-sm-2 col-form-label">商品單價</label>
+                                <div class="col-sm-3">
+                                    <input type="text" th:field="*{productPrice}" class="form-control" name="productPrice" id="productPrice" readonly>
+                                    <span th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}" class="error" id="productPrice.errors"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="productOrdQty" class="col-sm-2 col-form-label">購買數量</label>
+                                <div class="col-sm-3">
+                                    <input type="text" th:field="*{productOrdQty}" class="form-control" name="productOrdQty" id="productOrdQty">
+                                    <span th:if="${#fields.hasErrors('productOrdQty')}" th:errors="*{productOrdQty}" class="error" id="productOrdQty.errors"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="productRealPrice" class="col-sm-2 col-form-label">實際商品金額</label>
+                                <div class="col-sm-3">
+                                    <input type="text" th:field="*{productRealPrice}" class="form-control" name="productRealPrice" id="productRealPrice" readonly>
+                                    <span th:if="${#fields.hasErrors('productRealPrice')}" th:errors="*{productRealPrice}" class="error" id="productRealPrice.errors"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="productComContent" class="col-sm-2 col-form-label">評價內容</label>
+                                <div class="col-sm-3">
+                                    <input type="text" th:field="*{productComContent}" class="form-control" name="productComContent" id="productComContent">
+                                    <span th:if="${#fields.hasErrors('productComContent')}" th:errors="*{productComContent}" class="error" id="productComContent.errors"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="productScore" class="col-sm-2 col-form-label">評價星等</label>
+                                <div class="col-sm-3">
+                                    <select size="1" name="productScore" id="productScore" th:field="*{productScore}" class="form-control">
+                                        <option th:value="1" th:text="一顆星"></option>
+                                        <option th:value="2" th:text="兩顆星"></option>
+                                        <option th:value="3" th:text="三顆星"></option>
+                                        <option th:value="4" th:text="四顆星"></option>
+                                        <option th:value="5" th:text="五顆星"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-3 offset-sm-2">
+                                    <input type="hidden" name="productOrdNo" th:value="${productOrderDetail.compositeKey.productOrdNo}">
+                                    <input type="hidden" name="productNo" th:value="${productOrderDetail.compositeKey.productNo}">
+                                    <button type="submit" class="btn-blue">送出修改</button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="productPrice" class="col-sm-2 col-form-label">商品單價</label>
-                        <div class="col-sm-3">
-                            <input type="text" th:field="*{productPrice}" class="form-control" name="productPrice" id="productPrice" readonly>
-                            <span th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}" class="error" id="productPrice.errors"></span>
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="productOrdQty" class="col-sm-2 col-form-label">購買數量</label>
-                        <div class="col-sm-3">
-                            <input type="text" th:field="*{productOrdQty}" class="form-control" name="productOrdQty" id="productOrdQty">
-                            <span th:if="${#fields.hasErrors('productOrdQty')}" th:errors="*{productOrdQty}" class="error" id="productOrdQty.errors"></span>
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="productRealPrice" class="col-sm-2 col-form-label">實際商品金額</label>
-                        <div class="col-sm-3">
-                            <input type="text" th:field="*{productRealPrice}" class="form-control" name="productRealPrice" id="productRealPrice" readonly>
-                            <span th:if="${#fields.hasErrors('productRealPrice')}" th:errors="*{productRealPrice}" class="error" id="productRealPrice.errors"></span>
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="productComContent" class="col-sm-2 col-form-label">評價內容</label>
-                        <div class="col-sm-3">
-                            <input type="text" th:field="*{productComContent}" class="form-control" name="productComContent" id="productComContent">
-                            <span th:if="${#fields.hasErrors('productComContent')}" th:errors="*{productComContent}" class="error" id="productComContent.errors"></span>
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="productScore" class="col-sm-2 col-form-label">評價星等</label>
-                        <div class="col-sm-3">
-                            <select size="1" name="productScore" id="productScore" th:field="*{productScore}">
-                                <option th:value="1" th:text="一顆星" /></option>
-                                <option th:value="2" th:text="兩顆星" /></option>
-                                <option th:value="3" th:text="三顆星" /></option>
-                                <option th:value="4" th:text="四顆星" /></option>
-                                <option th:value="5" th:text="五顆星" /></option>
-                            </select>
-                        </div>
-                    </div>
-
-
-                    <div>
-                        <input type="hidden" name="productOrdNo" th:value="${productOrderDetail.compositeKey.productOrdNo}">
-                        <input type="hidden" name="productNo" th:value="${productOrderDetail.compositeKey.productNo}">
-                        <div><button type="submit" id="submit"> 送出修改 </button></div>
                     </div>
                 </form>
             </div>
             <!-- /.container-fluid -->
         </div>
         <!-- End of Main Content -->
-
         <!-- Footer -->
         <footer th:replace="backend/component/bottom :: bottom"></footer>
         <!-- End of Footer -->
@@ -101,103 +131,10 @@
     <!-- End of Content Wrapper -->
 </div>
 <!-- End of Page Wrapper -->
-
 <!-- Scroll to Top Button-->
 <a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
 <!-- Logout Modal-->
 <div th:replace="backend/component/logout :: logout"></div>
-
 <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
-
-<script th:inline="javascript">
-    // Get傳遞
-    // function updateProductInstantly() {
-    //     var selectedProductNo = document.getElementById('productSelect').value;
-    //
-    //     var xhr = new XMLHttpRequest();
-    //     xhr.open('GET', '/backend/product/updateProduct/' + encodeURIComponent(selectedProductNo), true); // 將POST改為GET，並在URL中傳遞productNo
-    //     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    //     xhr.onload = function () {
-    //         if (xhr.status === 200) {
-    //             var productDetails = JSON.parse(xhr.responseText);
-    //
-    //             document.getElementById('productCatNo').value = productDetails.productCategory.productCatNo;
-    //             document.getElementById('productName').value = productDetails.productName;
-    //             document.getElementById('productInfo').value = productDetails.productInfo;
-    //             document.getElementById('productSize').value = productDetails.productSize;
-    //             document.getElementById('productColor').value = productDetails.productColor;
-    //             document.getElementById('productPrice').value = productDetails.productPrice;
-    //             document.getElementById('productStat').value = productDetails.productStat;
-    //             document.getElementById('productSalQty').value = productDetails.productSalQty;
-    //             document.getElementById('productComPeople').value = productDetails.productComPeople;
-    //             document.getElementById('productComScore').value = productDetails.productComScore;
-    //
-    //             // 手動更新URL
-    //             window.location.href = '/backend/product/updateProduct/' + encodeURIComponent(selectedProductNo);
-    //         } else {
-    //             console.error('Failed to fetch product details');
-    //         }
-    //     };
-    //
-    //     xhr.send();
-    // }
-
-    // 舊的寫法，用post傳遞
-    <!--    function updateProductOrderInstantly() {-->
-    <!--        var selectedProductOrderNo = document.getElementById('productOrderSelect').value;-->
-
-    <!--        var xhr = new XMLHttpRequest();-->
-    <!--        xhr.open('POST', '/backend/productorder/getProductOrderInstantly?productOrdNo=' + encodeURIComponent(selectedProductOrderNo), true);-->
-    <!--        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');-->
-    <!--        xhr.onload = function () {-->
-    <!--            if (xhr.status === 200) {-->
-    <!--                var productOrderDetails = JSON.parse(xhr.responseText);-->
-
-    <!--                document.getElementById('memNo').value = productOrderDetails.memNo;-->
-    <!--                document.getElementById('productByrName').value = productOrderDetails.productByrName;-->
-    <!--                document.getElementById('productByrPhone').value = productOrderDetails.productByrPhone;-->
-    <!--                document.getElementById('productByrEmail').value = productOrderDetails.productByrEmail;-->
-    <!--                document.getElementById('productRcvName').value = productOrderDetails.productRcvName;-->
-    <!--                document.getElementById('productRcvPhone').value = productOrderDetails.productRcvPhone;-->
-    <!--                document.getElementById('productAddr').value = productOrderDetails.productAddr;-->
-    <!--                document.getElementById('productAllPrice').value = productOrderDetails.productAllPrice;-->
-    <!--                document.getElementById('coupNo').value = productOrderDetails.coupon.coupNo;-->
-    <!--                document.getElementById('productDisc').value = productOrderDetails.productDisc;-->
-    <!--                document.getElementById('productRealPrice').value = productOrderDetails.productRealPrice;-->
-    <!--                document.getElementById('productOrdTime').value = productOrderDetails.productOrdTime;-->
-    <!--                document.getElementById('productOrdStat').value = productOrderDetails.productOrdStat;-->
-    <!--                document.getElementById('productStat').value = productOrderDetails.productStat;-->
-    <!--            } else {-->
-    <!--                console.error('Failed to fetch productorder details');-->
-    <!--            }-->
-    <!--        };-->
-
-    <!--        xhr.send();-->
-    <!--    }-->
-    <!--    function updatePriceInstantly() {-->
-    <!--        var selectedcoupNo = document.getElementById('coupNo').value;-->
-    <!--        var selectedProductOrderNo = document.getElementById('productOrderSelect').value;-->
-
-    <!--        var xhr = new XMLHttpRequest();-->
-    <!--        xhr.open('POST', '/backend/productorder/getcoupNoInstantly?coupNo=' + encodeURIComponent(selectedcoupNo) + '&productOrdNo=' + encodeURIComponent(selectedProductOrderNo)+ '&productOrdNo=' + encodeURIComponent(selectedProductOrderNo), true);-->
-    <!--        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');-->
-
-    <!--        xhr.onload = function () {-->
-    <!--            if (xhr.status === 200) {-->
-    <!--                var productOrdercoupNo = JSON.parse(xhr.responseText);-->
-
-
-    <!--                document.getElementById('productDisc').value = productOrdercoupNo.productDisc;-->
-    <!--                document.getElementById('productRealPrice').value = productOrdercoupNo.productRealPrice;-->
-
-    <!--            } else {-->
-    <!--                console.error('Failed to fetch productorder details');-->
-    <!--            }-->
-    <!--        };-->
-
-    <!--        xhr.send();-->
-    <!--    }-->
-    <!--</script>-->
-
 </body>
 </html>

@@ -11,7 +11,20 @@
         .completed-order {
             color: #1a1d20;
             background-color: darkgray;
-            opacity: 0.5;}
+            opacity: 0.5;
+        }
+        input[type="submit"].btn-blue {
+            font-size: 14px; /* 調整字體大小 */
+            color: #ffffff; /* 白色字體 */
+            background-color: #007fff; /* 按鈕背景藍色 */
+            border: none;
+            padding: 3px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"].btn-blue:hover {
+            background-color: #0056b3; /* 深藍色，滑鼠懸停效果 */
+        }
     </style>
 </head>
 <body id="page-top">
@@ -49,7 +62,6 @@
                                     <th>評價內容</th>
                                     <th>評價星等</th>
                                     <th>修改</th>
-
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -64,16 +76,14 @@
                                         <td th:text="${productOrderDetail.productScore}"></td>
                                         <td>
                                             <form method="post" th:action="@{/backend/productorderdetail/getOne_For_Update}" style="margin-bottom: 0px;">
-                                                <input type="submit" value="修改">
+                                                <input type="submit" class="btn-blue" value="修改">
                                                 <input type="hidden" name="productOrdNo" th:value="${productOrderDetail.compositeKey.productOrdNo}">
-                                                <input type="hidden" name="productNo" th:value="${productOrderDetail.compositeKey.productNo}"></form>
+                                                <input type="hidden" name="productNo" th:value="${productOrderDetail.compositeKey.productNo}">
+                                            </form>
                                         </td>
                                     </tr>
                                 </th:block>
-
-
                                 </tbody>
-
                             </table>
                         </div>
                     </div>
