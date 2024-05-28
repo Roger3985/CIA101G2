@@ -151,352 +151,132 @@
             </section>
             <!-- End section -->
             <!-- Product section -->
-            <section class="section">
+            <!-- You may also like -->
+            <section class="section bg-gray-100">
                 <div class="container">
-                    <div class="row justify-content-center section-heading">
+                    <div class="row justify-content-center mb-4 mb-lg-6">
                         <div class="col-lg-6 text-center">
-                            <p class="fs-6 m-0">Read Today’s News.</p>
-                            <h3 class="h2 mt-2">Latest Arrivals</h3>
+                            <h3 class="h2 mb-2">向您推薦</h3>
+                            <p class="fs-6 m-0">近期上市</p>
                         </div>
                     </div>
-                    <div class="row g-2 g-sm-3 g-lg-4">
-                        <!-- Product Box -->
-                        <div class="col-6 col-md-4 col-lg-3">
-                            <div class="product-card-1">
-                                <div class="product-card-image">
-                                    <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                    <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-heart"></i> </a><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-repeat"></i> </a><a data-bs-toggle="modal"
-                                            data-bs-target="#px-quick-view" href="javascript:void(0)"
-                                            class="btn btn-outline-primary"><i class="fi-eye"></i></a></div>
-                                    <div class="product-media"><a href="#"><img class="img-fluid"
-                                                th:src="@{/frontend/assets/img/fashion/product-1.jpg}" title=""
-                                                alt=""></a>
-                                        <div class="product-cart-btn"><a href="#"
-                                                class="btn btn-primary btn-sm w-100"><i class="fi-shopping-cart"></i>
-                                                Add to cart</a></div>
-                                    </div>
-                                </div>
-                                <div class="product-card-info">
-                                    <div class="product-meta small"><a href="#">Clothing</a>, <a href="#">Men</a></div>
-                                    <div class="rating-star text"><i class="bi-star-fill active"></i> <i
-                                            class="bi-star-fill active"></i> <i class="bi-star-fill active"></i> <i
-                                            class="bi-star-fill active"></i> <i class="bi-star"></i></div>
-                                    <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                    <div class="product-price"><span class="text-primary">$28.<small>50</small></span>
-                                        <del class="fs-sm text-muted">$38.<small>50</small></del>
-                                    </div>
-                                    <div class="nav-thumbs">
-                                        <div class="form-check radio-text form-check-inline"><input
-                                                class="form-check-input" type="radio" name="size3" id="btnradio1"
-                                                checked="checked"> <label class="radio-text-label"
-                                                for="btnradio1">XS</label></div>
-                                        <div class="form-check radio-text form-check-inline"><input
-                                                class="form-check-input" type="radio" name="size3" id="btnradio2">
-                                            <label class="radio-text-label" for="btnradio2">S</label>
-                                        </div>
-                                        <div class="form-check radio-text form-check-inline"><input
-                                                class="form-check-input" type="radio" name="size3" id="btnradio3">
-                                            <label class="radio-text-label" for="btnradio3">M</label>
-                                        </div>
-                                        <div class="form-check radio-text form-check-inline"><input
-                                                class="form-check-input" type="radio" name="size3" id="btnradio4">
-                                            <label class="radio-text-label" for="btnradio4">L</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Product Box -->
-                        <!-- Product Box -->
-                        <div class="col-6 col-md-4 col-lg-3">
-                            <div class="product-card-1">
-                                <div class="product-card-image">
-                                    <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                    <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-heart"></i> </a><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-repeat"></i> </a><a data-bs-toggle="modal"
-                                            data-bs-target="#px-quick-view" href="javascript:void(0)"
-                                            class="btn btn-outline-primary"><i class="fi-eye"></i></a></div>
-                                    <div class="product-media"><a href="#"><img class="img-fluid"
-                                                th:src="@{/frontend/assets/img/fashion/product-2.jpg}" title=""
-                                                alt=""></a>
-                                        <div class="product-cart-btn"><a href="#"
-                                                class="btn btn-primary btn-sm w-100"><i class="fi-shopping-cart"></i>
-                                                Add to cart</a></div>
-                                    </div>
-                                </div>
-                                <div class="product-card-info">
-                                    <div class="product-meta small"><a href="#">Clothing</a>, <a href="#">Men</a></div>
-                                    <div class="rating-star text"><i class="bi-star-fill active"></i> <i
-                                            class="bi-star-fill active"></i> <i class="bi-star-fill active"></i> <i
-                                            class="bi-star-fill active"></i> <i class="bi-star"></i></div>
-                                    <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                    <div class="product-price"><span class="text-primary">$28.<small>50</small></span>
-                                        <del class="fs-sm text-muted">$38.<small>50</small></del>
-                                    </div>
-                                    <div class="nav-thumbs">
-                                        <div class="form-check radio-color form-check-inline"><input
-                                                class="form-check-input" type="radio" name="color1" id="color_1"
-                                                checked=""> <label class="radio-color-label" for="color_1"><span
-                                                    style="background-color: #ffc8dd;"></span></label></div>
-                                        <div class="form-check radio-color form-check-inline"><input
-                                                class="form-check-input" type="radio" name="color1" id="color_2"> <label
-                                                class="radio-color-label" for="color_2"><span
-                                                    style="background-color: #1d3557;"></span></label></div>
-                                        <div class="form-check radio-color form-check-inline"><input
-                                                class="form-check-input" type="radio" name="color1" id="color_3"> <label
-                                                class="radio-color-label" for="color_3"><span
-                                                    style="background-color: #7209b7;"></span></label></div>
-                                        <div class="form-check radio-color form-check-inline"><input
-                                                class="form-check-input" type="radio" name="color1" id="color_4"> <label
-                                                class="radio-color-label" for="color_4"><span
-                                                    style="background-color: #c8b6ff;"></span></label></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Product Box -->
-                        <!-- Product Box -->
-                        <div class="col-6 col-md-4 col-lg-3">
-                            <div class="product-card-1">
-                                <div class="product-card-image">
-                                    <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                    <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-heart"></i> </a><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-repeat"></i> </a><a data-bs-toggle="modal"
-                                            data-bs-target="#px-quick-view" href="javascript:void(0)"
-                                            class="btn btn-outline-primary"><i class="fi-eye"></i></a></div>
-                                    <div class="product-media"><a href="#"><img class="img-fluid"
-                                                th:src="@{/frontend/assets/img/fashion/product-3.jpg}" title=""
-                                                alt=""></a>
-                                        <div class="product-cart-btn"><a href="#"
-                                                class="btn btn-primary btn-sm w-100"><i class="fi-shopping-cart"></i>
-                                                Add to cart</a></div>
-                                    </div>
-                                </div>
-                                <div class="product-card-info">
-                                    <div class="product-meta small"><a href="#">Clothing</a>, <a href="#">Men</a></div>
-                                    <div class="rating-star text"><i class="bi-star-fill active"></i> <i
-                                            class="bi-star-fill active"></i> <i class="bi-star-fill active"></i> <i
-                                            class="bi-star-fill active"></i> <i class="bi-star"></i></div>
-                                    <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                    <div class="product-price"><span class="text-primary">$28.<small>50</small></span>
-                                        <del class="fs-sm text-muted">$38.<small>50</small></del>
-                                    </div>
-                                    <div class="nav-thumbs">
-                                        <div class="form-check radio-text form-check-inline"><input
-                                                class="form-check-input" type="radio" name="size4" id="btnradio_1"
-                                                checked="checked"> <label class="radio-text-label"
-                                                for="btnradio_1">XS</label></div>
-                                        <div class="form-check radio-text form-check-inline"><input
-                                                class="form-check-input" type="radio" name="size4" id="btnradi_o2">
-                                            <label class="radio-text-label" for="btnradi_o2">S</label>
-                                        </div>
-                                        <div class="form-check radio-text form-check-inline"><input
-                                                class="form-check-input" type="radio" name="size4" id="btnradi_o3">
-                                            <label class="radio-text-label" for="btnradi_o3">M</label>
-                                        </div>
-                                        <div class="form-check radio-text form-check-inline"><input
-                                                class="form-check-input" type="radio" name="size4" id="btnradi_o4">
-                                            <label class="radio-text-label" for="btnradi_o4">L</label>
+                    <div class="swiper-hover-arrow position-relative">
+                        <div class="swiper swiper-container swiper-initialized swiper-horizontal swiper-pointer-events"
+                             data-swiper-options="{
+                      &quot;slidesPerView&quot;: 2,
+                      &quot;spaceBetween&quot;: 30,
+                      &quot;loop&quot;: true,
+                      &quot;pagination&quot;: {
+                        &quot;el&quot;: &quot;.swiper-pagination&quot;,
+                        &quot;clickable&quot;: true
+                        },
+                      &quot;navigation&quot;: {
+                        &quot;nextEl&quot;: &quot;.swiper-next-02&quot;,
+                        &quot;prevEl&quot;: &quot;.swiper-prev-02&quot;
+                      },
+                      &quot;autoplay&quot;: {
+                        &quot;delay&quot;: 3500,
+                        &quot;disableOnInteraction&quot;: false
+                      },
+                      &quot;breakpoints&quot;: {
+                        &quot;600&quot;: {
+                          &quot;slidesPerView&quot;: 2
+                        },
+                        &quot;991&quot;: {
+                          &quot;slidesPerView&quot;: 2
+                        },
+                        &quot;1200&quot;: {
+                          &quot;slidesPerView&quot;: 3
+                        }
+                      }
+                    }">
+                            <div class="swiper-wrapper" style="width: 100%;">
+                                <th:block th:each="productDTO, iterStat : ${productDTOList}">
+                                    <div class="swiper-slide" role="group"
+                                         th:attr="aria-label=${iterStat.index + 1} + ' / ' + ${productDTOList.size()}"
+                                         style="width: 156px; margin-right: 24px;">
+                                        <div class="product-card-1">
+                                            <div class="product-card-image">
+                                                <div th:if="${iterStat.index < newProductList.size() and newProductList[iterStat.index]}"
+                                                     class="badge-ribbon">
+                                                    <span class="badge bg-danger">最新上市</span>
+                                                </div>
+                                                <div class="product-action">
+                                                    <a href="#" class="btn btn-outline-primary">
+                                                        <i class="fi-heart"></i>
+                                                    </a>
+                                                    <a href="#" class="btn btn-outline-primary">
+                                                        <i class="fi-repeat"></i>
+                                                    </a>
+                                                    <!--                                                <a data-bs-toggle="modal" data-bs-target="#px-quick-view" href="javascript:void(0)" class="btn btn-outline-primary">-->
+                                                    <!--                                                    <i class="fi-eye"></i>-->
+                                                    <!--                                                </a>-->
+                                                </div>
+                                                <div class="product-media">
+                                                    <a th:href="@{/frontend/product/oneProduct(productNo=${productDTO.productNoList.get(0)})}">
+                                                        <img class="img-fluid"
+                                                             th:src="@{/frontend/productpicture/DBPhotoReader(productPicNo=${productDTO.productPicNoList.get(0)})}"
+                                                             title="" alt="">
+                                                    </a>
+                                                    <div class="product-cart-btn">
+                                                        <a href="#" class="btn btn-primary btn-sm w-100">
+                                                            <i class="fi-shopping-cart"></i>
+                                                            加入購物車
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="product-card-info">
+                                                <div class="product-meta small">
+                                                    <a href="#">Clothing</a>, <a href="#">Men</a>
+                                                </div>
+                                                <div class="rating-star text">
+                                                    <th:block th:each="star : ${#numbers.sequence(1, 5)}">
+                                                        <i th:classappend="${star <= productDTO.productScore ? 'bi bi-star-fill star' : (star - 0.5 <= productDTO.productScore ? 'bi bi-star-half star-half' : 'bi bi-star star-empty')}"></i>
+                                                    </th:block>
+                                                </div>
+                                                <h6 class="product-title">
+                                                    <a href="#" th:text="${productDTO.productName}"></a>
+                                                </h6>
+                                                <div class="product-price">
+                                                    <th:block th:each="productPrice : ${productDTO.productPriceSet}">
+                                                        <span class="text-primary" th:text="'$ ' + ${productPrice}"></span>
+                                                    </th:block>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </th:block>
                             </div>
+                            <div class="swiper-pagination mt-4 d-lg-none position-relative"></div>
+                            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
                         </div>
-                        <!-- End Product Box -->
-                        <!-- Product Box -->
-                        <div class="col-6 col-md-4 col-lg-3">
-                            <div class="product-card-1">
-                                <div class="product-card-image">
-                                    <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                    <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-heart"></i> </a><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-repeat"></i> </a><a data-bs-toggle="modal"
-                                            data-bs-target="#px-quick-view" href="javascript:void(0)"
-                                            class="btn btn-outline-primary"><i class="fi-eye"></i></a></div>
-                                    <div class="product-media"><a href="#"><img class="img-fluid"
-                                                th:src="@{/frontend/assets/img/fashion/product-4.jpg}" title=""
-                                                alt=""></a>
-                                        <div class="product-cart-btn"><a href="#"
-                                                class="btn btn-primary btn-sm w-100"><i class="fi-shopping-cart"></i>
-                                                Add to cart</a></div>
-                                    </div>
-                                </div>
-                                <div class="product-card-info">
-                                    <div class="product-meta small"><a href="#">Clothing</a>, <a href="#">Men</a></div>
-                                    <div class="rating-star text"><i class="bi-star-fill active"></i> <i
-                                            class="bi-star-fill active"></i> <i class="bi-star-fill active"></i> <i
-                                            class="bi-star-fill active"></i> <i class="bi-star"></i></div>
-                                    <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                    <div class="product-price"><span class="text-primary">$28.<small>50</small></span>
-                                        <del class="fs-sm text-muted">$38.<small>50</small></del>
-                                    </div>
-                                    <div class="nav-thumbs">
-                                        <div class="form-check radio-color form-check-inline"><input
-                                                class="form-check-input" type="radio" name="color2" id="color_5"
-                                                checked=""> <label class="radio-color-label" for="color_5"><span
-                                                    style="background-color: #38a3a5;"></span></label></div>
-                                        <div class="form-check radio-color form-check-inline"><input
-                                                class="form-check-input" type="radio" name="color2" id="color_6"> <label
-                                                class="radio-color-label" for="color_6"><span
-                                                    style="background-color: #1b263b;"></span></label></div>
-                                        <div class="form-check radio-color form-check-inline"><input
-                                                class="form-check-input" type="radio" name="color2" id="color_7"> <label
-                                                class="radio-color-label" for="color_7"><span
-                                                    style="background-color: #e0e1dd;"></span></label></div>
-                                        <div class="form-check radio-color form-check-inline"><input
-                                                class="form-check-input" type="radio" name="color2" id="color_8"> <label
-                                                class="radio-color-label" for="color_8"><span
-                                                    style="background-color: #ffd500;"></span></label></div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="swiper-arrow-style-02 swiper-next swiper-next-02" tabindex="0" role="button"
+                             aria-label="Next slide">
+                            <i class="bi bi-chevron-right"></i>
                         </div>
-                        <!-- End Product Box -->
-                        <!-- Product Box -->
-                        <div class="col-6 col-md-4 col-lg-3">
-                            <div class="product-card-1">
-                                <div class="product-card-image">
-                                    <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                    <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-heart"></i> </a><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-repeat"></i> </a><a data-bs-toggle="modal"
-                                            data-bs-target="#px-quick-view" href="javascript:void(0)"
-                                            class="btn btn-outline-primary"><i class="fi-eye"></i></a></div>
-                                    <div class="product-media"><a href="#"><img class="img-fluid"
-                                                th:src="@{/frontend/assets/img/fashion/product-5.jpg}" title=""
-                                                alt=""></a>
-                                        <div class="product-cart-btn"><a href="#"
-                                                class="btn btn-primary btn-sm w-100"><i class="fi-shopping-cart"></i>
-                                                Add to cart</a></div>
-                                    </div>
-                                </div>
-                                <div class="product-card-info">
-                                    <div class="product-meta small"><a href="#">Clothing</a>, <a href="#">Men</a></div>
-                                    <div class="rating-star text"><i class="bi-star-fill active"></i> <i
-                                            class="bi-star-fill active"></i> <i class="bi-star-fill active"></i> <i
-                                            class="bi-star-fill active"></i> <i class="bi-star"></i></div>
-                                    <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                    <div class="product-price"><span class="text-primary">$28.<small>50</small></span>
-                                        <del class="fs-sm text-muted">$38.<small>50</small></del>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="swiper-arrow-style-02 swiper-prev swiper-prev-02" tabindex="0" role="button"
+                             aria-label="Previous slide">
+                            <i class="bi bi-chevron-left"></i>
                         </div>
-                        <!-- End Product Box -->
-                        <!-- Product Box -->
-                        <div class="col-6 col-md-4 col-lg-3">
-                            <div class="product-card-1">
-                                <div class="product-card-image">
-                                    <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                    <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-heart"></i> </a><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-repeat"></i> </a><a data-bs-toggle="modal"
-                                            data-bs-target="#px-quick-view" href="javascript:void(0)"
-                                            class="btn btn-outline-primary"><i class="fi-eye"></i></a></div>
-                                    <div class="product-media"><a href="#"><img class="img-fluid"
-                                                th:src="@{/frontend/assets/img/fashion/product-6.jpg}" title=""
-                                                alt=""></a>
-                                        <div class="product-cart-btn"><a href="#"
-                                                class="btn btn-primary btn-sm w-100"><i class="fi-shopping-cart"></i>
-                                                Add to cart</a></div>
-                                    </div>
-                                </div>
-                                <div class="product-card-info">
-                                    <div class="product-meta small"><a href="#">Clothing</a>, <a href="#">Men</a></div>
-                                    <div class="rating-star text"><i class="bi-star-fill active"></i> <i
-                                            class="bi-star-fill active"></i> <i class="bi-star-fill active"></i> <i
-                                            class="bi-star-fill active"></i> <i class="bi-star"></i></div>
-                                    <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                    <div class="product-price"><span class="text-primary">$28.<small>50</small></span>
-                                        <del class="fs-sm text-muted">$38.<small>50</small></del>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Product Box -->
-                        <!-- Product Box -->
-                        <div class="col-6 col-md-4 col-lg-3">
-                            <div class="product-card-1">
-                                <div class="product-card-image">
-                                    <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                    <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-heart"></i> </a><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-repeat"></i> </a><a data-bs-toggle="modal"
-                                            data-bs-target="#px-quick-view" href="javascript:void(0)"
-                                            class="btn btn-outline-primary"><i class="fi-eye"></i></a></div>
-                                    <div class="product-media"><a href="#"><img class="img-fluid"
-                                                th:src="@{/frontend/assets/img/fashion/product-7.jpg}" title=""
-                                                alt=""></a>
-                                        <div class="product-cart-btn"><a href="#"
-                                                class="btn btn-primary btn-sm w-100"><i class="fi-shopping-cart"></i>
-                                                Add to cart</a></div>
-                                    </div>
-                                </div>
-                                <div class="product-card-info">
-                                    <div class="product-meta small"><a href="#">Clothing</a>, <a href="#">Men</a></div>
-                                    <div class="rating-star text"><i class="bi-star-fill active"></i> <i
-                                            class="bi-star-fill active"></i> <i class="bi-star-fill active"></i> <i
-                                            class="bi-star-fill active"></i> <i class="bi-star"></i></div>
-                                    <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                    <div class="product-price"><span class="text-primary">$28.<small>50</small></span>
-                                        <del class="fs-sm text-muted">$38.<small>50</small></del>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Product Box -->
-                        <!-- Product Box -->
-                        <div class="col-6 col-md-4 col-lg-3">
-                            <div class="product-card-1">
-                                <div class="product-card-image">
-                                    <div class="badge-ribbon"><span class="badge bg-danger">Sale</span></div>
-                                    <div class="product-action"><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-heart"></i> </a><a href="#" class="btn btn-outline-primary"><i
-                                                class="fi-repeat"></i> </a><a data-bs-toggle="modal"
-                                            data-bs-target="#px-quick-view" href="javascript:void(0)"
-                                            class="btn btn-outline-primary"><i class="fi-eye"></i></a></div>
-                                    <div class="product-media"><a href="#"><img class="img-fluid"
-                                                th:src="@{/frontend/assets/img/fashion/product-8.jpg}" title=""
-                                                alt=""></a>
-                                        <div class="product-cart-btn"><a href="#"
-                                                class="btn btn-primary btn-sm w-100"><i class="fi-shopping-cart"></i>
-                                                Add to cart</a></div>
-                                    </div>
-                                </div>
-                                <div class="product-card-info">
-                                    <div class="product-meta small"><a href="#">Clothing</a>, <a href="#">Men</a></div>
-                                    <div class="rating-star text"><i class="bi-star-fill active"></i> <i
-                                            class="bi-star-fill active"></i> <i class="bi-star-fill active"></i> <i
-                                            class="bi-star-fill active"></i> <i class="bi-star"></i></div>
-                                    <h6 class="product-title"><a href="#">Fine-knit sweater</a></h6>
-                                    <div class="product-price"><span class="text-primary">$28.<small>50</small></span>
-                                        <del class="fs-sm text-muted">$38.<small>50</small></del>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Product Box -->
                     </div>
                 </div>
             </section>
+            <!-- End You may also like -->
             <!-- End Product section -->
             <!-- call to action -->
-            <section class="py-12 bg-cover bg-center bg-no-repeat"
-                style="background-image: url(../../assets/img/fashion/bg-banner-1.jpg);">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-7 text-center">
-                            <h6 class="text-white mb-4">Hurry up! Limited time offer</h6>
-                            <h3 class="display-2 fw-300 text-white">Nw Exclusive<br>2021 Collection</h3>
-                            <div class="pt-4"><a class="btn btn-outline-white" href="#">Discover More</a></div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+<!--            <section class="py-12 bg-cover bg-center bg-no-repeat"-->
+<!--                style="background-image: url(../../assets/img/fashion/bg-banner-1.jpg);">-->
+<!--                <div class="container">-->
+<!--                    <div class="row justify-content-center">-->
+<!--                        <div class="col-lg-7 text-center">-->
+<!--                            <h6 class="text-white mb-4">Hurry up! Limited time offer</h6>-->
+<!--                            <h3 class="display-2 fw-300 text-white">Nw Exclusive<br>2021 Collection</h3>-->
+<!--                            <div class="pt-4"><a class="btn btn-outline-white" href="#">Discover More</a></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </section>-->
             <!-- End call to action -->
             <!-- Product section -->
             <!-- section -->

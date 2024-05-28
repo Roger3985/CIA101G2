@@ -1,23 +1,26 @@
-package com;
+package com.ren;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ren.product.dto.ProductDTO;
 import com.ren.product.entity.Product;
 import com.ren.product.service.impl.ProductServiceImpl;
 import com.yu.rental.entity.Rental;
 import com.yu.rental.service.RentalServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.Session;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,17 +39,42 @@ public class FrontendIndexController {
      */
     @GetMapping("/")
     public String toFrontendIndex(HttpServletRequest req,
+                                  ModelMap model,
                                   HttpSession session) {
 //        Cookie[] cookies = req.getCookies();
 //        for (var cookie : cookies) {
 //            System.out.println("cookieName: " + cookie.getName() + ", cookieValue: " + cookie.getValue());
 //        }
-
+        System.out.println("前台首頁你在哪???");
         String location = "";
 
         if ((location = (String) session.getAttribute("location")) != null) {
             return "redirect:" + location;
         }
+
+        Pageable pageable = PageRequest.of(0, 10);
+        String sortType = "newest";
+        Page<ProductDTO> productPage = productSvc.getVisitProductFromRedis(pageable, sortType);
+
+        List<Boolean> newProductList = new ArrayList<>();
+        for (ProductDTO prodDTO : productPage.getContent()) {
+            Boolean newProduct = false;
+            if (prodDTO.getProductOnShelfSet() != null && !prodDTO.getProductOnShelfSet().isEmpty()) {
+                List<Timestamp> list = new ArrayList<>(prodDTO.getProductOnShelfSet());
+                list.sort(Comparator.naturalOrder());
+
+                LocalDateTime now = LocalDateTime.now();
+                LocalDateTime dateTime = list.get(0).toLocalDateTime();
+                Long daysDifference = ChronoUnit.DAYS.between(dateTime, now);
+                if (daysDifference < 7) {
+                    newProduct = true;
+                }
+                newProductList.add(newProduct);
+            }
+            System.out.println("到底有沒有印呢?" + prodDTO.getProductID());
+        }
+        model.addAttribute("newProductList", newProductList);
+        model.addAttribute("productDTOList", productPage.getContent());
 
         return "/index";
     }

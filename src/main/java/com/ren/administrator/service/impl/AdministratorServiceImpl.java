@@ -19,6 +19,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
@@ -189,6 +190,7 @@ public class AdministratorServiceImpl implements AdministratorService_interface 
         if (administrator.getAdmLogin() == 0 || administrator.getAdmLogout() == 1) {
             administrator.setAdmLogin(Byte.valueOf("1"));
             administrator.setAdmLogout(Byte.valueOf("0"));
+            administrator.setAdmActiveTime(new Timestamp(System.currentTimeMillis()));
             // 返回更新後的administrator
             administrator = updateAdministrator(administrator);
         }
