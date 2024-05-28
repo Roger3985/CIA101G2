@@ -55,7 +55,6 @@ public class Scheduler {
 
             if (today.equals(coupReltime)) {
 
-                System.out.println("優惠券編號" + coupon.getCoupNo() + "發卷給所有會員嚕!");
                 List<Member> memberList = memberService.findAll();
                 if (coupon.getCoupCond().equals("所有會員")) {
                     for (Member member : memberList) {
@@ -70,12 +69,13 @@ public class Scheduler {
                         myCoupon.setCoupExpDate(coupon.getCoupExpDate());
                         myCouponService.addMyCoupon(myCoupon);
 
+                        System.out.println("優惠券編號" + coupon.getCoupNo() + "發卷給所有會員嚕!");
                         coupon.setCoupRelStat(Byte.valueOf("1"));
                         couponService.updateCoupon(coupon);
 
                         Notice newNotice = new Notice();
                         newNotice.setMember(memberService.findByNo(member.getMemNo()));
-                        String returnRemind = "您收到一張優惠券，請至我的優惠券查看詳情";
+                        String returnRemind = "您收到一張優惠券，請至【我的優惠券】查看詳情";
                         newNotice.setNotContent(returnRemind);
                         newNotice.setNotTime(new Timestamp(System.currentTimeMillis()));
                         newNotice.setNotStat((byte) 0);
@@ -99,7 +99,6 @@ public class Scheduler {
                         }
                     }
                     for (Member memberBd : bdMemList) {
-                        System.out.println("優惠券編號" + coupon.getCoupNo() + "發卷給當月壽星嚕!");
                         MyCoupon myCoupon = new MyCoupon();
                         MyCoupon.CompositeCouponMember compositeKey = new MyCoupon.CompositeCouponMember();
                         compositeKey.setMemNo(memberBd.getMemNo());
@@ -109,6 +108,7 @@ public class Scheduler {
                         myCoupon.setCoupUsedStat(Byte.valueOf("0"));
                         myCoupon.setCoupExpDate(coupon.getCoupExpDate());
                         myCouponService.addMyCoupon(myCoupon);
+                        System.out.println("優惠券編號" + coupon.getCoupNo() + "發卷給當月壽星嚕!");
 
                         coupon.setCoupRelStat(Byte.valueOf("1"));
                         couponService.updateCoupon(coupon);

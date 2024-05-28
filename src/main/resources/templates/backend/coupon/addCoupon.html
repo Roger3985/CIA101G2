@@ -134,61 +134,46 @@
             document.getElementById(d).style.display = "none";
         }
 
-        function isLeapYear(year) {
-            return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
-        }
+        // function isLeapYear(year) {
+        //     return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+        // }
+        //
+        // function getDaysOfMonth(year, month) {
+        //     switch (month) {
+        //         case 1:  // January
+        //         case 3:  // March
+        //         case 5:  // May
+        //         case 7:  // July
+        //         case 8:  // August
+        //         case 10: // October
+        //         case 12: // December
+        //             return 31;
+        //         case 4:  // April
+        //         case 6:  // June
+        //         case 9:  // September
+        //         case 11: // November
+        //             return 30;
+        //         case 2:  // February
+        //             return isLeapYear(year) ? 29 : 28;
+        //         default:
+        //             throw new Error("Invalid month");
+        //     }
+        // }
+        //
 
-        function getDaysOfMonth(year, month) {
-            switch (month) {
-                case 1:  // January
-                case 3:  // March
-                case 5:  // May
-                case 7:  // July
-                case 8:  // August
-                case 10: // October
-                case 12: // December
-                    return 31;
-                case 4:  // April
-                case 6:  // June
-                case 9:  // September
-                case 11: // November
-                    return 30;
-                case 2:  // February
-                    return isLeapYear(year) ? 29 : 28;
-                default:
-                    throw new Error("Invalid month");
-            }
-        }
+        // 取得當前年份和月份
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth();
 
-        function getNextMonthFirstAndLastDate() {
-            const now = new Date();
-            const currentYear = now.getUTCFullYear();
-            const currentMonth = now.getUTCMonth(); // 0-based, January is 0
+        // 取得下個月的第一天
+        const firstDayNextMonth = new Date(currentYear, currentMonth + 1, 1);
+        const lastDayNextMonth = new Date(currentYear, currentMonth + 2, 0);
+        console.log(firstDayNextMonth);
+        console.log(lastDayNextMonth);
 
-            // Calculate next month and year
-            let nextMonth = currentMonth + 1;
-            let nextYear = currentYear;
-            if (nextMonth > 11) {
-                nextMonth = 0;
-                nextYear += 1;
-            }
-
-            // First day of next month in GMT
-            const firstDayNextMonth = new Date(nextYear, nextMonth, 1, 0, 0, 0);
-
-            // Last day of next month in GMT
-            const daysInNextMonth = getDaysOfMonth(nextYear, nextMonth + 1); // 1-based for this function
-            const lastDayNextMonth = new Date(nextYear, nextMonth, daysInNextMonth, 0, 0, 0);
-
-            return {
-                firstDayNextMonth,
-                lastDayNextMonth
-            };
-        }
-
-        const {firstDayNextMonth, lastDayNextMonth} = getNextMonthFirstAndLastDate();
-        console.log("Next month's first day (GMT): ", firstDayNextMonth.toISOString());
-        console.log("Next month's last day (GMT): ", lastDayNextMonth.toISOString());
+        // 將日期轉換為當地時間的 ISO 字符串
+        const firstDayNextMonthISO = new Date(firstDayNextMonth.getTime() - (firstDayNextMonth.getTimezoneOffset() * 60000)).toISOString().split('.')[0];
+        const lastDayNextMonthISO = new Date(lastDayNextMonth.getTime() - (lastDayNextMonth.getTimezoneOffset() * 60000)).toISOString().split('.')[0];
 
 
         document.querySelectorAll(".form-check-input").forEach(function (radio) {
@@ -198,16 +183,17 @@
                     document.getElementById("disc").value = 0.85;
 
                     // Set the release date and expiry date
-                    // document.getElementById("coupRelDate").value = firstDayNextMonth.toISOString().toLocaleString().slice(0, 16);
-                    // console.log(firstDayNextMonth);
-                    // console.log(firstDayNextMonth.toISOString().toLocaleString().slice(0, 16));
-                    // document.getElementById("coupExpDate").value = lastDayNextMonth.toISOString().toLocaleString().slice(0, 16);
-                    // console.log(lastDayNextMonth)
-                    // console.log(lastDayNextMonth.toISOString().toLocaleString().slice(0, 16));
+                    document.getElementById("coupRelDate").value = firstDayNextMonthISO;
+                    console.log(firstDayNextMonthISO);
+                    document.getElementById("coupExpDate").value = lastDayNextMonthISO;
+                    console.log(lastDayNextMonthISO)
 
                 } else if (radio.value === "所有會員") {
                     document.getElementById("info").value = "fall衣love與您一同慶祝OO節，獻上九折優惠券，快來逛逛吧！";
                     document.getElementById("disc").value = 0.9;
+                    document.getElementById("coupRelDate").value = firstDayNextMonthISO;
+                    document.getElementById("coupExpDate").value = lastDayNextMonthISO;
+
                 }
             });
         });
