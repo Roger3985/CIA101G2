@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zxx" data-bs-theme="light">
+
+<head><!-- metas -->
+    <meta charset="utf-8">
+    <meta name="author" content="pxdraft">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template">
+    <!-- title -->
+    <title>Fall衣Love最新消息</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <!-- CSS Template -->
+    <th:block th:include="~{frontend/component/plugin/frontendplugin.html :: css}"></th:block>
+</head>
+
+<body>
+<!-- 通用插件 -->
+<th:block th:replace="frontend/component/plugin/frontendplugin :: components"></th:block>
+<!-- 通用插件 -->
+<!--
+========================
+    Wrapper
+========================
+-->
+<div class="wrapper">
+    <!-- header height -->
+    <div class="header-height-bar" style="min-height: 104.865px;"></div>
+    <!-- Header -->
+    <header th:replace="frontend/component/header :: header"></header>
+    <!-- End Header -->
+    <!-- Main -->
+    <main>
+        <!-- Breadcrumb -->
+        <div class="py-3 bg-gray-100">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 my-2">
+                        <h1 class="m-0 h4 text-center text-lg-start">Faq's</h1>
+                    </div>
+                    <div class="col-lg-6 my-2">
+                        <ol class="breadcrumb m-0 small justify-content-center justify-content-lg-end">
+                            <li class="breadcrumb-item"><a class="text-nowrap text-reset" href="#"><i
+                                    class="bi bi-home"></i>Home</a></li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page">Faq's</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Breadcrumb -->
+        <table>
+            <thead>
+            <tr>
+                <th>標題</th>
+                <th>內容</th>
+                <th>發布時間</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="news : ${newsListData}">
+                <tr>
+                    <td th:text="${news.newsTitle}"></td>
+                    <td th:text="${news.newsContent}"></td>
+                    <td th:text="${news.postTime}"></td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </main>
+    <!-- Footer -->
+    <footer th:replace="frontend/component/footer :: footer"></footer>
+    <!-- End Footer -->
+</div>
+<!--
+========================
+   End Wrapper
+========================
+-->
+<!-- script start -->
+<th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
+<!-- End script start -->
+</body>
+
+</html>

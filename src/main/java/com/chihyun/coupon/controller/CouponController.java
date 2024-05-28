@@ -17,6 +17,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -232,6 +233,17 @@ public class CouponController {
         return list;
     }
 
+    @ModelAttribute("UniqueList")
+    protected List<BigDecimal> getUnique(){
+        List<Coupon> coupons = couponSvc.getAll(); // 假设这个方法获取所有的优惠券
+        return couponSvc.getUniqueDiscounts(coupons);
+    }
+
+    @ModelAttribute("UniqueCondList")
+    protected List<String> getUniqueCon(){
+        List<Coupon> coupons = couponSvc.getAll();
+        return couponSvc.getUniqueCond(coupons);
+    }
 
 
     /*

@@ -51,6 +51,7 @@ public class NewsBackendController {
                          @RequestParam String postTime) throws IOException {
 
         news.setPostTime(Timestamp.valueOf(LocalDateTime.now()));
+        System.out.println("有換行嗎?"+news.getNewsContent());
 
         if (result.hasFieldErrors()) {
             List<String> errorMessage = new ArrayList<>();

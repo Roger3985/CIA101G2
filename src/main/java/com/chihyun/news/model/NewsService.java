@@ -27,7 +27,7 @@ public class NewsService {
         return optional.orElse(null);
     }
     public List<News> getAll(){
-        List<News> list = repository.findAll();
+        List<News> list = repository.findAllByOrderByPostTimeDesc();
         return list;
     }
     public void deleteNews(Integer newsNo){

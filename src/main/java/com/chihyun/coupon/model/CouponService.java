@@ -6,9 +6,11 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service("couponService")
 public class CouponService {
@@ -51,7 +53,6 @@ public class CouponService {
        return list;
     }
 
-
     public List<Coupon> getAll() {
         return repository.findAll();
     }
@@ -59,4 +60,19 @@ public class CouponService {
     public List<Coupon> getAll(Map<String, String[]> map) {
         return CompositeQuery_Coupon.getAllC(map, sessionFactory.openSession());
     }
+
+    public List<BigDecimal> getUniqueDiscounts(List<Coupon> coupons) {
+        return coupons.stream()
+                .map(Coupon::getCoupDisc) // 提取折扣数
+                .distinct()               // 去重
+                .collect(Collectors.toList()); // 收集为列表
+    }
+
+    public List<String> getUniqueCond(List<Coupon> coupons){
+        return coupons.stream()
+                .map(Coupon::getCoupCond)
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
 }

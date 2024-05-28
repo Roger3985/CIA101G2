@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>後台即時客服</title>
-    <!-- Favicon -->
-    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <title>後台客服</title>
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <link rel="stylesheet" th:href="@{/css/backend/service/backendChat.css}">
 </head>
 
-<body onload="connect();">
+<body id="page-top">
+<div th:replace="backend/component/loading :: loading"></div>
 <!-- Page Wrapper -->
 <div id="wrapper">
     <!-- Sidebar -->
@@ -25,11 +24,11 @@
             <!-- End of Topbar -->
             <!-- Begin Page Content -->
             <div class="container-fluid">
-
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
                 <div class="chat-container" id="chat-page">
                     <div class="users-list">
                         <div class="users-list-container">
-                            <h2>在線會員</h2>
+                            <h2>Online Users</h2>
                             <ul id="connectedUsers">
                             </ul>
                         </div>
@@ -41,30 +40,28 @@
 
                         <form id="messageForm" name="messageForm">
                             <div class="message-input">
-                                <input autocomplete="off" type="text" id="message" placeholder="請輸入訊息...">
-                                <button type="button" id="msg_btn">送出</button>
+                                <input autocomplete="off" type="text" id="message" placeholder="Type your message...">
+                                <button type="button" id="msg_btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                         class="bi bi-send" viewBox="0 0 16 16">
+                                        <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
+                                    </svg>
+                                </button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-            <!-- /.container-fluid -->
         </div>
-        <!-- End of Main Content -->
+        <!-- End of Page Wrapper -->
+        <!-- Scroll to Top Button-->
+        <a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+        <!-- Logout Modal-->
+        <div th:replace="backend/component/logout :: logout"></div>
 
-        <!-- Footer -->
-        <footer th:replace="backend/component/bottom :: bottom"></footer>
-        <!-- End of Footer -->
+        <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
     </div>
-    <!--     End of Content Wrapper -->
 </div>
-<!-- End of Page Wrapper -->
-
-<!-- Scroll to Top Button-->
-<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
-<!-- Logout Modal-->
-<div th:replace="backend/component/logout :: logout"></div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script type="text/javascript" th:src="@{/js/backend/service/backendChat.js}"></script>

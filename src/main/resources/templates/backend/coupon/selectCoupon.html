@@ -9,6 +9,21 @@
         .list-item {
             list-style: none;
         }
+
+        .btn-outline-primary {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .form-select {
+            border: 1px solid #d1d3e2;
+        !important;
+            border-radius: .35rem;
+        !important;
+            line-height: 1.5;
+        }
+
+
     </style>
 </head>
 <body id="page-top">
@@ -28,58 +43,103 @@
             <div class="container-fluid">
                 <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
 
-                <h4><span>資料查詢</span></h4>
+                <h4 class="display-6 font-weight-bold text-primary">資料查詢</h4>
                 <!-- 錯誤表列 -->
                 <div class="errorblock" th:utext="${errorMessage}">${errorMessage}</div>
-                <br>
 
                 <!--ListAll-->
                 <div class="a">
                     <!-- href對應controller的get/postmapping，會長在瀏覽器標頭上   -->
-                    <p style="color: blue">查詢所有優惠券:</p>
-                    <h6><a href='couponlist'>List</a> all Coupons. </h6><br>
+                    <p class="display-6 text-secondary">查詢所有優惠券:</p>
+                    <h5 class="display-8 text-secondary"><a href='couponlist'>List all Coupons</a></h5>
                 </div>
 
                 <!--萬用複合查詢-->
                 <form method="post" th:action="@{listCoupons_ByCompositeQuery}">
                     <p style="color: blue">萬用複合查詢:</p>
 
-                    輸入優惠券編號:
-                    <input type="text" name="coupNo"><br>
+                    <div class="mb-3 row">
+                        <label class="col-form-label">輸入優惠券編號:</label>
+                        <div class="col-3">
+                            <input class="form-control" type="text" name="coupNo">
+                        </div>
+                    </div>
 
-                    輸入優惠券名稱:
-                    <input type="text" name="coupName" value="壽星"><br>
+                    <div class="mb-3 row">
+                        <label class="col-form-label">輸入優惠券名稱:</label>
+                        <div class="col-3">
+                            <input class="form-control" type="text" name="coupName" value="壽星">
+                        </div>
+                    </div>
 
-                    輸入發放條件:
-                    <input type="text" name="coupCond"><br>
+                    <div class="mb-3 row">
+                        <label class="col-form-label">輸入發放條件:</label>
+                        <select class="form-select" name="coupCond">
+                            <option value=""></option>
+                            <option th:each="coupCond : ${UniqueCondList}" th:value="${coupCond}"
+                                    th:text="${coupCond}"></option>
+                        </select>
+                    </div>
 
-                    選擇折扣數:
-                    <select name="coupDisc">
-                        <option value=""></option>
-                        <option th:each="coupon : ${couponListData}" th:value="${coupon.coupDisc}"
-                                th:text="${coupon.coupDisc}"></option>
-                    </select><br>
+                    <div class="mb-3 row">
+                        <label class="col-form-label">選擇折扣數:</label>
+                        <select class="form-select" name="coupDisc">
+                            <option value=""></option>
+                            <option th:each="coupDisc : ${UniqueList}" th:value="${coupDisc}"
+                                    th:text="${coupDisc}"></option>
+                        </select>
+                    </div>
 
-                    建立日期範圍:
-                    <input name="coupAddDateStart" type="date"> ~
-                    <input name="coupAddDateEnd" type="date"><br>
+<!--                    <div class="mb-3 row align-items-center">-->
+<!--                        <label class="col-form-label">建立日期範圍:</label>-->
+<!--                        <div class="col-2">-->
+<!--                            <input class="form-control" name="coupAddDateStart" type="date">-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <p style="margin-top: 0; margin-bottom: 0;">~</p>-->
+<!--                        </div>-->
+<!--                        <div class="col-2">-->
+<!--                            <input class="form-control" name="coupAddDateEnd" type="date">-->
+<!--                        </div>-->
+<!--                    </div>-->
 
-                    失效日期範圍:
-                    <input name="coupExpDateStart" type="date"> ~
-                    <input name="coupExpDateEnd" type="date"><br>
+<!--                    <div class="mb-3 row">-->
+<!--                        <label class="col-form-label">失效日期範圍:</label>-->
+<!--                        <div class="col-2">-->
+<!--                            <input class="form-control" name="coupExpDateStart" type="date">-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <p style="margin-top: 0; margin-bottom: 0;">~</p>-->
+<!--                        </div>-->
+<!--                        <div class="col-2">-->
+<!--                            <input class="form-control" name="coupExpDateEnd" type="date">-->
+<!--                        </div>-->
+<!--                    </div>-->
 
-                    發放日期範圍:
-                    <input name="coupRelDateStart" type="date"> ~
-                    <input name="coupRelDateEnd" type="date"><br>
+<!--                    <div class="mb-3 row">-->
+<!--                        <label class="col-form-label">發放日期範圍:</label>-->
+<!--                        <div class="col-2">-->
+<!--                            <input class="form-control" name="coupRelDateStart" type="date">-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <p style="margin-top: 0; margin-bottom: 0;">~</p>-->
+<!--                        </div>-->
+<!--                        <div class="col-2">-->
+<!--                            <input class="form-control" name="coupRelDateEnd" type="date">-->
+<!--                        </div>-->
+<!--                    </div>-->
 
-                    選擇發放狀態:
-                    <select name="coupRelStat">
-                        <option value=""></option>
-                        <option value="0">未發送</option>
-                        <option value="1">已發送</option>
-                    </select><br>
-
-                    <input type="submit" value="送出">
+                    <div class="mb-3 row ">
+                        <label class="col-form-label">選擇發放狀態:</label>
+                        <select class="form-select" name="coupRelStat">
+                            <option value=""></option>
+                            <option value="0">未發送</option>
+                            <option value="1">已發送</option>
+                        </select>
+                    </div>
+                    <div class="col-12 g-1">
+                        <button class="btn btn-outline-primary" type="submit" id="submit">送出查詢</button>
+                    </div>
                 </form>
             </div>
             <!-- /.container-fluid -->

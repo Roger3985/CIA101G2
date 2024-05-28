@@ -8,7 +8,10 @@
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <style>
-
+        .btn-outline-primary {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 
@@ -27,33 +30,40 @@
             <!-- End of Topbar -->
             <!-- Begin Page Content -->
             <div class="container-fluid">
-<!--                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>-->
+                <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <h4 class="display-6 font-weight-bold text-primary">新增客服機器人資料</h4>
                 <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
                 <form method="post" th:action="@{/backend/servicerobot/insert}" th:object="${serviceRobot}">
-<!--                    <div class="mb-3 row">-->
-<!--                        <label for="keywordNo" class="col-sm-2 col-form-label">編號</label>-->
-<!--                        <div class="col-sm-3">-->
-<!--                            <input type="text" th:field="*{keywordNo}" class="form-control" name="keywordNo" id="keywordNo">-->
-<!--                        </div>-->
-<!--                    </div>-->
+                    <!--                    <div class="mb-3 row">-->
+                    <!--                        <label for="keywordNo" class="col-sm-2 col-form-label">編號</label>-->
+                    <!--                        <div class="col-sm-3">-->
+                    <!--                            <input type="text" th:field="*{keywordNo}" class="form-control" name="keywordNo" id="keywordNo">-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
                     <div class="mb-3 row">
                         <label for="keywordName" class="col-sm-2 col-form-label">關鍵字</label>
-                        <div class="col-sm-3">
-                            <textarea type="text" th:field="*{keywordName}" class="form-control" name="keywordName" id="keywordName"
+                        <div class="col-3">
+                            <textarea type="text" th:field="*{keywordName}" class="form-control" name="keywordName"
+                                      id="keywordName"
                                       cols="30" rows="2" placeholder="請輸入關鍵字..."></textarea>
-                            <span th:if="${#fields.hasErrors('keywordName')}" th:errors="*{keywordName}" class="error" id="keywordName.errors"></span>
+                            <span th:if="${#fields.hasErrors('keywordName')}" th:errors="*{keywordName}" class="error"
+                                  id="keywordName.errors"></span>
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="responseContent" class="col-sm-2 col-form-label">預設回覆內容</label>
-                        <div class="col-sm-3">
-                            <textarea th:field="*{responseContent}" class="form-control" name="responseContent" id="responseContent"
+                        <div class="col-3">
+                            <textarea th:field="*{responseContent}" class="form-control" name="responseContent"
+                                      id="responseContent"
                                       cols="30" rows="10" placeholder="請輸入預計回覆內容..."></textarea>
-                            <span th:if="${#fields.hasErrors('responseContent')}" th:errors="*{responseContent}" class="error" id="responseContent.errors"></span>
+                            <span th:if="${#fields.hasErrors('responseContent')}" th:errors="*{responseContent}"
+                                  class="error" id="responseContent.errors"></span>
                         </div>
                     </div>
                     <div>
-                        <div><button type="submit" id="submit">送出新增</button></div>
+                        <div class="col-12">
+                            <button class="btn btn-outline-primary" type="submit" id="submit">送出新增</button>
+                        </div>
                     </div>
                 </form>
             </div>

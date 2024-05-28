@@ -9,7 +9,7 @@
     <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
     <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template">
     <!-- title -->
-    <title>ShopApp - eCommerce Bootstrap 5 Template</title>
+    <title>最新消息</title>
     <!-- Favicon -->
     <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
     <!-- CSS Template -->
@@ -38,38 +38,55 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6 my-2">
-                        <h1 class="m-0 h4 text-center text-lg-start">Faq's</h1>
+                        <h1 class="m-0 h4 text-center text-lg-start">最新消息</h1>
                     </div>
                     <div class="col-lg-6 my-2">
                         <ol class="breadcrumb m-0 small justify-content-center justify-content-lg-end">
                             <li class="breadcrumb-item"><a class="text-nowrap text-reset" href="#"><i
                                     class="bi bi-home"></i>Home</a></li>
-                            <li class="breadcrumb-item text-nowrap active" aria-current="page">Faq's</li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page">最新消息</li>
                         </ol>
                     </div>
                 </div>
             </div>
         </div>
         <!-- End Breadcrumb -->
-        <table>
-            <thead>
-            <tr>
-                <th>標題</th>
-                <th>內容</th>
-                <th>發布時間</th>
-            </tr>
-            </thead>
-            <tbody>
-            <th:block th:each="news : ${newsListData}">
-                <tr>
-                    <td th:text="${news.newsTitle}"></td>
-                    <td th:text="${news.newsContent}"></td>
-                    <td th:text="${news.postTime}"></td>
-                </tr>
-            </th:block>
-            </tbody>
-        </table>
+        <!-- FAQ -->
+        <section class="py-6">
+            <div class="container">
+                <div class="row align-items-start g-4">
+                    <div class="col pe-lg-5 sticky-lg-top sticky-lg-top-header" style="top: 114.094px;">
+                    </div>
+<!--                    <div class="col-lg-9">-->
+<!--                        <h2 class="h3 mb-4" id="Order">最新消息</h2>-->
+                        <div class="accordion" id="accordionExample">
+                        <div th:each="news : ${newsListData}">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" th:attr="id='headingOne' + ${news.newsNo}">
+                                    <button class="accordion-button bg-body" type="button" data-bs-toggle="collapse"
+                                            th:attr="data-bs-target='#collapseOne' + ${news.newsNo}, aria-controls='collapseOne' + ${news.newsNo}"
+                                            aria-expanded="true"
+                                            th:text="${news.newsTitle}">
+
+                                    </button>
+                                </h2>
+                                <div th:attr="id='collapseOne' + ${news.newsNo}, aria-labelledby='headingOne' + ${news.newsNo}"
+                                     class="accordion-collapse collapse show"
+                                     data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <p th:utext="${#strings.replace(news.newsContent, '\n', '<br/>')}"></p>
+                                        <p th:text="${#dates.format(news.postTime,'yyyy-MM-dd HH:mm')}" style="margin-bottom: 0px;"></p>
+                                    </div>
+                                </div>
+<!--                            </div>-->
+                        </div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- FAQ End -->
     </main>
+    <!-- End Main -->
     <!-- Footer -->
     <footer th:replace="frontend/component/footer :: footer"></footer>
     <!-- End Footer -->

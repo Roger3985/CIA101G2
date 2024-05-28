@@ -1,5 +1,6 @@
 body.chatbody  {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100%;
     margin: 0;
     padding: 0;
     background-color: #f7f9fb;
@@ -13,10 +14,16 @@ body.chatbody  {
 
 .chat-container {
     display: flex;
+    /*width: 100%;*/
+
     max-width: 700px;
-    min-width: 700px;
-    min-height: 500px;
-    max-height: 500px;
+    width: 100%;
+    height: 80vh;
+
+    /*max-width: 700px;*/
+    /*min-width: 700px;*/
+    /*min-height: 500px;*/
+    /*max-height: 500px;*/
     margin: 20px;
     border: 1px solid #ccc;
     background-color: #f7f9fb;
@@ -30,6 +37,7 @@ body.chatbody  {
     align-items: center;
     /*align-self: flex-start;*/
     flex-direction: column;
+    width: 100%;
     height:50px;
     border-top-left-radius:5px;
     border-top-right-radius:5px;
@@ -117,6 +125,7 @@ body.chatbody  {
     box-sizing: border-box;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
+    width: 100%;
 }
 
 .message {
@@ -236,7 +245,7 @@ body.chatbody  {
 }
 
 .message-input button {
-    padding: 8px 10px;
+    padding: 6px 16px;
     border: none;
     background-color: #e63946;
     color: #fff;

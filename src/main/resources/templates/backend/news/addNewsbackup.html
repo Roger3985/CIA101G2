@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>更新最新消息</title>
-    <!-- Favicon -->
-    <link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+    <title>addNews.html</title>
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
-
+    <style>
+        .error {
+            font-size: 12px; /* 調整字體大小 */
+            color: red;
+        }
+    </style>
 </head>
+
 <body id="page-top">
 <div th:replace="backend/component/loading :: loading"></div>
 <!-- Page Wrapper -->
@@ -26,11 +30,7 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
-                <form th:action="@{update}" method="post" th:object="${news}">
-                    <div>
-                        <label>編號</label>
-                        <input type="text" th:field="*{newsNo}" readonly="readonly"/><br>
-                    </div>
+                <form th:action="@{insert}" method="post" th:object="${news}">
 
                     <div>
                         <label>發布時間</label>
@@ -40,45 +40,40 @@
 
                     <div>
                         <label>標題</label>
-                        <textarea  th:field="*{newsTitle}" onclick="hideContent('newsTitle.errors')" rows="5" cols="30"/><br>
+                        <input type="text" th:field="*{newsTitle}" onclick="hideContent('newsTitle.errors')"/><br>
                         <span th:if="${#fields.hasErrors('newsTitle')}" th:errors="*{newsTitle}" class="error"></span>
                     </div>
 
                     <div>
                         <label>內容</label>
-                        <textarea th:field="*{newsContent}" onclick="hideContent('newsContent.errors')" rows="10" cols="30"/><br>
+                        <textarea name="newsContent" th:field="*{newsContent}"
+                                  onclick="hideContent('newsContent.errors')"></textarea>
                         <span th:if="${#fields.hasErrors('newsContent')}" th:errors="*{newsContent}"
                               class="error"></span>
                     </div>
-
                     <div>
-                        <button type="submit" id="submit"> 送出修改</button>
+                        <button type="submit" id="submit"> 送出新增</button>
                     </div>
                 </form>
             </div>
-            <!-- /.container-fluid -->
         </div>
-        <!-- End of Main Content -->
+        <!-- End of Page Wrapper -->
+        <!-- Scroll to Top Button-->
+        <a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+        <!-- Logout Modal-->
+        <div th:replace="backend/component/logout :: logout"></div>
 
-        <!-- Footer -->
-        <footer th:replace="backend/component/bottom :: bottom"></footer>
-        <!-- End of Footer -->
+        <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+        <script>
+            function hideContent(d) {
+                document.getElementById(d).style.display = "none";
+            }
+
+            var now = new Date();
+            var dateTime = now.toLocaleString();
+            document.getElementById("datetime").innerHTML = dateTime;
+        </script>
     </div>
-    <!-- End of Content Wrapper -->
 </div>
-<!-- End of Page Wrapper -->
-
-<!-- Scroll to Top Button-->
-<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
-<!-- Logout Modal-->
-<div th:replace="backend/component/logout :: logout"></div>
-
-<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
-<script>
-    var now = new Date();
-    var dateTime = now.toLocaleString();
-    document.getElementById("datetime").innerHTML = dateTime;
-</script>
-
 </body>
 </html>
