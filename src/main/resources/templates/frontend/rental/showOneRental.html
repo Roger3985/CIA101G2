@@ -202,8 +202,7 @@
                                 </label>
                             </div>
                             <div class="product-price fs-3 fw-500 mb-2">
-                                <del class="text-muted fs-6">NT$ <span th:text="'$' + ${rental.rentalPrice}"></span></del><!--  原本定價  -->
-                                <span class="text-primary" th:text="'NT$ ' + ${rental.rentalCategory.rentalDesPrice}"></span><!--  目前租借價  -->
+                                <span class="text-primary" th:text="'NT$ ' + ${rental.rentalPrice}"></span>
                             </div>
                             <div class="product-detail-actions d-flex flex-wrap pt-3">
                                 <div class="cart-button mb-3 d-flex">
@@ -471,7 +470,7 @@
                                                      th:width="200" th:height="300" title="" alt="">
                                             </a>
                                             <div class="product-cart-btn">
-                                                <a th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}"
+                                                <a th:href="@{'/frontend/rental/showOneRental?rentalNo=5001'}"
                                                    class="btn btn-primary btn-sm w-100">
                                                     <i class="fi-eye"></i> 點擊查看詳情
                                                 </a>
@@ -487,12 +486,11 @@
                                             <i class="bi bi-star"></i>
                                         </div>
                                         <h6 class="product-title">
-                                            <a class="text-reset" th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
+                                            <a class="text-reset" th:href="@{'/frontend/rental/showOneRental?rentalNo=5001'}">
                                                 <span th:text="${rental.rentalName}"></span></a>
                                         </h6>
                                         <div class="product-price">
-                                            <span class="text-primary" th:text="'$' + ${rental.rentalCategory.rentalDesPrice}"></span>
-                                            <del class="fs-sm text-muted" th:text="'$' + ${rental.rentalPrice}"></del>
+                                            <span class="text-primary" th:text="'$' + ${rental.rentalPrice}"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -527,7 +525,6 @@
                                         </h6>
                                         <div class="product-price">
                                             <span class="text-primary">NT$ $4000</span>
-                                            <del class="fs-sm text-muted">NT$ $12500</del>
                                         </div>
                                     </div>
                                 </div>
@@ -563,7 +560,6 @@
                                         </h6>
                                         <div class="product-price">
                                             <span class="text-primary">NT$ $2000</span>
-                                            <del class="fs-sm text-muted">NT$ $12000</del>
                                         </div>
                                     </div>
                                 </div>
@@ -590,6 +586,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
         </section>
         <!-- 最下方輪播圖  (結束)-->
     </main>
