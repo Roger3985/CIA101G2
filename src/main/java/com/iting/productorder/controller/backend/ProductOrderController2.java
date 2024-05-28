@@ -4,8 +4,11 @@ package com.iting.productorder.controller.backend;
 import com.chihyun.coupon.entity.Coupon;
 import com.chihyun.coupon.model.CouponService;
 import com.iting.cart.service.CartService;
+import com.iting.productmyfavorite.entity.ProductMyFavorite;
 import com.iting.productorder.entity.ProductOrder;
 import com.iting.productorder.service.ProductOrderService;
+import com.iting.productorderdetail.entity.ProductOrderDetail;
+import com.roger.member.entity.Member;
 import com.roger.member.entity.uniqueAnnotation.Create;
 import com.roger.member.service.MemberService;
 import org.slf4j.LoggerFactory;
@@ -29,10 +32,7 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -273,9 +273,20 @@ public ResponseEntity<ProductOrder> getProductOrderInstantly(@RequestParam Integ
 
 
 
+    @ModelAttribute("MemberDataList")
+    protected List<Member> referenceListData(Model model) {
 
+        List<Member> list = memberService.findAll();
+        return list;
+    }
 
+    @PostMapping("getOne")
+    public String getOne(@RequestParam("memNo") String memNo, ModelMap model) {
 
+        List<ProductOrder> productorderListData = productOrderSvc.findByMember(Integer.valueOf(memNo));
+        model.addAttribute("productorderListData", productorderListData);
+        return "/backend/productorder/MemberProductOrder";
+    }
 
 
 

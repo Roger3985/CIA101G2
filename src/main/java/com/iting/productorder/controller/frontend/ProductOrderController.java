@@ -83,7 +83,7 @@ public class ProductOrderController {
         Member myData = (Member) session.getAttribute("loginsuccess");
         if (myData == null) {
             session.setAttribute("location", "/frontend/productorder/submitOrder");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("frontend/member/loginMember");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("/frontend/member/loginMember");
         }
 
         ProductOrder productOrder = createProductOrder(productByrName, productByrPhone, productByrEmail,

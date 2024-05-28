@@ -213,7 +213,6 @@
                     </tr>
                 </th:block>
                 </tbody>
-
             </table>
 
             <div class="card">
@@ -239,6 +238,7 @@
             </div>
         </div>
     </form>
+
     <!-- End Section -->
 </main>
 <!-- End Main -->
@@ -264,11 +264,14 @@
 
 <script th:inline="javascript">
 
+    var quantityUpdated = false; // 标志位，记录是否进行了数量更新操作
+
     function updateQuantity(button, change) {
         var input = button.parentNode.querySelector('.cart-qty-input');
         var newValue = parseInt(input.value) + change;
         if (newValue >= 1) {
             input.value = newValue;
+            quantityUpdated = true; // 设置标志位
             updateBackendQuantity(input); // 呼叫更新後端數量函數
             updateTotal(input); // 更新商品總價
         }
@@ -327,6 +330,11 @@
     }
 
     function deleteProduct(button) {
+        if (quantityUpdated) {
+            quantityUpdated = false; // 重置标志位
+            console.log("Skipping delete due to recent quantity update");
+            return;
+        }
         var row = button.closest('.productitm');
         var productNo = row.querySelector('input[name="productNo"]').value;
         var memNo = row.querySelector('input[name="memNo"]').value;
@@ -349,8 +357,8 @@
                 console.error('刪除失敗');
             }
         });
-
     }
+
 
     function customAlert(message) {
         // 设置弹窗消息

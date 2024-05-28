@@ -195,10 +195,10 @@ public class CartController {
 
     @PostMapping("/cart/ProductOrderSuccess")
     public String ProductOrderSuccess(HttpSession session, Model model) {
-//        Member myData = (Member) session.getAttribute("loginsuccess");
-//        Integer memNo = myData.getMemNo();
-//        List<ProductOrder> list = productOrderService.findByMember(memNo);
-//        model.addAttribute("productorderListData", list);
+        Member myData = (Member) session.getAttribute("loginsuccess");
+        Integer memNo = myData.getMemNo();
+        List<ProductOrder> list = productOrderService.findByMember(memNo);
+        model.addAttribute("productorderListData", list);
         return "frontend/cart/ProductOrderPaySuccess";
 
     }
@@ -279,6 +279,7 @@ public class CartController {
                 }
 
                 // 设置购物车信息为模型属性
+
                 model.addAttribute("cartListData", cartListData);
             }
         }
