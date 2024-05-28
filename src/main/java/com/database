@@ -56,8 +56,8 @@ CREATE TABLE Member
     memPwd         VARCHAR(32)  NOT NULL,
     memMob         VARCHAR(20)  NOT NULL UNIQUE,
     memGender      TINYINT      NULL,
-    memMail        VARCHAR(40)  NOT NULL,
-    memAdd         VARCHAR(100) NOT NULL UNIQUE,
+    memMail        VARCHAR(40)  NOT NULL UNIQUE,
+    memAdd         VARCHAR(100) NOT NULL,
     memBd          DATE         NULL,
     memCard        VARCHAR(19)  NULL,
     provider       TINYINT      NULL,
@@ -131,11 +131,10 @@ INSERT INTO Coupon(coupName,coupCond,coupDisc,coupExpDate,coupRelDate,coupRelSta
 
 -- 創建我的優惠券表格
 CREATE TABLE Mycoupon(
-coupNo	INT	NOT NUll,
-memNo	INT	NOT NUll,
-coupUsedStat	TINYINT,
-coupInfo	VARCHAR(200) NOT NUll,
-coupExpDate	DATETIME NOT NUll,
+coupNo    INT    NOT NUll,
+memNo    INT    NOT NUll,
+coupUsedStat    TINYINT,
+coupExpDate    DATETIME NOT NUll,
 CONSTRAINT Mycoupon_id_pk PRIMARY KEY (coupNo, memNo),
 CONSTRAINT Mycoupon_coupNo_fk FOREIGN KEY (coupNo) REFERENCES Coupon(coupNo) ,
 CONSTRAINT Mycoupon_memNo_fk FOREIGN KEY (memNo) REFERENCES Member(memNo)
@@ -143,20 +142,20 @@ CONSTRAINT Mycoupon_memNo_fk FOREIGN KEY (memNo) REFERENCES Member(memNo)
 
 
 INSERT INTO Mycoupon VALUES
-(1,1,0,'fallElove祝您生日快樂！送上這張生日禮券，期待與您在特殊日子共同創造更多難忘時刻。','2024-02-01 00:00:00'),
-(2,10,0,'fallElove祝您生日快樂！送上這張生日禮券，期待與您在特殊日子共同創造更多難忘時刻。','2024-03-01 00:00:00'),
-(3,2,0,'fallElove祝您生日快樂！送上這張生日禮券，期待與您在特殊日子共同創造更多難忘時刻。','2024-04-01 00:00:00'),
-(4,6,0,'fallElove祝您生日快樂！送上這張生日禮券，期待與您在特殊日子共同創造更多難忘時刻。','2024-05-01 00:00:00'),
-(5,1,0,'親愛的顧客，母親節即將來臨，讓我們一同為母親帶來美好的驚喜！使用您的母親節優惠券，為母親準備一場特別的體驗，讓我們攜手共創珍貴的回憶！','2023-05-13 00:00:00'),
-(5,2,0,'親愛的顧客，母親節即將來臨，讓我們一同為母親帶來美好的驚喜！使用您的母親節優惠券，為母親準備一場特別的體驗，讓我們攜手共創珍貴的回憶！','2023-05-13 00:00:00'),
-(5,3,0,'親愛的顧客，母親節即將來臨，讓我們一同為母親帶來美好的驚喜！使用您的母親節優惠券，為母親準備一場特別的體驗，讓我們攜手共創珍貴的回憶！','2023-05-13 00:00:00'),
-(5,4,0,'親愛的顧客，母親節即將來臨，讓我們一同為母親帶來美好的驚喜！使用您的母親節優惠券，為母親準備一場特別的體驗，讓我們攜手共創珍貴的回憶！','2023-05-13 00:00:00'),
-(5,5,0,'親愛的顧客，母親節即將來臨，讓我們一同為母親帶來美好的驚喜！使用您的母親節優惠券，為母親準備一場特別的體驗，讓我們攜手共創珍貴的回憶！','2023-05-13 00:00:00'),
-(5,6,0,'親愛的顧客，母親節即將來臨，讓我們一同為母親帶來美好的驚喜！使用您的母親節優惠券，為母親準備一場特別的體驗，讓我們攜手共創珍貴的回憶！','2023-05-13 00:00:00'),
-(5,7,0,'親愛的顧客，母親節即將來臨，讓我們一同為母親帶來美好的驚喜！使用您的母親節優惠券，為母親準備一場特別的體驗，讓我們攜手共創珍貴的回憶！','2023-05-13 00:00:00'),
-(5,8,0,'親愛的顧客，母親節即將來臨，讓我們一同為母親帶來美好的驚喜！使用您的母親節優惠券，為母親準備一場特別的體驗，讓我們攜手共創珍貴的回憶！','2023-05-13 00:00:00'),
-(5,9,0,'親愛的顧客，母親節即將來臨，讓我們一同為母親帶來美好的驚喜！使用您的母親節優惠券，為母親準備一場特別的體驗，讓我們攜手共創珍貴的回憶！','2023-05-13 00:00:00'),
-(5,10,0,'親愛的顧客，母親節即將來臨，讓我們一同為母親帶來美好的驚喜！使用您的母親節優惠券，為母親準備一場特別的體驗，讓我們攜手共創珍貴的回憶！','2023-05-13 00:00:00');
+(2,1,0,'2024-02-01 00:00:00'),
+(2,10,0,'2024-03-01 00:00:00'),
+(3,2,0,'2024-04-01 00:00:00'),
+(4,6,0,'2024-05-01 00:00:00'),
+(5,1,0,'2023-05-13 00:00:00'),
+(5,2,0,'2023-05-13 00:00:00'),
+(5,3,0,'2023-05-13 00:00:00'),
+(5,4,0,'2023-05-13 00:00:00'),
+(5,5,0,'2023-05-13 00:00:00'),
+(5,6,0,'2023-05-13 00:00:00'),
+(5,7,0,'2023-05-13 00:00:00'),
+(5,8,0,'2023-05-13 00:00:00'),
+(5,9,0,'2023-05-13 00:00:00'),
+(5,10,0,'2023-05-13 00:00:00');
 
 -- 創建職位表格
 CREATE TABLE Title
@@ -906,7 +905,53 @@ INSERT INTO  ProductPicture  (productNo,productPic,mimeType) VALUES
 (30,'null', 'image/webp'),
 (30,'null', 'image/webp'),
 (30,'null', 'image/webp'),
-(30,'null', 'image/webp');
+(30,'null', 'image/webp'),
+(89, 'null', 'image/webp'),
+(92, 'null', 'image/webp'),
+(95, 'null', 'image/webp'),
+(98, 'null', 'image/webp'),
+(101, 'null', 'image/webp'),
+(104, 'null', 'image/webp'),
+(107, 'null', 'image/webp'),
+(111, 'null', 'image/webp'),
+(114, 'null', 'image/webp'),
+(117, 'null', 'image/webp'),
+(120, 'null', 'image/webp'),
+(123, 'null', 'image/webp'),
+(126, 'null', 'image/webp'),
+(129, 'null', 'image/webp'),
+(132, 'null', 'image/webp'),
+(135, 'null', 'image/webp'),
+(138, 'null', 'image/webp'),
+(141, 'null', 'image/webp'),
+(144, 'null', 'image/webp'),
+(147, 'null', 'image/webp'),
+(150, 'null', 'image/webp'),
+(153, 'null', 'image/webp'),
+(156, 'null', 'image/webp'),
+(159, 'null', 'image/webp'),
+(162, 'null', 'image/webp'),
+(165, 'null', 'image/webp'),
+(168, 'null', 'image/webp'),
+(171, 'null', 'image/webp'),
+(174, 'null', 'image/webp'),
+(177, 'null', 'image/webp'),
+(180, 'null', 'image/webp'),
+(183, 'null', 'image/webp'),
+(186, 'null', 'image/webp'),
+(189, 'null', 'image/webp'),
+(192, 'null', 'image/webp'),
+(195, 'null', 'image/webp'),
+(198, 'null', 'image/webp'),
+(201, 'null', 'image/webp'),
+(204, 'null', 'image/webp'),
+(207, 'null', 'image/webp'),
+(210, 'null', 'image/webp'),
+(213, 'null', 'image/webp'),
+(216, 'null', 'image/webp'),
+(219, 'null', 'image/webp'),
+(222, 'null', 'image/webp'),
+(225, 'null', 'image/webp');
 
 -- 創建 ProductOrderDetail 表格
 CREATE TABLE ProductOrderDetail
@@ -1006,9 +1051,9 @@ AUTO_INCREMENT = 5001;
 INSERT INTO Rental(rentalNo, rentalCatNo, rentalName, rentalPrice, rentalSize, rentalColor, rentalInfo, rentalStat)
 VALUES(5001, 1, '格紋成套西裝', 2000, '1', '黑色', '格紋成套西裝是一款經典且永不過時的選擇，適合各種正式場合。其精緻的格紋設計，不僅展現了紳士的風範，還增添了幾分優雅的氣質。這款西裝採用高品質的面料製成，舒適透氣，貼身剪裁使得穿著者的身形更加修長挺拔。無論是商務會議還是婚禮宴會，格紋成套西裝都是您的理想之選。', 0),
       (5011, 1, '雙排扣格紋成套西裝', 2300, '2', '棕色', '雙排扣格紋成套西裝在傳統格紋的基礎上，增加了雙排扣的設計，為整體造型注入更多的復古元素。這款西裝注重細節，每一處剪裁都精益求精，彰顯出穿著者的品味與風度。雙排扣設計不僅提升了西裝的層次感，還能更好地勾勒出男性的胸部線條，適合想要在正式場合中脫穎而出的您。', 0),
-      (5038, 3, '時尚復古斜領緊身晚禮服', 1800, '3', '白色', '這款時尚復古斜領緊身晚禮服，將古典與現代美學完美結合。斜領設計獨具匠心，優雅大方，緊身剪裁則完美勾勒出女性的曼妙曲線。高質感的面料使得整件禮服散發著高貴的氣息，無論是參加晚宴還是紅毯活動，都能讓您成為全場焦點。', 2),
-      (5201, 2, '閃光香檳婚紗', 3500, '1', '白色', '閃光香檳婚紗是每位新娘夢寐以求的禮服之一。其獨特的香檳色調加上細緻的閃光設計，令整體造型如夢似幻。這款婚紗選用高級面料，手感柔軟，穿著舒適。精美的刺繡和珠飾點綴，使婚紗更加璀璨奪目，讓新娘在婚禮上盡顯優雅與高貴。', 2),
-      (5375, 2, '露肩緞面婚紗', 2000, '2', '白色', '露肩緞面婚紗以其簡潔而不失華麗的設計，贏得了眾多新娘的青睞。露肩設計展現出女性優美的肩頸線條，而緞面材質則為整件婚紗增添了絲滑的質感和自然的光澤。這款婚紗輕盈舒適，適合各類婚禮場地，無論是室內教堂還是戶外草坪，都能讓新娘散發出迷人的光彩。', 1);
+      (5038, 3, '時尚復古斜領緊身晚禮服', 1800, '3', '白色', '這款時尚復古斜領緊身晚禮服，將古典與現代美學完美結合。斜領設計獨具匠心，優雅大方，緊身剪裁則完美勾勒出女性的曼妙曲線。高質感的面料使得整件禮服散發著高貴的氣息，無論是參加晚宴還是紅毯活動，都能讓您成為全場焦點。', 0),
+      (5201, 2, '閃光香檳婚紗', 3500, '1', '白色', '閃光香檳婚紗是每位新娘夢寐以求的禮服之一。其獨特的香檳色調加上細緻的閃光設計，令整體造型如夢似幻。這款婚紗選用高級面料，手感柔軟，穿著舒適。精美的刺繡和珠飾點綴，使婚紗更加璀璨奪目，讓新娘在婚禮上盡顯優雅與高貴。', 0),
+      (5375, 2, '露肩緞面婚紗', 2000, '2', '白色', '露肩緞面婚紗以其簡潔而不失華麗的設計，贏得了眾多新娘的青睞。露肩設計展現出女性優美的肩頸線條，而緞面材質則為整件婚紗增添了絲滑的質感和自然的光澤。這款婚紗輕盈舒適，適合各類婚禮場地，無論是室內教堂還是戶外草坪，都能讓新娘散發出迷人的光彩。', 0);
 
 -- 租借品照片
 CREATE TABLE RentalPic

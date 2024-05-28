@@ -258,8 +258,7 @@
                                             <p class="small mb-2"><span>編號：</span><span class="rentalNo" th:text="${rental.rentalNo}"></span></p><!-- 租借品編號 -->
                                         </div>
                                         <div class="product-price pb-3">
-                                            <span class="text-primary fs-4" th:text="'$' + ${rental.rentalCategory.rentalDesPrice}"></span><!-- 押金 -->
-                                            <del class="fs-sm text-muted"><span th:text="'$' + ${rental.rentalPrice}"></span></del><!-- 定價 -->
+                                            <span class="text-primary fs-4" th:text="'$' + ${rental.rentalPrice}"></span>
                                         </div>
                                         <div class="rentalItem" style="transform: translate3d(0px, 20px, 0px);">
                                             <a href="" class="btn btn-mode btn_addToCart"><!--  加入購物車(457)  -->

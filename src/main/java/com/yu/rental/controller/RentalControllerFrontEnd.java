@@ -25,7 +25,7 @@ public class RentalControllerFrontEnd {
      *
      * 左上角的關鍵字查詢
      * 點入商品欄後，顯示個別商品、全部商品
-     * 排序方法：最新上架、價格低~高、價格高~低、最熱門
+     * 排序方法：最新上架、價格低~高、價格高~低
      * 點選"加入我的最愛"，即可新增查看
      *個別品項篩選 (針對類別、金額、Size)
      *
@@ -194,72 +194,6 @@ public class RentalControllerFrontEnd {
 
         return "frontend/rental/fragments/rentalGrid :: rental-grid";
     }
-
-
-    //    // 依關鍵字搜尋相關租借品 (如果rentalStat不為5 (下架狀態))
-//    @GetMapping("/findByAllKeyWord")
-//    public String findByAllKeyWord(@RequestParam("keyword") String keyword,
-//                                   @RequestParam("rentalStat") Byte rentalStat,
-//                                   @RequestParam("rentalSize") Integer rentalSize,
-//                                   @RequestParam(value = "page", defaultValue = "0") Integer page,
-//                                   @RequestParam(value = "size", defaultValue = "5") Integer size, ModelMap model) {
-//
-//        page = Math.max(page, 0);
-//        Pageable pageable = PageRequest.of(page, size);
-//        Page<Rental> results = rentalService.findByAllKeyWord(keyword, rentalStat, rentalSize, pageable);
-//
-//        System.out.println("搜尋結果: " + results);
-//
-//        model.addAttribute("rentalListData", results); //顯示對應的搜尋結果
-//        return "/frontend/rental/rentalShop";
-//    }
-
-
-//    //處理複合查詢
-//    @PostMapping("/search")
-//    public String search(@RequestParam(required = false) Integer rentalNo,
-//                         @RequestParam(required = false) Integer rentalCatNo,
-//                         @RequestParam(required = false) String rentalName,
-//                         @RequestParam(required = false) BigDecimal rentalPrice,
-//                         @RequestParam(required = false) Integer rentalSize,
-//                         @RequestParam(required = false) String rentalColor,
-//                         @RequestParam(required = false) String rentalInfo,
-//                         @RequestParam(required = false) Byte rentalStat, ModelMap model) {
-//
-//
-//        Map<String, Object> map = new HashMap<>();
-//
-//        if (rentalNo != null) {
-//            map.put("rentalNo", rentalNo);
-//        }
-//        if (rentalCatNo != null) {
-//            map.put("rentalCatNo", rentalCatNo);
-//        }
-//        if (rentalName != null) {
-//            map.put("rentalName", rentalName);
-//        }
-//        if (rentalPrice != null) {
-//            map.put("rentalPrice", rentalPrice);
-//        }
-//        if (rentalSize != null) {
-//            map.put("rentalSize", rentalSize);
-//        }
-//        if (rentalColor != null) {
-//            map.put("rentalColor", rentalColor);
-//        }
-//        if (rentalInfo != null) {
-//            map.put("rentalInfo", rentalInfo);
-//        }
-//        if (rentalStat != null) {
-//            map.put("rentalStat", rentalStat);
-//        }
-//
-//        //建立返回數據的對象
-//        List<Rental> queryList = rentalService.searchRentals(map);
-//        model.addAttribute("queryList", queryList);
-//        return "frontend/rental/select_page"; //結果傳至listAllRental
-//    }
-
 
     /**
      * 因 @ModelAttribute寫在方法上，故將此類別中的@GetMapping Method先加入model.addAttribute("...List",...Service.getAll());

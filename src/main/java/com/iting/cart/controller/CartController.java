@@ -195,10 +195,12 @@ public class CartController {
 
     @PostMapping("/cart/ProductOrderSuccess")
     public String ProductOrderSuccess(HttpSession session, Model model) {
-//        Member myData = (Member) session.getAttribute("loginsuccess");
-//        Integer memNo = myData.getMemNo();
-//        List<ProductOrder> list = productOrderService.findByMember(memNo);
-//        model.addAttribute("productorderListData", list);
+        if( session.getAttribute("loginsuccess")!=null){
+            Member myData = (Member) session.getAttribute("loginsuccess");
+            Integer memNo = myData.getMemNo();
+            List<ProductOrder> list = productOrderService.findByMember(memNo);
+            model.addAttribute("productorderListData", list);}
+
         return "frontend/cart/ProductOrderPaySuccess";
 
     }

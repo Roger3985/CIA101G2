@@ -30,6 +30,7 @@ public class FrontendIndexController {
     @Autowired
     ProductServiceImpl productSvc;
 
+    @Autowired
     RentalServiceImpl rentalSvc;
 
     /**
