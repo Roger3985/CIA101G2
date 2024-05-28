@@ -52,7 +52,7 @@
                                     <tr>
                                         <td th:text="${news.newsNo}"></td>
                                         <td th:text="${news.newsTitle}"></td>
-                                        <td th:text="${news.newsContent}"></td>
+                                        <td th:utext="${#strings.replace(news.newsContent, '\n', '<br/>')}"></td>
                                         <td th:text="${news.postTime}"></td>
                                         <td>
                                             <form method="post" th:action="@{/backend/news/updateNews}">

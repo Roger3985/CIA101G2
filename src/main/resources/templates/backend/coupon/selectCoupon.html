@@ -56,8 +56,8 @@
                     選擇折扣數:
                     <select name="coupDisc">
                         <option value=""></option>
-                        <option th:each="coupon : ${couponListData}" th:value="${coupon.coupDisc}"
-                                th:text="${coupon.coupDisc}"></option>
+                        <option th:each="coupDisc : ${UniqueList}" th:value="${coupDisc}"
+                                th:text="${coupDisc}"></option>
                     </select><br>
 
                     建立日期範圍:

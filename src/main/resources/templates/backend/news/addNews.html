@@ -6,9 +6,13 @@
     <title>addNews.html</title>
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <style>
-        .error {
-            font-size: 12px; /* 調整字體大小 */
-            color: red;
+        .btn-outline-primary {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        #postTime_el {
+            text-align: center;
         }
     </style>
 </head>
@@ -30,50 +34,65 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+                <h4 class="display-6 font-weight-bold text-primary">新增最新消息</h4>
                 <form th:action="@{insert}" method="post" th:object="${news}">
 
-                    <div>
-                        <label>發布時間</label>
-                        <span id="datetime"></span>
-                        <input type="hidden" name="postTime"/><br/>
+                    <div class="mb-3 row">
+                        <label class="col-form-label" for="postTime_el">發布時間</label>
+                        <div class="col-6" style="padding-top: 7px; padding-bottom: 7px;">
+                            <input type="hidden" name="postTime"/>
+                            <span id="postTime_el"></span>
+                        </div>
                     </div>
 
-                    <div>
-                        <label>標題</label>
-                        <input type="text" th:field="*{newsTitle}" onclick="hideContent('newsTitle.errors')"/><br>
-                        <span th:if="${#fields.hasErrors('newsTitle')}" th:errors="*{newsTitle}" class="error"></span>
+                    <div class="mb-3 row">
+                        <label class="col-form-label" for="newsTitle">標題</label>
+                        <div class="col-6">
+                            <input class="form-control" th:field="*{newsTitle}"
+                                   onclick="hideContent('newsTitle.errors')" id="newsTitle"/>
+                            <span th:if="${#fields.hasErrors('newsTitle')}" th:errors="*{newsTitle}"
+                                  class="error"></span>
+                        </div>
                     </div>
 
-                    <div>
-                        <label>內容</label>
-                        <textarea name="newsContent" th:field="*{newsContent}"
+                    <div class="mb-3 row">
+                        <label class="col-form-label" for="newsContent">內容</label>
+                        <div class="col-6">
+                        <textarea class="form-control" style="height: 300px" name="newsContent"
+                                  th:field="*{newsContent}" id="newsContent"
                                   onclick="hideContent('newsContent.errors')"></textarea>
-                        <span th:if="${#fields.hasErrors('newsContent')}" th:errors="*{newsContent}"
-                              class="error"></span>
+                            <span th:if="${#fields.hasErrors('newsContent')}" th:errors="*{newsContent}"
+                                  class="error"></span>
+                        </div>
                     </div>
                     <div>
-                        <button type="submit" id="submit"> 送出新增</button>
+                        <button class="btn btn-outline-primary" type="submit" id="submit"> 送出新增</button>
                     </div>
                 </form>
             </div>
         </div>
-        <!-- End of Page Wrapper -->
-        <!-- Scroll to Top Button-->
-        <a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
-        <!-- Logout Modal-->
-        <div th:replace="backend/component/logout :: logout"></div>
-
-        <th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
-        <script>
-            function hideContent(d) {
-                document.getElementById(d).style.display = "none";
-            }
-
-            var now = new Date();
-            var dateTime = now.toLocaleString();
-            document.getElementById("datetime").innerHTML = dateTime;
-        </script>
+        <!-- Footer -->
+        <footer th:replace="backend/component/bottom :: bottom"></footer>
     </div>
+    <!-- End of Page Wrapper -->
+
+</div>
+<!-- Scroll to Top Button-->
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<!-- Logout Modal-->
+<div th:replace="backend/component/logout :: logout"></div>
+
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+<script>
+    function hideContent(d) {
+        document.getElementById(d).style.display = "none";
+    }
+
+    var now = new Date();
+    var today_str = now.toLocaleString();
+    document.getElementById("postTime_el").innerHTML = today_str;
+</script>
+</div>
 </div>
 </body>
 </html>

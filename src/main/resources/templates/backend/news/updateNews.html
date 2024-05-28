@@ -40,13 +40,13 @@
 
                     <div>
                         <label>標題</label>
-                        <input type="text" th:field="*{newsTitle}" onclick="hideContent('newsTitle.errors')"/><br>
+                        <textarea  th:field="*{newsTitle}" onclick="hideContent('newsTitle.errors')" rows="5" cols="30"/><br>
                         <span th:if="${#fields.hasErrors('newsTitle')}" th:errors="*{newsTitle}" class="error"></span>
                     </div>
 
                     <div>
                         <label>內容</label>
-                        <input type="text" th:field="*{newsContent}" onclick="hideContent('newsContent.errors')"/><br>
+                        <textarea th:field="*{newsContent}" onclick="hideContent('newsContent.errors')" rows="10" cols="30"/><br>
                         <span th:if="${#fields.hasErrors('newsContent')}" th:errors="*{newsContent}"
                               class="error"></span>
                     </div>

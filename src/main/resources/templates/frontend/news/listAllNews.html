@@ -55,10 +55,11 @@
         <section class="py-6">
             <div class="container">
                 <div class="row align-items-start g-4">
-                    <div class="col-lg-3 pe-lg-5 sticky-lg-top sticky-lg-top-header" style="top: 114.094px;">
+                    <div class="col pe-lg-5 sticky-lg-top sticky-lg-top-header" style="top: 114.094px;">
                     </div>
-                    <div class="col-lg-9">
-                        <h2 class="h3 mb-4" id="Order">最新消息</h2>
+<!--                    <div class="col-lg-9">-->
+<!--                        <h2 class="h3 mb-4" id="Order">最新消息</h2>-->
+                        <div class="accordion" id="accordionExample">
                         <div th:each="news : ${newsListData}">
                             <div class="accordion-item">
                                 <h2 class="accordion-header" th:attr="id='headingOne' + ${news.newsNo}">
@@ -66,18 +67,19 @@
                                             th:attr="data-bs-target='#collapseOne' + ${news.newsNo}, aria-controls='collapseOne' + ${news.newsNo}"
                                             aria-expanded="true"
                                             th:text="${news.newsTitle}">
+
                                     </button>
                                 </h2>
                                 <div th:attr="id='collapseOne' + ${news.newsNo}, aria-labelledby='headingOne' + ${news.newsNo}"
                                      class="accordion-collapse collapse show"
                                      data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        <p th:text="${news.newsContent}"></p>
-                                        <p th:text="${news.postTime}"></p>
+                                        <p th:utext="${#strings.replace(news.newsContent, '\n', '<br/>')}"></p>
+                                        <p th:text="${#dates.format(news.postTime,'yyyy-MM-dd HH:mm')}" style="margin-bottom: 0px;"></p>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+<!--                            </div>-->
+                        </div></div>
                     </div>
                 </div>
             </div>
