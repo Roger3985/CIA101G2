@@ -38,6 +38,7 @@
                                     <th>商品照片編號</th>
                                     <th>商品編號</th>
                                     <th>圖片格式</th>
+                                    <th>圖片</th>
                                     <th>修改</th>
                                 </tr>
                                 </thead>
@@ -46,15 +47,15 @@
                                     <tr>
                                         <td th:text="${productPicture.productPicNo}"></td>
                                         <td th:text="${productPicture.product.productNo + ' : ' + productPicture.product.productName}"></td>
-                                        <td>
-                                            <div class="progress-container">
-                                                <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
-                                            </div>
-                                        </td>
+<!--                                        <td>-->
+<!--                                            <div class="progress-container">-->
+<!--                                                <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>-->
+<!--                                            </div>-->
+<!--                                        </td>-->
+                                        <td th:text="${productPicture.mimeType}"></td>
                                         <td>
                                             <img th:src="@{/backend/productpicture/DBPhotoReader} + '?productPicNo=' + ${productPicture.productPicNo}" alt="Profile Picture">
                                         </td>
-                                        <td th:text="${productPicture.mimeType}"></td>
                                         <td>
                                             <form method="get" th:action="@{updateProductPicture}">
                                                 <input type="hidden" name="productPicNo" th:value="${productPicture.productPicNo}">

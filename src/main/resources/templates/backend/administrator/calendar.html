@@ -9,6 +9,86 @@
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <!-- Custom styles for this page -->
     <link th:href="@{/css/backend/component/profile.css}" rel="stylesheet" />
+    <style>
+        /* custom-fullcalendar.css */
+
+        .calendar-container {
+            width: 70%;
+            margin: 0 auto;
+        }
+
+        .fc-toolbar-title {
+            font-size: 20px;
+            color: #333;
+        }
+
+        .fc-button {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+            font-size: 12px;
+            padding: 5px 10px;
+        }
+
+        .fc-button:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .fc-button.fc-button-today {
+            background-color: #28a745;
+            border-color: #28a745;
+            color: white;
+            font-size: 12px;
+            padding: 5px 10px;
+        }
+
+        .fc-button.fc-button-today:hover {
+            background-color: #218838;
+            border-color: #218838;
+        }
+
+        .fc-col-header-cell {
+            background-color: #f8f9fa;
+            color: #495057;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .fc-daygrid-day {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            font-size: 12px;
+            height: 70px; /* 根据需要调整高度 */
+        }
+
+        .fc-day-other {
+            background-color: #e9ecef;
+            color: #6c757d;
+        }
+
+        .fc-event {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            font-size: 12px;
+            padding: 2px;
+        }
+
+        .fc-event:hover {
+            background-color: #0056b3;
+        }
+
+        .fc-day-today {
+            background-color: #ffc107;
+            color: white;
+        }
+
+        .fc-day-sat, .fc-day-sun {
+            background-color: #e9ecef; /* 灰色背景 */
+        }
+
+    </style>
 </head>
 <body id="page-top">
 <div th:replace="backend/component/loading :: loading"></div>
@@ -52,7 +132,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const calendarEl = document.getElementById("calendar")
+        const calendarEl = document.getElementById("calendar");
         const calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: "dayGridMonth",
             headerToolbar: {
@@ -66,9 +146,9 @@
                 week: "Week",
                 day: "Day",
             },
-        })
-        calendar.render()
-    })
+        });
+        calendar.render();
+    });
 
 </script>
 </body>

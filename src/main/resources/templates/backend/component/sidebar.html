@@ -40,33 +40,33 @@
                 <div class="dropright">
                     <a class="dropdown-item dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">管理員</a>
                     <ul class="dropdown-menu border-info">
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/administrator/selectAdministrator}" data-breadcrumb="首頁 - 管理員 - 查詢資料" data-breadcrumb-url="/backend/index - /backend/administrator - /backend/administrator/selectAdministrator"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/administrator/addAdministrator}"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
-                        <li><a class="dropdown-item" th:href="@{/backend/administrator/updateAdministrator}"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
+                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/administrator/listAllAdministrators}" data-breadcrumb="首頁 - 管理員 - 查詢資料" data-breadcrumb-url="/backend/index - /backend/administrator - /backend/administrator/listAllAdministrators"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
+                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/administrator/addAdministrator}" data-breadcrumb="首頁 - 管理員 - 新增資料" data-breadcrumb-url="/backend/index - /backend/administrator - /backend/administrator/addAdministrator"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
+                        <li><a class="dropdown-item" th:href="@{/backend/administrator/updateAdministrator}" data-breadcrumb="首頁 - 管理員 - 修改資料" data-breadcrumb-url="/backend/index - /backend/administrator - /backend/administrator/updateAdministrator"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
                     </ul>
                 </div>
                 <div class="dropright">
                     <a class="dropdown-item dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">職位</a>
                     <ul class="dropdown-menu border-info">
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/title/selectTitle}"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/title/addTitle}"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
-                        <li><a class="dropdown-item" th:href="@{/backend/title/updateTitle}"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
+                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/title/listAllTitles}" data-breadcrumb="首頁 - 職位 - 查詢資料" data-breadcrumb-url="/backend/index - /backend/title - /backend/title/listAllTitles"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
+                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/title/addTitle}" data-breadcrumb="首頁 - 職位 - 新增資料" data-breadcrumb-url="/backend/index - /backend/title - /backend/title/addTitle"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
+                        <li><a class="dropdown-item" th:href="@{/backend/title/updateTitle}" data-breadcrumb="首頁 - 職位 - 修改資料" data-breadcrumb-url="/backend/index - /backend/title - /backend/title/updateTitle"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
                     </ul>
                 </div>
                 <div class="dropright">
                     <a class="dropdown-item dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">職位權限</a>
                     <ul class="dropdown-menu border-info">
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/admauthority/selectAdmAuthority}"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/admauthority/addAdmAuthority}"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
-                        <li><a class="dropdown-item" th:href="@{/backend/admauthority/updateAdmAuthority}"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
+                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/admauthority/listAllAdmAuthorities}" data-breadcrumb="首頁 - 職位權限 - 查詢資料" data-breadcrumb-url="/backend/index - /backend/admauthority - /backend/admauthority/listAllAdmAuthorities"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
+                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/admauthority/addAdmAuthority}" data-breadcrumb="首頁 - 職位權限 - 新增資料" data-breadcrumb-url="/backend/index - /backend/admauthority - /backend/admauthority/addAdmAuthority"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
+                        <li><a class="dropdown-item" th:href="@{/backend/admauthority/updateAdmAuthority}"><i class="fas fa-edit" data-breadcrumb="首頁 - 職位權限 - 修改資料" data-breadcrumb-url="/backend/index - /backend/admauthority - /backend/admauthority/updateAdmAuthority"> </i> <span> 修改資料</span></a></li>
                     </ul>
                 </div>
                 <div class="dropright">
                     <a class="dropdown-item dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">功能權限</a>
                     <ul class="dropdown-menu border-info">
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/authorityfunction/selectAuthorityFunction}"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/authorityfunction/addAuthorityFunction}"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
-                        <li><a class="dropdown-item" th:href="@{/backend/authorityfunction/updateAuthorityFunction}"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
+                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/authorityfunction/listAuthorityFunctions}" data-breadcrumb="首頁 - 功能權限 - 查詢資料" data-breadcrumb-url="/backend/index - /backend/authorityfunction - /backend/authorityfunction/listAllAuthorityFunctions"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
+                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/authorityfunction/addAuthorityFunction}" data-breadcrumb="首頁 - 功能權限 - 新增資料" data-breadcrumb-url="/backend/index - /backend/authorityfunction - /backend/authorityfunction/addAuthorityFunction"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
+                        <li><a class="dropdown-item" th:href="@{/backend/authorityfunction/updateAuthorityFunction}" data-breadcrumb="首頁 - 功能權限 - 修改資料" data-breadcrumb-url="/backend/index - /backend/authorityfunction - /backend/authorityfunction/updateAuthorityFunction"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -229,10 +229,9 @@
                 <div class="dropright">
                     <a class="dropdown-item dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">商品</a>
                     <ul class="dropdown-menu border-info">
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/product/productPage}" data-breadcrumb="首頁 > 商品"><i class="fas fa-search"> </i> <span> 商品</span></a></li>
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/product/listAllProducts}"><i class="fas fa-search" data-breadcrumb="首頁 > 商品 > 查詢資料"> </i> <span> 查詢資料</span></a></li>
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/product/addProduct}"><i class="fas fa-plus" data-breadcrumb="首頁 > 商品 > 新增資料"> </i> <span> 新增資料</span></a></li>
-                        <li><a class="dropdown-item" th:href="@{/backend/product/updateProduct}"><i class="fas fa-edit" data-breadcrumb="首頁 > 商品 > 修改資料"> </i> <span> 修改資料</span></a></li>
+                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/product/listAllProducts}" data-breadcrumb="首頁 - 商品 - 查詢資料" data-breadcrumb-url="/backend/index - /backend/product - /backend/product/listAllProducts"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
+                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/product/addProduct}"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
+                        <li><a class="dropdown-item" th:href="@{/backend/product/updateProduct}"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
                     </ul>
                 </div>
                 <div class="dropright">
