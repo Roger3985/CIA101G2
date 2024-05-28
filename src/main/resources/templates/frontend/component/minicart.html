@@ -33,35 +33,37 @@
                 </div>
             </div>
             <!-- 租借商品 -->
-            <div class="tab-pane fade" id="rental" role="tabpanel" aria-labelledby="rental-tab">
-
-                <!-- 購物車物件 1 -->
-                <div id="rentalListContainer">
-                    <!-- 商品將顯示在這裡 -->
-<!--                    <div th:each="${}">-->
-
-                        <div class="rental-item">
-                            <div class="rental-image">
-                                <img src="/path/to/images/${item.rentalNo}.jpg" alt="商品圖片">
+            <div class="tab-pane fade" id="rental" role="tabpanel" aria-labelledby="rental-tab" th:each="rental : ${rentalListData}">
+                <ul class="list-unstyled m-0 p-0">
+                    <!-- 購物車物件 1 -->
+                    <li class="py-2">
+                        <div class="row align-items-center">
+                            <div class="col-4">
+                                <!-- Image -->
+                                <a th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
+                                    <img class="img-fluid border" th:src="@{'/icons/frontend/rental/' + ${rental.rentalNo} + '.jpg'}" alt="...">
+                                </a>
                             </div>
-                            <div class="rental-details">
-                                <div class="rental-name"></div>
-                                <div class="rental-price">價格: </div>
-                                <div class="rental-quantity">數量: </div>
+                            <div class="col-8">
+                                <!-- Title -->
+                                <p class="mb-2">
+                                    <a class="text-mode fw-500" th:href="@{'/frontend/rental/showOneRental?rentalNo=' + ${rental.rentalNo}}">
+                                        <span th:text="${rental.rentalName}"></span>
+                                    </a>
+                                    <span class="m-0 text-muted w-100 d-block">這裡是價格</span>
+                                </p>
+                                <!-- Footer -->
+                                <div class="d-flex align-items-center">
+                                    <!-- Remove -->
+                                    <a class="small text-mode ms-auto" href="#!">
+                                        <i class="bi bi-x"></i> Remove
+                                    </a>
+                                </div>
                             </div>
                         </div>
-
-<!--                    </div>-->
-                </div>
-                <!-- 這裡可以放更多購物車物件 -->
-                <div class="offcanvas-footer border-top p-3">
-
-                    <div class="row g-0 pt-2 mt-2 border-top fw-bold text-mode">
-                        <div class="col-8"><span id="rentalAllPriceForMiniCart" class="text-mode">合計(租金+押金)</span></div>
-                        <div class="col-4 text-end"><span class="ml-auto totalPrice"></span></div>
-                    </div>
-
-                </div>
+                    </li>
+                    <!-- 這裡可以放更多購物車物件 -->
+                </ul>
 
             </div>
         </div>
