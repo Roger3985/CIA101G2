@@ -52,7 +52,7 @@
                                 <th:block th:each="order : ${orderList}">
                                     <tr>
 
-                                        <td th:text="${order.getrentalOrdNo()}"></td>
+                                        <td class="ordNo" th:text="${order.getrentalOrdNo()}"></td>
                                         <td th:text="${order.getrentalTakeMethod() == 1 ? '店取' : '宅配'}"></td>
                                         <td th:switch="${order.getrentalPayMethod()}">
                                             <span th:case="1">信用卡</span>
@@ -70,6 +70,12 @@
                                             <span th:case="'40'">訂單成立</span>
                                             <span th:case="'45'" style="color: coral">已歸還</span>
                                             <span th:case="'50'" style="color : green">完成</span>
+                                            <span th:case="'80'" style="color: red">申請取消
+                                                <div class="forMD" style="display: none" th:text="${order.getrentalOrdNo()}"></div>
+                                                <div></div>
+                                                <button type="button" class="btn_yes">同意</button>
+                                                <button type="button" class="btn_no">不同意</button>
+                                            </span>
                                             <span th:case="'81'">申請換貨</span>
                                             <span th:case="'82'">換貨中</span>
                                         </td>
@@ -178,7 +184,7 @@
 <script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 <!-- Page level custom scripts -->
 <script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
 
     $(function () {
@@ -307,6 +313,55 @@
                     $("#refundInfo").html(refundInfo);
                     $('#refundModal').modal('show');
                 }).catch(error => console.error('Error:', error));
+        });
+
+        $(document).on("click", "button", function (e) {
+
+            let target = $(e.target);
+            if (target.hasClass("btn_yes")) {
+
+                let rentalOrdNo = target.closest("span").find("div.forMD").text();
+                console.log(rentalOrdNo);
+                let data = {
+                    "rentalOrdNo" : rentalOrdNo,
+                    "yesOrNo" : 1
+                };
+                fetch(baseUrl + apiPath + "makeADecision", {
+                    method : "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                }).then(response => response.text())
+                  .then(data => {
+                      if (data === "100") {
+                          swal("成功", "", "success");
+                      }
+                  });
+
+            }
+            if (target.hasClass("btn_no")) {
+
+                let rentalOrdNo = target.closest("span").find("div.forMD").text();
+                let data = {
+                    "rentalOrdNo" : rentalOrdNo,
+                    "yesOrNo" : 0
+                };
+                fetch(baseUrl + apiPath + "makeADecision", {
+                    method : "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                }).then(response => response.text())
+                    .then(data => {
+                        if (data === "100") {
+                            swal("成功", "", "success");
+                        }
+                    });
+
+            }
+
         });
 
 

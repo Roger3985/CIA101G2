@@ -167,7 +167,7 @@
                                             <td class="p-3" th:text="${#dates.format(order.getrentalBackDate(), 'yyyy 年 M 月 d 日 HH 時 m 分')}"></td>
                                             <td class="p-3">
                                                 <span th:switch="${order.getrentalOrdStat()}">
-                                                    <span th:case="0" class="badge bg-danger m-0">訂單取消</span>
+                                                    <span th:case="0" class="badge bg-danger m-0" style="background-color: red !important;">訂單取消</span>
                                                     <span th:case="10" class="badge bg-info m-0">揀貨中</span>
                                                     <span th:case="20" class="badge bg-warning m-0">配送中</span>
                                                     <span th:case="30" class="badge bg-info m-0">等待取貨</span>
@@ -175,6 +175,7 @@
                                                     <span th:case="40" class="badge bg-success m-0">訂單已成立</span>
                                                     <span th:case="45" class="badge bg-info m-0">已歸還</span>
                                                     <span th:case="50" class="badge bg-success m-0">已完成</span>
+                                                    <span th:case="80" class="badge bg-danger m-0" style="background-color: orange">申請取消</span>
                                                 </span>
                                             </td>
                                             <td class="p-3 text-end" th:text=" '$' + ${order.getrentalAllPrice() + order.getrentalAllDepPrice()}"></td>

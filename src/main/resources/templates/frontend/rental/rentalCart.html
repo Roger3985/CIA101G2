@@ -105,46 +105,46 @@
                         <!-- Cart Sidebar -->
                         <div class="col-lg-4 ps-xl-7">
                             <!-- Shipping estimates -->
-                            <div class="card mb-4">
-                                <div class="card-header bg-transparent py-3">
-                                    <h6 class="m-0 h5">Shipping estimates</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="mb-3"><select class="form-select" required="">
-                                            <option value="">Choose your country</option>
-                                            <option value="Australia">Australia</option>
-                                            <option value="Belgium">Belgium</option>
-                                            <option value="Canada">Canada</option>
-                                            <option value="Finland">Finland</option>
-                                            <option value="Mexico">Mexico</option>
-                                            <option value="New Zealand">New Zealand</option>
-                                            <option value="Switzerland">Switzerland</option>
-                                            <option value="United States">United States</option>
-                                        </select>
-                                        <div class="invalid-feedback">Please choose your country!</div>
-                                    </div>
-                                    <div class="mb-3"><select class="form-select" required="">
-                                            <option value="">Choose your city</option>
-                                            <option value="Bern">Bern</option>
-                                            <option value="Brussels">Brussels</option>
-                                            <option value="Canberra">Canberra</option>
-                                            <option value="Helsinki">Helsinki</option>
-                                            <option value="Mexico City">Mexico City</option>
-                                            <option value="Ottawa">Ottawa</option>
-                                            <option value="Washington D.C.">Washington D.C.</option>
-                                            <option value="Wellington">Wellington</option>
-                                        </select>
-                                        <div class="invalid-feedback">Please choose your city!</div>
-                                    </div>
-                                    <div class="mb-3"><input class="form-control" type="text"
-                                            placeholder="ZIP / Postal code" required="">
-                                        <div class="invalid-feedback">Please provide a valid zip!</div>
-                                    </div>
-                                    <button class="btn btn-outline-primary d-block w-100" type="submit">Calculate
-                                        shipping
-                                    </button>
-                                </div>
-                            </div>
+<!--                            <div class="card mb-4">-->
+<!--                                <div class="card-header bg-transparent py-3">-->
+<!--                                    <h6 class="m-0 h5">Shipping estimates</h6>-->
+<!--                                </div>-->
+<!--                                <div class="card-body">-->
+<!--                                    <div class="mb-3"><select class="form-select" required="">-->
+<!--                                            <option value="">Choose your country</option>-->
+<!--                                            <option value="Australia">Australia</option>-->
+<!--                                            <option value="Belgium">Belgium</option>-->
+<!--                                            <option value="Canada">Canada</option>-->
+<!--                                            <option value="Finland">Finland</option>-->
+<!--                                            <option value="Mexico">Mexico</option>-->
+<!--                                            <option value="New Zealand">New Zealand</option>-->
+<!--                                            <option value="Switzerland">Switzerland</option>-->
+<!--                                            <option value="United States">United States</option>-->
+<!--                                        </select>-->
+<!--                                        <div class="invalid-feedback">Please choose your country!</div>-->
+<!--                                    </div>-->
+<!--                                    <div class="mb-3"><select class="form-select" required="">-->
+<!--                                            <option value="">Choose your city</option>-->
+<!--                                            <option value="Bern">Bern</option>-->
+<!--                                            <option value="Brussels">Brussels</option>-->
+<!--                                            <option value="Canberra">Canberra</option>-->
+<!--                                            <option value="Helsinki">Helsinki</option>-->
+<!--                                            <option value="Mexico City">Mexico City</option>-->
+<!--                                            <option value="Ottawa">Ottawa</option>-->
+<!--                                            <option value="Washington D.C.">Washington D.C.</option>-->
+<!--                                            <option value="Wellington">Wellington</option>-->
+<!--                                        </select>-->
+<!--                                        <div class="invalid-feedback">Please choose your city!</div>-->
+<!--                                    </div>-->
+<!--                                    <div class="mb-3"><input class="form-control" type="text"-->
+<!--                                            placeholder="ZIP / Postal code" required="">-->
+<!--                                        <div class="invalid-feedback">Please provide a valid zip!</div>-->
+<!--                                    </div>-->
+<!--                                    <button class="btn btn-outline-primary d-block w-100" type="submit">Calculate-->
+<!--                                        shipping-->
+<!--                                    </button>-->
+<!--                                </div>-->
+<!--                            </div>-->
                             <!-- Order Total -->
                             <div class="card">
                                 <div class="card-header bg-transparent py-3">
@@ -200,7 +200,6 @@
 
             let baseUrl = window.location.protocol + "//" + window.location.host;
             let apiPath = "/frontend/rentalorder";
-            let memNo = 1;
             let rentalAllPrice = 0;
             let rentalAllDepPrice = 0;
 
@@ -209,7 +208,7 @@
                 rentalAllPrice = 0;
                 rentalAllDepPrice = 0;
 
-                fetch(baseUrl + apiPath + "/getFromCart?memNo=" + memNo)
+                fetch(baseUrl + apiPath + "/getFromCart")
                     .then(function (response) {
                         return response.json();
                     }).then(function (data) {
@@ -281,8 +280,7 @@
                                     let target = $(e.target);
                                     let apiPath = "/frontend/rentalmytrack/addTrack";
                                     let data = {
-                                        rentalNo : rentalNo,
-                                        memNo : memNo
+                                        rentalNo : rentalNo
                                     };
 
                                     fetch(baseUrl + apiPath, {
@@ -384,7 +382,7 @@
             //     getAll();
             // });
 
-// 刪除單個購物車商品
+            // 刪除單個購物車商品
             $(document).on("click", ".delItem", function () {
                 let rentalNos = [];
                 let rentalNo = $(this).closest("div.cartItem").attr("data-rentalNo");
@@ -439,8 +437,7 @@
                 }
                 // console.log(rentalNos);
                 let data = {
-                    "rentalNos" : rentalNos,
-                    "memNo" : memNo
+                    "rentalNos" : rentalNos
                 };
 
                 swal({
