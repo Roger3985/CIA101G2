@@ -2,6 +2,7 @@ package com.ren.authorityfunction.controller;
 
 import com.ren.authorityfunction.entity.AuthorityFunction;
 import com.ren.authorityfunction.service.impl.AuthorityFunctionServiceImpl;
+import com.ren.title.service.impl.TitleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,9 @@ public class AuthorityFunctionController {
     @Autowired
     private AuthorityFunctionServiceImpl authorityFunctionSvc;
 
+    @Autowired
+    private TitleServiceImpl titleSvc;
+
     @GetMapping("/listOneAuthorityFunction")
     public AuthorityFunction getAuthorityFunction(@PathVariable Integer authFuncNo) {
         return authorityFunctionSvc.getOneAuthorityFunction(authFuncNo);
@@ -39,9 +43,8 @@ public class AuthorityFunctionController {
     }
 
     @GetMapping("/addAuthorityFunction")
-    public String toAddAuthorityFunction(@ModelAttribute("authorityFunctionList") List<AuthorityFunction> list,
-                                       ModelMap model) {
-        model.addAttribute("authorityFunction", list.get(0));
+    public String toAddAuthorityFunction(ModelMap model) {
+        model.addAttribute("authorityFunction", new AuthorityFunction());
         return "backend/authorityfunction/addAuthorityFunction";
     }
 

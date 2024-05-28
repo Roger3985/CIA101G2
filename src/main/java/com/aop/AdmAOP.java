@@ -204,4 +204,10 @@ public class AdmAOP {
         });
     }
 
+    @AfterReturning(value = "@annotation(updateRedisDB)")
+    public void redisDBMonitor(JoinPoint joinPoint, UpdateRedisDB updateRedisDB ) {
+        String message = updateRedisDB.message();
+        rabbitTemplate.convertAndSend("topicExchangeName", "updateRedis", message);
+    }
+
 }
