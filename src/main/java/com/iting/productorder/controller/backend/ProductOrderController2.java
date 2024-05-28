@@ -4,8 +4,11 @@ package com.iting.productorder.controller.backend;
 import com.chihyun.coupon.entity.Coupon;
 import com.chihyun.coupon.model.CouponService;
 import com.iting.cart.service.CartService;
+import com.iting.productmyfavorite.entity.ProductMyFavorite;
 import com.iting.productorder.entity.ProductOrder;
 import com.iting.productorder.service.ProductOrderService;
+import com.iting.productorderdetail.entity.ProductOrderDetail;
+import com.roger.member.entity.Member;
 import com.roger.member.entity.uniqueAnnotation.Create;
 import com.roger.member.service.MemberService;
 import org.slf4j.LoggerFactory;
@@ -29,10 +32,7 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -69,7 +69,7 @@ public class ProductOrderController2 {
     public String select_page(Model model) {
         return "backend/productorder/select_page";
     }
-//
+    //
 //    @PostMapping("insert1")
 //    public String insert(@Validated(Create.class) ProductOrder productOrder, BindingResult result, ModelMap model) {
 //
@@ -80,43 +80,43 @@ public class ProductOrderController2 {
 //        model.addAttribute("success", "- (新增成功)");
 //        return "frontend/productorderdetail/CartToProductOrder"; // 新增成功後重導至IndexController_inSpringBoot.java的第58行@GetMapping("/emp/listAllEmp")
 //    }
-@PostMapping("insert")
-public String insert(@Validated(Create.class) ProductOrder productOrder, BindingResult result, ModelMap model, @RequestParam(name="coupon.coupNo") String coupNo) {
-    result = removeFieldError(productOrder, result, "upFiles");
+    @PostMapping("insert")
+    public String insert(@Validated(Create.class) ProductOrder productOrder, BindingResult result, ModelMap model, @RequestParam(name="coupon.coupNo") String coupNo) {
+        result = removeFieldError(productOrder, result, "upFiles");
 
-    if (coupNo == null || coupNo.isEmpty()) {
-        productOrder.getCoupon().setCoupNo(1);
-    } else {
-        productOrder.getCoupon().setCoupNo(Integer.parseInt(coupNo));
+        if (coupNo == null || coupNo.isEmpty()) {
+            productOrder.getCoupon().setCoupNo(1);
+        } else {
+            productOrder.getCoupon().setCoupNo(Integer.parseInt(coupNo));
+        }
+
+        if (result.hasErrors()) {
+            return "backend/productorder/addProductOrder";
+        }
+
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
+        productOrder.setProductOrdTime(timestamp);
+
+        BigDecimal productAllPrice = productOrder.getProductAllPrice();
+        BigDecimal coupDisc = couponService.getOneCoupon(Integer.valueOf(coupNo)).getCoupDisc();
+
+        // 检查productAllPrice和coupDisc是否为空
+        if (productAllPrice != null ) {
+            productOrder.setProductRealPrice(productAllPrice.multiply(coupDisc));
+            productOrder.setProductDisc(productAllPrice.subtract(productAllPrice.multiply(coupDisc)));
+        } else {
+            // 处理为空的情况，例如设为0或者其他默认值
+            productOrder.setProductRealPrice(BigDecimal.ZERO);
+            productOrder.setProductDisc(BigDecimal.ZERO); // 设置 productDisc 的默认值
+        }
+
+        // 余下代码不变
+        productOrderSvc.addProductOrder(productOrder);
+        List<ProductOrder> list = productOrderSvc.getAll();
+        model.addAttribute("productorderListData", list);
+        model.addAttribute("success", "- (新增成功)");
+        return "redirect:/backend/productorder/selectProductOrder";
     }
-
-    if (result.hasErrors()) {
-        return "backend/productorder/addProductOrder";
-    }
-
-    Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
-    productOrder.setProductOrdTime(timestamp);
-
-    BigDecimal productAllPrice = productOrder.getProductAllPrice();
-    BigDecimal coupDisc = couponService.getOneCoupon(Integer.valueOf(coupNo)).getCoupDisc();
-
-    // 检查productAllPrice和coupDisc是否为空
-    if (productAllPrice != null ) {
-        productOrder.setProductRealPrice(productAllPrice.multiply(coupDisc));
-        productOrder.setProductDisc(productAllPrice.subtract(productAllPrice.multiply(coupDisc)));
-    } else {
-        // 处理为空的情况，例如设为0或者其他默认值
-        productOrder.setProductRealPrice(BigDecimal.ZERO);
-        productOrder.setProductDisc(BigDecimal.ZERO); // 设置 productDisc 的默认值
-    }
-
-    // 余下代码不变
-    productOrderSvc.addProductOrder(productOrder);
-    List<ProductOrder> list = productOrderSvc.getAll();
-    model.addAttribute("productorderListData", list);
-    model.addAttribute("success", "- (新增成功)");
-    return "redirect:/backend/productorder/selectProductOrder";
-}
 
 
     @PostMapping("update")
@@ -221,7 +221,7 @@ public String insert(@Validated(Create.class) ProductOrder productOrder, Binding
         List<ProductOrder> list = productOrderSvc.getAll();
         return list;
     }
-// 取出購物車商品資訊
+    // 取出購物車商品資訊
 //    @GetMapping("/getFromCart")         // 因為 scan 要用 string 所以乾脆不轉型了
 //    public ResponseEntity<?> getFromCart(@RequestParam String memNo, ModelMap model) {
 //
@@ -230,14 +230,14 @@ public String insert(@Validated(Create.class) ProductOrder productOrder, Binding
 //        return ResponseEntity.status(HttpStatus.OK).body(map);
 //
 //    }
-@PostMapping("/getProductOrderInstantly")
-@ResponseBody
-public ResponseEntity<ProductOrder> getProductOrderInstantly(@RequestParam Integer productOrdNo) {
-    // 根據商品編號查詢商品詳情
-    ProductOrder productOrder = productOrderSvc.getOneProductOrder(productOrdNo);
-    // 返回查詢結果
-    return ResponseEntity.ok().body(productOrder);
-}
+    @PostMapping("/getProductOrderInstantly")
+    @ResponseBody
+    public ResponseEntity<ProductOrder> getProductOrderInstantly(@RequestParam Integer productOrdNo) {
+        // 根據商品編號查詢商品詳情
+        ProductOrder productOrder = productOrderSvc.getOneProductOrder(productOrdNo);
+        // 返回查詢結果
+        return ResponseEntity.ok().body(productOrder);
+    }
     @PostMapping("/getcoupNoInstantly")
     @ResponseBody
     public ResponseEntity<ProductOrder> updatePriceInstantly(@RequestParam(required = false) Integer coupNo, @RequestParam Integer productOrdNo) {
@@ -273,9 +273,20 @@ public ResponseEntity<ProductOrder> getProductOrderInstantly(@RequestParam Integ
 
 
 
+    @ModelAttribute("MemberDataList")
+    protected List<Member> referenceListData(Model model) {
 
+        List<Member> list = memberService.findAll();
+        return list;
+    }
 
+    @PostMapping("getOne")
+    public String getOne(@RequestParam("memNo") String memNo, ModelMap model) {
 
+        List<ProductOrder> productorderListData = productOrderSvc.findByMember(Integer.valueOf(memNo));
+        model.addAttribute("productorderListData", productorderListData);
+        return "/backend/productorder/MemberProductOrder";
+    }
 
 
 
