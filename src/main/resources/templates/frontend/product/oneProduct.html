@@ -224,7 +224,7 @@
                                     <div class="product-media productitm">
                                     <div class="product-cart-btn addToCartBtn">
                                         <input type="hidden" name="productNo"
-                                               th:value="${productDTO.productList.get(0).productNo}">
+                                               th:value="${productDTO.productNoList.get(0)}">
                                         <input type="hidden" name="productBuyQty" th:value="1">
                                         <button class="btn btn-mode me-3"><i class="fi-shopping-cart"></i> Add to cart
                                         </button>
@@ -233,7 +233,7 @@
                                     <div class="product-action productitm">
                                         <div class="addToFAVBtn">
                                                 <input type="hidden" name="productNo"
-                                                       th:value="${productDTO.productList.get(0).productNo}">
+                                                       th:value="${productDTO.productNoList.get(0)}">
                                                 <button class="btn btn-outline-mode me-3"><i class="fi-heart"></i></button>
                                         </div>
                                     </div>
