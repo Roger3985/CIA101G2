@@ -83,7 +83,7 @@ public class ProductOrderController {
         Member myData = (Member) session.getAttribute("loginsuccess");
         if (myData == null) {
             session.setAttribute("location", "/frontend/productorder/submitOrder");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("frontend/member/loginMember");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("/frontend/member/loginMember");
         }
 
         ProductOrder productOrder = createProductOrder(productByrName, productByrPhone, productByrEmail,
@@ -131,16 +131,16 @@ public class ProductOrderController {
     }
     @PostMapping("insertProductOrderSuccess")
     public ResponseEntity<String> insertProductOrderSuccess(@RequestParam("productByrName") java.lang.String productByrName,
-                                             @RequestParam("productByrPhone") java.lang.String productByrPhone,
-                                             @RequestParam("productByrEmail") java.lang.String productByrEmail,
-                                             @RequestParam("productRcvName") java.lang.String productRcvName,
-                                             @RequestParam("productRcvPhone") java.lang.String productRcvPhone,
-                                             @RequestParam("productTakeMethod") Byte productTakeMethod,
-                                             @RequestParam("productAddr") java.lang.String productAddr,
-                                             @RequestParam("productPayMethod") Byte productPayMethod,
-                                             @RequestParam("productAllPrice") BigDecimal productAllPrice,
-                                             @RequestParam(value = "coupNo", required = false) Integer coupNo,
-                                             HttpSession session) {
+                                                            @RequestParam("productByrPhone") java.lang.String productByrPhone,
+                                                            @RequestParam("productByrEmail") java.lang.String productByrEmail,
+                                                            @RequestParam("productRcvName") java.lang.String productRcvName,
+                                                            @RequestParam("productRcvPhone") java.lang.String productRcvPhone,
+                                                            @RequestParam("productTakeMethod") Byte productTakeMethod,
+                                                            @RequestParam("productAddr") java.lang.String productAddr,
+                                                            @RequestParam("productPayMethod") Byte productPayMethod,
+                                                            @RequestParam("productAllPrice") BigDecimal productAllPrice,
+                                                            @RequestParam(value = "coupNo", required = false) Integer coupNo,
+                                                            HttpSession session) {
         Member myData = (Member) session.getAttribute("loginsuccess");
         session.setAttribute("loginsuccess",myData);
         if (myData == null) {

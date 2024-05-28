@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -64,16 +65,6 @@
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-                    </div>
-                    <div>
-                        <form method="post" th:action="@{/backend/productorder/getOne}">
-                            <label>選擇會員編號:</label>
-                            <select name="memNo">
-                                <option value="">請選擇</option>
-                                <option th:each="member : ${MemberDataList}" th:value="${member.memNo}" th:text="${member.memNo} + '-[' + ${member.memName} + ']'" />
-                            </select>
-                            <input type="submit" value="送出">
-                        </form>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -182,7 +173,6 @@
             </div>
             <!-- /.container-fluid -->
         </div>
-
         <!-- End of Main Content -->
 
         <!-- Footer -->
