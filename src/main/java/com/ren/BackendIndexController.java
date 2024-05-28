@@ -268,7 +268,6 @@ public class BackendIndexController {
             res.addCookie(cookie);
             stiRedisTemplate.opsForValue().set(random, admNo);
             session.setAttribute("random", random);
-            System.out.println("cookie存入");
         }
 
         return "redirect:/backend/index";
