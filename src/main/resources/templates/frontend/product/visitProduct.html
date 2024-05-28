@@ -44,7 +44,7 @@
                     <div class="col-lg-6 my-2">
                         <ol class="breadcrumb m-0 small justify-content-center justify-content-lg-end">
                             <li class="breadcrumb-item">
-                                <a class="text-nowrap text-reset" th:href="@{/index}">首頁</a>
+                                <a class="text-nowrap text-reset" th:href="@{/}">首頁</a>
                             </li>
                             <li class="breadcrumb-item text-nowrap active" aria-current="page">商品</li>
                         </ol>
@@ -130,7 +130,7 @@
                                     <ul>
                                         <li class="custom-checkbox checkbox-color">
                                             <input class="custom-control-input filter-checkbox" id="colorsidebar1" type="checkbox"
-                                                   data-filter-type="color" data-filter-value="blue">
+                                                   data-filter="color" data-value="藍色">
                                             <label class="custom-control-label" style="color: #1F45FC;"
                                                    for="colorsidebar1">
                                                 <span class="text-body">藍色</span>
@@ -138,7 +138,7 @@
                                         </li>
                                         <li class="custom-checkbox checkbox-color">
                                             <input class="custom-control-input filter-checkbox" id="colorsidebar2" type="checkbox"
-                                                   data-filter-type="color" data-filter-value="yellow">
+                                                   data-filter="color" data-value="黃色">
                                             <label class="custom-control-label" style="color: #FCD71E;"
                                                    for="colorsidebar2">
                                                 <span class="text-body">黃色</span>
@@ -146,7 +146,7 @@
                                         </li>
                                         <li class="custom-checkbox checkbox-color">
                                             <input class="custom-control-input filter-checkbox" id="colorsidebar3" type="checkbox"
-                                                   data-filter-type="color" data-filter-value="black">
+                                                   data-filter="color" data-value="黑色">
                                             <label class="custom-control-label" style="color: #000;"
                                                    for="colorsidebar3">
                                                 <span class="text-body">黑色</span>
@@ -154,7 +154,7 @@
                                         </li>
                                         <li class="custom-checkbox checkbox-color">
                                             <input class="custom-control-input filter-checkbox" id="colorsidebar4" type="checkbox"
-                                                   data-filter-type="color" data-filter-value="red">
+                                                   data-filter="color" data-value="紅色">
                                             <label class="custom-control-label" style="color: #f73636;"
                                                    for="colorsidebar4">
                                                 <span class="text-body">紅色</span>
@@ -176,32 +176,32 @@
                                     <ul>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input filter-checkbox" id="brand1" type="checkbox"
-                                                   data-filter-type="size" data-filter-value="0">
+                                                   data-filter="size" data-value="0">
                                             <label class="custom-control-label" for="brand1">XS</label>
                                         </li>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input filter-checkbox" id="brand2" type="checkbox"
-                                                   data-filter-type="size" data-filter-value="1">
+                                                   data-filter="size" data-value="1">
                                             <label class="custom-control-label" for="brand2">S</label>
                                         </li>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input filter-checkbox" id="brand3" type="checkbox"
-                                                   data-filter-type="size" data-filter-value="2">
+                                                   data-filter="size" data-value="2">
                                             <label class="custom-control-label" for="brand3">M</label>
                                         </li>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input filter-checkbox" id="brand4" type="checkbox"
-                                                   data-filter-type="size" data-filter-value="3">
+                                                   data-filter="size" data-value="3">
                                             <label class="custom-control-label" for="brand4">L</label>
                                         </li>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input filter-checkbox" id="brand5" type="checkbox"
-                                                   data-filter-type="size" data-filter-value="4">
+                                                   data-filter="size" data-value="4">
                                             <label class="custom-control-label" for="brand5">XL</label>
                                         </li>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input filter-checkbox" id="brand6" type="checkbox"
-                                                   data-filter-type="size" data-filter-value="5">
+                                                   data-filter="size" data-value="5">
                                             <label class="custom-control-label" for="brand6">2L</label>
                                         </li>
                                     </ul>
@@ -219,22 +219,22 @@
                                     <ul>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input filter-checkbox" id="price1" type="checkbox"
-                                                   data-filter-type="price" data-filter-value="2000-5000">
+                                                   data-filter="price" data-value="2000-5000">
                                             <label class="custom-control-label" for="price1">$2000 - $5000</label>
                                         </li>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input filter-checkbox" id="price2" type="checkbox"
-                                                   data-filter-type="price" data-filter-value="5000-10000">
+                                                   data-filter="price" data-value="5000-10000">
                                             <label class="custom-control-label" for="price2">$5000 - $10000</label>
                                         </li>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input filter-checkbox" id="price3" type="checkbox"
-                                                   data-filter-type="price" data-filter-value="10000-20000">
+                                                   data-filter="price" data-value="10000-20000">
                                             <label class="custom-control-label" for="price3">$10000 - $20000</label>
                                         </li>
                                         <li class="custom-checkbox">
                                             <input class="custom-control-input filter-checkbox" id="price4" type="checkbox"
-                                                   data-filter-type="price" data-filter-value="20000-above">
+                                                   data-filter="price" data-value="20000-above">
                                             <label class="custom-control-label" for="price4">$20000 以上</label>
                                         </li>
                                     </ul>
@@ -326,8 +326,8 @@
                                                 </a>
                                             </div>
                                             <div class="product-media productitm">
-                                                <a th:href="@{/frontend/product/Product(productNo=${productDTO.productNoList.get(0)})}">
-                                                    <img class="img-fluid" th:src="@{/frontend/productPic/}"
+                                                <a th:href="@{/frontend/product/oneProduct(productNo=${productDTO.productNoList.get(0)})}">
+                                                    <img class="img-fluid" th:src="@{/frontend/productpicture/DBPhotoReader(productPicNo=${productDTO.productPicNoList.get(0)})}"
                                                          title=""
                                                          alt="">
                                                 </a>
@@ -344,7 +344,7 @@
                                         </div>
                                         <div class="product-card-info">
                                             <div class="product-meta small">
-                                                <a th:href="@{/frontend/product/oneProduct(productCatNo=${productDTO.productCatNo})(productName=${productDTO.productName})}"
+                                                <a th:href="@{/frontend/product/oneProduct(productNo=${productDTO.productNoList.get(0)})}"
                                                    th:text="${productDTO.productCatName}"></a>
                                             </div>
                                             <div class="rating-star text">
@@ -376,37 +376,37 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- End Product Box -->
-                        <!-- 頁碼 -->
-                        <!-- 分頁控件 -->
-                        <div class="shop-bottom-bar d-flex align-items-center mt-3">
-                            <div th:text="'Showing: ' + ${currentPage * 15 + 1} + ' - ' + (${currentPage + 1} * 15 > ${productPage.totalElements} ? ${productPage.totalElements} : (${currentPage + 1} * 15)) + ' of ' + ${productPage.totalElements}"></div>
-                            <div class="ms-auto">
-                                <ul class="pagination">
-                                    <li class="page-item"
-                                        th:classappend="${productPage.hasPrevious()} ? '' : 'disabled'">
-                                        <a class="page-link"
-                                           th:href="@{/frontend/product/visitProduct(page=${currentPage - 1}, size=15)}"
-                                           aria-label="Previous">
-                                            <span aria-hidden="true">«</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item"
-                                        th:each="i : ${#numbers.sequence(0, productPage.totalPages - 1)}"
-                                        th:classappend="${i == currentPage} ? 'active' : ''">
-                                        <a class="page-link"
-                                           th:href="@{/frontend/product/visitProduct(page=${i}, size=15)}"
-                                           th:text="${i + 1}"></a>
-                                    </li>
-                                    <li class="page-item" th:classappend="${productPage.hasNext()} ? '' : 'disabled'">
-                                        <a class="page-link"
-                                           th:href="@{/frontend/product/visitProduct(page=${currentPage + 1}, size=15)}"
-                                           aria-label="Next">
-                                            <span aria-hidden="true">»</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                            <!-- End Product Box -->
+                            <!-- 頁碼 -->
+                            <!-- 分頁控件 -->
+                            <div class="shop-bottom-bar d-flex align-items-center mt-3">
+                                <div th:text="'Showing: ' + ${currentPage * 15 + 1} + ' - ' + (${currentPage + 1} * 15 > ${productPage.totalElements} ? ${productPage.totalElements} : (${currentPage + 1} * 15)) + ' of ' + ${productPage.totalElements}"></div>
+                                <div class="ms-auto">
+                                    <ul class="pagination">
+                                        <li class="page-item"
+                                            th:classappend="${productPage.hasPrevious()} ? '' : 'disabled'">
+                                            <a class="page-link"
+                                               th:href="@{/frontend/product/visitProduct(page=${currentPage - 1}, pageSize=15)}"
+                                               aria-label="Previous">
+                                                <span aria-hidden="true">«</span>
+                                            </a>
+                                        </li>
+                                        <li class="page-item"
+                                            th:each="i : ${#numbers.sequence(0, productPage.totalPages - 1)}"
+                                            th:classappend="${i == currentPage} ? 'active' : ''">
+                                            <a class="page-link"
+                                               th:href="@{/frontend/product/visitProduct(page=${i}, pageSize=15)}"
+                                               th:text="${i + 1}"></a>
+                                        </li>
+                                        <li class="page-item" th:classappend="${productPage.hasNext()} ? '' : 'disabled'">
+                                            <a class="page-link"
+                                               th:href="@{/frontend/product/visitProduct(page=${currentPage + 1}, pageSize=15)}"
+                                               aria-label="Next">
+                                                <span aria-hidden="true">»</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -430,107 +430,62 @@
 <th:block th:insert="~{frontend/component/plugin/frontendplugin.html :: js}"></th:block>
 <!-- End script start -->
 <script>
-  // 購物車
-  function testAddToCart(event) {
-    event.preventDefault();
-    var button = event.target.closest('a'); // 找到最接近的<a>元素
-    var row = button.closest('.addToCartBtn'); // 找到最近的包含该按钮的商品项
-    var productNo = row.querySelector('input[name="productNo"]').value;
-    var productBuyQty = row.querySelector('input[name="productBuyQty"]').value;
+    // 購物車
+    function testAddToCart(event) {
+        event.preventDefault();
+        var button = event.target.closest('a'); // 找到最接近的<a>元素
+        var row = button.closest('.addToCartBtn'); // 找到最近的包含该按钮的商品项
+        var productNo = row.querySelector('input[name="productNo"]').value;
+        var productBuyQty = row.querySelector('input[name="productBuyQty"]').value;
 
-    var data = {
-      productNo: productNo,
-      productBuyQty: productBuyQty
-    };
+        var data = {
+            productNo: productNo,
+            productBuyQty: productBuyQty
+        };
 
-    $.ajax({
-      type: 'POST',
-      url: "/frontend/cart/addproducttocart",
-      data: data,
-      success: function(response) {
-        console.log("Update successful");
-      },
-      error: function(error) {
-        console.log("Error:", error);
-      }
-    });
-  }
-
-  var addToCartButtons = document.querySelectorAll(".addToCartBtn .btn-primary");
-  addToCartButtons.forEach(function(button) {
-    button.addEventListener("click", testAddToCart);
-  });
-
-  function testAddToFAV(event) {
-    event.preventDefault();
-    var button = event.target.closest('a');
-    var row = button.closest('.productitm');
-    var productNo = row.querySelector('input[name="productNo"]').value;
-    var data = {
-      productNo: productNo,
-    };
-
-    $.ajax({
-      type: 'POST',
-      url: "/frontend/productmyfavorite/addProductTomyFAV",
-      data: data,
-      success: function(data) {
-        console.log("加入成功");
-      }
-    });
-  }
-
-  var addToFAVBtns = document.querySelectorAll(".addToFAVBtn a");
-  addToFAVBtns.forEach(function(button) {
-    button.addEventListener("click", testAddToFAV);
-  });
-
-    window.onload = function() {
-        document.querySelectorAll('.filter-checkbox, #minPrice, #maxPrice').forEach(element => {
-            element.addEventListener('change', applyFilters);
+        $.ajax({
+            type: 'POST',
+            url: "/frontend/cart/addproducttocart",
+            data: data,
+            success: function(response) {
+                console.log("Update successful");
+            },
+            error: function(error) {
+                console.log("Error:", error);
+            }
         });
-    };
+    }
 
+    function testAddToFAV(event) {
+        event.preventDefault();
+        var button = event.target.closest('a');
+        var row = button.closest('.productitm');
+        var productNo = row.querySelector('input[name="productNo"]').value;
+        var data = {
+            productNo: productNo,
+        };
 
-    <!--商品過濾相關 -->
-    document.querySelectorAll('.sort-button').forEach(button => {
-        button.addEventListener('click', function () {
-            const sortType = this.dataset.sort;
-            const productContainer = document.querySelector('#product-container')
-
-            productContainer.innerHTML = '';
-
-            axios.get(`/frontend/product/visitProduct-fragment?sortType=${sortType}`)
-                .then(response => {
-                    productContainer.innerHTML = response.data;
-                })
-                .catch(error => console.log('error', error));
+        $.ajax({
+            type: 'POST',
+            url: "/frontend/productmyfavorite/addProductTomyFAV",
+            data: data,
+            success: function(data) {
+                console.log("加入成功");
+            }
         });
-    });
-
-    document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-            applyFilters();
-        });
-    });
-
-    document.querySelectorAll('#minPrice, #maxPrice').forEach(input => {
-        input.addEventListener('change', function () {
-            applyFilters();
-        });
-    });
+    }
 
     function applyFilters() {
         const filters = {};
 
         // Collect checked filter checkboxes
         document.querySelectorAll('.filter-checkbox:checked').forEach(checkedBox => {
-            const filterType = checkedBox.dataset.filterType;
-            const filterValue = checkedBox.dataset.filterValue;
-            if (!filters[filterType]) {
-                filters[filterType] = [];
+            const filter = checkedBox.dataset.filter;
+            const value = checkedBox.dataset.value;
+            if (!filters[filter]) {
+                filters[filter] = [];
             }
-            filters[filterType].push(filterValue);
+            filters[filter].push(value);
         });
 
         // Collect min and max price inputs
@@ -565,44 +520,47 @@
             .catch(error => console.log('error', error));
     }
 
-    // Attach event listeners
-    document.querySelectorAll('.filter-checkbox, #minPrice, #maxPrice').forEach(element => {
-        element.addEventListener('change', applyFilters);
-    });
+    window.onload = function() {
+        // Attach event listeners to filter checkboxes
+        document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', applyFilters);
+        });
 
+        // Attach event listeners to min and max price inputs
+        document.querySelectorAll('#minPrice, #maxPrice').forEach(input => {
+            input.addEventListener('change', applyFilters);
+        });
 
+        // Attach event listeners to sort buttons
+        document.querySelectorAll('.sort-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const sortType = this.dataset.sort;
+                const productContainer = document.querySelector('#product-container');
 
-    // document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
-    //     checkbox.addEventListener('change', function () {
-    //         const filters = {};
-    //
-    //         document.querySelectorAll('.filter-checkbox:checked').forEach(checkedBox => {
-    //             const filterType = checkedBox.dataset.filterType;
-    //             const filterValue = checkedBox.dataset.filterValue;
-    //             if (!filters[filterType]) {
-    //                 filters[filterType] = [];
-    //             }
-    //             filters[filterType].push(filterValue);
-    //         });
-    //
-    //         const params = new URLSearchParams();
-    //         for (const key in filters) {
-    //             params.append(key, filters[key].join(','));
-    //         }
-    //
-    //         const productContainer = document.querySelector('#product-container');
-    //
-    //         productContainer.innerHTML = '';
-    //
-    //         axios.get(`/frontend/product/filterProducts?${params}`)
-    //             .then(response => {
-    //                 productContainer.innerHTML = response.data;
-    //             })
-    //             .catch(error => console.log('error', error));
-    //     });
-    // });
+                productContainer.innerHTML = '';
 
+                axios.get(`/frontend/product/visitProduct-fragment?sortType=${sortType}`)
+                    .then(response => {
+                        productContainer.innerHTML = response.data;
+                    })
+                    .catch(error => console.log('error', error));
+            });
+        });
+
+        // Attach event listeners to add to cart buttons
+        var addToCartButtons = document.querySelectorAll(".addToCartBtn .btn-primary");
+        addToCartButtons.forEach(function(button) {
+            button.addEventListener("click", testAddToCart);
+        });
+
+        // Attach event listeners to add to favorite buttons
+        var addToFAVBtns = document.querySelectorAll(".addToFAVBtn a");
+        addToFAVBtns.forEach(function(button) {
+            button.addEventListener("click", testAddToFAV);
+        });
+    };
 </script>
+
 </body>
 
 </html>

@@ -42,7 +42,7 @@
                     <div class="col-lg-6 my-2">
                         <ol class="breadcrumb dark-link m-0 small justify-content-center justify-content-lg-end">
                             <li class="breadcrumb-item">
-                                <a class="text-nowrap" th:href="@{/frontend/index}">
+                                <a class="text-nowrap" th:href="@{/}">
                                     首頁
                                     <i class="bi bi-home"></i>
                                 </a>
@@ -71,24 +71,31 @@
                                 <!-- 預計使用th:each將所有該商品的照片列出 -->
                                 <div class="swiper-slide swiper-slide-visible swiper-slide-active" role="group" aria-label="1 / 6" style="width: 516px; opacity: 1; transform: translate3d(0px, 0px, 0px);">
                                     <div class="pd-gallery-slide">
-                                        <a class="gallery-link" th:href="@{/frontend/productpicture/DBPhotoReader} + '?productPicNo=' + ${picNo}">
+                                        <a class="gallery-link" th:href="@{/frontend/productpicture/DBPhotoReader(productPicNo=${picNo})}">
                                             <i class="bi bi-arrows-fullscreen"></i>
                                         </a>
-                                        <img th:src="@{/frontend/productpicture/DBPhotoReader} + '?productPicNo=' + ${picNo}" class="img-fluid" title="" alt="">
+                                        <img th:src="@{/frontend/productpicture/DBPhotoReader(productPicNo=${product})}" class="img-fluid" title="" alt="">
                                     </div>
                                 </div>
                             </div>
                             <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
                         </div>
                         <div class="swiper swiper_thumb_gallery product-thumb swiper-initialized swiper-horizontal swiper-pointer-events swiper-free-mode swiper-backface-hidden swiper-thumbs">
-                            <div th:each="picNo, iterStat : ${picNoList}" class="swiper-wrapper" id="swiper-wrapper-b62c589e07109e8a9" aria-live="polite" style="transform: translate3d(0px, 0px, 0px);">
+                            <div th:each="picNo, iterStat : ${productDTO.productPicNoList}" class="swiper-wrapper" id="swiper-wrapper-b62c589e07109e8a9" aria-live="polite" style="transform: translate3d(0px, 0px, 0px);">
                                 <div class="swiper-slide swiper-slide-visible swiper-slide-active swiper-slide-thumb-active" role="group" aria-label="${iterStat.index + 1} / ${totalPictures}" style="width: 95.2px; margin-right: 10px;">
-                                    <div class="pd-gallery-slide-thumb"><img th:src="@{/frontend/productpicture/DBPhotoReader} + '?productPicNo=' + ${picNo}" class="img-fluid" title="" alt=""></div>
+                                    <div class="pd-gallery-slide-thumb">
+                                        <img th:src="@{/frontend/productpicture/DBPhotoReader(productPicNo=${picNo})}" class="img-fluid" title="" alt="">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="swiper-arrow-style-03 swiper-next swiper-next-pd-details_thumb" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-b62c589e07109e8a9" aria-disabled="false"><i class="bi bi-chevron-right"></i></div>
-                            <div class="swiper-arrow-style-03 swiper-prev swiper-prev-pd-details_thumb swiper-button-disabled" tabindex="-1" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-b62c589e07109e8a9" aria-disabled="true"><i class="bi bi-chevron-left"></i></div>
-                            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+                            <div class="swiper-arrow-style-03 swiper-next swiper-next-pd-details_thumb" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-b62c589e07109e8a9" aria-disabled="false">
+                                <i class="bi bi-chevron-right"></i>
+                            </div>
+                            <div class="swiper-arrow-style-03 swiper-prev swiper-prev-pd-details_thumb swiper-button-disabled" tabindex="-1" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-b62c589e07109e8a9" aria-disabled="true">
+                                <i class="bi bi-chevron-left"></i>
+                            </div>
+                            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+                        </div>
                     </div>
                     <!-- End Product Gallery -->
                     <!-- Product Details -->
@@ -106,35 +113,75 @@
                                 </th:block>
                             </div>
                             <div class="product-description"><p th:text="${productDTO.productInfo}"></p></div>
-                            <div class="product-attribute"><label class="fs-6 text-mode pb-2 fw-500">Size</label>
+                            <div class="product-attribute">
+                                <label class="fs-6 text-mode pb-2 fw-500">尺寸</label>
                                 <div class="nav-thumbs nav mb-3">
-                                    <div class="form-check radio-text form-check-inline me-2">
-                                        <input class="form-check-input" type="radio" name="size_d3" id="xs_2" checked="">
-                                        <label class="radio-text-label" for="xs_2">XS</label>
-                                    </div>
-                                    <div class="form-check radio-text form-check-inline me-2"><input class="form-check-input" type="radio" name="size_d3" id="s_2"> <label class="radio-text-label" for="s_2">S</label></div>
-                                    <div class="form-check radio-text form-check-inline me-2"><input class="form-check-input" type="radio" name="size_d3" id="m_2"> <label class="radio-text-label" for="m_2">M</label></div>
-                                    <div class="form-check radio-text form-check-inline me-2"><input class="form-check-input" type="radio" name="size_d3" id="l_2"> <label class="radio-text-label" for="l_2">L</label></div>
+                                    <th:block th:each="productSize, iterStat : ${productDTO.productSizeSet}">
+                                        <th:block th:if="${iterStat.index == 0}">
+                                            <div class="form-check radio-text form-check-inline me-2">
+                                                <input class="form-check-input" type="radio" name="size_d3" id="xs_2" checked="">
+                                                <label th:if="${productSize == 0}" th:text="XS" class="radio-text-label" for="xs_2"></label>
+                                                <label th:if="${productSize == 1}" th:text="S" class="radio-text-label" for="xs_2"></label>
+                                                <label th:if="${productSize == 2}" th:text="M" class="radio-text-label" for="xs_2"></label>
+                                                <label th:if="${productSize == 3}" th:text="L" class="radio-text-label" for="xs_2"></label>
+                                                <label th:if="${productSize == 4}" th:text="XL" class="radio-text-label" for="xs_2"></label>
+                                                <label th:if="${productSize == 5}" th:text="2L" class="radio-text-label" for="xs_2"></label>
+                                            </div>
+                                        </th:block>
+                                        <th:block th:if="${iterStat.index != 0}">
+                                            <div class="form-check radio-text form-check-inline me-2">
+                                                <input class="form-check-input" type="radio" name="size_d3" id="s_2">
+                                                <label th:if="${productSize == 0}" th:text="XS" class="radio-text-label" for="s_2"></label>
+                                                <label th:if="${productSize == 1}" th:text="S" class="radio-text-label" for="s_2"></label>
+                                                <label th:if="${productSize == 2}" th:text="M" class="radio-text-label" for="s_2"></label>
+                                                <label th:if="${productSize == 3}" th:text="L" class="radio-text-label" for="s_2"></label>
+                                                <label th:if="${productSize == 4}" th:text="XL" class="radio-text-label" for="s_2"></label>
+                                                <label th:if="${productSize == 5}" th:text="2L" class="radio-text-label" for="s_2"></label>
+                                            </div>
+                                        </th:block>
+                                    </th:block>
                                 </div>
-                                <label class="fs-6 text-mode pb-2 fw-500">Color</label>
+                                <label class="fs-6 text-mode pb-2 fw-500">配色</label>
                                 <div class="nav-thumbs nav mb-3">
-                                    <div class="form-check radio-color large form-check-inline me-2"><input class="form-check-input" type="radio" name="color_1" id="color_01" checked=""> <label class="radio-color-label" for="color_01"><span style="background-color: #126532;"></span></label></div>
-                                    <div class="form-check radio-color large form-check-inline me-2"><input class="form-check-input" type="radio" name="color_1" id="color_2"> <label class="radio-color-label" for="color_2"><span style="background-color: #ff9922;"></span></label></div>
-                                    <div class="form-check radio-color large form-check-inline me-2"><input class="form-check-input" type="radio" name="color_1" id="color_3"> <label class="radio-color-label" for="color_3"><span style="background-color: #326598;"></span></label></div>
-                                    <div class="form-check radio-color large form-check-inline me-2"><input class="form-check-input" type="radio" name="color_1" id="color_4"> <label class="radio-color-label" for="color_4"><span style="background-color: #126578;"></span></label></div>
+                                    <th:block th:each="productColor : ${productDTO.productColorSet}">
+                                        <div th:if="${productColor == '藍色'}" class="form-check radio-color large form-check-inline me-2">
+                                            <input class="form-check-input" type="radio" name="color_1" id="color_01" checked="">
+                                            <label class="radio-color-label" for="color_01">
+                                                <span style="background-color: #1F45FC;"></span>
+                                            </label>
+                                        </div>
+                                        <div th:if="${productColor == '黃色'}" class="form-check radio-color large form-check-inline me-2">
+                                            <input class="form-check-input" type="radio" name="color_1" id="color_2">
+                                            <label class="radio-color-label" for="color_2">
+                                                <span style="background-color: #FCD71E;"></span>
+                                            </label>
+                                        </div>
+                                        <div th:if="${productColor == '黑色'}" class="form-check radio-color large form-check-inline me-2">
+                                            <input class="form-check-input" type="radio" name="color_1" id="color_3">
+                                            <label class="radio-color-label" for="color_3">
+                                                <span style="background-color: #000;"></span>
+                                            </label>
+                                        </div>
+                                        <div th:if="${productColor == '紅色'}" class="form-check radio-color large form-check-inline me-2">
+                                            <input class="form-check-input" type="radio" name="color_1" id="color_4">
+                                            <label class="radio-color-label" for="color_4">
+                                                <span style="background-color: #f73636;"></span>
+                                            </label>
+                                        </div>
+                                    </th:block>
                                 </div>
                             </div>
-                            <div class="count-down count-down-02 mb-3" data-countdown="January 01, 2024 15:00:00">
-                                <div class="days"><span class="count">00</span><span class="title">Day</span></div>
-                                <div class="hours"><span class="count">00</span><span class="title">Hour</span></div>
-                                <div class="minutes"><span class="count">00</span><span class="title">Minute</span>
-                                </div>
-                                <div class="seconds"><span class="count">00</span><span class="title">Second</span>
-                                </div>
+<!--                            <div class="count-down count-down-02 mb-3" data-countdown="January 01, 2024 15:00:00">-->
+<!--                                <div class="days"><span class="count">00</span><span class="title">Day</span></div>-->
+<!--                                <div class="hours"><span class="count">00</span><span class="title">Hour</span></div>-->
+<!--                                <div class="minutes"><span class="count">00</span><span class="title">Minute</span>-->
+<!--                                </div>-->
+<!--                                <div class="seconds"><span class="count">00</span><span class="title">Second</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                            <div class="product-price fs-3 fw-500 mb-2" th:each="productPrice : ${productDTO.productPriceSet}">
+                                <span class="text-primary" th:text="'$ ' + ${productPrice}"></span>
                             </div>
-                            <div class="product-price fs-3 fw-500 mb-2">
-                                <del class="text-muted fs-6">$38.<small>50</small></del>
-                                <span class="text-primary">$28.<small>50</small></span></div>
                             <div class="product-detail-actions d-flex flex-wrap pt-3">
                                 <div class="cart-qty me-3 mb-3">
                                     <div class="dec qty-btn qty_btn">-</div>
@@ -142,22 +189,55 @@
                                     <div class="inc qty-btn qty_btn">+</div>
                                 </div>
                                 <div class="cart-button mb-3 d-flex">
-                                    <button class="btn btn-mode me-3"><i class="fi-shopping-cart"></i> Add to cart
+                                    <button class="btn btn-mode me-3">
+                                        <i class="fi-shopping-cart"></i>
+                                        Add to cart
                                     </button>
-                                    <button class="btn btn-outline-mode me-3"><i class="fi-heart"></i></button>
-                                    <button class="btn btn-outline-mode"><i class="fi-repeat"></i></button>
+                                    <button class="btn btn-outline-mode me-3">
+                                        <i class="fi-heart"></i>
+                                    </button>
+                                    <button class="btn btn-outline-mode">
+                                        <i class="fi-repeat"></i>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="product-info-buttons nav pt-4"><a href="#" class="me-3" data-bs-toggle="modal" data-bs-target="#px_size_chart_modal"><i class="bi bi-scissors"></i>Size guide</a> <a href="#" class="" data-bs-toggle="modal" data-bs-target="#px_shipping_modal"><i class="bi bi-truck me-2"></i>Shipping</a> <a href="#" class="ms-auto" data-bs-toggle="modal" data-bs-target="#px_ask_modal"><i class="bi bi-envelope ms-auto"></i>Ask about product</a></div>
-                            <div class="pt-3 border-top mt-3 small"><p class="theme-link mb-2"><label class="m-0 text-mode">Categories:</label> <a href="#">Sunglasses</a>, <a href="#">Winter</a>,
-                                <a href="#">Shorts</a>, <a href="#">Cool</a></p>
-                                <p class="theme-link mb-2"><label class="m-0 text-mode">Tags:</label> <a href="#">Fashion</a>,
-                                    <a href="#">Women</a>, <a href="#">Winter</a></p>
-                                <p class="theme-link m-0"><label class="m-0 text-mode">Share:</label> <a class="icon icon-sm icon-secondary me-2" href="#"><i class="bi bi-facebook"></i>
-                                </a><a class="icon icon-sm icon-secondary me-2" href="#"><i class="bi bi-twitter"></i>
-                                </a><a class="icon icon-sm icon-secondary me-2" href="#"><i class="bi bi-instagram"></i>
-                                </a><a class="icon icon-sm icon-secondary me-2" href="#"><i class="bi bi-linkedin"></i></a>
-                                </p></div>
+                            <div class="product-info-buttons nav pt-4">
+                                <a href="#" class="me-3" data-bs-toggle="modal" data-bs-target="#px_size_chart_modal">
+                                    <i class="bi bi-scissors"></i>
+                                    Size guide
+                                </a>
+                                <a href="#" class="" data-bs-toggle="modal" data-bs-target="#px_shipping_modal">
+                                    <i class="bi bi-truck me-2"></i>
+                                    Shipping
+                                </a>
+                                <a href="#" class="ms-auto" data-bs-toggle="modal" data-bs-target="#px_ask_modal">
+                                    <i class="bi bi-envelope ms-auto"></i>
+                                    Ask about product
+                                </a>
+                            </div>
+<!--                            <div class="pt-3 border-top mt-3 small">-->
+<!--                                <p class="theme-link mb-2">-->
+<!--                                    <label class="m-0 text-mode">Categories:</label><a href="#">Sunglasses</a>, <a href="#">Winter</a>,<a href="#">Shorts</a>, <a href="#">Cool</a></p>-->
+<!--                                <p class="theme-link mb-2">-->
+<!--                                    <label class="m-0 text-mode">Tags:</label> <a href="#">Fashion</a>,-->
+<!--                                    <a href="#">Women</a>, <a href="#">Winter</a>-->
+<!--                                </p>-->
+<!--                                <p class="theme-link m-0">-->
+<!--                                    <label class="m-0 text-mode">Share:</label>-->
+<!--                                    <a class="icon icon-sm icon-secondary me-2" href="#">-->
+<!--                                        <i class="bi bi-facebook"></i>-->
+<!--                                    </a>-->
+<!--                                    <a class="icon icon-sm icon-secondary me-2" href="#">-->
+<!--                                        <i class="bi bi-twitter"></i>-->
+<!--                                    </a>-->
+<!--                                    <a class="icon icon-sm icon-secondary me-2" href="#">-->
+<!--                                        <i class="bi bi-instagram"></i>-->
+<!--                                    </a>-->
+<!--                                    <a class="icon icon-sm icon-secondary me-2" href="#">-->
+<!--                                        <i class="bi bi-linkedin"></i>-->
+<!--                                    </a>-->
+<!--                                </p>-->
+<!--                            </div>-->
                             <div class="pt-4"><img class="img-fluid" src="../../assets/img/fashion/payment-details.png" title="" alt=""></div>
                         </div>
                     </div>
@@ -167,25 +247,29 @@
                         <div class="border p-3">
                             <div class="d-flex border-bottom pb-3 mb-3">
                                 <div class="fs-1 text-primary"><i class="bi bi-truck"></i></div>
-                                <div class="col ps-3"><h6 class="mb-1">Free shipping</h6>
-                                    <p class="m-0">Lorem ipsum dolor sit amet</p></div>
+                                <div class="col ps-3"><h6 class="mb-1">免運服務</h6>
+                                    <p class="m-0">滿 $ 10,000 免運費</p></div>
                             </div>
                             <div class="d-flex border-bottom pb-3 mb-3">
                                 <div class="fs-1 text-primary"><i class="bi bi-box-arrow-in-left"></i></div>
-                                <div class="col ps-3"><h6 class="mb-1">30 Days Return</h6>
-                                    <p class="m-0">Lorem ipsum dolor sit amet</p></div>
+                                <div class="col ps-3"><h6 class="mb-1">30天以內退還免運費</h6>
+                                    <p class="m-0">詳情請查看服務說明</p>
+                                </div>
                             </div>
                             <div class="d-flex">
                                 <div class="fs-1 text-primary"><i class="bi bi-headphones"></i></div>
-                                <div class="col ps-3"><h6 class="mb-1">Contact us 24/7</h6>
-                                    <p class="m-0">Lorem ipsum dolor sit amet</p></div>
+                                <div class="col ps-3"><h6 class="mb-1">24小時客服專線</h6>
+                                    <p class="m-0">+886 3425 1108</p></div>
                             </div>
                         </div>
-                        <div class="mt-3"><a href="#"><img class="w-100"
-                                                           src="../../assets/img/fashion/mega-menu-banner.jpg" title=""
-                                                           alt=""></a></div>
+                        <div class="mt-3">
+                            <a href="#">
+                                <img class="w-100" src="../../assets/img/fashion/mega-menu-banner.jpg" title="" alt="">
+                            </a>
+                        </div>
                     </div>
-                    <!-- End Sidebar --></div>
+                    <!-- End Sidebar -->
+                </div>
             </div>
         </section>
         <!-- End Product Details -->

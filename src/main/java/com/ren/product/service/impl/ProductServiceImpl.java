@@ -6,6 +6,8 @@ import com.ren.product.dao.ProductRepository;
 import com.ren.product.service.ProductService_interface;
 import com.ren.productcategory.dao.ProductCategoryRepository;
 import com.ren.productcategory.service.impl.ProductCategoryServiceImpl;
+import com.ren.productpicture.entity.ProductPicture;
+import com.ren.productpicture.service.impl.ProductPictureServiceImpl;
 import com.ren.productreview.entity.ProductReview;
 import com.ren.productreview.service.impl.ProductReviewServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,8 @@ public class ProductServiceImpl implements ProductService_interface {
     @Autowired
     @Qualifier("proStrDTO")
     private RedisTemplate<String, ProductDTO> proDTORedisTemplate;
+    @Autowired
+    private ProductPictureServiceImpl productPictureSvc;
 
     /**
      * 新增單項商品
@@ -363,7 +367,8 @@ public class ProductServiceImpl implements ProductService_interface {
             String productCatName = productCategorySvc.getOneProductCategory(productCatNo).getProductCatName();
             productDTO.setProductCatName(productCatName);
             productDTO.setProductName(productName);
-            List<Integer> productNoList = new ArrayList<>();
+            var productNoList = new ArrayList<Integer>();
+            var productPicNoList = new ArrayList<Integer>();
             HashSet<BigDecimal> productPriceSet = new HashSet<>();
             HashSet<Integer> productSizeSet = new HashSet<>();
             HashSet<String> productColorSet = new HashSet<>();
@@ -372,7 +377,8 @@ public class ProductServiceImpl implements ProductService_interface {
             Integer productScorePeople = 0;
             Double productScore = 0.0;
             for (Product product : list) {
-                productNoList.add(product.getProductNo());
+                Integer productNo = product.getProductNo();
+                productNoList.add(productNo);
                 productPriceSet.add(product.getProductPrice());
 
                 if (product.getProductSize() != null) {
@@ -393,15 +399,25 @@ public class ProductServiceImpl implements ProductService_interface {
                     productTotalScore += productReview.getProductScore();
                     productScorePeople++;
                 }
+
+                List<ProductPicture> productPictures = productPictureSvc.getByProductNo(productNo);
+                for (var productPicture : productPictures) {
+                    productPicNoList.add(productPicture.getProductPicNo());
+                }
             }
 
             if (productScorePeople != 0) {
                 productScore = (double) productTotalScore / productScorePeople;
                 productScore = Math.round(productScore * 10.0) / 10.0;
             }
+
             productDTO.setProductScorePeople(productScorePeople);
             productDTO.setProductScore(productScore);
-            productDTO.setProductNoList((ArrayList<Integer>) productNoList);
+            productDTO.setProductNoList(productNoList);
+            if (productPicNoList.isEmpty()) {
+                productPicNoList.add(1);
+            }
+            productDTO.setProductPicNoList(productPicNoList);
             productDTO.setProductPriceSet(productPriceSet);
             productDTO.setProductSizeSet(productSizeSet);
             productDTO.setProductColorSet(productColorSet);
@@ -865,36 +881,51 @@ public class ProductServiceImpl implements ProductService_interface {
     }
 
     public Page<ProductDTO> getVisitProductFromRedis(Pageable pageable, Map<String, String> filters) {
-
         List<ProductDTO> productDTOList = getAllFromRedis();
 
         if (filters != null) {
-
             if (filters.containsKey("color")) {
                 String[] colors = filters.get("color").split(",");
+                Set<String> colorSet = new HashSet<>(Arrays.asList(colors));
+
                 productDTOList = productDTOList.stream()
-                        .filter(productDTO -> Arrays.stream(colors).anyMatch(color -> productDTO.getProductColorSet().contains(color)))
+                        .filter(productDTO -> productDTO.getProductColorSet().containsAll(colorSet))
                         .collect(Collectors.toList());
+
+                for (var productDTO : productDTOList) {
+                    System.out.println(productDTO.getProductID());
+                    Set<String> set = productDTO.getProductColorSet();
+                    for (var color : set) {
+                        System.out.println(color);
+                    }
+                }
             }
 
             if (filters.containsKey("size")) {
                 String[] sizes = filters.get("size").split(",");
                 List<Integer> sizeList = Arrays.stream(sizes).map(Integer::valueOf).collect(Collectors.toList());
+
                 productDTOList = productDTOList.stream()
-                        .filter(productDTO -> productDTO.getProductSizeSet().stream().anyMatch(sizeList::contains))
+                        .filter(productDTO -> productDTO.getProductSizeSet().containsAll(sizeList))
                         .collect(Collectors.toList());
             }
 
             if (filters.containsKey("priceRange")) {
                 String[] priceRanges = filters.get("priceRange").split(",");
+
                 productDTOList = productDTOList.stream()
                         .filter(productDTO -> {
                             for (String range : priceRanges) {
-                                String[] prices = range.split("-");
-                                BigDecimal minPrice = new BigDecimal(prices[0]);
-                                BigDecimal maxPrice = new BigDecimal(prices[1]);
-                                if (productDTO.getProductPriceSet().stream().anyMatch(price -> price.compareTo(minPrice) >= 0 && price.compareTo(maxPrice) <= 0)) {
-                                    return true;
+                                try {
+                                    String[] prices = range.split("-");
+                                    BigDecimal minPrice = new BigDecimal(prices[0]);
+                                    BigDecimal maxPrice = prices.length > 1 ? new BigDecimal(prices[1]) : BigDecimal.valueOf(Double.MAX_VALUE);
+
+                                    if (productDTO.getProductPriceSet().stream().anyMatch(price -> price.compareTo(minPrice) >= 0 && price.compareTo(maxPrice) <= 0)) {
+                                        return true;
+                                    }
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Invalid price range: " + range);
                                 }
                             }
                             return false;
@@ -902,14 +933,21 @@ public class ProductServiceImpl implements ProductService_interface {
                         .collect(Collectors.toList());
             }
         }
-
         int totalSize = productDTOList.size();
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), totalSize);
 
+        System.out.println("Total size: " + totalSize);
+        System.out.println("Start index: " + start);
+        System.out.println("End index: " + end);
+        System.out.println("Pageable page size: " + pageable.getPageSize());
+
         List<ProductDTO> pagedProductDTOList = productDTOList.subList(start, end);
+
+        System.out.println("Paged list size: " + pagedProductDTOList.size());
 
         return new PageImpl<>(pagedProductDTOList, pageable, totalSize);
     }
+
 
 }

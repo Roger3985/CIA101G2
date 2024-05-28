@@ -1,10 +1,7 @@
 package com.ren.product.dto;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.ren.product.entity.Product;
-import com.ren.productpicture.entity.ProductPicture;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -23,6 +20,7 @@ public class ProductDTO {
     private Integer productScorePeople;
     private Double productScore;
     private ArrayList<Integer> productNoList;
+    private ArrayList<Integer> productPicNoList;
     private HashSet<BigDecimal> productPriceSet;
     private HashSet<Integer> productSizeSet;
     private HashSet<String> productColorSet;
@@ -35,7 +33,7 @@ public class ProductDTO {
         this.productID = productID;
     }
 
-    public ProductDTO(Integer productCatNo, String productCatName, String productName, String productInfo, Integer productScorePeople, Double productScore, ArrayList<Integer> productNoList, HashSet<BigDecimal> productPriceSet, HashSet<Integer> productSizeSet, HashSet<String> productColorSet, HashSet<Timestamp> productOnShelfSet) {
+    public ProductDTO(Integer productCatNo, String productCatName, String productName, String productInfo, Integer productScorePeople, Double productScore, ArrayList<Integer> productNoList, ArrayList<Integer> productPicNoList, HashSet<BigDecimal> productPriceSet, HashSet<Integer> productSizeSet, HashSet<String> productColorSet, HashSet<Timestamp> productOnShelfSet) {
         this.productCatNo = productCatNo;
         this.productCatName = productCatName;
         this.productName = productName;
@@ -43,13 +41,14 @@ public class ProductDTO {
         this.productScorePeople = productScorePeople;
         this.productScore = productScore;
         this.productNoList = productNoList;
+        this.productPicNoList = productPicNoList;
         this.productPriceSet = productPriceSet;
         this.productSizeSet = productSizeSet;
         this.productColorSet = productColorSet;
         this.productOnShelfSet = productOnShelfSet;
     }
 
-    public ProductDTO(String productID, Integer productCatNo, String productCatName, String productName, String productInfo, Integer productScorePeople, Double productScore, ArrayList<Integer> productNoList, HashSet<BigDecimal> productPriceSet, HashSet<Integer> productSizeSet, HashSet<String> productColorSet, HashSet<Timestamp> productOnShelfSet) {
+    public ProductDTO(String productID, Integer productCatNo, String productCatName, String productName, String productInfo, Integer productScorePeople, Double productScore, ArrayList<Integer> productNoList, ArrayList<Integer> productPicNoList, HashSet<BigDecimal> productPriceSet, HashSet<Integer> productSizeSet, HashSet<String> productColorSet, HashSet<Timestamp> productOnShelfSet) {
         this.productID = productID;
         this.productCatNo = productCatNo;
         this.productCatName = productCatName;
@@ -58,6 +57,7 @@ public class ProductDTO {
         this.productScorePeople = productScorePeople;
         this.productScore = productScore;
         this.productNoList = productNoList;
+        this.productPicNoList = productPicNoList;
         this.productPriceSet = productPriceSet;
         this.productSizeSet = productSizeSet;
         this.productColorSet = productColorSet;
@@ -158,5 +158,13 @@ public class ProductDTO {
 
     public void setProductNoList(ArrayList<Integer> productNoList) {
         this.productNoList = productNoList;
+    }
+
+    public ArrayList<Integer> getProductPicNoList() {
+        return productPicNoList;
+    }
+
+    public void setProductPicNoList(ArrayList<Integer> productPicNoList) {
+        this.productPicNoList = productPicNoList;
     }
 }
