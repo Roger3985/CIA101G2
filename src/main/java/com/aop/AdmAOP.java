@@ -207,7 +207,6 @@ public class AdmAOP {
     @AfterReturning(value = "@annotation(updateRedisDB)")
     public void redisDBMonitor(JoinPoint joinPoint, UpdateRedisDB updateRedisDB ) {
         String message = updateRedisDB.message();
-        System.out.println("aop已觸發");
         rabbitTemplate.convertAndSend("dataBaseSync", "updateRedis", message);
     }
 
