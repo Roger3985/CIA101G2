@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>新增商品</title>
+	<link rel="shortcut icon" th:href="@{/logo/favicon.ico}">
+	<th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
+	<style>
+		/* 添加自定義CSS樣式 */
+		.form-container {
+			display: flex;
+			flex-wrap: wrap;
+		}
+		.form-section {
+			flex: 1;
+			padding: 20px;
+			min-width: 300px;
+		}
+		.form-group {
+			margin-bottom: 15px;
+		}
+		.form-group label {
+			display: block;
+			margin-bottom: 5px;
+			font-weight: bold;
+		}
+		.form-group input,
+		.form-group select,
+		.form-group textarea {
+			width: 100%;
+			padding: 8px;
+			box-sizing: border-box;
+		}
+		.form-group textarea {
+			resize: vertical;
+		}
+		.form-group span.error {
+			color: red;
+			font-size: 0.9em;
+		}
+		.form-submit {
+			text-align: center;
+			margin-top: 20px;
+		}
+		.upload-images {
+			border: 2px dashed #ddd;
+			padding: 20px;
+			text-align: center;
+			cursor: pointer;
+			margin-bottom: 15px;
+		}
+		.upload-images img {
+			max-width: 100px;
+			margin: 5px;
+		}
+	</style>
+</head>
+<body id="page-top">
+<div th:replace="backend/component/loading :: loading"></div>
+<div id="wrapper">
+	<ul th:replace="backend/component/sidebar :: sidebar"></ul>
+	<div id="content-wrapper" class="d-flex flex-column">
+		<div id="content">
+			<nav th:replace="backend/component/nav :: nav"></nav>
+			<div class="container-fluid">
+				<div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
+				<form method="post" th:action="@{/backend/product/addProduct/add}" th:object="${product}" enctype="multipart/form-data">
+					<div class="form-container">
+						<!-- 左側表單區域 -->
+						<div class="form-section">
+							<div class="form-group">
+								<label for="productCatNo">商品類別編號</label>
+								<select size="1" name="productCatNo" id="productCatNo" th:field="*{productCategory.productCatNo}">
+									<option th:each="productCategory : ${productCategoryList}" th:value="${productCategory.productCatNo}" th:text="${productCategory.productCatNo} + ' : ' + ${productCategory.productCatName}"></option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="productName">商品名稱</label>
+								<input type="text" th:field="*{productName}" class="form-control" name="productName" id="productName">
+								<span th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}" class="error" id="productName.errors"></span>
+							</div>
+							<div class="form-group">
+								<label for="productInfo">商品資訊</label>
+								<input type="text" th:field="*{productInfo}" class="form-control" name="productInfo" id="productInfo">
+								<span th:if="${#fields.hasErrors('productInfo')}" th:errors="*{productInfo}" class="error" id="productInfo.errors"></span>
+							</div>
+							<div class="form-group">
+								<label for="productSize">尺寸</label>
+								<select size="1" name="productSize" id="productSize" th:field="*{productSize}">
+									<option th:value="XS">XS</option>
+									<option th:value="S">S</option>
+									<option th:value="M">M</option>
+									<option th:value="L">L</option>
+									<option th:value="XL">XL</option>
+									<option th:value="2L">2L</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="productColor">顏色</label>
+								<input type="text" th:field="*{productColor}" class="form-control" name="productColor" id="productColor">
+								<span th:if="${#fields.hasErrors('productColor')}" th:errors="*{productColor}" class="error" id="productColor.errors"></span>
+							</div>
+							<div class="form-group">
+								<label for="productPrice">商品單價</label>
+								<input type="text" th:field="*{productPrice}" class="form-control" name="productPrice" id="productPrice">
+								<span th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}" class="error" id="productPrice.errors"></span>
+							</div>
+							<div class="form-group">
+								<label for="productStat">商品狀態</label>
+								<select size="1" name="productStat" id="productStat" th:field="*{productStat}">
+									<option th:value="1" th:text="上架"></option>
+									<option th:value="0" th:text="下架"></option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="productSalQty">商品已售出數量</label>
+								<input type="text" th:field="*{productSalQty}" class="form-control" name="productSalQty" id="productSalQty">
+								<span th:if="${#fields.hasErrors('productSalQty')}" th:errors="*{productSalQty}" class="error" id="productSalQty.errors"></span>
+							</div>
+						</div>
+						<!-- 右側表單區域 -->
+						<div class="form-section">
+							<div class="upload-images" onclick="document.getElementById('uploadInput').click();">
+								<p>Drop your images here or click to browse</p>
+								<input type="file" id="uploadInput" name="images" accept="image/*" multiple style="display: none;">
+							</div>
+							<div id="imagePreview"></div>
+
+<!--							<div class="form-group">-->
+<!--								<label for="productComPeople">評價總人數</label>-->
+<!--								<input type="text" th:field="*{productComPeople}" class="form-control" name="productComPeople" id="productComPeople">-->
+<!--								<span th:if="${#fields.hasErrors('productComPeople')}" th:errors="*{productComPeople}" class="error" id="productComPeople.errors"></span>-->
+<!--							</div>-->
+<!--							<div class="form-group">-->
+<!--								<label for="productComScore">評價總星數</label>-->
+<!--								<input type="text" th:field="*{productComScore}" class="form-control" name="productComScore" id="productComScore">-->
+<!--								<span th:if="${#fields.hasErrors('productComScore')}" th:errors="*{productComScore}" class="error" id="productComScore.errors"></span>-->
+<!--							</div>-->
+						</div>
+					</div>
+					<div class="form-submit">
+						<button type="submit" id="submit">送出新增</button>
+					</div>
+					<!-- 以下待修正 -->
+					<input type="hidden" name="">
+					<input type="hidden" name="">
+					<input type="hidden" name="">
+				</form>
+			</div>
+		</div>
+		<footer th:replace="backend/component/bottom :: bottom"></footer>
+	</div>
+</div>
+<a th:replace="backend/component/scrolltotop :: scrolltotop"></a>
+<div th:replace="backend/component/logout :: logout"></div>
+<th:block th:insert="~{backend/component/plugin/backendplugin.html :: js}"></th:block>
+<script>
+	document.getElementById('uploadInput').addEventListener('change', function(event) {
+		var files = event.target.files;
+		var preview = document.getElementById('imagePreview');
+		preview.innerHTML = '';
+		for (var i = 0; i < files.length; i++) {
+			var file = files[i];
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				var img = document.createElement('img');
+				img.src = e.target.result;
+				preview.appendChild(img);
+			};
+			reader.readAsDataURL(file);
+		}
+	});
+</script>
+</body>
+</html>

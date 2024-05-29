@@ -46,7 +46,6 @@ public class FrontendIndexController {
 //        for (var cookie : cookies) {
 //            System.out.println("cookieName: " + cookie.getName() + ", cookieValue: " + cookie.getValue());
 //        }
-        System.out.println("前台首頁你在哪???");
         String location = "";
 
         if ((location = (String) session.getAttribute("location")) != null) {
@@ -72,7 +71,6 @@ public class FrontendIndexController {
                 }
                 newProductList.add(newProduct);
             }
-            System.out.println("到底有沒有印呢?" + prodDTO.getProductID());
         }
         model.addAttribute("newProductList", newProductList);
         model.addAttribute("productDTOList", productPage.getContent());

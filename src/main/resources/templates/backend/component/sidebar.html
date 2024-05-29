@@ -41,8 +41,8 @@
                     <a class="dropdown-item dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">管理員</a>
                     <ul class="dropdown-menu border-info">
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/administrator/listAllAdministrators}" data-breadcrumb="首頁 - 管理員 - 查詢資料" data-breadcrumb-url="/backend/index - /backend/administrator - /backend/administrator/listAllAdministrators"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/administrator/addAdministrator}" data-breadcrumb="首頁 - 管理員 - 新增資料" data-breadcrumb-url="/backend/index - /backend/administrator - /backend/administrator/addAdministrator"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
-                        <li><a class="dropdown-item" th:href="@{/backend/administrator/updateAdministrator}" data-breadcrumb="首頁 - 管理員 - 修改資料" data-breadcrumb-url="/backend/index - /backend/administrator - /backend/administrator/updateAdministrator"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
+                        <li><a class="dropdown-item border-bottom" th:if="${session.loginState.titleNo > 1}" th:href="@{/backend/administrator/addAdministrator}" data-breadcrumb="首頁 - 管理員 - 新增資料" data-breadcrumb-url="/backend/index - /backend/administrator - /backend/administrator/addAdministrator"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
+                        <li><a class="dropdown-item" th:if="${session.loginState.titleNo > 2}" th:href="@{/backend/administrator/updateAdministrator}" data-breadcrumb="首頁 - 管理員 - 修改資料" data-breadcrumb-url="/backend/index - /backend/administrator - /backend/administrator/updateAdministrator"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
                     </ul>
                 </div>
                 <div class="dropright">
@@ -246,8 +246,8 @@
                     <a class="dropdown-item dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">商品照片</a>
                     <ul class="dropdown-menu border-info">
                         <li><a class="dropdown-item border-bottom" th:href="@{/backend/productpicture/listAllProductPictures}" data-breadcrumb="首頁 - 商品照片 - 查詢資料" data-breadcrumb-url="/backend/index - /backend/productpicture - /backend/productpicture/listAllProductPictures"><i class="fas fa-search"> </i> <span> 查詢資料</span></a></li>
-                        <li><a class="dropdown-item border-bottom" th:href="@{/backend/productpicture/addProductPicture}" data-breadcrumb="首頁 - 商品照片 - 新增資料" data-breadcrumb-url="/backend/index - /backend/productpicture - /backend/productpicture/addProductPicture"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
-                        <li><a class="dropdown-item" th:href="@{/backend/productpicture/updateProductPicture}" data-breadcrumb="首頁 - 商品照片 - 修改資料" data-breadcrumb-url="/backend/index - /backend/productpicture - /backend/productpicture/updateProductPicture"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
+                        <li><a class="dropdown-item border-bottom" th:if="${session.loginState.titleNo > 1}" th:href="@{/backend/productpicture/addProductPicture}" data-breadcrumb="首頁 - 商品照片 - 新增資料" data-breadcrumb-url="/backend/index - /backend/productpicture - /backend/productpicture/addProductPicture"><i class="fas fa-plus"> </i> <span> 新增資料</span></a></li>
+                        <li><a class="dropdown-item" th:if="${session.loginState.titleNo > 2}" th:href="@{/backend/productpicture/updateProductPicture}" data-breadcrumb="首頁 - 商品照片 - 修改資料" data-breadcrumb-url="/backend/index - /backend/productpicture - /backend/productpicture/updateProductPicture"><i class="fas fa-edit"> </i> <span> 修改資料</span></a></li>
                     </ul>
                 </div>
                 <div class="dropright">

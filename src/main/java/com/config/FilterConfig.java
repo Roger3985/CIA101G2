@@ -72,7 +72,8 @@ public class FilterConfig {
     @Bean
     public FilterRegistrationBean<Filter> functionFilterRegistration() {
         FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>(functionFilter);
-        registration.addUrlPatterns("/backend/*/add*", "/backend/*/update*", "/backend/*/delete*");
+        registration.addUrlPatterns("/backend/administrator/addAdministrator", "/backend/administrator/updateAdministrator",
+                "/backend/administrator/deleteAdministrator", "/backend/title/addTitle", "/backend/title/updateTitle", "/backend/title/deleteTitle");
         registration.setOrder(THIRD_ORDER);
         return registration;
     }

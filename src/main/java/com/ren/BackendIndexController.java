@@ -267,7 +267,6 @@ public class BackendIndexController {
             cookie.setPath(req.getContextPath() + "/backend");
             res.addCookie(cookie);
             stiRedisTemplate.opsForValue().set(random, admNo);
-            session.setAttribute("random", random);
         }
 
         return "redirect:/backend/index";

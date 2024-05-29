@@ -94,9 +94,13 @@ public class FunctionFilter extends HttpFilter {
      * @throws ServletException forward時可能會拋出的異常
      * @throws IOException forward時可能會拋出的異常
      */
-    private void reject(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        RequestDispatcher dispatcher = req.getRequestDispatcher(req.getRequestURI());
-        dispatcher.forward(req, res);
-        System.out.println("您還沒有權限!!!");
+    private void reject(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        String referer = req.getHeader("Referer");
+        if (referer != null && !referer.isEmpty()) {
+            String encodedMessage = URLEncoder.encode("您未持有該權限!", StandardCharsets.UTF_8.toString());
+            res.sendRedirect(referer + "?error=" + encodedMessage);
+        } else {
+            res.sendRedirect(req.getContextPath() + "/error");
+        }
     }
 }

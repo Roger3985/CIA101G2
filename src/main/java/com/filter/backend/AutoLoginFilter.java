@@ -61,12 +61,10 @@ public class AutoLoginFilter extends HttpFilter {
                     .flatMap(this::userCookie);
 
             // (有無登入(有無LoginState) && 有無設定自動登入(有無autoLogin Cookie))
-            // 因考慮使用者可能會關閉Cookie與不使用自動登入功能，且優先判斷cookie有較高的安全性問題，將autoLogin的確認放在 or 判斷式的最後面，
+            // 因考慮使用者可能會關閉Cookie與不使用自動登入功能，且優先判斷cookie有較高的安全性問題，將autoLogin的確認放在 and 判斷式的最後面，
             // 優先確認使用者登入狀態
             // 如果都沒有，導向登入頁面
             if ((loginState = (LoginState) session.getAttribute("loginState")) == null && !userCookie.isPresent()) {
-//                System.out.println("來看看是誰被過濾, session:" + session + ", loginState:" + loginState + ", cookie:" + userCookie);
-                System.out.println("還沒登入哦!");
                 String encodedMessage = URLEncoder.encode("您還沒登入哦! 麻煩請先回到首頁登入。", StandardCharsets.UTF_8.toString());
                 res.sendRedirect(errorRedirect + encodedMessage);
                 return;
@@ -79,7 +77,7 @@ public class AutoLoginFilter extends HttpFilter {
                 Integer admNo = stiRedisTemplate.opsForValue().get(cookieValue);
                 // 透過使用者編號找到管理員
                 Administrator administrator = administratorSvc.getOneAdministrator(admNo);
-                // 使用Service的登入方法，獲得登入狀態DTO
+                // 使用Service的登入方法
                 administratorSvc.login(administrator, session);
             }
         }

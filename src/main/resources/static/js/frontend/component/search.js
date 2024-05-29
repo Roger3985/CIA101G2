@@ -35,8 +35,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         resultsHtml += '<h3>商品</h3>';
                         resultsHtml += productResults.map(result => `
                         <a href="/frontend/product/oneProduct?productNo=${result.productNo}" class="d-block mb-2">
-                            <h4>${result.productName}</h4>
-                            <p>${result.productInfo}</p>
+                            <h5>${'商品類別編號: ' + result.productCategory.productCatNo + ' , 商品類別名稱: ' + result.productCategory.productCatName}</h5>
+                            <p>${'商品名稱: ' + result.productName + ' , 商品資訊: '  + result.productInfo}</p>
                         </a>
                     `).join('');
                     }
@@ -45,8 +45,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         resultsHtml += '<h3>租借品</h3>';
                         resultsHtml += rentalResults.map(result => `
                         <a href="/frontend/rental/Rental?rentalNo=${result.rentalNo}" class="d-block mb-2">
-                            <h4>${result.rentalName}</h4>
-                            <p>${result.rentalInfo}</p>
+                            <h4>${'租借品標號: ' + result.rentalCategory.rentalCatNo + ' , 租借品類別名稱: ' + result.rentalCategory.rentalCatName}</h4>
+                            <p>${'租借品名稱: ' + result.rentalName + ' ,  租借品資訊: ' + result.rentalInfo}</p>
                         </a>
                     `).join('');
                     }

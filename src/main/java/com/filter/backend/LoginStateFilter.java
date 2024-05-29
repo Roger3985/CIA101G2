@@ -52,14 +52,11 @@ public class LoginStateFilter extends HttpFilter {
                 System.out.println("發生異常，請麻煩重新登入");
                 session.invalidate();
                 // 將錯誤訊息傳到前端
-//                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//                res.setContentType("application/json");
-//                res.getWriter().write("{\"error\": \"發生異常，請重新登入。\"}");
-//                res.getWriter().flush();
                 String encodedMessage = URLEncoder.encode("發生異常，麻煩請您重新登入。", StandardCharsets.UTF_8.toString());
                 res.sendRedirect(errorRedirect + encodedMessage);
                 return;
             }
+
             // 如果當前SessionID與Redis資料庫內的SessionID不同，則代表為不同裝置登入，強制登出
             // 從當前session內的登入狀態獲得管理員編號，使用管理員編號查詢Redis資料庫登入狀態的SessionID
             if (!session.getId().equals(loginState.getJsessionid())) {
@@ -79,15 +76,8 @@ public class LoginStateFilter extends HttpFilter {
                     cookieRedisTemplate.delete(deleteCookie.getName());
                 }
 
-                // session.removeAttribute("loginState"); // 因Session被註銷，所以不用移除Session內的值
                 session.invalidate();
-                System.out.println("被強制登出囉");
-                // 將錯誤訊息傳到前端響應
-//                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//                res.setContentType("application/json");
-//                res.getWriter().write("{\"error\": \"偵測到您已在其他裝置登入，請重新登入。\"}");
-//                res.getWriter().flush();
-                // 重導回首頁
+                // 將錯誤訊息傳到前端響應，重導回首頁
                 String encodedMessage = URLEncoder.encode("偵測到您已在其他裝置登入，麻煩請您重新登入。", StandardCharsets.UTF_8.toString());
                 res.sendRedirect(errorRedirect + encodedMessage);
                 return;

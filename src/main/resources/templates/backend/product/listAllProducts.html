@@ -9,52 +9,6 @@
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            margin: 20px;
-        }
-        /* 新增 header 类的样式，用于搜索输入框和 Add new 按钮的布局 */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px; /* 调整间距 */
-        }
-        .header input[type="search"] {
-            padding: 5px;
-            font-size: 16px;
-        }
-        .header button {
-            padding: 5px 10px;
-            font-size: 16px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px; /* 调整表格与上方内容的间距 */
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        .out-of-stock {
-            color: red;
-            font-weight: bold;
-        }
-    </style>
 
 </head>
 <body id="page-top">
@@ -82,9 +36,6 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <form class="header" th:action="@{/backend/product/addProduct}">
-                                <button>Add new</button>
-                            </form>
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
@@ -96,9 +47,6 @@
                                     <th>顏色</th>
                                     <th>商品單價</th>
                                     <th>商品狀態</th>
-                                    <th>商品已售出數量</th>
-                                    <th>評價總人數</th>
-                                    <th>評價總星數</th>
                                     <th>修改</th>
                                 </tr>
                                 </thead>
@@ -123,9 +71,6 @@
                                             <span th:if="${product.productStat == 0}" th:text="下架"></span>
                                             <span th:if="${product.productStat == 1}" th:text="上架"></span>
                                         </td>
-                                        <td th:text="${product.productSalQty}"></td>
-                                        <td th:text="${product.productComPeople}"></td>
-                                        <td th:text="${product.productComScore}"></td>
                                         <td>
                                             <form method="get" th:action="@{updateProduct}">
                                                 <input type="hidden" name="productNo" th:value="${product.productNo}">
@@ -184,6 +129,7 @@
 <script th:src="@{/backend/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 <!-- Page level custom scripts -->
 <script th:src="@{/backend/js/demo/datatables-demo.js}"></script>
+<script th:src="@{/js/backend/component/modalmsg.js}"></script>
 
 </body>
 </html>

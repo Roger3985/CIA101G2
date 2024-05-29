@@ -3,7 +3,6 @@ package com.ren.product.controller;
 import com.ren.product.entity.Product;
 import com.ren.product.service.impl.ProductServiceImpl;
 import com.ren.productcategory.service.impl.ProductCategoryServiceImpl;
-import com.ren.productpicture.service.impl.ProductPictureServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;

@@ -40,8 +40,8 @@
                             <h3>商品</h3>
                             <div th:each="product : ${productResults}">
                                 <a th:href="@{/frontend/product/oneProduct(productNo=${product.productNo})}" class="d-block mb-2">
-                                    <h4 th:text="${product.productName}">Product Name</h4>
-                                    <p th:text="${product.productInfo}">Product Info</p>
+                                    <h4 th:text="${'商品類別編號: ' + product.productCategory.productCatNo + ' , 商品類別名稱: ' + product.productCategory.productCatName}">Product Name</h4>
+                                    <p th:text="${'商品名稱: ' + product.productName + ' , 商品資訊: ' + product.productInfo}">Product Info</p>
                                 </a>
                             </div>
                             <nav th:if="${productPage.totalPages > 1}">
@@ -68,8 +68,8 @@
                             <h3>租借品</h3>
                             <div th:each="rental : ${rentalResults}">
                                 <a th:href="@{/frontend/rental/Rental(rentalNo=${rental.rentalNo})}" class="d-block mb-2">
-                                    <h4 th:text="${rental.rentalName}">Rental Name</h4>
-                                    <p th:text="${rental.rentalInfo}">Rental Info</p>
+                                    <h4 th:text="${'租借品類別編號: ' + rental.rentalCategory.rentalCatNo + ' , 租借品類別名稱: ' + rental.rentalCategory.rentalCatName}">Rental Name</h4>
+                                    <p th:text="${'租借品名稱: ' + rental.rentalName + ' , 租借品資訊: ' + rental.rentalInfo}">Rental Info</p>
                                 </a>
                             </div>
                             <nav th:if="${rentalPage.totalPages > 1}">
