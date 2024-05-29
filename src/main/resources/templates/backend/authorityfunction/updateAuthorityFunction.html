@@ -27,21 +27,19 @@
             <div class="container-fluid">
                 <div th:replace="backend/component/breadcrumb :: breadcrumb"></div>
                 <!-- 內容請填這裡~~~~~~~~~~~~~~~ -->
-                <form method="post" th:action="@{/backend/product/updateProduct/update}" th:object="${product}">
+                <form method="post" th:action="@{/backend/authorityfunction/updateAuthorityFunction/update}" th:object="${authorityFunction}">
                     <div class="mb-3 row">
-                        <label for="titleNo" class="col-sm-2 col-form-label">職位編號</label>
+                        <label for="authFuncNo" class="col-sm-2 col-form-label">功能編號</label>
                         <div class="col-sm-3">
-                            <select size="1" name="titleNo" id="titleNo" th:field="*{title.titleNo}">
-                                <option th:each="title : ${titleList}" th:value="${title.titleNo}" th:text="${title.titleNo} + ' : ' + ${title.titleName}"></option>
-                            </select>
+                            <input type="text" th:field="*{authFuncNo}" class="form-control" name="authFuncNo" id="authFuncNo">
+                            <span th:if="${#fields.hasErrors('authFuncNo')}" th:errors="*{authFuncNo}" class="error" id="authFuncNoe.errors"></span>
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="authFuncNo" class="col-sm-2 col-form-label">權限編號</label>
+                        <label for="authFuncInfo" class="col-sm-2 col-form-label">功能名稱</label>
                         <div class="col-sm-3">
-                            <select size="1" name="authFuncNo" id="authFuncNo" th:field="*{authorityFunction.authFuncNo}">
-                                <option th:each="authFunction : ${authFunctionList}" th:value="${authFunction.authFuncNo}" th:text="${authFunction.authFuncNo} + ' : ' + ${authFunction.authFuncInfo}"></option>
-                            </select>
+                            <input type="text" th:field="*{authFuncInfo}" class="form-control" name="authFuncInfo" id="authFuncInfo">
+                            <span th:if="${#fields.hasErrors('authFuncInfo')}" th:errors="*{authFuncInfo}" class="error" id="authFuncInfo.errors"></span>
                         </div>
                     </div>
                     <div>

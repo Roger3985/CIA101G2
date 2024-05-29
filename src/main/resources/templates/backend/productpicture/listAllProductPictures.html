@@ -39,7 +39,7 @@
                                     <th>商品編號</th>
                                     <th>圖片格式</th>
                                     <th>圖片</th>
-                                    <th>修改</th>
+<!--                                    <th>修改</th>-->
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -56,14 +56,14 @@
                                         <td>
                                             <img th:src="@{/backend/productpicture/DBPhotoReader} + '?productPicNo=' + ${productPicture.productPicNo}" alt="Profile Picture">
                                         </td>
-                                        <td>
-                                            <form method="get" th:action="@{updateProductPicture}">
-                                                <input type="hidden" name="productPicNo" th:value="${productPicture.productPicNo}">
-                                                <button type="submit">
-                                                    <i class="far fa-edit"></i>
-                                                </button>
-                                            </form>
-                                        </td>
+<!--                                        <td>-->
+<!--                                            <form method="get" th:action="@{updateProductPicture}">-->
+<!--                                                <input type="hidden" name="productPicNo" th:value="${productPicture.productPicNo}">-->
+<!--                                                <button type="submit">-->
+<!--                                                    <i class="far fa-edit"></i>-->
+<!--                                                </button>-->
+<!--                                            </form>-->
+<!--                                        </td>-->
                                     </tr>
                                 </th:block>
                                 </tbody>

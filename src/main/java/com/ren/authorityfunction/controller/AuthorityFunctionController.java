@@ -60,7 +60,7 @@ public class AuthorityFunctionController {
         }
         authorityFunctionSvc.addAuthorityFunction(authorityFunction);
         redirectAttributes.addAttribute("success", "新增成功!");
-        return "backend/authorityfunction/addAuthorityFunction";
+        return "redirect:/backend/authorityfunction/listAllAuthorityFunctions";
     }
 
     @PutMapping("/updateAuthorityFunction/{authFuncNo}")
@@ -72,9 +72,22 @@ public class AuthorityFunctionController {
 
     @GetMapping("/updateAuthorityFunction")
     public String toUpdateAuthorityFunction(@ModelAttribute("authorityFunctionList") List<AuthorityFunction> list,
-                                       ModelMap model) {
+                                            ModelMap model) {
         model.addAttribute("authorityFunction", list.get(0));
         return "backend/authorityfunction/updateAuthorityFunction";
+    }
+
+    @PostMapping("/updateAuthorityFunction/update")
+    public String toUpdateAuthorityFunction(@Valid AuthorityFunction authorityFunction,
+                                            BindingResult result,
+                                            ModelMap model) {
+        if (result.hasErrors()) {
+            model.addAttribute("authorityFunction", authorityFunction);
+            model.addAttribute("errors", result.getAllErrors());
+            return "backend/authirityfunction";
+        }
+        authorityFunctionSvc.updateAuthorityFunction(authorityFunction);
+        return "redirect:/backend/authorityfunction/listAllAuthorityFunctions";
     }
 
     @ModelAttribute("authorityFunctionList")

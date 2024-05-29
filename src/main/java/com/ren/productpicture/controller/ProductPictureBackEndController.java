@@ -67,44 +67,42 @@ public class ProductPictureBackEndController {
     @GetMapping("/addProductPicture")
     public String toAddProductPicture(ModelMap model) {
         model.addAttribute("productList", productSvc.getAll());
+//        model.addAttribute("productPicture", new ProductPicture());
         return "backend/productpicture/addProductPicture";
     }
 
     @PostMapping("/addProductPicture/add")
-    public ResponseEntity<Map<String, Object>> upload(@RequestParam("productNo") Integer productNo,
-                                                      @RequestParam("productPic") MultipartFile[] files) throws IOException {
-        Map<String, Object> response = new HashMap<>();
+    public String upload(@RequestParam("productNo") Integer productNo,
+                         @RequestParam("productPic") MultipartFile file) throws IOException {
 
-        if (files.length == 0) {
-            response.put("success", false);
-            response.put("message", "沒有上傳圖片");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        if (file.isEmpty()) {
+
+            return "backend/productpicture/addProductPicture";
         }
 
-        for (MultipartFile file : files) {
-            ProductPicture productPicture = new ProductPicture();
-            Product product = productSvc.getOneProduct(productNo);
-            productPicture.setProduct(product);
-            byte[] upfile = file.getBytes();
-            String fileType = file.getContentType();
-            productPicture.setMimeType(fileType);
+        ProductPicture productPicture = new ProductPicture();
+        Product product = productSvc.getOneProduct(productNo);
+        productPicture.setProduct(product);
+        byte[] upfile = file.getBytes();
+        String fileType = file.getContentType();
+        productPicture.setMimeType(fileType);
 
-            // 檢查檔案類別，如果是jpeg或png等已壓縮檔案，直接上傳，如果不是，執行壓縮
-            if (validateFileType(fileType)) {
-                productPicture.setProductPic(upfile);
-                productPictureSvc.addProductPicture(productPicture);
-            } else {
-                productPictureSvc.storeFile(upfile, productPicture);
-            }
+        // 檢查檔案類別，如果是jpeg或png等已壓縮檔案，直接上傳，如果不是，執行壓縮
+        if (validateFileType(fileType)) {
+            productPicture.setProductPic(upfile);
+            productPictureSvc.addProductPicture(productPicture);
+        } else {
+            productPictureSvc.storeFile(upfile, productPicture);
+        }
+
+//        for (MultipartFile file : files) {
+
             // 這裡是將上傳成功消息傳送到RabbitMQ
-            String productName = productSvc.getOneProduct(productNo).getProductName();
-            notifyUploadSuccess(productNo, productName);
-        }
+//            String productName = productSvc.getOneProduct(productNo).getProductName();
+//            notifyUploadSuccess(productNo, productName);
+//        }
 
-        response.put("success", true);
-        response.put("message", "檔案上傳成功");
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return "redirect:/backend/productpicture/listAllProductPictures";
     }
 
     @PostMapping("/uploadChunk")
@@ -159,12 +157,11 @@ public class ProductPictureBackEndController {
         messagingTemplate.convertAndSend("/topic/progress", progress);
     }
 
-    @PutMapping("/updateProductPicture")
+    @GetMapping("/updateProductPicture")
     public String updateProductPicture(@ModelAttribute("productPictureList") List<ProductPicture> productPictureList,
                                        ModelMap model) {
         model.addAttribute("productPicture", productPictureList.get(0));
         model.addAttribute("productList", productSvc.getAll());
-        model.addAttribute("memberList", memberSvc.findAll());
         return "backend/productpicture/updateProductPicture";
     }
 

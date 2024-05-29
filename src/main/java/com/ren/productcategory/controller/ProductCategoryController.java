@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +44,19 @@ public class ProductCategoryController {
         return "backend/productcategory/addProductCategory";
     }
 
+    @PostMapping("/addProductCategory/add")
+    public String addProductCategory(@Valid ProductCategory productCategory,
+                                     BindingResult result,
+                                     ModelMap model) {
+        if (result.hasErrors()){
+            model.addAttribute("productCategory", productCategory);
+            model.addAttribute("errors", result.getAllErrors());
+            return "backend/productcategory/addProductCategory";
+        }
+        productCategorySvc.addProductCategory(productCategory);
+        return "redirect:/backend/productcategory/listAllProductCategories";
+    }
+
     @GetMapping("/updateProductCategory/{productCatNo}")
     public String toUpdateProductCategory(@PathVariable Integer productCatNo,
                                         ModelMap model) {
@@ -55,6 +69,19 @@ public class ProductCategoryController {
                                         ModelMap model) {
         model.addAttribute("productCategory", list.get(0));
         return "backend/productcategory/updateProductCategory";
+    }
+
+    @PostMapping("/updateProductCategory/update")
+    public String updateProductCategory(@Valid ProductCategory productCategory,
+                                     BindingResult result,
+                                     ModelMap model) {
+        if (result.hasErrors()){
+            model.addAttribute("productCategory", productCategory);
+            model.addAttribute("errors", result.getAllErrors());
+            return "backend/productcategory/updateProductCategory";
+        }
+        productCategorySvc.updateProductCategory(productCategory);
+        return "redirect:/backend/productcategory/listAllProductCategories";
     }
 
     @ModelAttribute("productCategoryList")

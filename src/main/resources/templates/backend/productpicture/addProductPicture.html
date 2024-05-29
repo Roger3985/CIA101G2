@@ -32,7 +32,7 @@
             <div class="container-fluid">
                 <div class="container">
                     <h2>上傳並預覽圖片</h2>
-                    <form id="productForm">
+                    <form method="post" id="productForm" th:action="@{/backend/productpicture/addProductPicture/add}" enctype="multipart/form-data">
                         <select size="1" name="productNo" id="productSelect">
                             <option th:each="product : ${productList}"
                                     th:value="${product.productNo}"
@@ -45,7 +45,7 @@
                             <input type="file" id="images" name="productPic" multiple accept="image/*" class="form-control">
                         </div>
                         <div id="preview-container" class="row preview-container"></div>
-                        <button type="button" id="uploadButton" class="btn btn-primary mt-3">上傳</button>
+                        <button type="submit" id="uploadButton" class="btn btn-primary mt-3">上傳</button>
                     </form>
                 </div>
             </div>
@@ -101,66 +101,46 @@
             }
         });
 
-        uploadButton.addEventListener("click", function() {
-            const files = imagesInput.files;
-            const productNo = document.getElementById("productSelect").value;
-
-            if (files) {
-                Array.from(files).forEach(file => {
-                    uploadFileInChunks(file, productNo);
-                });
-            }
-        });
-
-        function uploadFileInChunks(file, productNo) {
-            var chunkSize = 1024 * 1024; // 1MB
-            var totalChunks = Math.ceil(file.size / chunkSize);
-            var chunkNumber = 0;
-
-            function uploadNextChunk() {
-                var start = chunkNumber * chunkSize;
-                var end = Math.min(start + chunkSize, file.size);
-                var chunk = file.slice(start, end);
-
-                var formData = new FormData();
-                formData.append("productNo", productNo);
-                formData.append("productPic", chunk);
-                formData.append("chunkNumber", chunkNumber + 1);
-                formData.append("totalChunks", totalChunks);
-
-                fetch('/backend/productpicture/uploadChunk', {
-                    method: 'POST',
-                    body: formData
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            return response.text().then(text => { throw new Error(text) });
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.success) {
-                            chunkNumber++;
-                            if (chunkNumber < totalChunks) {
-                                uploadNextChunk();
-                            } else {
-                                console.log('文件上傳完成');
-                                window.alert('文件上傳完成');
-                                window.location.href = "/backend/productpicture/listAllProductPictures";
-                            }
-                        } else {
-                            console.error('塊上傳失敗:', data.message);
-                            window.alert('塊上傳失敗: ' + data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('上傳塊時發生錯誤:', error);
-                        window.alert('上傳塊時發生錯誤: ' + error);
-                    });
-            }
-
-            uploadNextChunk();
-        }
+    //     uploadButton.addEventListener("click", function() {
+    //         // 提交圖片數據
+    //         const imagesData = new FormData();
+    //         const files = imagesInput.files;
+    //         const productNo = document.getElementById("productSelect").value;
+    //
+    //         if (files) {
+    //             Array.from(files).forEach(file => {
+    //                 imagesData.append("productPic", file);
+    //             });
+    //         }
+    //
+    //         imagesData.append("productNo", productNo);
+    //
+    //         fetch('/backend/productpicture/addProductPicture/add', {
+    //             method: "POST",
+    //             body: imagesData
+    //         })
+    //             .then(response => {
+    //                 if (!response.ok) {
+    //                     return response.text().then(text => { throw new Error(text) })
+    //                 }
+    //                 return response.json();
+    //             })
+    //             .then(data => {
+    //                 if (data.success) {
+    //                     // 使用 modalMsg.js 的 alert 函数
+    //                     window.alert(data.message);
+    //                     window.location.href = "/backend/productpicture/listAllProductPictures";
+    //                 } else {
+    //                     // 使用 modalMsg.js 的 alert 函数
+    //                     window.alert(data.message);
+    //                 }
+    //             })
+    //             .catch(error => {
+    //                 console.error("上傳失敗:", error);
+    //                 // 使用 modalMsg.js 的 alert 函数
+    //                 window.alert("上傳失敗");
+    //             });
+    //     });
     });
 </script>
 </body>

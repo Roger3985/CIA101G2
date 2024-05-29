@@ -102,45 +102,65 @@
         });
 
         uploadButton.addEventListener("click", function() {
-            // 提交圖片數據
-            const imagesData = new FormData();
             const files = imagesInput.files;
             const productNo = document.getElementById("productSelect").value;
 
             if (files) {
                 Array.from(files).forEach(file => {
-                    imagesData.append("productPic", file);
+                    uploadFileInChunks(file, productNo);
                 });
             }
-
-            imagesData.append("productNo", productNo);
-
-            fetch('/backend/productpicture/addProductPicture/add', {
-                method: "POST",
-                body: imagesData
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.text().then(text => { throw new Error(text) })
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        // 使用 modalMsg.js 的 alert 函数
-                        window.alert(data.message);
-                        window.location.href = "/backend/productpicture/listAllProductPictures";
-                    } else {
-                        // 使用 modalMsg.js 的 alert 函数
-                        window.alert(data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error("上傳失敗:", error);
-                    // 使用 modalMsg.js 的 alert 函数
-                    window.alert("上傳失敗");
-                });
         });
+
+        function uploadFileInChunks(file, productNo) {
+            var chunkSize = 1024 * 1024; // 1MB
+            var totalChunks = Math.ceil(file.size / chunkSize);
+            var chunkNumber = 0;
+
+            function uploadNextChunk() {
+                var start = chunkNumber * chunkSize;
+                var end = Math.min(start + chunkSize, file.size);
+                var chunk = file.slice(start, end);
+
+                var formData = new FormData();
+                formData.append("productNo", productNo);
+                formData.append("productPic", chunk);
+                formData.append("chunkNumber", chunkNumber + 1);
+                formData.append("totalChunks", totalChunks);
+
+                fetch('/backend/productpicture/uploadChunk', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.text().then(text => { throw new Error(text) });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            chunkNumber++;
+                            if (chunkNumber < totalChunks) {
+                                uploadNextChunk();
+                            } else {
+                                console.log('文件上傳完成');
+                                window.alert('文件上傳完成');
+                                window.location.href = "/backend/productpicture/listAllProductPictures";
+                            }
+                        } else {
+                            console.error('塊上傳失敗:', data.message);
+                            window.alert('塊上傳失敗: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('上傳塊時發生錯誤:', error);
+                        window.alert('上傳塊時發生錯誤: ' + error);
+                    });
+            }
+
+            uploadNextChunk();
+        }
     });
 </script>
 </body>

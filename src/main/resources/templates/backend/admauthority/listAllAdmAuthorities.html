@@ -41,7 +41,7 @@
                                 <tr>
                                     <th>管理員編號</th>
                                     <th>權限編號</th>
-                                    <th>修改</th>
+<!--                                    <th>修改</th>-->
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -49,14 +49,14 @@
                                     <tr>
                                         <td th:text="${admAuthority.title.titleName}"></td>
                                         <td th:text="${admAuthority.authorityFunction.authFuncInfo}"></td>
-                                        <td>
-                                            <form method="get" th:action="@{updateAdmAuthiroty}">
-                                                <input type="hidden" name="productNo" th:value="${admAuthority.title.titleNo}">
-                                                <button type="submit">
-                                                    <i class="far fa-edit"></i>
-                                                </button>
-                                            </form>
-                                        </td>
+<!--                                        <td>-->
+<!--                                            <form method="get" th:action="@{updateAdmAuthiroty}">-->
+<!--                                                <input type="hidden" name="productNo" th:value="${admAuthority.title.titleNo}">-->
+<!--                                                <button type="submit">-->
+<!--                                                    <i class="far fa-edit"></i>-->
+<!--                                                </button>-->
+<!--                                            </form>-->
+<!--                                        </td>-->
                                     </tr>
                                 </th:block>
                                 </tbody>

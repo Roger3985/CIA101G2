@@ -59,6 +59,7 @@ public class ProductServiceImpl implements ProductService_interface {
     @UpdateRedisDB(message = "updateRedis")
     @Override
     public Product addProduct(Product product) {
+        product.setProductOnShelf(new Timestamp(new Date().getTime()));
         return productRepository.save(product);
     }
 

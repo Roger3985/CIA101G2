@@ -105,6 +105,11 @@ public class ProductFrontEndController {
                 }
                 newProductList.add(newProduct);
             }
+            for (var pro : productDTO.getProductPicNoList()) {
+                System.out.println(productDTO.getProductID());
+                System.out.println("確認照片編號有無問題: " + productDTO.getProductID() + " : " + pro);
+            }
+
         }
 
         model.addAttribute("newProductList", newProductList);

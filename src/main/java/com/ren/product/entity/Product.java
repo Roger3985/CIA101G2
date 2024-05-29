@@ -52,11 +52,11 @@ public class Product {
     @Column(name = "productstat")
     private Byte productStat;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = "yyyy-MM-dd HH:mm:ss")
-    @Future(message = "上架時間不能為過去時間")
+//    @Future(message = "上架時間不能為過去時間")
     @Column(name = "productonshelf")
     private Timestamp productOnShelf;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = "yyyy-MM-dd HH:mm:ss")
-    @Future(message = "下架時間不能為過去時間")
+//    @Future(message = "下架時間不能為過去時間")
     @Column(name = "productoffshelf")
     private Timestamp productOffShelf;
 

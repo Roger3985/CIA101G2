@@ -97,27 +97,6 @@
                             </select>
                         </div>
                     </div>
-                    <div class="mb-3 row">
-                        <label for="productSalQty" class="col-sm-2 col-form-label">商品已售出數量</label>
-                        <div class="col-sm-3">
-                            <input type="text" th:field="*{productSalQty}" class="form-control" name="productSalQty" id="productSalQty">
-                            <span th:if="${#fields.hasErrors('productSalQty')}" th:errors="*{productSalQty}" class="error" id="productSalQty.errors"></span>
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="productComPeople" class="col-sm-2 col-form-label">評價總人數</label>
-                        <div class="col-sm-3">
-                            <input type="text" th:field="*{productComPeople}" class="form-control" name="productComPeople" id="productComPeople">
-                            <span th:if="${#fields.hasErrors('productComPeople')}" th:errors="*{productComPeople}" class="error" id="productComPeople.errors"></span>
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="productComScore" class="col-sm-2 col-form-label">評價總星數</label>
-                        <div class="col-sm-3">
-                            <input type="text" th:field="*{productComScore}" class="form-control" name="productComScore" id="productComScore">
-                            <span th:if="${#fields.hasErrors('productComScore')}" th:errors="*{productComScore}" class="error" id="productComScore.errors"></span>
-                        </div>
-                    </div>
                     <div>
                         <div><button type="submit" id="submit"> 送出修改 </button></div>
                     </div>
@@ -172,9 +151,6 @@
                 $('#productColor').val(productDetails.productColor);
                 $('#productPrice').val(productDetails.productPrice);
                 $('#productStat').val(productDetails.productStat);
-                $('#productSalQty').val(productDetails.productSalQty);
-                $('#productComPeople').val(productDetails.productComPeople);
-                $('#productComScore').val(productDetails.productComScore);
             })
             .catch(function (error) {
                 console.error('Failed to fetch product details: ' + error);

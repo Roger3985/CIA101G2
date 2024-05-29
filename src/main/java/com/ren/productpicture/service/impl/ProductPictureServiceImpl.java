@@ -1,5 +1,6 @@
 package com.ren.productpicture.service.impl;
 
+import com.aop.annotation.UpdateRedisDB;
 import com.ren.administrator.entity.Administrator;
 import com.ren.productpicture.entity.ProductPicture;
 import com.ren.product.dao.ProductRepository;
@@ -54,6 +55,7 @@ public class ProductPictureServiceImpl implements ProductPictureService_interfac
 	 * @param productPicture 欲新增之商品照片Entity
 	 * @return 返回新增後Entity
 	 */
+	@UpdateRedisDB(message = "updateRedis")
 	@Override
 	public ProductPicture addProductPicture(ProductPicture productPicture) {
 		return productPictureRepository.save(productPicture);
