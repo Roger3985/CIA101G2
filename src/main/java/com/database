@@ -328,16 +328,16 @@ CREATE TABLE ColumnArticle
     artStat     TINYINT     NOT NULL,
     FOREIGN KEY (admNo)     REFERENCES Administrator(admNo)
 );
-INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (1, '如何籌備一場難忘的婚禮：從規劃到執行', '在籌備婚禮時，規劃是至關重要的一步。這包括選擇婚禮日期和場地，管理預算和財務，以及與各個供應商合作和溝通。從訂婚到婚禮當天的流程，每一步都需要仔細計劃和準備，以確保婚禮順利進行並成為難忘的回憶。', '2024-04-02 10:00:00', 1001, 0);
+INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (1, '如何籌備一場難忘的婚禮：從規劃到執行', '在籌備婚禮時，規劃是至關重要的一步。這包括選擇婚禮日期和場地，管理預算和財務，以及與各個供應商合作和溝通。從訂婚到婚禮當天的流程，每一步都需要仔細計劃和準備，以確保婚禮順利進行並成為難忘的回憶。', '2023-04-02 10:00:00', 1001, 0);
 INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (2, '婚禮慶典的歷史與演變', '婚禮慶典有著悠久的歷史和豐富的文化傳統。從古代到現代，不同文化和地區的婚禮慶典都有著獨特的儀式和慣例。隨著社會的變遷和文化的交流，婚禮慶典也不斷演變，反映了不同時代和地域的價值觀和生活方式。', '2023-11-02 09:00:00', 1002, 1);
-INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (2, '婚禮場地選擇指南：室內還是室外？', '選擇婚禮場地是籌備婚禮的重要決定之一。室內場地通常提供穩定的環境和舒適的氛圍，而室外場地則能帶來自然的美景和開放的感覺。在做出選擇時，要考慮到季節、天氣、預算和個人喜好，以確保婚禮的順利進行和與眾不同的體驗。', '2024-03-02 22:00:00', 1003, 0);
+INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (2, '婚禮場地選擇指南：室內還是室外？', '選擇婚禮場地是籌備婚禮的重要決定之一。室內場地通常提供穩定的環境和舒適的氛圍，而室外場地則能帶來自然的美景和開放的感覺。在做出選擇時，要考慮到季節、天氣、預算和個人喜好，以確保婚禮的順利進行和與眾不同的體驗。', '2023-11-14 22:00:00', 1003, 0);
 INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (3, '婚禮主題構想：從經典到獨特的靈感', '婚禮主題可以為婚禮慶典帶來獨特的氛圍和風格。從經典的浪漫到獨特的主題，如海灘婚禮或鄉村婚禮，每個主題都有其獨特的魅力和體驗。選擇一個適合的主題，可以讓婚禮更具個性化和意義深長。', '2023-12-02 13:00:00', 1004, 1);
 INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (1, '精緻設計的婚紗：流行趨勢與風格選擇', '婚紗是婚禮中最重要的元素之一，它代表著新娘的個性和風格。從經典的公主款式到時尚的露肩設計，每個婚紗款式都有其獨特的特點和魅力。選擇一款適合自己身形和個人風格的婚紗，可以讓新娘在婚禮當天散發自信和美麗。', '2024-04-03 16:00:00', 1005, 0);
-INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (2, '男士婚禮穿搭指南：如何挑選適合的婚紗西裝？', '男士的婚禮穿搭同樣重要，它展現了新郎的品味和風格。從經典的西裝款式到時尚的花色和剪裁，每個男士婚紗西裝都有其獨特的魅力和風格。選擇一款合適的婚紗西裝，可以讓新郎在婚禮當天與新娘相得益彰並展現出最好的形象。', '2023-03-02 09:00:00', 1006, 1);
+INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (2, '男士婚禮穿搭指南：如何挑選適合的婚紗西裝？', '男士的婚禮穿搭同樣重要，它展現了新郎的品味和風格。從經典的西裝款式到時尚的花色和剪裁，每個男士婚紗西裝都有其獨特的魅力和風格。選擇一款合適的婚紗西裝，可以讓新郎在婚禮當天與新娘相得益彰並展現出最好的形象。', '2024-04-05 09:00:00', 1006, 1);
 INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (3, '如何找到完美的婚紗店：選擇過程中的注意事項', '選擇一家適合的婚紗店是準備婚禮時的重要步驟之一。婚紗店不僅提供各種款式和設計的婚紗，還能提供專業的意見和定制服務。在選擇婚紗店時，要考慮到品質、服務、價格和口碑等因素，以確保找到完美的婚紗。', '2024-05-11 11:00:00', 1007, 0);
-INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (3, '婚禮攝影師的角色：捕捉幸福時刻的專業技巧', '婚禮攝影師扮演著捕捉幸福時刻和永恆回憶的重要角色。他們不僅需要具備專業的攝影技巧，還需要有豐富的婚禮攝影經驗和良好的溝通能力。選擇一位合適的婚禮攝影師，可以讓新人在婚禮當天留下美好的回憶和獨特的照片作品。', '2023-12-31 21:00:00', 1008, 1);
-INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (2, '婚禮花卉與裝飾：打造浪漫氛圍的關鍵', '婚禮花卉和裝飾是營造浪漫氛圍和美好回憶的重要元素之一。從鮮花花束到場地裝飾，每個細節都需要精心設計和佈置。選擇適合的花卉和裝飾品，可以讓婚禮場地更加美麗和令人難忘。', '2024-01-02 10:00:00', 1009, 0);
-INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (3, '婚禮籌備中的常見挑戰與解決方案', '婚禮籌備過程中常常會遇到各種挑戰和困難。例如預算超支、供應商問題、人際關係等。面對這些挑戰，新人需要保持冷靜和耐心，並尋找解決問題的有效方法。通過合理的計劃和良好的溝通，可以克服婚禮籌備中的各種困難，讓婚禮順利進行並成為美好回憶。', '2023-02-02 13:00:00', 1010, 1);
+INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (3, '婚禮攝影師的角色：捕捉幸福時刻的專業技巧', '婚禮攝影師扮演著捕捉幸福時刻和永恆回憶的重要角色。他們不僅需要具備專業的攝影技巧，還需要有豐富的婚禮攝影經驗和良好的溝通能力。選擇一位合適的婚禮攝影師，可以讓新人在婚禮當天留下美好的回憶和獨特的照片作品。', '2024-05-12 21:00:00', 1008, 1);
+INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (2, '婚禮花卉與裝飾：打造浪漫氛圍的關鍵', '婚禮花卉和裝飾是營造浪漫氛圍和美好回憶的重要元素之一。從鮮花花束到場地裝飾，每個細節都需要精心設計和佈置。選擇適合的花卉和裝飾品，可以讓婚禮場地更加美麗和令人難忘。', '2024-05-13 10:00:00', 1009, 0);
+INSERT INTO ColumnArticle(admNo, artTitle, artContent, artTime, artCatNo, artStat) VALUES (3, '婚禮籌備中的常見挑戰與解決方案', '婚禮籌備過程中常常會遇到各種挑戰和困難。例如預算超支、供應商問題、人際關係等。面對這些挑戰，新人需要保持冷靜和耐心，並尋找解決問題的有效方法。通過合理的計劃和良好的溝通，可以克服婚禮籌備中的各種困難，讓婚禮順利進行並成為美好回憶。', '2024-05-12 13:00:00', 1010, 1);
 
 -- 創建點讚表格
 CREATE TABLE ClickLike

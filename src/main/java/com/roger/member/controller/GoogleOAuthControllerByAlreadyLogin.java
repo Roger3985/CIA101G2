@@ -223,7 +223,7 @@ public class GoogleOAuthControllerByAlreadyLogin {
             // 設置加入成功的消息
             Notice newNotice = new Notice();
             newNotice.setMember(newMember);
-            newNotice.setNotContent("您的會員註冊已成功，歡迎加入我們fallElove的大家庭");
+            newNotice.setNotContent("您的會員註冊已成功，歡迎加入我們Fall衣Love的大家庭");
             newNotice.setNotTime(new Timestamp(System.currentTimeMillis()));
             newNotice.setNotStat((byte) 0);
 
