@@ -280,8 +280,8 @@ public class MemberServiceImpl implements MemberService {
             props.put("mail.smtp.port", "465");
 
             // 設定 Gmail 帳號跟密碼
-            final String myGmail = "ixlogic.wu@gmail.com";
-            final String myGmail_password = "ddjomltcnypgcstn";
+            final String myGmail = "fallyilove@gmail.com";
+            final String myGmail_password = "wqsqgerrbblzziuc";
 
             Session session = Session.getInstance(props, new Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {

@@ -64,6 +64,11 @@ public class BackendIndexController {
     @Autowired
     private ProductOrderDetailServiceImpl productOrderDetailSvc;
 
+    /**
+     * 透過商品與商品訂單的ORM關係來獲得商品的售出數量，統計後送到前端由chart.js呈現
+     *
+     * @return 返回(商品類別編號 : 商品名稱, 售出數量)的Map到前端顯示
+     */
     @ModelAttribute("productSalMap")
     public Map<String, Integer> productList() {
         List<ProductOrderDetail> productOrderDetailList = productOrderDetailSvc.getAll();
@@ -250,7 +255,7 @@ public class BackendIndexController {
 
         // 確認密碼正確後，回傳登入成功訊息，並將administrator存入session
         model.addAttribute("message", "登入成功!");
-        System.out.println(autoLogin);
+
         // 確認使用者是否要自動登入
         if (autoLogin == YES) {
             // 生成名為autoLogin的cookie，其值設置為一個亂數生成的字符串，分別存入給使用者與redis資料庫，做身分核對
@@ -263,10 +268,7 @@ public class BackendIndexController {
             res.addCookie(cookie);
             stiRedisTemplate.opsForValue().set(random, admNo);
             session.setAttribute("random", random);
-            System.out.println("cookie存入");
         }
-
-        System.out.println("登入成功!!!");
 
         return "redirect:/backend/index";
     }

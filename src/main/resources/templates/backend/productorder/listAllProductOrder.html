@@ -7,12 +7,12 @@
     <th:block th:include="~{backend/component/plugin/backendplugin.html :: css}"></th:block>
     <!-- Custom styles for this page -->
     <link th:href="@{/backend/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
-   <style>
-       .completed-order {
-           color: #1a1d20;
-       background-color: darkgray;
-       opacity: 0.5;}
-   </style>
+    <style>
+        .completed-order {
+            color: #1a1d20;
+            background-color: darkgray;
+            opacity: 0.5;}
+    </style>
     <style>
         .badge-status {
             display: inline-block;
@@ -65,6 +65,16 @@
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
                     </div>
+                    <div>
+                        <form method="post" th:action="@{/backend/productorder/getOne}">
+                            <label>選擇會員編號:</label>
+                            <select name="memNo">
+                                <option value="">請選擇</option>
+                                <option th:each="member : ${MemberDataList}" th:value="${member.memNo}" th:text="${member.memNo} + '-[' + ${member.memName} + ']'" />
+                            </select>
+                            <input type="submit" value="送出">
+                        </form>
+                    </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -85,8 +95,8 @@
                                     <th>優惠券折價總和</th>
                                     <th>訂單實付金額</th>
                                     <th>下單時間</th>
-                                    <th>訂單狀態</th>
                                     <th>付款狀態</th>
+                                    <th>訂單狀態</th>
                                     <th>修改</th>
                                     <th>詳情</th>
 
@@ -94,68 +104,68 @@
                                 </thead>
                                 <tbody>
                                 <th:block th:each="productorder : ${productorderListData}">
-                                        <!-- 你现有的表格单元格内容 -->
-                                        <td th:text="${productorder.productOrdNo}"></td>
-                                        <td th:if="${productorder.member != null}" th:text="${productorder.member.memNo}"></td>
-                                        <td th:text="${productorder.productByrName}"></td>
-                                        <td th:text="${productorder.productByrPhone}"></td>
-                                        <td th:text="${productorder.productByrEmail}"></td>
-                                        <td th:text="${productorder.productRcvName}"></td>
-                                        <td th:text="${productorder.productRcvPhone}"></td>
-                                        <td>
-                                            <span th:if="${productorder.productTakeMethod == 1}">店取</span>
-                                            <span th:if="${productorder.productTakeMethod == 2}">宅配</span>
-                                            <span th:if="${productorder.productTakeMethod == 3}">超商取貨</span>
-                                        </td>
-                                        <td th:text="${productorder.productAddr}"></td>
-                                        <td>
-                                            <span th:if="${productorder.productPayMethod == 1}">線上刷卡</span>
-                                            <span th:if="${productorder.productPayMethod == 2}">現場付款</span>
-                                        </td>
-                                        <td th:text="${productorder.productAllPrice}"></td>
-                                        <td th:if="${productorder.coupon != null}">
-                                            <span th:if="${productorder.coupon.coupNo == 1}">未使用優惠券</span>
-                                            <span th:unless="${productorder.coupon.coupNo == 1}" th:text="${productorder.coupon.coupNo}"></span>
-                                        </td>
-                                        <td th:unless="${productorder.coupon != null}">未使用優惠券</td>
+                                    <!-- 你现有的表格单元格内容 -->
+                                    <td th:text="${productorder.productOrdNo}"></td>
+                                    <td th:if="${productorder.member != null}" th:text="${productorder.member.memNo}"></td>
+                                    <td th:text="${productorder.productByrName}"></td>
+                                    <td th:text="${productorder.productByrPhone}"></td>
+                                    <td th:text="${productorder.productByrEmail}"></td>
+                                    <td th:text="${productorder.productRcvName}"></td>
+                                    <td th:text="${productorder.productRcvPhone}"></td>
+                                    <td>
+                                        <span th:if="${productorder.productTakeMethod == 1}">店取</span>
+                                        <span th:if="${productorder.productTakeMethod == 2}">宅配</span>
+                                        <span th:if="${productorder.productTakeMethod == 3}">超商取貨</span>
+                                    </td>
+                                    <td th:text="${productorder.productAddr}"></td>
+                                    <td>
+                                        <span th:if="${productorder.productPayMethod == 1}">線上刷卡</span>
+                                        <span th:if="${productorder.productPayMethod == 2}">現場付款</span>
+                                    </td>
+                                    <td th:text="${productorder.productAllPrice}"></td>
+                                    <td th:if="${productorder.coupon != null}">
+                                        <span th:if="${productorder.coupon.coupNo == 1}">未使用優惠券</span>
+                                        <span th:unless="${productorder.coupon.coupNo == 1}" th:text="${productorder.coupon.coupNo}"></span>
+                                    </td>
+                                    <td th:unless="${productorder.coupon != null}">未使用優惠券</td>
 
-                                        <td th:text="${productorder.productDisc}"></td>
-                                        <td th:text="${productorder.productRealPrice}"></td>
-                                        <td th:text="${productorder.productOrdTime}"></td>
-                                        <td>
+                                    <td th:text="${productorder.productDisc}"></td>
+                                    <td th:text="${productorder.productRealPrice}"></td>
+                                    <td th:text="${productorder.productOrdTime}"></td>
+                                    <td>
                                         <span class="badge-status badge-status-failed" th:if="${productorder.productStat == 0}">未付款</span>
                                         <span class="badge-status badge-status-paid" th:if="${productorder.productStat == 1}">已付款</span>
                                     </td>
-                                        <td>
-                                            <span class="badge-status badge-status-failed" th:if="${productorder.productOrdStat == 0}">訂單取消</span>
-                                            <span class="badge-status badge-status-unpaid " th:if="${productorder.productOrdStat == 10}">揀貨中</span>
-                                            <span class="badge-status badge-status-unpaid" th:if="${productorder.productOrdStat == 20}">配送中</span>
-                                            <span class="badge-status badge-status-unpaid" th:if="${productorder.productOrdStat == 30}">等待取貨</span>
-                                            <span class="badge-status badge-status-unpaid" th:if="${productorder.productOrdStat == 40}">訂單成立</span>
-                                            <span class="badge-status badge-status-paid" th:if="${productorder.productOrdStat == 50}">訂單完成</span>
-                                            <span class="badge-status badge-status-unpaid" th:if="${productorder.productOrdStat == 81}">申請換貨</span>
-                                            <span class="badge-status badge-status-unpaid" th:if="${productorder.productOrdStat == 82}">換貨中</span>
-                                            <span  class="badge-status badge-status-refunding" th:if="${productorder.productOrdStat == 83}">申請退貨退款</span>
-                                            <span class="badge-status badge-status-refunded" th:if="${productorder.productOrdStat == 84}">退款中</span>
-                                        </td>
+                                    <td>
+                                        <span class="badge-status badge-status-failed" th:if="${productorder.productOrdStat == 0}">訂單取消</span>
+                                        <span class="badge-status badge-status-unpaid " th:if="${productorder.productOrdStat == 10}">揀貨中</span>
+                                        <span class="badge-status badge-status-unpaid" th:if="${productorder.productOrdStat == 20}">配送中</span>
+                                        <span class="badge-status badge-status-unpaid" th:if="${productorder.productOrdStat == 30}">等待取貨</span>
+                                        <span class="badge-status badge-status-unpaid" th:if="${productorder.productOrdStat == 40}">訂單成立</span>
+                                        <span class="badge-status badge-status-paid" th:if="${productorder.productOrdStat == 50}">訂單完成</span>
+                                        <span class="badge-status badge-status-unpaid" th:if="${productorder.productOrdStat == 81}">申請換貨</span>
+                                        <span class="badge-status badge-status-unpaid" th:if="${productorder.productOrdStat == 82}">換貨中</span>
+                                        <span  class="badge-status badge-status-refunding" th:if="${productorder.productOrdStat == 83}">申請退貨退款</span>
+                                        <span class="badge-status badge-status-refunded" th:if="${productorder.productOrdStat == 84}">退款中</span>
+                                    </td>
 
-                                        <td>
+                                    <td>
 
-                                            <form method="post" th:action="@{/backend/productorder/updateProductOrder}" style="margin-bottom: 0px;"onsubmit="return confirmUpdate()">
+                                        <form method="post" th:action="@{/backend/productorder/updateProductOrder}" style="margin-bottom: 0px;"onsubmit="return confirmUpdate()">
                                             <button
                                                     name="productOrdNo"
                                                     th:value="${productorder.productOrdNo}">
                                                 <i class="far fa-edit"></i>
                                             </button>
-                                            </form>
+                                        </form>
 
-                                        </td>
-                                        <td>
-                                            <form method="post" th:action="@{/backend/productorderdetail/productorderdetail}" style="margin-bottom: 0px;">
-                                                <input type="submit" value="詳情">
-                                                <input type="hidden" name="productOrdNo" th:value="${productorder.productOrdNo}">
-                                            </form>
-                                        </td>
+                                    </td>
+                                    <td>
+                                        <form method="post" th:action="@{/backend/productorderdetail/productorderdetail}" style="margin-bottom: 0px;">
+                                            <input type="submit" value="詳情">
+                                            <input type="hidden" name="productOrdNo" th:value="${productorder.productOrdNo}">
+                                        </form>
+                                    </td>
 
                                     </tr>
 
@@ -165,12 +175,14 @@
                                 </tbody>
 
                             </table>
+
                         </div>
                     </div>
                 </div>
             </div>
             <!-- /.container-fluid -->
         </div>
+
         <!-- End of Main Content -->
 
         <!-- Footer -->
