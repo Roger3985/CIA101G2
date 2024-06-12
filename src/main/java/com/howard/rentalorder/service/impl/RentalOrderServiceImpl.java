@@ -25,7 +25,6 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.view.RedirectView;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.params.ScanParams;
@@ -44,36 +43,99 @@ public class RentalOrderServiceImpl implements RentalOrderService {
 
     @Autowired
     private RentalOrderRepository repository;
-
     @Autowired
     private RentalOrderDetailsRepository detailsRepository;
-
     @Autowired
     MemberRepository memberRepository;
-
     @Autowired
     RentalRepository rentalRepository;
-
     @Autowired
     RentalCartServiceImpl cartService;
-
     @Autowired
-    LogisticsStateService logisticsStateService;
+    LogisticsStateServiceImpl logisticsStateServiceImpl;
 
     JedisPool jedisPool = null;
-
     public RentalOrderServiceImpl() {
         jedisPool = JedisUtil.getJedisPool();
     }
 
+    /*------------------------------ 租借訂單的 CRUD -----------------------------------*/
 
-    public RentalOrder findOrderByOrdNo(Integer rentalOrdNo) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("rentalOrdNo", rentalOrdNo);
-        return getByAttributes(map).get(0);
-    }
+    @Override
+    @Transactional
+    public String createOrder(RentalOrderRequest req, HttpServletRequest sReq) {
+        // 新增訂單
+        RentalOrder order = new RentalOrder();
+        Optional<Member> members = memberRepository.findById(req.getMemNo());
+        Member member = members.orElse(null);
+        order.setMember(member);
+        order.setrentalByrName(req.getrentalByrName());
+        order.setrentalByrPhone(req.getrentalByrPhone());
+        order.setrentalByrEmail(req.getrentalByrEmail());
+        order.setrentalRcvName(req.getrentalRcvName());
+        order.setrentalRcvPhone(req.getrentalRcvPhone());
+        order.setrentalTakeMethod(req.getrentalTakeMethod());
+        if (req.getrentalTakeMethod() == (byte) 1) {
+            req.setrentalAddr(null);
+        }
+        order.setrentalAddr(req.getrentalAddr());
+        order.setrentalPayMethod(req.getrentalPayMethod());
+        order.setrentalAllPrice(req.getrentalAllPrice());
+        order.setrentalAllDepPrice(req.getrentalAllDepPrice());
+        order.setrentalOrdTime(req.getrentalOrdTime());
+        order.setrentalDate(req.getrentalDate());
+        order.setrentalBackDate(req.getrentalBackDate());
+        order.setrentalRealBackDate(req.getrentalRealBackDate());
+        order.setrentalPayStat(req.getrentalPayStat());
+        order.setrentalOrdStat(req.getrentalOrdStat());
+        order.setRtnStat(req.getRtnStat());
+        order.setRtnRemark(req.getRtnRemark());
 
-    // 刪除訂單
+        repository.save(order);
+        // 取出所有租借的商品的 rentalNo
+        List<String> buyItems = req.getBuyItems();
+        // 拿來裝準備 set 進 order 裡的明細的 HashSet
+        Set<RentalOrderDetails> details = new HashSet<>();
+        // 拿來裝明細裡所有品名的 ArrayList
+        List<String> rentalNames = new ArrayList<>();
+
+        for (String buyItem : buyItems) {
+
+            RentalOrderDetails detail = new RentalOrderDetails();
+            Rental rental = rentalRepository.findByRentalNo(Integer.valueOf(buyItem));
+            detail.setRental(rental);
+            detail.setCompositeDetail(new RentalOrderDetails.CompositeDetail(order.getrentalOrdNo(), rental.getRentalNo()));
+            detail.setrentalPrice(rental.getRentalPrice());
+            detail.setrentalDesPrice(rental.getRentalCategory().getRentalDesPrice());
+
+            // 單一明細加入明細集合
+            details.add(detail);
+            // 把個別商品名稱加入集合
+            rentalNames.add(rental.getRentalName());
+            // 把個別商品改變狀態為1(已預約)
+            rental.setRentalStat((byte) 1);
+
+        }
+        // 明細放進訂單主體
+        order.setRentalOrderDetailses(details);
+
+        // 若沒有呼叫綠界金流或Line Pay金流方法(rentalPayMethod = 2，也就是現場付款)，則付款狀態(rentalPayStat)維持 0(未付款)
+        if (order.getrentalPayMethod() == (byte) 2) {
+            order.setrentalOrdStat((byte) 40);
+            return "thankForBuying";
+        }
+        // 如果選綠界
+        if (order.getrentalPayMethod() == (byte) 1) {
+            // 拼接綠界成立訂單的商品明細(綠界商品明細規定各品名之間以#區隔)
+            String itemNames = String.join("#", rentalNames);
+            // 呼叫綠界成立訂單的方法並回傳
+            return ecpayCheckout(order, itemNames);
+        }
+        // 如果不選現場也不選綠界 = 選 line pay
+        return linePayCheckOut(order, sReq);
+
+    } // createOrder 方法結束
+
     @Override
     public void deleteOrder(Integer rentalOrdNo) {
 
@@ -84,11 +146,11 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         // 然後刪訂單
         repository.delete(order);
 
-    }
+    } // deleteOrder 方法結束
 
+    @Override
     @Transactional
-    @Override // 更新訂單狀態
-    public void update(Map<String, Object> map) {
+    public void updateOrder(Map<String, Object> map) {
 
         Integer rentalOrdNo = (Integer) map.get("rentalOrdNo");
         RentalOrder rentalOrder = repository.findById(rentalOrdNo).orElse(null);
@@ -131,12 +193,13 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         }
         repository.save(rentalOrder);
 
-    }
+    } // updateOrder 方法結束
 
     @Override
     public List<RentalOrder> getAll() {
         return repository.findAll();
-    }
+    } // getAll 方法結束
+
     @Override
     public List<RentalOrder> getByAttributes(Map<String, Object> map) {
 
@@ -234,90 +297,13 @@ public class RentalOrderServiceImpl implements RentalOrderService {
                 rentalAllDepPrice, rentalOrdTime, rentalDate, rentalBackDate, rentalRealBackDate, rentalPayStat,
                 rentalOrdStat, rtnStat, rtnRemark, rtnCompensation);
 
-    }
+    } // getByAttributes 方法結束
 
-    @Transactional
-    public String createOrder(RentalOrderRequest req, HttpServletRequest sReq) {
-        // 新增訂單
-        RentalOrder order = new RentalOrder();
-        Optional<Member> members = memberRepository.findById(req.getMemNo());
-        Member member = members.orElse(null);
-        order.setMember(member);
-        order.setrentalByrName(req.getrentalByrName());
-        order.setrentalByrPhone(req.getrentalByrPhone());
-        order.setrentalByrEmail(req.getrentalByrEmail());
-        order.setrentalRcvName(req.getrentalRcvName());
-        order.setrentalRcvPhone(req.getrentalRcvPhone());
-        order.setrentalTakeMethod(req.getrentalTakeMethod());
-        if (req.getrentalTakeMethod() == (byte) 1) {
-            req.setrentalAddr(null);
-        }
-        order.setrentalAddr(req.getrentalAddr());
-        order.setrentalPayMethod(req.getrentalPayMethod());
-        order.setrentalAllPrice(req.getrentalAllPrice());
-        order.setrentalAllDepPrice(req.getrentalAllDepPrice());
-        order.setrentalOrdTime(req.getrentalOrdTime());
-        order.setrentalDate(req.getrentalDate());
-        order.setrentalBackDate(req.getrentalBackDate());
-        order.setrentalRealBackDate(req.getrentalRealBackDate());
-        order.setrentalPayStat(req.getrentalPayStat());
-        order.setrentalOrdStat(req.getrentalOrdStat());
-        order.setRtnStat(req.getRtnStat());
-        order.setRtnRemark(req.getRtnRemark());
+    /*------------------------------ 租借訂單的 CRUD -----------------------------------*/
 
-        repository.save(order);
-        // 取出所有租借的商品的 rentalNo
-        List<String> buyItems = req.getBuyItems();
-        // 拿來裝準備 set 進 order 裡的明細的 HashSet
-        Set<RentalOrderDetails> details = new HashSet<>();
-        // 拿來裝明細裡所有品名的 ArrayList
-        List<String> rentalNames = new ArrayList<>();
+    /*--------------------------------- 綠界金流 ---------------------------------------*/
 
-        for (String buyItem : buyItems) {
-
-            RentalOrderDetails detail = new RentalOrderDetails();
-            Rental rental = rentalRepository.findByRentalNo(Integer.valueOf(buyItem));
-            detail.setRental(rental);
-            detail.setCompositeDetail(new RentalOrderDetails.CompositeDetail(order.getrentalOrdNo(), rental.getRentalNo()));
-            detail.setrentalPrice(rental.getRentalPrice());
-            detail.setrentalDesPrice(rental.getRentalCategory().getRentalDesPrice());
-
-            // 單一明細加入明細集合
-            details.add(detail);
-            // 把個別商品名稱加入集合
-            rentalNames.add(rental.getRentalName());
-            // 把個別商品改變狀態為1(已預約)
-            rental.setRentalStat((byte) 1);
-
-        }
-        // 明細放進訂單主體
-        order.setRentalOrderDetailses(details);
-
-        // 若沒有呼叫綠界金流或Line Pay金流方法(rentalPayMethod = 2，也就是現場付款)，則付款狀態(rentalPayStat)維持 0(未付款)
-        if (order.getrentalPayMethod() == (byte) 2) {
-            order.setrentalOrdStat((byte) 40);
-            return "thankForBuying";
-        }
-        // 如果選綠界
-        if (order.getrentalPayMethod() == (byte) 1) {
-            // 拼接綠界成立訂單的商品明細(綠界商品明細規定各品名之間以#區隔)
-            String itemNames = String.join("#", rentalNames);
-            // 呼叫綠界成立訂單的方法並回傳
-            return ecpayCheckout(order, itemNames);
-        }
-        // 如果不選現場也不選綠界 = 選 line pay
-        return linePayCheckOut(order, sReq);
-
-    } // createOrder 方法結束
-
-    /*----------------------------串接綠界金流 api 的方法----------------------------------*/
-
-    /**
-     * 結帳產生金流訂單
-     * @param order 要結帳的訂單
-     * @param itemNames 該筆 訂單明細 中串接起來的品名(ex:"衣服#褲子#鞋子...")
-     * @return 帶有可送出付款請求的 formHTML
-     */
+    @Override
     public String ecpayCheckout(RentalOrder order, String itemNames) {
 
         if (order.getrentalTakeMethod() == (byte) 1) {
@@ -357,14 +343,11 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         }
         return form;
 
-    } // 結帳產生金流訂單 結束
+    } // ecpayCheckout 結束
 
-    /**
-     * 存入綠界回傳的交易成功資訊
-     * @param infosMap 裝有綠界回傳 交易成功 資訊的 map
-     */
+    @Override
     public void setTradeSuccessInfos(Map<String, String> infosMap) {
-//        System.out.println("有進來service方法喔喔喔喔喔");
+
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.select(10);
             String cursor = "0";
@@ -386,13 +369,9 @@ public class RentalOrderServiceImpl implements RentalOrderService {
             jedis.hmset(key, infosMap);
         }
 
-    } // 存入綠界回傳的交易成功資訊 結束
+    } // setTradeSuccessInfos 結束
 
-    /**
-     * 查詢綠界金流訂單的 tradeNo(目前只從 map 取出 tradeNo，未來可擴充去取其他所需參數)
-     * @param rentalOrdNo 租借訂單編號
-     * @return 綠界對該筆金流訂單的授權碼(tradeNo)
-     */
+    @Override
     public String postQueryTradeInfo(Integer rentalOrdNo) {
 
         try (Jedis jedis = jedisPool.getResource()) {
@@ -405,18 +384,14 @@ public class RentalOrderServiceImpl implements RentalOrderService {
             QueryTradeInfoObj obj = new QueryTradeInfoObj();
             obj.setMerchantTradeNo(merchantTradeNo);
             // 把從綠界回傳的 訂單資訊字串 重構成 map，然後回傳從 map 找到的該訂單的 TradeNo
-            return logisticsStateService.parseLogisticsInfo(all.queryTradeInfo(obj)).get("TradeNo");
+            return logisticsStateServiceImpl.parseLogisticsInfo(all.queryTradeInfo(obj)).get("TradeNo");
 
         }
 
-    }
+    } // postQueryTradeInfo 結束
 
-    /**
-     * 產生綠界刷退押金訂單
-     * @param order 要刷退的那筆訂單
-     * @return 裝有 綠界 對於刷退的回應資訊的 map
-     */
-    public Map<String, String> refund(RentalOrder order) {
+    @Override
+    public Map<String, String> refundForEcPay(RentalOrder order) {
 
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.select(10);
@@ -443,20 +418,20 @@ public class RentalOrderServiceImpl implements RentalOrderService {
                     break;
                 case 1 : // 晚一天到兩天，退 50%
                     obj.setTotalAmount( String.valueOf( order.getrentalAllDepPrice()
-                                                             .multiply(new BigDecimal("0.5"))
-                                                             .setScale(0, RoundingMode.HALF_UP) ) );
+                            .multiply(new BigDecimal("0.5"))
+                            .setScale(0, RoundingMode.HALF_UP) ) );
                     refundPercent = "50";
                     break;
                 case 2 : // 晚兩天，退 0%
                     obj.setTotalAmount( String.valueOf(order.getrentalAllDepPrice()
-                                                            .divide(order.getrentalAllDepPrice(), 0, RoundingMode.HALF_UP) ) );
+                            .divide(order.getrentalAllDepPrice(), 0, RoundingMode.HALF_UP) ) );
 
                     refundPercent = "0";
                     break;
                 default : // 晚兩天以上，退 0%
                     if (daysLate > 2) {
                         obj.setTotalAmount( String.valueOf(order.getrentalAllDepPrice()
-                                                                .divide(order.getrentalAllDepPrice(), 0, RoundingMode.HALF_UP) ) );
+                                .divide(order.getrentalAllDepPrice(), 0, RoundingMode.HALF_UP) ) );
 
                         refundPercent = "0";
                     }
@@ -470,21 +445,17 @@ public class RentalOrderServiceImpl implements RentalOrderService {
             // 設定欲執行動作為 刷退
             obj.setAction("R");
             // 把回傳的 刷退 資訊重構成好用格式
-            Map<String, String> refundInfos = logisticsStateService.parseLogisticsInfo( all.doAction(obj) );
+            Map<String, String> refundInfos = logisticsStateServiceImpl.parseLogisticsInfo( all.doAction(obj) );
             // 刷退幾 %
             refundInfos.put("refundPercent", refundPercent);
             return refundInfos;
 
         }
 
-    } // 產生刷退押金訂單 結束
+    } // refund 結束
 
-    /**
-     * 產生綠界刷退全款訂單
-     * @param order 要刷退的那筆訂單
-     * @return 裝有 綠界 對於刷退的回應資訊的 map
-     */
-    public Map<String, String> cancel(RentalOrder order) {
+    @Override
+    public Map<String, String> cancelForEcPay(RentalOrder order) {
 
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.select(10);
@@ -505,7 +476,7 @@ public class RentalOrderServiceImpl implements RentalOrderService {
             // 設定欲執行動作為 刷退
             obj.setAction("R");
             // 把回傳的 刷退 資訊重構成好用格式
-            Map<String, String> refundInfos = logisticsStateService.parseLogisticsInfo( all.doAction(obj) );
+            Map<String, String> refundInfos = logisticsStateServiceImpl.parseLogisticsInfo( all.doAction(obj) );
             // 刷退幾 %
             refundInfos.put("refundPercent", "100");
             for (RentalOrderDetails detail : order.getRentalOrderDetailses()) {
@@ -515,26 +486,18 @@ public class RentalOrderServiceImpl implements RentalOrderService {
 
         }
 
-    } // 產生刷退全款訂單 結束
+    } // cancel 結束
+
+    /*--------------------------------- 綠界金流 ---------------------------------------*/
+
+    /*------------------------------- LinePay金流 -------------------------------------*/
 
     private static final String CHANNEL_ID = "2005342190";
     private static final String CHANNEL_SECRET = "44c865afc4d0e1d4575ea90a87616108";
     private static final String REQUEST_URL = "https://sandbox-api-pay.line.me";
     private static final String REQUEST_URI = "/v3/payments/request";
 
-
-    // 把資料轉換成指定格式字串
-    public static String encrypt(final String keys, final String data) {
-        return toBase64String(HmacUtils.getHmacSha256(keys.getBytes()).doFinal(data.getBytes()));
-    }
-
-    // 轉換成 Base64 字串
-    public static String toBase64String(byte[] bytes) {
-        byte[] byteArray = Base64.encodeBase64(bytes);
-        return new String(byteArray);
-    }
-
-    // Line Pay 結帳
+    @Override
     public String linePayCheckOut(RentalOrder order, HttpServletRequest sReq) {
 
         if (order.getrentalTakeMethod() == (byte) 1) {
@@ -542,6 +505,7 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         }
 
         try {
+            /*----------------------- 實例化、初始化所需物件和參數 -----------------------*/
             // 設定訂單主體
             ObjectMapper objectMapper = new ObjectMapper();
             CheckoutPaymentRequestForm form = new CheckoutPaymentRequestForm();
@@ -594,22 +558,21 @@ public class RentalOrderServiceImpl implements RentalOrderService {
             // 取消付款時跳轉的 url
             redirectUrls.setCancelUrl(baseUrl + "/frontend/rentalorder/linePayCancel?rentalOrdNo=" + order.getrentalOrdNo());
             form.setRedirectUrls(redirectUrls);
-            // 設定請求資訊
-
+            /*------------------------------ 產生驗證簽名 ------------------------------*/
             String requestBody = objectMapper.writeValueAsString(form);
             String signature = encrypt(CHANNEL_SECRET, CHANNEL_SECRET + REQUEST_URI + objectMapper.writeValueAsString(form) + nonce);
-            // 設定請求標頭
+            /*------------------------------ 產生請求標頭 ------------------------------*/
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.set("X-LINE-ChannelId", CHANNEL_ID);
             headers.set("X-LINE-Authorization-Nonce", nonce);
             headers.set("X-LINE-Authorization", signature);
-            // 設定請求主體
+            /*--------------------- 產生請求主體、送出請求並取得回應 ----------------------*/
             HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
             RestTemplate restTemplate = new RestTemplate();
             // 送出請求
             ResponseEntity<String> response = restTemplate.exchange(REQUEST_URL + REQUEST_URI, HttpMethod.POST, entity, String.class);
-            System.out.println("回應在這    " + response);
+            /*-------------------------- 基於回應做後續處理 ---------------------------*/
             if (response.getStatusCode() == HttpStatus.OK) {
                 // 付款完後把付款狀態改為 1 (已付款)
                 order.setrentalPayStat((byte) 1);
@@ -633,10 +596,11 @@ public class RentalOrderServiceImpl implements RentalOrderService {
 
         return "/frontend/rentalorder/linePayCancel?rentalOrdNo=" + order.getrentalOrdNo();
 
-    } // Line Pay 結束
+    } // linePayCheckOut 結束
 
-    // LinePayConfirm
+    @Override
     public String linePayConfirm(String nonceForNotRepeat) {
+
         /*-----------------------找出transactionId-----------------------*/
         String transactionId = "";
         Integer rentalOrdNo = null;
@@ -683,39 +647,19 @@ public class RentalOrderServiceImpl implements RentalOrderService {
             System.out.println("轉換回應物件過程中有錯喔喔喔喔");
         }
         return rootNode.path("returnCode").asText();
+
     } // LinePayConfirm 結束
 
-    /**
-     * 產生 LinePay 刷退押金訂單
-     * @param order 要刷退的那筆訂單
-     * @return 裝有 LinePay 對於刷退的回應資訊的 map
-     */
+    @Override
     public Map<String, String> refundForLinePay(RentalOrder order) {
-        /*-----------------------實例化、初始化所需物件和參數-----------------------*/
-        // 找出 transactionId
-        String transactionId = null;
-        try (Jedis jedis = jedisPool.getResource()) {
-            jedis.select(10);
-            // 從 redis 取出對應的 LinePay 訂單號
-            String orderMappingKey = "rentalOrdNoForLinePay : " + order.getrentalOrdNo();
-            transactionId = jedis.get(orderMappingKey);
-        }
-        System.out.println(transactionId);
-        final String REFUND_URI = "/v3/payments/" + transactionId + "/refund";
-        System.out.println(REFUND_URI);
-        RestTemplate restTemplate = new RestTemplate();
-        ObjectMapper objectMapper = new ObjectMapper();
+        /*----------------------- 實例化、初始化所需物件和參數 -----------------------*/
         // 用來轉換成 RequestBody 要的格式的自訂物件
         LinePayRefund linePayRefund = new LinePayRefund();
         // 用來放刷退回應訊息的 map
         Map<String, String> refundInfos = new HashMap<>();
         // 用來紀錄刷退幾%的字串
         String refundPercent = null;
-        String nonce = UUID.randomUUID().toString();
-        // 驗證簽名
-        String signature = null;
-        String requestBody = null;
-        /*---------------判斷此筆訂單有無超時，並依照結果設定可刷退多少押金---------------*/
+        /*--------------- 判斷此筆訂單有無超時，並依照結果設定可刷退多少押金 ---------------*/
         LocalDateTime backTime = order.getrentalBackDate().toLocalDateTime();
         LocalDateTime realBackTime = order.getrentalRealBackDate().toLocalDateTime();
         int daysLate = (int) Duration.between(backTime, realBackTime).toDays();
@@ -726,46 +670,25 @@ public class RentalOrderServiceImpl implements RentalOrderService {
                 break;
             case 1 : // 晚一天到兩天，退 50%
                 linePayRefund.setRefundAmount( order.getrentalAllDepPrice()
-                             .multiply(new BigDecimal("0.5"))
-                             .setScale(0, RoundingMode.HALF_UP) );
+                        .multiply(new BigDecimal("0.5"))
+                        .setScale(0, RoundingMode.HALF_UP) );
                 refundPercent = "50";
                 break;
             case 2 : // 晚兩天，退 0%
                 linePayRefund.setRefundAmount( order.getrentalAllDepPrice()
-                             .divide(order.getrentalAllDepPrice(), 0, RoundingMode.HALF_UP) );
+                        .divide(order.getrentalAllDepPrice(), 0, RoundingMode.HALF_UP) );
                 refundPercent = "0";
                 break;
             default : // 晚兩天以上，退 0%
                 if (daysLate > 2) {
                     linePayRefund.setRefundAmount( order.getrentalAllDepPrice()
-                                 .divide(order.getrentalAllDepPrice(), 0, RoundingMode.HALF_UP) );
+                            .divide(order.getrentalAllDepPrice(), 0, RoundingMode.HALF_UP) );
                     refundPercent = "0";
                 }
                 break;
         }
-        /*------------------------------產生驗證簽名------------------------------*/
-        try {
-            requestBody = objectMapper.writeValueAsString(linePayRefund);
-        } catch (JsonProcessingException e) {
-            System.out.println("轉換linePayRefund物件出問題喔");
-        }
-        signature = encrypt(CHANNEL_SECRET, CHANNEL_SECRET + REFUND_URI + requestBody + nonce);
-        /*------------------------------產生請求標頭------------------------------*/
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("X-LINE-ChannelId", CHANNEL_ID);
-        headers.set("X-LINE-Authorization-Nonce", nonce);
-        headers.set("X-LINE-Authorization", signature);
-        /*---------------------產生請求主體、送出請求並取得回應----------------------*/
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-        ResponseEntity<String> response = restTemplate.exchange(REQUEST_URL + REFUND_URI, HttpMethod.POST, entity, String.class);
-        /*--------------------------把回應字串變成好用格式--------------------------*/
-        JsonNode rootNode = null;
-        try {
-            rootNode = objectMapper.readTree(response.getBody());
-        } catch (JsonProcessingException e) {
-            System.out.println("轉換回應物件過程中有錯喔喔喔喔");
-        }
+        /*----------------------- 送出請求，取得回應後進行後續處理 -----------------------*/
+        JsonNode rootNode = sdLinePayRefundReq(linePayRefund, order);
         // 結果代碼 (ex:0000、1198...)
         refundInfos.put("returnCode", rootNode.path("returnCode").asText());
         // 成功訊息或失敗原因
@@ -774,62 +697,19 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         refundInfos.put("refundPercent", refundPercent);
         return refundInfos;
 
-    } // 產生 LinePay 刷退押金訂單 結束
+    } // refundForLinePay 結束
 
-    /**
-     * 產生 LinePay 刷退全款訂單
-     * @param order 要刷退的那筆訂單
-     * @return 裝有 LinePay 對於刷退的回應資訊的 map
-     */
+    @Override
     public Map<String, String> cancelForLinePay(RentalOrder order) {
-        /*-----------------------實例化、初始化所需物件和參數-----------------------*/
-        // 找出 transactionId
-        String transactionId = null;
-        try (Jedis jedis = jedisPool.getResource()) {
-            jedis.select(10);
-            // 從 redis 取出對應的 LinePay 訂單號
-            String orderMappingKey = "rentalOrdNoForLinePay : " + order.getrentalOrdNo();
-            transactionId = jedis.get(orderMappingKey);
-        }
-        System.out.println(transactionId);
-        final String REFUND_URI = "/v3/payments/" + transactionId + "/refund";
-        System.out.println(REFUND_URI);
-        RestTemplate restTemplate = new RestTemplate();
-        ObjectMapper objectMapper = new ObjectMapper();
+
+        /*----------------------- 實例化、初始化所需物件和參數 -----------------------*/
         // 用來轉換成 RequestBody 要的格式的自訂物件
         LinePayRefund linePayRefund = new LinePayRefund();
         // 用來放刷退回應訊息的 map
         Map<String, String> refundInfos = new HashMap<>();
-        // 用來紀錄刷退幾%的字串
-        String refundPercent = null;
-        String nonce = UUID.randomUUID().toString();
-        // 驗證簽名
-        String signature = null;
-        String requestBody = null;
         linePayRefund.setRefundAmount(null);
-        /*------------------------------產生驗證簽名------------------------------*/
-        try {
-            requestBody = objectMapper.writeValueAsString(linePayRefund);
-        } catch (JsonProcessingException e) {
-            System.out.println("轉換linePayRefund物件出問題喔");
-        }
-        signature = encrypt(CHANNEL_SECRET, CHANNEL_SECRET + REFUND_URI + requestBody + nonce);
-        /*------------------------------產生請求標頭------------------------------*/
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("X-LINE-ChannelId", CHANNEL_ID);
-        headers.set("X-LINE-Authorization-Nonce", nonce);
-        headers.set("X-LINE-Authorization", signature);
-        /*---------------------產生請求主體、送出請求並取得回應----------------------*/
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-        ResponseEntity<String> response = restTemplate.exchange(REQUEST_URL + REFUND_URI, HttpMethod.POST, entity, String.class);
-        /*--------------------------把回應字串變成好用格式--------------------------*/
-        JsonNode rootNode = null;
-        try {
-            rootNode = objectMapper.readTree(response.getBody());
-        } catch (JsonProcessingException e) {
-            System.out.println("轉換回應物件過程中有錯喔喔喔喔");
-        }
+        /*----------------------- 送出請求，取得回應後進行後續處理 -----------------------*/
+        JsonNode rootNode = sdLinePayRefundReq(linePayRefund, order);
         // 結果代碼 (ex:0000、1198...)
         refundInfos.put("returnCode", rootNode.path("returnCode").asText());
         // 成功訊息或失敗原因
@@ -841,15 +721,9 @@ public class RentalOrderServiceImpl implements RentalOrderService {
         }
         return refundInfos;
 
-    } // 產生 LinePay 刷退全款訂單 結束
+    } // cancelForLinePay 結束
 
-    /**
-     * 因為 LinePay 的 orderId 不能重複，所以在創建訂單時用 UUID 生成隨機字串作為 key，
-     * 以資料庫真正訂單號碼做為 value，把鍵值對存入 Redis，所以需要真正訂單號碼，手上卻只有隨機字串時，
-     * 用此方法來找到該訂單真正在資料庫的號碼
-     * @param nonce 用 UUID 生成，代表 LinePay 訂單的隨機字串
-     * @return 該筆訂單在資料庫裡真正的編號
-     */
+    @Override
     public String findTrueRentalOrdNo(String nonce) {
 
         try (Jedis jedis = jedisPool.getResource()) {
@@ -858,7 +732,78 @@ public class RentalOrderServiceImpl implements RentalOrderService {
             return jedis.get(key);
         }
 
+    } // findTrueRentalOrdNo 結束
+
+    /*------------------------------- LinePay金流 -------------------------------------*/
+
+    /*--------------------------------所有方法共用-------------------------------------*/
+
+    // 用真實訂單號碼找出訂單
+    public RentalOrder findOrderByOrdNo(Integer rentalOrdNo) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("rentalOrdNo", rentalOrdNo);
+        return getByAttributes(map).get(0);
     }
 
+    // 把資料轉換成指定格式字串
+    public static String encrypt(final String keys, final String data) {
+        return toBase64String(HmacUtils.getHmacSha256(keys.getBytes()).doFinal(data.getBytes()));
+    }
+
+    // 轉換成 Base64 字串
+    public static String toBase64String(byte[] bytes) {
+        byte[] byteArray = Base64.encodeBase64(bytes);
+        return new String(byteArray);
+    }
+
+    /**
+     * 對 LinePay 送出刷退請求，並解析回應物件後回傳
+     * @param linePayRefund 裝有刷退所需資訊的物件
+     * @param order 要執行刷退的訂單
+     * @return 解析完的 LinePay 回傳的回應
+     */
+    public JsonNode sdLinePayRefundReq(LinePayRefund linePayRefund, RentalOrder order) {
+
+        String transactionId = null;
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.select(10);
+            // 從 redis 取出對應的 LinePay 訂單號
+            String orderMappingKey = "rentalOrdNoForLinePay : " + order.getrentalOrdNo();
+            transactionId = jedis.get(orderMappingKey);
+        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        RestTemplate restTemplate = new RestTemplate();
+        String signature = null;
+        String requestBody = null;
+        final String REFUND_URI = "/v3/payments/" + transactionId + "/refund";
+        String nonce = UUID.randomUUID().toString();
+
+        try {
+            requestBody = objectMapper.writeValueAsString(linePayRefund);
+        } catch (JsonProcessingException e) {
+            System.out.println("轉換linePayRefund物件出問題喔");
+        }
+        signature = encrypt(CHANNEL_SECRET, CHANNEL_SECRET + REFUND_URI + requestBody + nonce);
+        /*------------------------------ 產生請求標頭 ------------------------------*/
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("X-LINE-ChannelId", CHANNEL_ID);
+        headers.set("X-LINE-Authorization-Nonce", nonce);
+        headers.set("X-LINE-Authorization", signature);
+        /*--------------------- 產生請求主體、送出請求並取得回應 ----------------------*/
+        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
+        ResponseEntity<String> response = restTemplate.exchange(REQUEST_URL + REFUND_URI, HttpMethod.POST, entity, String.class);
+        /*---------------------------- 解析回應物件 -----------------------------*/
+        JsonNode rootNode = null;
+        try {
+            rootNode = objectMapper.readTree(response.getBody());
+        } catch (JsonProcessingException e) {
+            System.out.println("轉換回應物件過程中有錯喔喔喔喔");
+        }
+        return rootNode;
+
+    }
+
+    /*--------------------------------所有方法共用-------------------------------------*/
 
 }
