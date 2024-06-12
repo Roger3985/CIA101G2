@@ -25,6 +25,7 @@ public class RentalCartServiceImpl implements RentalCartService {
     @Autowired
     private RentalRepository rentalRepository;
 
+    @Override
     public void setToCart(Integer memNo, Map<String, String> map) {
 
         try (Jedis jedis = jedisPool.getResource()) {
@@ -63,6 +64,7 @@ public class RentalCartServiceImpl implements RentalCartService {
 
     } // SetToCart 方法結束
 
+    @Override
     public void deleteFromCart(Integer memNo, List<Integer> rentalNos) {
             // 從連線池取得連線物件
         try(Jedis jedis = jedisPool.getResource()) {
@@ -84,6 +86,7 @@ public class RentalCartServiceImpl implements RentalCartService {
 
     } // deleteFromCart 方法結束
 
+    @Override
     public void updateCart(List<Integer> rentalNos, String field, String value) {
 
         try(Jedis jedis = jedisPool.getResource()) {
@@ -115,6 +118,7 @@ public class RentalCartServiceImpl implements RentalCartService {
 
     } // updateCart 方法結束
 
+    @Override
     public Map<String, Map<String, String>> getFromCart(String memNo) {
         /*
          * new 一個叫做 Results 的 map，裡面每一個 key 值代表一個購物車商品存進 Redis 用的 key，這個 key 的值是一個 map，

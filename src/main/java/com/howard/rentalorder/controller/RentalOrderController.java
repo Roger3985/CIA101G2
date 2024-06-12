@@ -5,10 +5,10 @@ import com.howard.rentalorder.dto.DeleteCantRent;
 import com.howard.rentalorder.dto.RentalOrderRequest;
 import com.howard.rentalorder.dto.SetToCart;
 import com.howard.rentalorder.entity.RentalOrder;
-import com.howard.rentalorder.service.impl.LogisticsStateService;
+import com.howard.rentalorder.service.impl.LogisticsStateServiceImpl;
 import com.howard.rentalorder.service.impl.RentalCartServiceImpl;
 import com.howard.rentalorder.service.impl.RentalOrderServiceImpl;
-import com.howard.rentalorder.service.impl.RentalOrderShippingService;
+import com.howard.rentalorder.service.impl.RentalOrderShippingServiceImpl;
 import com.howard.rentalorderdetails.service.impl.RentalOrderDetailsServiceImpl;
 import com.roger.member.entity.Member;
 import com.roger.member.repository.MemberRepository;
@@ -41,10 +41,10 @@ public class RentalOrderController {
     /*--------------------------所有方法共用-------------------------------*/
 
     @Autowired
-    private LogisticsStateService logisticsStateService;
+    private LogisticsStateServiceImpl logisticsStateServiceImpl;
 
     @Autowired
-    private RentalOrderShippingService shippingService;
+    private RentalOrderShippingServiceImpl shippingService;
 
     @Autowired
     private RentalOrderServiceImpl service;
@@ -226,7 +226,7 @@ public class RentalOrderController {
     @PostMapping("/receiveTradeInfos")
     public ResponseEntity<?> receiveTradeInfos(@RequestBody String infos) {
 
-        Map<String, String> infosMap = logisticsStateService.parseLogisticsInfo(infos);
+        Map<String, String> infosMap = logisticsStateServiceImpl.parseLogisticsInfo(infos);
         System.out.println("接收到交易成功訊息了喔喔喔喔喔 ===" + infosMap.get("MerchantTradeNo"));
         service.setTradeSuccessInfos(infosMap);
         return ResponseEntity.status(HttpStatus.OK).body("1|OK");
@@ -268,7 +268,7 @@ public class RentalOrderController {
         if (rtnCompensation != null) {
             map.put("rtnCompensation", rtnCompensation);
         }
-        service.update(map);
+        service.updateOrder(map);
 
         return "redirect:/backend/rentalorder/listAllRentalOrder";
 
@@ -381,11 +381,11 @@ public class RentalOrderController {
 
 
             if (order.getrentalPayStat() == (byte) 1) { // 如果已付款，則刷退
-                System.out.println("======================================" + order.getrentalPayMethod());
+//                System.out.println("======================================" + order.getrentalPayMethod());
                 switch ((int) order.getrentalPayMethod()) {
 
                     case 1 : // 用 綠界 付款
-                        Map<String, String> refundInfos = service.cancel(order);
+                        Map<String, String> refundInfos = service.cancelForEcPay(order);
                         updateStat((byte) 0, cro.getRentalOrdNo());
                         addMemberMessage(refundInfos, "已經取消，退款比例為 ", cro.getRentalOrdNo());
                         return ResponseEntity.status(HttpStatus.OK).body(refundInfos.get("refundPercent"));
@@ -429,7 +429,7 @@ public class RentalOrderController {
         Map<String, Object> map = new HashMap<>();
         map.put("rentalOrdNo", rentalOrdNo);
         map.put("rentalOrdStat", stat);
-        service.update(map);
+        service.updateOrder(map);
     }
 
     /*---------------------------處理CRUD請求的方法---------------------------------*/
@@ -520,7 +520,7 @@ public class RentalOrderController {
     public ResponseEntity<?> queryNewStat(@RequestParam Integer memNo,
                                           @RequestParam Integer rentalOrdNo) {
         // 目前只有回傳物流狀態碼，其他資訊都沒取出來
-        String logisticsStatus = logisticsStateService.postQueryLogisticsTradeInfo(memNo, rentalOrdNo);
+        String logisticsStatus = logisticsStateServiceImpl.postQueryLogisticsTradeInfo(memNo, rentalOrdNo);
         return ResponseEntity.status(HttpStatus.OK).body(logisticsStatus);
 
     }
@@ -544,7 +544,7 @@ public class RentalOrderController {
     @PostMapping("/depRefund")
     public ResponseEntity<?> depRefund(@RequestBody Integer rentalOrdNo) {
 
-        Map<String, String> refundInfos = service.refund(service.findOrderByOrdNo(rentalOrdNo));
+        Map<String, String> refundInfos = service.refundForEcPay(service.findOrderByOrdNo(rentalOrdNo));
         addMemberMessage(refundInfos, "押金已完成刷退囉! 刷退押金比例為 ", rentalOrdNo);
         return ResponseEntity.status(HttpStatus.OK).body(refundInfos);
 

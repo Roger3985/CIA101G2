@@ -2,15 +2,14 @@ package com.howard.rentalorder.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.howard.rentalorder.dto.CancelRentalOrder;
 import com.howard.rentalorder.dto.DeleteCantRent;
 import com.howard.rentalorder.dto.RentalOrderRequest;
 import com.howard.rentalorder.dto.SetToCart;
 import com.howard.rentalorder.entity.RentalOrder;
-import com.howard.rentalorder.service.impl.LogisticsStateService;
+import com.howard.rentalorder.service.impl.LogisticsStateServiceImpl;
 import com.howard.rentalorder.service.impl.RentalCartServiceImpl;
 import com.howard.rentalorder.service.impl.RentalOrderServiceImpl;
-import com.howard.rentalorder.service.impl.RentalOrderShippingService;
+import com.howard.rentalorder.service.impl.RentalOrderShippingServiceImpl;
 import com.howard.rentalorderdetails.entity.RentalOrderDetails;
 import com.howard.rentalorderdetails.service.impl.RentalOrderDetailsServiceImpl;
 import com.roger.member.entity.Member;
@@ -44,10 +43,10 @@ public class FrontendRentalOrderController {
     /*--------------------------所有方法共用-------------------------------*/
 
     @Autowired
-    private LogisticsStateService logisticsStateService;
+    private LogisticsStateServiceImpl logisticsStateServiceImpl;
 
     @Autowired
-    private RentalOrderShippingService shippingService;
+    private RentalOrderShippingServiceImpl shippingService;
 
     @Autowired
     private RentalOrderServiceImpl service;
@@ -286,7 +285,7 @@ public class FrontendRentalOrderController {
     @PostMapping("/receiveTradeInfos")
     public ResponseEntity<?> receiveTradeInfos(@RequestBody String infos) {
 
-        Map<String, String> infosMap = logisticsStateService.parseLogisticsInfo(infos);
+        Map<String, String> infosMap = logisticsStateServiceImpl.parseLogisticsInfo(infos);
         service.setTradeSuccessInfos(infosMap);
         return ResponseEntity.status(HttpStatus.OK).body("1|OK");
 
@@ -304,7 +303,7 @@ public class FrontendRentalOrderController {
         Map<String, Object> map = new HashMap<>();
         map.put("rentalOrdNo", rentalOrdNo);
         map.put("rentalOrdStat", (byte) 80);
-        service.update(map);
+        service.updateOrder(map);
         return ResponseEntity.status(HttpStatus.OK).body("ok");
 
     }
@@ -417,7 +416,7 @@ public class FrontendRentalOrderController {
             return ResponseEntity.status(HttpStatus.OK).body(toLogin);
         }
         // 目前只有回傳物流狀態碼，可依照需求增加要取的值
-        String logisticsStatus = logisticsStateService.postQueryLogisticsTradeInfo(member.getMemNo(), rentalOrdNo);
+        String logisticsStatus = logisticsStateServiceImpl.postQueryLogisticsTradeInfo(member.getMemNo(), rentalOrdNo);
         return ResponseEntity.status(HttpStatus.OK).body(logisticsStatus);
 
     }
