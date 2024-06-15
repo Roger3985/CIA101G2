@@ -10,7 +10,7 @@
 *  會員中心：會員帳戶管理、優惠券管理、客服系統。  
 
 ## Start with
-* 環境需求: Java 17 ([下載](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html))、MySQL([下載](https://www.mysql.com/downloads/))、Redis ([下載](https://redis.io/downloads/))、RabbitMQ([安裝方式請看我](https://github.com/Roger3985/CIA101G2/blob/master/RABBITMQ_SETTING.md))
+* 環境需求: Java 17 ([下載](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html))、MySQL([下載](https://www.mysql.com/downloads/))、Redis ([下載](https://redis.io/downloads/))、RabbitMQ([安裝方式請看我](https://github.com/Roger3985/CIA101G2/blob/master/introduction/RABBITMQ_SETTING.md))
 * 圖片資源載入: 執行src/main/java/com/photoWrite/photoWrite.java內的main方法將圖片資源加載到MySQL資料庫內
 
 ## Built with
