@@ -24,12 +24,17 @@
 [![Spring MVC](https://img.shields.io/badge/Spring%20MVC-6DB33F?style=for-the-badge&logo=spring&logoColor=white)](https://spring.io/projects/spring-framework)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![Spring Security](https://img.shields.io/badge/Spring%20Security-6DB33F?style=for-the-badge&logo=spring-security&logoColor=white)](https://spring.io/projects/spring-security)
-*  SpringMVC、[SpringBoot](https://spring.io/projects/spring-boot)、[SpringSecurity](https://spring.io/projects/spring-security)
-*  資料庫串接：[Spring JPA](https://spring.io/projects/spring-data-jpa)、[Hibernate](https://hibernate.org/)
-*  資料庫：[MySQL](https://www.mysql.com/)、[Redis](https://redis.io/)
+[![Spring JPA](https://img.shields.io/badge/Spring%20JPA-6DB33F?style=for-the-badge&logo=spring&logoColor=white)](https://spring.io/projects/spring-data-jpa)
+[![Hibernate](https://img.shields.io/badge/Hibernate-59666C?style=for-the-badge&logo=hibernate&logoColor=white)](https://hibernate.org/)
+[![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)](https://redis.io/)
 *  通訊協議：Ajax、WebSocket、Stomp、AMQP
-*  其他插件：[RabbitMQ](https://www.rabbitmq.com/)、[Erlang](https://www.erlang.org/)
-*  第三方金流API：[綠界科技](https://www.ecpay.com.tw/)、[LinePay](https://pay.line.me/jp/developers/apis/onlineApis?locale=zh_TW)
-*  開發工具：[Maven](https://maven.apache.org/)、[Intellij](https://www.jetbrains.com/idea/)、[Postman](https://www.postman.com/)
+[![Erlang](https://img.shields.io/badge/Erlang-A90533?style=for-the-badge&logo=erlang&logoColor=white)](https://www.erlang.org/)
+[![RabbitMQ](https://img.shields.io/badge/RabbitMQ-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white)](https://www.rabbitmq.com/)
+[![綠界科技](https://img.shields.io/badge/綠界科技-0F9D58?style=for-the-badge&logo=&logoColor=white)](https://www.ecpay.com.tw/)
+[![LinePay](https://img.shields.io/badge/LinePay-00C300?style=for-the-badge&logo=line&logoColor=white)](https://pay.line.me/)
+[![Maven](https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white)](https://maven.apache.org/)
+[![IntelliJ IDEA](https://img.shields.io/badge/IntelliJ%20IDEA-000000?style=for-the-badge&logo=intellij-idea&logoColor=white)](https://www.jetbrains.com/idea/)
+[![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)](https://www.postman.com/)
 
 
