@@ -13,16 +13,16 @@
    cd otp_src_27.0
    ```
    #### c. 安裝依賴:
-   - (a) 在Debian/Ubuntu系統:
+   ##### (a) 在Debian/Ubuntu系統:
    ```sh
    sudo apt-get install build-essential libncurses5-dev openssl libssl-dev fop xsltproc unixodbc-dev
    ```
-   - (b) 在RedHat/CentOS系統:
+   ##### (b) 在RedHat/CentOS系統:
    ```sh
    sudo yum groupinstall 'Development Tools'
    sudo yum install ncurses-devel openssl-devel wxBase wxGTK wxWidgets unixODBC unixODBC-devel
    ```
-   - (c) 配置、編譯和安裝:
+   ##### (c) 配置、編譯和安裝:
    ```sh
    ./configure
    make
