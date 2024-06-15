@@ -3,8 +3,8 @@
 ### 1. [前往Erlang官網下載](https://www.erlang.org/downloads)
 ### 2. 安裝方式:
    #### (1) Windows系統:
-   - a. 點選Download Erlang/OTP區塊右邊的Download Windows installer,根據作業系統選擇64-bit or 32-bit
-   - b. 開啟安裝程式，照預設路徑安裝即可
+   + a. 點選Download Erlang/OTP區塊右邊的Download Windows installer,根據作業系統選擇64-bit or 32-bit
+   * b. 開啟安裝程式，照預設路徑安裝即可
    #### (2) Linux系統:
    - a. 點選Download Erlang/OTP區塊右邊的Download source
    - b. 輸入以下指令解壓縮:
