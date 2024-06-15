@@ -1,18 +1,18 @@
 # 請按以下步驟安裝程式與設定
 # 步驟一: 下載並安裝Erlang
-### 1. [前往Erlang官網下載](https://www.erlang.org/downloads)
-### 2. 安裝方式:
-   #### (1) Windows系統:
-   + a. 點選Download Erlang/OTP區塊右邊的Download Windows installer,根據作業系統選擇64-bit or 32-bit
-   * b. 開啟安裝程式，照預設路徑安裝即可
-   #### (2) Linux系統:
-   - a. 點選Download Erlang/OTP區塊右邊的Download source
-   - b. 輸入以下指令解壓縮:
+## 1. [前往Erlang官網下載](https://www.erlang.org/downloads)
+## 2. 安裝方式:
+   ### (1) Windows系統:
+   #### a. 點選Download Erlang/OTP區塊右邊的Download Windows installer,根據作業系統選擇64-bit or 32-bit
+   #### b. 開啟安裝程式，照預設路徑安裝即可
+   ### (2) Linux系統:
+   #### a. 點選Download Erlang/OTP區塊右邊的Download source
+   #### b. 輸入以下指令解壓縮:
    ```sh
    tar -xvzf otp_src_27.0.tar.gz
    cd otp_src_27.0
    ```
-   - c. 安裝依賴:
+   #### c. 安裝依賴:
    - (a) 在Debian/Ubuntu系統:
    ```sh
    sudo apt-get install build-essential libncurses5-dev openssl libssl-dev fop xsltproc unixodbc-dev
