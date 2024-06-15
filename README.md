@@ -14,11 +14,12 @@
 
 # Built with
 ### Front-end
-[![HTML5]()]()
-[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://www.w3schools.com/css/)
-[![jQuery]()](https://jquery.com/)
-[![Axios]()](https://axios-http.com/docs/intro)
-[Bootstrap](https://getbootstrap.com/)
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://www.w3schools.com/html/default.asp)
+[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://www.w3schools.com/css/default.asp)
+[![JavaScript](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)](https://www.w3schools.com/js/default.asp)
+[![jQuery](https://img.shields.io/badge/jquery-%230769AD.svg?style=for-the-badge&logo=jquery&logoColor=white)](https://jquery.com/)
+[![Axios](https://img.shields.io/badge/axios-%235A29E4.svg?style=for-the-badge&logo=axios&logoColor=white)](https://axios-http.com/docs/intro)
+[![Bootstrap](https://img.shields.io/badge/bootstrap-%23563D7C.svg?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
 ### Back-end
 *  SpringMVC、[SpringBoot](https://spring.io/projects/spring-boot)、[SpringSecurity](https://spring.io/projects/spring-security)
 *  資料庫串接：[Spring JPA](https://spring.io/projects/spring-data-jpa)、[Hibernate](https://hibernate.org/)
