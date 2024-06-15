@@ -36,7 +36,15 @@
    #### a. 點選側邊欄Install and Upgrade欄位下方的Windows
    #### b. 找到Direct Downloads，點擊下載欄位內的Download下載安裝程式
    #### c. 開啟安裝程式，照預設路徑安裝即可
-   #### d. 設定環境變數，若按照預設路徑安裝，在Path新增: C:\Program Files\RabbitMQ Server\rabbitmq_server-{version}\sbin，依版本新增，如撰寫這份文件時的版本為3.13.2 ex: C:\Program Files\RabbitMQ Server\rabbitmq_server-3.13.2\sbin
+   #### d. 設定環境變數
+   - 若按照預設路徑安裝，在Path新增:
+   ```plaintext
+   C:\Program Files\RabbitMQ Server\rabbitmq_server-{version}\sbin
+   ```
+   - 依版本新增，如撰寫這份文件時的版本為3.13.2，ex:
+   ```plaintext
+   C:\Program Files\RabbitMQ Server\rabbitmq_server-3.13.2\sbin
+   ```
    #### e. 輸入以下指令啟用插件
    ##### (a) 啟用管理插件
    ```sh
@@ -135,5 +143,3 @@ sudo systemctl enable rabbitmq-server
 ```sh
 sudo systemctl disable rabbitmq-server
 ```
-   
-
