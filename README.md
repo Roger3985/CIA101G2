@@ -31,11 +31,6 @@
 [![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
 [![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)](https://redis.io/)
 <br/>
-![Ajax](https://img.shields.io/badge/ajax-%230769AD.svg?style=for-the-badge)
-![WebSocket](https://img.shields.io/badge/WebSocket-000000?style=for-the-badge&logo=websocket&logoColor=white)
-![Stomp](https://img.shields.io/badge/stomp-%2300D8FF.svg?style=for-the-badge)
-![AMQP](https://img.shields.io/badge/AMQP-0000FF?style=for-the-badge)
-<br/>
 [![Erlang](https://img.shields.io/badge/Erlang-A90533?style=for-the-badge&logo=erlang&logoColor=white)](https://www.erlang.org/)
 [![RabbitMQ](https://img.shields.io/badge/RabbitMQ-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white)](https://www.rabbitmq.com/)
 <br/>
@@ -45,5 +40,10 @@
 [![Maven](https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white)](https://maven.apache.org/)
 [![IntelliJ IDEA](https://img.shields.io/badge/IntelliJ%20IDEA-000000?style=for-the-badge&logo=intellij-idea&logoColor=white)](https://www.jetbrains.com/idea/)
 [![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)](https://www.postman.com/)
+### Protocol
+![Ajax](https://img.shields.io/badge/ajax-%230769AD.svg?style=for-the-badge)
+![WebSocket](https://img.shields.io/badge/WebSocket-000000?style=for-the-badge&logo=websocket&logoColor=white)
+![Stomp](https://img.shields.io/badge/stomp-%2300D8FF.svg?style=for-the-badge)
+![AMQP](https://img.shields.io/badge/AMQP-0000FF?style=for-the-badge)
 
 
