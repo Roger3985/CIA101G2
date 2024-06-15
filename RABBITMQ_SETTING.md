@@ -3,20 +3,20 @@
 ### 1. [前往Erlang官網下載](https://www.erlang.org/downloads)
 ### 2. 安裝方式:
    #### Windows系統:
-     ##### a. 點選Download Erlang/OTP區塊右邊的Download Windows installer,根據作業系統選擇64-bit or 32-bit
-     ##### b. 開啟安裝程式，照預設路徑安裝即可
+     - a. 點選Download Erlang/OTP區塊右邊的Download Windows installer,根據作業系統選擇64-bit or 32-bit
+     - b. 開啟安裝程式，照預設路徑安裝即可
    #### Linux系統:
-     ##### a. 點選Download Erlang/OTP區塊右邊的Download source
-     ##### b. 輸入以下指令解壓縮:
+     - a. 點選Download Erlang/OTP區塊右邊的Download source
+     - b. 輸入以下指令解壓縮:
              tar -xvzf otp_src_27.0.tar.gz
              cd otp_src_27.0
-     ##### c. 安裝依賴:
-       ###### (a) 在Debian/Ubuntu系統:
+     - c. 安裝依賴:
+       - (a) 在Debian/Ubuntu系統:
                 sudo apt-get install build-essential libncurses5-dev openssl libssl-dev fop xsltproc unixodbc-dev
-       ###### (b) 在RedHat/CentOS系統:
+       - (b) 在RedHat/CentOS系統:
                 sudo yum groupinstall 'Development Tools'
                 sudo yum install ncurses-devel openssl-devel wxBase wxGTK wxWidgets unixODBC unixODBC-devel
-       ###### (c) 配置、編譯和安裝:
+       - (c) 配置、編譯和安裝:
                 - ./configure
                 - make
                 - sudo make install
