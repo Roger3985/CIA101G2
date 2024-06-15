@@ -67,7 +67,7 @@
    sudo rabbitmq-plugins enable rabbitmq_stomp
    ```
 ## 3. 管理頁面
-  - 安裝完成後使用步驟三的開啟指令可以到達管理頁面[管理頁面(預設網址為http://localhost:15672)](http://localhost:15672)
+  - 安裝完成後，使用步驟三的啟動指令開啟服務後，可訪問管理頁面[管理頁面(預設網址為http://localhost:15672)](http://localhost:15672)
   - 預設帳號:guest
   - 預設密碼:guest
 
