@@ -10,7 +10,7 @@
 *  會員中心：會員帳戶管理、優惠券管理、客服系統。  
 
 ## Start with
-* 環境需求: Java 17、Redis、RabbitMQ([安裝方式請看我](https://github.com/Roger3985/CIA101G2/blob/master/RABBITMQ_SETTING.md))
+* 環境需求: Java 17[download](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)、Redis[download](https://redis.io/downloads/)、RabbitMQ([安裝方式請看我](https://github.com/Roger3985/CIA101G2/blob/master/RABBITMQ_SETTING.md))
 
 ## Built with
 ### Front-end
