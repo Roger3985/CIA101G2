@@ -10,13 +10,15 @@
 *  會員中心：會員帳戶管理、優惠券管理、客服系統。  
 
 # Start With
-* 環境需求: Java 17、Redis、RabbitMQ([安裝方式請看我](https://github.com/Roger3985/CIA101G2/blob/master/RABBITMQ_SETTING.md)
+* 環境需求: Java 17、Redis、RabbitMQ([安裝方式請看我](https://github.com/Roger3985/CIA101G2/blob/master/RABBITMQ_SETTING.md))
 
 # Built with
 ### Front-end
-*  [jQuery](https://jquery.com/)
-*  [Axios](https://axios-http.com/docs/intro)
-*  [Bootstrap](https://getbootstrap.com/)
+[![HTML5]()]()
+[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://www.w3schools.com/css/)
+[![jQuery]()](https://jquery.com/)
+[![Axios]()](https://axios-http.com/docs/intro)
+[Bootstrap](https://getbootstrap.com/)
 ### Back-end
 *  SpringMVC、[SpringBoot](https://spring.io/projects/spring-boot)、[SpringSecurity](https://spring.io/projects/spring-security)
 *  資料庫串接：[Spring JPA](https://spring.io/projects/spring-data-jpa)、[Hibernate](https://hibernate.org/)
