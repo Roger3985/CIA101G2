@@ -8,8 +8,10 @@
    #### Linux系統:
    - a. 點選Download Erlang/OTP區塊右邊的Download source
    - b. 輸入以下指令解壓縮:
-   ```tar -xvzf otp_src_27.0.tar.gz
+   ```sh
+   tar -xvzf otp_src_27.0.tar.gz
    cd otp_src_27.0
+   ```
    c. 安裝依賴:
    (a) 在Debian/Ubuntu系統:
    sudo apt-get install build-essential libncurses5-dev openssl libssl-dev fop xsltproc unixodbc-dev
