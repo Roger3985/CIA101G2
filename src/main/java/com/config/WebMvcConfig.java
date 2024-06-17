@@ -2,7 +2,6 @@ package com.config;
 
 import com.roger.converters.StringToDateConverter;
 import com.roger.converters.StringToTimestampConverter;
-import com.yu.rentalmyfavorite.converter.RentalMyFAVToAddToWishListConverter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -27,9 +26,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         // 將自定義轉換器 StringToTimestampConverter 添加到格式化程序註冊表中
         registry.addConverter(new StringToTimestampConverter());
-
-        //自訂轉換器 (將 RentalMyFavorite 物件轉換為 AddToWishList 物件)
-        registry.addConverter(new RentalMyFAVToAddToWishListConverter());
     }
 
 }

@@ -4,11 +4,9 @@ import com.yu.rental.entity.Rental;
 import com.yu.rental.service.RentalServiceImpl;
 import com.yu.rentalcategory.entity.RentalCategory;
 import com.yu.rentalcategory.service.RentalCategoryServiceImpl;
-import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
-import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -16,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,12 +22,12 @@ import java.util.Map;
 @RequestMapping("/backend/rental") //對應資料夾路徑
 public class RentalControllerBackEnd {
 
-    @Autowired  // 自動裝配
+    // 自動裝配
+    @Autowired
     private RentalServiceImpl rentalService;
     @Autowired
     private RentalCategoryServiceImpl rentalCategoryService;
-////////////////////////////////////////////////////////////////////////////////////////////////
-    // 測試區 //
+
 //處理單筆查詢(依rentalNo)
 @PostMapping("getDisplayRentalSize")
 public String getDisplayRentalSize(@RequestParam(value = "rentalSize", required = false) String rentalSize, ModelMap model) {
@@ -50,10 +47,6 @@ public String getDisplayRentalSize(@RequestParam(value = "rentalSize", required 
     model.addAttribute("sizeData", sizeData);
     return "/backend/rental/listOneRental";
 }
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////
 
     //顯示首頁 (後台)
     @GetMapping("/backendIndex")

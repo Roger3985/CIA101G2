@@ -18,15 +18,6 @@ import java.util.Map;
 @RequestMapping("/frontend/rentalcategory") //對應資料夾路徑
 public class RentalCategoryControllerFrontEnd {
 
-    /**前端網頁需求：
-     *
-     * 左上角的關鍵字查詢
-     * 點入商品欄後，顯示個別商品、全部商品
-     * 排序方法：最新上架、價格低~高、價格高~低、最熱門
-     * 點選"加入我的最愛"，即可新增查看
-     *個別品項篩選 (針對類別、金額、Size)
-     *
-     */
 
     @Autowired  // 自動裝配
     private RentalServiceImpl rentalService;
@@ -55,112 +46,6 @@ public class RentalCategoryControllerFrontEnd {
         model.addAttribute("rentalCategory", rentalCategory);
         return "/frontend/rentalcategory/showOneRentalCat";
     }
-
-
-    //顯示租借品類別 - 依名稱
-//    @GetMapping("listOneRentalCat")
-//    public String listOneRentalCat(@RequestParam(value = "rentalCatName", required = true) String rentalCatName, ModelMap model) {
-////        建立返回數據的對象
-//        RentalCategory rentalCategory = rentalCategoryService.getRentalCatName(rentalCatName);
-//        model.addAttribute("rentalCategory", rentalCategory);
-//        return "/frontend/rental/rentalShop";
-//    }
-
-
-    //    顯示單一租借品
-//    @GetMapping("/listOneRental")  //required = true：請求參數不可為null(預設)
-//    public String getOneRental(@RequestParam(value = "rentalNo",required = true) Integer rentalNo, ModelMap model) {
-//        //建立返回數據的對象
-//        Rental rental = rentalService.findByNo(rentalNo);
-//        model.addAttribute("rental", rental);
-//        return "/frontend/rental/listOneRental";
-//    }
-
-
-    //    //顯示租借品類別 - 依租借品類別名稱
-//    @PostMapping("listForRentalCatName")
-//    public String listForRentalCatName(@RequestParam(value = "rentalCatName") String rentalCatName, ModelMap model) {
-//
-//        String catToDisplay = ""; // 用來存放要顯示的類別
-//
-//        // 判斷租借品類別名稱
-//        if ("西裝".equals(rentalCatName))
-//             catToDisplay = "西裝類別";
-//        else if ("婚紗".equals(rentalCatName))
-//             catToDisplay = "婚紗類別";
-//
-//        else if ("禮服".equals(rentalCatName))
-//            catToDisplay = "禮服類別";
-//
-//
-//        model.addAttribute(" catToDisplay",  catToDisplay);
-//
-//        // 顯示全部租借品類別列表
-//        List<RentalCategory> rentalCatListData = rentalCategoryService.findAll();
-//        model.addAttribute("rentalCatListData", rentalCatListData);
-//        return "/frontend/rental/rentalShop";
-//    }
-
-
-//    //顯示租借品新增
-//    @GetMapping("/addRental")
-//    public String addRentalFrom(ModelMap model) {
-//        Rental rental = new Rental();
-//        model.addAttribute("rental", rental);
-//        return "/frontend/rental/addRental";
-//    }
-
-
-//    //顯示租借品修改
-//    @GetMapping("/updateRental")
-//    public String updateRental(Model model) {
-//        //建立返回數據的對象
-//        List<Rental> rentalList = rentalService.findAll();
-//        model.addAttribute("rental", rentalList);
-//        model.addAttribute("rentalCategory", rentalCategoryService.findAll());
-//        model.addAttribute("rental", rentalList.get(0));
-//        return "/frontend/rental/updateRental";
-//    }
-
-
-
-
-
-    //處理查詢(依租借品的顏色)
-//    @PostMapping("/getDisplayColor")
-//    public String getDisplayColor(@RequestParam("rentalColor") String rentalColor, ModelMap model) {
-//
-//        List<Rental> colorList = rentalService.getRentalColor(rentalColor); //找出符合相關顏色的，放入list
-//        model.addAttribute("colorList", colorList);
-//        model.addAttribute("rentalCategory", new RentalCategory());
-//        List<RentalCategory> rentalCatListData = rentalCategoryService.findAll();
-//        model.addAttribute("rentalCatListData",rentalCatListData);
-//
-//        if (rentalColor == null) {
-//            model.addAttribute("errors", "errors");
-//            return "/frontend/rental/select_page";
-//        }
-//        model.addAttribute("rentalColor", rentalColor);
-//        return "/frontend/rental/listOneRental"; // 查詢完成後轉交listOneRental.html
-//    }
-    //處理查詢(依租借品的尺寸)
-//    @PostMapping("/getDisplayRentalSize")
-//    public String getDisplayRentalSize(@RequestParam("rentalSize") String rentalSize, ModelMap model) {
-//
-//        List<Rental> sizeList = rentalService.getRentalSize(Integer.valueOf(rentalSize));
-//        model.addAttribute("sizeList", sizeList);
-//        model.addAttribute("rentalCategory", new RentalCategory());
-//        List<RentalCategory> rentalCatListData = rentalCategoryService.findAll();
-//        model.addAttribute("rentalCatListData",rentalCatListData);
-//
-//        if (rentalSize == null) {
-//            model.addAttribute("errors", "errors");
-//            return "/frontend/rental/select_page";
-//        }
-//        model.addAttribute("rentalSize", rentalSize);
-//        return "/frontend/rental/listOneRental"; // 查詢完成後轉交listOneRental.html
-//    }
-
 
 
     //關鍵字查詢(依租借品的名稱 "模糊查詢")
@@ -195,18 +80,6 @@ public class RentalCategoryControllerFrontEnd {
     }
 
 
-
-
-//排序方法：最新上架 (顯示近期上架，可依據已上架產品+租借品狀態為上架中作為排序依據)
-
-//處理單個類別查詢(依租借品的類別編號)  --------> 租借品類別去實作給前端網頁
-
-
-
-
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * 因 @ModelAttribute寫在方法上，故將此類別中的@GetMapping Method先加入model.addAttribute("...List",...Service.getAll());
      * referenceListData()：回傳一個包含參考資料的列表或映射，透過View渲染到使用者介面上。

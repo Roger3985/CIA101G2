@@ -14,7 +14,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -49,16 +48,6 @@ public class RentalCategoryControllerBackEnd {
 	public String listAllRentalCategory() {
 		return "/backend/rentalcategory/listAllRentalCategory";
 	}
-
-
-//	//顯示後台 showOneRental.html
-//	@GetMapping("listOneRentalCategory")  //required = true：請求參數不可為null(預設)
-//	public String listOneRentalCat(@RequestParam(value = "rentalCatNo", required = true) Integer rentalCatNo, ModelMap model) {
-//		//建立返回數據的對象
-//		RentalCategory rentalCategory = rentalCategoryService.findByCatNo(rentalCatNo);
-//		model.addAttribute("rentalCategory", rentalCategory);
-//		return "/backend/rentalcategory/listOneRentalCategory";
-//	}
 
 
 	//顯示新增頁面 (後台)
@@ -115,7 +104,6 @@ public class RentalCategoryControllerBackEnd {
 	// 處理修改資料
 	@PostMapping("updateRentalCat")
 	public String updateRentalCat(@Validated(RentalCategory.UpdateRentalCatGroup.class) RentalCategory rentalCategory,
-
 								  BindingResult result, ModelMap model) {
 		//驗證方式： 若屬性存在一個以上的驗證註解，為避免在驗證皆未通過。 搭配迴圈輸出完整的錯誤訊息
 		if (rentalCategory != null) {
@@ -164,17 +152,8 @@ public class RentalCategoryControllerBackEnd {
 		model.addAttribute("rentalCategory", rentalCategory);
 		return "/backend/rentalcategory/listAllRentalCategory";
 	}
-	/**
-	 *前端透過Ajax方式傳送Json資料，由此處控制器方法來接收JSON資料
-	 *必須使用@RequestBody註釋
-	 */
-//	@PostMapping("/json")
-//	public String handleJson(@RequestBody RentalCategory rentalCategory){
-//		System.out.println(rentalCategory);
-//		return "finish";
-//	}
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////待處理	複合查詢
+
 	/**
 	 * Map中存储了请求参数的键值，键是参数的名称，值是参数的值数组
 	 *通过HttpServletRequest获取了请求的参数Map，并将其传递给searchRentals()方法执行查询。
@@ -190,7 +169,6 @@ public class RentalCategoryControllerBackEnd {
 		model.addAttribute("queryList", queryList);
 		return "/backend/rentalcategory/listAllRentalCategory"; //結果傳至listAllRental
 	}
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * 因 @ModelAttribute寫在方法上，故將此類別中的@GetMapping Method先加入model.addAttribute("...List",...Service.getAll());

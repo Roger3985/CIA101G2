@@ -35,34 +35,6 @@ public class RentalPicControllerFrontEnd {
     private RentalPicServiceImpl rentalPicService;
     @Autowired  // 自動裝配
     private RentalServiceImpl rentalService;
-    
-
-//    //顯示全部租借品照片頁面 (前台)
-//    @GetMapping("/listAllRentalPic")
-//    public String listAllRentalPic() {
-//        return "/frontend/rentalpic/listAllRentalPic";
-//    }
-
-
-    //顯示showOneRental.html裡面的照片 (依rentalNo對應)
-//    @GetMapping("/rental/showOneRental")
-//    public String showOneRentalPic(@RequestParam("rentalPicNo") Integer rentalPicNo, ModelMap model) {
-//
-//        RentalPic rentalPic = rentalPicService.findByRentalPicNo(rentalPicNo);
-//        List<RentalPic> rentalPicList = rentalPicService.findAll();
-//        model.addAttribute("rentalPicList", rentalPicList);
-//
-//        List<Rental> rentalListData = rentalService.findAll();
-//        model.addAttribute("rental", new Rental());
-//        model.addAttribute("rentalListData", rentalListData);
-//
-//        if (rentalPicList == null) {
-//            model.addAttribute("errors", "查無資料");
-//            return "/frontend/rental/rentalShop";
-//        }
-//        model.addAttribute("rentalPic", rentalPic);
-//        return "/frontend/rental/showOneRental";
-//    }
 
 
     //圖片處理 (與設置初始預設圖片)
@@ -91,27 +63,6 @@ public class RentalPicControllerFrontEnd {
             out.close();
         }
     }
-
-
-//    //萬用查詢
-//    @GetMapping("/search")
-//    public String search(@RequestParam(value = "rentalPicNo", required = false) Integer rentalPicNo,
-//                         @RequestParam(value = "rentalNo", required = false) Integer rentalNo, ModelMap modelMap) {
-//
-//        Map<String, Object> map = new HashMap<>();
-//
-//        if (rentalPicNo != null) {
-//            map.put("rentalPicNo", rentalPicNo);
-//        } else if (rentalNo != null) {
-//            map.put("rentalNo", rentalNo);
-//        }
-//
-//        List<RentalPic> rentalPicList = rentalPicService.searchRentalPics(map);
-//        modelMap.addAttribute("rentalPicList", rentalPicList);
-//        modelMap.addAttribute("search", "true");
-//
-//        return "/frontend/rentalpic/selectRentalPic";
-//    }
 
 
     /**

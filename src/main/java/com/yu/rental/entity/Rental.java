@@ -73,7 +73,7 @@ public class Rental implements java.io.Serializable {
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "rentalcatno", referencedColumnName = "rentalcatno") //對應rental的rCatNo
+    @JoinColumn(name = "rentalcatno", referencedColumnName = "rentalcatno")
     private RentalCategory rentalCategory;
 
     @JsonBackReference

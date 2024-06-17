@@ -12,17 +12,9 @@ public interface RentalPicService {
 
     RentalPic findByRentalPicNo(Integer rentalPicNo);//單筆查詢(rentalPicNo)
 
-    RentalPic findByRentalRentalNo(Integer rentalNo); //單筆查詢(rentalNo)
-
-//----------------------------------------------------------------------------------------------------------------------
-//主要為後端使用：增查改
-
     RentalPic addRentalPic(RentalPic rentalPic); //新增
-//    RentalPic addRentalPic(Integer rNo, byte[] rPic); //新增
 
     RentalPic updateRentalPic(RentalPic rentalPic); //修改
-
-    public void updatePicture(RentalPic rentalPic, byte[] rentalFile); //修改照片
 
     List<RentalPic> searchRentalPics(Map<String, Object> map); //複合查詢
 }

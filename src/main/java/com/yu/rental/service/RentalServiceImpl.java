@@ -2,7 +2,6 @@ package com.yu.rental.service;
 
 import com.yu.rental.dao.RentalRepository;
 import com.yu.rental.entity.Rental;
-import com.yu.rentalcategory.dao.RentalCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,12 +41,6 @@ public class RentalServiceImpl implements RentalService {
 		return repository.findById(rentalNo).orElse(null);
 	}
 
-	//單筆查詢(String rentalName)
-	@Override
-	public Rental findByRentalName(String rentalName) {
-		return repository.findByRentalName(rentalName);
-	}
-
 	//處理查詢(依租借品的顏色)
 	@Override
 	public List<Rental> findByRentalColor(String rentalColor) {
@@ -74,13 +67,6 @@ public class RentalServiceImpl implements RentalService {
 	public List<Rental> getRentalName(String rentalName) {
 		return repository.findQueryByRentalName(rentalName);
 	}
-
-	// 依關鍵字搜尋相關租借品 (如果rentalStat不為5 (下架狀態))
-	@Override
-	public Page<Rental> findByAllKeyWord(String keyword, Byte rentalStat, Integer rentalSize, Pageable pageable) {
-		return repository.findByKeyword_Status_SizeAndPrice(keyword, rentalStat, rentalSize, pageable);
-	}
-
 
 	//金額由大到小 (取得租借清單，以價格的降冪後返回)
 	@Override
@@ -126,11 +112,6 @@ public class RentalServiceImpl implements RentalService {
 		return repository.save(rental);
 	}
 
-	//單筆查詢(List集合)
-	@Override
-	public List<Rental> getOneRental(Map<String, Object> getOneRentalMap) {
-		return null;
-	}
 
 
 

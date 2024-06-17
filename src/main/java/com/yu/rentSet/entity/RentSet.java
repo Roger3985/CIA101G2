@@ -71,45 +71,4 @@ public class RentSet implements Serializable {
         this.rentalSetDays = rentalSetDays;
     }
 
-
-//聯合主鍵使用
-//    @Embeddable
-//    public static class CompositeDetail implements Serializable {
-//
-//        @Column(name = "rentalordno")
-//        private Integer rentalOrdNo;
-//
-//        public CompositeDetail() {
-//        }
-//
-//        public CompositeDetail(Integer rentalOrdNo) {
-//            this.rentalOrdNo = rentalOrdNo;
-//        }
-//
-//        public Integer getRentalOrdNo() {
-//            return rentalOrdNo;
-//        }
-//
-//        public void setRentalOrdNo(Integer rentalOrdNo) {
-//            this.rentalOrdNo = rentalOrdNo;
-//        }
-//
-//        @Override
-//        public boolean equals(Object o) {
-//            if (this == o) return true;
-//            if (!(o instanceof CompositeDetail)) return false;
-//            CompositeDetail that = (CompositeDetail) o;
-//            return Objects.equals(getRentalOrdNo(), that.getRentalOrdNo());
-//        }
-//
-//        @Override
-//        public int hashCode() {
-//            return Objects.hash(getRentalOrdNo());
-//        }
-//
-//    }
-
-
-
-
 }

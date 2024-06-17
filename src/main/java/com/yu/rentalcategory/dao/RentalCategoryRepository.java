@@ -16,7 +16,7 @@ public interface RentalCategoryRepository extends JpaRepository<RentalCategory, 
 
     /**
      * 因繼承 JpaRepository，所以不需要實作任何方法，即可使用「新增、修改、刪除」等基本功能。
-     * 注意：JpaRepository的泛型為 <T,ID>，所以在使用繼承時，必須定義好 T 與 ID 的型別，也就是 <MemberDTO, Long>。
+     * 注意：JpaRepository的泛型為 <T,ID>，所以在使用繼承時，必須定義好 T 與 ID 的型別，也就是 <RentalCategory, Long>。
      */
     @Transactional
     public RentalCategory findByRentalCatNo(Integer rentalCatNo);
@@ -31,20 +31,5 @@ public interface RentalCategoryRepository extends JpaRepository<RentalCategory, 
     @Transactional
     @Query("SELECT re FROM RentalCategory re WHERE re.rentalCatNo = :rentalCatNo")
     Optional<RentalCategory> findRentalCategory_RentalCatNo(Integer rentalCatNo);
-
-    //自定義查詢(使用JPQL語法)
-    @Query("SELECT re FROM RentalCategory re WHERE re.rentalCatName LIKE %:rentalCatName%")
-    List<RentalCategory> findQueryByRentalCatName(@Param("rentalCatName") String rentalCatName);
-
-    @Query("SELECT re FROM RentalCategory re WHERE re.rentalStockQty = :rentalStockQty")
-    List<RentalCategory> findQueryByRentalStockQty(@Param("rentalStockQty") Integer rentalStockQty);
-
-    @Query("SELECT re FROM RentalCategory re WHERE re.rentalRentedQty = :rentalRentedQty")
-    List<RentalCategory> findQueryByRentalRentedQty(@Param("rentalRentedQty") Integer rentalRentedQty);
-
-
-
-
-
 
 }

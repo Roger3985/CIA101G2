@@ -27,22 +27,6 @@ public class RentSetServiceImpl implements RentSetService {
         return repository.findByRentalOrder_RentalOrdNo(rentalOrdNo);
     }
 
-    //單筆查詢(rentalSetName)
-    @Override
-    public RentSet findByRentalSetName(String rentalSetName) {
-        return repository.findByRentalSetName(rentalSetName);
-    }
-
-    //單筆查詢(rentalSetDays)
-    @Override
-    public RentSet findByRentalSetDays(Byte rentalSetDays) {
-        return repository.findByRentalSetDays(rentalSetDays);
-    }
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//主要為後端使用：增查改
-
     //新增 (PK為null，save方法插入數據)
     @Override
     public RentSet addRentSet(RentSet rentSet) {

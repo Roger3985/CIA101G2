@@ -1,15 +1,10 @@
 
 package com.yu.rentalpic.service;
 
-import com.roger.member.entity.Member;
 import com.yu.rentalpic.dao.RentalPicRepository;
 import com.yu.rentalpic.entity.RentalPic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.sql.Timestamp;
-import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,15 +25,6 @@ public class RentalPicServiceImpl implements RentalPicService {
     public RentalPic findByRentalPicNo(Integer rentalPicNo) {
         return repository.findByRentalPicNo(rentalPicNo);
     }
-
-    //單筆查詢(rentalNo)
-    @Override
-    public RentalPic findByRentalRentalNo(Integer rentalNo) {
-        return repository.findByRentalRentalNo(rentalNo);
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-//主要為後端使用：增查改
 
     //新增 (PK為null，save方法插入數據)
     @Override
@@ -74,9 +60,4 @@ public class RentalPicServiceImpl implements RentalPicService {
         return repository.searchRentalPics(rentalPicNo, rentalNo, rentalFile);
     }
 
-    //修改照片
-    @Override
-    public void updatePicture(RentalPic rentalPic, byte[] rentalFile) {
-        repository.updateRentalFileById(rentalPic.getRentalPicNo(), rentalFile);
-    }
 }

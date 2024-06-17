@@ -132,16 +132,6 @@ public class RentalPicControllerBackEnd {
                 model.addAttribute("rentalPic", rentalPic);
             }
         }
-//        // 如果有驗證錯誤，直接返回錯誤
-//        if (result.hasErrors()|| parts[0].isEmpty()) {
-//            List<FieldError> fieldErrors = result.getFieldErrors();
-//            for (int i = 0, len = fieldErrors.size(); i < len; i++) {
-//                FieldError field = fieldErrors.get(i); //依索引值放入個別錯誤
-//                model.addAttribute(i + "-" + field.getField(), field.getDefaultMessage()); //出錯的名稱&訊息放入。
-//                model.addAttribute("rentalPic", rentalPic);
-//            }
-//            return "/backend/rentalpic/addRentalPic";
-//        }
         return "/backend/rentalpic/listAllRentalPic";
     }
 

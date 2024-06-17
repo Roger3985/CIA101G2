@@ -14,7 +14,7 @@ public interface RentalMyFavoriteService {
 
     List<AddToWishList> getWishFromRedis(Integer memNo);
 
-    //----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
     RentalMyFavorite findByRentalNo(Integer rentalNo); //單筆查詢(rentalNo)
 
     RentalMyFavorite findByRentalNoAndMemNo(Integer rentalNo, Integer memNo);  //複合主鍵查詢
@@ -23,5 +23,4 @@ public interface RentalMyFavoriteService {
 
     List<RentalMyFavorite> findByCompositeKey(Integer rentalNo);
 
-//    List<RentalMyFavorite> searchRentalMyFAVs(Map<String, Object> map); //複合查詢
 }

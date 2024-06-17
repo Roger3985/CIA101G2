@@ -20,16 +20,6 @@ import java.util.Map;
 @RequestMapping("/backend/rentset") //對應資料夾路徑
 public class RentSetControllerBackEnd {
 
-    /**
-     * 註：
-     *    進行CRUD操作時，確保在保存實體前設置外來鍵關聯。
-     *    例： address(從)、user(主)
-     *         User user = new User();
-     *         Address address = new Address();
-     *         address.setUser(user);  //設置外來鍵關聯
-     *         userRepository.save(user);
-     */
-
 
     @Autowired  // 自動裝配
     private RentalOrderServiceImpl rentalOrderService;

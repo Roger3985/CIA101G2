@@ -4,10 +4,8 @@ import com.chihyun.mycoupon.entity.MyCoupon;
 import com.chihyun.mycoupon.model.MyCouponService;
 import com.google.gson.Gson;
 import com.roger.member.entity.Member;
-import com.roger.member.service.impl.MemberServiceImpl;
 import com.yu.rental.entity.Rental;
 import com.yu.rental.service.RentalServiceImpl;
-import com.yu.rentalcategory.service.RentalCategoryServiceImpl;
 import com.yu.rentalmyfavorite.dto.AddToWishList;
 import com.yu.rentalmyfavorite.service.RentalMyFavoriteServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,11 +101,11 @@ public class RentalMyFavoriteFrontEnd {
         // 使用 Gson 對象的 toJson 方法，將 response 轉換為 JSON 格式
         Gson gson = new Gson();
 
-        // 從 HTTP 會話中獲取當前已登入的會員資料
+        // 從 HTTP 會話中取得當前已登入的會員資料
         Member myData = (Member) session.getAttribute("loginsuccess");
         System.out.println("抓到 myData：" + myData);
 
-        // 如果會員未登錄，返回錯誤信息
+        // 如果會員未登錄，返回錯誤
         if (myData == null) {
             response.put("message", "請登入會員再進行操作");
             return gson.toJson(response);

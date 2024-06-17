@@ -3,8 +3,6 @@ package com.yu.rentalmyfavorite.service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import com.roger.member.repository.MemberRepository;
-import com.yu.rental.dao.RentalRepository;
 import com.yu.rentalmyfavorite.dao.RentalMyFavoriteRepository;
 import com.yu.rentalmyfavorite.dto.AddToWishList;
 import com.yu.rentalmyfavorite.entity.RentalMyFavorite;
@@ -67,7 +65,7 @@ public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
 
         try {
             String favoriteKey = "member:" + memNo;
-            // 取得收藏的所有品項 (從 Redis 中獲取與該會員編號相關的所有收藏)
+            // 取得收藏的所有品項 (從 Redis 中取得與該會員編號相關的所有收藏)
             Set<String> favorites = rentalWishRedisTemplate.keys(favoriteKey + ":*");
 
             // 遍歷內容，對應 key.value
@@ -80,7 +78,8 @@ public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
                 AddToWishList item = new AddToWishList();
                 item.setMemNo(memNo); // 設置 memNo 屬性
 
-                // 設置 rentalNo 屬性 (檢查 favoriteData 是否包含 rentalNo 鍵，並確認值為字串形式後，再轉換為 Integer 並設置到 item 對象中)
+                // 設置 rentalNo 屬性
+                // (檢查 favoriteData 是否包含 rentalNo 鍵，並確認值為字串形式後，再轉換為 Integer 並設置到 item 對象中)
                 if (favoriteData.containsKey("rentalNo")) {
                     Integer rentalNo = Integer.parseInt((String) favoriteData.get("rentalNo"));
                     item.setRentalNo(rentalNo);
@@ -122,31 +121,6 @@ public class RentalMyFavoriteServiceImpl implements RentalMyFavoriteService {
     public List<RentalMyFavorite> findByCompositeKey(Integer rentalNo) {
         return repository.findByCompositeKey(rentalNo);
     }
-
-//    @Override
-//    public List<RentalMyFavorite> searchRentalMyFAVs(Map<String, Object> map) {
-//        if (map.isEmpty()) {
-//            return repository.findAll();
-//        }
-//
-//        Integer rentalNo = null;
-//        Integer memNo = null;
-//        Timestamp rentalFavTime = null;
-//
-//        if (map.containsKey("rentalNo")) {
-//            rentalNo = (Integer) map.get("rentalNo");
-//        }
-//        if (map.containsKey("memNo")) {
-//            memNo = (Integer) map.get("memNo");
-//        }
-//        if (map.containsKey("rentalFavTime")) {
-//            rentalFavTime = (Timestamp) map.get("rentalFavTime");
-//        }
-//
-//        return repository.searchRentalMyFAVs(rentalNo, memNo, rentalFavTime);
-//    }
-
-
 
 }
 

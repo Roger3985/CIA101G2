@@ -21,17 +21,8 @@ import java.util.List;
 @RequestMapping("/frontend") //對應資料夾路徑
 public class RentalControllerFrontEnd {
 
-    /**前端網頁需求：
-     *
-     * 左上角的關鍵字查詢
-     * 點入商品欄後，顯示個別商品、全部商品
-     * 排序方法：最新上架、價格低~高、價格高~低
-     * 點選"加入我的最愛"，即可新增查看
-     *個別品項篩選 (針對類別、金額、Size)
-     *
-     */
-
-    @Autowired  // 自動裝配
+    // 自動裝配
+    @Autowired
     private RentalServiceImpl rentalService;
     @Autowired
     private RentalCategoryServiceImpl rentalCategoryService;
@@ -86,7 +77,7 @@ public class RentalControllerFrontEnd {
         Rental rental = rentalService.findByNo(rentalNo);
         model.addAttribute("rentalCategory", new RentalCategory());
         List<RentalCategory> rentalCatListData = rentalCategoryService.findAll();
-        model.addAttribute("rentalCatListData",rentalCatListData); //所有租借品類別資訊
+        model.addAttribute("rentalCatListData",rentalCatListData);
         if (rental == null) {
             model.addAttribute("errors", "errors");
             return "/frontend/rental/rentalShop";
@@ -124,44 +115,6 @@ public class RentalControllerFrontEnd {
 
         }
         return "/frontend/rental/rentalShop"; // 查詢完成後轉交
-    }
-
-    //排序方法：價格低~高、價格高~低
-    @GetMapping("/rental/rentalShopGrid/{sortType}")
-    public String sortAll(@PathVariable("sortType") String sortType,
-                          @RequestParam(value = "rentalStat", required = false) Byte rentalStat,
-                          Model model) {
-
-        //判斷選擇哪種方式
-        if("low_to_high".equals(sortType)){
-            List<Rental> sortList = rentalService.findAllSort();
-            for (Rental rental : sortList) {
-                System.out.println(rental.getRentalName() +":"+rental.getRentalPrice());
-            }
-            model.addAttribute("rentalListData", sortList); // 顯示價格由小到大
-
-        } else if("high_to_low".equals(sortType)){
-            List<Rental> sortDESCList = rentalService.findAllSortDESC();
-            model.addAttribute("rentalListData", sortDESCList); // 顯示價格由大到小
-
-        } else if("newest".equals(sortType)){
-            List<Rental> newestList = rentalService.findByRentalStatDESC(rentalStat);
-            model.addAttribute("rentalListData", newestList); // 顯示最新品項
-
-        } else {
-            List<Rental> defaultSortList = rentalService.findAllSort();
-            model.addAttribute("rentalListData", defaultSortList); // 預設價格由小到大
-
-        }
-        return "/frontend/rental/rentalShopGrid"; // 查詢完成後轉交
-    }
-
-
-    //處理查詢(依租借品的顏色)
-    @GetMapping("/findByColor")
-    public ResponseEntity<List<Rental>> findByColor(@RequestParam String rentalColor) {
-        List<Rental> rentals = rentalService.findByRentalColor(rentalColor);
-        return new ResponseEntity<>(rentals, HttpStatus.OK);
     }
 
 

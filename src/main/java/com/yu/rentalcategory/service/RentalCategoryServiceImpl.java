@@ -1,11 +1,9 @@
 package com.yu.rentalcategory.service;
 
 import com.yu.rental.dao.RentalRepository;
-import com.yu.rental.entity.Rental;
 import com.yu.rentalcategory.dao.RentalCategoryRepository;
 import com.yu.rentalcategory.entity.RentalCategory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -22,9 +20,6 @@ public class RentalCategoryServiceImpl implements RentalCategoryService {
 
     @Autowired //自動裝配
     private RentalCategoryRepository repository;
-    @Autowired
-    private RentalRepository rentalRepository;
-
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -34,26 +29,10 @@ public class RentalCategoryServiceImpl implements RentalCategoryService {
     public RentalCategory findByCatNo(Integer rentalCatNo) {
         return repository.findByRentalCatNo(rentalCatNo);	}
 
-    @Override
-    public Optional<RentalCategory> findRentalCategory_RentalCatNo(Integer rentalCatNo) {
-        return repository.findRentalCategory_RentalCatNo(rentalCatNo);
-    }
-
-    //單筆查詢
-    @Override
-    public RentalCategory getRentalCatName(String rentalCatName) {
-        return repository.findByRentalCatName(rentalCatName);	}
-
     //單筆查詢
     @Override
     public List<RentalCategory> getRentalDesPrice(BigDecimal rentalDesPrice) {
         return repository.findByRentalDesPrice(rentalDesPrice);	}
-
-    //單筆查詢
-    @Override
-    public RentalCategory getOneRentalCat(Integer rentalCatNo) {
-        return repository.findByRentalCatNo(rentalCatNo);
-    }
 
     //全部查詢(RentalCategory)
     @Override
@@ -61,8 +40,6 @@ public class RentalCategoryServiceImpl implements RentalCategoryService {
         return repository.findAll();
     }
 
-    //----------------------------------------------------------------------------------------------------------------------
-    //主要為後端使用：增查改
     @Override
     public RentalCategory addRentalCat(RentalCategory rentalCategory) {
         return repository.save(rentalCategory);
@@ -78,7 +55,7 @@ public class RentalCategoryServiceImpl implements RentalCategoryService {
     public List<RentalCategory> searchRentalCats(Map<String, String[]> paramsMap) {
         //複合查詢 (使用"Map<String, String[]> paramsMap" 處理多個參數值)
         if (paramsMap == null || paramsMap.isEmpty()) {
-            return repository.findAll(); // 如果没有任何条件，返回所有
+            return repository.findAll();
         }
 
         //JPQL查詢語句
@@ -115,11 +92,11 @@ public class RentalCategoryServiceImpl implements RentalCategoryService {
             }
         }
         TypedQuery<RentalCategory> query = entityManager.createQuery(jpql.toString(), RentalCategory.class);
-        // 设置参数
+        // 設置參數
         for (Map.Entry<String, Object> rentalCatEntry : params.entrySet()) {
             query.setParameter(rentalCatEntry.getKey(), rentalCatEntry.getValue());
         }
-        // 执行查询
+        // 執行查詢
         return query.getResultList();
     }
 
