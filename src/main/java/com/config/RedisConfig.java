@@ -295,17 +295,44 @@ public class RedisConfig {
         return redisTemplate;
     }
 
+
+    /**
+     * 功能：存放租借品中，已加入的願望品項之清單
+     *
+     * 產生一個叫 "rentalWish" 的 Spring Bean。
+     * 返回的類型宣告為 RedisTemplate<String, Map<String, String>>
+     * "rentalDataBase" 為指定連接 Redis 的倉庫
+     * "new RedisTemplate" 創建一個 RedisTemplate 實例。用於與 Redis 交互
+     *
+     * @return 返回配置好的 RedisTemplate
+     */
     @Bean("rentalWish")
     public RedisTemplate<String, Map<String, String>> rentalWishRedisTemplate(
             @Qualifier("rentalDataBase") RedisConnectionFactory connectionFactory) {
         RedisTemplate<String, Map<String, String>> redisTemplate = new RedisTemplate<>();
         // 設置連線
         redisTemplate.setConnectionFactory(connectionFactory);
-        // 設置 Serializer
+        // 設置 鍵的序列化器 StringRedisSerializer ([鍵] 會被序列化為字符串)
         redisTemplate.setKeySerializer(new StringRedisSerializer());
+        // 設置 值的序列化器 Jackson2JsonRedisSerializer，指定類型Map<String, String> ([值] 會被序列化為JSON格式的Map)
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Map.class));
         return redisTemplate;
     }
+
+
+
+
+//    @Bean("rentalWish")
+//    public RedisTemplate<Integer, Map<String, String>> rentalWishRedisTemplate(
+//            @Qualifier("rentalDataBase") RedisConnectionFactory connectionFactory) {
+//        RedisTemplate<Integer, Map<String, String>> redisTemplate = new RedisTemplate<>();
+//        // 設置連線
+//        redisTemplate.setConnectionFactory(connectionFactory);
+//        // 設置Serializer
+//        redisTemplate.setKeySerializer(new GenericToStringSerializer<>(Integer.class));
+//        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+//        return redisTemplate;
+//    }
 
 
 //    @Bean("loginState")
